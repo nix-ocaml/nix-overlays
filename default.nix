@@ -124,17 +124,26 @@ in
         ];
       };
 
+      camlzip = lib.overrideDerivation superO.camlzip (_: {
+        inherit (superO) camlzip;
+
+        src = pkgs.fetchurl {
+          url = "https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz";
+          sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
+        };
+
+      });
+
       ezgzip = buildPkg {
         pkgName = "ezgzip";
-        version = "0.2.3";
+        version = "0.2.3-dev";
         src = pkgs.fetchFromGitHub {
-          owner = "hcarty";
+          owner = "anmonteiro";
           repo = "ezgzip";
-          rev = "v0.2.3";
-          sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
+          rev = "0719eb0";
+          sha256 = "07kihdwrb5sj8j15yccb6msq3kgca7lv6xmhjrgh7j2cc6nkfnsh";
         };
-        buildInputs = with selfO; [rresult];
-        propagatedBuildInputs = with selfO; [ astring ocplib-endian camlzip ];
+        propagatedBuildInputs = with selfO; [rresult astring ocplib-endian camlzip  ];
       };
     });
   }
