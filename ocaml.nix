@@ -83,6 +83,7 @@ in
 
     hpack = buildH2Repo {
       pkgName = "hpack";
+      propagatedBuildInputs = with selfO; [ angstrom faraday ];
     };
 
     h2 = buildH2Repo {
