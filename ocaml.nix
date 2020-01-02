@@ -1,7 +1,9 @@
-{ lib, pkgs, fetchFromGitHub, stdenv, ocamlPackages }:
+{ fetchFromGitHub, stdenv, pkgconfig, openssl }:
+
+selfO: superO:
 
 let
-  buildPkg = { pkgName, src, ... }@args: ocamlPackages.buildDunePackage ({
+  buildPkg = { pkgName, src, ... }@args: selfO.buildDunePackage ({
     inherit (args) version;
     pname = pkgName;
 
@@ -45,7 +47,7 @@ let
   } // args);
 
 in
-  ocamlPackages.overrideScope' (selfO: superO: {
+  {
     faraday = buildFaraday {
       pkgName = "faraday";
       propagatedBuildInputs = with selfO; [ bigstringaf ];
@@ -115,33 +117,33 @@ in
     ssl = buildPkg {
       pkgName = "ssl";
       version = "0.5.9-dev";
-      src = pkgs.fetchFromGitHub {
+      src = fetchFromGitHub {
         owner = "savonet";
         repo = "ocaml-ssl";
         rev = "fbffa9b";
         sha256 = "1pp9hig7kkzhr3n1rkc177mnahrijx6sbq59xjr8bnbfsmn1l2ay";
       };
 
-      nativeBuildInputs = with pkgs; [ pkgconfig ];
-      propagatedBuildInputs = with pkgs; [
-        openssl
-      ];
+      nativeBuildInputs = [ selfO.dune pkgconfig ];
+      propagatedBuildInputs = [ openssl.dev ];
     };
 
-    camlzip = lib.overrideDerivation superO.camlzip (_: {
-      inherit (superO) camlzip;
+    camlzip = superO.camlzip.overrideAttrs (o: {
+      buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
+        "all zip.cmxa"
+        else
+          o.buildFlags;
 
-      src = pkgs.fetchurl {
+      src = builtins.fetchurl {
         url = "https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz";
         sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
       };
-
     });
 
     ezgzip = buildPkg {
       pkgName = "ezgzip";
       version = "0.2.3-dev";
-      src = pkgs.fetchFromGitHub {
+      src = fetchFromGitHub {
         owner = "anmonteiro";
         repo = "ezgzip";
         rev = "0719eb0";
@@ -149,4 +151,4 @@ in
       };
       propagatedBuildInputs = with selfO; [rresult astring ocplib-endian camlzip  ];
     };
-  })
+  }
