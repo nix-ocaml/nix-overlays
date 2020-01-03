@@ -58,7 +58,7 @@ in
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
 
-    dose3 = callPackage ./dose3 {
-      ocamlPackages = oself;
-    };
+    # dose3 = callPackage ./dose3 {
+      # ocamlPackages = oself;
+    # };
   }
