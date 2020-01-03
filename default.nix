@@ -7,5 +7,5 @@ let
 
 in
   {
-    ocamlPackages = super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml.nix {});
+    ocamlPackages = super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml {});
   }
