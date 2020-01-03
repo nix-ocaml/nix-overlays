@@ -11,7 +11,7 @@ let
       if o.stdenv.hostPlatform != o.stdenv.buildPlatform then {
         # "LIBS=-static"
         preConfigure = ''
-          configureFlagsArray+=("CC=$CC" "AS=$AS"  "PARTIALLD=$LD -r")
+          configureFlagsArray+=("CC=$CC" "AS=$AS" "PARTIALLD=$LD -r")
         '';
         configureFlags = (lib.remove "--no-shared-libs" o.configureFlags) ++ [
           "--disable-shared"
@@ -28,15 +28,25 @@ let
     crossSystem = lib.systems.examples.musl64;
     overlays = [
       (self: super: { ocaml = fixOcaml super.ocaml; })
+
+      # The OpenSSL override below would cause curl and its transitive closure
+      # to be recompiled because of its use within the fetchers. So for now we
+      # use the native fetchers.
+      # This should be revisited in the future, as it makes the fetchers
+      # unusable at runtime in the target env
+      (self: super:
+        lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) pkgsNative)
+
       (self: super: {
         opaline = fixOcamlBuild (super.opaline.override {
           ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
         });
 
         openssl_1_1 = (super.openssl_1_1.override { static = true; }).overrideDerivation (o: {
-          configureFlags =
-            (lib.remove "--enable-static"
-            (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
+          stdenv = super.stdenv;
+          configureFlags = o.configureFlags ++ ["no-shared"];
+            # (lib.remove "--enable-static"
+            # (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
         });
 
         ocaml-ng = super.ocaml-ng // {
@@ -61,8 +71,8 @@ let
                   "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
                 ];
               });
-              # ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
-              # easy-format = fixOcamlBuild osuper.easy-format;
+              ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
+              easy-format = fixOcamlBuild osuper.easy-format;
               qcheck = fixOcamlBuild osuper.qcheck;
               stringext = fixOcamlBuild osuper.stringext;
               opam-file-format = fixOcamlBuild osuper.opam-file-format;
@@ -70,11 +80,11 @@ let
               camlzip = fixOcamlBuild osuper.camlzip;
               dune = fixOcamlBuild osuper.dune;
               dune_2 = fixOcamlBuild osuper.dune_2;
-              # digestif = fixOcamlBuild osuper.digestif;
+              digestif = fixOcamlBuild osuper.digestif;
               astring = fixOcamlBuild osuper.astring;
               rresult = fixOcamlBuild osuper.rresult;
               fpath = fixOcamlBuild osuper.fpath;
-              # ocb-stubblr = fixOcamlBuild osuper.ocb-stubblr;
+              ocb-stubblr = fixOcamlBuild osuper.ocb-stubblr;
               cppo = fixOcamlBuild osuper.cppo;
               ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
               ssl = fixOcamlBuild osuper.ssl;
