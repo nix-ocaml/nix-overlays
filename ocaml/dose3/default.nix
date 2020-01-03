@@ -1,4 +1,4 @@
-{ fetchFromGithub, ocamlPackages }:
+{ stdenv, fetchFromGithub, ocamlPackages }:
 
 stdenv.mkDerivation {
   name = "dose";
