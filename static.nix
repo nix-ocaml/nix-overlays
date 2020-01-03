@@ -50,8 +50,13 @@ let
         });
 
         ocaml-ng = super.ocaml-ng // {
-          "ocamlPackages_${ocamlVersion}" = (super.ocaml-ng."ocamlPackages_${ocamlVersion}".overrideScope'
-            (oself: osuper: {
+          "ocamlPackages_${ocamlVersion}" =
+            (super.ocaml-ng."ocamlPackages_${ocamlVersion}".overrideScope'
+              # For convenience, add our own overlays to the static packages.
+              # It's important that this happens before the next
+              # `overrideScope'` call, as that will fix our packages for
+              # cross-compilation
+              (super.callPackage ./ocaml { })).overrideScope' (oself: osuper: {
               ocaml = fixOcaml osuper.ocaml;
               findlib = fixOcamlBuild osuper.findlib;
               ocamlbuild = fixOcamlBuild osuper.ocamlbuild;
@@ -88,8 +93,7 @@ let
               cppo = fixOcamlBuild osuper.cppo;
               ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
               ssl = fixOcamlBuild osuper.ssl;
-            }
-            )).overrideScope' (super.callPackage ./ocaml { });
+            });
         };
       })
     ];
