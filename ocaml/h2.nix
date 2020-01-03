@@ -40,6 +40,7 @@ in rec {
     propagatedBuildInputs = [
       h2-lwt
       faraday-lwt-unix
+      lwt_ssl
     ];
   };
 }

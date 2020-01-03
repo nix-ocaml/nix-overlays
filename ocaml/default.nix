@@ -50,12 +50,12 @@ in
       pname = "ezgzip";
       version = "0.2.3-dev";
       src = fetchFromGitHub {
-        owner = "anmonteiro";
+        owner = "hcarty";
         repo = "ezgzip";
-        rev = "0719eb0";
-        sha256 = "07kihdwrb5sj8j15yccb6msq3kgca7lv6xmhjrgh7j2cc6nkfnsh";
+        rev = "v0.2.3";
+        sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
       };
-      propagatedBuildInputs = [rresult astring ocplib-endian camlzip  ];
+      propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
 
     dose3 = callPackage ./dose3 {
