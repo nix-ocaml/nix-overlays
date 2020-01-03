@@ -33,7 +33,7 @@ let
           ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
         });
 
-        openssl = (super.openssl_1_1.override { static = true; }).overrideDerivation (o: {
+        openssl_1_1 = (super.openssl_1_1.override { static = true; }).overrideDerivation (o: {
           configureFlags =
             (lib.remove "--enable-static"
             (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
@@ -79,7 +79,7 @@ let
               ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
               ssl = fixOcamlBuild osuper.ssl;
             }
-            )).overrideScope' (super.callPackage ./ocaml.nix { });
+            )).overrideScope' (super.callPackage ./ocaml { });
         };
       })
     ];
