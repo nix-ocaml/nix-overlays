@@ -8,4 +8,8 @@ let
 in
   {
     ocamlPackages = super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml {});
+    ocaml-ng = super.ocaml-ng // {
+      ocamlPackages_4_09 = super.ocaml-ng.ocamlPackages_4_09.overrideScope'
+        (super.callPackage ./ocaml {});
+    };
   }

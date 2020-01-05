@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGithub, ocamlPackages }:
+{ stdenv, ocamlPackages, perl }:
+
+with ocamlPackages;
 
 stdenv.mkDerivation {
   name = "dose";
@@ -6,14 +8,14 @@ stdenv.mkDerivation {
     url = "http://gforge.inria.fr/frs/download.php/file/36063/dose3-5.0.1.tar.gz";
     sha256 = "00yvyfm4j423zqndvgc1ycnmiffaa2l9ab40cyg23pf51qmzk2jm";
   };
-  buildInputs = with esyOcamlPkgs; [
+  buildInputs = [
     ocaml
     findlib
     ocamlbuild
     cppo
     perl
   ];
-  propagatedBuildInputs = with esyOcamlPkgs; [
+  propagatedBuildInputs = [
     cudf
     ocaml_extlib
     ocamlgraph

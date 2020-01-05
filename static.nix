@@ -11,9 +11,8 @@ let
       dontUpdateAutotoolsGnuConfigScripts = true;
     })).overrideDerivation (o:
       if o.stdenv.hostPlatform != o.stdenv.buildPlatform then {
-        # "LIBS=-static"
         preConfigure = ''
-          configureFlagsArray+=("CC=$CC" "AS=$AS" "PARTIALLD=$LD -r")
+          configureFlagsArray+=("CC=$CC" "AS=$AS" "PARTIALLD=$LD -r" "LIBS=-static")
         '';
         configureFlags = (lib.remove "--no-shared-libs" o.configureFlags) ++ [
           "--disable-shared"
