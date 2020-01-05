@@ -19,8 +19,17 @@ let
   opamPackages = callPackage ./opam.nix {
     ocamlPackages = oself;
   };
+
+  lambda-runtime-packages = callPackage ./lambda-runtime.nix {
+    ocamlPackages = oself;
+  };
+
 in
-  opamPackages // faradayPackages // httpafPackages // h2Packages //  {
+  opamPackages //
+  faradayPackages //
+  httpafPackages //
+  h2Packages //
+  lambda-runtime-packages // {
     ssl = osuper.ssl.overrideAttrs (o: {
       version = "0.5.9-dev";
       src = fetchFromGitHub {
@@ -33,6 +42,8 @@ in
       nativeBuildInputs = [ dune pkgconfig ];
       propagatedBuildInputs = [ openssl.dev ];
     });
+
+    piaf = callPackage ./piaf.nix { ocamlPackages = oself; };
 
     camlzip = osuper.camlzip.overrideAttrs (o: {
       buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
