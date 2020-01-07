@@ -45,6 +45,15 @@ in
 
     piaf = callPackage ./piaf.nix { ocamlPackages = oself; };
 
+    dune_2 = osuper.dune_2.overrideAttrs (o: rec {
+      version = "2.1.1";
+
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
+        sha256 = "0z5anyyfiydpk4l45p64k2ravypawnlllixq0h5ir450dw0ifi5i";
+      };
+    });
+
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
 
