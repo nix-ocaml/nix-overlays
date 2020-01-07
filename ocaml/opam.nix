@@ -1,8 +1,8 @@
-{ fetchFromGitHub, stdenv, ocamlPackages }:
+{ opaline, fetchFromGitHub, stdenv, ocamlPackages }:
 
 with ocamlPackages;
 
-let opam-lib = { pname, deps }: stdenv.mkDerivation {
+let opam-lib = { pname, deps }: stdenv.mkDerivation rec {
   name = pname;
   version = "2.0.5";
   buildInputs = [ ocaml findlib dune ];

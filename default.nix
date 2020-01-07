@@ -4,12 +4,16 @@ self: super:
 
 let
   inherit (super) lib stdenv pkgs;
+  ocamlPackages_4_09 =
+    super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml {});
 
 in
   {
-    ocamlPackages = super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml {});
-    ocaml-ng = super.ocaml-ng // {
-      ocamlPackages_4_09 = super.ocaml-ng.ocamlPackages_4_09.overrideScope'
-        (super.callPackage ./ocaml {});
+    opaline = super.opaline.override {
+      ocamlPackages = ocamlPackages_4_09;
     };
+
+    ocamlPackages = ocamlPackages_4_09;
+
+    ocaml-ng = super.ocaml-ng // { inherit ocamlPackages_4_09; };
   }

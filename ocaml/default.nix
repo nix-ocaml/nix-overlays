@@ -1,4 +1,4 @@
-{ callPackage, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -44,6 +44,15 @@ in
     });
 
     piaf = callPackage ./piaf.nix { ocamlPackages = oself; };
+
+    lwt4 = osuper.lwt4.overrideAttrs (o: rec {
+      version = "5.1.1";
+
+      src = fetchzip {
+        url = "https://github.com/ocsigen/${o.pname}/archive/${version}.tar.gz";
+        sha256 = "1nl7rdnwfdhwcsm5zpay1nr9y5cbapd9x1qzily7zk9ab4v52m8g";
+      };
+    });
 
     camlzip = osuper.camlzip.overrideAttrs (o: {
       buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
