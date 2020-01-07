@@ -50,6 +50,10 @@ let
             # (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
         });
 
+        libev = super.libev.overrideDerivation (o : {
+          configureFlags = [ "LDFLAGS=-static" ];
+        });
+
         ocaml-ng = super.ocaml-ng // {
           "ocamlPackages_${ocamlVersion}" =
             (super.ocaml-ng."ocamlPackages_${ocamlVersion}".overrideScope'
