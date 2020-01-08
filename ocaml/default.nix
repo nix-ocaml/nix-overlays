@@ -85,17 +85,33 @@ in
       };
     });
 
-    ezgzip = buildDunePackage {
+    ezgzip = buildDunePackage rec {
       pname = "ezgzip";
-      version = "0.2.3-dev";
+      version = "0.2.3";
       src = fetchFromGitHub {
         owner = "hcarty";
-        repo = "ezgzip";
-        rev = "v0.2.3";
+        repo = pname;
+        rev = "v${version}";
         sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
+
+    syndic = buildDunePackage rec {
+      pname = "syndic";
+      version = "1.6.1";
+      src = builtins.fetchurl {
+        url = "https://github.com/Cumulus/${pname}/releases/download/v${version}/syndic-v${version}.tbz";
+        sha256 = "1i43yqg0i304vpiy3sf6kvjpapkdm6spkf83mj9ql1d4f7jg6c58";
+      };
+      propagatedBuildInputs = [ xmlm uri ptime ];
+    };
+
+    ptime = osuper.ptime.overrideAttrs (o: {
+      buildInputs = [ findlib topkg ];
+
+      buildPhase = "${topkg.run} build --with-js_of_ocaml false";
+    });
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
