@@ -1,4 +1,4 @@
-{ callPackage, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -108,7 +108,7 @@ in
     };
 
     ptime = osuper.ptime.overrideAttrs (o: {
-      buildInputs = [ findlib topkg ];
+      buildInputs = lib.remove js_of_ocaml o.buildInputs;
 
       buildPhase = "${topkg.run} build --with-js_of_ocaml false";
     });

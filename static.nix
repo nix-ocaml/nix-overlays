@@ -15,7 +15,6 @@ let
           configureFlagsArray+=("CC=$CC" "AS=$AS" "PARTIALLD=$LD -r" "LIBS=-static")
         '';
         configureFlags = (lib.remove "--no-shared-libs" o.configureFlags) ++ [
-          "--disable-shared"
           "-host ${o.stdenv.hostPlatform.config} -target ${o.stdenv.targetPlatform.config}"
         ];
       } else
@@ -81,6 +80,8 @@ let
                   "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
                 ];
               });
+              markup = fixOcamlBuild osuper.markup;
+              ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
               ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
               easy-format = fixOcamlBuild osuper.easy-format;
               qcheck = fixOcamlBuild osuper.qcheck;
@@ -98,6 +99,7 @@ let
               cppo = fixOcamlBuild osuper.cppo;
               ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
               ssl = fixOcamlBuild osuper.ssl;
+              xmlm = fixOcamlBuild osuper.xmlm;
             });
         };
       })
