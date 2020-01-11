@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, ninja, nodejs, python3, ... }:
+{ stdenv, ocamlPackages_4_06, fetchFromGitHub, ninja, nodejs, python3, ... }:
 
 let
   version = "7.0.2-dev.1";
@@ -10,12 +10,13 @@ let
     sha256 = "16lxpdlrn7dzqdh5srr78fg5yg2g2k8qf8hd2j1wc6bvd4k31a2q";
     fetchSubmodules = true;
   };
-  ocaml =  import ./ocaml.nix {
+  ocaml = import ./ocaml.nix {
     bs-version = version;
     version = ocaml-version;
     inherit stdenv;
     src = "${src}/ocaml";
   };
+  reason = ocamlPackages_4_06.reason;
 in
 stdenv.mkDerivation {
   inherit src version;
@@ -46,6 +47,6 @@ stdenv.mkDerivation {
     cp bsconfig.json package.json $out
     ln -s $out/lib/bsb $out/bin/bsb
     ln -s $out/lib/bsc $out/bin/bsc
-    ln -s $out/lib/bsrefmt $out/bin/bsrefmt
+    ln -s ${reason}/bin/refmt $out/bin/bsrefmt
   '';
 }

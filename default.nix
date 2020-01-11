@@ -4,18 +4,26 @@ self: super:
 
 let
   inherit (super) lib stdenv pkgs;
-  ocamlPackages_4_09 =
-    super.ocaml-ng.ocamlPackages_4_09.overrideScope' (pkgs.callPackage ./ocaml {});
-
+  overlayOcamlPackages = version: {
+    "ocamlPackages_${version}" = super.ocaml-ng."ocamlPackages_${version}".overrideScope' (pkgs.callPackage ./ocaml {});
+  };
+  oP_406 = overlayOcamlPackages "4_06";
+  oP_409 = overlayOcamlPackages "4_09";
 in
   {
+    # OCaml related packages
+
     opaline = super.opaline.override {
-      ocamlPackages = ocamlPackages_4_09;
+      ocamlPackages = oP_409.ocamlPackages_4_09;
     };
 
-    ocamlPackages = ocamlPackages_4_09;
+    ocamlPackages = oP_409.ocamlPackages_4_09;
 
-    ocaml-ng = super.ocaml-ng // { inherit ocamlPackages_4_09; };
+    # 4.06 and 4.09 treated specially out of convenience because:
+    # - 4.09 is the latest stable version
+    # - 4.06 is used by BuckleScript
+    ocaml-ng = super.ocaml-ng // oP_409 // oP_406;
 
-    bs-platform = pkgs.callPackage ./bs-platform {};
+    # BuckleScript
+    bs-platform = pkgs.callPackage ./bs-platform oP_406;
   }

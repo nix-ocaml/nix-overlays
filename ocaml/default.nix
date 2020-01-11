@@ -45,15 +45,6 @@ in
 
     piaf = callPackage ./piaf.nix { ocamlPackages = oself; };
 
-    dune_2 = osuper.dune_2.overrideAttrs (o: rec {
-      version = "2.1.1";
-
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
-        sha256 = "0z5anyyfiydpk4l45p64k2ravypawnlllixq0h5ir450dw0ifi5i";
-      };
-    });
-
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
 
@@ -111,6 +102,16 @@ in
       buildInputs = lib.remove js_of_ocaml o.buildInputs;
 
       buildPhase = "${topkg.run} build --with-js_of_ocaml false";
+    });
+
+    reason = osuper.reason.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "facebook";
+        repo = "reason";
+        rev = "ede1f25c895ac9c6a93f7d3c87a19eaa8de366f0";
+        sha256 = "04v8sk29051f897pliwaip1v57s85fb9m6h2bsx4a0wb8y30rmxx";
+      };
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ fix ];
     });
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
