@@ -42,14 +42,14 @@ let
           ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
         });
 
-        openssl_1_1 = (super.openssl_1_1.override { static = true; }).overrideDerivation (o: {
+        openssl_1_1 = (super.openssl_1_1.override { static = true; }).overrideAttrs (o: {
           stdenv = super.stdenv;
           configureFlags = o.configureFlags ++ ["no-shared"];
             # (lib.remove "--enable-static"
             # (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
         });
 
-        libev = super.libev.overrideDerivation (o : {
+        libev = super.libev.overrideAttrs (o : {
           configureFlags = [ "LDFLAGS=-static" ];
         });
 
@@ -72,7 +72,7 @@ let
               zarith = (osuper.zarith.overrideAttrs (o: {
                 configurePlatforms = [ ];
                 nativeBuildInputs = o.nativeBuildInputs ++ o.buildInputs;
-              })).overrideDerivation (o: {
+              })).overrideAttrs (o: {
                 preConfigure = ''
                   echo $configureFlags
                 '';
