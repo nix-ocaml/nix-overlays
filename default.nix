@@ -25,5 +25,7 @@ in
     ocaml-ng = super.ocaml-ng // oP_409 // oP_406;
 
     # BuckleScript
-    bs-platform = pkgs.callPackage ./bs-platform oP_406;
+    bs-platform = pkgs.callPackage ./bs-platform {
+      reason = oP_406.ocamlPackages_4_06.reason;
+    };
   }
