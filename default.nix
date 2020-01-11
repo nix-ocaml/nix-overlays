@@ -16,4 +16,6 @@ in
     ocamlPackages = ocamlPackages_4_09;
 
     ocaml-ng = super.ocaml-ng // { inherit ocamlPackages_4_09; };
+
+    bs-platform = pkgs.callPackage ./bs-platform {};
   }
