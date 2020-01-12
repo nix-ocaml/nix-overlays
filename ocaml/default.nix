@@ -1,4 +1,4 @@
-{ callPackage, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage, opaline, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -126,4 +126,10 @@ in
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
     cudf = callPackage ./cudf.nix { ocamlPackages = oself; };
+
+    uchar = osuper.uchar.overrideAttrs (o: {
+      installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
+      nativeBuildInputs = [ocamlbuild ocaml findlib];
+      buildInputs = [ocamlbuild ocaml findlib];
+    });
   }
