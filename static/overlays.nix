@@ -39,6 +39,9 @@ in [
       ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
     });
 
+    ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
+    ocamlPackages_latest = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
+
     # zlib = super.zlib.override {
       # static = true;
       # shared = false;

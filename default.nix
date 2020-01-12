@@ -14,10 +14,11 @@ in
     # OCaml related packages
 
     opaline = super.opaline.override {
-      ocamlPackages = oP_409.ocamlPackages_4_09;
+      inherit (self) ocamlPackages;
     };
 
     ocamlPackages = oP_409.ocamlPackages_4_09;
+    ocamlPackages_latest = self.ocamlPackages;
 
     # 4.06 and 4.09 treated specially out of convenience because:
     # - 4.09 is the latest stable version
