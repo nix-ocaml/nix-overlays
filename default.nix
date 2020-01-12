@@ -28,4 +28,10 @@ in
     bs-platform = pkgs.callPackage ./bs-platform {
       reason = oP_406.ocamlPackages_4_06.reason;
     };
+
+    pkgsCross.musl64.pkgsStatic = super.pkgsCross.musl64.pkgsStatic.appendOverlays (import ./static/overlays.nix {
+      inherit lib;
+      pkgsNative = pkgs;
+      ocamlVersion = "4_09";
+    });
   }
