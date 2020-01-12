@@ -104,6 +104,15 @@ in
       buildPhase = "${topkg.run} build --with-js_of_ocaml false";
     });
 
+    ppxlib = osuper.ppxlib.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "ocaml-ppx";
+        repo = "ppxlib";
+        rev = "f13dc352b9bb17e8ced3d12d2533cffba2fcbfac";
+        sha256 = "1cg0is23c05k1rc94zcdz452p9zn11dpqxm1pnifwx5iygz3w0a1";
+      };
+    });
+
     reason = osuper.reason.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "facebook";
