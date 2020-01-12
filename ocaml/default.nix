@@ -113,6 +113,15 @@ in
       };
     });
 
+    dune_2 = osuper.dune_2.overrideAttrs(o: rec {
+      version = "2.1.2";
+
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
+        sha256 = "1bszrjxwm2pj0ga0s9krp75xdp2yk1qi6rw0315xq57cngmphclw";
+      };
+    });
+
     reason = osuper.reason.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "facebook";
