@@ -1,4 +1,4 @@
-{ callPackage, opaline, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage, postgresql, opaline, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -24,12 +24,17 @@ let
     ocamlPackages = oself;
   };
 
+  caqti-packages = callPackage ./caqti {
+    ocamlPackages = oself;
+  };
+
 in
   opamPackages //
   faradayPackages //
   httpafPackages //
   h2Packages //
-  lambda-runtime-packages // {
+  lambda-runtime-packages //
+  caqti-packages // {
     ssl = osuper.ssl.overrideAttrs (o: {
       version = "0.5.9-dev";
       src = fetchFromGitHub {
@@ -121,6 +126,17 @@ in
         sha256 = "1bszrjxwm2pj0ga0s9krp75xdp2yk1qi6rw0315xq57cngmphclw";
       };
     });
+
+    postgresql = buildDunePackage rec {
+      pname = "postgresql";
+      version = "4.5.2-dev";
+      src = builtins.fetchurl {
+        url = "https://github.com/mmottl/${pname}-ocaml/archive/eb8db696ba5c7b44c704be2ec5d4ca56f27b65cf.tar.gz";
+        sha256 = "0gib9l4rhy4djxhl2v59nvd0zy6gljr91m2gn3h6hpnmylkgn1kf";
+      };
+      nativeBuildInputs = [ dune-configurator base stdio ];
+      propagatedBuildInputs = [ postgresql ];
+    };
 
     reason = osuper.reason.overrideAttrs (o: {
       src = fetchFromGitHub {
