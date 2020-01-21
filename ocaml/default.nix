@@ -152,6 +152,8 @@ in
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
+    routes = callPackage ./routes { ocamlPackages = oself; };
+
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
       nativeBuildInputs = [ocamlbuild ocaml findlib];
