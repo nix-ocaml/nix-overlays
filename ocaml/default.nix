@@ -5,22 +5,22 @@ oself: osuper:
 with oself;
 
 let
-  faradayPackages = callPackage ./faraday.nix {
+  faradayPackages = callPackage ./faraday {
     ocamlPackages = oself;
   };
-  httpafPackages = callPackage ./httpaf.nix {
-    ocamlPackages = oself;
-  };
-
-  h2Packages = callPackage ./h2.nix {
+  httpafPackages = callPackage ./httpaf {
     ocamlPackages = oself;
   };
 
-  opamPackages = callPackage ./opam.nix {
+  h2Packages = callPackage ./h2 {
     ocamlPackages = oself;
   };
 
-  lambda-runtime-packages = callPackage ./lambda-runtime.nix {
+  opamPackages = callPackage ./opam {
+    ocamlPackages = oself;
+  };
+
+  lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
 
@@ -48,7 +48,7 @@ in
       propagatedBuildInputs = [ openssl.dev ];
     });
 
-    piaf = callPackage ./piaf.nix { ocamlPackages = oself; };
+    piaf = callPackage ./piaf { ocamlPackages = oself; };
 
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
@@ -150,7 +150,7 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
-    cudf = callPackage ./cudf.nix { ocamlPackages = oself; };
+    cudf = callPackage ./cudf { ocamlPackages = oself; };
 
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
