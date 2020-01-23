@@ -8,7 +8,12 @@ let
   faradayPackages = callPackage ./faraday {
     ocamlPackages = oself;
   };
+
   httpafPackages = callPackage ./httpaf {
+    ocamlPackages = oself;
+  };
+
+  websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
   };
 
@@ -32,6 +37,7 @@ in
   opamPackages //
   faradayPackages //
   httpafPackages //
+  websocketafPackages //
   h2Packages //
   lambda-runtime-packages //
   caqti-packages // {

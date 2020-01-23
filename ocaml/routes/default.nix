@@ -9,7 +9,7 @@ ocamlPackages.buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "anuragsoni";
     repo = pname;
-    rev = "e057f498bae4604fff7edbe1c92b3c72b3fe8bc4";
-    sha256 = "1qg4nwmmpj97x938wpdxzv4zx85xn5pflzk6hp5q52qm7n2dibrq";
+    rev = "19dfad6783c2135d89466606af3e0855dbd79113";
+    sha256 = "1anzlnvsa3na4wq895flr1x76ws78k1b7qwsjy8smj9ckn3bm4zv";
   };
 }
