@@ -1,19 +1,16 @@
-{ callPackage, postgresql, opaline, lib, fetchzip, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage , postgresql , opaline , lib , fetchzip,
+  fetchFromGitHub , stdenv , pkgconfig , openssl }:
 
 oself: osuper:
 
 with oself;
 
 let
+  caqti-packages = callPackage ./caqti {
+    ocamlPackages = oself;
+  };
+
   faradayPackages = callPackage ./faraday {
-    ocamlPackages = oself;
-  };
-
-  httpafPackages = callPackage ./httpaf {
-    ocamlPackages = oself;
-  };
-
-  websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
   };
 
@@ -21,7 +18,7 @@ let
     ocamlPackages = oself;
   };
 
-  opamPackages = callPackage ./opam {
+  httpafPackages = callPackage ./httpaf {
     ocamlPackages = oself;
   };
 
@@ -29,32 +26,58 @@ let
     ocamlPackages = oself;
   };
 
-  caqti-packages = callPackage ./caqti {
+  opamPackages = callPackage ./opam {
+    ocamlPackages = oself;
+  };
+
+  websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
   };
 
 in
-  opamPackages //
+  caqti-packages //
   faradayPackages //
-  httpafPackages //
-  websocketafPackages //
   h2Packages //
+  httpafPackages //
   lambda-runtime-packages //
-  caqti-packages // {
-    ssl = osuper.ssl.overrideAttrs (o: {
-      version = "0.5.9-dev";
-      src = fetchFromGitHub {
-        owner = "savonet";
-        repo = "ocaml-ssl";
-        rev = "fbffa9b";
-        sha256 = "1pp9hig7kkzhr3n1rkc177mnahrijx6sbq59xjr8bnbfsmn1l2ay";
-      };
+  opamPackages //
+  websocketafPackages // {
+    camlzip = osuper.camlzip.overrideAttrs (o: {
+      buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
+        "all zip.cmxa"
+        else
+          o.buildFlags;
 
-      nativeBuildInputs = [ dune pkgconfig ];
-      propagatedBuildInputs = [ openssl.dev ];
+      src = builtins.fetchurl {
+        url = "https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz";
+        sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
+      };
     });
 
-    piaf = callPackage ./piaf { ocamlPackages = oself; };
+    cudf = callPackage ./cudf { ocamlPackages = oself; };
+
+    dose3 = callPackage ./dose3 { ocamlPackages = oself; };
+
+    dune_2 = osuper.dune_2.overrideAttrs(o: rec {
+      version = "2.1.2";
+
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
+        sha256 = "1bszrjxwm2pj0ga0s9krp75xdp2yk1qi6rw0315xq57cngmphclw";
+      };
+    });
+
+    ezgzip = buildDunePackage rec {
+      pname = "ezgzip";
+      version = "0.2.3";
+      src = fetchFromGitHub {
+        owner = "hcarty";
+        repo = pname;
+        rev = "v${version}";
+        sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
+      };
+      propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
+    };
 
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
@@ -75,63 +98,9 @@ in
       };
     });
 
-    camlzip = osuper.camlzip.overrideAttrs (o: {
-      buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
-        "all zip.cmxa"
-        else
-          o.buildFlags;
+    pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
-      src = builtins.fetchurl {
-        url = "https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz";
-        sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
-      };
-    });
-
-    ezgzip = buildDunePackage rec {
-      pname = "ezgzip";
-      version = "0.2.3";
-      src = fetchFromGitHub {
-        owner = "hcarty";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
-      };
-      propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
-    };
-
-    syndic = buildDunePackage rec {
-      pname = "syndic";
-      version = "1.6.1";
-      src = builtins.fetchurl {
-        url = "https://github.com/Cumulus/${pname}/releases/download/v${version}/syndic-v${version}.tbz";
-        sha256 = "1i43yqg0i304vpiy3sf6kvjpapkdm6spkf83mj9ql1d4f7jg6c58";
-      };
-      propagatedBuildInputs = [ xmlm uri ptime ];
-    };
-
-    ptime = osuper.ptime.overrideAttrs (o: {
-      buildInputs = lib.remove js_of_ocaml o.buildInputs;
-
-      buildPhase = "${topkg.run} build --with-js_of_ocaml false";
-    });
-
-    ppxlib = osuper.ppxlib.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "ocaml-ppx";
-        repo = "ppxlib";
-        rev = "f13dc352b9bb17e8ced3d12d2533cffba2fcbfac";
-        sha256 = "1cg0is23c05k1rc94zcdz452p9zn11dpqxm1pnifwx5iygz3w0a1";
-      };
-    });
-
-    dune_2 = osuper.dune_2.overrideAttrs(o: rec {
-      version = "2.1.2";
-
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
-        sha256 = "1bszrjxwm2pj0ga0s9krp75xdp2yk1qi6rw0315xq57cngmphclw";
-      };
-    });
+    piaf = callPackage ./piaf { ocamlPackages = oself; };
 
     postgresql = buildDunePackage rec {
       pname = "postgresql";
@@ -144,6 +113,21 @@ in
       propagatedBuildInputs = [ postgresql ];
     };
 
+    ppxlib = osuper.ppxlib.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "ocaml-ppx";
+        repo = "ppxlib";
+        rev = "f13dc352b9bb17e8ced3d12d2533cffba2fcbfac";
+        sha256 = "1cg0is23c05k1rc94zcdz452p9zn11dpqxm1pnifwx5iygz3w0a1";
+      };
+    });
+
+    ptime = osuper.ptime.overrideAttrs (o: {
+      buildInputs = lib.remove js_of_ocaml o.buildInputs;
+
+      buildPhase = "${topkg.run} build --with-js_of_ocaml false";
+    });
+
     reason = osuper.reason.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "facebook";
@@ -154,11 +138,30 @@ in
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ fix ];
     });
 
-    dose3 = callPackage ./dose3 { ocamlPackages = oself; };
-
-    cudf = callPackage ./cudf { ocamlPackages = oself; };
-
     routes = callPackage ./routes { ocamlPackages = oself; };
+
+    ssl = osuper.ssl.overrideAttrs (o: {
+      version = "0.5.9-dev";
+      src = fetchFromGitHub {
+        owner = "savonet";
+        repo = "ocaml-ssl";
+        rev = "fbffa9b";
+        sha256 = "1pp9hig7kkzhr3n1rkc177mnahrijx6sbq59xjr8bnbfsmn1l2ay";
+      };
+
+      nativeBuildInputs = [ dune pkgconfig ];
+      propagatedBuildInputs = [ openssl.dev ];
+    });
+
+    syndic = buildDunePackage rec {
+      pname = "syndic";
+      version = "1.6.1";
+      src = builtins.fetchurl {
+        url = "https://github.com/Cumulus/${pname}/releases/download/v${version}/syndic-v${version}.tbz";
+        sha256 = "1i43yqg0i304vpiy3sf6kvjpapkdm6spkf83mj9ql1d4f7jg6c58";
+      };
+      propagatedBuildInputs = [ xmlm uri ptime ];
+    };
 
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
