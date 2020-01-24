@@ -35,4 +35,15 @@ in
       pkgsNative = pkgs;
       ocamlVersion = "4_09";
     });
+
+    # Other packages
+
+    lib = super.lib // {
+      gitignoreSource = (import (pkgs.fetchFromGitHub {
+        owner = "hercules-ci";
+        repo = "gitignore";
+        rev = "7415c4f";
+        sha256 = "1zd1ylgkndbb5szji32ivfhwh04mr1sbgrnvbrqpmfb67g2g3r9i";
+      }) { inherit lib; }).gitignoreSource;
+    };
   }
