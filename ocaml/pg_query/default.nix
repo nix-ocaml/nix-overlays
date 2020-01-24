@@ -13,9 +13,9 @@ ocamlPackages.buildDune2Package {
     sha256 = "1bx4zbnpyi0994r59xl91rw2iak1lmhqq8178i333wj4snkflk5w";
   };
 
-  buildInputs = with ocamlPackages; [
-    ctypes
-    ppx_deriving
+  propagatedBuildInputs = with ocamlPackages; [
     ppx_inline_test
+    ppx_deriving
+    ctypes
   ];
 }
