@@ -100,6 +100,8 @@ in
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
+    ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
+
     piaf = callPackage ./piaf { ocamlPackages = oself; };
 
     postgresql = buildDunePackage rec {
