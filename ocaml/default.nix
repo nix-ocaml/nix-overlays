@@ -161,4 +161,14 @@ in
       nativeBuildInputs = [ocamlbuild ocaml findlib];
       buildInputs = [ocamlbuild ocaml findlib];
     });
+
+    uri = osuper.uri.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "anmonteiro";
+        repo = "ocaml-uri";
+        rev = "72fce0fc74a6382f4c773382dd123143f1471522";
+        sha256 = "1iv1wqx7rqca36i2whicabd7b7mwdprcbs6miza960rfsrxmzr7i";
+      };
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
+    });
   }
