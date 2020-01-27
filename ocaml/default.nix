@@ -42,8 +42,11 @@ in
   lambda-runtime-packages //
   opamPackages //
   websocketafPackages // {
+    archi = callPackage ./archi { ocamlPackages = oself; };
+
     camlzip = osuper.camlzip.overrideAttrs (o: {
       buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
+        # TODO: maybe use a patch instead
         "all zip.cmxa"
         else
           o.buildFlags;
