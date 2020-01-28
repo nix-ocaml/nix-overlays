@@ -34,6 +34,10 @@ let
     ocamlPackages = oself;
   };
 
+  janeStreetPackages = osuper.janeStreet // (callPackage ./janestreet {
+    inherit osuper oself;
+  });
+
 in
   caqti-packages //
   faradayPackages //
@@ -41,7 +45,8 @@ in
   httpafPackages //
   lambda-runtime-packages //
   opamPackages //
-  websocketafPackages // {
+  websocketafPackages //
+  janeStreetPackages // {
     archi = callPackage ./archi { ocamlPackages = oself; };
 
     camlzip = osuper.camlzip.overrideAttrs (o: {
@@ -72,6 +77,12 @@ in
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
+
+    janePackage = osuper.janePackage.override {
+      defaultVersion = "0.13.0";
+    };
+
+    janeStreet = janeStreetPackages;
 
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
