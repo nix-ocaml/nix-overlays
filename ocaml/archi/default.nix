@@ -1,19 +1,39 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
 
-ocamlPackages.buildDunePackage {
-  pname = "archi";
+with ocamlPackages;
+
+let buildArchi = args: buildDunePackage ({
   version = "0.0.1-dev";
-
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "archi";
-    rev = "6cbaaa7340aaceec7eaaa9a597da6e1bbcb10fb3";
-    sha256 = "0g09h1lnzsr4ggxwf6ccpkbllg5f8ai45f6lypkwigmgzkrddsz1";
+    rev = "5222154cfc6c5012fbf120abd8f87fc31d5d109a";
+    sha256 = "0s9zzz6s18cqmbrbadicpz1gy8z743rvzvfxvl2jwdc4nmc8rarp";
   };
 
-  propagatedBuildInputs = with ocamlPackages; [
-    hmap
-    lwt4
-  ];
-}
+} // args);
+
+  archiPkgs = rec {
+    archi = buildArchi {
+      pname = "archi";
+      buildInputs = [ alcotest ];
+      propagatedBuildInputs = [ hmap ];
+      doCheck = true;
+    };
+
+    archi-lwt = buildArchi {
+      pname = "archi-lwt";
+      propagatedBuildInputs = [ archi lwt4 ];
+      doCheck = false;
+    };
+  };
+  in
+  archiPkgs // (if (lib.versionOlder "4.08" ocamlVersion) then {
+    archi-async = buildArchi {
+      pname = "archi-async";
+      propagatedBuildInputs = [ archi async ];
+
+      doCheck = false;
+    };
+  } else {})
 

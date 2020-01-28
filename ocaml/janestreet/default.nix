@@ -27,8 +27,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "janestreet";
       repo = "async_kernel";
-      rev = "ff144f830bd6d46169d06a74b5e6ab89481adfc0";
-      sha256 = "1z6jmf22kk41zai92iprl1lf39vx6hc5aaymjpfa7w1ij6ly9dl7";
+      rev = "v0.13.0";
+      sha256 = "1rrbyy3pyh31qwv0jiarhpgdyq2z2gx6axmaplgpxshk4qx6gsld";
     };
     propagatedBuildInputs = [ core_kernel ];
   });

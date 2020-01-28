@@ -6,6 +6,11 @@ oself: osuper:
 with oself;
 
 let
+  archiPackages = callPackage ./archi {
+    ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
+  };
+
   caqti-packages = callPackage ./caqti {
     ocamlPackages = oself;
   };
@@ -39,6 +44,7 @@ let
   });
 
 in
+  archiPackages //
   caqti-packages //
   faradayPackages //
   h2Packages //
@@ -47,8 +53,6 @@ in
   opamPackages //
   websocketafPackages //
   janeStreetPackages // {
-    archi = callPackage ./archi { ocamlPackages = oself; };
-
     camlzip = osuper.camlzip.overrideAttrs (o: {
       buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
         # TODO: maybe use a patch instead
