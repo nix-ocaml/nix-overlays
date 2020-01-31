@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "f976d41902d88684ae8449bfb2af80bae7d80406";
-    sha256 = "16lxpdlrn7dzqdh5srr78fg5yg2g2k8qf8hd2j1wc6bvd4k31a2q";
+    rev = "f624ac892da4f07264306ba0645c53ac601c2974";
+    sha256 = "18ms9fzd9mqynw29x7wbsbs9qc4jj6skvmyr89yny2miafxycdp0";
     fetchSubmodules = true;
   };
 
