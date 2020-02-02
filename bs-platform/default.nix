@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "7.0.2-dev.1";
+  version = "7.1.0";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "f624ac892da4f07264306ba0645c53ac601c2974";
-    sha256 = "18ms9fzd9mqynw29x7wbsbs9qc4jj6skvmyr89yny2miafxycdp0";
+    rev = "a7f482243fabb38292b81b7bae9cefcb8076237f";
+    sha256 = "0p0ywb4cjpsrjq0if4s1bsnv9jdycd61r4ryndfzc50gngrpjbqr";
     fetchSubmodules = true;
   };
 
@@ -33,9 +33,7 @@ stdenv.mkDerivation rec {
       cp ${ninja}/bin/ninja vendor/ninja/snapshot/ninja.linux
     '';
 
-  configurePhase = ''
-    node scripts/ninja.js config
-  '';
+  dontConfigure = true;
 
   buildPhase = ''
     node scripts/install.js
