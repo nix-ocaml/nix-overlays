@@ -88,6 +88,8 @@ in
 
     janeStreet = janeStreetPackages;
 
+    jose = callPackage ./jose { ocamlPackages = oself; };
+
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
 
@@ -106,6 +108,8 @@ in
         sha256 = "1l97zdcql7y13fhaq0m9n9xvxf712jg0w70r72fvv6j49xm4nlhi";
       };
     });
+
+    nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
