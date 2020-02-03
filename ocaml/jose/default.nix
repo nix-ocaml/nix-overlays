@@ -6,10 +6,10 @@ buildDunePackage {
   pname = "jose";
   version = "0.5.5-dev";
   src = fetchFromGitHub {
-    owner = "ulrikstrid";
+    owner = "anmonteiro";
     repo = "reason-jose";
-    rev = "2458d620c9c6f506bdde9ead7ae485b910fbdf0d";
-    sha256 = "1n1z5rfjqankh3ycflhr4v897hx4rby760z1n9dp6kvck065j1ll";
+    rev = "09ec905a9cfd28e33e00ccaec1102b53198e033d";
+    sha256 = "0m5s1yv03vpf3r9182nam69sc9sdsppaww9ghgq500fi9bfp8knb";
   };
 
   propagatedBuildInputs = [
