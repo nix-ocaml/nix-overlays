@@ -8,8 +8,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "reason-jose";
-    rev = "09ec905a9cfd28e33e00ccaec1102b53198e033d";
-    sha256 = "0m5s1yv03vpf3r9182nam69sc9sdsppaww9ghgq500fi9bfp8knb";
+    rev = "9549a67ae37af28444773f93631cee2716fa1c30";
+    sha256 = "18jxj85zgajq8w3likd7phiyy2x3nqidarmx7lcp2kkbs0bldz21";
   };
 
   propagatedBuildInputs = [
