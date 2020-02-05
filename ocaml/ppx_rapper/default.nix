@@ -7,14 +7,15 @@ ocamlPackages.buildDune2Package {
   version = "0.9.3-dev";
 
   src = fetchFromGitHub {
-    owner = "anmonteiro";
+    owner = "roddyyaga";
     repo = "ppx_rapper";
-    rev = "ab3feb1a1ae0dca7e002faf91ccfb1b55c504853";
-    sha256 = "1k80k1vkrryziva91h8kz2bi427fv5gdfl0bw6ajkypy7hi6s56b";
+    rev = "1.0.2";
+    sha256 = "0w8dnvz8dvvngd17liq97w4f557djrm1i0jfzq05fmydq7sckfpf";
   };
 
   propagatedBuildInputs = with ocamlPackages; [
     caqti
+    caqti-lwt
     base
     pg_query
   ];

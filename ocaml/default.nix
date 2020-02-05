@@ -53,6 +53,8 @@ in
   opamPackages //
   websocketafPackages //
   janeStreetPackages // {
+    calendar = callPackage ./calendar { ocamlPackages = oself; };
+
     camlzip = osuper.camlzip.overrideAttrs (o: {
       buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
         # TODO: maybe use a patch instead
