@@ -19,6 +19,10 @@ let
     ocamlPackages = oself;
   };
 
+  graphqlPackages = callPackage ./graphql {
+    ocamlPackages = oself;
+  };
+
   h2Packages = callPackage ./h2 {
     ocamlPackages = oself;
   };
@@ -28,6 +32,10 @@ let
   };
 
   lambda-runtime-packages = callPackage ./lambda-runtime {
+    ocamlPackages = oself;
+  };
+
+  menhirPackages = callPackage ./menhir {
     ocamlPackages = oself;
   };
 
@@ -47,9 +55,11 @@ in
   archiPackages //
   caqti-packages //
   faradayPackages //
+  graphqlPackages //
   h2Packages //
   httpafPackages //
   lambda-runtime-packages //
+  menhirPackages //
   opamPackages //
   websocketafPackages //
   janeStreetPackages // {
