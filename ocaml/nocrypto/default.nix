@@ -14,6 +14,6 @@ buildDunePackage {
 
   doCheck = true;
   nativeBuildInputs = [ cpuid ];
-  propagatedBuildInputs = [ cstruct ocplib-endian zarith ];
+  propagatedBuildInputs = [ cstruct ocplib-endian zarith lwt4 ];
   buildInputs = [ ounit ];
 }
