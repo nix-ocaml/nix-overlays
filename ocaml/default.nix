@@ -31,6 +31,14 @@ let
     ocamlPackages = oself;
   };
 
+  janeStreetPackages = osuper.janeStreet // (callPackage ./janestreet {
+    inherit osuper oself;
+  });
+
+  junitPackages = callPackage ./junit {
+    ocamlPackages = oself;
+  };
+
   lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
@@ -47,10 +55,6 @@ let
     ocamlPackages = oself;
   };
 
-  janeStreetPackages = osuper.janeStreet // (callPackage ./janestreet {
-    inherit osuper oself;
-  });
-
 in
   archiPackages //
   caqti-packages //
@@ -62,7 +66,8 @@ in
   menhirPackages //
   opamPackages //
   websocketafPackages //
-  janeStreetPackages // {
+  janeStreetPackages //
+  junitPackages // {
     alcotest = osuper.alcotest.overrideAttrs (o: {
       version = "1.0.0";
       src = builtins.fetchurl {

@@ -9,6 +9,9 @@ let
       url = https://gitlab.inria.fr/fpottier/menhir/repository/20200123/archive.tar.gz;
       sha256 = "1x19mplzk5kgqgpdggsgl4hfg9rs7wzybwaf7fj7x9qxvqmnndfv";
     };
+    postInstall = ''
+      rm $OCAMLFIND_DESTDIR/${args.pname}/dune-package
+    '';
   } // args);
 
 in rec {
