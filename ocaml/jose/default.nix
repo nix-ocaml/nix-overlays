@@ -4,12 +4,12 @@ with ocamlPackages;
 
 buildDunePackage {
   pname = "jose";
-  version = "0.5.5-dev";
+  version = "0.1.0-dev";
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "reason-jose";
-    rev = "9549a67ae37af28444773f93631cee2716fa1c30";
-    sha256 = "18jxj85zgajq8w3likd7phiyy2x3nqidarmx7lcp2kkbs0bldz21";
+    rev = "4853b4d2bdf0292384ed7d7a814852d63129a3c3";
+    sha256 = "1p4783y9q9xicvlvfg57yx7j4qcppr9pig3rr06ks7s0x868azy8";
   };
 
   propagatedBuildInputs = [
