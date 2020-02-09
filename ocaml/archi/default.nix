@@ -7,8 +7,8 @@ let buildArchi = args: buildDunePackage ({
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "archi";
-    rev = "8610617263dfdb9bc5dc5792ebdd0a7e3f8750ba";
-    sha256 = "0jbqscm3qya5612arppqwkybxm3fbh0had3525ng0raj9paw4578";
+    rev = "b19e5bfa5fe25d753feb239a73400984a10e4c97";
+    sha256 = "1ad0jqycqi4a883maraj8jazq15560jhcia5rk9m11vw5p5wzcmr";
   };
 
 } // args);
