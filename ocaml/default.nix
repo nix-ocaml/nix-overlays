@@ -63,6 +63,15 @@ in
   opamPackages //
   websocketafPackages //
   janeStreetPackages // {
+    alcotest = osuper.alcotest.overrideAttrs (o: {
+      version = "1.0.0";
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/alcotest/releases/download/1.0.0/alcotest-1.0.0.tbz;
+        sha256 = "1a43ilhwnj58pq3bi78ni46l9wh6klmmgfc93i94mvyx48bzzayx";
+      };
+      propagatedBuildInputs = lib.remove result o.propagatedBuildInputs ++ [ re ];
+    });
+
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
     camlzip = osuper.camlzip.overrideAttrs (o: {
@@ -73,7 +82,7 @@ in
           o.buildFlags;
 
       src = builtins.fetchurl {
-        url = "https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz";
+        url = https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz;
         sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
       };
     });
@@ -93,6 +102,14 @@ in
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
+
+    fmt = osuper.fmt.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://erratique.ch/software/fmt/releases/fmt-0.8.8.tbz;
+        sha256 = "1iy0rwknd302mr15328g805k210xyigxbija6fzqqfzyb43azvk4";
+      };
+      propagatedBuildInputs = [uchar seq stdlib-shims];
+    });
 
     janePackage = osuper.janePackage.override {
       defaultVersion = "0.13.0";
@@ -178,6 +195,13 @@ in
 
       nativeBuildInputs = [ dune pkgconfig ];
       propagatedBuildInputs = [ openssl.dev ];
+    });
+
+    stdlib-shims = osuper.stdlib-shims.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/stdlib-shims/releases/download/0.2.0/stdlib-shims-0.2.0.tbz;
+        sha256 = "0nb5flrczpqla1jy2pcsxm06w4jhc7lgbpik11amwhfzdriz0n9c";
+      };
     });
 
     syndic = buildDunePackage rec {
