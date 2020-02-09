@@ -72,6 +72,10 @@ in
       propagatedBuildInputs = lib.remove result o.propagatedBuildInputs ++ [ re ];
     });
 
+    base64 = callPackage ./base64 {
+      ocamlPackages = oself;
+    };
+
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
     camlzip = osuper.camlzip.overrideAttrs (o: {
