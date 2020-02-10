@@ -151,6 +151,10 @@ in
       };
     });
 
+    magic-mime = callPackage ./magic-mime {
+      ocamlPackages = oself;
+    };
+
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
