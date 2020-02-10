@@ -14,8 +14,8 @@ in
     # OCaml related packages
     ocamlformat = super.ocamlformat.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.13.0/ocamlformat-0.13.0.tbz;
-        sha256 = "09y6sfkqfrgxbmphz5q8w7mdlj8fjsrkiapcx86f94dnwz6j3ajf";
+        url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.13.0/ocamlformat-0.13.0-2.tbz";
+        sha256 = "0ki2flqi3xkhw9mfridivb6laxm7gml8rj9qz42vqmy9yx76jjxq";
       };
     });
 
