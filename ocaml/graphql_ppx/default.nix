@@ -9,8 +9,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "reasonml-community";
     repo = "graphql_ppx";
-    rev = "e240bf3e58b4d14d663cf83d5bb51b40022ba49d";
-    sha256 = "0xga0ai992pm81n4j6mm10s58d1axmgi6angvrv2jqd49rl4yxcj";
+    rev = "1ca111064da5aafa704ee53cc6acead49dcb52f4";
+    sha256 = "01ivxbfak95sjdmfj4qzablkn40imp2mkpgkpain366cimz98zir";
   };
 
   nativeBuildInputs = [ cppo ];
