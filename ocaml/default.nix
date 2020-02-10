@@ -120,6 +120,10 @@ in
       propagatedBuildInputs = [uchar seq stdlib-shims];
     });
 
+    graphql_ppx = callPackage ./graphql_ppx {
+      ocamlPackages = oself;
+    };
+
     janePackage = osuper.janePackage.override {
       defaultVersion = "0.13.0";
     };
