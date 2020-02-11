@@ -4,13 +4,13 @@ with ocamlPackages;
 
 ocamlPackages.buildDune2Package {
   pname = "ppx_rapper";
-  version = "0.9.3-dev";
+  version = "1.1.0-dev";
 
   src = fetchFromGitHub {
-    owner = "roddyyaga";
+    owner = "anmonteiro";
     repo = "ppx_rapper";
-    rev = "1.1.0";
-    sha256 = "1r4fi24q50x6wr9y251p9q0bbmddw5kjd151lj8xpzdl30cyrf6j";
+    rev = "482791f0127c9d6ae7e4f8db397e9661386fa9d2";
+    sha256 = "0gy6bygywd56rciq3wv5v9faq0b2rai43rwz22g448wdkv99z8w6";
   };
 
   propagatedBuildInputs = with ocamlPackages; [
