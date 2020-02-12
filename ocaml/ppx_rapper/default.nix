@@ -7,10 +7,10 @@ ocamlPackages.buildDune2Package {
   version = "1.1.0-dev";
 
   src = fetchFromGitHub {
-    owner = "anmonteiro";
+    owner = "roddyyaga";
     repo = "ppx_rapper";
-    rev = "693fc6c9e25017c814f2ebacbdb3be8a7614a9ad";
-    sha256 = "053y3kgad80qrg1slfhf7qln8nbbrwfhspvbqxc4cxdgsad9c479";
+    rev = "1.1.1";
+    sha256 = "0sl2arwifvmijdab2j0bz1s2c332ac3mp6yfnajbqz4blws9wmmj";
   };
 
   propagatedBuildInputs = with ocamlPackages; [
