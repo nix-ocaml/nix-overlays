@@ -69,10 +69,10 @@ in
   janeStreetPackages //
   junitPackages // {
     alcotest = osuper.alcotest.overrideAttrs (o: {
-      version = "1.0.0";
+      version = "1.0.1";
       src = builtins.fetchurl {
-        url = https://github.com/mirage/alcotest/releases/download/1.0.0/alcotest-1.0.0.tbz;
-        sha256 = "1a43ilhwnj58pq3bi78ni46l9wh6klmmgfc93i94mvyx48bzzayx";
+        url = https://github.com/mirage/alcotest/releases/download/1.0.1/alcotest-1.0.1.tbz;
+        sha256 = "1xlklxb83gamqbg8j5dzm5jk4mvcwkspxajh93p6vpw9ia1li1qc";
       };
       propagatedBuildInputs = lib.remove result o.propagatedBuildInputs ++ [ re ];
     });
@@ -155,7 +155,19 @@ in
       ocamlPackages = oself;
     };
 
+    markup = callPackage ./markup {
+      ocamlPackages = oself;
+    };
+
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
+
+    ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
+      version = "1.6.0";
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ocaml-migrate-parsetree/releases/download/v1.6.0/ocaml-migrate-parsetree-v1.6.0.tbz;
+        sha256 = "0gz39m4c4cbpza3sjfh4dfxlxf17r7bpqaxqq1zy2k0i4myqw0cv";
+      };
+    });
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
@@ -173,6 +185,8 @@ in
       nativeBuildInputs = [ dune-configurator base stdio ];
       propagatedBuildInputs = [ postgresql ];
     };
+
+    ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
     ppxlib = osuper.ppxlib.overrideAttrs (o: {
       src = fetchFromGitHub {
