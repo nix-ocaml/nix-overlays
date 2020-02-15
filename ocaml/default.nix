@@ -132,6 +132,16 @@ in
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
+    lambdasoup = osuper.lambdasoup.overrideAttrs (o: rec {
+      version = "0.7.0";
+      src = fetchFromGitHub {
+        owner = "aantron";
+        repo = "lambdasoup";
+        rev = version;
+        sha256 = "0wivjg4z8w7yr9jlkklx387gs8qdf1wv8pf86mkc4p50735hzaqk";
+      };
+    });
+
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
       version = "5.1.1";
 
@@ -172,6 +182,8 @@ in
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
+
+    ppx_tools = callPackage ./ppx_tools { ocamlPackages = oself; };
 
     piaf = callPackage ./piaf { ocamlPackages = oself; };
 
@@ -259,5 +271,15 @@ in
         sha256 = "1iv1wqx7rqca36i2whicabd7b7mwdprcbs6miza960rfsrxmzr7i";
       };
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
+    });
+
+    yaml = osuper.yaml.overrideAttrs (o: rec {
+      version = "2.1.0";
+      src = fetchFromGitHub {
+        owner = "avsm";
+        repo = "ocaml-yaml";
+        rev = "v${version}";
+        sha256 = "141h1zbg7gfw0424fkq3n5jhsccrky9mmgz42qmnm51m2d87xss3";
+      };
     });
   }
