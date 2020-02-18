@@ -88,6 +88,7 @@ in [
               "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
             ];
           });
+          fmt = fixOcamlBuild osuper.fmt;
           markup = fixOcamlBuild osuper.markup;
           ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
           ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
