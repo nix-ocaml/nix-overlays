@@ -18,9 +18,10 @@ let
     });
   fixOcamlBuild = b:
     b.overrideAttrs (o: {
-      configurePlatforms = [ ];
-      nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
-      # propagatedNativeBuildInputs = (o.propagatedBuildInputs or []);
+      configurePlatforms = [];
+      # nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
+      buildInputs = o.buildInputs ++ (o.nativeBuildInputs or [ ]);
+      propagatedNativeBuildInputs = o.propagatedBuildInputs or [ ];
     });
 
 in [
@@ -75,20 +76,16 @@ in [
           buildDunePackage = args:
             fixOcamlBuild (osuper.buildDunePackage args);
           buildDune2Package = args:
-            fixOcamlBuild (osuper.buildDunePackage (args // { dune = oself.dune_2; }));
+            fixOcamlBuild ((osuper.buildDunePackage.override { dune = oself.dune_2; }) args);
           result = fixOcamlBuild osuper.result;
           zarith = (osuper.zarith.overrideAttrs (o: {
             configurePlatforms = [ ];
             nativeBuildInputs = o.nativeBuildInputs ++ o.buildInputs;
           })).overrideAttrs (o: {
-            preConfigure = ''
-              echo $configureFlags
-            '';
             configureFlags = o.configureFlags ++ [
               "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
             ];
           });
-          fmt = fixOcamlBuild osuper.fmt;
           markup = fixOcamlBuild osuper.markup;
           ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
           ocamlgraph = fixOcamlBuild osuper.ocamlgraph;

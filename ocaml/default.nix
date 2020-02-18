@@ -117,6 +117,7 @@ in
         url = https://erratique.ch/software/fmt/releases/fmt-0.8.8.tbz;
         sha256 = "1iy0rwknd302mr15328g805k210xyigxbija6fzqqfzyb43azvk4";
       };
+      buildInputs = [ findlib topkg cmdliner ];
       propagatedBuildInputs = [uchar seq stdlib-shims];
     });
 
