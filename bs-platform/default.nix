@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
   };
 
   BS_RELEASE_BUILD = "true";
+  BS_TRAVIS_CI = "1";
   buildInputs = [ nodejs python3 gnutar ];
 
   patchPhase =
@@ -43,6 +44,10 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp -rf jscomp lib ${bin_folder} vendor odoc_gen native bsb bsc $out
+    mkdir $out/lib/ocaml
+    cp jscomp/runtime/js.* jscomp/runtime/*.cm* $out/lib/ocaml
+    cp jscomp/others/*.ml jscomp/others/*.mli jscomp/others/*.cm* $out/lib/ocaml
+    cp jscomp/stdlib-406/*.ml jscomp/stdlib-406/*.mli jscomp/stdlib-406/*.cm* $out/lib/ocaml
     cp bsconfig.json package.json $out
     ln -s $out/bsb $out/bin/bsb
     ln -s $out/bsc $out/bin/bsc
