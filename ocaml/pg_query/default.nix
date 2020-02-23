@@ -14,8 +14,10 @@ ocamlPackages.buildDune2Package {
   };
 
   propagatedBuildInputs = with ocamlPackages; [
+    core
     ppx_inline_test
     ppx_deriving
+    ppx_jane
     ctypes
   ];
 }
