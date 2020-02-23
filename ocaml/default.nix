@@ -43,9 +43,11 @@ let
     ocamlPackages = oself;
   };
 
-  menhirPackages = callPackage ./menhir {
-    ocamlPackages = oself;
-  };
+  menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
+    then {}
+    else callPackage ./menhir {
+      ocamlPackages = oself;
+    };
 
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;

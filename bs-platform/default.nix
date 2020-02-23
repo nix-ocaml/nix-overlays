@@ -1,19 +1,22 @@
-{ stdenv, reason, fetchFromGitHub, ninja, nodejs, python3, ... }:
+{ stdenv, reason, fetchFromGitHub, ninja, nodejs, python3, gnutar, ... }:
 
+let
+  bin_folder = if stdenv.isDarwin then "darwin" else "linux";
+in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "7.1.0";
+  version = "7.2.0-dev.3";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "a7f482243fabb38292b81b7bae9cefcb8076237f";
-    sha256 = "0p0ywb4cjpsrjq0if4s1bsnv9jdycd61r4ryndfzc50gngrpjbqr";
+    rev = "5e2bf1c7922df1d6690b3bb32e4c2a66f48ed59f";
+    sha256 = "0h7z90x8a78pls1pnd7s4wyd90qm4sp2p84xsb0s17mfjfbwyfxy";
     fetchSubmodules = true;
   };
 
   BS_RELEASE_BUILD = "true";
-  buildInputs = [ nodejs python3 ];
+  buildInputs = [ nodejs python3 gnutar ];
 
   patchPhase =
     let
@@ -29,8 +32,6 @@ stdenv.mkDerivation rec {
       sed -i 's:./configure.py --bootstrap:python3 ./configure.py --bootstrap:' ./scripts/install.js
       mkdir -p ./native/${ocaml-version}/bin
       ln -sf ${ocaml}/bin/*  ./native/${ocaml-version}/bin
-      rm -f vendor/ninja/snapshot/ninja.linux
-      cp ${ninja}/bin/ninja vendor/ninja/snapshot/ninja.linux
     '';
 
   dontConfigure = true;
@@ -41,10 +42,10 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp -rf jscomp lib vendor odoc_gen native $out
+    cp -rf jscomp lib ${bin_folder} vendor odoc_gen native bsb bsc $out
     cp bsconfig.json package.json $out
-    ln -s $out/lib/bsb $out/bin/bsb
-    ln -s $out/lib/bsc $out/bin/bsc
+    ln -s $out/bsb $out/bin/bsb
+    ln -s $out/bsc $out/bin/bsc
     ln -s ${reason}/bin/refmt $out/bin/bsrefmt
   '';
 }
