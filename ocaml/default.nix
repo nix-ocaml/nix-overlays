@@ -285,4 +285,8 @@ in
         sha256 = "141h1zbg7gfw0424fkq3n5jhsccrky9mmgz42qmnm51m2d87xss3";
       };
     });
+
+    zed = callPackage ./zed {
+      ocamlPackages = oself;
+    };
   }
