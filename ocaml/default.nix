@@ -218,15 +218,7 @@ in
       buildPhase = "${topkg.run} build --with-js_of_ocaml false";
     });
 
-    reason = osuper.reason.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "facebook";
-        repo = "reason";
-        rev = "ede1f25c895ac9c6a93f7d3c87a19eaa8de366f0";
-        sha256 = "04v8sk29051f897pliwaip1v57s85fb9m6h2bsx4a0wb8y30rmxx";
-      };
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ fix ];
-    });
+    reason = callPackage ./reason { ocamlPackages = oself; };
 
     routes = callPackage ./routes { ocamlPackages = oself; };
 

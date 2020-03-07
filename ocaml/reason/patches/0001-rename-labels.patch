@@ -1,0 +1,13 @@
+diff --git a/src/reason-parser/reason_syntax_util.cppo.ml b/src/reason-parser/reason_syntax_util.cppo.ml
+index 3394652..32964bd 100644
+--- a/src/reason-parser/reason_syntax_util.cppo.ml
++++ b/src/reason-parser/reason_syntax_util.cppo.ml
+@@ -25,7 +25,7 @@ open Parsetree
+ open Longident
+ 
+ (* Rename labels in function definition/application and records *)
+-let rename_labels = ref false
++let rename_labels = ref true
+ 
+ (** Check to see if the string `s` is made up of `keyword` and zero or more
+     trailing `_` characters. *)
