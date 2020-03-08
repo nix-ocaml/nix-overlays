@@ -58,8 +58,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "janestreet";
       repo = "base";
-      rev = "v0.13.0";
-      sha256 = "16j59blmsp1pbmlqagd1zz8b9nkxb83ixnwg2a0nl7ycmb2ifb74";
+      rev = "v0.13.1";
+      sha256 = "08a5aymcgr5svvm8v0v20msd5cad64m6maakfbhz4172g7kd9jzw";
     };
   });
 
