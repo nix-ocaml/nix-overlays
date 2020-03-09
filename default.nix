@@ -9,6 +9,7 @@ let
   };
   oP_406 = overlayOcamlPackages "4_06";
   oP_409 = overlayOcamlPackages "4_09";
+  oP_410 = overlayOcamlPackages "4_10";
 in
   {
     # OCaml related packages
@@ -23,13 +24,14 @@ in
       inherit (self) ocamlPackages;
     };
 
-    ocamlPackages = oP_409.ocamlPackages_4_09;
+    ocamlPackages = oP_410.ocamlPackages_4_10;
     ocamlPackages_latest = self.ocamlPackages;
 
-    # 4.06 and 4.09 treated specially out of convenience because:
-    # - 4.09 is the latest stable version
+    # 4.06, 4.09 and 4.10 treated specially out of convenience because:
+    # - 4.09 is still used in some of my projects
+    # - 4.10 is the latest stable version
     # - 4.06 is used by BuckleScript
-    ocaml-ng = super.ocaml-ng // oP_409 // oP_406;
+    ocaml-ng = super.ocaml-ng // oP_406 // oP_409 // oP_410;
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
@@ -39,7 +41,7 @@ in
     pkgsCross.musl64.pkgsStatic = super.pkgsCross.musl64.pkgsStatic.appendOverlays (import ./static/overlays.nix {
       inherit lib;
       pkgsNative = pkgs;
-      ocamlVersion = "4_09";
+      ocamlVersion = "4_10";
     });
 
     # Other packages
@@ -47,9 +49,9 @@ in
     lib = super.lib // {
       gitignoreSource = (import (pkgs.fetchFromGitHub {
         owner = "hercules-ci";
-        repo = "gitignore";
-        rev = "7415c4f";
-        sha256 = "1zd1ylgkndbb5szji32ivfhwh04mr1sbgrnvbrqpmfb67g2g3r9i";
+        repo = "gitignore.nix";
+        rev = "2ced4519f865341adcb143c5d668f955a2cb997f";
+        sha256 = "0fc5bgv9syfcblp23y05kkfnpgh3gssz6vn24frs8dzw39algk2z";
       }) { inherit lib; }).gitignoreSource;
     };
   }
