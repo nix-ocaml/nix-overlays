@@ -186,8 +186,6 @@ in
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
-    ppx_tools = callPackage ./ppx_tools { ocamlPackages = oself; };
-
     piaf = callPackage ./piaf { ocamlPackages = oself; };
 
     postgresql = buildDunePackage rec {
