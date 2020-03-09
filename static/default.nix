@@ -1,6 +1,6 @@
 # Adapted from https://github.com/serokell/tezos-packaging/blob/b7617f99/nix/static.nix
 
-{ pkgsPath ? <nixpkgs>, ocamlVersion ? "4_09" }:
+{ pkgsPath ? <nixpkgs>, ocamlVersion ? "4_10" }:
 
 let
   pkgsNative = import pkgsPath {};
