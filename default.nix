@@ -38,11 +38,14 @@ in
       reason = oP_406.ocamlPackages_4_06.reason;
     };
 
-    pkgsCross.musl64.pkgsStatic = super.pkgsCross.musl64.pkgsStatic.appendOverlays (import ./static/overlays.nix {
-      inherit lib;
-      pkgsNative = pkgs;
-      ocamlVersion = "4_10";
-    });
+    pkgsCross.musl64.pkgsStatic =
+      let mkOverlay = ocamlVersion: import ./static/overlays.nix {
+        inherit lib ocamlVersion;
+        pkgsNative = pkgs;
+      };
+      in
+      super.pkgsCross.musl64.pkgsStatic.appendOverlays
+        (lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" ]);
 
     # Other packages
 
