@@ -210,6 +210,15 @@ in
       };
     });
 
+    ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "ocaml-ppx";
+        repo = "ppx_deriving_yojson";
+        rev = "v3.5.2";
+        sha256 = "1vbhmnhnj1aa4jrp8xqi52nggwj7vrml83z2j0r0qzvl65v02mc0";
+      };
+    });
+
     ptime = osuper.ptime.overrideAttrs (o: {
       buildInputs = lib.remove js_of_ocaml o.buildInputs;
 
