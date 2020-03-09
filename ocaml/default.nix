@@ -100,6 +100,12 @@ in
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
+    digestif = osuper.digestif.overrideAttrs (o: {
+      # Don't run tests for digestif because it contains duplicate test names
+      # (Incompatible with alcotest v1)
+      doCheck = false;
+    });
+
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
     ezgzip = buildDunePackage rec {
