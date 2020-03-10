@@ -9,8 +9,8 @@ ocamlPackages.buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "35f38839a16c388d80ed3c6c4d313e016fff0f20";
-    sha256 = "1aggg0qsqx767d7wi2wffp7vkzdhs6sj1ymivabj064szpnlxa3x";
+    rev = "2682f2c5de70415a1bfef2a6c95f809b705d23ee";
+    sha256 = "0ajlpl8fpv3733kcb2c79pn5lfhh6w4p77m3icrrnvwkl482lshy";
   };
 
   propagatedBuildInputs = with ocamlPackages; [
@@ -22,6 +22,7 @@ ocamlPackages.buildDunePackage {
     h2-lwt-unix
     logs
     lwt_ssl
+    magic-mime
     ssl
     uri
   ];
