@@ -19,7 +19,7 @@ let
   fixOcamlBuild = b:
     b.overrideAttrs (o: {
       configurePlatforms = [];
-      # nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
+      nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
       buildInputs = o.buildInputs ++ (o.nativeBuildInputs or [ ]);
       propagatedNativeBuildInputs = o.propagatedBuildInputs or [ ];
     });
