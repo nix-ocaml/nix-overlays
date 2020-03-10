@@ -152,11 +152,11 @@ in
     });
 
     lwt4 = osuper.lwt4.overrideAttrs (o: rec {
-      version = "5.1.1";
+      version = "5.2.0";
 
       src = fetchzip {
         url = "https://github.com/ocsigen/${o.pname}/archive/${version}.tar.gz";
-        sha256 = "1nl7rdnwfdhwcsm5zpay1nr9y5cbapd9x1qzily7zk9ab4v52m8g";
+        sha256 = "1znw8ckwdmqsnrcgar4g33zgr659l4l904bllrz69bbwdnfmz2x3";
       };
     });
 
