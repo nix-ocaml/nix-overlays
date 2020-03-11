@@ -108,6 +108,14 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
+    dune_2 = osuper.dune.overrideAttrs (o : rec {
+      version = "2.4.0";
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
+        sha256 = "096wp6aawgh1ffhbnjfxgakwqd02kfkz2i6m6cc040w1g554iw98";
+      };
+    });
+
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
