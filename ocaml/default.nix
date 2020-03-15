@@ -108,14 +108,6 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
-    dune_2 = osuper.dune.overrideAttrs (o : rec {
-      version = "2.4.0";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/${version}/dune-${version}.tbz";
-        sha256 = "096wp6aawgh1ffhbnjfxgakwqd02kfkz2i6m6cc040w1g554iw98";
-      };
-    });
-
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
@@ -221,15 +213,6 @@ in
         repo = "ppxlib";
         rev = "f13dc352b9bb17e8ced3d12d2533cffba2fcbfac";
         sha256 = "1cg0is23c05k1rc94zcdz452p9zn11dpqxm1pnifwx5iygz3w0a1";
-      };
-    });
-
-    ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "ocaml-ppx";
-        repo = "ppx_deriving_yojson";
-        rev = "v3.5.2";
-        sha256 = "1vbhmnhnj1aa4jrp8xqi52nggwj7vrml83z2j0r0qzvl65v02mc0";
       };
     });
 
