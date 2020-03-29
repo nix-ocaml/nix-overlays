@@ -2,7 +2,7 @@
 
 with ocamlPackages;
 
-buildDune2Package {
+buildDunePackage {
   pname = "ppxfind";
   version = "1.4";
   src = builtins.fetchurl {
@@ -10,6 +10,7 @@ buildDune2Package {
     sha256 = "0wa9vcrc26kirc2cqqs6kmarbi8gqy3dgdfiv9y7nzsgy1liqacq";
   };
 
+  useDune2 = true;
   buildInputs = [ ocaml-migrate-parsetree ];
 
   # Don't run the native `strip' when cross-compiling.

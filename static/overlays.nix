@@ -75,8 +75,6 @@ in [
           ocamlbuild = fixOcamlBuild osuper.ocamlbuild;
           buildDunePackage = args:
             fixOcamlBuild (osuper.buildDunePackage args);
-          buildDune2Package = args:
-            fixOcamlBuild ((osuper.buildDunePackage.override { dune = oself.dune_2; }) args);
           result = fixOcamlBuild osuper.result;
           zarith = (osuper.zarith.overrideAttrs (o: {
             configurePlatforms = [ ];

@@ -2,7 +2,7 @@
 
 with ocamlPackages;
 
-ocamlPackages.buildDune2Package {
+buildDunePackage {
   pname = "pg_query";
   version = "0.9.4-dev";
 
@@ -12,6 +12,8 @@ ocamlPackages.buildDune2Package {
     rev = "bae4c23d4a62f0b0559ed5a8552bf481574250de";
     sha256 = "1bx4zbnpyi0994r59xl91rw2iak1lmhqq8178i333wj4snkflk5w";
   };
+
+  useDune2 = true;
 
   propagatedBuildInputs = with ocamlPackages; [
     core

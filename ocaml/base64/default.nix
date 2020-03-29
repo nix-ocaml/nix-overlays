@@ -2,7 +2,7 @@
 
 with ocamlPackages;
 
-buildDune2Package (rec {
+buildDunePackage (rec {
   pname = "base64";
   version = "3.3.0";
 
@@ -10,6 +10,7 @@ buildDune2Package (rec {
   buildInputs = [ dune-configurator alcotest bos ];
 
   doCheck = false;
+  useDune2 = true;
 
   # This installs a `dune-package` file in the destdir that messes with the
   # dune version checks, causing other packages to require Dune 2
