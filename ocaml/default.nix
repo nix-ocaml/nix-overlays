@@ -178,6 +178,15 @@ in
       ocamlPackages = oself;
     };
 
+    merlin = if (lib.versionAtLeast osuper.ocaml.version "4.10") then
+    osuper.merlin.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/merlin/releases/download/v3.3.4-preview1/merlin-v3.3.4-preview1.tbz;
+        sha256 = "0zfqhc68skc9xn4win6jjy4jvvczfdvnz7l4savqhkdsjfd956y7";
+      };
+    })
+    else osuper.merlin;
+
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
