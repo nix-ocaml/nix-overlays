@@ -19,6 +19,10 @@ let
     ocamlPackages = oself;
   };
 
+  functoriaPackages = callPackage ./functoria {
+    ocamlPackages = oself;
+  };
+
   graphqlPackages = callPackage ./graphql {
     ocamlPackages = oself;
   };
@@ -49,6 +53,14 @@ let
       ocamlPackages = oself;
     };
 
+  miragePackages = callPackage ./mirage {
+    ocamlPackages = oself;
+  };
+
+  mirageCryptoPackages = callPackage ./mirage-crypto {
+    ocamlPackages = oself;
+  };
+
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -61,11 +73,14 @@ in
   archiPackages //
   caqti-packages //
   faradayPackages //
+  functoriaPackages //
   graphqlPackages //
   h2Packages //
   httpafPackages //
   lambda-runtime-packages //
   menhirPackages //
+  miragePackages //
+  mirageCryptoPackages //
   opamPackages //
   websocketafPackages //
   janeStreetPackages //
@@ -107,6 +122,14 @@ in
     });
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
+
+    eqaf = osuper.eqaf.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/eqaf/releases/download/v0.6/eqaf-v0.6.tbz;
+        sha256 = "068r231ia87mpqpaqzqb9sjfj6yaqrwvcls2p173aa4qg38xvsq9";
+      };
+      propagatedBuildInputs = [ bigarray-compat cstruct ];
+    });
 
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
@@ -197,6 +220,8 @@ in
       };
     });
 
+    ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
@@ -214,14 +239,18 @@ in
       propagatedBuildInputs = [ postgresql ];
     };
 
+    ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_tools_versioned ];
+    });
+
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
     ppxlib = osuper.ppxlib.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "ocaml-ppx";
         repo = "ppxlib";
-        rev = "f13dc352b9bb17e8ced3d12d2533cffba2fcbfac";
-        sha256 = "1cg0is23c05k1rc94zcdz452p9zn11dpqxm1pnifwx5iygz3w0a1";
+        rev = "2d92deb88e9501ed33897edb88a15be75d10f82d";
+        sha256 = "1xfnxm71fpx96sgjb1p8sgvlgaxrdra6kgcr631p8vf23llln8k7";
       };
     });
 
@@ -265,6 +294,8 @@ in
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
 
+    tls = callPackage ./tls { ocamlPackages = oself; };
+
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
       nativeBuildInputs = [ocamlbuild ocaml findlib];
@@ -279,6 +310,26 @@ in
         sha256 = "1iv1wqx7rqca36i2whicabd7b7mwdprcbs6miza960rfsrxmzr7i";
       };
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
+    });
+
+    x509 = osuper.x509.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirleft/ocaml-x509/releases/download/v0.10.0/x509-v0.10.0.tbz;
+        sha256 = "1cjwa97qf6rx2kn74zmmwr1am5wbnqn18kyd7xrbdyp499yb2h3z";
+      };
+
+      propagatedBuildInputs = [
+        asn1-combinators
+        domain-name
+        fmt
+        gmap
+        cstruct
+        ptime
+        base64
+        mirage-crypto
+        mirage-crypto-pk
+        rresult
+      ];
     });
 
     yaml = osuper.yaml.overrideAttrs (o: rec {

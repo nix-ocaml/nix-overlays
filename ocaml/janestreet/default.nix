@@ -366,7 +366,7 @@ with oself;
       rev = "v0.13.0";
       sha256 = "0jkhwmkrfq3ss6bv6i3m871alcr4xpngs6ci6bmzv3yfl7s8bwdf";
     };
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ base sexplib0 ppxlib ];
   });
 
   ppx_sexp_message = osuper.janeStreet.ppx_sexp_message.overrideAttrs (o: {
@@ -427,6 +427,16 @@ with oself;
       sha256 = "19wscd81jlj355f9din1sg21m3af456a0id2a37bx38r390wrghc";
     };
     propagatedBuildInputs = [ core_kernel ];
+  });
+
+  sexplib = osuper.janeStreet.sexplib.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "sexplib";
+      rev = "v0.13.0";
+      sha256 = "059ypcyirw00x6dqa33x49930pwxcr3i72qz5pf220js2ai2nzhn";
+    };
+    propagatedBuildInputs = [ num parsexp ];
   });
 
   spawn = osuper.janeStreet.spawn.overrideAttrs (o: {
