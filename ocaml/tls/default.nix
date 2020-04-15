@@ -4,10 +4,10 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "tls";
-  version = "0.11.0";
+  version = "0.11.1";
   src = builtins.fetchurl {
     url = "https://github.com/mirleft/ocaml-tls/releases/download/v${version}/tls-v${version}.tbz";
-    sha256 = "1ia5li6sprapv3i5hmbqalljxh16jd4kq2pls6pi1ddvcjkcvqz0";
+    sha256 = "0ms13fbaxgmpbviazlfa4hb7nmi7s22nklc7ns926b0rr1aq1069";
   };
 
   propagatedBuildInputs = [
