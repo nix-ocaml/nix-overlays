@@ -204,8 +204,8 @@ in
     merlin = if (lib.versionAtLeast osuper.ocaml.version "4.10") then
     osuper.merlin.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml/merlin/archive/23fd5c155cbaa0b84108bb257a212b312e93caaf.tar.gz;
-        sha256 = "1bnly9m9682ikgb3g812arzy5w11zrzg8np17lrqkfygz7qvfx76";
+        url = https://github.com/ocaml/merlin/releases/download/v3.3.4/merlin-v3.3.4.tbz;
+        sha256 = "12wxric6n3rmsn0w16xm8vjd8p5aw24cj76zw2x87qfwwgmy1kdd";
       };
     })
     else osuper.merlin;
