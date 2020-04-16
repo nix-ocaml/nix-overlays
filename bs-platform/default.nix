@@ -5,13 +5,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "7.2.0";
+  version = "7.3.1";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "7.2.0";
-    sha256 = "1fsx7gvcp6rbqd0qf5fix02mbbmk9rgm09zbwjrx0lp5cjv3n2s4";
+    rev = version;
+    sha256 = "14vp6cl5ml7xb3pd0paqajb50qv62l8j5m8hi3b6fh0pm68j1yxd";
     fetchSubmodules = true;
   };
 
@@ -44,7 +44,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp -rf jscomp lib ${bin_folder} vendor odoc_gen native bsb bsc $out
-    mkdir $out/lib/ocaml
+    mkdir -p $out/lib/ocaml
     cp jscomp/runtime/js.* jscomp/runtime/*.cm* $out/lib/ocaml
     cp jscomp/others/*.ml jscomp/others/*.mli jscomp/others/*.cm* $out/lib/ocaml
     cp jscomp/stdlib-406/*.ml jscomp/stdlib-406/*.mli jscomp/stdlib-406/*.cm* $out/lib/ocaml
