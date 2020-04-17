@@ -123,14 +123,6 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
-    eqaf = osuper.eqaf.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/eqaf/releases/download/v0.6/eqaf-v0.6.tbz;
-        sha256 = "068r231ia87mpqpaqzqb9sjfj6yaqrwvcls2p173aa4qg38xvsq9";
-      };
-      propagatedBuildInputs = [ bigarray-compat cstruct ];
-    });
-
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
@@ -142,15 +134,6 @@ in
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
-
-    fmt = osuper.fmt.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://erratique.ch/software/fmt/releases/fmt-0.8.8.tbz;
-        sha256 = "1iy0rwknd302mr15328g805k210xyigxbija6fzqqfzyb43azvk4";
-      };
-      buildInputs = [ findlib topkg cmdliner ];
-      propagatedBuildInputs = [uchar seq stdlib-shims];
-    });
 
     graphql_ppx = callPackage ./graphql_ppx {
       ocamlPackages = oself;
