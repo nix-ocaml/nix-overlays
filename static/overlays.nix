@@ -91,6 +91,7 @@ in [
           qcheck = fixOcamlBuild osuper.qcheck;
           stringext = fixOcamlBuild osuper.stringext;
           opam-file-format = fixOcamlBuild osuper.opam-file-format;
+          ounit = fixOcamlBuild osuper.ounit;
           bigstringaf = fixOcamlBuild osuper.bigstringaf;
           camlzip = fixOcamlBuild osuper.camlzip;
           dune = fixOcamlBuild osuper.dune;
