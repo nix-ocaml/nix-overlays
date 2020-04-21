@@ -54,7 +54,7 @@ let
   };
 
   mirageCryptoPackages = callPackage ./mirage-crypto {
-    ocamlPackages = oself;
+    inherit osuper oself;
   };
 
   opamPackages = callPackage ./opam {
@@ -266,8 +266,6 @@ in
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
 
-    tls = callPackage ./tls { ocamlPackages = oself; };
-
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
       nativeBuildInputs = [ocamlbuild ocaml findlib];
@@ -284,25 +282,10 @@ in
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
     });
 
-    x509 = osuper.x509.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirleft/ocaml-x509/releases/download/v0.11.0/x509-v0.11.0.tbz;
-        sha256 = "0gcs3vpmixxxx2q4b2iphb1xw1jffya1wkp0p1xbmsfcghzrj20m";
-      };
-
-      propagatedBuildInputs = [
-        asn1-combinators
-        domain-name
-        fmt
-        gmap
-        cstruct
-        ptime
-        base64
-        logs
-        mirage-crypto
-        mirage-crypto-pk
-        rresult
-      ];
+    x509 = osuper.x509.overrideAttrs (_: {
+      postInstall = ''
+        rm $OCAMLFIND_DESTDIR/x509/dune-package
+      '';
     });
 
     yaml = osuper.yaml.overrideAttrs (o: rec {
