@@ -35,10 +35,6 @@ let
     ocamlPackages = oself;
   };
 
-  janeStreetPackages = osuper.janeStreet // (callPackage ./janestreet {
-    inherit osuper oself;
-  });
-
   junitPackages = callPackage ./junit {
     ocamlPackages = oself;
   };
@@ -83,7 +79,6 @@ in
   mirageCryptoPackages //
   opamPackages //
   websocketafPackages //
-  janeStreetPackages //
   junitPackages // {
     alcotest = osuper.alcotest.overrideAttrs (o: {
       version = "1.0.1";
@@ -138,12 +133,6 @@ in
     graphql_ppx = callPackage ./graphql_ppx {
       ocamlPackages = oself;
     };
-
-    janePackage = osuper.janePackage.override {
-      defaultVersion = "0.13.0";
-    };
-
-    janeStreet = janeStreetPackages;
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
