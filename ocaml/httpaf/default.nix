@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "httpaf";
-      rev = "ff22c07228c88ef5e67a108e15e2dc589f4f72a1";
-      sha256 = "1sazyn87vqm6n69iykq7miq34k22xmc3rs9fphjapx7c9r4s3h4w";
+      rev = "eac806e9b8e529309c5159edeecb304e009fc226";
+      sha256 = "10cwsxr9mc6nkzxza0p295hdqwg3aaahqwd7hfjpw9qwdislba2h";
     };
   } // args);
 in rec {
