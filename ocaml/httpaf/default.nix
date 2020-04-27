@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "httpaf";
-      rev = "addaf1c8d4008c6c1c150a1a4905c8ffe2647ef3";
-      sha256 = "0iysbix5g5zss30bphsg8xysxlw4zgryj6c1c6zjcgrsx2kqvrlr";
+      rev = "4e3396c991530c9ae5f9ab36e611448446f21196";
+      sha256 = "1npcl1w97l6gi3lhp60ssf8142fqcb1my8p78c662imksk8vk5c7";
     };
   } // args);
 in rec {
@@ -20,7 +20,7 @@ in rec {
 
   httpaf-lwt = buildHttpaf {
     pname = "httpaf-lwt";
-    propagatedBuildInputs = [ httpaf lwt4 ];
+    propagatedBuildInputs = [ httpaf gluten-lwt lwt4 ];
   };
 
   httpaf-lwt-unix = buildHttpaf {
@@ -28,6 +28,7 @@ in rec {
     propagatedBuildInputs = [
       httpaf
       httpaf-lwt
+      gluten-lwt-unix
       faraday-lwt-unix
       lwt_ssl
     ];
