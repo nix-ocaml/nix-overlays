@@ -27,6 +27,10 @@ let
     ocamlPackages = oself;
   };
 
+  glutenPackages = callPackage ./gluten {
+    ocamlPackages = oself;
+  };
+
   h2Packages = callPackage ./h2 {
     ocamlPackages = oself;
   };
@@ -71,6 +75,7 @@ in
   faradayPackages //
   functoriaPackages //
   graphqlPackages //
+  glutenPackages //
   h2Packages //
   httpafPackages //
   lambda-runtime-packages //
