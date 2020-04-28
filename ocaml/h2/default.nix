@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-h2";
-      rev = "577991e36a9d589946a0e70846f208807178c3e6";
-      sha256 = "0rah9zdxl6rkki5lmd3d4s55f2cdfjnk55jqzbpbx1yl85yga5wa";
+      rev = "a61978a32f8f49aa3460b8372eae0efb0d2ca40d";
+      sha256 = "1fm849aly00fl2fdlkscdrdfqm3z48bvcykmqdzr80f29xbz7h95";
     };
   } // args);
 in rec {
@@ -32,12 +32,13 @@ in rec {
 
   h2-lwt = buildH2 {
     pname = "h2-lwt";
-    propagatedBuildInputs = [ h2 lwt4 ];
+    propagatedBuildInputs = [ gluten-lwt h2 lwt4 ];
   };
 
   h2-lwt-unix = buildH2 {
     pname = "h2-lwt-unix";
     propagatedBuildInputs = [
+      gluten-lwt-unix
       h2-lwt
       faraday-lwt-unix
       lwt_ssl
