@@ -6,6 +6,11 @@ oself: osuper:
 with oself;
 
 let
+  angstromPackages = callPackage ./angstrom {
+    ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
+  };
+
   archiPackages = callPackage ./archi {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -70,6 +75,7 @@ let
   };
 
 in
+  angstromPackages //
   archiPackages //
   caqti-packages //
   faradayPackages //
@@ -281,9 +287,10 @@ in
       src = fetchFromGitHub {
         owner = "anmonteiro";
         repo = "ocaml-uri";
-        rev = "72fce0fc74a6382f4c773382dd123143f1471522";
-        sha256 = "1iv1wqx7rqca36i2whicabd7b7mwdprcbs6miza960rfsrxmzr7i";
+        rev = "8634a6923ac8a757d7ac7882aa80a3f8090732c6";
+        sha256 = "0qdlgmrsv47frr7zijrb5qjwdn419nay2rjw6i9jvdp0iwnhwpbk";
       };
+      doCheck = false;
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
     });
 
