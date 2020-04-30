@@ -38,6 +38,7 @@ let
 
   glutenPackages = callPackage ./gluten {
     ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
   };
 
   h2Packages = callPackage ./h2 {
