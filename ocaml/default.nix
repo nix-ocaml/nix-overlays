@@ -20,6 +20,10 @@ let
     ocamlPackages = oself;
   };
 
+  conduit-packages = callPackage ./conduit {
+    ocamlPackages = oself;
+  };
+
   faradayPackages = callPackage ./faraday {
     ocamlPackages = oself;
   };
@@ -41,6 +45,10 @@ let
   };
 
   httpafPackages = callPackage ./httpaf {
+    ocamlPackages = oself;
+  };
+
+  ipaddrPackages = callPackage ./ipaddr {
     ocamlPackages = oself;
   };
 
@@ -70,6 +78,10 @@ let
     ocamlPackages = oself;
   };
 
+  tlsPackages = callPackage ./tls {
+    ocamlPackages = oself;
+  };
+
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
   };
@@ -77,6 +89,7 @@ let
 in
   angstromPackages //
   archiPackages //
+  conduit-packages //
   caqti-packages //
   faradayPackages //
   functoriaPackages //
@@ -84,11 +97,13 @@ in
   glutenPackages //
   h2Packages //
   httpafPackages //
+  ipaddrPackages //
   lambda-runtime-packages //
   menhirPackages //
   miragePackages //
   mirageCryptoPackages //
   opamPackages //
+  tlsPackages //
   websocketafPackages //
   junitPackages // {
     alcotest = osuper.alcotest.overrideAttrs (o: {
@@ -125,6 +140,16 @@ in
       # Don't run tests for digestif because it contains duplicate test names
       # (Incompatible with alcotest v1)
       doCheck = false;
+    });
+
+    dns-client = osuper.dns-client.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/ocaml-dns/releases/download/v4.4.1/dns-v4.4.1.tbz;
+        sha256 = "18c09jf0kicv2xz40n367y774rg8qs07rr1vdk8bx8f7hnaa9cn8";
+      };
+      postInstall = ''
+        rm $OCAMLFIND_DESTDIR/dns-client/dune-package
+      '';
     });
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
@@ -182,6 +207,20 @@ in
 
     markup = callPackage ./markup {
       ocamlPackages = oself;
+    };
+
+    mirage-kv = buildDunePackage {
+      pname = "mirage-kv";
+      version = "3.0.1";
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/mirage-kv/releases/download/v3.0.1/mirage-kv-v3.0.1.tbz;
+        sha256 = "1n736sjvdd8rkbc2b5jm9sn0w6hvhjycma5328r0l03v24vk5cki";
+      };
+      propagatedBuildInputs = [
+        lwt4
+        mirage-device
+        fmt
+      ];
     };
 
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
@@ -285,10 +324,60 @@ in
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
     });
 
+    vchan = buildDunePackage {
+      pname = "vchan";
+      version = "5.0.0";
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/ocaml-vchan/releases/download/v5.0.0/vchan-v5.0.0.tbz;
+        sha256 = "0bx55w0ydl4bdhm6z5v0qj2r59j4avzddhklbb1wx40qvg3adz63";
+      };
+      propagatedBuildInputs = [
+        lwt4
+        cstruct
+        ppx_sexp_conv
+        ppx_cstruct
+        io-page
+        mirage-flow
+        xenstore
+        xenstore_transport
+        sexplib
+        cmdliner
+      ];
+    };
+
     x509 = osuper.x509.overrideAttrs (_: {
       postInstall = ''
         rm $OCAMLFIND_DESTDIR/x509/dune-package
       '';
+    });
+
+    xenstore = buildDunePackage {
+      pname = "xenstore";
+      version = "2.1.0";
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/ocaml-xenstore/releases/download/2.1.1/xenstore-2.1.1.tbz;
+        sha256 = "1xc49j3n3jap2n3w7v6a9q08a4bw5xxv3z4wsp24bhxd47m18f18";
+      };
+      propagatedBuildInputs = [
+        cstruct
+        ppx_cstruct
+        lwt4
+      ];
+    };
+
+    xenstore_transport = buildDunePackage (rec {
+      pname = "xenstore_transport";
+      version = "1.1.0";
+      src = fetchFromGitHub {
+        owner = "xapi-project";
+        repo = "ocaml-xenstore-clients";
+        rev = "v${version}";
+        sha256 = "14hjkbwvpnv7ffavqpipvalmrp7flrzms29vf609rgm75jqi29sa";
+      };
+      propagatedBuildInputs = [
+        lwt4
+        xenstore
+      ];
     });
 
     yaml = osuper.yaml.overrideAttrs (o: rec {
