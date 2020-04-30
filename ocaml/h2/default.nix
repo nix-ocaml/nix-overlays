@@ -1,4 +1,4 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-h2";
-      rev = "2df073d588299434ce7960680d3c7fdf993ce9b4";
-      sha256 = "100aj3j2qgyqbn1g85qp9sv1f0wfa22srd0f9f5bwwqnf74vch3q";
+      rev = "6fca12c871614f8d8f6dd926f7c4ed7deb6de93c";
+      sha256 = "156d5imz9dscfhbwn0ja04zyxg759fc5n2ays1bj822ly38afa3i";
     };
   } // args);
 in rec {
@@ -44,4 +44,14 @@ in rec {
       lwt_ssl
     ];
   };
-}
+} // (if (lib.versionOlder "4.08" ocamlVersion) then {
+    h2-mirage = buildH2 {
+      pname = "h2-mirage";
+      doCheck = false;
+      propagatedBuildInputs = [
+        conduit-mirage
+        h2-lwt
+        gluten-mirage
+      ];
+    };
+  } else {})

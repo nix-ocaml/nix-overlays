@@ -43,10 +43,12 @@ let
 
   h2Packages = callPackage ./h2 {
     ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
   };
 
   httpafPackages = callPackage ./httpaf {
     ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
   };
 
   ipaddrPackages = callPackage ./ipaddr {
