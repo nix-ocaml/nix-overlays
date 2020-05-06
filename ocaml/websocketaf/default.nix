@@ -8,14 +8,14 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "websocketaf";
-      rev = "b344de3076964e3e5e027e234c72a35ec7f31183";
-      sha256 = "1a1c5pvlcbcwh4i824mhj5rphdd3p09l4gwc7cd85ipn820i46yy";
+      rev = "c002201cdee3a1c81570273a857903840a3d8f89";
+      sha256 = "1z8js52hh2gcjj94iqjdsagbpyw5hz61i2wxz06ib1n706iifcdn";
     };
   } // args);
 in rec {
   websocketaf = buildWebsocketaf {
     pname = "websocketaf";
-    propagatedBuildInputs = [ angstrom faraday httpaf base64 ];
+    propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
   };
 
   websocketaf-lwt = buildWebsocketaf {
@@ -29,6 +29,7 @@ in rec {
       websocketaf
       websocketaf-lwt
       faraday-lwt-unix
+      gluten-lwt-unix
     ];
   };
 }
