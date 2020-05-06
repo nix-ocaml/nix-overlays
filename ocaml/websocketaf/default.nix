@@ -20,7 +20,7 @@ in rec {
 
   websocketaf-lwt = buildWebsocketaf {
     pname = "websocketaf-lwt";
-    propagatedBuildInputs = [ websocketaf lwt4 digestif ];
+    propagatedBuildInputs = [ websocketaf gluten-lwt lwt4 digestif ];
   };
 
   websocketaf-lwt-unix = buildWebsocketaf {
