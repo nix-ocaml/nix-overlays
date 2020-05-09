@@ -4,12 +4,10 @@ with ocamlPackages;
 
 ocamlPackages.buildDunePackage rec {
   pname = "routes";
-  version = "0.0.1-dev";
+  version = "0.8.0";
 
-  src = fetchFromGitHub {
-    owner = "anuragsoni";
-    repo = pname;
-    rev = "58c6a136299e9919004cb481ee2130d8c069ea82";
-    sha256 = "0rqbyb9bgjd64sqq8q4mz43pjnmp0sv3xr3fxcjrclbv2lv6zs4p";
+  src = builtins.fetchurl {
+    url = https://github.com/anuragsoni/routes/releases/download/0.8.0/routes-0.8.0.tbz;
+    sha256 = "0ikw5b4jrif0psk5kiwagyg15fwypff2b8xzhq9qr80zsq2nny7s";
   };
 }
