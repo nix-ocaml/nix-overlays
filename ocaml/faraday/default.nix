@@ -27,4 +27,9 @@ in rec {
     pname = "faraday-lwt-unix";
     propagatedBuildInputs = [ faraday-lwt ];
   };
+
+  faraday-async = buildFaraday {
+    pname = "faraday-async";
+    propagatedBuildInputs = [ faraday async ];
+  };
 }
