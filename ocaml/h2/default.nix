@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-h2";
-      rev = "6fca12c871614f8d8f6dd926f7c4ed7deb6de93c";
-      sha256 = "156d5imz9dscfhbwn0ja04zyxg759fc5n2ays1bj822ly38afa3i";
+      rev = "f0c576a32467b7a153ed9158ec64be98f2c84e88";
+      sha256 = "1cbyvp4bw0mc8l19jzw9k8xvs9g23nfij91zwwamc2n1yl03x7g7";
     };
   } // args);
 in rec {

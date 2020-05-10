@@ -5,14 +5,11 @@ with ocamlPackages;
 let
   buildHttpaf = args: buildDunePackage ({
     version = "0.6.5-dev";
-    # Until this is in
-    # https://github.com/inhabitedtype/httpaf/pull/176
-    doCheck = false;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "httpaf";
-      rev = "d7fccccfe78ad0dc508e3b3f41b661af5c49bcbf";
-      sha256 = "185ng8pjz8dfk690h8yvhp9wcbv01s5m9n9d9fj6mbv20y1cv793";
+      rev = "90a3f33e697bab18428a61d31f78eb0247b4f201";
+      sha256 = "1h691ncrww7d1m25rj43bg8mzdpp18a299d3rj8frsggg2psdx1s";
     };
   } // args);
 in rec {
