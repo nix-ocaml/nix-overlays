@@ -92,8 +92,8 @@ let
 in
   angstromPackages //
   archiPackages //
-  conduit-packages //
   caqti-packages //
+  conduit-packages //
   faradayPackages //
   functoriaPackages //
   graphqlPackages //
@@ -118,6 +118,28 @@ in
       propagatedBuildInputs = lib.remove result o.propagatedBuildInputs ++ [ re ];
     });
 
+    async_ssl = buildDunePackage rec {
+      version = "0.13.0";
+      pname = "async_ssl";
+      useDune2 = true;
+      src = fetchFromGitHub {
+        owner = "janestreet";
+        repo = pname;
+        rev = "v${version}";
+        sha256 = "0z5dbiam5k7ipx9ph4r8nqv0a1ldx1ymxw3xjxgrdjda90lmwf2k";
+      };
+      propagatedBuildInputs = [
+        async
+        base
+        core
+        ppx_jane
+        stdio
+        openssl.dev
+        ctypes
+        dune-configurator
+      ];
+    };
+
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
     };
@@ -134,6 +156,15 @@ in
       src = builtins.fetchurl {
         url = https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz;
         sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
+      };
+    });
+
+    ctypes = osuper.ctypes.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "ocamllabs";
+        repo = "ocaml-ctypes";
+        rev = "0.17.1";
+        sha256 = "16brmdnz7wi2z25qqhd5s5blyq4app6jbv6g9pa4vyg6h0nzbcys";
       };
     });
 
