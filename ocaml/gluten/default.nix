@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "gluten";
-      rev = "1f13b531a9628bd302e606ed134ee514f83ae15f";
-      sha256 = "1kvpxyc9g23hihpfrqwwpjkhyvddni6bmvchhcng7sl2czzwpn3n";
+      rev = "a45a0af6e4db3a711b97dd986b90404a00411060";
+      sha256 = "17bpz4dpkn6yxapx1x4vjkqjdmhpy3s4rnqnry2cc4zc3h2rksdp";
     };
   } // args);
   glutenPackages = rec {
