@@ -12,10 +12,11 @@ let
       sha256 = "17bpz4dpkn6yxapx1x4vjkqjdmhpy3s4rnqnry2cc4zc3h2rksdp";
     };
   } // args);
-  glutenPackages = rec {
+
+in rec {
     gluten = buildGluten {
       pname = "gluten";
-      propagatedBuildInputs = [ httpaf ];
+      propagatedBuildInputs = [ faraday ];
     };
 
     gluten-lwt = buildGluten {
@@ -31,12 +32,10 @@ let
         lwt_ssl
       ];
     };
-  };
-in
-  glutenPackages // (if (lib.versionOlder "4.08" ocamlVersion) then {
+  } // (if (lib.versionOlder "4.08" ocamlVersion) then {
     gluten-async = buildGluten {
       pname = "gluten-async";
-      propagatedBuildInputs = with glutenPackages; [
+      propagatedBuildInputs = [
         faraday-async
         gluten
       ];
@@ -44,7 +43,7 @@ in
 
     gluten-mirage = buildGluten {
       pname = "gluten-mirage";
-      propagatedBuildInputs = with glutenPackages; [
+      propagatedBuildInputs = [
         faraday-lwt
         gluten-lwt
         conduit-mirage

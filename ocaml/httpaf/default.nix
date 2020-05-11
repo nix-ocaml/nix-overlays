@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "httpaf";
-      rev = "d9b0aa9f5471f881be934f46046c42e20591b9a1";
-      sha256 = "0i2akwwpr2b519k41lwqb872yk5q59fkx95399b3i1sis7g716hv";
+      rev = "e2ba2ad95cb653032fd6533cc0e9eeb7020a9cbd";
+      sha256 = "1s6yphh2dijkjiw4p8i06cxm67ns6j0r6mhgijagf6bmgcb50bq5";
     };
   } // args);
 in rec {
@@ -34,6 +34,18 @@ in rec {
     ];
   };
 } // (if (lib.versionOlder "4.08" ocamlVersion) then {
+    httpaf-async = buildHttpaf {
+      pname = "httpaf-async";
+      doCheck = false;
+      propagatedBuildInputs = [
+        httpaf
+        async
+        gluten-async
+        faraday-async
+        async_ssl
+      ];
+    };
+
     httpaf-mirage = buildHttpaf {
       pname = "httpaf-mirage";
       doCheck = false;
