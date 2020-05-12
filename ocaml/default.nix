@@ -177,10 +177,6 @@ in
     });
 
     dns-client = osuper.dns-client.overrideAttrs (_: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/ocaml-dns/releases/download/v4.4.1/dns-v4.4.1.tbz;
-        sha256 = "18c09jf0kicv2xz40n367y774rg8qs07rr1vdk8bx8f7hnaa9cn8";
-      };
       postInstall = ''
         rm $OCAMLFIND_DESTDIR/dns-client/dune-package
       '';
