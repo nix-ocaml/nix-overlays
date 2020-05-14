@@ -4,12 +4,12 @@ with ocamlPackages;
 
 let
   buildH2 = args: buildDunePackage ({
-    version = "0.5.0";
+    version = "0.6.0";
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-h2";
-      rev = "e257868a494b772c8fd7dcf53c85dfaf4e2cc4b3";
-      sha256 = "1shqml7f4g02zaab3i638lr0fdmi6l1c4nifwxxmw7pfgwki3344";
+      rev = "9440e21f067623a5ee62b01676bc71f6d5ca599f";
+      sha256 = "1cj7dkhfd4h1pldl5nc0b04y4992acdd58fbhddnm9vhwpbzwszv";
     };
   } // args);
 in rec {
