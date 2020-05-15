@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "aws-lambda-ocaml-runtime";
-      rev = "c9972900746f0d1cd3b2d5e76550368509132b47";
-      sha256 = "0hba50kvfgsafvh1gll4sy3n5z93vqf3jllaps5vbvwmrqqh52qx";
+      rev = "1fe828601e0a7c3f2c97e5490f1b5db5bface553";
+      sha256 = "0r75h8fy045j0snrjiarnx045cwzj22p4z9j1skjsbkfvviw4p7s";
     };
   } // args);
 
