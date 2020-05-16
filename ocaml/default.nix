@@ -82,7 +82,7 @@ let
   };
 
   tlsPackages = callPackage ./tls {
-    ocamlPackages = oself;
+    inherit osuper oself;
   };
 
   websocketafPackages = callPackage ./websocketaf {
