@@ -45,6 +45,18 @@ in rec {
     ];
   };
 } // (if (lib.versionOlder "4.08" ocamlVersion) then {
+    h2-async = buildH2 {
+      pname = "h2-async";
+      doCheck = false;
+      propagatedBuildInputs = [
+        h2
+        async
+        gluten-async
+        faraday-async
+        async_ssl
+      ];
+    };
+
     h2-mirage = buildH2 {
       pname = "h2-mirage";
       doCheck = false;

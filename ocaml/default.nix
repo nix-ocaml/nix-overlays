@@ -87,6 +87,7 @@ let
 
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
   };
 
 in

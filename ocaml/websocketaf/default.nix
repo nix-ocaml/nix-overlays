@@ -1,4 +1,4 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
@@ -8,10 +8,11 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "websocketaf";
-      rev = "929ef16ecf686e88968f971ac84910cb12f9b219";
-      sha256 = "1lzk5gnbxxmp9sc2yvaq02av7kgw8i54vbdfywvjh0jwpz8jsj7d";
+      rev = "fb9926b6f653252e4ba5009bbb171a11c0e4e6fc";
+      sha256 = "1hsym4q9763ml6p96klmi9230pp2dgf4nhr9zgzd5kqh8dy86zbv";
     };
   } // args);
+
 in rec {
   websocketaf = buildWebsocketaf {
     pname = "websocketaf";
@@ -32,4 +33,27 @@ in rec {
       gluten-lwt-unix
     ];
   };
-}
+} // (if (lib.versionOlder "4.08" ocamlVersion) then {
+    websocketaf-async = buildWebsocketaf {
+      pname = "websocketaf-async";
+      doCheck = false;
+      propagatedBuildInputs = [
+        websocketaf
+        async
+        gluten-async
+        faraday-async
+        async_ssl
+        digestif
+      ];
+    };
+
+    websocketaf-mirage = buildWebsocketaf {
+      pname = "websocketaf-mirage";
+      doCheck = false;
+      propagatedBuildInputs = [
+        conduit-mirage
+        websocketaf-lwt
+        gluten-mirage
+      ];
+    };
+  } else {})
