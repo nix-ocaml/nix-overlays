@@ -3,13 +3,13 @@
 with ocamlPackages;
 
 let
-  buildGluten = args: buildDunePackage ({
-    version = "0.3.0-dev";
+  buildGluten = args: buildDunePackage (rec {
+    version = "0.2.1";
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "gluten";
-      rev = "a45a0af6e4db3a711b97dd986b90404a00411060";
-      sha256 = "17bpz4dpkn6yxapx1x4vjkqjdmhpy3s4rnqnry2cc4zc3h2rksdp";
+      rev = version;
+      sha256 = "1xm20hl55n1lngp9pf3ac4k6fjs7l6h23skmv19imnqjshg96iv5";
     };
   } // args);
 

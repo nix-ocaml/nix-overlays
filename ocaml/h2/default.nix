@@ -3,13 +3,13 @@
 with ocamlPackages;
 
 let
-  buildH2 = args: buildDunePackage ({
-    version = "0.6.0";
+  buildH2 = args: buildDunePackage (rec {
+    version = "0.6.1";
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-h2";
-      rev = "9440e21f067623a5ee62b01676bc71f6d5ca599f";
-      sha256 = "1cj7dkhfd4h1pldl5nc0b04y4992acdd58fbhddnm9vhwpbzwszv";
+      rev = version;
+      sha256 = "024jwy4scjsywil70nzq3c6j4xayp7i7mvscjxvkjracjgavgpin";
     };
   } // args);
 in rec {
