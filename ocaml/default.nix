@@ -187,6 +187,13 @@ in
 
     dune-release = callPackage ./dune-release { ocamlPackages = oself; };
 
+    eqaf = osuper.eqaf.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/eqaf/releases/download/v0.7/eqaf-v0.7.tbz;
+        sha256 = "1q09pwhs121vpficl2af1yzs4y7dd9bc1lcxbqyfc4x4m6p6drhh";
+      };
+    });
+
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";

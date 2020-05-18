@@ -3,26 +3,24 @@
 with oself;
 
 let
+  src = builtins.fetchurl {
+    url = "https://github.com/mirage/mirage-crypto/releases/download/v0.7.0/mirage-crypto-v0.7.0.tbz";
+    sha256 = "0k7kllv3bh192yj6p9dk2z81r56w7x2kyr46pxygb5gnhqqxcncf";
+  };
   overridePostInstall = pname: {
     postInstall = ''
       rm $OCAMLFIND_DESTDIR/${pname}/dune-package
     '';
   };
 in rec {
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: overridePostInstall "mirage-crypto");
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: { inherit src; } // overridePostInstall "mirage-crypto");
 
-  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (_: overridePostInstall "mirage-crypto-rng");
-
-  mirage-crypto-entropy =
-  let pname = "mirage-crypto-entropy";
+  mirage-crypto-rng =
+  let pname = "mirage-crypto-rng";
   in
   buildDunePackage (rec {
-    inherit pname;
-    version = "0.6.2";
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-crypto/releases/download/v${version}/mirage-crypto-v${version}.tbz";
-      sha256 = "08xq49cxn66yi0gfajzi8czcxfx24rd191rvf7s10wfkz304sa72";
-    };
+    inherit pname src;
+    version = "0.7.0";
     useDune2 = true;
 
     propagatedBuildInputs = [
@@ -30,7 +28,12 @@ in rec {
       mirage-runtime
       lwt4
       mirage-crypto
-      mirage-crypto-rng
+      dune-configurator
+      duration
+      logs
+      mtime
+      mirage-time
+      mirage-clock
     ];
   } // (overridePostInstall pname));
 
