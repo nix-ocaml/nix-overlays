@@ -299,11 +299,9 @@ in
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
     ppxlib = osuper.ppxlib.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "ocaml-ppx";
-        repo = "ppxlib";
-        rev = "2d92deb88e9501ed33897edb88a15be75d10f82d";
-        sha256 = "1xfnxm71fpx96sgjb1p8sgvlgaxrdra6kgcr631p8vf23llln8k7";
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.13.0/ppxlib-0.13.0.tbz;
+        sha256 = "1n9rxqf3i45xm723vvr1bh568ydqlbfv1m88c5zhw3jh139z7qc1";
       };
     });
 
