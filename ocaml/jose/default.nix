@@ -18,5 +18,6 @@ buildDunePackage {
     astring
     yojson
     zarith
+    result
   ];
 }
