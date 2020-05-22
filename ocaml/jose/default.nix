@@ -2,12 +2,12 @@
 
 with ocamlPackages;
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "jose";
-  version = "0.3.0";
+  version = "0.3.1";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/reason-jose/releases/download/v0.3.0/jose-v0.3.0.tbz;
-    sha256 = "16jsxrc08agzvpaqr7nblhcj2j1h16p1miwvc7z6zhxsdnzic1dg";
+    url = "https://github.com/ulrikstrid/reason-jose/releases/download/v${version}/${pname}-v${version}.tbz";
+    sha256 = "0zd4nnj715j0kr84sjxg6km1s7294zavqvzi3p7s6sybihq2ldg1";
   };
 
   propagatedBuildInputs = [

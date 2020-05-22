@@ -283,10 +283,10 @@ in
 
     postgresql = buildDunePackage rec {
       pname = "postgresql";
-      version = "4.5.2-dev";
+      version = "4.6.0";
       src = builtins.fetchurl {
-        url = "https://github.com/mmottl/${pname}-ocaml/archive/eb8db696ba5c7b44c704be2ec5d4ca56f27b65cf.tar.gz";
-        sha256 = "0gib9l4rhy4djxhl2v59nvd0zy6gljr91m2gn3h6hpnmylkgn1kf";
+        url = "https://github.com/mmottl/postgresql-ocaml/releases/download/${version}/${pname}-${version}.tbz";
+        sha256 = "1cb5cai59ck7qd2j7w5iss7whzsxan4czv06v5ywg4wybkknr6wy";
       };
       nativeBuildInputs = [ dune-configurator base stdio ];
       propagatedBuildInputs = [ postgresql ];
