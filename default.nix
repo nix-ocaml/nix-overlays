@@ -57,4 +57,11 @@ in
         sha256 = "0fc5bgv9syfcblp23y05kkfnpgh3gssz6vn24frs8dzw39algk2z";
       }) { inherit lib; }).gitignoreSource;
     };
+
+    cockroachdb = super.cockroachdb.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = "https://binaries.cockroachdb.com/cockroach-v20.1.0.src.tgz";
+        sha256 = "05gg7lfz6z0rj390l9cl8a53q455w2gzlwy8pib5vkqvd9spf06s";
+      };
+    });
   }
