@@ -3,11 +3,11 @@
 with ocamlPackages;
 
 let
-  buildMenhir = args: buildDunePackage ({
-    version = "20200211";
+  buildMenhir = args: buildDunePackage (rec {
+    version = "20200525";
     src = builtins.fetchurl {
-      url = https://gitlab.inria.fr/fpottier/menhir/repository/20200211/archive.tar.gz;
-      sha256 = "1mls0w2g0mbb1n0yg0f36qbm4xlcri57cdrjy0lhnspmzxmj52f8";
+      url = "https://gitlab.inria.fr/fpottier/menhir/repository/${version}/archive.tar.gz";
+      sha256 = "1ic1diyknf9y6alx8zl38h4x4b4hx1ypwn7jaffr5gxvf5w55nh0";
     };
 
     useDune2 = true;
