@@ -3,12 +3,12 @@
 with ocamlPackages;
 
 let buildArchi = args: buildDunePackage ({
-  version = "0.0.1-dev";
+  version = "0.1.1-dev";
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "archi";
-    rev = "b19e5bfa5fe25d753feb239a73400984a10e4c97";
-    sha256 = "1ad0jqycqi4a883maraj8jazq15560jhcia5rk9m11vw5p5wzcmr";
+    rev = "51908bf4e381835ed04f88f8706022fb6f7b6fe3";
+    sha256 = "0xvj8h9xa3gnkfijqdy16zgfi0m2v64pz489fy0rp45q1wy463v8";
   };
 
 } // args);
