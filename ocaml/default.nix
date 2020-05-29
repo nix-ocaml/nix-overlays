@@ -249,6 +249,15 @@ in
       ocamlPackages = oself;
     };
 
+    merlin-extend = osuper.merlin-extend.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "anmonteiro";
+        repo = "merlin-extend";
+        rev = "04f86e539d252a2c26bb1021d9d4349acc7eb031";
+        sha256 = "1bldss4n7n8rcl83z0fzinld2nmm4ywrkjh9nf36zqzz72yq0lmq";
+      };
+    });
+
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
       version = "3.0.1";
@@ -266,10 +275,10 @@ in
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
-      version = "1.6.0";
+      version = "1.7.3-dev";
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ocaml-migrate-parsetree/releases/download/v1.6.0/ocaml-migrate-parsetree-v1.6.0.tbz;
-        sha256 = "0gz39m4c4cbpza3sjfh4dfxlxf17r7bpqaxqq1zy2k0i4myqw0cv";
+        url = https://github.com/ocaml-ppx/ocaml-migrate-parsetree/archive/b59baa2634fb559446dfe1b60d6079c286191dc5.tar.gz;
+        sha256 = "1pnmljkghpk22hg51irny0x8jpfki8bqpwdy14if5xyliyz040bn";
       };
     });
 

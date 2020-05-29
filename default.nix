@@ -10,6 +10,7 @@ let
   oP_406 = overlayOcamlPackages "4_06";
   oP_409 = overlayOcamlPackages "4_09";
   oP_410 = overlayOcamlPackages "4_10";
+  oP_411 = overlayOcamlPackages "4_11";
 in
   {
     # OCaml related packages
@@ -31,7 +32,7 @@ in
     # - 4.09 is still used in some of my projects
     # - 4.10 is the latest stable version
     # - 4.06 is used by BuckleScript
-    ocaml-ng = super.ocaml-ng // oP_406 // oP_409 // oP_410;
+    ocaml-ng = super.ocaml-ng // oP_406 // oP_409 // oP_410 // oP_411;
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
@@ -45,7 +46,7 @@ in
       };
       in
       super.pkgsCross.musl64.pkgsStatic.appendOverlays
-        (lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" ]);
+        (lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" "4_11" ]);
 
     # Other packages
 
