@@ -13,14 +13,6 @@ let
   oP_411 = overlayOcamlPackages "4_11";
 in
   {
-    # OCaml related packages
-    ocamlformat = super.ocamlformat.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.13.0/ocamlformat-0.13.0-2.tbz";
-        sha256 = "0ki2flqi3xkhw9mfridivb6laxm7gml8rj9qz42vqmy9yx76jjxq";
-      };
-    });
-
     opaline = super.opaline.override {
       inherit (self) ocamlPackages;
     };

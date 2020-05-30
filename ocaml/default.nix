@@ -275,10 +275,10 @@ in
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
-      version = "1.7.3-dev";
+      version = "1.7.3";
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ocaml-migrate-parsetree/archive/b59baa2634fb559446dfe1b60d6079c286191dc5.tar.gz;
-        sha256 = "1pnmljkghpk22hg51irny0x8jpfki8bqpwdy14if5xyliyz040bn";
+        url = https://github.com/ocaml-ppx/ocaml-migrate-parsetree/archive/v1.7.3.tar.gz;
+        sha256 = "1x7i6zkfglvj935q45wgd7pk16g2dhqdlz781whrzslm5mj3f4i2";
       };
     });
 
