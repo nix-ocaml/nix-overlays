@@ -76,14 +76,13 @@ in [
           buildDunePackage = args:
             fixOcamlBuild (osuper.buildDunePackage args);
           result = fixOcamlBuild osuper.result;
-          zarith = (osuper.zarith.overrideAttrs (o: {
+          zarith = (osuper.zarith.overrideDerivation (o: {
             configurePlatforms = [ ];
             nativeBuildInputs = o.nativeBuildInputs ++ o.buildInputs;
-          })).overrideAttrs (o: {
             configureFlags = o.configureFlags ++ [
               "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
             ];
-          });
+          }));
           markup = fixOcamlBuild osuper.markup;
           ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
           ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
