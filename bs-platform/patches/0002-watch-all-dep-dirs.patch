@@ -1,0 +1,16 @@
+ bsb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bsb b/bsb
+index c77c7636e..c08426ad7 100755
+--- a/bsb
++++ b/bsb
+@@ -284,7 +284,7 @@ if (watch_mode) {
+             if (visited[pkg_dir]) continue
+             visited[pkg_dir] = true
+             var pkg_sourcedirs = path.join(pkg_dir, sourcedirs)
+-            var watch_files = getWatchFiles(pkg_sourcedirs)
++            var watch_files = { pkgs: [ pkg ], dirs: [ '.' ] }
+             var dirs = watch_files.dirs
+             for (var i = 0; i < dirs.length; i++) {
+                 var dir = path.join(pkg_dir, dirs[i])

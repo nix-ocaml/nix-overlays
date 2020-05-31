@@ -19,7 +19,20 @@ stdenv.mkDerivation rec {
   BS_TRAVIS_CI = "1";
   buildInputs = [ nodejs python3 gnutar ];
 
-  patchPhase =
+  patches = [
+    # This is https://github.com/BuckleScript/bucklescript/pull/4047 rebased
+    # against the current version of BuckleScript
+    ./patches/0001-watch-symlinked-dirs.patch
+
+    # This patch is sort of a hack to just watch all the dependent (linked)
+    # directories in a monorepo instead of looking for
+    # `node_modules/<package>/lib/bs/.sourcedirs.json`, which won't be present
+    # for dependencies in `node_modules` (BuckleScript only builds them at the
+    # top level).
+    ./patches/0002-watch-all-dep-dirs.patch
+  ];
+
+  postPatch =
     let
       ocaml-version = "4.06.1";
       ocaml = import ./ocaml.nix {
