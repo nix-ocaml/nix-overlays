@@ -4,10 +4,10 @@ with ocamlPackages;
 
 let
   buildCaqti = args: buildDunePackage (rec {
-    version = "1.2.2";
+    version = "1.2.3";
     src = builtins.fetchurl {
       url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v${version}/caqti-v${version}.tbz";
-      sha256 = "1g33gjk23hk915spgl18rljygmad700lii1ky06654svl4a3wzh9";
+      sha256 = "0wigib87x65zn257fd5p2yiq48n21iv0xykj68df3082v5h8piig";
     };
   } // args);
 in rec {
