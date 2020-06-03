@@ -6,6 +6,12 @@ oself: osuper:
 with oself;
 
 let
+ overridePostInstall = pname: {
+   postInstall = ''
+     rm $OCAMLFIND_DESTDIR/${pname}/dune-package
+   '';
+  };
+
   angstromPackages = callPackage ./angstrom {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -25,10 +31,6 @@ let
   };
 
   faradayPackages = callPackage ./faraday {
-    ocamlPackages = oself;
-  };
-
-  functoriaPackages = callPackage ./functoria {
     ocamlPackages = oself;
   };
 
@@ -69,14 +71,6 @@ let
       ocamlPackages = oself;
     };
 
-  miragePackages = callPackage ./mirage {
-    ocamlPackages = oself;
-  };
-
-  mirageCryptoPackages = callPackage ./mirage-crypto {
-    inherit osuper oself;
-  };
-
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -96,7 +90,6 @@ in
   caqti-packages //
   conduit-packages //
   faradayPackages //
-  functoriaPackages //
   graphqlPackages //
   glutenPackages //
   h2Packages //
@@ -104,8 +97,6 @@ in
   ipaddrPackages //
   lambda-runtime-packages //
   menhirPackages //
-  miragePackages //
-  mirageCryptoPackages //
   opamPackages //
   tlsPackages //
   websocketafPackages //
@@ -187,13 +178,6 @@ in
 
     dune-release = callPackage ./dune-release { ocamlPackages = oself; };
 
-    eqaf = osuper.eqaf.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/eqaf/releases/download/v0.7/eqaf-v0.7.tbz;
-        sha256 = "1q09pwhs121vpficl2af1yzs4y7dd9bc1lcxbqyfc4x4m6p6drhh";
-      };
-    });
-
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
@@ -257,6 +241,10 @@ in
         sha256 = "1bldss4n7n8rcl83z0fzinld2nmm4ywrkjh9nf36zqzz72yq0lmq";
       };
     });
+
+    mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: overridePostInstall "mirage-crypto");
+    mirage-crypto-pk = osuper.mirage-crypto-pk.overrideAttrs (_: overridePostInstall "mirage-crypto-pk");
+    mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (_: overridePostInstall "mirage-crypto-rng");
 
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
