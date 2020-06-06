@@ -5,32 +5,19 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "7.3.2";
+  version = "8.0.0-dev.1";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = version;
-    sha256 = "1nvp7wiiv149r4qf9bgc84bm4w7s44sjq9i7j103v24wllzz218s";
+    rev = "ac97c6700566822ab674785934778b6987ab39ae";
+    sha256 = "164vw4l4bdl1rbw8jhhr3s30w2nb522cngqp2wfpcj261h99lxa0";
     fetchSubmodules = true;
   };
 
   BS_RELEASE_BUILD = "true";
   BS_TRAVIS_CI = "1";
   buildInputs = [ nodejs python3 gnutar ];
-
-  patches = [
-    # This is https://github.com/BuckleScript/bucklescript/pull/4047 rebased
-    # against the current version of BuckleScript
-    ./patches/0001-watch-symlinked-dirs.patch
-
-    # This patch is sort of a hack to just watch all the dependent (linked)
-    # directories in a monorepo instead of looking for
-    # `node_modules/<package>/lib/bs/.sourcedirs.json`, which won't be present
-    # for dependencies in `node_modules` (BuckleScript only builds them at the
-    # top level).
-    ./patches/0002-watch-all-dep-dirs.patch
-  ];
 
   postPatch =
     let
@@ -65,5 +52,6 @@ stdenv.mkDerivation rec {
     ln -s $out/bsb $out/bin/bsb
     ln -s $out/bsc $out/bin/bsc
     ln -s ${reason}/bin/refmt $out/bin/bsrefmt
+    ln -s $out/${bin_folder}/* $out/bin
   '';
 }
