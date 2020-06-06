@@ -4,12 +4,12 @@ with ocamlPackages;
 
 let
   buildAngstrom = args: buildDunePackage (rec {
-    version = "0.14.0";
+    version = "0.14.1";
     src = fetchFromGitHub {
       owner = "inhabitedtype";
       repo = "angstrom";
       rev = version;
-      sha256 = "18lry0mz32ynxlpygm12ybs9h4rs8svwdhq8kv8x9cqw92sl4q32";
+      sha256 = "1l69y0qspgi7kgrphyh7718hjb2sml1a9lljkp65bkqmmmi6ybly";
     };
   } // args);
   angstromPackages = rec {
