@@ -4,6 +4,14 @@ self: super:
 
 let
   inherit (super) lib stdenv pkgs;
+  gitignoreNix = pkgs.fetchFromGitHub {
+    owner = "hercules-ci";
+    repo = "gitignore.nix";
+    rev = "00b237fb1813c48e20ee2021deb6f3f03843e9e4";
+    sha256 = "186pvp1y5fid8mm8c7ycjzwzhv7i6s3hh33rbi05ggrs7r3as3yy";
+  };
+  gitignoreSource = import gitignoreNix { inherit lib; };
+
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" = super.ocaml-ng."ocamlPackages_${version}".overrideScope' (pkgs.callPackage ./ocaml {});
   };
@@ -43,12 +51,7 @@ in
     # Other packages
 
     lib = super.lib // {
-      gitignoreSource = (import (pkgs.fetchFromGitHub {
-        owner = "hercules-ci";
-        repo = "gitignore.nix";
-        rev = "2ced4519f865341adcb143c5d668f955a2cb997f";
-        sha256 = "0fc5bgv9syfcblp23y05kkfnpgh3gssz6vn24frs8dzw39algk2z";
-      }) { inherit lib; }).gitignoreSource;
+      gitignoreSource = gitignoreSource.gitignoreSource;
     };
 
     cockroachdb = super.cockroachdb.overrideAttrs (o: {
