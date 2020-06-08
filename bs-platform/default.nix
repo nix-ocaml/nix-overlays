@@ -30,6 +30,14 @@ stdenv.mkDerivation rec {
       };
     in
     ''
+      # Don't build refmt, we have our own.
+      sed -i 's#build ../.{process.platform}/refmt$ext: cc $INCL/refmt_main3.mli $INCL/refmt_main3.ml##g' ./scripts/ninjaFactory.js
+      sed -i 's#    flags = $flags  -w -40-30 -no-alias-deps -I +compiler-libs ocamlcommon.cmxa##g' ./scripts/ninjaFactory.js
+
+      # But BuckleScript needs it to build
+      rm -rf ./${bin_folder}/refmt.exe
+      ln -s ${reason}/bin/refmt ./${bin_folder}/refmt.exe
+
       sed -i 's:./configure.py --bootstrap:python3 ./configure.py --bootstrap:' ./scripts/install.js
       mkdir -p ./native/${ocaml-version}/bin
       ln -sf ${ocaml}/bin/*  ./native/${ocaml-version}/bin
@@ -52,6 +60,8 @@ stdenv.mkDerivation rec {
     ln -s $out/bsb $out/bin/bsb
     ln -s $out/bsc $out/bin/bsc
     ln -s ${reason}/bin/refmt $out/bin/bsrefmt
+    rm -rf $out/${bin_folder}/refmt.exe
+    ln -s ${reason}/bin/refmt $out/${bin_folder}/refmt.exe
     ln -s $out/${bin_folder}/* $out/bin
   '';
 }
