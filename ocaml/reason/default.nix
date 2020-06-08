@@ -9,8 +9,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "reason";
-    rev = "db13e434133b90852e021f9b39caa521936b12b5";
-    sha256 = "0hnzxi8dz8n9s31hw1n01fg8dd1fz0n4v42prb40d0a3f3i4add7";
+    rev = "773dbcd0982ff7b775a567f3c7b754ad15c165b1";
+    sha256 = "0ackkavqjzs1b390mq122c1ks18rarmwhprb83byvxfg5xrbjnsp";
   };
 
   propagatedBuildInputs = [ menhir fix merlin-extend ocaml-migrate-parsetree ];
