@@ -4,10 +4,10 @@ with ocamlPackages;
 
 let
   buildMenhir = args: buildDunePackage (rec {
-    version = "20200525";
+    version = "20200612";
     src = builtins.fetchurl {
       url = "https://gitlab.inria.fr/fpottier/menhir/repository/${version}/archive.tar.gz";
-      sha256 = "1ic1diyknf9y6alx8zl38h4x4b4hx1ypwn7jaffr5gxvf5w55nh0";
+      sha256 = "0d67y61vjrgpcwlq51xnq9hb9ji115lh1wzhsik0lx0rgwjlzdpb";
     };
 
     useDune2 = true;
