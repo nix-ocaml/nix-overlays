@@ -5,13 +5,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "8.0.0-dev.1";
+  version = "8.0.0";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "ac97c6700566822ab674785934778b6987ab39ae";
-    sha256 = "164vw4l4bdl1rbw8jhhr3s30w2nb522cngqp2wfpcj261h99lxa0";
+    rev = "d549631effda362f6758f14d869b06ea05ab518b";
+    sha256 = "14wp376gmcjmwaznd0xkqcngpr8gd385x5a3f8x71vd3c836c7rf";
     fetchSubmodules = true;
   };
 
