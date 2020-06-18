@@ -6,12 +6,6 @@ oself: osuper:
 with oself;
 
 let
- overridePostInstall = pname: {
-   postInstall = ''
-     rm $OCAMLFIND_DESTDIR/${pname}/dune-package
-   '';
-  };
-
   angstromPackages = callPackage ./angstrom {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -75,6 +69,10 @@ let
       ocamlPackages = oself;
     };
 
+  mirageCryptoPackages = callPackage ./mirage-crypto {
+    inherit osuper;
+  };
+
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -101,6 +99,7 @@ in
   httpafPackages //
   ipaddrPackages //
   lambda-runtime-packages //
+  mirageCryptoPackages //
   menhirPackages //
   opamPackages //
   tlsPackages //
@@ -242,10 +241,6 @@ in
         sha256 = "1bldss4n7n8rcl83z0fzinld2nmm4ywrkjh9nf36zqzz72yq0lmq";
       };
     });
-
-    mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: overridePostInstall "mirage-crypto");
-    mirage-crypto-pk = osuper.mirage-crypto-pk.overrideAttrs (_: overridePostInstall "mirage-crypto-pk");
-    mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (_: overridePostInstall "mirage-crypto-rng");
 
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
