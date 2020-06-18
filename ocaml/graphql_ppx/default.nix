@@ -9,7 +9,7 @@ let
 
     src = fetchFromGitHub {
       owner = "reasonml-community";
-      repo = "graphql_ppx";
+      repo = "graphql-ppx";
       inherit rev sha256;
     };
 
@@ -35,8 +35,8 @@ in
     # Only works in BuckleScript
     graphql_ppx-1_x = buildGraphQLPPX (rec {
       version = "v1.0.0";
-      rev = "082fb4df8784e72c195c641b44058cb22ac4a94e";
-      sha256 = "1fv3w0syds2fnsxjmhr7al4yiv3zhnaz01pnimffvl1m2ahwlrns";
+      rev = "1c27b83f3f60360db6f8b85ed7a1d3ef3bb5773b";
+      sha256 = "0fxb40q5n0qzkp86g2dpk5nhh2bgsdr4y3aj0amm6vk5q7kyd1sr";
     });
   }
 
