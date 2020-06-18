@@ -35,8 +35,8 @@ in
     # Only works in BuckleScript
     graphql_ppx-1_x = buildGraphQLPPX (rec {
       version = "v1.0.0";
-      rev = "40813dc038f7b54d5e897964f4116d6708016153";
-      sha256 = "1ijzbbprhvlwqzpmw3f61pwwbjw64yyv4yvrzag70bxn82g79xfj";
+      rev = "082fb4df8784e72c195c641b44058cb22ac4a94e";
+      sha256 = "1fv3w0syds2fnsxjmhr7al4yiv3zhnaz01pnimffvl1m2ahwlrns";
     });
   }
 

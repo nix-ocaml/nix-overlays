@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     owner = "BuckleScript";
     repo = "bucklescript";
     rev = "d549631effda362f6758f14d869b06ea05ab518b";
-    sha256 = "14wp376gmcjmwaznd0xkqcngpr8gd385x5a3f8x71vd3c836c7rf";
+    sha256 = "0hc6bpk9wg2fngnls51y0gj3nn692902kh7hxhk3rj7w28lydk3k";
     fetchSubmodules = true;
   };
 
