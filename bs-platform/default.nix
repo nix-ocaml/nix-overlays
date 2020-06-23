@@ -19,6 +19,10 @@ stdenv.mkDerivation rec {
   BS_TRAVIS_CI = "1";
   buildInputs = [ nodejs python3 gnutar ];
 
+  patches = [
+    ./patches/0003-generators-in-dependencies.patch
+  ];
+
   postPatch =
     let
       ocaml-version = "4.06.1";
@@ -57,11 +61,11 @@ stdenv.mkDerivation rec {
     cp jscomp/others/*.ml jscomp/others/*.mli jscomp/others/*.cm* $out/lib/ocaml
     cp jscomp/stdlib-406/*.ml jscomp/stdlib-406/*.mli jscomp/stdlib-406/*.cm* $out/lib/ocaml
     cp bsconfig.json package.json $out
-    ln -s $out/bsb $out/bin/bsb
-    ln -s $out/bsc $out/bin/bsc
-    ln -s ${reason}/bin/refmt $out/bin/bsrefmt
+    ln -sfn $out/bsb $out/bin/bsb
+    ln -sfn $out/bsc $out/bin/bsc
+    ln -sfn ${reason}/bin/refmt $out/bin/bsrefmt
     rm -rf $out/${bin_folder}/refmt.exe
-    ln -s ${reason}/bin/refmt $out/${bin_folder}/refmt.exe
-    ln -s $out/${bin_folder}/* $out/bin
+    ln -sfn ${reason}/bin/refmt $out/${bin_folder}/refmt.exe
+    ln -sfn $out/${bin_folder}/* $out/bin
   '';
 }

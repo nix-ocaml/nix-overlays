@@ -1,0 +1,44 @@
+ jscomp/bsb/bsb_parse_sources.ml   | 2 +-
+ lib/4.06.1/bsb.ml                 | 2 +-
+ lib/4.06.1/unstable/bsb_native.ml | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/jscomp/bsb/bsb_parse_sources.ml b/jscomp/bsb/bsb_parse_sources.ml
+index bac9cb20e..35a12ba4b 100644
+--- a/jscomp/bsb/bsb_parse_sources.ml
++++ b/jscomp/bsb/bsb_parse_sources.ml
+@@ -270,7 +270,7 @@ let rec
+   if Set_string.mem cxt.ignored_dirs dir then Bsb_file_groups.empty
+   else 
+     let cur_globbed_dirs = ref false in 
+-    let has_generators = not (cxt.cut_generators || not cxt.toplevel) in          
++    let has_generators = not cxt.cut_generators in
+     let scanned_generators = extract_generators input in        
+     let sub_dirs_field = Map_string.find_opt input  Bsb_build_schemas.subdirs in 
+     let base_name_array = 
+diff --git a/lib/4.06.1/bsb.ml b/lib/4.06.1/bsb.ml
+index 6bbb47ab1..4c2721eca 100644
+--- a/lib/4.06.1/bsb.ml
++++ b/lib/4.06.1/bsb.ml
+@@ -10801,7 +10801,7 @@ let rec
+   if Set_string.mem cxt.ignored_dirs dir then Bsb_file_groups.empty
+   else 
+     let cur_globbed_dirs = ref false in 
+-    let has_generators = not (cxt.cut_generators || not cxt.toplevel) in          
++    let has_generators = not cxt.cut_generators in
+     let scanned_generators = extract_generators input in        
+     let sub_dirs_field = Map_string.find_opt input  Bsb_build_schemas.subdirs in 
+     let base_name_array = 
+diff --git a/lib/4.06.1/unstable/bsb_native.ml b/lib/4.06.1/unstable/bsb_native.ml
+index 88b69b57b..bec3fd744 100644
+--- a/lib/4.06.1/unstable/bsb_native.ml
++++ b/lib/4.06.1/unstable/bsb_native.ml
+@@ -10833,7 +10833,7 @@ let rec
+   if Set_string.mem cxt.ignored_dirs dir then Bsb_file_groups.empty
+   else 
+     let cur_globbed_dirs = ref false in 
+-    let has_generators = not (cxt.cut_generators || not cxt.toplevel) in          
++    let has_generators = not cxt.cut_generators in
+     let scanned_generators = extract_generators input in        
+     let sub_dirs_field = Map_string.find_opt input  Bsb_build_schemas.subdirs in 
+     let base_name_array = 
