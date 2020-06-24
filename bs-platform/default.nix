@@ -5,13 +5,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "8.0.0";
+  version = "8.0.1";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
-    rev = "d549631effda362f6758f14d869b06ea05ab518b";
-    sha256 = "0hc6bpk9wg2fngnls51y0gj3nn692902kh7hxhk3rj7w28lydk3k";
+    rev = version;
+    sha256 = "142znslzh6dqqnfx9ijhvs0wj37bs48lhrngzdg2243qbvfrdk4y";
     fetchSubmodules = true;
   };
 
@@ -34,6 +34,10 @@ stdenv.mkDerivation rec {
       };
     in
     ''
+      # Don't keep these things in the nix store
+      rm -rf ./darwin ./linux ./win32
+      mkdir ./${bin_folder}
+
       # Don't build refmt, we have our own.
       sed -i 's#build ../.{process.platform}/refmt$ext: cc $INCL/refmt_main3.mli $INCL/refmt_main3.ml##g' ./scripts/ninjaFactory.js
       sed -i 's#    flags = $flags  -w -40-30 -no-alias-deps -I +compiler-libs ocamlcommon.cmxa##g' ./scripts/ninjaFactory.js
@@ -54,7 +58,7 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p $out/bin
+    mkdir -p $out/bin $out/${bin_folder}
     cp -rf jscomp lib ${bin_folder} vendor odoc_gen native bsb bsc $out
     mkdir -p $out/lib/ocaml
     cp jscomp/runtime/js.* jscomp/runtime/*.cm* $out/lib/ocaml
