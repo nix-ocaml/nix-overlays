@@ -155,6 +155,8 @@ in
       };
     });
 
+    coin = callPackage ./coin { ocamlPackages = oself; };
+
     ctypes = osuper.ctypes.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "ocamllabs";
@@ -256,6 +258,8 @@ in
       ];
     };
 
+    multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
 
     ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
@@ -267,6 +271,8 @@ in
     });
 
     ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+
+    pecu = callPackage ./pecu { ocamlPackages = oself; };
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
@@ -305,6 +311,8 @@ in
     });
 
     reason = callPackage ./reason { ocamlPackages = oself; };
+
+    rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
     routes = callPackage ./routes { ocamlPackages = oself; };
 
@@ -354,6 +362,8 @@ in
       doCheck = false;
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
     });
+
+    uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
     vchan = buildDunePackage {
       pname = "vchan";
@@ -420,6 +430,8 @@ in
         sha256 = "141h1zbg7gfw0424fkq3n5jhsccrky9mmgz42qmnm51m2d87xss3";
       };
     });
+
+    yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 
     zed = callPackage ./zed {
       ocamlPackages = oself;
