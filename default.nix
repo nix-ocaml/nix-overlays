@@ -56,8 +56,8 @@ in
 
     cockroachdb = super.cockroachdb.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = "https://binaries.cockroachdb.com/cockroach-v20.1.1.src.tgz";
-        sha256 = "0lqmd3f7nn23wxcaav349vyr77bncd3c0d0xlf4bg0kmyj8fyphx";
+        url = "https://binaries.cockroachdb.com/cockroach-v20.1.3.src.tgz";
+        sha256 = "0bg60rcfn2d4awg5al8d5xvk8h7bab986qlbpl9bkv6zpw9wipfb";
       };
     });
   }
