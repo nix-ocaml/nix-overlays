@@ -20,7 +20,7 @@ in rec {
 
   faraday-lwt = buildFaraday {
     pname = "faraday-lwt";
-    propagatedBuildInputs = [ faraday lwt4 ];
+    propagatedBuildInputs = [ faraday lwt ];
   };
 
   faraday-lwt-unix = buildFaraday {

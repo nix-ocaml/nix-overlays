@@ -27,7 +27,7 @@ with oself;
       tls
       x509
       fmt
-      lwt4
+      lwt
       mirage-flow
       mirage-kv
       mirage-clock

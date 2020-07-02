@@ -20,7 +20,7 @@ in rec {
 
   httpaf-lwt = buildHttpaf {
     pname = "httpaf-lwt";
-    propagatedBuildInputs = [ httpaf gluten-lwt lwt4 ];
+    propagatedBuildInputs = [ httpaf gluten-lwt lwt ];
   };
 
   httpaf-lwt-unix = buildHttpaf {

@@ -29,6 +29,6 @@ in rec {
   graphql-lwt = buildGraphql {
     pname = "graphql-lwt";
     buildInputs = [ alcotest ];
-    propagatedBuildInputs = [ graphql lwt4 ];
+    propagatedBuildInputs = [ graphql lwt ];
   };
 }

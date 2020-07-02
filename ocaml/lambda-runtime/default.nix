@@ -16,7 +16,7 @@ let
 in rec {
   lambda-runtime = buildLambdaRuntime {
     pname = "lambda-runtime";
-    propagatedBuildInputs = [ yojson ppx_deriving_yojson piaf uri logs lwt4 ];
+    propagatedBuildInputs = [ yojson ppx_deriving_yojson piaf uri logs lwt ];
   };
 
   now = buildLambdaRuntime {
@@ -26,7 +26,7 @@ in rec {
       httpaf
       yojson
       ppx_deriving_yojson
-      lwt4
+      lwt
       base64
     ];
   };

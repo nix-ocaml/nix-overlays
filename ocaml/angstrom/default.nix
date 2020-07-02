@@ -27,7 +27,7 @@ let
       pname = "angstrom-lwt-unix";
       propagatedBuildInputs = [
         angstrom
-        lwt4
+        lwt
       ];
     };
   };

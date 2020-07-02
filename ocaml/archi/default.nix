@@ -23,7 +23,7 @@ let buildArchi = args: buildDunePackage ({
 
     archi-lwt = buildArchi {
       pname = "archi-lwt";
-      propagatedBuildInputs = [ archi lwt4 ];
+      propagatedBuildInputs = [ archi lwt ];
       doCheck = false;
     };
   };

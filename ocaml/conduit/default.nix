@@ -30,7 +30,7 @@ in rec {
       ppx_sexp_conv
       sexplib
       conduit
-      lwt4
+      lwt
     ];
   };
 
@@ -39,7 +39,7 @@ in rec {
     propagatedBuildInputs = [
       ppx_sexp_conv
       conduit-lwt
-      lwt4
+      lwt
       uri
       ipaddr
       ipaddr-sexp

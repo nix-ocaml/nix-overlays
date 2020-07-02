@@ -27,7 +27,7 @@ in rec {
     propagatedBuildInputs = [
       caqti
       logs
-      lwt4
+      lwt
     ];
   };
 

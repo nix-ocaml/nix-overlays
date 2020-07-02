@@ -32,7 +32,7 @@ in rec {
 
   h2-lwt = buildH2 {
     pname = "h2-lwt";
-    propagatedBuildInputs = [ gluten-lwt h2 lwt4 ];
+    propagatedBuildInputs = [ gluten-lwt h2 lwt ];
   };
 
   h2-lwt-unix = buildH2 {

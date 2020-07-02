@@ -208,7 +208,7 @@ in
       };
     });
 
-    lwt4 = osuper.lwt4.overrideAttrs (o: rec {
+    lwt = osuper.lwt.overrideAttrs (o: rec {
       version = "5.3.0";
 
       src = fetchzip {
@@ -252,7 +252,7 @@ in
         sha256 = "1n736sjvdd8rkbc2b5jm9sn0w6hvhjycma5328r0l03v24vk5cki";
       };
       propagatedBuildInputs = [
-        lwt4
+        lwt
         mirage-device
         fmt
       ];
@@ -373,7 +373,7 @@ in
         sha256 = "0bx55w0ydl4bdhm6z5v0qj2r59j4avzddhklbb1wx40qvg3adz63";
       };
       propagatedBuildInputs = [
-        lwt4
+        lwt
         cstruct
         ppx_sexp_conv
         ppx_cstruct
@@ -402,7 +402,7 @@ in
       propagatedBuildInputs = [
         cstruct
         ppx_cstruct
-        lwt4
+        lwt
       ];
     };
 
@@ -416,7 +416,7 @@ in
         sha256 = "14hjkbwvpnv7ffavqpipvalmrp7flrzms29vf609rgm75jqi29sa";
       };
       propagatedBuildInputs = [
-        lwt4
+        lwt
         xenstore
       ];
     });
