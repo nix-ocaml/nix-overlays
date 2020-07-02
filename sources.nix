@@ -3,8 +3,8 @@ args@{ overlays ? [ (import ./.) ], ... }:
 # `git ls-remote https://github.com/nixos/nixpkgs-channels nixos-unstable`
 
 import (builtins.fetchTarball {
-  name = "nixos-unstable-2020-06-24";
-  url = https://github.com/nixos/nixpkgs/archive/22a81aa5fc15b2d41b12f7160a71cd4a9f3c3fa1.tar.gz;
-  sha256 = "14gx5fsqibdn2cxp7gymfrz2vcnwiwwjnxqlnysczz8dqihnrpa7";
+  name = "nixos-unstable-2020-06-30";
+  url = https://github.com/nixos/nixpkgs/archive/b3251e04ee470c20f81e75d5a6080ba92dc7ed3f.tar.gz;
+  sha256 = "0hld390gb3q055sa7j1rzxl1hzaxgagc60vrqmkk8fnfpv813g75";
 }) (args // { inherit overlays; })
 
