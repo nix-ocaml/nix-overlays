@@ -8,9 +8,9 @@ buildDunePackage {
   version = "0.0.1-dev";
 
   src = fetchFromGitHub {
-    owner = "anmonteiro";
+    owner = "dinosaure";
     repo = "multipart_form";
-    rev = "4fca5b07b929a9dc20faae3c2a1a175f249c5648";
+    rev = "c53bc1ddad2784d3069bf82aaa4370d762a1a870";
     sha256 = "1y5rsbcjj0732qh4y1s6yn6bn0kwc7kiqnsxcljyhlmvd3241rq4";
   };
 
