@@ -1,4 +1,4 @@
-{ stdenv, reason, fetchFromGitHub, ninja, nodejs, python3, gnutar, ... }:
+{ stdenv, reason, fetchFromGitHub, nodejs, python3, gnutar, ... }:
 
 let
   bin_folder = if stdenv.isDarwin then "darwin" else "linux";
@@ -21,6 +21,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./patches/0003-generators-in-dependencies.patch
+    ./patches/0004-ninja-install.patch
   ];
 
   postPatch =
@@ -34,6 +35,7 @@ stdenv.mkDerivation rec {
       };
     in
     ''
+      cp ${./patches/0005-ninja-lexer.patch} ./ninja.patch
       # Don't keep these things in the nix store
       rm -rf ./darwin ./linux ./win32
       mkdir ./${bin_folder}
