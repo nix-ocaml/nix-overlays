@@ -19,6 +19,10 @@ let
     ocamlPackages = oself;
   };
 
+  dataloader-packages = callPackage ./dataloader {
+    ocamlPackages = oself;
+  };
+
   faradayPackages = callPackage ./faraday {
     ocamlPackages = oself;
   };
@@ -85,6 +89,7 @@ in
   archiPackages //
   caqti-packages //
   conduit-packages //
+  dataloader-packages //
   faradayPackages //
   graphqlPackages //
   graphql_ppx_packages //
