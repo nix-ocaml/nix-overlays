@@ -6,11 +6,6 @@ oself: osuper:
 with oself;
 
 let
-  angstromPackages = callPackage ./angstrom {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   archiPackages = callPackage ./archi {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -87,7 +82,6 @@ let
   };
 
 in
-  angstromPackages //
   archiPackages //
   caqti-packages //
   conduit-packages //
