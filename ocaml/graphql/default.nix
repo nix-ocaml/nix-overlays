@@ -6,10 +6,10 @@ let
   buildGraphql = args: buildDunePackage ({
     version = "0.13.0-dev";
     src = fetchFromGitHub {
-      owner = "andreas";
+      owner = "anmonteiro";
       repo = "ocaml-graphql-server";
-      rev = "940e86f9ff1a017be2ff64b3a35c71804d9a4729";
-      sha256 = "0syd7vwpsxfdfypzdqcmif2hlgi78qadqr4vrvf0zal4m03qz646";
+      rev = "9d3b18afb098b9c546c2eb6574bb45a660431a5e";
+      sha256 = "12nqyv119cvzfyhb70b72plgz0lsdvk3628jh2kvp8cx4qbvw3g4";
     };
   } // args);
 
