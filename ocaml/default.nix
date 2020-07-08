@@ -298,8 +298,8 @@ in
 
     ppxlib = osuper.ppxlib.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.13.0/ppxlib-0.13.0.tbz;
-        sha256 = "1n9rxqf3i45xm723vvr1bh568ydqlbfv1m88c5zhw3jh139z7qc1";
+        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.14.0/ppxlib-0.14.0.tbz;
+        sha256 = "0m1q1y3dbi65w0bf8gdcvks2dcb2k1iz93s6h3gdfw7nr3vri8x1";
       };
     });
 
