@@ -6,8 +6,9 @@ buildDunePackage rec {
   pname = "jose";
   version = "0.4.0";
   src = builtins.fetchurl {
-    url = "https://github.com/ulrikstrid/reason-jose/releases/download/v${version}/${pname}-v${version}.tbz";
-    sha256 = "06npkd2hqlpnz84d4ba7bi8i2f81k0pnzhgd5a1c7nsjn20blzah";
+    # WIP version, doesn't support AES256 fully
+    url = "https://github.com/ulrikstrid/reason-jose/archive/cc3b292daea1069de334879765d0c914a706f21d.tar.gz";
+    sha256 = "1hpykm0rxiy2q909v6jsdw352zkmmyflxis8m5kwpqzfa1w8kjz2";
   };
 
   propagatedBuildInputs = [

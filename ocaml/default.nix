@@ -207,25 +207,6 @@ in
       };
     });
 
-    lwt = osuper.lwt.overrideAttrs (o: rec {
-      version = "5.3.0";
-
-      src = fetchzip {
-        url = "https://github.com/ocsigen/${o.pname}/archive/${version}.tar.gz";
-        sha256 = "15hgy3220m2b8imipa514n7l65m1h5lc6l1hanqwwvs7ghh2aqp2";
-      };
-    });
-
-    lwt_ppx = osuper.lwt_ppx.overrideAttrs (o: {
-      pname = "lwt_ppx";
-      version = "1.2.4";
-
-      src = fetchzip {
-        url = "https://github.com/ocsigen/lwt/archive/4.4.0.tar.gz";
-        sha256 = "1l97zdcql7y13fhaq0m9n9xvxf712jg0w70r72fvv6j49xm4nlhi";
-      };
-    });
-
     magic-mime = callPackage ./magic-mime {
       ocamlPackages = oself;
     };
@@ -296,12 +277,12 @@ in
 
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-    ppxlib = osuper.ppxlib.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.14.0/ppxlib-0.14.0.tbz;
-        sha256 = "0m1q1y3dbi65w0bf8gdcvks2dcb2k1iz93s6h3gdfw7nr3vri8x1";
-      };
-    });
+    # ppxlib = osuper.ppxlib.overrideAttrs (o: {
+      # src = builtins.fetchurl {
+        # url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.14.0/ppxlib-0.14.0.tbz;
+        # sha256 = "0m1q1y3dbi65w0bf8gdcvks2dcb2k1iz93s6h3gdfw7nr3vri8x1";
+      # };
+    # });
 
     ptime = osuper.ptime.overrideAttrs (o: {
       buildInputs = lib.remove js_of_ocaml o.buildInputs;
