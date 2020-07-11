@@ -9,8 +9,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "roddyyaga";
     repo = "ppx_rapper";
-    rev = "1.2.0";
-    sha256 = "0bpkw8krcmmrxbc1rala29r5l1vf5i00ma5rlr1sz07frg70dbp3";
+    rev = "2.0.0";
+    sha256 = "07y9qyh2mdk5bmxjm2jacpb5a2q1pwnykjlpz3z630h0sahspwp5";
   };
 
   useDune2 = true;
