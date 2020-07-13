@@ -6,6 +6,10 @@ oself: osuper:
 with oself;
 
 let
+  alcotestPackages = callPackage ./alcotest {
+    ocamlPackages = oself;
+  };
+
   archiPackages = callPackage ./archi {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -86,6 +90,7 @@ let
   };
 
 in
+  alcotestPackages //
   archiPackages //
   caqti-packages //
   conduit-packages //
@@ -104,15 +109,6 @@ in
   tlsPackages //
   websocketafPackages //
   junitPackages // {
-    alcotest = osuper.alcotest.overrideAttrs (o: {
-      version = "1.0.1";
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/alcotest/releases/download/1.0.1/alcotest-1.0.1.tbz;
-        sha256 = "1xlklxb83gamqbg8j5dzm5jk4mvcwkspxajh93p6vpw9ia1li1qc";
-      };
-      propagatedBuildInputs = lib.remove result o.propagatedBuildInputs ++ [ re ];
-    });
-
     async_ssl = buildDunePackage rec {
       version = "0.13.0";
       pname = "async_ssl";
