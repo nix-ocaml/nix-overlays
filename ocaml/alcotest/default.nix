@@ -4,13 +4,13 @@ with ocamlPackages;
 
 let
   buildAlcotest = args: buildDunePackage (rec {
-    version = "1.2.0";
+    version = "1.2.1";
 
     useDune2 = true;
 
     src = builtins.fetchurl {
       url = "https://github.com/mirage/alcotest/releases/download/${version}/alcotest-mirage-${version}.tbz";
-      sha256 = "11xa9ncx7sxhby1apgl8qvinifwn40cqp5nxsq5k4qhk10v74ayq";
+      sha256 = "0v6cwdsisaw0qh5pygygzflxr084kwhcj4vk7l08b5ixn2mkgh2c";
     };
 
     postInstall = ''
