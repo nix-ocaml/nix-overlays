@@ -8,8 +8,8 @@ let
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-graphql-server";
-      rev = "9d3b18afb098b9c546c2eb6574bb45a660431a5e";
-      sha256 = "12nqyv119cvzfyhb70b72plgz0lsdvk3628jh2kvp8cx4qbvw3g4";
+      rev = "cab25bba231ac9debd19e2dddc7fd63c8cedfed2";
+      sha256 = "0386sg10lk6cxig2dk3r692y0pqdrddpxrzclknv1ssfrzs0jzfj";
     };
   } // args);
 
