@@ -193,16 +193,6 @@ in
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
-    lambdasoup = osuper.lambdasoup.overrideAttrs (o: rec {
-      version = "0.7.0";
-      src = fetchFromGitHub {
-        owner = "aantron";
-        repo = "lambdasoup";
-        rev = version;
-        sha256 = "0wivjg4z8w7yr9jlkklx387gs8qdf1wv8pf86mkc4p50735hzaqk";
-      };
-    });
-
     magic-mime = callPackage ./magic-mime {
       ocamlPackages = oself;
     };
