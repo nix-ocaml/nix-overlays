@@ -35,10 +35,6 @@ let
     ocamlPackages = oself;
   };
 
-  graphql_ppx_packages = callPackage ./graphql_ppx {
-    ocamlPackages = oself;
-  };
-
   glutenPackages = callPackage ./gluten {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -97,7 +93,6 @@ in
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
-  graphql_ppx_packages //
   glutenPackages //
   h2Packages //
   httpafPackages //
@@ -189,6 +184,10 @@ in
         sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
+    };
+
+    graphql_ppx = callPackage ./graphql_ppx {
+      ocamlPackages = oself;
     };
 
     jose = callPackage ./jose { ocamlPackages = oself; };
