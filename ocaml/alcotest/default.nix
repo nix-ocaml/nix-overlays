@@ -29,5 +29,10 @@ in
     propagatedBuildInputs = [ alcotest lwt logs ];
   };
 
+  alcotest-mirage = buildAlcotest {
+    pname = "alcotest-mirage";
+    propagatedBuildInputs = [ alcotest lwt logs mirage-clock duration ];
+  };
+
 }
 
