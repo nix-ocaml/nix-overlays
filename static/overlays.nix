@@ -97,16 +97,12 @@ in [
           # works because Dune 2 is backwards compatible, but it's not good that
           # pkgsStatic propagates all build inputs. See:
           # https://github.com/NixOS/nixpkgs/issues/83667
-          dune = (fixOcamlBuild osuper.dune_2).overrideAttrs (o: {
-            inherit (osuper.dune) installPhase;
-          });
-          dune_2 = fixOcamlBuild osuper.dune_2;
+          dune =  oself.dune_2;
           digestif = fixOcamlBuild osuper.digestif;
           astring = fixOcamlBuild osuper.astring;
           rresult = fixOcamlBuild osuper.rresult;
           fpath = fixOcamlBuild osuper.fpath;
           ocb-stubblr = fixOcamlBuild osuper.ocb-stubblr;
-          cppo = fixOcamlBuild osuper.cppo;
           ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
           ssl = fixOcamlBuild osuper.ssl;
           xmlm = fixOcamlBuild osuper.xmlm;

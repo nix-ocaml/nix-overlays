@@ -147,6 +147,15 @@ in
 
     coin = callPackage ./coin { ocamlPackages = oself; };
 
+    cppo = buildDunePackage rec {
+      pname = "cppo";
+      version = "1.6.6";
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-community/cppo/releases/download/v1.6.6/cppo-v1.6.6.tbz;
+        sha256 = "185q0x54id7pfc6rkbjscav8sjkrg78fz65rgfw7b4bqlyb2j9z7";
+      };
+    };
+
     ctypes = osuper.ctypes.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "ocamllabs";
@@ -192,6 +201,10 @@ in
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
+    lwt = osuper.lwt.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+
     magic-mime = callPackage ./magic-mime {
       ocamlPackages = oself;
     };
@@ -236,6 +249,8 @@ in
     });
 
     ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+
+    ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
     pecu = callPackage ./pecu { ocamlPackages = oself; };
 
@@ -290,7 +305,7 @@ in
         sha256 = "1pp9hig7kkzhr3n1rkc177mnahrijx6sbq59xjr8bnbfsmn1l2ay";
       };
 
-      nativeBuildInputs = [ dune pkgconfig ];
+      nativeBuildInputs = [ dune-configurator pkgconfig ];
       propagatedBuildInputs = [ openssl.dev ];
     });
 
