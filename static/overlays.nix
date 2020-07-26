@@ -21,7 +21,7 @@ let
       configurePlatforms = [];
       nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
       buildInputs = o.buildInputs ++ (o.nativeBuildInputs or [ ]);
-      propagatedNativeBuildInputs = o.propagatedBuildInputs or [ ];
+      propagatedNativeBuildInputs = (o.propagatedNativeBuildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
     });
 
 in [
@@ -97,7 +97,8 @@ in [
           # works because Dune 2 is backwards compatible, but it's not good that
           # pkgsStatic propagates all build inputs. See:
           # https://github.com/NixOS/nixpkgs/issues/83667
-          dune =  oself.dune_2;
+          dune = oself.dune_2;
+          dune_2 = fixOcamlBuild osuper.dune_2;
           digestif = fixOcamlBuild osuper.digestif;
           astring = fixOcamlBuild osuper.astring;
           rresult = fixOcamlBuild osuper.rresult;
