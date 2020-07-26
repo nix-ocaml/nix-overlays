@@ -12,7 +12,7 @@ let
     };
   } // args);
 
-in rec {
+in {
   junit = buildJunit {
     pname = "junit";
     propagatedBuildInputs = [ ptime tyxml ];

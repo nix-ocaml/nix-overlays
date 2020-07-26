@@ -12,7 +12,7 @@ let
       sha256 = "03zi7jbiqxrs56wp2j7s9nf3rbb3ry5yglfrs853w4d94g1a323c";
     };
   } // args);
-in rec {
+in {
   httpaf = buildHttpaf {
     pname = "httpaf";
     propagatedBuildInputs = [ angstrom faraday ];

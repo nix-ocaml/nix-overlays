@@ -13,13 +13,14 @@ let buildDataloader = args: buildDunePackage ({
   };
 } // args);
 in
-  rec {
+  {
     dataloader = buildDataloader {
       pname = "dataloader";
     };
+
     dataloader-lwt = buildDataloader {
       pname = "dataloader-lwt";
 
       propagatedBuildInputs = [ dataloader lwt ];
     };
-}
+  }

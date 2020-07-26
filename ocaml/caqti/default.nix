@@ -10,7 +10,7 @@ let
       sha256 = "1b1a627ig5wysbx8m78wpn721l6jxfwm558pm9mlbnar0dh4d504";
     };
   } // args);
-in rec {
+in {
   caqti = buildCaqti {
     pname = "caqti";
     nativeBuildInputs = [ cppo ];

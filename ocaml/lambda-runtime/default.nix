@@ -13,7 +13,7 @@ let
     };
   } // args);
 
-in rec {
+in {
   lambda-runtime = buildLambdaRuntime {
     pname = "lambda-runtime";
     propagatedBuildInputs = [ yojson ppx_deriving_yojson piaf uri logs lwt ];

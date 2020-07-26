@@ -25,7 +25,7 @@ let opam-lib = { pname, deps }: stdenv.mkDerivation rec {
       runHook postInstall
   '';
 };
-in rec {
+in {
   opam-core = opam-lib {
     pname= "opam-core";
     deps = [ ocamlgraph re cppo ];

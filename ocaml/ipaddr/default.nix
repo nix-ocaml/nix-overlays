@@ -10,7 +10,7 @@ let
       sha256 = "0agwb4dy5agwviz4l7gpv280g1wcgfl921k1ykfwq80b46fbyjkg";
     };
   } // args);
-in rec {
+in {
   macaddr = buildIpaddr {
     pname = "macaddr";
   };

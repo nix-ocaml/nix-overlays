@@ -13,7 +13,7 @@ let
     };
   } // args);
 
-in rec {
+in {
   graphql_parser = buildGraphql {
     pname = "graphql_parser";
     buildInputs = [ alcotest ];

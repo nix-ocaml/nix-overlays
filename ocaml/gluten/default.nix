@@ -13,7 +13,7 @@ let
     };
   } // args);
 
-in rec {
+in {
     gluten = buildGluten {
       pname = "gluten";
       propagatedBuildInputs = [ faraday ];

@@ -13,7 +13,7 @@ let
     };
   } // args);
 
-in rec {
+in {
   websocketaf = buildWebsocketaf {
     pname = "websocketaf";
     propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];

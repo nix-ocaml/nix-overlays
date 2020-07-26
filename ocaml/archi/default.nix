@@ -13,7 +13,7 @@ let buildArchi = args: buildDunePackage ({
 
 } // args);
 
-  archiPkgs = rec {
+  archiPkgs = {
     archi = buildArchi {
       pname = "archi";
       buildInputs = [ alcotest ];

@@ -12,7 +12,7 @@ let
       rev = "8d37f20";
       sha256 = "1g9k5lyg6qck375l29dsid0q24i8j6m0jhsxrf460w2gxm4xl754";
     }; } // args);
-in rec {
+in {
   faraday = buildFaraday {
     pname = "faraday";
     propagatedBuildInputs = [ bigstringaf ];

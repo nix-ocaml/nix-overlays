@@ -10,7 +10,7 @@ let
       sha256 = "0xvkah2x8ssiij5l9kzqc1wikga6j23kzgsp8xj7d3bz7zkkhr8j";
     };
   } // args);
-in rec {
+in {
   conduit = buildConduit {
     pname = "conduit";
     propagatedBuildInputs = [

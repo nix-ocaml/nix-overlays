@@ -12,7 +12,7 @@ let
       sha256 = "024jwy4scjsywil70nzq3c6j4xayp7i7mvscjxvkjracjgavgpin";
     };
   } // args);
-in rec {
+in {
   hpack = buildH2 {
     pname = "hpack";
     propagatedBuildInputs = [ angstrom faraday ];

@@ -17,7 +17,7 @@ let
     '';
   } // args);
 
-in rec {
+in {
   menhirSdk = buildMenhir {
     pname = "menhirSdk";
   };
