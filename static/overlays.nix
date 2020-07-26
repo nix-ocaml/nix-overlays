@@ -93,7 +93,11 @@ in [
           ounit = fixOcamlBuild osuper.ounit;
           bigstringaf = fixOcamlBuild osuper.bigstringaf;
           camlzip = fixOcamlBuild osuper.camlzip;
-          dune = fixOcamlBuild osuper.dune;
+          # In the static overlays, make `dune` effectively be Dune v2. This
+          # works because Dune 2 is backwards compatible, but it's not good that
+          # pkgsStatic propagates all build inputs. See:
+          # https://github.com/NixOS/nixpkgs/issues/83667
+          dune = fixOcamlBuild osuper.dune_2;
           dune_2 = fixOcamlBuild osuper.dune_2;
           digestif = fixOcamlBuild osuper.digestif;
           astring = fixOcamlBuild osuper.astring;
