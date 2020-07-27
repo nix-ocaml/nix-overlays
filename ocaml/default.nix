@@ -215,10 +215,6 @@ in
       ocamlPackages = oself;
     };
 
-    markup = callPackage ./markup {
-      ocamlPackages = oself;
-    };
-
     merlin-extend = osuper.merlin-extend.overrideAttrs (o: {
       src = fetchFromGitHub {
         owner = "anmonteiro";
