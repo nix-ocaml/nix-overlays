@@ -4,10 +4,10 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "jose";
-  version = "0.5.0";
+  version = "0.5.1";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/reason-jose/releases/download/v0.5.0/jose-v0.5.0.tbz;
-    sha256 = "03mr39rm6splhsyrlhp9rmzmh1b8nk3c8kf8n61ww389nc2866yf";
+    url = "https://github.com/ulrikstrid/reason-jose/releases/download/v${version}/jose-v${version}.tbz";
+    sha256 = "0kb0pn2zq8xc42rbg1f36cr63kr3csr7anijw01klr77w4x7bf2n";
   };
 
   propagatedBuildInputs = [

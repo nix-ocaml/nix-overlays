@@ -3,8 +3,8 @@
 let
   overrideMirageCrypto = pname: osuper."${pname}".overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/mirage-crypto/archive/9c13805b6c3ca121715d92705e5706d43cb63281.tar.gz;
-      sha256 = "1zyzmxg8iar4hxvmb5fyh75k10bla61rw5yhqqcx6j35fnj1yhpl";
+      url = https://github.com/mirage/mirage-crypto/releases/download/v0.8.3/mirage-crypto-v0.8.3.tbz;
+      sha256 = "08rmhjrk046nnhbdk16vg7w7ink4bj6yq9dsjcky5psn982aqiwi";
     };
     postInstall = ''
       rm $OCAMLFIND_DESTDIR/${pname}/dune-package
