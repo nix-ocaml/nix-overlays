@@ -1,5 +1,4 @@
-{ callPackage , postgresql , opaline , lib , fetchzip,
-  fetchFromGitHub , stdenv , pkgconfig , openssl }:
+{ callPackage, libpq, opaline, lib, fetchFromGitHub, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -54,6 +53,10 @@ let
     ocamlPackages = oself;
   };
 
+  janestreetPackages = callPackage ./janestreet {
+    ocamlPackages = oself;
+  };
+
   junitPackages = callPackage ./junit {
     ocamlPackages = oself;
   };
@@ -97,13 +100,14 @@ in
   h2Packages //
   httpafPackages //
   ipaddrPackages //
+  janestreetPackages //
+  junitPackages //
   lambda-runtime-packages //
   mirageCryptoPackages //
   menhirPackages //
   opamPackages //
   tlsPackages //
-  websocketafPackages //
-  junitPackages // {
+  websocketafPackages // {
     async_ssl = buildDunePackage rec {
       version = "0.13.0";
       pname = "async_ssl";
@@ -199,6 +203,8 @@ in
       ocamlPackages = oself;
     };
 
+    janeStreet = janestreetPackages;
+
     jose = callPackage ./jose { ocamlPackages = oself; };
 
     lwt = osuper.lwt.overrideAttrs (o: {
@@ -236,6 +242,8 @@ in
       ];
     };
 
+    mtime = osuper.mtime.override { jsooSupport = false; };
+
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
@@ -268,7 +276,7 @@ in
         sha256 = "1cb5cai59ck7qd2j7w5iss7whzsxan4czv06v5ywg4wybkknr6wy";
       };
       nativeBuildInputs = [ dune-configurator base stdio ];
-      propagatedBuildInputs = [ postgresql ];
+      propagatedBuildInputs = [ libpq ];
     };
 
     ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
@@ -284,11 +292,23 @@ in
       # };
     # });
 
-    ptime = osuper.ptime.overrideAttrs (o: {
-      buildInputs = lib.remove js_of_ocaml o.buildInputs;
+    ptime =
+      let
+        filterJSOO = p:
+          !(lib.hasAttr "pname" p && (p.pname == "js_of_ocaml"));
+      in
+      osuper.ptime.overrideAttrs (o: {
+        src = builtins.fetchurl {
+          url = https://github.com/dbuenzli/ptime/archive/e85b030c862715eb579b3b902c8eed3f9b985d72.tar.gz;
+          sha256 = "0qr6wall0yv1i581anhly46jp34p7q4v011rnr84p9yfj4r6kphp";
+        };
 
-      buildPhase = "${topkg.run} build --with-js_of_ocaml false";
-    });
+        buildInputs = lib.filter filterJSOO o.buildInputs;
+        propagatedBuildInputs = lib.filter filterJSOO o.propagatedBuildInputs;
+        propagatedNativeBuildInputs = lib.filter filterJSOO (o.propagatedNativeBuildInputs or []);
+
+        buildPhase = "${topkg.run} build --with-js_of_ocaml false";
+      });
 
     reason = callPackage ./reason { ocamlPackages = oself; };
 

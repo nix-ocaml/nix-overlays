@@ -13,8 +13,8 @@ buildDunePackage {
   '';
 
   src = builtins.fetchurl {
-    url = http://github.com/roddyyaga/pg_query-ocaml/archive/bae4c23d4a62f0b0559ed5a8552bf481574250de.tar.gz;
-    sha256 = "11vlpv924w8bq7mcimzgwchpfvn39ij6mpzmh2vnqyghmmayxb9z";
+    url = https://github.com/anmonteiro/pg_query-ocaml/archive/fe2228611f1824e54694d2c48ce4f118e5b40cb3.tar.gz;
+    sha256 = "0ma5wkhfsdvvshnk2q9kwwnjagkfls1xxpznpf69vljkxynhmpr1";
   };
 
   useDune2 = true;

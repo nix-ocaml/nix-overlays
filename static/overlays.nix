@@ -16,12 +16,13 @@ let
         "-target ${o.stdenv.targetPlatform.config}"
       ];
     });
-  fixOcamlBuild = b:
+  dds = x: x.overrideAttrs (o: { dontDisableStatic = true; });
+  fixOCamlPackage = b:
     b.overrideAttrs (o: {
       configurePlatforms = [];
-      nativeBuildInputs = o.buildInputs ++ (o.propagatedBuildInputs or []);
-      buildInputs = o.buildInputs ++ (o.nativeBuildInputs or [ ]);
-      propagatedNativeBuildInputs = (o.propagatedNativeBuildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
+      nativeBuildInputs = (o.nativeBuildInputs or []) ++ (o.buildInputs or []) ++ (o.propagatedBuildInputs or []);
+      buildInputs = (o.buildInputs or []) ++ (o.nativeBuildInputs or []);
+      # propagatedNativeBuildInputs = (o.propagatedNativeBuildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
     });
 
 in [
@@ -36,7 +37,7 @@ in [
     lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) pkgsNative)
 
   (self: super: {
-    opaline = fixOcamlBuild (super.opaline.override {
+    opaline = fixOCamlPackage (super.opaline.override {
       ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
     });
 
@@ -48,66 +49,54 @@ in [
       # shared = false;
       # splitStaticOutput = false;
     # };
+    gmp =
+      if super.stdenv.buildPlatform != super.stdenv.hostPlatform
+      then dds super.gmp
+      else super.gmp;
 
-    openssl = (super.openssl_1_1.override { static = true; }).overrideAttrs (o: {
-      stdenv = super.stdenv;
-      configureFlags =
-      # o.configureFlags ++ ["no-shared"];
-        (lib.remove "--enable-static"
-        (lib.remove "--disable-shared" o.configureFlags)) ++ [ "no-shared" ];
-    });
+    libpq =
+      if super.stdenv.buildPlatform != super.stdenv.hostPlatform
+      then dds super.libpq
+      else super.libpq;
 
-    libev = super.libev.overrideDerivation (o :
-    if o.stdenv.hostPlatform != o.stdenv.buildPlatform then {
-      configureFlags = [ "LDFLAGS=-static" ];
-    } else {});
+    libev =
+      if super.stdenv.hostPlatform != super.stdenv.buildPlatform
+      then (dds super.libev).overrideDerivation (o :{
+        configureFlags = [ "LDFLAGS=-static" ];
+      })
+      else super.libev;
+
+    openssl =
+      if super.stdenv.buildPlatform != super.stdenv.hostPlatform
+      then super.openssl_1_1.override { static = true; }
+      else super.openssl;
 
     ocaml-ng = super.ocaml-ng // {
       "ocamlPackages_${ocamlVersion}" =
-        (super.ocaml-ng."ocamlPackages_${ocamlVersion}".overrideScope'
+        ((super.ocaml-ng."ocamlPackages_${ocamlVersion}".overrideScope'
           # For convenience, add our own overlays to the static packages.
           # It's important that this happens before the next
           # `overrideScope'` call, as that will fix our packages for
           # cross-compilation
-          (super.callPackage ../ocaml {})).overrideScope' (oself: osuper: {
-          ocaml = fixOCamlCross osuper.ocaml;
-          findlib = fixOcamlBuild osuper.findlib;
-          ocamlbuild = fixOcamlBuild osuper.ocamlbuild;
-          buildDunePackage = args:
-            fixOcamlBuild (osuper.buildDunePackage args);
-          result = fixOcamlBuild osuper.result;
-          zarith = (osuper.zarith.overrideDerivation (o: {
-            configurePlatforms = [ ];
-            nativeBuildInputs = o.nativeBuildInputs ++ o.buildInputs;
-            configureFlags = o.configureFlags ++ [
-              "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
-            ];
-          }));
-          markup = fixOcamlBuild osuper.markup;
-          ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
-          ocamlgraph = fixOcamlBuild osuper.ocamlgraph;
-          easy-format = fixOcamlBuild osuper.easy-format;
-          qcheck = fixOcamlBuild osuper.qcheck;
-          stringext = fixOcamlBuild osuper.stringext;
-          opam-file-format = fixOcamlBuild osuper.opam-file-format;
-          ounit = fixOcamlBuild osuper.ounit;
-          bigstringaf = fixOcamlBuild osuper.bigstringaf;
-          camlzip = fixOcamlBuild osuper.camlzip;
-          # In the static overlays, make `dune` effectively be Dune v2. This
-          # works because Dune 2 is backwards compatible, but it's not good that
-          # pkgsStatic propagates all build inputs. See:
-          # https://github.com/NixOS/nixpkgs/issues/83667
-          dune = oself.dune_2;
-          dune_2 = fixOcamlBuild osuper.dune_2;
-          digestif = fixOcamlBuild osuper.digestif;
-          astring = fixOcamlBuild osuper.astring;
-          rresult = fixOcamlBuild osuper.rresult;
-          fpath = fixOcamlBuild osuper.fpath;
-          ocb-stubblr = fixOcamlBuild osuper.ocb-stubblr;
-          ocplib-endian = fixOcamlBuild osuper.ocplib-endian;
-          ssl = fixOcamlBuild osuper.ssl;
-          xmlm = fixOcamlBuild osuper.xmlm;
-        });
+          (super.callPackage ../ocaml {})).overrideScope' (oself: osuper:
+
+          lib.mapAttrs
+          (_: p: if p ? overrideAttrs then fixOCamlPackage p else p)
+          osuper)).overrideScope' (oself: osuper: {
+            ocaml = fixOCamlCross osuper.ocaml;
+
+            zarith = osuper.zarith.overrideDerivation (o: {
+              configureFlags = o.configureFlags ++ [
+                "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
+              ];
+            });
+            ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
+            # In the static overlays, make `dune` effectively be Dune v2.
+            # This works because Dune 2 is backwards compatible, but it's
+            # not good that pkgsStatic propagates all build inputs. See:
+            # https://github.com/NixOS/nixpkgs/issues/83667
+            dune = oself.dune_2;
+          });
     };
   })
 ]

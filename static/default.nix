@@ -22,5 +22,8 @@ let
 in
   import pkgsPath {
     crossSystem = lib.systems.examples.musl64;
-    overlays = (import ./overlays.nix { inherit pkgsNative lib fixOCaml ocamlVersion; });
+    overlays =
+      [ (import ../.) ] ++ (import ./overlays.nix {
+        inherit pkgsNative lib fixOCaml ocamlVersion;
+      });
   }

@@ -10,10 +10,13 @@ let
     rev = "00b237fb1813c48e20ee2021deb6f3f03843e9e4";
     sha256 = "186pvp1y5fid8mm8c7ycjzwzhv7i6s3hh33rbi05ggrs7r3as3yy";
   };
+
   gitignoreSource = import gitignoreNix { inherit lib; };
 
   overlayOcamlPackages = version: {
-    "ocamlPackages_${version}" = super.ocaml-ng."ocamlPackages_${version}".overrideScope' (pkgs.callPackage ./ocaml {});
+    "ocamlPackages_${version}" =
+        super.ocaml-ng."ocamlPackages_${version}".overrideScope'
+          (pkgs.callPackage ./ocaml {});
   };
   oP_406 = overlayOcamlPackages "4_06";
   oP_409 = overlayOcamlPackages "4_09";
@@ -21,6 +24,10 @@ let
   oP_411 = overlayOcamlPackages "4_11";
 in
   {
+    # Stripped down postgres without the `bin` part, to allow static linking
+    # with musl
+    libpq = super.postgresql.override { enableSystemd = false; };
+
     opaline = super.opaline.override {
       inherit (self) ocamlPackages;
     };
@@ -39,14 +46,14 @@ in
       reason = oP_406.ocamlPackages_4_06.reason;
     };
 
+
     pkgsCross.musl64.pkgsStatic =
-      let mkOverlay = ocamlVersion: import ./static/overlays.nix {
-        inherit lib ocamlVersion;
-        pkgsNative = pkgs;
-      };
-      in
       super.pkgsCross.musl64.pkgsStatic.appendOverlays
-        (lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" "4_11" ]);
+        (import ./static/overlays.nix {
+          inherit lib;
+          ocamlVersion = "4_10";
+          pkgsNative = self.pkgs;
+        });
 
     # Other packages
 
