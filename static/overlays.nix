@@ -16,6 +16,9 @@ let
         "-target ${o.stdenv.targetPlatform.config}"
       ];
     });
+  removeUnknownConfigureFlags = f: with lib;
+    remove "--disable-shared"
+    (remove "--enable-static" f);
   dds = x: x.overrideAttrs (o: { dontDisableStatic = true; });
   fixOCamlPackage = b:
     b.overrideAttrs (o: {
@@ -68,7 +71,9 @@ in [
 
     openssl =
       if super.stdenv.buildPlatform != super.stdenv.hostPlatform
-      then super.openssl_1_1.override { static = true; }
+      then (super.openssl_1_1.override { static = true; }).overrideAttrs (o: {
+        configureFlags = removeUnknownConfigureFlags o.configureFlags;
+      })
       else super.openssl;
 
     ocaml-ng = super.ocaml-ng // {
