@@ -207,6 +207,13 @@ in
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
+    ke = osuper.ke.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/ke/archive/3b912d13784992b67ddee1370c8a3e93a6df3c5a.tar.gz;
+        sha256 = "0rg4m26bpgjkq4mbyjid717smr4q41n74z2r3g2h9rr73h6k9383";
+      };
+    });
+
     lwt = osuper.lwt.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
