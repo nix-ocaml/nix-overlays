@@ -209,8 +209,8 @@ in
 
     ke = osuper.ke.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/mirage/ke/archive/3b912d13784992b67ddee1370c8a3e93a6df3c5a.tar.gz;
-        sha256 = "0rg4m26bpgjkq4mbyjid717smr4q41n74z2r3g2h9rr73h6k9383";
+        url = https://github.com/mirage/ke/archive/0b3d570f56c558766e8d53600e59ce65f3218556.tar.gz;
+        sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
       };
     });
 
