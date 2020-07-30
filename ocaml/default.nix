@@ -295,6 +295,23 @@ in
       # };
     # });
 
+    ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ppx_deriving/archive/e6cbddb82ea39ea56dbc541ed18c22f6bde596b7.tar.gz;
+        sha256 = "0cj8cpn3vc8bsd0vpl5s6xhk318vbvs7dkfy8rbaavwqq3mdkr8f";
+      };
+      buildInputs = o.buildInputs ++ [ cppo ];
+      propagatedBuildInputs = [ ppxlib result ppx_derivers ];
+    });
+
+    ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/d06711479564486554aa0834fe900ac27d55ccc4.tar.gz;
+        sha256 = "0gpzm4v2h0jxvnalacivwsq31kx9svbgg626d17076ll0mipywvd";
+      };
+      propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
+    });
+
     ptime =
       let
         filterJSOO = p:
@@ -348,6 +365,13 @@ in
       };
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
+
+    topkg = osuper.topkg.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/dbuenzli/topkg/archive/v1.0.2.tar.gz;
+        sha256 = "0qfp25s16yx9zhij7dwrr3qspsmw5k5v9f55lq5ii9djn3acyqj2";
+      };
+    });
 
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
