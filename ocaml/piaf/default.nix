@@ -9,8 +9,8 @@ ocamlPackages.buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "b7c761d3b29780b05f6157167d224a737db2fbe8";
-    sha256 = "0hkb93xrv64bqh1y3d1nb9cyylxh274rd4p9pj9ag0srm5nf985d";
+    rev = "76ea85ccd67e1acc6e5d0b07c22a86211c70679f";
+    sha256 = "01x1fp80i3v2iv652ccp84y5sbfzgih25b18wadj7fdmdk0iwbac";
   };
 
   propagatedBuildInputs = with ocamlPackages; [
