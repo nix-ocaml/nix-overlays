@@ -249,8 +249,6 @@ in
 
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
-    nocrypto = callPackage ./nocrypto { ocamlPackages = oself; };
-
     ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree.overrideAttrs (o: {
       version = "1.7.3";
       src = builtins.fetchurl {
