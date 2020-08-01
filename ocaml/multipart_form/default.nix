@@ -1,4 +1,4 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
@@ -7,11 +7,9 @@ buildDunePackage {
 
   version = "0.0.1-dev";
 
-  src = fetchFromGitHub {
-    owner = "dinosaure";
-    repo = "multipart_form";
-    rev = "c53bc1ddad2784d3069bf82aaa4370d762a1a870";
-    sha256 = "1y5rsbcjj0732qh4y1s6yn6bn0kwc7kiqnsxcljyhlmvd3241rq4";
+  src = builtins.fetchurl {
+    url = https://github.com/dinosaure/multipart_form/archive/c53bc1ddad2784d3069bf82aaa4370d762a1a870.tar.gz;
+    sha256 = "0xwl0rr5vigvsm40pc0ilx7av329b8xqw34srbpj2y6g1spjgs65";
   };
 
   propagatedBuildInputs = [

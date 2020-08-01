@@ -1,15 +1,13 @@
-{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
+{ lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
 let
   buildWebsocketaf = args: buildDunePackage ({
     version = "0.0.1-dev";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "websocketaf";
-      rev = "fb9926b6f653252e4ba5009bbb171a11c0e4e6fc";
-      sha256 = "1hsym4q9763ml6p96klmi9230pp2dgf4nhr9zgzd5kqh8dy86zbv";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/websocketaf/archive/fb9926b6f653252e4ba5009bbb171a11c0e4e6fc.tar.gz;
+      sha256 = "105cbpcdbsx11p63v3s2cld1sixhm5kjjj4g6k9jvi2gs2p808hg";
     };
   } // args);
 

@@ -1,15 +1,13 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
 let
   buildLambdaRuntime = args: buildDunePackage ({
     version = "0.1.0-dev";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "aws-lambda-ocaml-runtime";
-      rev = "1fe828601e0a7c3f2c97e5490f1b5db5bface553";
-      sha256 = "0r75h8fy045j0snrjiarnx045cwzj22p4z9j1skjsbkfvviw4p7s";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/aws-lambda-ocaml-runtime/archive/1fe828601e0a7c3f2c97e5490f1b5db5bface553.tar.gz;
+      sha256 = "03lxjcd7qx6v7dqjp6j83xzfn56vdhaxak8g6k3515lm87vx24vc";
     };
   } // args);
 

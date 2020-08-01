@@ -1,17 +1,15 @@
-{ opaline, fetchFromGitHub, stdenv, ocamlPackages }:
+{ opaline, stdenv, ocamlPackages }:
 
 with ocamlPackages;
 
 let opam-lib = { pname, deps }: stdenv.mkDerivation rec {
   name = pname;
-  version = "2.0.5";
+  version = "2.0.7";
   buildInputs = [ ocaml findlib dune ];
   propagatedBuildInputs = deps;
-  src = fetchFromGitHub {
-    owner  = "ocaml";
-    repo   = "opam";
-    rev    = "${version}";
-    sha256 = "0pf2smq2sdcxryq5i87hz3dv05pb3zasb1is3kxq1pi1s4cn55mx";
+  src = builtins.fetchurl {
+    url  = "https://github.com/ocaml/opam/archive/${version}.tar.gz";
+    sha256 = "15b5c8f5hnhx8s4gcxfy509vv4r15wv2z5ds1p2gsqfdhwr8zwa2";
   };
   configurePhase = ''
       ./configure --disable-checks

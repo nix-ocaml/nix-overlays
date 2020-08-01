@@ -1,15 +1,13 @@
-{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
+{ lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
 let
   buildH2 = args: buildDunePackage (rec {
     version = "0.6.1";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "ocaml-h2";
-      rev = "9f64b11f9f35c1d807b03a07def726b3a6779b9b";
-      sha256 = "13y9jind3wf1kr2dmx8s8wbzxr4v46l7dpc2gn5lbi892j7cawp5";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/ocaml-h2/archive/597729a6347ac96999087952fc8fefb57513a707.tar.gz;
+      sha256 = "1dkgy62yc86f166hf4hqzvi96y44wfja13x6wc8b6nk8n7bg6569";
     };
   } // args);
 in {

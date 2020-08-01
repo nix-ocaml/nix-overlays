@@ -1,15 +1,13 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
 let buildDataloader = args: buildDunePackage ({
   version = "0.0.1-dev";
 
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "ocaml-dataloader";
-    rev = "c2e6d7d057d4453b36511a5d293e9ab502755484";
-    sha256 = "0d1fx3zzgwl3hdr9kwlnb381d5b8zfc2v8vsvrzpqkwgb77c78kv";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/ocaml-dataloader/archive/c2e6d7d057d4453b36511a5d293e9ab502755484.tar.gz;
+    sha256 = "1w4wnwx854358wymdd26xkccyl3lql4j3k3lbr57bd7rv5xpplwq";
   };
 } // args);
 in

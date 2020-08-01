@@ -1,4 +1,4 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
@@ -6,11 +6,9 @@ let
   buildFaraday = args: buildDunePackage ({
     version = "0.12.0-dev";
 
-    src = fetchFromGitHub {
-      owner = "inhabitedtype";
-      repo = "faraday";
-      rev = "8d37f20";
-      sha256 = "1g9k5lyg6qck375l29dsid0q24i8j6m0jhsxrf460w2gxm4xl754";
+    src = builtins.fetchurl {
+      url = https://github.com/inhabitedtype/faraday/archive/89ee69331d116ee2962b055ac319cbec66241931.tar.gz;
+      sha256 = "1bv84hn806rc4jhg45fd1si1kxyc3gbyl05fyggc4pmyk66qyhm7";
     }; } // args);
 in {
   faraday = buildFaraday {

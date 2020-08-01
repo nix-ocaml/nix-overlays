@@ -1,4 +1,4 @@
-{ callPackage, libpq, opaline, lib, fetchFromGitHub, stdenv, pkgconfig, openssl }:
+{ callPackage, libpq, opaline, lib, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -112,11 +112,9 @@ in
       version = "0.13.0";
       pname = "async_ssl";
       useDune2 = true;
-      src = fetchFromGitHub {
-        owner = "janestreet";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "0z5dbiam5k7ipx9ph4r8nqv0a1ldx1ymxw3xjxgrdjda90lmwf2k";
+      src = builtins.fetchurl {
+        url = "https://github.com/janestreet/${pname}/archive/v${version}.tar.gz";
+        sha256 = "0lgjkjhm1x0s539syzxixdi941ahbldhvp6jn7ycz07iqwhg9b9n";
       };
       propagatedBuildInputs = [
         async
@@ -161,11 +159,9 @@ in
     };
 
     ctypes = osuper.ctypes.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "ocamllabs";
-        repo = "ocaml-ctypes";
-        rev = "0.17.1";
-        sha256 = "16brmdnz7wi2z25qqhd5s5blyq4app6jbv6g9pa4vyg6h0nzbcys";
+      src = builtins.fetchurl {
+        url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
+        sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
       };
     });
 
@@ -190,11 +186,9 @@ in
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
-      src = fetchFromGitHub {
-        owner = "hcarty";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "0x2i40n289k4gn2hn2hrmh6z9j570nbim368iddy54aqb97hj3ir";
+      src = builtins.fetchurl {
+        url = "https://github.com/hcarty/${pname}/archive/v${version}.tar.gz";
+        sha256 = "0zjss0hljpy3mxpi1ccdvicb4j0qg5dl6549i23smy1x07pr0nmr";
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
@@ -223,11 +217,9 @@ in
     };
 
     merlin-extend = osuper.merlin-extend.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "anmonteiro";
-        repo = "merlin-extend";
-        rev = "04f86e539d252a2c26bb1021d9d4349acc7eb031";
-        sha256 = "1bldss4n7n8rcl83z0fzinld2nmm4ywrkjh9nf36zqzz72yq0lmq";
+      src = builtins.fetchurl {
+        url = https://github.com/anmonteiro/merlin-extend/archive/04f86e539d252a2c26bb1021d9d4349acc7eb031.tar.gz;
+        sha256 = "02cyzc48gvbq433pjkp1z6k0hnknjsnhhm5x9mnpjrjl0j77g0f1";
       };
     });
 
@@ -336,11 +328,9 @@ in
 
     ssl = osuper.ssl.overrideAttrs (o: {
       version = "0.5.9-dev";
-      src = fetchFromGitHub {
-        owner = "savonet";
-        repo = "ocaml-ssl";
-        rev = "fbffa9b";
-        sha256 = "1pp9hig7kkzhr3n1rkc177mnahrijx6sbq59xjr8bnbfsmn1l2ay";
+      src = builtins.fetchurl {
+        url = https://github.com/savonet/ocaml-ssl/archive/fbffa9b.tar.gz;
+        sha256 = "1zf6i4z5aq45in430pagp8cz2q65jdhsdpsgpcdysjm4jlfsswr1";
       };
 
       nativeBuildInputs = [ dune-configurator pkgconfig ];
@@ -378,11 +368,9 @@ in
     });
 
     uri = osuper.uri.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "anmonteiro";
-        repo = "ocaml-uri";
-        rev = "8634a6923ac8a757d7ac7882aa80a3f8090732c6";
-        sha256 = "0qdlgmrsv47frr7zijrb5qjwdn419nay2rjw6i9jvdp0iwnhwpbk";
+      src = builtins.fetchurl {
+        url = https://github.com/anmonteiro/ocaml-uri/archive/8634a6923ac8a757d7ac7882aa80a3f8090732c6.tar.gz;
+        sha256 = "10gsahap5m081swkl2frdsh4jj7lirrpm5g4alcv60ihc1vwbyyd";
       };
       doCheck = false;
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
@@ -434,11 +422,9 @@ in
     xenstore_transport = buildDunePackage (rec {
       pname = "xenstore_transport";
       version = "1.1.0";
-      src = fetchFromGitHub {
-        owner = "xapi-project";
-        repo = "ocaml-xenstore-clients";
-        rev = "v${version}";
-        sha256 = "14hjkbwvpnv7ffavqpipvalmrp7flrzms29vf609rgm75jqi29sa";
+      src = builtins.fetchurl {
+        url = "https://github.com/xapi-project/ocaml-xenstore-clients/archive/v${version}.tar.gz";
+        sha256 = "1lggdxw1ai66irmnzn9rifz2ksbvngsfi2rc0xz4d8wph1y2yzlv";
       };
       propagatedBuildInputs = [
         lwt
@@ -448,11 +434,9 @@ in
 
     yaml = osuper.yaml.overrideAttrs (o: rec {
       version = "2.1.0";
-      src = fetchFromGitHub {
-        owner = "avsm";
-        repo = "ocaml-yaml";
-        rev = "v${version}";
-        sha256 = "141h1zbg7gfw0424fkq3n5jhsccrky9mmgz42qmnm51m2d87xss3";
+      src = builtins.fetchurl {
+        url = "https://github.com/avsm/ocaml-yaml/archive/v${version}.tar.gz";
+        sha256 = "1dnzlb8y568smzxwyx6iqpgih63nhgr997yqwpdy38d1014vwlqy";
       };
     });
 

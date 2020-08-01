@@ -1,15 +1,13 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
 let
   buildGraphql = args: buildDunePackage ({
     version = "0.13.0-dev";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "ocaml-graphql-server";
-      rev = "cab25bba231ac9debd19e2dddc7fd63c8cedfed2";
-      sha256 = "0386sg10lk6cxig2dk3r692y0pqdrddpxrzclknv1ssfrzs0jzfj";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/ocaml-graphql-server/archive/cab25bba231ac9debd19e2dddc7fd63c8cedfed2.tar.gz;
+      sha256 = "0inmc2r09rx9070bpnrrdllnncp1fcjhl765hy8pzz9zw36clyq5";
     };
   } // args);
 
