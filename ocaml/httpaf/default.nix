@@ -1,15 +1,13 @@
-{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
+{ lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
 let
   buildHttpaf = args: buildDunePackage ({
     version = "0.6.6-dev";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "httpaf";
-      rev = "19618b2158a9f8e64c6091b460db76a2144c1b49";
-      sha256 = "03zi7jbiqxrs56wp2j7s9nf3rbb3ry5yglfrs853w4d94g1a323c";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/httpaf/archive/dbeec79bf9922011162bd86b6aa1028cb6d4ffac.tar.gz;
+      sha256 = "1x47bfjzpwy5jqz8wm883smda5f8vv4qnwvi9kd8bxg147crsxjz";
     };
   } // args);
 in {
