@@ -1,15 +1,13 @@
-{ lib, fetchFromGitHub, ocamlPackages, ocamlVersion }:
+{ lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
 
 let
   buildGluten = args: buildDunePackage (rec {
     version = "0.2.1";
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "gluten";
-      rev = "4271bfccaba99be9fcb1f8794faa547db6491834";
-      sha256 = "0aai21p0xp810axan50h9ss84sv0xxl9fmc203hsrr3j1aygm5r9";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/gluten/archive/d3540d576f54aba1e41480aa89d4cdbad4167604.tar.gz;
+      sha256 = "1vlxh02gb0amsap8xp65m6zzn3hgp35w4xg0qiz369bxd6mndqz3";
     };
   } // args);
 
@@ -21,7 +19,7 @@ in {
 
     gluten-lwt = buildGluten {
       pname = "gluten-lwt";
-      propagatedBuildInputs = [ gluten lwt ];
+      propagatedBuildInputs = [ gluten lwt ke ];
     };
 
     gluten-lwt-unix = buildGluten {
