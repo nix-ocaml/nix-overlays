@@ -4,13 +4,11 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "graphql_ppx";
-  version = "1.0.0-beta.20";
+  version = "1.0.0-beta.21";
 
-  src = fetchFromGitHub {
-    owner = "reasonml-community";
-    repo = "graphql-ppx";
-    rev = "v${version}";
-    sha256 = "1qfm9dgd9ycc4asfv3grl0axr7ir9fxvncmd4jbx7mhii35igdfb";
+  src = builtins.fetchurl {
+    url = https://github.com/reasonml-community/graphql-ppx/archive/f394f010799baa00cf9d7054ded5d2ae5aacec76.tar.gz;
+    sha256 = "13njw9ghgb91fq3wchgyc19z8qpxrswi3bxhp10i42dcal79yc7g";
   };
 
   useDune2 = true;
