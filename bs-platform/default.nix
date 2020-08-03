@@ -5,13 +5,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "bs-platform";
-  version = "8.0.3";
+  version = "8.2.0";
 
   src = fetchFromGitHub {
     owner = "BuckleScript";
     repo = "bucklescript";
     rev = version;
-    sha256 = "15f86i7z9jdrzlh85m3fvayz04zdx8g26ysisj0vp20615ws252r";
+    sha256 = "1hql7sxps1k17zmwyha6idq6nw20abpq770l55ry722birclmsmf";
     fetchSubmodules = true;
   };
 
@@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
   patches = [
     ./patches/0003-generators-in-dependencies.patch
     ./patches/0004-ninja-install.patch
+    ./patches/0006-jscomp-release-ninja-fix.patch
   ];
 
   postPatch =
