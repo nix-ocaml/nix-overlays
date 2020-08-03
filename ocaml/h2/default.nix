@@ -6,8 +6,8 @@ let
   buildH2 = args: buildDunePackage (rec {
     version = "0.6.1";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/ocaml-h2/archive/597729a6347ac96999087952fc8fefb57513a707.tar.gz;
-      sha256 = "1dkgy62yc86f166hf4hqzvi96y44wfja13x6wc8b6nk8n7bg6569";
+      url = https://github.com/anmonteiro/ocaml-h2/archive/a96b0bc16aaf42d4dc907f7342610c863cc4f9b4.tar.gz;
+      sha256 = "0r04j19nm8i3jskqr0p0dn03ywa8i4l2dqmkym1cvib7xq7m56ww";
     };
   } // args);
 in {
