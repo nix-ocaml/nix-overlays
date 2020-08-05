@@ -454,6 +454,13 @@ in
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 
+    zarith = osuper.zarith.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/zarith/archive/a9a309d0596d93b6c0c902951e1cae13d661bebd.tar.gz;
+        sha256 = "067vr029idkljhndpk7c8gljmxbaszmav09y5k1j6xy67x5wb0sj";
+      };
+    });
+
     zed = callPackage ./zed {
       ocamlPackages = oself;
     };
