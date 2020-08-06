@@ -28,6 +28,13 @@ in
     # with musl
     libpq = super.postgresql.override { enableSystemd = false; };
 
+    ocamlformat = super.ocamlformat.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.15.0/ocamlformat-0.15.0.tbz;
+        sha256 = "0190vz59n6ma9ca1m3syl3mc8i1smj1m3d8x1jp21f710y4llfr6";
+      };
+    });
+
     opaline = super.opaline.override {
       inherit (self) ocamlPackages;
     };
