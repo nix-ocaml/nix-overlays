@@ -280,9 +280,16 @@ in
 
     # ppxlib = osuper.ppxlib.overrideAttrs (o: {
       # src = builtins.fetchurl {
-        # url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.14.0/ppxlib-0.14.0.tbz;
-        # sha256 = "0m1q1y3dbi65w0bf8gdcvks2dcb2k1iz93s6h3gdfw7nr3vri8x1";
+        # url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.15.0/ppxlib-0.15.0.tbz;
+        # sha256 = "0c5kjgyxhck5wlnhrsh77ylkbrq3rssqhwf2bjjrka3limzhsqqb";
       # };
+      # propagatedBuildInputs = [
+        # ocaml-compiler-libs
+        # ocaml-migrate-parsetree
+        # ppx_derivers
+        # sexplib0
+        # stdlib-shims
+      # ];
     # });
 
     ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
