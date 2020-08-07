@@ -79,6 +79,10 @@ let
     ocamlPackages = oself;
   };
 
+  reasonPackages = callPackage ./reason {
+    ocamlPackages = oself;
+  };
+
   tlsPackages = callPackage ./tls {
     inherit osuper oself;
   };
@@ -106,6 +110,7 @@ in
   mirageCryptoPackages //
   menhirPackages //
   opamPackages //
+  reasonPackages //
   tlsPackages //
   websocketafPackages // {
     async_ssl = buildDunePackage rec {
@@ -218,8 +223,8 @@ in
 
     merlin-extend = osuper.merlin-extend.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/anmonteiro/merlin-extend/archive/04f86e539d252a2c26bb1021d9d4349acc7eb031.tar.gz;
-        sha256 = "02cyzc48gvbq433pjkp1z6k0hnknjsnhhm5x9mnpjrjl0j77g0f1";
+        url = https://github.com/let-def/merlin-extend/releases/download/v0.6/merlin-extend-v0.6.tbz;
+        sha256 = "0hvc4mz92x3rl2dxwrhvhzwl4gilnyvvwcqgr45vmdpyjyp3dwn2";
       };
     });
 
@@ -326,8 +331,6 @@ in
 
         buildPhase = "${topkg.run} build --with-js_of_ocaml false";
       });
-
-    reason = callPackage ./reason { ocamlPackages = oself; };
 
     rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
