@@ -181,8 +181,6 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
-    dune-release = callPackage ./dune-release { ocamlPackages = oself; };
-
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
