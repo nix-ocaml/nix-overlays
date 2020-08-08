@@ -79,6 +79,8 @@ let
     ocamlPackages = oself;
   };
 
+  piafPackages = callPackage ./piaf { ocamlPackages = oself; };
+
   reasonPackages = callPackage ./reason {
     ocamlPackages = oself;
   };
@@ -110,6 +112,7 @@ in
   mirageCryptoPackages //
   menhirPackages //
   opamPackages //
+  piafPackages //
   reasonPackages //
   tlsPackages //
   websocketafPackages // {
@@ -262,8 +265,6 @@ in
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
-
-    piaf = callPackage ./piaf { ocamlPackages = oself; };
 
     postgresql = buildDunePackage rec {
       pname = "postgresql";
