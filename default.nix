@@ -11,7 +11,7 @@ let
     sha256 = "186pvp1y5fid8mm8c7ycjzwzhv7i6s3hh33rbi05ggrs7r3as3yy";
   };
 
-  gitignoreSource = import gitignoreNix { inherit lib; };
+  gitignoreSource = (import gitignoreNix { inherit lib; }).gitignoreSource;
 
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" =
@@ -64,8 +64,21 @@ in
 
     # Other packages
 
-    lib = super.lib // {
-      gitignoreSource = gitignoreSource.gitignoreSource;
+    lib = super.lib // rec {
+      inherit gitignoreSource;
+      filterSource = { src, dirs ? [], files ? [] }: (super.lib.cleanSourceWith rec {
+        inherit src;
+        # Good examples: https://github.com/NixOS/nixpkgs/blob/master/lib/sources.nix
+        filter = name: type:
+          let
+            path = toString name;
+            baseName = baseNameOf path;
+            relPath = lib.removePrefix (toString src + "/") path;
+          in
+            lib.any (dir: dir == relPath || (lib.hasPrefix "${dir}/" relPath)) dirs ||
+            (type == "regular" && (lib.any (file: file == baseName) files));
+      });
+      filterGitSource = args: gitignoreSource (filterSource args);
     };
 
     cockroachdb = super.cockroachdb.overrideAttrs (o: {
