@@ -172,12 +172,6 @@ in
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
-    digestif = osuper.digestif.overrideAttrs (o: {
-      # Don't run tests for digestif because it contains duplicate test names
-      # (Incompatible with alcotest v1)
-      doCheck = false;
-    });
-
     dns-client = osuper.dns-client.overrideAttrs (_: {
       postInstall = ''
         rm $OCAMLFIND_DESTDIR/dns-client/dune-package

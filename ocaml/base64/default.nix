@@ -7,7 +7,8 @@ buildDunePackage (rec {
   version = "3.3.0";
 
   nativeBuildInputs = [ dune-configurator ];
-  buildInputs = [ dune-configurator alcotest bos ];
+  buildInputs = [ dune-configurator bos ];
+  checkInputs =  [ alcotest ];
 
   doCheck = false;
   useDune2 = true;

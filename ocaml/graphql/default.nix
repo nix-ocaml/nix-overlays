@@ -14,19 +14,19 @@ let
 in {
   graphql_parser = buildGraphql {
     pname = "graphql_parser";
-    buildInputs = [ alcotest ];
+    checkInputs = [ alcotest ];
     propagatedBuildInputs = [ menhir fmt re ];
   };
 
   graphql = buildGraphql {
     pname = "graphql";
-    buildInputs = [ alcotest ];
+    checkInputs = [ alcotest ];
     propagatedBuildInputs = [ graphql_parser yojson rresult seq ];
   };
 
   graphql-lwt = buildGraphql {
     pname = "graphql-lwt";
-    buildInputs = [ alcotest ];
+    checkInputs = [ alcotest ];
     propagatedBuildInputs = [ graphql lwt ];
   };
 }

@@ -10,7 +10,7 @@ buildDunePackage {
     sha256 = "1r5p5jqv275mcq8qa402wl9k300iy5mv0lyiad9g5cwcs7yzvxac";
   };
 
-  buildInputs = [ alcotest ];
+  checkInputs = [ alcotest ];
 
   propagatedBuildInputs = [ re ];
 }

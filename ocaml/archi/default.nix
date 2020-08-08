@@ -14,7 +14,7 @@ let buildArchi = args: buildDunePackage ({
   archiPkgs = {
     archi = buildArchi {
       pname = "archi";
-      buildInputs = [ alcotest ];
+      checkInputs = [ alcotest ];
       propagatedBuildInputs = [ hmap ];
       doCheck = true;
     };
