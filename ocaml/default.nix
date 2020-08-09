@@ -364,6 +364,24 @@ in
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
 
+    tls-mirage = buildDunePackage {
+      pname = "tls-mirage";
+      version = osuper.tls.version;
+      src = osuper.tls.src;
+      propagatedBuildInputs = [
+        tls
+        x509
+        fmt
+        lwt
+        mirage-flow
+        mirage-kv
+        mirage-clock
+        ptime
+        mirage-crypto
+        mirage-crypto-pk
+      ];
+    };
+
     topkg = osuper.topkg.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://github.com/dbuenzli/topkg/archive/v1.0.2.tar.gz;
