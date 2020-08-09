@@ -23,7 +23,8 @@ in
   import pkgsPath {
     crossSystem = lib.systems.examples.musl64;
     overlays =
-      [ (import ../.) ] ++ (import ./overlays.nix {
+      [ (import ../.) ] ++
+      (import ./overlays.nix {
         inherit pkgsNative lib fixOCaml ocamlVersion;
       });
   }

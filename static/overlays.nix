@@ -67,8 +67,9 @@ in [
 
     libev =
       if super.stdenv.hostPlatform != super.stdenv.buildPlatform
-      then (dds super.libev).overrideDerivation (o :{
+      then super.libev.overrideDerivation (o :{
         configureFlags = [ "LDFLAGS=-static" ];
+        dontDisableStatic = true;
       })
       else super.libev;
 
