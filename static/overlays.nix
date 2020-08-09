@@ -1,5 +1,8 @@
 { pkgsNative, lib, fixOCaml ? null, ocamlVersion }:
 
+# An important note about these overlays: `pkgsStatic` propagates all build
+# inputs. See: https://github.com/NixOS/nixpkgs/issues/83667
+
 let
   # TODO: explain difference: shared vs no shared support
   fixOCamlCross = if fixOCaml != null then
@@ -96,11 +99,6 @@ in [
               ];
             });
             ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
-            # In the static overlays, make `dune` effectively be Dune v2.
-            # This works because Dune 2 is backwards compatible, but it's
-            # not good that pkgsStatic propagates all build inputs. See:
-            # https://github.com/NixOS/nixpkgs/issues/83667
-            dune = oself.dune_2;
           });
     };
   })

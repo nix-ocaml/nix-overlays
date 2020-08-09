@@ -12,8 +12,4 @@ buildDunePackage (rec {
   };
 
   useDune2 = true;
-
-  postInstall = ''
-    rm $OCAMLFIND_DESTDIR/${pname}/dune-package
-  '';
 })

@@ -85,10 +85,6 @@ let
     ocamlPackages = oself;
   };
 
-  tlsPackages = callPackage ./tls {
-    inherit osuper oself;
-  };
-
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -114,7 +110,6 @@ in
   opamPackages //
   piafPackages //
   reasonPackages //
-  tlsPackages //
   websocketafPackages // {
     async_ssl = buildDunePackage rec {
       version = "0.13.0";
@@ -175,13 +170,11 @@ in
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
-    dns-client = osuper.dns-client.overrideAttrs (_: {
-      postInstall = ''
-        rm $OCAMLFIND_DESTDIR/dns-client/dune-package
-      '';
-    });
-
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
+
+    # Make `dune` effectively be Dune v2.  This works because Dune 2 is
+    # backwards compatible.
+    dune = oself.dune_2;
 
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
@@ -314,6 +307,13 @@ in
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
 
+    ppx_blob = osuper.ppx_blob.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/johnwhitington/ppx_blob/releases/download/0.7.0/ppx_blob-0.7.0.tbz;
+        sha256 = "0r8wsdhjh6ricv85mr8f8a7fkcxzls6dxv6jymy8nykgjvvkb2mc";
+      };
+    });
+
     ptime =
       let
         filterJSOO = p:
@@ -408,12 +408,6 @@ in
         cmdliner
       ];
     };
-
-    x509 = osuper.x509.overrideAttrs (_: {
-      postInstall = ''
-        rm $OCAMLFIND_DESTDIR/x509/dune-package
-      '';
-    });
 
     xenstore = buildDunePackage {
       pname = "xenstore";

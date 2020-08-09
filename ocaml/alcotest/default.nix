@@ -12,10 +12,6 @@ let
       url = "https://github.com/mirage/alcotest/releases/download/${version}/alcotest-mirage-${version}.tbz";
       sha256 = "0v6cwdsisaw0qh5pygygzflxr084kwhcj4vk7l08b5ixn2mkgh2c";
     };
-
-    postInstall = ''
-      rm $OCAMLFIND_DESTDIR/${args.pname}/dune-package
-    '';
   } // args);
 in
 {
