@@ -6,8 +6,8 @@ let
   buildGluten = args: buildDunePackage (rec {
     version = "0.2.1";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/gluten/archive/7b2bbc5111f5a2b25150f9219af5481587b0f47c.tar.gz;
-      sha256 = "0dwnkaxhhi75wjxrnb55bl0hnjgh53wwr41im68d04rggni5zjrg";
+      url = https://github.com/anmonteiro/gluten/archive/a9b82e5c01f902ce971370592830733010add135.tar.gz;
+      sha256 = "0gfbhl0m2lcp0jfyzgvnrkix4csg17fawrmmilfmpihnsfz6413r";
     };
   } // args);
 
