@@ -7,7 +7,7 @@ let
     version = "0.7.0";
     src = builtins.fetchurl {
       url = "https://github.com/anmonteiro/ocaml-h2/releases/download/${version}/h2-${version}.tbz";
-      sha256 = "0pyzj6801nva86nc3bfgzq79jszylh2ihjc99dx56agbj21hlif9";
+      sha256 = "1g2y823bfaq7gy0cz5x5y8gd900lc8sq9pssqkgj6z94fnh378k3";
     };
   } // args);
 in {
