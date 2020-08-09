@@ -202,7 +202,7 @@ in
     });
 
     lwt = osuper.lwt.overrideAttrs (o: {
-      buildInputs = o.buildInputs ++ [ dune-configurator ];
+      buildInputs = o.buildInputs ++ [ dune-configurator ocaml-syntax-shims ];
     });
 
     magic-mime = callPackage ./magic-mime {
