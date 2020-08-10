@@ -6,8 +6,8 @@ let buildReasonPkg = args: buildDunePackage ({
   version = "3.6.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/facebook/reason/archive/315af8ebeb1e80f043738950f8c3bfcdc10adc40.tar.gz;
-    sha256 = "0rmh2r4087j56qlsxw0jn64iq519xy57ij9g350dv7wk6i9fziji";
+    url = https://github.com/facebook/reason/archive/932f1b641a729ea17fa5ae2597b046721f448cc2.tar.gz;
+    sha256 = "0rvfypiyxjr69i28x3ijgqn9mym65dfcdk4hgay699xw4q2l6jcb";
   };
 } // args);
 
