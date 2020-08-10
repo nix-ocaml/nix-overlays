@@ -174,7 +174,9 @@ in
 
     # Make `dune` effectively be Dune v2.  This works because Dune 2 is
     # backwards compatible.
-    dune = oself.dune_2;
+    dune = if lib.versionOlder "4.07" ocaml.version
+      then oself.dune_2
+      else osuper.dune;
 
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
@@ -248,6 +250,8 @@ in
         sha256 = "1x7i6zkfglvj935q45wgd7pk16g2dhqdlz781whrzslm5mj3f4i2";
       };
     });
+
+    ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
     ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
 

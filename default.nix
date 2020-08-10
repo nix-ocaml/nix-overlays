@@ -43,7 +43,7 @@ in
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
-      reason = oP_406.ocamlPackages_4_06.reason;
+      reason = self.ocaml-ng.ocamlPackages_4_06.reason;
     };
 
 
