@@ -10,7 +10,7 @@ let
   else
     ocaml: ocaml.overrideDerivation (o: {
       preConfigure = ''
-              configureFlagsArray+=("CC=$CC" "PARTIALLD=$LD -r" "ASPP=$CC -c" "AS=$AS" "LIBS=-static")
+        configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
       configureFlags = [
         "--enable-static"
@@ -32,8 +32,6 @@ let
     });
 
 in [
-  (self: super: { ocaml = fixOCamlCross super.ocaml; })
-
   # The OpenSSL override below would cause curl and its transitive closure
   # to be recompiled because of its use within the fetchers. So for now we
   # use the native fetchers.
@@ -43,6 +41,8 @@ in [
     lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) pkgsNative)
 
   (self: super: {
+    ocaml = self.ocaml-ng."ocamlPackages_${ocamlVersion}".ocaml;
+
     opaline = fixOCamlPackage (super.opaline.override {
       ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
     });
@@ -55,6 +55,7 @@ in [
       # shared = false;
       # splitStaticOutput = false;
     # };
+
     gmp =
       if super.stdenv.buildPlatform != super.stdenv.hostPlatform
       then dds super.gmp

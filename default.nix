@@ -48,12 +48,22 @@ in
 
 
     pkgsCross.musl64.pkgsStatic =
-      super.pkgsCross.musl64.pkgsStatic.appendOverlays
-        (import ./static/overlays.nix {
-          inherit lib;
-          ocamlVersion = "4_10";
-          pkgsNative = self.pkgs;
-        });
+      let mkOverlay = ocamlVersion: import ./static/overlays.nix {
+        inherit lib ocamlVersion;
+        pkgsNative = self.pkgs;
+      };
+      in
+       super.pkgsCross.musl64.pkgsStatic.appendOverlays
+       ((lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" "4_11" ]) ++ [
+         (self: super: {
+           ocaml = super.ocaml-ng.ocamlPackages_4_10.ocaml;
+           ocamlPackages = super.ocaml-ng.ocamlPackages_4_10;
+           ocamlPackages_latest = super.ocaml-ng.ocamlPackages_4_10;
+           opaline = super.opaline.override {
+             inherit (self) ocamlPackages;
+           };
+         })
+       ]);
 
     # Other packages
 
