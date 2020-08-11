@@ -251,7 +251,7 @@ in
       };
     });
 
-    ocaml = osuper.ocaml.override { flambdaSupport = true; };
+    ocaml = osuper.ocaml.override { flambdaSupport = !(lib.versionOlder "4.11" osuper.ocaml.version); };
 
     ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
 
