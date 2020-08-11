@@ -18,10 +18,11 @@ let
         super.ocaml-ng."ocamlPackages_${version}".overrideScope'
           (pkgs.callPackage ./ocaml {});
   };
-  oP_406 = overlayOcamlPackages "4_06";
-  oP_409 = overlayOcamlPackages "4_09";
-  oP_410 = overlayOcamlPackages "4_10";
-  oP_411 = overlayOcamlPackages "4_11";
+  ocamlVersions = ["4_06" "4_08" "4_09" "4_10" "4_11" ];
+  oPs =
+    lib.fold lib.mergeAttrs {}
+    (builtins.map (version: overlayOcamlPackages version) ocamlVersions);
+
 in
   {
     # Stripped down postgres without the `bin` part, to allow static linking
@@ -32,14 +33,14 @@ in
       inherit (self) ocamlPackages;
     };
 
-    ocamlPackages = oP_410.ocamlPackages_4_10;
+    ocamlPackages = oPs.ocamlPackages_4_10;
     ocamlPackages_latest = self.ocamlPackages;
 
     # 4.06, 4.09 and 4.10 treated specially out of convenience because:
     # - 4.09 is still used in some of my projects
     # - 4.10 is the latest stable version
     # - 4.06 is used by BuckleScript
-    ocaml-ng = super.ocaml-ng // oP_406 // oP_409 // oP_410 // oP_411;
+    ocaml-ng = super.ocaml-ng // oPs;
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
@@ -54,7 +55,7 @@ in
       };
       in
        super.pkgsCross.musl64.pkgsStatic.appendOverlays
-       ((lib.concatMap mkOverlay [ "4_08" "4_09" "4_10" "4_11" ]) ++ [
+       ((lib.concatMap mkOverlay ocamlVersions) ++ [
          (self: super: {
            ocaml = super.ocaml-ng.ocamlPackages_4_10.ocaml;
            ocamlPackages = super.ocaml-ng.ocamlPackages_4_10;
