@@ -251,7 +251,15 @@ in
       };
     });
 
-    ocaml = osuper.ocaml.override { flambdaSupport = !(lib.versionOlder "4.11" osuper.ocaml.version); };
+    ocaml = osuper.ocaml.override { flambdaSupport = true; };
+
+    uunf = osuper.uunf.overrideAttrs (o: {
+      # https://github.com/ocaml/ocaml/issues/9839
+      configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
+      ''
+        ulimit -s 9216
+      '';
+    });
 
     ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
 
