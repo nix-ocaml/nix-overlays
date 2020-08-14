@@ -178,6 +178,13 @@ in
       then oself.dune_2
       else osuper.dune;
 
+    dune_2 = osuper.dune_2.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/dune/releases/download/2.7.0/dune-2.7.0.tbz;
+        sha256 = "1xd76iksmj3lm2hmfyyxv8l3hvpnwwvjgmy89x7248xqsvyb0gli";
+      };
+    });
+
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";
@@ -195,6 +202,14 @@ in
     janeStreet = janestreetPackages;
 
     jose = callPackage ./jose { ocamlPackages = oself; };
+
+    js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhir ];
+      src = builtins.fetchurl {
+        url = https://github.com/ocsigen/js_of_ocaml/releases/download/3.7.0/js_of_ocaml-3.7.0.tbz;
+        sha256 = "0rw6cfkl3zlyav8q2w7grxxqjmg35mz5rgvmkiqb58nl4gmgzx6w";
+      };
+    });
 
     ke = osuper.ke.overrideAttrs (o: {
       src = builtins.fetchurl {
