@@ -288,10 +288,10 @@ in
 
     postgresql = buildDunePackage rec {
       pname = "postgresql";
-      version = "4.6.2";
+      version = "4.6.3";
       src = builtins.fetchurl {
         url = "https://github.com/mmottl/postgresql-ocaml/releases/download/${version}/${pname}-${version}.tbz";
-        sha256 = "02djirz9ia94kif8y68xfswdj9bp5zljiz6i8440dvf3px6niiab";
+        sha256 = "0ya1jl75w8dand9pj1a7sfb0nwi8ll15g5alpvfnn11vn60am01w";
       };
       nativeBuildInputs = [ dune-configurator ];
       propagatedBuildInputs = [ libpq ];
