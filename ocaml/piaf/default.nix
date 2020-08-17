@@ -3,8 +3,8 @@
 with ocamlPackages;
 
 let src = builtins.fetchurl {
-  url = https://github.com/anmonteiro/piaf/archive/76ea85ccd67e1acc6e5d0b07c22a86211c70679f.tar.gz;
-  sha256 = "161bgk38jrv3l29m7060dqxjk21jzj2z6qx6aqcbxxw4va9qnkpg";
+  url = https://github.com/anmonteiro/piaf/archive/eba8d7a007c276d8d34a88b1752e8e6c5eec1c9a.tar.gz;
+  sha256 = "17xagjbm3vxbsjkbpl3xzn40kxnb8mgmzv63sl3a8xpqixrlmz79";
 };
 
 in
