@@ -71,10 +71,6 @@ let
       ocamlPackages = oself;
     };
 
-  mirageCryptoPackages = callPackage ./mirage-crypto {
-    inherit osuper;
-  };
-
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -105,7 +101,6 @@ in
   janestreetPackages //
   junitPackages //
   lambda-runtime-packages //
-  mirageCryptoPackages //
   menhirPackages //
   opamPackages //
   piafPackages //
@@ -231,13 +226,6 @@ in
         url = https://github.com/ocaml/merlin/archive/v3.3.7-4.11-preview1.tar.gz;
         sha256 = "0lslnk2dnlx7z8z9cd4bg8wc56s2djzcn0s1zxb0xhl7m5vss7w6";
       } else o.src;
-    });
-
-    merlin-extend = osuper.merlin-extend.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/let-def/merlin-extend/releases/download/v0.6/merlin-extend-v0.6.tbz;
-        sha256 = "0hvc4mz92x3rl2dxwrhvhzwl4gilnyvvwcqgr45vmdpyjyp3dwn2";
-      };
     });
 
     mirage-kv = buildDunePackage {
