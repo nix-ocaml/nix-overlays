@@ -1,4 +1,6 @@
-{ stdenv, reason, fetchFromGitHub, nodejs, python3, gnutar, ... }:
+{ stdenv, ocamlPackages, fetchFromGitHub, nodejs, python3, gnutar, ... }:
+
+with ocamlPackages;
 
 let
   bin_folder = if stdenv.isDarwin then "darwin" else "linux";
@@ -26,15 +28,6 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch =
-    let
-      ocaml-version = "4.06.1";
-      ocaml = import ./ocaml.nix {
-        bs-version = version;
-        version = ocaml-version;
-        inherit stdenv;
-        src = "${src}/ocaml";
-      };
-    in
     ''
       cp ${./patches/0005-ninja-lexer.patch} ./ninja.patch
       # Don't keep these things in the nix store
