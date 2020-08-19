@@ -55,6 +55,13 @@ in
       ocamlPackages = self.ocamlPackages-bs;
     };
 
+    dune_2 =
+      if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.07"
+      then self.ocamlPackages.dune_2
+      else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
+      then self.ocaml-ng.ocamlPackages_4_10.dune_2
+      else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
+
     bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
       ocamlPackages = self.ocamlPackages-bs;
       dune_2 = pkgs.ocamlPackages.dune_2;
