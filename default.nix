@@ -33,6 +33,14 @@ in
       inherit (self) ocamlPackages;
     };
 
+    ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_06.overrideScope' (oself: osuper: {
+      ocaml = import ./bucklescript-experimental/ocaml.nix {
+        stdenv = super.stdenv;
+        src = "${self.bucklescript-experimental.src}/ocaml";
+        version = "4.06.1+BS";
+      };
+    });
+
     ocamlPackages = oPs.ocamlPackages_4_10;
     ocamlPackages_latest = self.ocamlPackages;
 
@@ -44,9 +52,13 @@ in
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
-      reason = self.ocaml-ng.ocamlPackages_4_06.reason;
+      ocamlPackages = self.ocamlPackages-bs;
     };
 
+    bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
+      ocamlPackages = self.ocamlPackages-bs;
+      dune_2 = pkgs.ocamlPackages.dune_2;
+    };
 
     pkgsCross.musl64.pkgsStatic =
       let mkOverlay = ocamlVersion: import ./static/overlays.nix {
