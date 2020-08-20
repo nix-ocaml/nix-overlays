@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "bucklescript";
-    rev = "3d632e9bf0c6db53248c62a8d402e189ab436187";
-    sha256 = "1npp5bz4lckwvld725xszh1qmm09c74kqyx042ymxk4r9wkw94rn";
+    rev = "47423eeb1034eb79379e8323d4defbd329ec857d";
+    sha256 = "17k3sp1iyd92r4kjyjsjvs0i2iqjq3xdvfpfwilk31hgjar6x5np";
     fetchSubmodules = true;
   };
 
