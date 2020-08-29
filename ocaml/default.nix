@@ -227,10 +227,10 @@ in
     };
 
     merlin = osuper.merlin.overrideAttrs (o: {
-      src = if (lib.versionOlder "4.11" osuper.ocaml.version) then builtins.fetchurl {
-        url = https://github.com/ocaml/merlin/archive/v3.3.7-4.11-preview1.tar.gz;
-        sha256 = "0lslnk2dnlx7z8z9cd4bg8wc56s2djzcn0s1zxb0xhl7m5vss7w6";
-      } else o.src;
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/merlin/archive/v3.3.8.tar.gz;
+        sha256 = "0hhyn9mxcxk0afqhqp734hcaigw5vgz1cbsrsqlkndrvg3cgvw9f";
+      };
     });
 
     mirage-kv = buildDunePackage {
