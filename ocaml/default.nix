@@ -233,6 +233,13 @@ in
       };
     });
 
+    mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/mirage-crypto/releases/download/v0.8.5/mirage-crypto-v0.8.5.tbz;
+        sha256 = "0l6q0z5ghhy0djfscb2i2xg4dpmxs4xkwh16kc473cmb4hsxsmyk";
+      };
+    });
+
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
       version = "3.0.1";
