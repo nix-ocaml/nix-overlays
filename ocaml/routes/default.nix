@@ -7,7 +7,7 @@ ocamlPackages.buildDunePackage rec {
   version = "0.8.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/routes/archive/0241c337649c2a6f9aa1f5fb05a1ae9a92262d56.tar.gz;
-    sha256 = "0y9dvn3wsb784h8304pr1ng0ajqcfl8zknvvr1lnbxvx1q7szjc7";
+    url = https://github.com/anmonteiro/routes/archive/770642fa00189f9bbf2846f9b1af517f3f7c3164.tar.gz;
+    sha256 = "147n99gqpa24732w93k33qh9mj6xh35rl36qr66hyy7223fhsis0";
   };
 }
