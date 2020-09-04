@@ -228,8 +228,8 @@ in
 
     merlin = osuper.merlin.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml/merlin/archive/v3.3.8.tar.gz;
-        sha256 = "0hhyn9mxcxk0afqhqp734hcaigw5vgz1cbsrsqlkndrvg3cgvw9f";
+        url = https://github.com/ocaml/merlin/archive/v3.3.9.tar.gz;
+        sha256 = "1g3w1i0x7c728a6nfmj7kj5z0p3p8n1rv80psnz6j801bdv0wi8r";
       };
     });
 
@@ -421,6 +421,8 @@ in
       nativeBuildInputs = [ocamlbuild ocaml findlib];
       buildInputs = [ocamlbuild ocaml findlib];
     });
+
+    unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
     uri = osuper.uri.overrideAttrs (o: {
       src = builtins.fetchurl {
