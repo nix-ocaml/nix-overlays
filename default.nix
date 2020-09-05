@@ -1,9 +1,9 @@
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
-self: super:
+final: prev:
 
 let
-  inherit (super) lib stdenv pkgs;
+  inherit (prev) lib stdenv pkgs;
   gitignoreNix = pkgs.fetchFromGitHub {
     owner = "hercules-ci";
     repo = "gitignore.nix";
@@ -15,7 +15,7 @@ let
 
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" =
-        super.ocaml-ng."ocamlPackages_${version}".overrideScope'
+        prev.ocaml-ng."ocamlPackages_${version}".overrideScope'
           (pkgs.callPackage ./ocaml {});
   };
   ocamlVersions = ["4_06" "4_08" "4_09" "4_10" "4_11" ];
@@ -27,69 +27,69 @@ in
   {
     # Stripped down postgres without the `bin` part, to allow static linking
     # with musl
-    libpq = super.postgresql.override { enableSystemd = false; };
+    libpq = prev.postgresql.override { enableSystemd = false; };
 
-    opaline = super.opaline.override {
-      inherit (self) ocamlPackages;
+    opaline = prev.opaline.override {
+      inherit (final) ocamlPackages;
     };
 
-    ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_06.overrideScope' (oself: osuper: {
+    ocamlPackages-bs = final.ocaml-ng.ocamlPackages_4_06.overrideScope' (ofinal: oprev: {
       ocaml = import ./bucklescript-experimental/ocaml.nix {
-        stdenv = super.stdenv;
-        src = "${self.bucklescript-experimental.src}/ocaml";
+        stdenv = prev.stdenv;
+        src = "${final.bucklescript-experimental.src}/ocaml";
         version = "4.06.1+BS";
       };
     });
 
     ocamlPackages = oPs.ocamlPackages_4_11;
-    ocamlPackages_latest = self.ocamlPackages;
+    ocamlPackages_latest = final.ocamlPackages;
 
     # 4.06, 4.09 and 4.10 treated specially out of convenience because:
     # - 4.09 is still used in some of my projects
     # - 4.10 is the latest stable version
     # - 4.06 is used by BuckleScript
-    ocaml-ng = super.ocaml-ng // oPs;
+    ocaml-ng = prev.ocaml-ng // oPs;
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
-      ocamlPackages = self.ocamlPackages-bs;
+      ocamlPackages = final.ocamlPackages-bs;
     };
 
     dune_2 =
-      if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.07"
-      then self.ocamlPackages.dune_2
-      else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
-      then self.ocaml-ng.ocamlPackages_4_11.dune_2
-      else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
+      if lib.versionAtLeast final.ocamlPackages.ocaml.version "4.07"
+      then final.ocamlPackages.dune_2
+      else if lib.versionAtLeast final.ocamlPackages.ocaml.version "4.02"
+      then final.ocaml-ng.ocamlPackages_4_11.dune_2
+      else throw "dune_2 is not available for OCaml ${final.ocamlPackages.ocaml.version}";
 
     bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
-      ocamlPackages = self.ocamlPackages-bs;
+      ocamlPackages = final.ocamlPackages-bs;
       dune_2 = pkgs.ocamlPackages.dune_2;
     };
 
     pkgsCross.musl64.pkgsStatic =
       let mkOverlay = ocamlVersion: import ./static/overlays.nix {
         inherit lib ocamlVersion;
-        pkgsNative = self.pkgs;
+        pkgsNative = final.pkgs;
       };
       in
-       super.pkgsCross.musl64.pkgsStatic.appendOverlays
+       prev.pkgsCross.musl64.pkgsStatic.appendOverlays
        ((lib.concatMap mkOverlay ocamlVersions) ++ [
-         (self: super: {
-           ocaml = super.ocaml-ng.ocamlPackages_4_11.ocaml;
-           ocamlPackages = super.ocaml-ng.ocamlPackages_4_11;
-           ocamlPackages_latest = super.ocaml-ng.ocamlPackages_4_11;
-           opaline = super.opaline.override {
-             inherit (self) ocamlPackages;
+         (final: prev: {
+           ocaml = prev.ocaml-ng.ocamlPackages_4_11.ocaml;
+           ocamlPackages = prev.ocaml-ng.ocamlPackages_4_11;
+           ocamlPackages_latest = prev.ocaml-ng.ocamlPackages_4_11;
+           opaline = prev.opaline.override {
+             inherit (final) ocamlPackages;
            };
          })
        ]);
 
     # Other packages
 
-    lib = super.lib // rec {
+    lib = prev.lib // rec {
       inherit gitignoreSource;
-      filterSource = { src, dirs ? [], files ? [] }: (super.lib.cleanSourceWith rec {
+      filterSource = { src, dirs ? [], files ? [] }: (prev.lib.cleanSourceWith rec {
         inherit src;
         # Good examples: https://github.com/NixOS/nixpkgs/blob/master/lib/sources.nix
         filter = name: type:
@@ -104,7 +104,7 @@ in
       filterGitSource = args: gitignoreSource (filterSource args);
     };
 
-    cockroachdb = super.cockroachdb.overrideAttrs (o: {
+    cockroachdb = prev.cockroachdb.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://binaries.cockroachdb.com/cockroach-v20.1.4.src.tgz;
         sha256 = "1m82m776axyf7b5f1lzlv5y7zslyhikfxjgagqy7ci5zwn8j4i0n";
