@@ -226,20 +226,6 @@ in
       ocamlPackages = oself;
     };
 
-    merlin = osuper.merlin.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml/merlin/archive/v3.3.9.tar.gz;
-        sha256 = "1g3w1i0x7c728a6nfmj7kj5z0p3p8n1rv80psnz6j801bdv0wi8r";
-      };
-    });
-
-    mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/mirage-crypto/releases/download/v0.8.5/mirage-crypto-v0.8.5.tbz;
-        sha256 = "0l6q0z5ghhy0djfscb2i2xg4dpmxs4xkwh16kc473cmb4hsxsmyk";
-      };
-    });
-
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
       version = "3.0.1";
