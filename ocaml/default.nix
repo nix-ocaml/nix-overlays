@@ -178,13 +178,6 @@ in
       then oself.dune_2
       else osuper.dune;
 
-    dune_2 = osuper.dune_2.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml/dune/releases/download/2.7.0/dune-2.7.0.tbz;
-        sha256 = "058wiyncczbmlfxj3cnwn5n68wkmbaf4mgjm2bkp2hffpn2wl5xl";
-      };
-    });
-
     ezgzip = buildDunePackage rec {
       pname = "ezgzip";
       version = "0.2.3";

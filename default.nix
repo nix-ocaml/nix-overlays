@@ -41,7 +41,7 @@ in
       };
     });
 
-    ocamlPackages = oPs.ocamlPackages_4_10;
+    ocamlPackages = oPs.ocamlPackages_4_11;
     ocamlPackages_latest = self.ocamlPackages;
 
     # 4.06, 4.09 and 4.10 treated specially out of convenience because:
@@ -59,7 +59,7 @@ in
       if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.07"
       then self.ocamlPackages.dune_2
       else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
-      then self.ocaml-ng.ocamlPackages_4_10.dune_2
+      then self.ocaml-ng.ocamlPackages_4_11.dune_2
       else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
 
     bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
@@ -76,9 +76,9 @@ in
        super.pkgsCross.musl64.pkgsStatic.appendOverlays
        ((lib.concatMap mkOverlay ocamlVersions) ++ [
          (self: super: {
-           ocaml = super.ocaml-ng.ocamlPackages_4_10.ocaml;
-           ocamlPackages = super.ocaml-ng.ocamlPackages_4_10;
-           ocamlPackages_latest = super.ocaml-ng.ocamlPackages_4_10;
+           ocaml = super.ocaml-ng.ocamlPackages_4_11.ocaml;
+           ocamlPackages = super.ocaml-ng.ocamlPackages_4_11;
+           ocamlPackages_latest = super.ocaml-ng.ocamlPackages_4_11;
            opaline = super.opaline.override {
              inherit (self) ocamlPackages;
            };
