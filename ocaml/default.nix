@@ -486,8 +486,8 @@ in
 
     zarith = osuper.zarith.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml/zarith/archive/a9a309d0596d93b6c0c902951e1cae13d661bebd.tar.gz;
-        sha256 = "067vr029idkljhndpk7c8gljmxbaszmav09y5k1j6xy67x5wb0sj";
+        url = https://github.com/ocaml/zarith/archive/54ecbebb1e50eadaecdd75225b60e111d1e533f9.tar.gz;
+        sha256 = "1kkzq2pm4k3qrns05xa5ywmbdhxn83p2zrwj71kqq2ngpvibbgyf";
       };
     });
 
