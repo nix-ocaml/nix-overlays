@@ -7,13 +7,13 @@ let
 in
 stdenv.mkDerivation rec {
   name = "bucklescript";
-  version = "8.2.0-dune";
+  version = "8.3.0-dune";
 
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "bucklescript";
-    rev = "3a19635b1620c8ddbbea3fadb5e4fae94ee53cc4";
-    sha256 = "1hfj4226p6v6dichqcv4dp48ypckym68hbnxnjins7gc8b2d9c7g";
+    rev = "de286f346";
+    sha256 = "00piz4smzrppg5bvbigpj347qhsl7ib46l9js64fcazhyihx5l7m";
     fetchSubmodules = true;
   };
 
