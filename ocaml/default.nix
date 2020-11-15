@@ -170,6 +170,8 @@ in
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
+    decimal = callPackage ./decimal { ocamlPackages = oself; };
+
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
     # Make `dune` effectively be Dune v2.  This works because Dune 2 is
