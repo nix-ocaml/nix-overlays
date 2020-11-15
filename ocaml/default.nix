@@ -388,13 +388,6 @@ in
       ];
     };
 
-    topkg = osuper.topkg.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/topkg/archive/v1.0.2.tar.gz;
-        sha256 = "0qfp25s16yx9zhij7dwrr3qspsmw5k5v9f55lq5ii9djn3acyqj2";
-      };
-    });
-
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
       nativeBuildInputs = [ocamlbuild ocaml findlib];
@@ -460,14 +453,6 @@ in
         lwt
         xenstore
       ];
-    });
-
-    yaml = osuper.yaml.overrideAttrs (o: rec {
-      version = "2.1.0";
-      src = builtins.fetchurl {
-        url = "https://github.com/avsm/ocaml-yaml/archive/v${version}.tar.gz";
-        sha256 = "1dnzlb8y568smzxwyx6iqpgih63nhgr997yqwpdy38d1014vwlqy";
-      };
     });
 
     yojson = buildDunePackage {
