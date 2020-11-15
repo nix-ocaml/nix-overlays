@@ -104,10 +104,5 @@ in
       filterGitSource = args: gitignoreSource (filterSource args);
     };
 
-    cockroachdb = super.cockroachdb.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://binaries.cockroachdb.com/cockroach-v20.1.4.src.tgz;
-        sha256 = "1m82m776axyf7b5f1lzlv5y7zslyhikfxjgagqy7ci5zwn8j4i0n";
-      };
-    });
+    cockroachdb = pkgs.callPackage ./cockroachdb {};
   }
