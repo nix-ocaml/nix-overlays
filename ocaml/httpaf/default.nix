@@ -6,8 +6,8 @@ let
   buildHttpaf = args: buildDunePackage ({
     version = "0.6.6-dev";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/httpaf/archive/5eb08d3f6dc2879e51e7ce7aa5682e20794a87ef.tar.gz;
-      sha256 = "1b1q0vlqh6y53kj9wvmj0j4b7jbxhn6xkpjw88a5j2a3sfsvlm1w";
+      url = https://github.com/anmonteiro/httpaf/archive/628bc70b44e3609e424a843cefdd37b6fd03836b.tar.gz;
+      sha256 = "17lyv3mzp59x2rwdr5sml2lfl7ba8aij73ddhrpjv8gjj1psfd9s";
     };
   } // args);
 in {
