@@ -18,7 +18,7 @@ let
         super.ocaml-ng."ocamlPackages_${version}".overrideScope'
           (pkgs.callPackage ./ocaml {});
   };
-  ocamlVersions = ["4_06" "4_08" "4_09" "4_10" "4_11" ];
+  ocamlVersions = ["4_06" "4_08" "4_09" "4_10" "4_11" "4_12"];
   oPs =
     lib.fold lib.mergeAttrs {}
     (builtins.map (version: overlayOcamlPackages version) ocamlVersions);

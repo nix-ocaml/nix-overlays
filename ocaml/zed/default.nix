@@ -4,10 +4,10 @@ with ocamlPackages;
 
 buildDunePackage {
   pname = "zed";
-  version = "2.0.5";
+  version = "3.1.0";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-community/zed/releases/download/2.0.5/zed-2.0.5.tbz;
-    sha256 = "0yjifjy0dyk3893kvj5dd0qpdpa4gii6n2dwr1lfbcl94f00p85k";
+    url = https://github.com/ocaml-community/zed/archive/3.1.0.tar.gz;
+    sha256 = "1z95fs49hi00xy078a83m0vfdqwjb5953rwr15lfpirldi4v11y3";
   };
 
   propagatedBuildInputs = [ camomile react charInfo_width ];
