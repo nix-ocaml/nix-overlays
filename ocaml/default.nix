@@ -111,6 +111,13 @@ in
   piafPackages //
   reasonPackages //
   websocketafPackages // {
+    astring = osuper.astring.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://erratique.ch/software/astring/releases/astring-0.8.5.tbz;
+        sha256 = "1ykhg9gd3iy7zsgyiy2p9b1wkpqg9irw5pvcqs3sphq71iir4ml6";
+      };
+    });
+
     async_ssl = buildDunePackage rec {
       version = "0.13.0";
       pname = "async_ssl";

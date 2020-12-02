@@ -4,10 +4,10 @@ with ocamlPackages;
 
 let
   buildHttpaf = args: buildDunePackage ({
-    version = "0.6.6-dev";
+    version = "0.7.0-dev";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/httpaf/archive/628bc70b44e3609e424a843cefdd37b6fd03836b.tar.gz;
-      sha256 = "17lyv3mzp59x2rwdr5sml2lfl7ba8aij73ddhrpjv8gjj1psfd9s";
+      url = https://github.com/anmonteiro/httpaf/archive/71ee236a72c1efa2115963f8fcf2ef4f01dc3fd5.tar.gz;
+      sha256 = "0nzz961psbfylzb80m0rik9p5819cmk4lkf9q1fbm49l4bras1s3";
     };
   } // args);
 in {
