@@ -111,13 +111,6 @@ in
   piafPackages //
   reasonPackages //
   websocketafPackages // {
-    astring = osuper.astring.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://erratique.ch/software/astring/releases/astring-0.8.5.tbz;
-        sha256 = "1ykhg9gd3iy7zsgyiy2p9b1wkpqg9irw5pvcqs3sphq71iir4ml6";
-      };
-    });
-
     async_ssl = buildDunePackage rec {
       version = "0.13.0";
       pname = "async_ssl";
@@ -448,15 +441,6 @@ in
         url = https://github.com/ocaml-community/utop/archive/e31656e72559c94bec144434f9d68e3ae801b14e.tar.gz;
         sha256 = "19b3wmai0rrqbnbcsx0ay1639j5g6d8qam9hpj4k15gmgw95bpij";
       };
-    });
-
-    uri = osuper.uri.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/anmonteiro/ocaml-uri/archive/8634a6923ac8a757d7ac7882aa80a3f8090732c6.tar.gz;
-        sha256 = "10gsahap5m081swkl2frdsh4jj7lirrpm5g4alcv60ihc1vwbyyd";
-      };
-      doCheck = false;
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ angstrom ];
     });
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
