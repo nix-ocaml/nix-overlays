@@ -1,9 +1,5 @@
-{ stdenv, fetchurl
-, cmake, xz, which, autoconf
-, ncurses6, libedit, libunwind
-, installShellFiles, lib
-, removeReferencesTo, go, govers
-}:
+{ stdenv, cmake, xz, which, autoconf , ncurses6, libedit, libunwind,
+  installShellFiles, removeReferencesTo, go, govers }:
 
 let
   darwinDeps = [ libunwind libedit ];
@@ -15,13 +11,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "cockroach";
-  version = "20.2.0";
+  version = "20.2.3";
 
   goPackagePath = "github.com/cockroachdb/cockroach";
 
-  src = fetchurl {
+  src = builtins.fetchurl {
     url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-    sha256 = "0g3bx1fmw1yqchqmnrw58550qfdzmc837hvg4z0ldbmxzcxwaiqw";
+    sha256 = "1m45h3adk9a6095dvnzgx0a2n2xiw3wxrs3qync3cnsz9hfx9rki";
   };
 
   NIX_CFLAGS_COMPILE = stdenv.lib.optionals stdenv.cc.isGNU [ "-Wno-error=deprecated-copy" "-Wno-error=redundant-move" "-Wno-error=pessimizing-move" ];
