@@ -53,10 +53,6 @@ let
     ocamlPackages = oself;
   };
 
-  janestreetPackages = callPackage ./janestreet {
-    ocamlPackages = oself;
-  };
-
   junitPackages = callPackage ./junit {
     ocamlPackages = oself;
   };
@@ -102,7 +98,6 @@ in
   h2Packages //
   httpafPackages //
   ipaddrPackages //
-  janestreetPackages //
   junitPackages //
   kafka-packages //
   lambda-runtime-packages //
@@ -111,26 +106,6 @@ in
   piafPackages //
   reasonPackages //
   websocketafPackages // {
-    async_ssl = buildDunePackage rec {
-      version = "0.13.0";
-      pname = "async_ssl";
-      useDune2 = true;
-      src = builtins.fetchurl {
-        url = "https://github.com/janestreet/${pname}/archive/v${version}.tar.gz";
-        sha256 = "0lgjkjhm1x0s539syzxixdi941ahbldhvp6jn7ycz07iqwhg9b9n";
-      };
-      propagatedBuildInputs = [
-        async
-        base
-        core
-        ppx_jane
-        stdio
-        openssl.dev
-        ctypes
-        dune-configurator
-      ];
-    };
-
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
     };
@@ -194,8 +169,6 @@ in
       ocamlPackages = oself;
     };
 
-    janeStreet = janestreetPackages;
-
     jose = callPackage ./jose { ocamlPackages = oself; };
 
     js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
@@ -223,8 +196,8 @@ in
 
     lwt = osuper.lwt.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocsigen/lwt/archive/c6c43d7a29527a079a6487ad3962c396ae0ddef6.tar.gz;
-        sha256 = "0pqdd7ngxjsb7h87wd8g5fydnxzhhk4czj4fhd4hwk9s7glvd1zb";
+        url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
+        sha256 = "00wbx1gr38b8pivv1blrzkrwq9qqqq0hbsvkdndcrzyh83q5ypwc";
       };
       buildInputs = o.buildInputs ++ [ dune-configurator ocaml-syntax-shims ];
     });
@@ -312,19 +285,25 @@ in
 
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-    # ppxlib = osuper.ppxlib.overrideAttrs (o: {
-      # src = builtins.fetchurl {
-        # url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.16.0/ppxlib-0.16.0.tbz;
-        # sha256 = "1maydiydnx0357v4qw7npyph0fq26kqcl3yk5kgif3xq0ribidx2";
-      # };
-      # propagatedBuildInputs = [
-        # ocaml-compiler-libs
-        # ocaml-migrate-parsetree
-        # ppx_derivers
-        # sexplib0
-        # stdlib-shims
-      # ];
-    # });
+    ppxlib = osuper.ppxlib.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.20.0/ppxlib-0.20.0.tbz;
+        sha256 = "0dxd5inxv12rx9kikl21y384m7cpylyvbjslw69rrpjpy8z91d8w";
+      };
+      propagatedBuildInputs = [
+        # XXX(anmonteiro): this propagates `base` and `stdio` even though
+        # ppxlib doesn't depend on them. Many JaneStreet PPXes do, however, and
+        # unfortunately they're hard to override without copying everything
+        # over (see https://github.com/NixOS/nixpkgs/issues/75485).
+        base
+        stdio
+        ocaml-compiler-libs
+        ocaml-migrate-parsetree-2-1
+        ppx_derivers
+        sexplib0
+        stdlib-shims
+      ];
+    });
 
     ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
       src = builtins.fetchurl {

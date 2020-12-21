@@ -48,7 +48,19 @@ in
     # - 4.09 is still used in some of my projects
     # - 4.10 is the latest stable version
     # - 4.06 is used by BuckleScript
-    ocaml-ng = super.ocaml-ng // oPs;
+    ocaml-ng = super.ocaml-ng // oPs // {
+      ocamlPackages = self.ocamlPackages;
+    };
+
+    ocamlformat = super.ocamlformat.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.16.0/ocamlformat-0.16.0.tbz;
+        sha256 = "1vwjvvwha0ljc014v8jp8snki5zsqxlwd7x0dl0rg2i9kcmwc4mr";
+      };
+
+      buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
+        (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
+    });
 
     # BuckleScript
     bs-platform = pkgs.callPackage ./bs-platform {
