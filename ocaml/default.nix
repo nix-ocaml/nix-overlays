@@ -262,6 +262,8 @@ in
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
+    pbkdf = callPackage ./pbkdf { ocamlPackages = oself; };
+
     pecu = callPackage ./pecu { ocamlPackages = oself; };
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
@@ -307,8 +309,8 @@ in
 
     ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppx_deriving/archive/e6cbddb82ea39ea56dbc541ed18c22f6bde596b7.tar.gz;
-        sha256 = "0cj8cpn3vc8bsd0vpl5s6xhk318vbvs7dkfy8rbaavwqq3mdkr8f";
+        url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2/ppx_deriving-v5.2.tbz;
+        sha256 = "1rifvap3pr80qlmhy5swk71lb01wlb1qnv5zcp1m18sch8k2cb8w";
       };
       buildInputs = o.buildInputs ++ [ cppo ];
       propagatedBuildInputs = [ ppxlib result ppx_derivers ];
@@ -316,8 +318,8 @@ in
 
     ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/d06711479564486554aa0834fe900ac27d55ccc4.tar.gz;
-        sha256 = "0gpzm4v2h0jxvnalacivwsq31kx9svbgg626d17076ll0mipywvd";
+        url = https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.6.1/ppx_deriving_yojson-v3.6.1.tbz;
+        sha256 = "1rj4i6l47f7pqr7cfxsfh05i5srb5pp9ns6df9719pbhghhfjbki";
       };
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
