@@ -65,6 +65,8 @@ let
     ocamlPackages = oself;
   };
 
+  lspPackages = callPackage ./ocaml-lsp { ocamlPackages = oself; };
+
   menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
     then {}
     else callPackage ./menhir {
@@ -105,6 +107,7 @@ in
   opamPackages //
   piafPackages //
   reasonPackages //
+  lspPackages //
   websocketafPackages // {
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
