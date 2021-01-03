@@ -127,15 +127,6 @@ in
 
     coin = callPackage ./coin { ocamlPackages = oself; };
 
-    cppo = buildDunePackage rec {
-      pname = "cppo";
-      version = "1.6.6-next";
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml-community/cppo/archive/9cf2f1b.tar.gz;
-        sha256 = "0ah5r3zxwhdrrgzir5qfnnn1mpq82x34ffkf8j4zbkykxygy8hc5";
-      };
-    };
-
     ctypes = osuper.ctypes.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
@@ -487,13 +478,6 @@ in
     };
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-    zarith = osuper.zarith.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml/zarith/archive/54ecbebb1e50eadaecdd75225b60e111d1e533f9.tar.gz;
-        sha256 = "1kkzq2pm4k3qrns05xa5ywmbdhxn83p2zrwj71kqq2ngpvibbgyf";
-      };
-    });
 
     zed = callPackage ./zed {
       ocamlPackages = oself;
