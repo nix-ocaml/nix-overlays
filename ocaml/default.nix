@@ -410,8 +410,8 @@ in
 
     utop = osuper.utop.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-community/utop/archive/e31656e72559c94bec144434f9d68e3ae801b14e.tar.gz;
-        sha256 = "19b3wmai0rrqbnbcsx0ay1639j5g6d8qam9hpj4k15gmgw95bpij";
+        url = https://github.com/ocaml-community/utop/releases/download/2.7.0/utop-2.7.0.tbz;
+        sha256 = "1p9z7jk2dqs7qlgjliz6qhn3dw048hhbr6znyb03qz16vx9sqs70";
       };
     });
 
