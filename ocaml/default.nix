@@ -177,14 +177,6 @@ in
       };
     });
 
-    lambdaTerm = osuper.lambdaTerm.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml-community/lambda-term/archive/3.1.0.tar.gz;
-        sha256 = "1462j2c2nnzv6ng8b6907bw0zy3mhhnnjdm8k6as0sgm9ls0r77r";
-      };
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ mew_vi ];
-    });
-
     lwt = osuper.lwt.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
@@ -195,30 +187,6 @@ in
 
     magic-mime = callPackage ./magic-mime {
       ocamlPackages = oself;
-    };
-
-    mew = buildDunePackage {
-      pname = "mew";
-      version = "0.1.0";
-
-      src = builtins.fetchurl {
-        url = https://github.com/kandu/mew/archive/0.1.0.tar.gz;
-        sha256 = "1rjri9mgfb9gn9fmjn0ax21y9jd9wkvr7mmx2jrlqmzgabmqrlv4";
-      };
-
-      propagatedBuildInputs = [ result trie ];
-    };
-
-    mew_vi = buildDunePackage {
-      pname = "mew_vi";
-      version = "0.5.0";
-
-      src = builtins.fetchurl {
-        url = https://github.com/kandu/mew_vi/archive/0.5.0.tar.gz;
-        sha256 = "1nmg3cysglgw4115n5zpz4azrfbnfxkn2kvw73chzs69viygm4m6";
-      };
-
-      propagatedBuildInputs = [ mew react ];
     };
 
     mirage-kv = buildDunePackage {
@@ -388,16 +356,6 @@ in
         mirage-crypto
         mirage-crypto-pk
       ];
-    };
-
-    trie = buildDunePackage {
-      pname = "trie";
-      version = "0.1.0";
-
-      src = builtins.fetchurl {
-        url = https://github.com/kandu/trie/archive/1.0.0.tar.gz;
-        sha256 = "1slq4kiwnc723dsaw15ms7xxpqz061v8zck1m6iyc5j2li70by62";
-      };
     };
 
     uchar = osuper.uchar.overrideAttrs (o: {
