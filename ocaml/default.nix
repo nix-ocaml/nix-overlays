@@ -93,7 +93,7 @@ let
     ocamlPackages = oself;
   };
 
-  subscriptionsTransportWsPackages = callPackage ./subscription-transport-ws {
+  subscriptionsTransportWsPackages = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;
   };
 
@@ -107,7 +107,7 @@ in
   archiPackages //
   caqti-packages //
   conduit-packages //
-  cookie //
+cookiePackages //
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
