@@ -318,13 +318,6 @@ cookiePackages //
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
 
-    ppx_blob = osuper.ppx_blob.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/johnwhitington/ppx_blob/releases/download/0.7.0/ppx_blob-0.7.0.tbz;
-        sha256 = "0r8wsdhjh6ricv85mr8f8a7fkcxzls6dxv6jymy8nykgjvvkb2mc";
-      };
-    });
-
     ptime =
       let
         filterJSOO = p:
