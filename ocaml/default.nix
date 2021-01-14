@@ -53,6 +53,10 @@ let
     ocamlPackages = oself;
   };
 
+  janestreetPackages = callPackage ./janestreet {
+    ocamlPackages = oself;
+  };
+
   junitPackages = callPackage ./junit {
     ocamlPackages = oself;
   };
@@ -98,6 +102,7 @@ in
   h2Packages //
   httpafPackages //
   ipaddrPackages //
+  janestreetPackages //
   junitPackages //
   kafka-packages //
   lambda-runtime-packages //
@@ -167,6 +172,8 @@ in
     graphql_ppx = callPackage ./graphql_ppx {
       ocamlPackages = oself;
     };
+
+    janeStreet = janestreetPackages;
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
