@@ -147,8 +147,8 @@ in
 
     dune_2 = osuper.dune_2.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/2.8.0/dune-2.8.0.tbz";
-        sha256 = "12yly2lp93ijhy7b72p6y2q3cr3yy3hk7rlmrh072py8a6d4s407";
+        url = "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz";
+        sha256 = "0i5xlkfsvdf2d4z72cg9xp1bqga0vpmp13ma31jww8gkbb3hbd77";
       };
       patches = [];
     });
