@@ -22,6 +22,10 @@ let
     ocamlPackages = oself;
   };
 
+  cookiePackages = callPackage ./cookie {
+    ocamlPackages = oself;
+  };
+
   dataloader-packages = callPackage ./dataloader {
     ocamlPackages = oself;
   };
@@ -71,6 +75,10 @@ let
       ocamlPackages = oself;
     };
 
+  morphPackages = callPackage ./morph {
+    ocamlPackages = oself;
+  };
+
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -78,6 +86,14 @@ let
   piafPackages = callPackage ./piaf { ocamlPackages = oself; };
 
   reasonPackages = callPackage ./reason {
+    ocamlPackages = oself;
+  };
+
+  sessionPackages = callPackage ./session {
+    ocamlPackages = oself;
+  };
+
+  subscriptionsTransportWsPackages = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;
   };
 
@@ -91,6 +107,7 @@ in
   archiPackages //
   caqti-packages //
   conduit-packages //
+cookiePackages //
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
@@ -102,9 +119,12 @@ in
   kafka-packages //
   lambda-runtime-packages //
   menhirPackages //
+  morphPackages //
   opamPackages //
   piafPackages //
   reasonPackages //
+  sessionPackages //
+  subscriptionsTransportWsPackages //
   websocketafPackages // {
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
