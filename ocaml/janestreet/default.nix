@@ -1,4 +1,4 @@
-{ ocamlPackages }:
+{ ocamlPackages, openssl }:
 
 with ocamlPackages;
 
