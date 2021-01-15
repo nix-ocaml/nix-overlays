@@ -87,6 +87,10 @@ let
     ocamlPackages = oself;
   };
 
+  oidcPackages = callPackage ./oidc {
+    ocamlPackages = oself;
+  };
+
   opamPackages = callPackage ./opam {
     ocamlPackages = oself;
   };
@@ -130,6 +134,7 @@ in
   logsPpxPackages //
   menhirPackages //
   morphPackages //
+  oidcPackages//
   opamPackages //
   piafPackages //
   reasonPackages //
