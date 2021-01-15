@@ -552,14 +552,19 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppxlib ];
   };
 
-  ppx_sexp_conv = janePackage {
+  ppx_sexp_conv = (janePackage {
     pname = "ppx_sexp_conv";
     version = "0.14.1";
     minimumOCamlVersion = "4.04.2";
     hash = "04bx5id99clrgvkg122nx03zig1m7igg75piphhyx04w33shgkz2";
     meta.description = "[@@deriving] plugin to generate S-expression conversion functions";
     propagatedBuildInputs = [ ppxlib sexplib0 base ];
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_sexp_conv/archive/13e9b27f5f9550b825128f8cd1f31d20dc8fa91b.tar.gz;
+      sha256 = "06pda057qbnycg5x01wybrvpbwdrrsn3p0xm92di1zj4fjj8z7w1";
+    };
+  });
 
   ppx_sexp_message = janePackage {
     pname = "ppx_sexp_message";
