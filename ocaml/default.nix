@@ -73,6 +73,10 @@ let
     ocamlPackages = oself;
   };
 
+  logsPpxPackages = callPackage ./logs-ppx {
+    ocamlPackages = oself;
+  };
+
   menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
     then {}
     else callPackage ./menhir {
@@ -80,6 +84,10 @@ let
     };
 
   morphPackages = callPackage ./morph {
+    ocamlPackages = oself;
+  };
+
+  oidcPackages = callPackage ./oidc {
     ocamlPackages = oself;
   };
 
@@ -111,7 +119,7 @@ in
   archiPackages //
   caqti-packages //
   conduit-packages //
-cookiePackages //
+  cookiePackages //
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
@@ -123,8 +131,10 @@ cookiePackages //
   junitPackages //
   kafka-packages //
   lambda-runtime-packages //
+  logsPpxPackages //
   menhirPackages //
   morphPackages //
+  oidcPackages//
   opamPackages //
   piafPackages //
   reasonPackages //
