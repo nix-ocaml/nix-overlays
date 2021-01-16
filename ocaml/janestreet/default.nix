@@ -193,14 +193,19 @@ with ocamlPackages;
     checkInputs = [ ppx_jane ];
   };
 
-  core = janePackage {
+  core = (janePackage {
     pname = "core";
     hash = "1m9h73pk9590m8ngs1yf4xrw61maiqmi9glmlrl12qhi0wcja5f3";
     meta.description = "System-independent part of Core";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ core_kernel spawn timezone ];
     doCheck = false; # we don't have quickcheck_deprecated
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/core/archive/596b31f37c30acc5ca8e8c1029dbc753d473bc31.tar.gz;
+      sha256 = "1k0l9q1k9j5ccc2x40w2627ykzldyy8ysx3mmkh11rijgjjk3fsf";
+    };
+  });
 
   core_bench = janePackage {
     pname = "core_bench";
@@ -216,14 +221,19 @@ with ocamlPackages;
     propagatedBuildInputs = [ core ];
   };
 
-  core_kernel = janePackage {
+  core_kernel = (janePackage {
     pname = "core_kernel";
     hash = "012sp02v35j41lzkvf073620602fgiswz2n224j06mk3bm8jmjms";
     meta.description = "System-independent part of Core";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base_bigstring sexplib ];
     doCheck = false; # we don't have quickcheck_deprecated
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/core_kernel/archive/v0.14.1.tar.gz;
+      sha256 = "0f24sagyzhfr6x68fynhsn5cd1p72vkqm25wnfg8164sivas148x";
+    };
+  });
 
   csvfields = janePackage {
     pname = "csvfields";
