@@ -26,6 +26,10 @@ let
     ocamlPackages = oself;
   };
 
+  cstructPackages = callPackage ./cstruct {
+    inherit osuper oself;
+  };
+
   dataloader-packages = callPackage ./dataloader {
     ocamlPackages = oself;
   };
@@ -120,6 +124,7 @@ in
   caqti-packages //
   conduit-packages //
   cookiePackages //
+  cstructPackages //
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
@@ -284,10 +289,6 @@ in
       nativeBuildInputs = [ dune-configurator ];
       propagatedBuildInputs = [ libpq ];
     };
-
-    ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_tools_versioned ];
-    });
 
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
