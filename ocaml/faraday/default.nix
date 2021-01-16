@@ -4,11 +4,11 @@ with ocamlPackages;
 
 let
   buildFaraday = args: buildDunePackage ({
-    version = "0.12.0-dev";
+    version = "0.7.2-dev";
 
     src = builtins.fetchurl {
-      url = https://github.com/inhabitedtype/faraday/archive/89ee69331d116ee2962b055ac319cbec66241931.tar.gz;
-      sha256 = "1bv84hn806rc4jhg45fd1si1kxyc3gbyl05fyggc4pmyk66qyhm7";
+      url = https://github.com/inhabitedtype/faraday/archive/cc3e6316858117497fbba77bfd5860d6516136c4.tar.gz;
+      sha256 = "068am5gg8q7fdcwscqc7lrm8zvna9g5ds0rbzdc7bynljs7y4ys7";
     }; } // args);
 in {
   faraday = buildFaraday {
@@ -28,6 +28,6 @@ in {
 
   faraday-async = buildFaraday {
     pname = "faraday-async";
-    propagatedBuildInputs = [ faraday async ];
+    propagatedBuildInputs = [ faraday async core ];
   };
 }

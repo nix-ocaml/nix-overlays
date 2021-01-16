@@ -419,13 +419,18 @@ with ocamlPackages;
     doCheck = false; # test build rule broken
   };
 
-  ppx_custom_printf = janePackage {
+  ppx_custom_printf = (janePackage {
     pname = "ppx_custom_printf";
     hash = "0p9hgx0krxqw8hlzfv2bg2m3zi5nxsnzhyp0fj5936rapad02hc5";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Printf-style format-strings for user-defined string conversion";
     propagatedBuildInputs = [ ppx_sexp_conv ];
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_custom_printf/archive/d415134eb9851e0e52357046f2ed642dfc398ba3.tar.gz;
+      sha256 = "1ydfpb6aqgj03njxlicydbd9hf8shlqjr2i6yknzsvmwqxpy5qci";
+    };
+  });
 
   ppx_enumerate = janePackage {
     pname = "ppx_enumerate";
@@ -435,14 +440,19 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppxlib ];
   };
 
-  ppx_expect = janePackage {
+  ppx_expect = (janePackage {
     pname = "ppx_expect";
     hash = "05v6jzn1nbmwk3vzxxnb3380wzg2nb28jpb3v5m5c4ikn0jrhcwn";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Cram like framework for OCaml";
     propagatedBuildInputs = [ ppx_here ppx_inline_test re ];
     doCheck = false; # circular dependency with ppx_jane
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
+      sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
+    };
+  });
 
   ppx_fields_conv = janePackage {
     pname = "ppx_fields_conv";
@@ -520,13 +530,18 @@ with ocamlPackages;
     propagatedBuildInputs = [ time_now ];
   };
 
-  ppx_optcomp = janePackage {
+  ppx_optcomp = (janePackage {
     pname = "ppx_optcomp";
     hash = "1wav3zgh4244x1ll562g735cwwrzyk5jj72niq9jgz9qjlpsprlk";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
     propagatedBuildInputs = [ ppxlib ];
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_optcomp/archive/a4422ecd7e0677569533b1dae07924f5d786e8f6.tar.gz;
+      sha256 = "1szyb7hjln28dak2hb97hgnax64agwv9hy066l42mmgjxijghzlg";
+    };
+  });
 
   ppx_optional = janePackage {
     pname = "ppx_optional";
@@ -566,13 +581,18 @@ with ocamlPackages;
     };
   });
 
-  ppx_sexp_message = janePackage {
+  ppx_sexp_message = (janePackage {
     pname = "ppx_sexp_message";
     hash = "17xnq345xwfkl9ydn05ljsg37m2glh3alnspayl3fgbhmcjmav3i";
     minimumOCamlVersion = "4.04.2";
     meta.description = "A ppx rewriter for easy construction of s-expressions";
     propagatedBuildInputs = [ ppx_here ppx_sexp_conv ];
-  };
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_sexp_message/archive/fd604b269398aebdb0c5fa5511d9f3c38b6ecb45.tar.gz;
+      sha256 = "1izfs9a12m2fc3vaz6yxgj1f5hl5xw0hx2qs55cbai5sa1irm8lg";
+    };
+  });
 
   ppx_sexp_value = janePackage {
     pname = "ppx_sexp_value";
