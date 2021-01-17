@@ -77,6 +77,10 @@ let
     ocamlPackages = oself;
   };
 
+  markupPackages = callPackage ./markup {
+    ocamlPackages = oself;
+  };
+
   menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
     then {}
     else callPackage ./menhir {
@@ -109,6 +113,10 @@ let
     ocamlPackages = oself;
   };
 
+  tyxmlPackages = callPackage ./tyxml {
+    ocamlPackages = oself;
+  };
+
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -132,6 +140,7 @@ in
   kafka-packages //
   lambda-runtime-packages //
   logsPpxPackages //
+  markupPackages //
   menhirPackages //
   morphPackages //
   oidcPackages//
@@ -140,6 +149,7 @@ in
   reasonPackages //
   sessionPackages //
   subscriptionsTransportWsPackages //
+  tyxmlPackages //
   websocketafPackages // {
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
