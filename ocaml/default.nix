@@ -113,6 +113,10 @@ let
     ocamlPackages = oself;
   };
 
+  tyxmlPackages = callPackage ./tyxml {
+    ocamlPackages = oself;
+  };
+
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -145,6 +149,7 @@ in
   reasonPackages //
   sessionPackages //
   subscriptionsTransportWsPackages //
+  tyxmlPackages //
   websocketafPackages // {
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
