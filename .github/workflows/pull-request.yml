@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout
       - uses: cachix/install-nix-action@v12
-        with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
       - uses: cachix/cachix-action@v8
         with:
           name: mycache
@@ -22,5 +20,5 @@ jobs:
           # If you chose API tokens for write access OR if you have a private cache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix-env -i nix-build-uncached
-      - run: nix-build-uncached -build-flags "--experimental-features nix-command" ./sources.nix -A pkgs.ocaml-nng-ocamlPackages_${{ matrix.ocaml_version }}
+      - run: nix-build-uncached -build-flags "--experimental-features nix-command" ./sources.nix -A pkgs.ocaml-ng-ocamlPackages_${{ matrix.ocaml_version }}
     
