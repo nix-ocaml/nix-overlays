@@ -1,30 +1,10 @@
 { stdenv, ocamlPackages, lib }:
 
 with ocamlPackages;
-let src = builtins.fetchurl {
-  url = https://github.com/ocsigen/tyxml/archive/4.4.0.tar.gz;
-  sha256 = "1yhf09vpnhw7mp1iiq9rrf1igsviashyqf8vxv2g7wxpn0nrshfz";
-};
+let src = ocamlPackages.tyxml.src;
 
 in
 {
-  tyxml = ocamlPackages.buildDunePackage {
-    pname = "tyxml";
-    version = "4.4.0";
-    inherit src;
-
-    propagatedBuildInputs = with ocamlPackages; [
-      seq
-      uutf
-      re
-    ];
-
-    meta = {
-      description = "TyXML is a library for building correct HTML and SVG documents";
-      license = stdenv.lib.licenses.lgpl21;
-    };
-  };
-
   tyxml-syntax = ocamlPackages.buildDunePackage {
     pname = "tyxml-syntax";
     version = "4.4.0";

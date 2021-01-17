@@ -77,10 +77,6 @@ let
     ocamlPackages = oself;
   };
 
-  markupPackages = callPackage ./markup {
-    ocamlPackages = oself;
-  };
-
   menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
     then {}
     else callPackage ./menhir {
@@ -140,7 +136,6 @@ in
   kafka-packages //
   lambda-runtime-packages //
   logsPpxPackages //
-  markupPackages //
   menhirPackages //
   morphPackages //
   oidcPackages//
