@@ -2,6 +2,8 @@ name: "Validate PR"
 on:
   pull_request:
   push:
+    branches:
+      - master
 jobs:
   tests:
     strategy:
