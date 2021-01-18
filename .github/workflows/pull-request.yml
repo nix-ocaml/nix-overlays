@@ -22,5 +22,5 @@ jobs:
           # If you chose API tokens for write access OR if you have a private cache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build nix packages
-        run: nix-build ./sources.nix -A pkgs.ocaml-ng-ocamlPackages_${{ matrix.ocaml_version }}
+        run: nix-build ./sources.nix -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.morph
     
