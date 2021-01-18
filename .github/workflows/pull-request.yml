@@ -1,0 +1,28 @@
+name: "Validate PR"
+on:
+  pull_request:
+  push:
+jobs:
+  tests:
+    strategy:
+      matrix:
+        ocaml_version: [4_11, 4_12]
+        os: ["ubuntu-latest", "macos-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v12
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+      - uses: cachix/cachix-action@v8
+        with:
+          name: anmonteiro
+          # If you chose signing key for write access
+          # If you chose API tokens for write access OR if you have a private cache
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build nix packages
+        run: |
+          nix-build ./sources.nix -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.piaf \
+          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.oidc \
+          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.tyxml-jsx
+    
