@@ -17,12 +17,9 @@ jobs:
       - uses: cachix/cachix-action@v8
         with:
           name: anmonteiro
-          # If you chose signing key for write access
-          # If you chose API tokens for write access OR if you have a private cache
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
           nix-build ./sources.nix -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.piaf \
           -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.oidc \
           -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.tyxml-jsx
-    
