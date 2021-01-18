@@ -21,6 +21,6 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           # If you chose API tokens for write access OR if you have a private cache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix-env -i nix-build-uncached
-      - run: nix-build-uncached -build-flags "--experimental-features nix-command" ./sources.nix -A pkgs.ocaml-ng-ocamlPackages_${{ matrix.ocaml_version }}
+      - name: Build nix packages
+        run: nix run -f . nix-build-uncached -c nix-build-uncached -build-flags "--experimental-features nix-command" ./sources.nix -A pkgs.ocaml-ng-ocamlPackages_${{ matrix.ocaml_version }}
     
