@@ -14,6 +14,7 @@ let
     "erm_xmpp" "gmetadom" "herelib" "higlo" "js_build_tools" "lablgtk-extras"
     "lua-ml" "ocaml_optcomp" "ocamlscript" "ocsigen_deriving" "pa_bench" "pipebang"
     "rope" "stog" "type_conv" "type_conv_112_01_01" "typerep" "typerep_p4" "ulex"
+    "lablgl"
   ];
 
 in
