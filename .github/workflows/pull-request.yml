@@ -27,5 +27,5 @@ jobs:
           NIXPKGS_ALLOW_UNFREE: 1
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
