@@ -6,7 +6,8 @@ let
   ignoredPackages = [
     "bap" "bin_prot_p4" "bolt" "camlp4" "camomile_0_8_2" "cil" "dypgen"
     "earlybird" "enumerate" "estring" "faillib" "fieldslib_p4" "gtktop"
-    "lablgtk_2_14" "lablgtk" "lablgtk-extras" "lens" "magick" "mezzo" "mlgmp"
+    "lablgtk_2_14" "lablgtk" "lablgtk3" "lablgtk3-gtkspell3"
+    "lablgtk3-sourceview3" "lablgtk-extras" "lens" "magick" "mezzo" "mlgmp"
     "ocaml_cairo" "ocaml_cryptgps" "ocaml_data_notation" "ocaml_http"
     "ocamlnat" "ocamlsdl" "ocf" "omake_rc1" "pa_ounit" "ppx_deriving_protobuf"
     "sodium" "sqlite3EZ" "type_conv_108_08_00" "type_conv_109_60_01"
