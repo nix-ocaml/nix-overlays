@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+env:
+  NIXPKGS_ALLOW_UNFREE: 1
 jobs:
   tests:
     strategy:
