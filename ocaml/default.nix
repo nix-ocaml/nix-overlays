@@ -217,14 +217,6 @@ in
 
     jose = callPackage ./jose { ocamlPackages = oself; };
 
-    js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhir ];
-      src = builtins.fetchurl {
-        url = https://github.com/ocsigen/js_of_ocaml/releases/download/3.7.0/js_of_ocaml-3.7.0.tbz;
-        sha256 = "0rw6cfkl3zlyav8q2w7grxxqjmg35mz5rgvmkiqb58nl4gmgzx6w";
-      };
-    });
-
     ke = osuper.ke.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://github.com/mirage/ke/archive/0b3d570f56c558766e8d53600e59ce65f3218556.tar.gz;
