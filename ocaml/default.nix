@@ -1,4 +1,4 @@
-{ callPackage, libpq, opaline, lib, stdenv, pkgconfig, openssl }:
+{ fetchFromGitHub, callPackage, libpq, opaline, lib, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
@@ -249,6 +249,20 @@ in
       };
     });
 
+    luv = osuper.buildDunePackage {
+      pname = "luv";
+      version = "0.5.6";
+      src = fetchFromGitHub {
+        owner = "aantron";
+        repo = "luv";
+        rev = "0.5.6";
+        sha256 = "04k4v6xnmav0l627j8v9bfkwr74qnfmhls7sj50bl2665p35cg8b";
+        fetchSubmodules = true;
+      };
+
+      propagatedBuildInputs = [ctypes result];
+    };
+
     lwt = osuper.lwt.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
@@ -389,6 +403,28 @@ in
 
         buildPhase = "${topkg.run} build --with-js_of_ocaml false";
       });
+
+    redemon = osuper.buildDunePackage {
+      pname = "redemon";
+      version = "0.3.2-dev";
+      src = builtins.fetchurl {
+        url = https://github.com/ulrikstrid/redemon/archive/4c68048b8f9e22faf6d70cc1d83d5731851233b7.tar.gz;
+        sha256 = "0vf1ki6skya338dg21fsdsqxr26nfj6420qg3rmmn1ghy7q8mhqw";
+      };
+
+      propagatedBuildInputs = [luv cmdliner logs fmt];
+    };
+
+    reenv = osuper.buildDunePackage {
+      pname = "reenv";
+      version = "0.3.1-dev";
+      src = builtins.fetchurl {
+        url = https://github.com/ulrikstrid/reenv/archive/57f5c418264840ecb6114f5afa3be0f0c8c14943.tar.gz;
+        sha256 = "0lh72r5wxkmdx5228bqm3g70khafsfk8i65imnlyhcab7gjdc8vn";
+      };
+
+      propagatedBuildInputs = [reason cmdliner re];
+    };
 
     rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
