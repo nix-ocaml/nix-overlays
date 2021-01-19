@@ -26,6 +26,9 @@ let
 
     # linking issues?
     "ocaml_libvirt"
+
+    # fixed upstream, remove as nixos sources are upgraded
+    "mdx"
   ];
 
 in
