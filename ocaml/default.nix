@@ -236,6 +236,13 @@ in
       ocamlPackages = oself;
     };
 
+    mdx = osuper.mdx.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = "https://github.com/realworldocaml/mdx/releases/download/1.8.0/mdx-1.8.0.tbz";
+        sha256 = "1p2ip73da271as0x1gfbajik3mf1bkc8l54276vgacn1ja3saj52";
+      };
+    });
+
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
       version = "3.0.1";
