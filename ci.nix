@@ -15,6 +15,8 @@ let
     "lua-ml" "ocaml_optcomp" "ocamlscript" "ocsigen_deriving" "pa_bench" "pipebang"
     "rope" "stog" "type_conv" "type_conv_112_01_01" "typerep" "typerep_p4" "ulex"
     "lablgl"
+
+    "cairo2"
   ];
 
 in
