@@ -22,6 +22,5 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix-build ./sources.nix -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.piaf \
-          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.oidc \
-          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.tyxml-jsx
+          nix run -f ./sources.nix nix-build-uncached -c \
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.ocaml_version }} --show-trace

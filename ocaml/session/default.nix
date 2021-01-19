@@ -40,6 +40,7 @@ in
       meta = {
         description = "A session manager for your everyday needs - Redis-specific support for Lwt";
         license = stdenv.lib.licenses.bsd3;
+        broken = true;
       };
     };
 }

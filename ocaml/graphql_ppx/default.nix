@@ -1,4 +1,4 @@
-{ fetchFromGitHub, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
