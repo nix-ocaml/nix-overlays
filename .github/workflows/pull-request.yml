@@ -6,8 +6,6 @@ on:
       - master
 jobs:
   tests:
-    env:
-      NIXPKGS_ALLOW_UNFREE: 1
     strategy:
       matrix:
         setup:
@@ -25,6 +23,8 @@ jobs:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
             nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace
