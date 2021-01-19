@@ -480,8 +480,4 @@ in
     };
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-    zed = callPackage ./zed {
-      ocamlPackages = oself;
-    };
   }
