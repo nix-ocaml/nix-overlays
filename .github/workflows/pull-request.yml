@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-env:
-  NIXPKGS_ALLOW_UNFREE: 1
 jobs:
   tests:
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
     strategy:
       matrix:
         setup:
