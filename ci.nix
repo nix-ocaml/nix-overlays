@@ -4,9 +4,10 @@ let
   pkgs = import ./sources.nix {};
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
+    # camlp4 or not supported in 4.11+
     "bap" "bin_prot_p4" "bolt" "camlp4" "camomile_0_8_2" "cil" "dypgen"
     "earlybird" "enumerate" "estring" "faillib" "fieldslib_p4" "gtktop"
-    "lablgtk_2_14" "lablgtk" "lablgtk3" "lablgtk3-gtkspell3"
+    "lablgtk_2_14" "lablgtk" "lablgtk3" "lablgtk3-gtkspell3" "camlimages"
     "lablgtk3-sourceview3" "lablgtk-extras" "lens" "magick" "mezzo" "mlgmp"
     "ocaml_cairo" "ocaml_cryptgps" "ocaml_data_notation" "ocaml_http"
     "ocamlnat" "ocamlsdl" "ocf" "omake_rc1" "pa_ounit" "ppx_deriving_protobuf"
@@ -17,7 +18,14 @@ let
     "ocamlscript" "ocsigen_deriving" "pa_bench" "pipebang" "rope" "stog"
     "type_conv" "type_conv_112_01_01" "typerep" "typerep_p4" "ulex" "lablgl"
 
-    "cairo2" "facile"
+    # dune.configurator issue
+    "cairo2" "gettext-stub"
+
+    # jbuild files
+    "facile"
+
+    # linking issues?
+    "ocaml_libvirt"
   ];
 
 in

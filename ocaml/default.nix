@@ -272,7 +272,10 @@ in
       '';
     });
 
-    ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+    ocamlgraph = osuper.ocamlgraph.override {
+      lablgtk = null;
+      gtkSupport = false;
+    };
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
