@@ -8,7 +8,9 @@ jobs:
   tests:
     strategy:
       matrix:
-        ocaml_version: [4_11, 4_12]
+        setup:
+          - { ocaml-version: 4_11, continue-on-error: false }
+          - { ocaml-version: 4_12, continue-on-error: true }
         os: ["ubuntu-latest", "macos-latest"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -23,4 +25,5 @@ jobs:
       - name: Build nix packages
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.ocaml_version }} --show-trace
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
