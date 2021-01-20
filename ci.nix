@@ -26,6 +26,10 @@ let
 
     # linking issues?
     "ocaml_libvirt"
+
+    # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
+    # to fix them)
+    "ppx_bitstring"
   ];
 
 in
