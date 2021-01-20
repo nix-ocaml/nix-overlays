@@ -185,10 +185,6 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
-    buildDunePackage_1 = osuper.buildDunePackage.override { dune = dune_1; };
-
-    dune_1 = osuper.dune;
-
     dune_2 = osuper.dune_2.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz";
@@ -252,8 +248,12 @@ in
       };
     });
 
-    mirage-clock = osuper.mirage-clock.override { buildDunePackage = buildDunePackage_1; };
-    mirage-clock-unix = osuper.mirage-clock-unix.override { buildDunePackage = buildDunePackage_1; };
+    mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+    mirage-clock-unix = osuper.mirage-clock-unix.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
@@ -274,7 +274,13 @@ in
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     ocaml = osuper.ocaml.override { flambdaSupport = true; };
-    ocaml_sqlite3 = osuper.ocaml_sqlite3.override { buildDunePackage = buildDunePackage_1; };
+    ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+
+    parmap = osuper.parmap.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     uunf = osuper.uunf.overrideAttrs (o: {
       # https://github.com/ocaml/ocaml/issues/9839
