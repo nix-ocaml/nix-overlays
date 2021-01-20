@@ -249,7 +249,7 @@ in
       };
     });
 
-    luv = osuper.buildDunePackage {
+    luv = buildDunePackage {
       pname = "luv";
       version = "0.5.6";
       src = fetchFromGitHub {
