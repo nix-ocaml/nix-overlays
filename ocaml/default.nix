@@ -185,6 +185,10 @@ in
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
+    buildDunePackage_1 = osuper.buildDunePackage.override { dune = dune_1; };
+
+    dune_1 = osuper.dune;
+
     dune_2 = osuper.dune_2.overrideAttrs (o: {
       src = builtins.fetchurl {
         url = "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz";
@@ -242,6 +246,9 @@ in
         sha256 = "1p2ip73da271as0x1gfbajik3mf1bkc8l54276vgacn1ja3saj52";
       };
     });
+
+    mirage-clock = osuper.mirage-clock.override { buildDunePackage = buildDunePackage_1; };
+    mirage-clock-unix = osuper.mirage-clock-unix.override { buildDunePackage = buildDunePackage_1; };
 
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
