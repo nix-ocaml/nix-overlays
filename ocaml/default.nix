@@ -217,6 +217,11 @@ in
       ocamlPackages = oself;
     };
 
+    irmin = osuper.irmin.overrideAttrs (o: {
+      doCheck = false;
+      checkInputs = [];
+    });
+
     janeStreet = janestreetPackages;
 
     jose = callPackage ./jose { ocamlPackages = oself; };
@@ -269,6 +274,7 @@ in
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     ocaml = osuper.ocaml.override { flambdaSupport = true; };
+    ocaml_sqlite3 = osuper.ocaml_sqlite3.override { buildDunePackage = buildDunePackage_1; };
 
     uunf = osuper.uunf.overrideAttrs (o: {
       # https://github.com/ocaml/ocaml/issues/9839
