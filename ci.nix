@@ -20,7 +20,7 @@ let
     "labltk"
 
     # too long to build or broken
-    "z3" "nonstd" "sosa" "genspio" "irmin-unix"
+    "z3" "nonstd" "sosa" "genspio" "irmin-unix" "dose3"
 
     # dune.configurator issue
     "cairo2" "gettext-stub" "zmq" "zmq-lwt" "ocamlfuse"
@@ -31,7 +31,7 @@ let
     "owl" "npy" "torch" "phylogenetics"
 
     # linking issues?
-    "ocaml_libvirt" "ocaml-r" "tsdl"
+    "ocaml_libvirt" "ocaml-r" "tsdl" "owee" "spacetime_lib" "prof_spacetime"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)

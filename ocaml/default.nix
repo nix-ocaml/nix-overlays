@@ -91,10 +91,6 @@ let
     ocamlPackages = oself;
   };
 
-  opamPackages = callPackage ./opam {
-    ocamlPackages = oself;
-  };
-
   piafPackages = callPackage ./piaf { ocamlPackages = oself; };
 
   reasonPackages = callPackage ./reason {
@@ -139,7 +135,6 @@ in
   menhirPackages //
   morphPackages //
   oidcPackages//
-  opamPackages //
   piafPackages //
   reasonPackages //
   sessionPackages //
@@ -198,8 +193,8 @@ in
 
     dune_2 = osuper.dune_2.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz";
-        sha256 = "0i5xlkfsvdf2d4z72cg9xp1bqga0vpmp13ma31jww8gkbb3hbd77";
+        url = "https://github.com/ocaml/dune/releases/download/2.8.2/dune-2.8.2.tbz";
+        sha256 = "07mf6pnmv1a6wh4la45zf6cn6qy2vcmz4xgx0djj75kw1wiyii72";
       };
       patches = [];
     });
@@ -219,6 +214,13 @@ in
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
+
+    ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = "https://ygrek.org/p/release/ocaml-extlib/extlib-1.7.8.tar.gz";
+        sha256 = "0npq4hq3zym8nmlyji7l5cqk6drx2rkcx73d60rxqh5g8dla8p4k";
+      };
+    });
 
     graphql_ppx = callPackage ./graphql_ppx {
       ocamlPackages = oself;
@@ -296,9 +298,14 @@ in
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
-    ocamlgraph = osuper.ocamlgraph.override {
-      lablgtk = null;
-      gtkSupport = false;
+    ocamlgraph = buildDunePackage {
+      pname = "ocamlgraph";
+      version = "2.0.0";
+      src = builtins.fetchurl {
+        url = https://github.com/backtracking/ocamlgraph/releases/download/2.0.0/ocamlgraph-2.0.0.tbz;
+        sha256 = "029692bvdz3hxpva9a2jg5w5381fkcw55ysdi8424lyyjxvjdzi0";
+      };
+      propagatedBuildInputs = [stdlib-shims];
     };
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
@@ -519,8 +526,4 @@ in
     };
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-    zed = callPackage ./zed {
-      ocamlPackages = oself;
-    };
   }
