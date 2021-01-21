@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages }:
+{ fetchFromGitHub, stdenv, ocamlPackages }:
 
 with ocamlPackages;
 
