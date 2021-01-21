@@ -91,10 +91,6 @@ let
     ocamlPackages = oself;
   };
 
-  opamPackages = callPackage ./opam {
-    ocamlPackages = oself;
-  };
-
   piafPackages = callPackage ./piaf { ocamlPackages = oself; };
 
   reasonPackages = callPackage ./reason {
@@ -139,7 +135,6 @@ in
   menhirPackages //
   morphPackages //
   oidcPackages//
-  opamPackages //
   piafPackages //
   reasonPackages //
   sessionPackages //
