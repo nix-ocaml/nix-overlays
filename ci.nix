@@ -23,7 +23,7 @@ let
     "z3" "nonstd" "sosa" "genspio" "irmin-unix"
 
     # dune.configurator issue
-    "cairo2" "gettext-stub" "zmq" "zmq-lwt"
+    "cairo2" "gettext-stub" "zmq" "zmq-lwt" "ocamlfuse"
 
     # jbuild files
     "facile" "atd" "atdgen" "safepass" "ocsigen-start" "ezxmlm"
