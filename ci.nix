@@ -17,19 +17,26 @@ let
     "gmetadom" "herelib" "higlo" "js_build_tools" "lua-ml" "ocaml_optcomp"
     "ocamlscript" "ocsigen_deriving" "pa_bench" "pipebang" "rope" "stog"
     "type_conv" "type_conv_112_01_01" "typerep" "typerep_p4" "ulex" "lablgl"
+    "labltk"
+
+    # too long to build or broken
+    "z3" "nonstd" "sosa" "genspio" "irmin-unix"
 
     # dune.configurator issue
-    "cairo2" "gettext-stub"
+    "cairo2" "gettext-stub" "zmq" "zmq-lwt"
 
     # jbuild files
-    "facile"
+    "facile" "atd" "atdgen" "safepass" "ocsigen-start" "ezxmlm"
+    "owl" "npy" "torch" "phylogenetics"
 
     # linking issues?
-    "ocaml_libvirt"
+    "ocaml_libvirt" "ocaml-r" "tsdl"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
-    "ppx_bitstring" "ppx_irmin"
+    "ppx_bitstring" "ppx_irmin" "ppx_deriving_rpc" "rpclib-lwt" "pgocaml_ppx"
+    "elpi" "eliom" "ocsigen-toolkit"
+    "ppx_import" # mystery
   ];
 
 in
