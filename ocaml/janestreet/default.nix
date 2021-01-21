@@ -1,4 +1,4 @@
-{ ocamlPackages, openssl }:
+{ ocamlPackages, openssl, fetchpatch, zstd }:
 
 with ocamlPackages;
 
@@ -693,7 +693,10 @@ with ocamlPackages;
       sexp_pretty
       sexp_select
     ];
-    patches = ./sexp.patch;
+    patches = [ (fetchpatch {
+      url = https://raw.githubusercontent.com/NixOS/nixpkgs/da25268ca2c9d7ace59c432a9ba35995f8069f89/pkgs/development/ocaml-modules/janestreet/sexp.patch;
+      sha256 = "08cgbcbfk5r1jk1ph4mg7hqgg92lm2f6fyg2h4jcdbgphms3gmxf";
+    })];
     meta.description = "S-expression swiss knife";
   };
 

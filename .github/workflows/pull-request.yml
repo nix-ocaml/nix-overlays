@@ -8,7 +8,9 @@ jobs:
   tests:
     strategy:
       matrix:
-        ocaml_version: [4_11, 4_12]
+        setup:
+          - { ocaml-version: 4_11, continue-on-error: false }
+          - { ocaml-version: 4_12, continue-on-error: true }
         os: ["ubuntu-latest", "macos-latest"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -21,7 +23,9 @@ jobs:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
         run: |
-          nix-build ./sources.nix -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.piaf \
-          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.oidc \
-          -A pkgs.ocaml-ng.ocamlPackages_${{ matrix.ocaml_version }}.tyxml-jsx
+          nix run -f ./sources.nix nix-build-uncached -c \
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace --keep-going
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
