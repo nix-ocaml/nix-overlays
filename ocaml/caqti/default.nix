@@ -16,7 +16,6 @@ in {
     nativeBuildInputs = [ cppo ];
     propagatedBuildInputs = [
       ptime
-      ppx_deriving
       uri
       logs
     ];
