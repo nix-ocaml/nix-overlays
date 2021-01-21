@@ -31,7 +31,7 @@ let
     "owl" "npy" "torch" "phylogenetics"
 
     # linking issues?
-    "ocaml_libvirt" "ocaml-r" "tsdl"
+    "ocaml_libvirt" "ocaml-r" "tsdl" "owee" "spacetime_lib"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
