@@ -249,7 +249,7 @@ in
       };
     });
 
-  luv = callPackage ./luv { ocamlPackages = oself; };
+    luv = callPackage ./luv { ocamlPackages = oself; };
 
     lwt = osuper.lwt.overrideAttrs (o: {
       src = builtins.fetchurl {
@@ -392,9 +392,9 @@ in
         buildPhase = "${topkg.run} build --with-js_of_ocaml false";
       });
 
-  redemon = callPackage ./redemon { ocamlPackages = oself; };
+    redemon = callPackage ./redemon { ocamlPackages = oself; };
 
-  reenv = callPackage ./reenv { ocamlPackages = oself; };
+    reenv = callPackage ./reenv { ocamlPackages = oself; };
 
     rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
