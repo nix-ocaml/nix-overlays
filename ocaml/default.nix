@@ -1,4 +1,4 @@
-{ fetchFromGitHub, callPackage, libpq, opaline, lib, stdenv, pkgconfig, openssl }:
+{ callPackage, libpq, opaline, lib, stdenv, pkgconfig, openssl }:
 
 oself: osuper:
 
