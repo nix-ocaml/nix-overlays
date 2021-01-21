@@ -232,6 +232,9 @@ in
       doCheck = false;
       checkInputs = [];
     });
+    irmin-http = osuper.irmin-http.overrideAttrs (o: {
+      doCheck = false;
+    });
 
     janeStreet = janestreetPackages;
 
