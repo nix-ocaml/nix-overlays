@@ -57,10 +57,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  ipaddrPackages = callPackage ./ipaddr {
-    ocamlPackages = oself;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
   };
@@ -135,7 +131,6 @@ in
   glutenPackages //
   h2Packages //
   httpafPackages //
-  ipaddrPackages //
   janestreetPackages //
   junitPackages //
   kafka-packages //
@@ -151,9 +146,21 @@ in
   subscriptionsTransportWsPackages //
   tyxmlPackages //
   websocketafPackages // {
+    arp = osuper.arp.overrideAttrs (_: {
+      doCheck = ! stdenv.isDarwin;
+    });
+
     base64 = callPackage ./base64 {
       ocamlPackages = oself;
     };
+
+    bigstring = osuper.bigstring.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
+        sha256 = "0nipiqarr6d7j2xz9gp5z0pl2x3bs0yg7w7phg10kd7p5sazjrsc";
+      };
+      doCheck = false;
+    });
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
@@ -171,6 +178,10 @@ in
     });
 
     coin = callPackage ./coin { ocamlPackages = oself; };
+
+    containers-data = osuper.containers-data.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     ctypes = osuper.ctypes.overrideAttrs (o: {
       src = builtins.fetchurl {
@@ -213,17 +224,21 @@ in
       ocamlPackages = oself;
     };
 
+    hidapi = osuper.hidapi.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+
+    irmin = osuper.irmin.overrideAttrs (o: {
+      doCheck = false;
+      checkInputs = [];
+    });
+    irmin-http = osuper.irmin-http.overrideAttrs (o: {
+      doCheck = false;
+    });
+
     janeStreet = janestreetPackages;
 
     jose = callPackage ./jose { ocamlPackages = oself; };
-
-    js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhir ];
-      src = builtins.fetchurl {
-        url = https://github.com/ocsigen/js_of_ocaml/releases/download/3.7.0/js_of_ocaml-3.7.0.tbz;
-        sha256 = "0rw6cfkl3zlyav8q2w7grxxqjmg35mz5rgvmkiqb58nl4gmgzx6w";
-      };
-    });
 
     ke = osuper.ke.overrideAttrs (o: {
       src = builtins.fetchurl {
@@ -244,6 +259,20 @@ in
       ocamlPackages = oself;
     };
 
+    mdx = osuper.mdx.overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = "https://github.com/realworldocaml/mdx/releases/download/1.8.0/mdx-1.8.0.tbz";
+        sha256 = "1p2ip73da271as0x1gfbajik3mf1bkc8l54276vgacn1ja3saj52";
+      };
+    });
+
+    mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+    mirage-clock-unix = osuper.mirage-clock-unix.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
+
     mirage-kv = buildDunePackage {
       pname = "mirage-kv";
       version = "3.0.1";
@@ -263,18 +292,20 @@ in
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     ocaml = osuper.ocaml.override { flambdaSupport = true; };
-
-    uunf = osuper.uunf.overrideAttrs (o: {
-      # https://github.com/ocaml/ocaml/issues/9839
-      configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
-      ''
-        ulimit -s 9216
-      '';
+    ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
-    ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+    ocamlgraph = osuper.ocamlgraph.override {
+      lablgtk = null;
+      gtkSupport = false;
+    };
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
+
+    parmap = osuper.parmap.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     pbkdf = callPackage ./pbkdf { ocamlPackages = oself; };
 
@@ -415,6 +446,14 @@ in
         url = https://github.com/ocaml-community/utop/releases/download/2.7.0/utop-2.7.0.tbz;
         sha256 = "1p9z7jk2dqs7qlgjliz6qhn3dw048hhbr6znyb03qz16vx9sqs70";
       };
+    });
+
+    uunf = osuper.uunf.overrideAttrs (o: {
+      # https://github.com/ocaml/ocaml/issues/9839
+      configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
+      ''
+        ulimit -s 9216
+      '';
     });
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
