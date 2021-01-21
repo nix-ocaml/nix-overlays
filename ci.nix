@@ -20,7 +20,7 @@ let
     "labltk"
 
     # too long to build or broken
-    "z3" "nonstd" "sosa" "genspio" "irmin-unix"
+    "z3" "nonstd" "sosa" "genspio" "irmin-unix" "dose3"
 
     # dune.configurator issue
     "cairo2" "gettext-stub" "zmq" "zmq-lwt" "ocamlfuse"
