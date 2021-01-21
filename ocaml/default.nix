@@ -187,8 +187,8 @@ in
 
     dune_2 = osuper.dune_2.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/2.8.1/dune-2.8.1.tbz";
-        sha256 = "0i5xlkfsvdf2d4z72cg9xp1bqga0vpmp13ma31jww8gkbb3hbd77";
+        url = "https://github.com/ocaml/dune/releases/download/2.8.2/dune-2.8.2.tbz";
+        sha256 = "07mf6pnmv1a6wh4la45zf6cn6qy2vcmz4xgx0djj75kw1wiyii72";
       };
       patches = [];
     });
@@ -279,7 +279,15 @@ in
       '';
     });
 
-    ocamlgraph = osuper.ocamlgraph.override { lablgtk = null; };
+    ocamlgraph = buildDunePackage {
+      pname = "ocamlgraph";
+      version = "2.0.0";
+      src = builtins.fetchurl {
+        url = https://github.com/backtracking/ocamlgraph/releases/download/2.0.0/ocamlgraph-2.0.0.tbz;
+        sha256 = "029692bvdz3hxpva9a2jg5w5381fkcw55ysdi8424lyyjxvjdzi0";
+      };
+      propagatedBuildInputs = [stdlib-shims];
+    };
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
