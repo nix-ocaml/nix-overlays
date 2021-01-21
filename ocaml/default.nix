@@ -337,8 +337,8 @@ in
 
     ppxlib = osuper.ppxlib.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.20.0/ppxlib-0.20.0.tbz;
-        sha256 = "0dxd5inxv12rx9kikl21y384m7cpylyvbjslw69rrpjpy8z91d8w";
+        url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.21.0/ppxlib-0.21.0.tbz;
+        sha256 = "1df7ahklww3hiq6207g7kdnjnwjmz60dg4zszr82y4x6a8bq8rzk";
       };
       propagatedBuildInputs = [
         # XXX(anmonteiro): this propagates `base` and `stdio` even though
