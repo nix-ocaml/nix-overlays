@@ -249,19 +249,7 @@ in
       };
     });
 
-    luv = buildDunePackage {
-      pname = "luv";
-      version = "0.5.6";
-      src = fetchFromGitHub {
-        owner = "aantron";
-        repo = "luv";
-        rev = "0.5.6";
-        sha256 = "04k4v6xnmav0l627j8v9bfkwr74qnfmhls7sj50bl2665p35cg8b";
-        fetchSubmodules = true;
-      };
-
-      propagatedBuildInputs = [ctypes result];
-    };
+  luv = callPackage ./luv { ocamlPackages = oself; };
 
     lwt = osuper.lwt.overrideAttrs (o: {
       src = builtins.fetchurl {
@@ -404,40 +392,9 @@ in
         buildPhase = "${topkg.run} build --with-js_of_ocaml false";
       });
 
-    redemon = osuper.buildDunePackage {
-      pname = "redemon";
-      version = "0.3.2-dev";
-      src = builtins.fetchurl {
-        url = https://github.com/ulrikstrid/redemon/archive/4c68048b8f9e22faf6d70cc1d83d5731851233b7.tar.gz;
-        sha256 = "0vf1ki6skya338dg21fsdsqxr26nfj6420qg3rmmn1ghy7q8mhqw";
-      };
+  redemon = callPackage ./redemon { ocamlPackages = oself; };
 
-      propagatedBuildInputs = [luv cmdliner logs fmt];
-    };
-
-    reenv = osuper.buildDunePackage {
-      pname = "reenv";
-      version = "0.4.0-dev";
-      src = builtins.fetchurl {
-        url = https://github.com/ulrikstrid/reenv/archive/64dbee58dbe01c86e24db3bdcb8961fdc178deb1.tar.gz;
-        sha256 = "1bv8rxnjnydfrvc55xbywsl98hq664khg5agacyk7ba0r1vlblh6";
-      };
-
-      buildInputs = [
-        alcotest
-        junit
-        junit_alcotest
-      ];
-
-      doCheck = true;
-
-      propagatedBuildInputs = [reason cmdliner re];
-
-      meta = {
-        description = "dotenv-cli written in reason";
-        license = stdenv.lib.licenses.mit;
-      };
-    };
+  reenv = callPackage ./reenv { ocamlPackages = oself; };
 
     rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
