@@ -220,6 +220,8 @@ in
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
 
+    emile = callPackage ./emile { ocamlPackages = oself; };
+
     ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = "https://ygrek.org/p/release/ocaml-extlib/extlib-1.7.8.tar.gz";
@@ -294,6 +296,10 @@ in
         mirage-device
         fmt
       ];
+    };
+
+    mrmime = callPackage ./mrmime {
+      ocamlPackages = oself;
     };
 
     mtime = osuper.mtime.override { jsooSupport = false; };
