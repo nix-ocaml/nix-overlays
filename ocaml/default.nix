@@ -97,6 +97,10 @@ let
     ocamlPackages = oself;
   };
 
+  redisPackages = callPackage ./redis {
+    ocamlPackages = oself;
+  };
+
   sessionPackages = callPackage ./session {
     ocamlPackages = oself;
   };
@@ -137,6 +141,7 @@ in
   oidcPackages//
   piafPackages //
   reasonPackages //
+  redisPackages //
   sessionPackages //
   subscriptionsTransportWsPackages //
   tyxmlPackages //
