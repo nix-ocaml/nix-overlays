@@ -40,7 +40,7 @@ let
     "ppx_import" # mystery
 
     # broken on 4.12
-    "ocaml-lsp"
+    "ocaml-lsp" "batteries"
   ];
 
 in
