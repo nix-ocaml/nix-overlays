@@ -276,6 +276,13 @@ in
       };
     });
 
+    merlin = osuper.merlin.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/merlin/archive/487eb6f.tar.gz;
+        sha256 = "0jy5ixzlhplx7yy7l9wlq2ix9j5a1w4mj7q8rggz0y95wp6xprnh";
+      };
+    });
+
     mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
