@@ -336,6 +336,13 @@ in
 
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
+    ocp-index = osuper.ocp-index.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/OCamlPro/ocp-index/archive/0cac3767d76b3bc8ed9b2854ad01c8015f989b05.tar.gz;
+        sha256 = "162q3vvpv60902wvch5v61nky37mqgij7qnlkfv30g0wvpw1gx4a";
+      };
+    });
+
     parmap = osuper.parmap.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
