@@ -88,7 +88,7 @@ let
   };
 
   multicorePackages =
-    if lib.versionAtLeast osuper.ocaml.version "4.10.0+multicore+no-effect-syntax"  then {
+    if osuper.ocaml.version == "4.10.0+multicore+no-effect-syntax"  then {
       domainslib = callPackage ./domainslib { ocamlPackages = oself; };
     } else {};
 
