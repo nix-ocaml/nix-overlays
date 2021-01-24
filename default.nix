@@ -50,6 +50,16 @@ in
     # - 4.06 is used by BuckleScript
     ocaml-ng = super.ocaml-ng // oPs // {
       ocamlPackages = self.ocamlPackages;
+      ocamlPackages_multicore = (oPs.ocamlPackages_4_10.overrideScope' (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          version = "4.10.0+multicore+no-effect-syntax";
+          hardeningDisable = ["strictoverflow"];
+          src = builtins.fetchurl {
+            url = https://github.com/ocaml-multicore/ocaml-multicore/archive/f7310b057a65159aa7627237bd14dca3a58e9a53.tar.gz;
+            sha256 = "05dzf3x8p37kvpwk7358s1ibmi8yx2dn02blh19298dh6d7dqbgv";
+          };
+        });
+      })).overrideScope' (pkgs.callPackage ./ocaml {});
     };
 
     ocamlformat = super.ocamlformat.overrideAttrs (o: {

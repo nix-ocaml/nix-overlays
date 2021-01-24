@@ -87,6 +87,11 @@ let
     ocamlPackages = oself;
   };
 
+  multicorePackages =
+    if lib.versionAtLeast osuper.ocaml.version "4.10.0+multicore+no-effect-syntax"  then {
+      domainslib = callPackage ./domainslib { ocamlPackages = oself; };
+    } else {};
+
   oidcPackages = callPackage ./oidc {
     ocamlPackages = oself;
   };
@@ -138,6 +143,7 @@ in
   logsPpxPackages //
   menhirPackages //
   morphPackages //
+  multicorePackages //
   oidcPackages//
   piafPackages //
   reasonPackages //
