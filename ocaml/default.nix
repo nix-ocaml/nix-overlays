@@ -18,10 +18,6 @@ let
     ocamlPackages = oself;
   };
 
-  conduit-packages = callPackage ./conduit {
-    ocamlPackages = oself;
-  };
-
   cookiePackages = callPackage ./cookie {
     ocamlPackages = oself;
   };
@@ -127,7 +123,6 @@ in
   alcotestPackages //
   archiPackages //
   caqti-packages //
-  conduit-packages //
   cookiePackages //
   cstructPackages //
   dataloader-packages //
@@ -225,8 +220,6 @@ in
       };
       propagatedBuildInputs = [rresult astring ocplib-endian camlzip result ];
     };
-
-    emile = callPackage ./emile { ocamlPackages = oself; };
 
     ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
       src = builtins.fetchurl {
@@ -334,8 +327,6 @@ in
     });
 
     pbkdf = callPackage ./pbkdf { ocamlPackages = oself; };
-
-    pecu = callPackage ./pecu { ocamlPackages = oself; };
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
@@ -445,24 +436,6 @@ in
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
 
-    tls-mirage = buildDunePackage {
-      pname = "tls-mirage";
-      version = osuper.tls.version;
-      src = osuper.tls.src;
-      propagatedBuildInputs = [
-        tls
-        x509
-        fmt
-        lwt
-        mirage-flow
-        mirage-kv
-        mirage-clock
-        ptime
-        mirage-crypto
-        mirage-crypto-pk
-      ];
-    };
-
     uchar = osuper.uchar.overrideAttrs (o: {
       installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
       nativeBuildInputs = [ocamlbuild ocaml findlib];
@@ -488,65 +461,9 @@ in
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
-    vchan = buildDunePackage {
-      pname = "vchan";
-      version = "5.0.0";
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/ocaml-vchan/releases/download/v5.0.0/vchan-v5.0.0.tbz;
-        sha256 = "0bx55w0ydl4bdhm6z5v0qj2r59j4avzddhklbb1wx40qvg3adz63";
-      };
-      propagatedBuildInputs = [
-        lwt
-        cstruct
-        ppx_sexp_conv
-        ppx_cstruct
-        io-page
-        mirage-flow
-        xenstore
-        xenstore_transport
-        sexplib
-        cmdliner
-      ];
-    };
-
-    xenstore = buildDunePackage {
-      pname = "xenstore";
-      version = "2.1.0";
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/ocaml-xenstore/releases/download/2.1.1/xenstore-2.1.1.tbz;
-        sha256 = "1xc49j3n3jap2n3w7v6a9q08a4bw5xxv3z4wsp24bhxd47m18f18";
-      };
-      propagatedBuildInputs = [
-        cstruct
-        ppx_cstruct
-        lwt
-      ];
-    };
-
-    xenstore_transport = buildDunePackage (rec {
-      pname = "xenstore_transport";
-      version = "1.1.0";
-      src = builtins.fetchurl {
-        url = "https://github.com/xapi-project/ocaml-xenstore-clients/archive/v${version}.tar.gz";
-        sha256 = "1lggdxw1ai66irmnzn9rifz2ksbvngsfi2rc0xz4d8wph1y2yzlv";
-      };
-      propagatedBuildInputs = [
-        lwt
-        xenstore
-      ];
+    xenstore = osuper.xenstore.overrideAttrs (o: {
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdlib-shims ];
     });
-
-    yojson = buildDunePackage {
-      pname = "yojson";
-      version = "1.7.0";
-      src = builtins.fetchurl {
-        url = https://github.com/ocaml-community/yojson/releases/download/1.7.0/yojson-1.7.0.tbz;
-        sha256 = "1iich6323npvvs8r50lkr4pxxqm9mf6w67cnid7jg1j1g5gwcvv5";
-      };
-
-      propagatedNativeBuildInputs = [ cppo ];
-      propagatedBuildInputs = [ easy-format biniou ];
-    };
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
   }
