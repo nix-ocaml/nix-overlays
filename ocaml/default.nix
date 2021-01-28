@@ -461,7 +461,7 @@ in
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
-    xenstore_transport = osuper.xenstore_transport.overrideAttrs (o: {
+    xenstore = osuper.xenstore.overrideAttrs (o: {
       propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdlib-shims ];
     });
 
