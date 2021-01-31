@@ -14,10 +14,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  caqti-packages = callPackage ./caqti {
-    ocamlPackages = oself;
-  };
-
   cookiePackages = callPackage ./cookie {
     ocamlPackages = oself;
   };
@@ -122,7 +118,6 @@ let
 in
   alcotestPackages //
   archiPackages //
-  caqti-packages //
   cookiePackages //
   cstructPackages //
   dataloader-packages //
@@ -353,16 +348,9 @@ in
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
-    postgresql = buildDunePackage rec {
-      pname = "postgresql";
-      version = "4.6.3";
-      src = builtins.fetchurl {
-        url = "https://github.com/mmottl/postgresql-ocaml/releases/download/${version}/${pname}-${version}.tbz";
-        sha256 = "0ya1jl75w8dand9pj1a7sfb0nwi8ll15g5alpvfnn11vn60am01w";
-      };
-      nativeBuildInputs = [ dune-configurator ];
-      propagatedBuildInputs = [ libpq ];
-    };
+    postgresql = osuper.postgresql.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
