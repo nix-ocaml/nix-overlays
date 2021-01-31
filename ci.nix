@@ -32,6 +32,7 @@ let
 
     # linking issues?
     "ocaml_libvirt" "ocaml-r" "tsdl" "owee" "spacetime_lib" "prof_spacetime"
+    "mariadb" "caqti-driver-mariadb"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
