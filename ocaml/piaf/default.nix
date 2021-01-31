@@ -1,37 +1,44 @@
-{ stdenv, ocamlPackages, lib }:
+{ stdenv, ocamlPackages, lib, fetchFromGitHub }:
 
 with ocamlPackages;
 
-let src = builtins.fetchurl {
-  url = https://github.com/anmonteiro/piaf/archive/fc22870f1d9b7a25b6e71ae56234cbf4999d1d13.tar.gz;
-  sha256 = "0dawpcry348cm4mfpn605zxbp8kb0gvqlirfc8bqf5d10pd12kyq";
+let src = fetchFromGitHub {
+  owner = "anmonteiro";
+  repo = "piaf";
+  rev = "03bfe63806a7affb09f57a9ac5844fddf67446b6";
+  sha256 = "13811z9v0c4s48k299qsb92mdihzinrm86zny99hxs4819hqspsn";
+  fetchSubmodules = true;
 };
 
 in
-
   {
     piaf = ocamlPackages.buildDunePackage {
       pname = "piaf";
       version = "0.0.1-dev";
       inherit src;
 
-      propagatedBuildInputs = with ocamlPackages; [
-        bigstringaf
-        findlib
-        httpaf
-        httpaf-lwt-unix
-        h2
-        h2-lwt-unix
+      doCheck = true;
+      checkInputs = [ alcotest alcotest-lwt ];
+
+      propagatedBuildInputs = [
         logs
         lwt_ssl
         magic-mime
         ssl
         uri
+
+        # (vendored) httpaf dependencies
+        angstrom
+        faraday
+        gluten-lwt-unix
+        psq
+        pecu
+        mrmime
       ];
 
       meta = {
-        description = "Client library for HTTP/1.X / HTTP/2 written entirely in OCaml.";
-        license = stdenv.lib.licenses.bsd3;
+        description = "An HTTP library with HTTP/2 support written entirely in OCaml";
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -59,8 +66,8 @@ in
       ];
 
       meta = {
-        description = "Mini-clone of curl based on Piaf";
-        license = stdenv.lib.licenses.bsd3;
+        description = "`curl` clone implemented using Piaf.";
+        license = lib.licenses.bsd3;
       };
     };
   }
