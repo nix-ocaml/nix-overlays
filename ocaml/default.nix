@@ -420,8 +420,8 @@ in
     ssl = osuper.ssl.overrideAttrs (o: {
       version = "0.5.9-dev";
       src = builtins.fetchurl {
-        url = https://github.com/savonet/ocaml-ssl/archive/fbffa9b.tar.gz;
-        sha256 = "1zf6i4z5aq45in430pagp8cz2q65jdhsdpsgpcdysjm4jlfsswr1";
+        url = https://github.com/savonet/ocaml-ssl/archive/6b75facc5d63e3cbc8a5eb5c3f0b27ef449c98c9.tar.gz;
+        sha256 = "01g6gzhqpg08jnfhfamck7qmwsmvp4ajxbhqi5pprbkxvi59bhkj";
       };
 
       nativeBuildInputs = [ dune-configurator pkgconfig ];
