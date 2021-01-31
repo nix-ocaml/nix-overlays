@@ -14,10 +14,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  caqti-packages = callPackage ./caqti {
-    ocamlPackages = oself;
-  };
-
   cookiePackages = callPackage ./cookie {
     ocamlPackages = oself;
   };
@@ -122,7 +118,6 @@ let
 in
   alcotestPackages //
   archiPackages //
-  caqti-packages //
   cookiePackages //
   cstructPackages //
   dataloader-packages //
@@ -276,6 +271,13 @@ in
       };
     });
 
+    merlin = osuper.merlin.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/ocaml/merlin/archive/487eb6f.tar.gz;
+        sha256 = "0jy5ixzlhplx7yy7l9wlq2ix9j5a1w4mj7q8rggz0y95wp6xprnh";
+      };
+    });
+
     mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
@@ -320,7 +322,21 @@ in
       propagatedBuildInputs = [stdlib-shims];
     };
 
+    ocp-build = osuper.ocp-build.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/OCamlPro/ocp-build/archive/104e4656ca6dba9edb03b62539c9f1e10abcaae8.tar.gz;
+        sha256 = "01qn6w6dc1g4pr4s031jblx41vv635r29hkasvlc71c5zs2szvwy";
+      };
+    });
+
     ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
+
+    ocp-index = osuper.ocp-index.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/OCamlPro/ocp-index/archive/0cac3767d76b3bc8ed9b2854ad01c8015f989b05.tar.gz;
+        sha256 = "162q3vvpv60902wvch5v61nky37mqgij7qnlkfv30g0wvpw1gx4a";
+      };
+    });
 
     parmap = osuper.parmap.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -332,16 +348,9 @@ in
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
-    postgresql = buildDunePackage rec {
-      pname = "postgresql";
-      version = "4.6.3";
-      src = builtins.fetchurl {
-        url = "https://github.com/mmottl/postgresql-ocaml/releases/download/${version}/${pname}-${version}.tbz";
-        sha256 = "0ya1jl75w8dand9pj1a7sfb0nwi8ll15g5alpvfnn11vn60am01w";
-      };
-      nativeBuildInputs = [ dune-configurator ];
-      propagatedBuildInputs = [ libpq ];
-    };
+    postgresql = osuper.postgresql.overrideAttrs (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 
     ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 

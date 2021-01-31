@@ -32,12 +32,16 @@ let
 
     # linking issues?
     "ocaml_libvirt" "ocaml-r" "tsdl" "owee" "spacetime_lib" "prof_spacetime"
+    "mariadb" "caqti-driver-mariadb"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
     "ppx_bitstring" "ppx_irmin" "ppx_deriving_rpc" "rpclib-lwt" "pgocaml_ppx"
     "elpi" "eliom" "ocsigen-toolkit"
     "ppx_import" # mystery
+
+    # broken on 4.12
+    "ocaml-lsp" "batteries"
   ];
 
 in
