@@ -17,7 +17,7 @@ in
   reason = buildReasonPkg {
     pname = "reason";
 
-    propagatedBuildInputs = [ menhir fix merlin-extend ocaml-migrate-parsetree ];
+    propagatedBuildInputs = [ menhir fix merlin-extend ppx_derivers result ];
 
     buildInputs = [ cppo menhir ];
 
