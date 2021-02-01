@@ -76,6 +76,7 @@ in
     meta = {
       description = "Helpers for working with graphql and morph";
       license = stdenv.lib.licenses.mit;
+      broken = true;
     };
   };
 }
