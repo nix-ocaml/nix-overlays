@@ -11,13 +11,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "cockroach";
-  version = "20.2.3";
+  version = "20.2.4";
 
   goPackagePath = "github.com/cockroachdb/cockroach";
 
   src = builtins.fetchurl {
     url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-    sha256 = "1m45h3adk9a6095dvnzgx0a2n2xiw3wxrs3qync3cnsz9hfx9rki";
+    sha256 = "0k9v7f5l0yl95qdcn4fman6hmj4n0mvz5crbdd2sxj4abgqf6gms";
   };
 
   NIX_CFLAGS_COMPILE = lib.optionals stdenv.cc.isGNU [ "-Wno-error=deprecated-copy" "-Wno-error=redundant-move" "-Wno-error=pessimizing-move" ];
