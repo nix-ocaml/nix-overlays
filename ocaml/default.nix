@@ -376,6 +376,7 @@ in
         url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2/ppx_deriving-v5.2.tbz;
         sha256 = "1rifvap3pr80qlmhy5swk71lb01wlb1qnv5zcp1m18sch8k2cb8w";
       };
+      propagatedBuildInputs = [ ppxlib result ppx_derivers ];
     });
 
     ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
