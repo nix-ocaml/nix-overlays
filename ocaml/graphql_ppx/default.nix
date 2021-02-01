@@ -2,13 +2,14 @@
 
 with ocamlPackages;
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "graphql_ppx";
-  version = "1.0.1";
+  version = "1.1.0-dev";
 
+  # src = /Users/anmonteiro/projects/graphql_ppx;
   src = builtins.fetchurl {
-    url = https://github.com/reasonml-community/graphql-ppx/archive/v1.0.1.tar.gz;
-    sha256 = "0ljyf3xgavs4szvz349zd0f4wdwvs6z6h94kxzivm0dbpkp4qqxv";
+    url = https://github.com/reasonml-community/graphql-ppx/archive/b122c05c9c924f0e6538d0d853df0387a3fa6735.tar.gz;
+    sha256 = "1vk9kaiv41v0bq1m1wp5hh0lgi0gjii24g8a14kyyfa3mjidpmmb";
   };
 
   useDune2 = true;
@@ -16,10 +17,8 @@ buildDunePackage rec {
 
   propagatedBuildInputs = [
     yojson
-    ocaml-migrate-parsetree
-    ppx_tools_versioned
+    ppxlib
     reason
-    menhir
   ];
 
   postInstall = ''
