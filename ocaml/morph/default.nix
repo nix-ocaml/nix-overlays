@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -32,7 +32,7 @@ in
 
     meta = {
       description = "Webframework for Reason and OCaml.";
-      license = stdenv.lib.licenses.mit;
+      license = lib.licenses.mit;
     };
   };
 
@@ -52,7 +52,7 @@ in
 
     meta = {
       description = "Helpers for working with graphql and morph";
-      license = stdenv.lib.licenses.mit;
+      license = lib.licenses.mit;
     };
   };
 
@@ -75,7 +75,7 @@ in
 
     meta = {
       description = "Helpers for working with graphql and morph";
-      license = stdenv.lib.licenses.mit;
+      license = lib.licenses.mit;
       broken = true;
     };
   };

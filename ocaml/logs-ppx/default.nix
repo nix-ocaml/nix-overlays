@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -20,7 +20,7 @@ in
 
       meta = {
         description = "PPX to cut down on boilerplate when using Logs";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 }

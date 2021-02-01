@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -22,7 +22,7 @@ in
 
       meta = {
         description = "Cookie parsing and serialization for OCaml";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -39,7 +39,7 @@ in
 
       meta = {
         description = "Session handling based on Cookie parsing and serialization for OCaml";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -56,7 +56,7 @@ in
 
       meta = {
         description = "Session handling based on Cookie parsing and serialization for OCaml";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 }

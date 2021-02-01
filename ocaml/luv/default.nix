@@ -1,4 +1,4 @@
-{ fetchFromGitHub, stdenv, ocamlPackages }:
+{ fetchFromGitHub, ocamlPackages }:
 
 with ocamlPackages;
 
@@ -17,6 +17,6 @@ buildDunePackage {
 
   meta = {
     description = "Cross-platform asynchronous I/O and system calls ";
-    license = stdenv.lib.licenses.mit;
+    license = lib.licenses.mit;
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -22,7 +22,7 @@ in
 
       meta = {
         description = "A session manager for your everyday needs";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -39,7 +39,7 @@ in
 
       meta = {
         description = "A session manager for your everyday needs - Redis-specific support for Lwt";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 }

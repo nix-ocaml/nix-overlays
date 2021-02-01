@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -23,7 +23,7 @@ in
 
     meta = {
       description = "Base functions and types to work with OpenID Connect.";
-      license = stdenv.lib.licenses.bsd3;
+      license = lib.licenses.bsd3;
     };
   };
 
@@ -43,7 +43,7 @@ in
 
     meta = {
       description = "OpenID Connect Relaying Party implementation built ontop of Piaf.";
-      license = stdenv.lib.licenses.bsd3;
+      license = lib.licenses.bsd3;
     };
   };
 }

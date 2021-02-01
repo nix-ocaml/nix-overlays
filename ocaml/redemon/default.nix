@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
@@ -14,6 +14,6 @@ buildDunePackage {
 
   meta = {
     description = "nodemon replacement written in OCaml, with luv";
-    license = stdenv.lib.licenses.mit;
+    license = lib.licenses.mit;
   };
 }
