@@ -415,10 +415,10 @@ in
     routes = callPackage ./routes { ocamlPackages = oself; };
 
     ssl = osuper.ssl.overrideAttrs (o: {
-      version = "0.5.9-dev";
+      version = "0.5.10";
       src = builtins.fetchurl {
-        url = https://github.com/savonet/ocaml-ssl/archive/6b75facc5d63e3cbc8a5eb5c3f0b27ef449c98c9.tar.gz;
-        sha256 = "01g6gzhqpg08jnfhfamck7qmwsmvp4ajxbhqi5pprbkxvi59bhkj";
+        url = https://github.com/savonet/ocaml-ssl/archive/v0.5.10.tar.gz;
+        sha256 = "0vcc8p6i8lhs59y3ycikllc6j1adh9syh63g5ibnrp3yz3lk2cwl";
       };
 
       nativeBuildInputs = [ dune-configurator pkgconfig ];
