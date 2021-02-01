@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -21,7 +21,7 @@ in
 
       meta = {
         description = "Redis client";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -43,7 +43,7 @@ in
 
       meta = {
         description = "Redis client (lwt interface)";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 
@@ -64,7 +64,7 @@ in
 
       meta = {
         description = "Redis client (blocking)";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 }

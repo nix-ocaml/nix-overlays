@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages, lib }:
+{ ocamlPackages, lib }:
 
 with ocamlPackages;
 let src = builtins.fetchurl {
@@ -21,7 +21,7 @@ in
       ];
 
       meta = {
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
     };
 }

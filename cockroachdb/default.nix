@@ -1,4 +1,4 @@
-{ stdenv, cmake, xz, which, autoconf , ncurses6, libedit, libunwind,
+{ stdenv, lib, cmake, xz, which, autoconf , ncurses6, libedit, libunwind,
   installShellFiles, removeReferencesTo, go, govers }:
 
 let
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     sha256 = "1m45h3adk9a6095dvnzgx0a2n2xiw3wxrs3qync3cnsz9hfx9rki";
   };
 
-  NIX_CFLAGS_COMPILE = stdenv.lib.optionals stdenv.cc.isGNU [ "-Wno-error=deprecated-copy" "-Wno-error=redundant-move" "-Wno-error=pessimizing-move" ];
+  NIX_CFLAGS_COMPILE = lib.optionals stdenv.cc.isGNU [ "-Wno-error=deprecated-copy" "-Wno-error=redundant-move" "-Wno-error=pessimizing-move" ];
 
   inherit nativeBuildInputs buildInputs;
   configurePhase = ''
@@ -54,7 +54,7 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "man" ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage    = "https://www.cockroachlabs.com";
     description = "A scalable, survivable, strongly-consistent SQL database";
     license     = licenses.bsl11;

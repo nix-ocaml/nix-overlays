@@ -69,7 +69,7 @@ let
     ocamlPackages = oself;
   };
 
-  menhirPackages = if !stdenv.lib.versionAtLeast osuper.ocaml.version "4.07"
+  menhirPackages = if !lib.versionAtLeast osuper.ocaml.version "4.07"
     then {}
     else callPackage ./menhir {
       ocamlPackages = oself;
@@ -376,7 +376,6 @@ in
         url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2/ppx_deriving-v5.2.tbz;
         sha256 = "1rifvap3pr80qlmhy5swk71lb01wlb1qnv5zcp1m18sch8k2cb8w";
       };
-      buildInputs = o.buildInputs ++ [ cppo ];
       propagatedBuildInputs = [ ppxlib result ppx_derivers ];
     });
 

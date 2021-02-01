@@ -1,4 +1,4 @@
-{ stdenv, ocamlPackages }:
+{ lib, ocamlPackages }:
 
 with ocamlPackages;
 
@@ -22,6 +22,6 @@ buildDunePackage {
 
   meta = {
     description = "dotenv-cli written in reason";
-    license = stdenv.lib.licenses.mit;
+    license = lib.licenses.mit;
   };
 }
