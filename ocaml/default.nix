@@ -141,10 +141,6 @@ in
       doCheck = ! stdenv.isDarwin;
     });
 
-    base64 = callPackage ./base64 {
-      ocamlPackages = oself;
-    };
-
     bigstring = osuper.bigstring.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
@@ -161,13 +157,6 @@ in
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
-    ctypes = osuper.ctypes.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
-        sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
-      };
-    });
-
     cudf = callPackage ./cudf { ocamlPackages = oself; };
 
     decimal = callPackage ./decimal { ocamlPackages = oself; };
@@ -177,7 +166,7 @@ in
     # Make `dune` effectively be Dune v2.  This works because Dune 2 is
     # backwards compatible.
     dune = if lib.versionOlder "4.07" ocaml.version
-      then oself.dune_2
+      then osuper.dune_2
       else osuper.dune;
 
     ezgzip = buildDunePackage rec {
@@ -213,7 +202,7 @@ in
       doCheck = false;
     });
     irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
-      doCheck = !stdenv.isDarwin;
+      doCheck = false;
     });
 
     janeStreet = janestreetPackages;
@@ -241,13 +230,6 @@ in
       ocamlPackages = oself;
     };
 
-    mdx = osuper.mdx.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = "https://github.com/realworldocaml/mdx/releases/download/1.8.0/mdx-1.8.0.tbz";
-        sha256 = "1p2ip73da271as0x1gfbajik3mf1bkc8l54276vgacn1ja3saj52";
-      };
-    });
-
     merlin = osuper.merlin.overrideAttrs (_: {
       src = dot-merlin-reader.src;
     });
@@ -259,29 +241,14 @@ in
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
-    mirage-kv = buildDunePackage {
-      pname = "mirage-kv";
-      version = "3.0.1";
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/mirage-kv/releases/download/v3.0.1/mirage-kv-v3.0.1.tbz;
-        sha256 = "1n736sjvdd8rkbc2b5jm9sn0w6hvhjycma5328r0l03v24vk5cki";
-      };
-      propagatedBuildInputs = [
-        lwt
-        mirage-device
-        fmt
-      ];
-    };
-
-    mrmime = callPackage ./mrmime {
-      ocamlPackages = oself;
-    };
+    mrmime = callPackage ./mrmime { ocamlPackages = oself; };
 
     mtime = osuper.mtime.override { jsooSupport = false; };
 
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     ocaml = osuper.ocaml.override { flambdaSupport = true; };
+
     ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
@@ -364,12 +331,7 @@ in
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
 
-    ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/ptime/archive/e85b030c862715eb579b3b902c8eed3f9b985d72.tar.gz;
-        sha256 = "0qr6wall0yv1i581anhly46jp34p7q4v011rnr84p9yfj4r6kphp";
-      };
-    });
+    ptime = (osuper.ptime.override { jsooSupport = false; });
 
     redemon = callPackage ./redemon { ocamlPackages = oself; };
 
@@ -380,7 +342,6 @@ in
     routes = callPackage ./routes { ocamlPackages = oself; };
 
     ssl = osuper.ssl.overrideAttrs (o: {
-      version = "0.5.10";
       src = builtins.fetchurl {
         url = https://github.com/savonet/ocaml-ssl/archive/v0.5.10.tar.gz;
         sha256 = "0vcc8p6i8lhs59y3ycikllc6j1adh9syh63g5ibnrp3yz3lk2cwl";
@@ -392,8 +353,8 @@ in
 
     stdlib-shims = osuper.stdlib-shims.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml/stdlib-shims/releases/download/0.2.0/stdlib-shims-0.2.0.tbz;
-        sha256 = "0nb5flrczpqla1jy2pcsxm06w4jhc7lgbpik11amwhfzdriz0n9c";
+        url = https://github.com/ocaml/stdlib-shims/releases/download/0.3.0/stdlib-shims-0.3.0.tbz;
+        sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
       };
     });
 
@@ -425,10 +386,6 @@ in
     });
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
-
-    xenstore = osuper.xenstore.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdlib-shims ];
-    });
 
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
   }

@@ -22,6 +22,9 @@ let
     # too long to build or broken
     "z3" "nonstd" "sosa" "genspio" "irmin-unix" "dose3"
 
+    # too outdated / dont care for now
+    "nocrypto" "wodan"
+
     # dune.configurator issue
     "cairo2" "gettext-stub" "zmq" "zmq-lwt" "ocamlfuse"
     "google-drive-ocamlfuse"
