@@ -18,10 +18,6 @@ let
     ocamlPackages = oself;
   };
 
-  cstructPackages = callPackage ./cstruct {
-    inherit osuper oself;
-  };
-
   dataloader-packages = callPackage ./dataloader {
     ocamlPackages = oself;
   };
@@ -119,7 +115,6 @@ in
   alcotestPackages //
   archiPackages //
   cookiePackages //
-  cstructPackages //
   dataloader-packages //
   faradayPackages //
   graphqlPackages //
@@ -387,23 +382,12 @@ in
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
 
-    ptime =
-      let
-        filterJSOO = p:
-          !(lib.hasAttr "pname" p && (p.pname == "js_of_ocaml"));
-      in
-      osuper.ptime.overrideAttrs (o: {
-        src = builtins.fetchurl {
-          url = https://github.com/dbuenzli/ptime/archive/e85b030c862715eb579b3b902c8eed3f9b985d72.tar.gz;
-          sha256 = "0qr6wall0yv1i581anhly46jp34p7q4v011rnr84p9yfj4r6kphp";
-        };
-
-        buildInputs = lib.filter filterJSOO o.buildInputs;
-        propagatedBuildInputs = lib.filter filterJSOO o.propagatedBuildInputs;
-        propagatedNativeBuildInputs = lib.filter filterJSOO (o.propagatedNativeBuildInputs or []);
-
-        buildPhase = "${topkg.run} build --with-js_of_ocaml false";
-      });
+    ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/dbuenzli/ptime/archive/e85b030c862715eb579b3b902c8eed3f9b985d72.tar.gz;
+        sha256 = "0qr6wall0yv1i581anhly46jp34p7q4v011rnr84p9yfj4r6kphp";
+      };
+    });
 
     redemon = callPackage ./redemon { ocamlPackages = oself; };
 
