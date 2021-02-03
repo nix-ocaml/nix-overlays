@@ -21,17 +21,13 @@ let
   ocamlVersions = ["4_06" "4_08" "4_09" "4_10" "4_11" "4_12"];
   oPs =
     lib.fold lib.mergeAttrs {}
-    (builtins.map (version: overlayOcamlPackages version) ocamlVersions);
+    (builtins.map overlayOcamlPackages ocamlVersions);
 
 in
   {
     # Stripped down postgres without the `bin` part, to allow static linking
     # with musl
     libpq = super.postgresql.override { enableSystemd = false; };
-
-    opaline = super.opaline.override {
-      inherit (self) ocamlPackages;
-    };
 
     dot-merlin-reader = (super.dot-merlin-reader.override {
       inherit (self) ocamlPackages;
@@ -52,6 +48,11 @@ in
 
     ocamlPackages = oPs.ocamlPackages_4_11;
     ocamlPackages_latest = self.ocamlPackages;
+    opaline = (super.opaline.override {
+      inherit (self) ocamlPackages;
+    }).overrideAttrs (o: {
+      nativeBuildInputs = o.buildInputs;
+    });
 
     # 4.06, 4.09 and 4.10 treated specially out of convenience because:
     # - 4.09 is still used in some of my projects
@@ -95,26 +96,15 @@ in
 
     bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
       ocamlPackages = self.ocamlPackages-bs;
-      dune_2 = pkgs.ocamlPackages.dune_2;
+      dune_2 = self.ocamlPackages.dune_2;
     };
 
-    pkgsCross.musl64.pkgsStatic =
-      let mkOverlay = ocamlVersion: import ./static/overlays.nix {
-        inherit lib ocamlVersion;
-        pkgsNative = self.pkgs;
-      };
-      in
-       super.pkgsCross.musl64.pkgsStatic.appendOverlays
-       ((lib.concatMap mkOverlay ocamlVersions) ++ [
-         (self: super: {
-           ocaml = super.ocaml-ng.ocamlPackages_4_11.ocaml;
-           ocamlPackages = super.ocaml-ng.ocamlPackages_4_11;
-           ocamlPackages_latest = super.ocaml-ng.ocamlPackages_4_11;
-           opaline = super.opaline.override {
-             inherit (self) ocamlPackages;
-           };
-         })
-       ]);
+    pkgsCross = super.pkgsCross // {
+      musl64 = super.pkgsCross.musl64.appendOverlays (super.pkgsCross.musl64.callPackage ./static {
+        inherit ocamlVersions;
+      });
+    };
+
 
     # Other packages
 
