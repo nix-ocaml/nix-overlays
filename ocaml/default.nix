@@ -220,6 +220,9 @@ in
     irmin-http = osuper.irmin-http.overrideAttrs (o: {
       doCheck = false;
     });
+    irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
+      doCheck = not stdenv.isDarwin;
+    });
 
     janeStreet = janestreetPackages;
 
