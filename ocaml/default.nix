@@ -155,19 +155,6 @@ in
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
-    camlzip = osuper.camlzip.overrideAttrs (o: {
-      buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
-        # TODO: maybe use a patch instead
-        "all zip.cmxa"
-        else
-          o.buildFlags;
-
-      src = builtins.fetchurl {
-        url = https://github.com/xavierleroy/camlzip/archive/rel110.tar.gz;
-        sha256 = "1ckxf9d19x63crkcn54agn5p77a9s84254s84ig53plh6rriqijz";
-      };
-    });
-
     coin = callPackage ./coin { ocamlPackages = oself; };
 
     containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -186,14 +173,6 @@ in
     decimal = callPackage ./decimal { ocamlPackages = oself; };
 
     dose3 = callPackage ./dose3 { ocamlPackages = oself; };
-
-    dune_2 = osuper.dune_2.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/2.8.2/dune-2.8.2.tbz";
-        sha256 = "07mf6pnmv1a6wh4la45zf6cn6qy2vcmz4xgx0djj75kw1wiyii72";
-      };
-      patches = [];
-    });
 
     # Make `dune` effectively be Dune v2.  This works because Dune 2 is
     # backwards compatible.
@@ -232,6 +211,9 @@ in
     });
     irmin-http = osuper.irmin-http.overrideAttrs (o: {
       doCheck = false;
+    });
+    irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
+      doCheck = !stdenv.isDarwin;
     });
 
     janeStreet = janestreetPackages;
@@ -424,12 +406,6 @@ in
       };
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
-
-    uchar = osuper.uchar.overrideAttrs (o: {
-      installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
-      nativeBuildInputs = [ocamlbuild ocaml findlib];
-      buildInputs = [ocamlbuild ocaml findlib];
-    });
 
     unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
