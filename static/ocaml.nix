@@ -7,7 +7,6 @@ let
   fixOCaml = ocaml:
     ((ocaml.override { useX11 = false; })
     .overrideAttrs (o: {
-      hardeningDisable = ["pie"];
       configurePlatforms = [ ];
       dontUpdateAutotoolsGnuConfigScripts = true;
     }))
@@ -15,16 +14,12 @@ let
       preConfigure = ''
         configureFlagsArray+=("CC=$CC" "PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
-      # (if (lib.elem "--enable-flambda" o.configureFlags) then
-      # ["--enable-flambda"] else []) ++
-      configureFlags = (removeUnknownConfigureFlags o.configureFlags) ++ [
-        "--enable-static"
+      configureFlags = o.configureFlags ++ [
         "-host ${o.stdenv.hostPlatform.config}"
         "-target ${o.stdenv.targetPlatform.config}"
       ];
     });
 
-  dds = x: x.overrideAttrs (o: { dontDisableStatic = true; });
   fixOCamlPackage = b:
     b.overrideAttrs (o: {
       # hardeningDisable = ["pie"];

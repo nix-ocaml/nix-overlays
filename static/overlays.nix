@@ -3,21 +3,28 @@
 
   (self: super:
     let
-      removeUnknownConfigureFlags = f: with super.lib;
+      inherit (super) lib;
+      removeUnknownConfigureFlags = f: with lib;
+        # TODO(anmonteiro): probably don't need to remove `"--disable-shared"`,
+        # the middleware below already does it.
         remove "--disable-shared"
         (remove "--enable-static" f);
-      dds = x: x.overrideAttrs (o: { dontDisableStatic = true; });
-      inherit (super.stdenvAdapters) makeStaticLibraries;
-      inherit (super.lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
+      inherit (super.stdenvAdapters) makeStaticBinaries makeStaticLibraries propagateBuildInputs;
+
+      inherit (lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
       disablePieHardening = stdenv: stdenv //
         { mkDerivation = args: stdenv.mkDerivation (args // {
             hardeningDisable = ["pie"];
+            configureFlags = super.lib.remove "--disable-shared" (args.configureFlags or []);
           });
         };
       staticAdapters = [
-        makeStaticLibraries
+        # this one comes first to remove `--disable-shared` added by `makeStaticLibraries`
         disablePieHardening
+        makeStaticLibraries
+        # propagateBuildInputs
       ];
+      # ++ optional (!super.stdenv.hostPlatform.isDarwin) makeStaticBinaries;
     in
     {
       stdenv = foldl (flip id) super.stdenv staticAdapters;
@@ -43,6 +50,4 @@
         # it doesn’t like the --disable-shared flag
         stdenv = super.stdenv;
       };
-
-      libpq = dds super.libpq;
     })
