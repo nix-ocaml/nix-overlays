@@ -155,14 +155,6 @@ in
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
-    camlzip = osuper.camlzip.overrideAttrs (o: {
-      buildFlags = if stdenv.hostPlatform != stdenv.buildPlatform then
-        # TODO: maybe use a patch instead
-        "all zip.cmxa"
-        else
-          o.buildFlags;
-    });
-
     coin = callPackage ./coin { ocamlPackages = oself; };
 
     containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -414,12 +406,6 @@ in
       };
       propagatedBuildInputs = [ xmlm uri ptime ];
     };
-
-    uchar = osuper.uchar.overrideAttrs (o: {
-      installPhase = "${opaline}/bin/opaline -libdir $OCAMLFIND_DESTDIR";
-      nativeBuildInputs = [ocamlbuild ocaml findlib];
-      buildInputs = [ocamlbuild ocaml findlib];
-    });
 
     unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
