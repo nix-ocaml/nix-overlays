@@ -373,16 +373,16 @@ in
 
     ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2/ppx_deriving-v5.2.tbz;
-        sha256 = "1rifvap3pr80qlmhy5swk71lb01wlb1qnv5zcp1m18sch8k2cb8w";
+        url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2.1/ppx_deriving-v5.2.1.tbz;
+        sha256 = "11h75dsbv3rs03pl67hdd3lbim7wjzh257ij9c75fcknbfr5ysz9";
       };
       propagatedBuildInputs = [ ppxlib result ppx_derivers ];
     });
 
     ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.6.1/ppx_deriving_yojson-v3.6.1.tbz;
-        sha256 = "1rj4i6l47f7pqr7cfxsfh05i5srb5pp9ns6df9719pbhghhfjbki";
+        url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/bc744e25765c7d6b4f65e3a484021aa736d7c919.tar.gz;
+        sha256 = "07vqa59p3pbk8bhizvn2z0p5z615cxyh4lnr1i4skn03s5wqvjin";
       };
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
