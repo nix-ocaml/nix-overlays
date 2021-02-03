@@ -241,13 +241,6 @@ in
       ocamlPackages = oself;
     };
 
-    mdx = osuper.mdx.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = "https://github.com/realworldocaml/mdx/releases/download/1.8.0/mdx-1.8.0.tbz";
-        sha256 = "1p2ip73da271as0x1gfbajik3mf1bkc8l54276vgacn1ja3saj52";
-      };
-    });
-
     merlin = osuper.merlin.overrideAttrs (_: {
       src = dot-merlin-reader.src;
     });
@@ -259,29 +252,14 @@ in
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
-    mirage-kv = buildDunePackage {
-      pname = "mirage-kv";
-      version = "3.0.1";
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/mirage-kv/releases/download/v3.0.1/mirage-kv-v3.0.1.tbz;
-        sha256 = "1n736sjvdd8rkbc2b5jm9sn0w6hvhjycma5328r0l03v24vk5cki";
-      };
-      propagatedBuildInputs = [
-        lwt
-        mirage-device
-        fmt
-      ];
-    };
-
-    mrmime = callPackage ./mrmime {
-      ocamlPackages = oself;
-    };
+    mrmime = callPackage ./mrmime { ocamlPackages = oself; };
 
     mtime = osuper.mtime.override { jsooSupport = false; };
 
     multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
     ocaml = osuper.ocaml.override { flambdaSupport = true; };
+
     ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
@@ -364,12 +342,7 @@ in
       propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
     });
 
-    ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/ptime/archive/e85b030c862715eb579b3b902c8eed3f9b985d72.tar.gz;
-        sha256 = "0qr6wall0yv1i581anhly46jp34p7q4v011rnr84p9yfj4r6kphp";
-      };
-    });
+    ptime = (osuper.ptime.override { jsooSupport = false; });
 
     redemon = callPackage ./redemon { ocamlPackages = oself; };
 
@@ -380,7 +353,6 @@ in
     routes = callPackage ./routes { ocamlPackages = oself; };
 
     ssl = osuper.ssl.overrideAttrs (o: {
-      version = "0.5.10";
       src = builtins.fetchurl {
         url = https://github.com/savonet/ocaml-ssl/archive/v0.5.10.tar.gz;
         sha256 = "0vcc8p6i8lhs59y3ycikllc6j1adh9syh63g5ibnrp3yz3lk2cwl";
@@ -392,8 +364,8 @@ in
 
     stdlib-shims = osuper.stdlib-shims.overrideAttrs (o: {
       src = builtins.fetchurl {
-        url = https://github.com/ocaml/stdlib-shims/releases/download/0.2.0/stdlib-shims-0.2.0.tbz;
-        sha256 = "0nb5flrczpqla1jy2pcsxm06w4jhc7lgbpik11amwhfzdriz0n9c";
+        url = https://github.com/ocaml/stdlib-shims/releases/download/0.3.0/stdlib-shims-0.3.0.tbz;
+        sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
       };
     });
 
