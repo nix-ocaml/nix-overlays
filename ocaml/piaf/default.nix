@@ -49,6 +49,10 @@ in
 
       nativeBuildInputs = [dune_2 ocaml findlib];
 
+      # remove the piaf directories. we're depending on piaf as a lib
+      postPatch = ''
+        rm -rf vendor lib lib_test multipart multipart_test
+      '';
       buildPhase = ''
         dune build bin/carl.exe --display=short --profile=release
       '';
