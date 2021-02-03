@@ -177,7 +177,7 @@ in
     # Make `dune` effectively be Dune v2.  This works because Dune 2 is
     # backwards compatible.
     dune = if lib.versionOlder "4.07" ocaml.version
-      then oself.dune_2
+      then osuper.dune_2
       else osuper.dune;
 
     ezgzip = buildDunePackage rec {
