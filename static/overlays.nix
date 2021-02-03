@@ -9,9 +9,26 @@
         # the middleware below already does it.
         remove "--disable-shared"
         (remove "--enable-static" f);
-      inherit (super.stdenvAdapters) makeStaticBinaries makeStaticLibraries propagateBuildInputs;
+      inherit (super.stdenvAdapters) makeStaticBinaries propagateBuildInputs;
 
       inherit (lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
+      makeStaticLibraries = stdenv: stdenv //
+        { mkDerivation = args: stdenv.mkDerivation (args // {
+            dontDisableStatic = true;
+            configureFlags = (args.configureFlags or []) ++ [
+              "--enable-static"
+              "--disable-shared"
+            ];
+            cmakeFlags =
+            let flags = (args.cmakeFlags or []); in
+            (if flags == null then [] else flags) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
+            mesonFlags =
+            let flags = (args.mesonFlags or []); in
+            (if flags == null then [] else flags) ++ [ "-Ddefault_library=static" ];
+          });
+        };
+
+
       disablePieHardening = stdenv: stdenv //
         { mkDerivation = args: stdenv.mkDerivation (args // {
             hardeningDisable = ["pie"];
