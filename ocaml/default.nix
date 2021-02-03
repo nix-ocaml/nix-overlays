@@ -426,9 +426,5 @@ in
 
     uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
-    xenstore = osuper.xenstore.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdlib-shims ];
-    });
-
     yuscii = callPackage ./yuscii { ocamlPackages = oself; };
   }
