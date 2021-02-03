@@ -141,10 +141,6 @@ in
       doCheck = ! stdenv.isDarwin;
     });
 
-    base64 = callPackage ./base64 {
-      ocamlPackages = oself;
-    };
-
     bigstring = osuper.bigstring.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
@@ -159,13 +155,6 @@ in
 
     containers-data = osuper.containers-data.overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
-    });
-
-    ctypes = osuper.ctypes.overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
-        sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
-      };
     });
 
     cudf = callPackage ./cudf { ocamlPackages = oself; };
