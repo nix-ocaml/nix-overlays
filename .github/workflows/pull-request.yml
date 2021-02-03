@@ -13,6 +13,8 @@ jobs:
           - { ocaml-version: 4_12, continue-on-error: true }
         os: ["ubuntu-latest", "macos-latest"]
     runs-on: ${{ matrix.os }}
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
       - uses: cachix/install-nix-action@v12
@@ -23,9 +25,13 @@ jobs:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
-        env:
-          NIXPKGS_ALLOW_UNFREE: 1
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
             nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace --keep-going
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
+      - name: Cross-compile nix packages to musl64
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          nix run -f ./sources.nix nix-build-uncached -c \
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr musl true --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}

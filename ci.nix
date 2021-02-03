@@ -1,4 +1,4 @@
-{ ocamlVersion }:
+{ ocamlVersion, musl ? false }:
 
 let
   pkgs = import ./sources.nix {};
@@ -58,5 +58,7 @@ in
     in
     (builtins.elem stdenv.system platforms)))
   )
+  (let pkgs = if musl then pkgs.pkgsCross.musl64 else pkgs; in
     pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"
+  )
 
