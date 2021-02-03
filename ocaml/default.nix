@@ -221,7 +221,7 @@ in
       doCheck = false;
     });
     irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
-      doCheck = not stdenv.isDarwin;
+      doCheck = !stdenv.isDarwin;
     });
 
     janeStreet = janestreetPackages;
