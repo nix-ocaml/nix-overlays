@@ -151,10 +151,6 @@ in
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
-    caqti-driver-postgresql = osuper.caqti-driver-postgresql.overrideAttrs (o: {
-      propagatedBuildInputs = [ caqti libpq ];
-    });
-
     coin = callPackage ./coin { ocamlPackages = oself; };
 
     containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -293,7 +289,7 @@ in
 
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
-    postgresql = osuper.postgresql.overrideAttrs (o: {
+    postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 
