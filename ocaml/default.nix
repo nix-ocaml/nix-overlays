@@ -80,10 +80,6 @@ let
     ocamlPackages = oself;
   };
 
-  subscriptionsTransportWsPackages = callPackage ./subscriptions-transport-ws {
-    ocamlPackages = oself;
-  };
-
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -107,7 +103,6 @@ oidcPackages //
 reasonPackages //
 redisPackages //
 sessionPackages //
-subscriptionsTransportWsPackages //
 websocketafPackages // {
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
@@ -348,6 +343,10 @@ websocketafPackages // {
       sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
     };
   });
+
+  subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
+    ocamlPackages = oself;
+  };
 
   syndic = buildDunePackage rec {
     pname = "syndic";
