@@ -224,7 +224,15 @@ websocketafPackages // {
 
   merlin = osuper.merlin.overrideAttrs (o: {
     src =
-      if (lib.versionOlder "4.11" osuper.ocaml.version)
+
+      if (lib.versionOlder "4.12" osuper.ocaml.version)
+      then
+        builtins.fetchurl
+          {
+            url = https://github.com/ocaml/merlin/releases/download/v4.0/merlin-v4.0-412.tbz;
+            sha256 = "0n60rf7w48kik9cl5m4kzklp8cxiamqad1qb01ikb8xma7f094p6";
+          }
+      else if (lib.versionOlder "4.11" osuper.ocaml.version)
       then dot-merlin-reader.src
       else
         builtins.fetchurl {
