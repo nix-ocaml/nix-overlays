@@ -291,8 +291,8 @@ websocketafPackages // {
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.21.0/ppxlib-0.21.0.tbz;
-      sha256 = "0gis9qzn3wl4xmvgyzn96i4q4xdayblb3amgb7rm5gr4ilsaz9wf";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.22.0/ppxlib-0.22.0.tbz;
+      sha256 = "0ykdp55i6x1a5mbxjlvwcfvs4kvzxqnn2bi2lf224rk677h93sry";
     };
     propagatedBuildInputs = [
       # XXX(anmonteiro): this propagates `base` and `stdio` even though
