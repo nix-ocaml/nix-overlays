@@ -630,14 +630,20 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppx_base ppxlib stdio ];
   };
 
-  ppx_typerep_conv = janePackage {
+  ppx_typerep_conv = (janePackage {
     pname = "ppx_typerep_conv";
     version = "0.14.1";
     minimumOCamlVersion = "4.04.2";
     hash = "1r0z7qlcpaicas5hkymy2q0gi207814wlay4hys7pl5asd59wcdh";
     meta.description = "Generation of runtime types from type declarations";
     propagatedBuildInputs = [ ppxlib typerep ];
-  };
+  }).overrideAttrs (_: {
+    src = builtins.fetchurl
+      {
+        url = https://github.com/janestreet/ppx_typerep_conv/archive/9fa81e6d6feee1049d23d06891aad55baf60dc06.tar.gz;
+        sha256 = "1m3lnxknfp2lx9v8qcncxw4qmvvpz566rgrwca2klxfczp8pzh1d";
+      };
+  });
 
   ppx_variants_conv = janePackage {
     pname = "ppx_variants_conv";
