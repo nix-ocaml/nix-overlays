@@ -4,8 +4,8 @@ with ocamlPackages;
 let src = fetchFromGitHub {
   owner = "anmonteiro";
   repo = "piaf";
-  rev = "03bfe63806a7affb09f57a9ac5844fddf67446b6";
-  sha256 = "13811z9v0c4s48k299qsb92mdihzinrm86zny99hxs4819hqspsn";
+  rev = "0.1.0";
+  sha256 = "190qa43h13i6i2ygb694g8929i036137xvxcc34xs6rmrx4xbbgn";
   fetchSubmodules = true;
 };
 

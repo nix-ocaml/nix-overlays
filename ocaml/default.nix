@@ -141,6 +141,14 @@ websocketafPackages // {
     then osuper.dune_2
     else osuper.dune;
 
+  dune-release = osuper.dune-release.overrideAttrs (o: {
+    doCheck = false;
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/dune-release/archive/5384dff2f79908352f0388bd2621ece3e783b6fe.tar.gz;
+      sha256 = "0vyi8sl5q077vb6yhz2lvzp9hnfmhvc6m4nd5sbwa482p3aplnl2";
+    };
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
