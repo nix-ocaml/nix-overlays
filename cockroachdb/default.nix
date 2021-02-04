@@ -1,9 +1,20 @@
-{ stdenv, lib, cmake, xz, which, autoconf , ncurses6, libedit, libunwind,
-  installShellFiles, removeReferencesTo, go, govers }:
-
+{ stdenv
+, lib
+, cmake
+, xz
+, which
+, autoconf
+, ncurses6
+, libedit
+, libunwind
+, installShellFiles
+, removeReferencesTo
+, go
+, govers
+}:
 let
   darwinDeps = [ libunwind libedit ];
-  linuxDeps  = [ ncurses6 ];
+  linuxDeps = [ ncurses6 ];
 
   buildInputs = if stdenv.isDarwin then darwinDeps else linuxDeps;
   nativeBuildInputs = [ installShellFiles cmake xz which autoconf removeReferencesTo go govers ];
@@ -55,10 +66,10 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "man" ];
 
   meta = with lib; {
-    homepage    = "https://www.cockroachlabs.com";
+    homepage = "https://www.cockroachlabs.com";
     description = "A scalable, survivable, strongly-consistent SQL database";
-    license     = licenses.bsl11;
-    platforms   = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+    license = licenses.bsl11;
+    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
     maintainers = with maintainers; [ rushmorem thoughtpolice rvolosatovs ];
   };
 }

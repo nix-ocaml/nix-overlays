@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let
   buildLambdaRuntime = args: buildDunePackage ({
     version = "0.1.0-dev";
@@ -11,7 +10,8 @@ let
     };
   } // args);
 
-in {
+in
+{
   lambda-runtime = buildLambdaRuntime {
     pname = "lambda-runtime";
     propagatedBuildInputs = [ yojson ppx_deriving_yojson piaf uri logs lwt ];

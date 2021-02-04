@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let
   buildGraphql = args: buildDunePackage ({
     version = "0.13.0-dev";
@@ -11,7 +10,8 @@ let
     };
   } // args);
 
-in {
+in
+{
   graphql_parser = buildGraphql {
     pname = "graphql_parser";
     checkInputs = [ alcotest ];

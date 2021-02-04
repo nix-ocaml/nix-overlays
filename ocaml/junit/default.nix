@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let
   buildJunit = args: buildDunePackage (rec {
     version = "2.0.2";
@@ -12,7 +11,8 @@ let
     };
   } // args);
 
-in {
+in
+{
   junit = buildJunit {
     pname = "junit";
     propagatedBuildInputs = [ ptime tyxml ];
@@ -23,4 +23,3 @@ in {
     propagatedBuildInputs = [ junit alcotest ];
   };
 }
-

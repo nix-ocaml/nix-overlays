@@ -1,7 +1,6 @@
 { lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
-
 let
   buildWebsocketaf = args: buildDunePackage ({
     version = "0.0.1-dev";
@@ -11,7 +10,8 @@ let
     };
   } // args);
 
-in {
+in
+{
   websocketaf = buildWebsocketaf {
     pname = "websocketaf";
     propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
@@ -32,26 +32,26 @@ in {
     ];
   };
 } // (if (lib.versionOlder "4.08" ocamlVersion) then {
-    websocketaf-async = buildWebsocketaf {
-      pname = "websocketaf-async";
-      doCheck = false;
-      propagatedBuildInputs = [
-        websocketaf
-        async
-        gluten-async
-        faraday-async
-        async_ssl
-        digestif
-      ];
-    };
+  websocketaf-async = buildWebsocketaf {
+    pname = "websocketaf-async";
+    doCheck = false;
+    propagatedBuildInputs = [
+      websocketaf
+      async
+      gluten-async
+      faraday-async
+      async_ssl
+      digestif
+    ];
+  };
 
-    websocketaf-mirage = buildWebsocketaf {
-      pname = "websocketaf-mirage";
-      doCheck = false;
-      propagatedBuildInputs = [
-        conduit-mirage
-        websocketaf-lwt
-        gluten-mirage
-      ];
-    };
-  } else {})
+  websocketaf-mirage = buildWebsocketaf {
+    pname = "websocketaf-mirage";
+    doCheck = false;
+    propagatedBuildInputs = [
+      conduit-mirage
+      websocketaf-lwt
+      gluten-mirage
+    ];
+  };
+} else { })

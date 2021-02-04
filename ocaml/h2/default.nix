@@ -1,7 +1,6 @@
 { lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
-
 let
   buildH2 = args: buildDunePackage (rec {
     version = "0.7.0";
@@ -10,7 +9,8 @@ let
       sha256 = "1g2y823bfaq7gy0cz5x5y8gd900lc8sq9pssqkgj6z94fnh378k3";
     };
   } // args);
-in {
+in
+{
   hpack = buildH2 {
     pname = "hpack";
     propagatedBuildInputs = [ angstrom faraday ];
@@ -43,25 +43,25 @@ in {
     ];
   };
 } // (if (lib.versionOlder "4.08" ocamlVersion) then {
-    h2-async = buildH2 {
-      pname = "h2-async";
-      doCheck = false;
-      propagatedBuildInputs = [
-        h2
-        async
-        gluten-async
-        faraday-async
-        async_ssl
-      ];
-    };
+  h2-async = buildH2 {
+    pname = "h2-async";
+    doCheck = false;
+    propagatedBuildInputs = [
+      h2
+      async
+      gluten-async
+      faraday-async
+      async_ssl
+    ];
+  };
 
-    h2-mirage = buildH2 {
-      pname = "h2-mirage";
-      doCheck = false;
-      propagatedBuildInputs = [
-        conduit-mirage
-        h2-lwt
-        gluten-mirage
-      ];
-    };
-  } else {})
+  h2-mirage = buildH2 {
+    pname = "h2-mirage";
+    doCheck = false;
+    propagatedBuildInputs = [
+      conduit-mirage
+      h2-lwt
+      gluten-mirage
+    ];
+  };
+} else { })

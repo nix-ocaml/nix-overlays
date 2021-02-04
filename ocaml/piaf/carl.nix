@@ -20,7 +20,9 @@ stdenv.mkDerivation {
   '';
 
   nativeBuildInputs = [
-    ocaml dune findlib
+    ocaml
+    dune
+    findlib
   ];
 
   buildInputs = [

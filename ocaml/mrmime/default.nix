@@ -11,9 +11,22 @@ buildDunePackage {
   };
 
   propagatedBuildInputs = [
-    rresult fmt ke unstrctrd ptime uutf rosetta ipaddr emile base64 pecu
-    bigstringaf bigarray-compat bigarray-overlap angstrom
-   ];
+    rresult
+    fmt
+    ke
+    unstrctrd
+    ptime
+    uutf
+    rosetta
+    ipaddr
+    emile
+    base64
+    pecu
+    bigstringaf
+    bigarray-compat
+    bigarray-overlap
+    angstrom
+  ];
 
   checkInputs = [ hxd alcotest jsonm ];
 }
