@@ -4,10 +4,6 @@ oself: osuper:
 
 with oself;
 let
-  alcotestPackages = callPackage ./alcotest {
-    ocamlPackages = oself;
-  };
-
   archiPackages = callPackage ./archi {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -106,7 +102,6 @@ let
   };
 
 in
-alcotestPackages //
 archiPackages //
 cookiePackages //
 dataloader-packages //
@@ -129,6 +124,8 @@ sessionPackages //
 subscriptionsTransportWsPackages //
 tyxmlPackages //
 websocketafPackages // {
+  alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
+
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
@@ -215,6 +212,37 @@ websocketafPackages // {
   janeStreet = janestreetPackages;
 
   jose = callPackage ./jose { ocamlPackages = oself; };
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/archive/0fcb60a4adce340759cfbe1393a6b0493257e93f.tar.gz;
+      sha256 = "08hsqz9hqp4hxg1r570d9lw5a9j2bgba0xc3dxyw1n27zh9k0db7";
+    };
+  });
+
+  js_of_ocaml = osuper.js_of_ocaml.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
+
+  js_of_ocaml-lwt = osuper.js_of_ocaml-lwt.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
+
+  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
+
+  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
+
+  js_of_ocaml-ppx_deriving_json = osuper.js_of_ocaml-ppx_deriving_json.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
+
+  js_of_ocaml-tyxml = osuper.js_of_ocaml-tyxml.overrideAttrs (_: {
+    src = js_of_ocaml-compiler.src;
+  });
 
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
