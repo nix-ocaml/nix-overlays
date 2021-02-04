@@ -222,8 +222,15 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
-  merlin = osuper.merlin.overrideAttrs (_: {
-    src = dot-merlin-reader.src;
+  merlin = osuper.merlin.overrideAttrs (o: {
+    src =
+      if (lib.versionOlder "4.11" osuper.ocaml.version)
+      then dot-merlin-reader.src
+      else
+        builtins.fetchurl {
+          url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
+          sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
+        };
   });
 
   mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
@@ -291,8 +298,8 @@ websocketafPackages // {
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.21.0/ppxlib-0.21.0.tbz;
-      sha256 = "0gis9qzn3wl4xmvgyzn96i4q4xdayblb3amgb7rm5gr4ilsaz9wf";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.22.0/ppxlib-0.22.0.tbz;
+      sha256 = "0ykdp55i6x1a5mbxjlvwcfvs4kvzxqnn2bi2lf224rk677h93sry";
     };
     propagatedBuildInputs = [
       # XXX(anmonteiro): this propagates `base` and `stdio` even though

@@ -153,13 +153,18 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppx_jane ];
   };
 
-  base_quickcheck = janePackage {
+  base_quickcheck = (janePackage {
     pname = "base_quickcheck";
     hash = "1lmp1h68g0gqiw8m6gqcbrp0fn76nsrlsqrwxp20d7jhh0693f3j";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Randomized testing framework, designed for compatibility with Base";
     propagatedBuildInputs = [ ppx_base ppx_fields_conv ppx_let ppx_sexp_value splittable_random ];
-  };
+  }).overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/base_quickcheck/archive/854396463466bd0f739b487b7ba4fb55b7ee49ef.tar.gz;
+      sha256 = "10dif9cinbq9wcmw1qmjsd6ajmfn68r16ivn5qf81z8jxxgwvgnj";
+    };
+  });
 
   bignum = janePackage {
     pname = "bignum";
@@ -586,8 +591,8 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppxlib sexplib0 base ];
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_sexp_conv/archive/13e9b27f5f9550b825128f8cd1f31d20dc8fa91b.tar.gz;
-      sha256 = "06pda057qbnycg5x01wybrvpbwdrrsn3p0xm92di1zj4fjj8z7w1";
+      url = https://github.com/janestreet/ppx_sexp_conv/archive/291fd9b59d19e29702e0e3170559250c1f382e42.tar.gz;
+      sha256 = "003mzsjy3abqv72rmfnlrjbk24mvl1ck7qz58b8a3xpmgyxz1kq1";
     };
   });
 
@@ -630,14 +635,20 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppx_base ppxlib stdio ];
   };
 
-  ppx_typerep_conv = janePackage {
+  ppx_typerep_conv = (janePackage {
     pname = "ppx_typerep_conv";
     version = "0.14.1";
     minimumOCamlVersion = "4.04.2";
     hash = "1r0z7qlcpaicas5hkymy2q0gi207814wlay4hys7pl5asd59wcdh";
     meta.description = "Generation of runtime types from type declarations";
     propagatedBuildInputs = [ ppxlib typerep ];
-  };
+  }).overrideAttrs (_: {
+    src = builtins.fetchurl
+      {
+        url = https://github.com/janestreet/ppx_typerep_conv/archive/9fa81e6d6feee1049d23d06891aad55baf60dc06.tar.gz;
+        sha256 = "1m3lnxknfp2lx9v8qcncxw4qmvvpz566rgrwca2klxfczp8pzh1d";
+      };
+  });
 
   ppx_variants_conv = janePackage {
     pname = "ppx_variants_conv";
