@@ -17,10 +17,6 @@ let
     ocamlPackages = oself;
   };
 
-  faradayPackages = callPackage ./faraday {
-    ocamlPackages = oself;
-  };
-
   graphqlPackages = callPackage ./graphql {
     ocamlPackages = oself;
   };
@@ -101,7 +97,6 @@ in
 archiPackages //
 cookiePackages //
 dataloader-packages //
-faradayPackages //
 graphqlPackages //
 glutenPackages //
 h2Packages //
@@ -172,6 +167,10 @@ websocketafPackages // {
       sha256 = "0npq4hq3zym8nmlyji7l5cqk6drx2rkcx73d60rxqh5g8dla8p4k";
     };
   });
+
+  faraday-async = callPackage ./faraday/async.nix { ocamlPackages = oself; };
+  faraday-lwt = callPackage ./faraday/lwt.nix { ocamlPackages = oself; };
+  faraday-lwt-unix = callPackage ./faraday/lwt-unix.nix { ocamlPackages = oself; };
 
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
