@@ -32,8 +32,8 @@ in
     inherit (self) ocamlPackages;
   }).overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/merlin/archive/487eb6f.tar.gz;
-      sha256 = "0jy5ixzlhplx7yy7l9wlq2ix9j5a1w4mj7q8rggz0y95wp6xprnh";
+      url = https://github.com/ocaml/merlin/releases/download/v4.0-411/merlin-v4.0-411.tbz;
+      sha256 = "0m7az1p6sf4fyy763z921j2q2ahl5zf83dgsmpcv29cnjy088655";
     };
   });
 

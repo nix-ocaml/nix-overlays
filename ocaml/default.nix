@@ -222,8 +222,15 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
-  merlin = osuper.merlin.overrideAttrs (_: {
-    src = dot-merlin-reader.src;
+  merlin = osuper.merlin.overrideAttrs (o: {
+    src =
+      if (lib.versionOlder "4.11" osuper.ocaml.version)
+      then dot-merlin-reader.src
+      else
+        builtins.fetchurl {
+          url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
+          sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
+        };
   });
 
   mirage-clock = osuper.mirage-clock.overrideAttrs (o: {

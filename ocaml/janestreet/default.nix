@@ -153,13 +153,18 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppx_jane ];
   };
 
-  base_quickcheck = janePackage {
+  base_quickcheck = (janePackage {
     pname = "base_quickcheck";
     hash = "1lmp1h68g0gqiw8m6gqcbrp0fn76nsrlsqrwxp20d7jhh0693f3j";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Randomized testing framework, designed for compatibility with Base";
     propagatedBuildInputs = [ ppx_base ppx_fields_conv ppx_let ppx_sexp_value splittable_random ];
-  };
+  }).overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/base_quickcheck/archive/854396463466bd0f739b487b7ba4fb55b7ee49ef.tar.gz;
+      sha256 = "10dif9cinbq9wcmw1qmjsd6ajmfn68r16ivn5qf81z8jxxgwvgnj";
+    };
+  });
 
   bignum = janePackage {
     pname = "bignum";
