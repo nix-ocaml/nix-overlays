@@ -9,6 +9,11 @@
         # the middleware below already does it.
         remove "--disable-shared"
         (remove "--enable-static" f);
+
+      removeUnknownFlagsAdapter = o: o.overrideAttrs (o: {
+        configureFlags = removeUnknownConfigureFlags (o.configureFlags or []);
+      });
+
       inherit (super.stdenvAdapters) makeStaticBinaries propagateBuildInputs;
 
       inherit (lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
@@ -67,4 +72,17 @@
         # it doesn’t like the --disable-shared flag
         stdenv = super.stdenv;
       };
+
+      db48 = super.db48.overrideAttrs (o: {
+        hardeningDisable = (o.hardeningDisable or []) ++ ["format"];
+      });
+
+      clasp = super.clasp.overrideAttrs (o: {
+        configurePlatforms = [];
+        configureFlags = ((removeUnknownConfigureFlags o.configureFlags) ++ [ "--static" ]);
+
+        preBuild = "cd build/release_static";
+      });
+
+      kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
     })

@@ -151,6 +151,10 @@ in
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
 
+    caqti-driver-postgresql = osuper.caqti-driver-postgresql.overrideAttrs (o: {
+      propagatedBuildInputs = [ caqti libpq ];
+    });
+
     coin = callPackage ./coin { ocamlPackages = oself; };
 
     containers-data = osuper.containers-data.overrideAttrs (o: {

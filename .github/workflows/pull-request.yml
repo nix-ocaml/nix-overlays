@@ -33,5 +33,5 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr musl true --show-trace --keep-going
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --arg musl true --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
