@@ -65,6 +65,7 @@ in
     # packages
     piaf
     carl
+    (carl.override { static = true; })
     caqti-driver-postgresql
   ]
   else drvs
