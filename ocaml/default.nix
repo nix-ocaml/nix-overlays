@@ -84,10 +84,6 @@ let
     ocamlPackages = oself;
   };
 
-  tyxmlPackages = callPackage ./tyxml {
-    ocamlPackages = oself;
-  };
-
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -112,7 +108,6 @@ reasonPackages //
 redisPackages //
 sessionPackages //
 subscriptionsTransportWsPackages //
-tyxmlPackages //
 websocketafPackages // {
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
@@ -363,6 +358,10 @@ websocketafPackages // {
     };
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
+
+  tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
+  tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
+  tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
   unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
