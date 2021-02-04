@@ -9,9 +9,31 @@
         # the middleware below already does it.
         remove "--disable-shared"
         (remove "--enable-static" f);
-      inherit (super.stdenvAdapters) makeStaticBinaries makeStaticLibraries propagateBuildInputs;
+
+      removeUnknownFlagsAdapter = o: o.overrideAttrs (o: {
+        configureFlags = removeUnknownConfigureFlags (o.configureFlags or []);
+      });
+
+      inherit (super.stdenvAdapters) makeStaticBinaries propagateBuildInputs;
 
       inherit (lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
+      makeStaticLibraries = stdenv: stdenv //
+        { mkDerivation = args: stdenv.mkDerivation (args // {
+            dontDisableStatic = true;
+            configureFlags = (args.configureFlags or []) ++ [
+              "--enable-static"
+              "--disable-shared"
+            ];
+            cmakeFlags =
+            let flags = (args.cmakeFlags or []); in
+            (if flags == null then [] else flags) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
+            mesonFlags =
+            let flags = (args.mesonFlags or []); in
+            (if flags == null then [] else flags) ++ [ "-Ddefault_library=static" ];
+          });
+        };
+
+
       disablePieHardening = stdenv: stdenv //
         { mkDerivation = args: stdenv.mkDerivation (args // {
             hardeningDisable = ["pie"];
@@ -50,4 +72,17 @@
         # it doesn’t like the --disable-shared flag
         stdenv = super.stdenv;
       };
+
+      db48 = super.db48.overrideAttrs (o: {
+        hardeningDisable = (o.hardeningDisable or []) ++ ["format"];
+      });
+
+      clasp = super.clasp.overrideAttrs (o: {
+        configurePlatforms = [];
+        configureFlags = ((removeUnknownConfigureFlags o.configureFlags) ++ [ "--static" ]);
+
+        preBuild = "cd build/release_static";
+      });
+
+      kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
     })

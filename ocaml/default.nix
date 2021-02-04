@@ -84,8 +84,6 @@ let
     ocamlPackages = oself;
   };
 
-  piafPackages = callPackage ./piaf { ocamlPackages = oself; };
-
   reasonPackages = callPackage ./reason {
     ocamlPackages = oself;
   };
@@ -130,7 +128,6 @@ in
   morphPackages //
   multicorePackages //
   oidcPackages//
-  piafPackages //
   reasonPackages //
   redisPackages //
   sessionPackages //
@@ -150,6 +147,8 @@ in
     });
 
     calendar = callPackage ./calendar { ocamlPackages = oself; };
+
+    carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
     coin = callPackage ./coin { ocamlPackages = oself; };
 
@@ -287,9 +286,11 @@ in
 
     pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
+    piaf = callPackage ./piaf { ocamlPackages = oself; };
+
     ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
-    postgresql = osuper.postgresql.overrideAttrs (o: {
+    postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
       buildInputs = o.buildInputs ++ [ dune-configurator ];
     });
 

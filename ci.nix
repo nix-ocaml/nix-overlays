@@ -1,4 +1,4 @@
-{ ocamlVersion }:
+{ ocamlVersion, musl ? false }:
 
 let
   pkgs = import ./sources.nix {};
@@ -47,16 +47,27 @@ let
     "ocaml-lsp" "batteries"
   ];
 
+  buildCandidates = lib.filterAttrs
+    (n: v:
+    let broken = if v ? meta && v.meta ? broken then v.meta.broken else false; in
+    ((! (builtins.elem n ignoredPackages)) &&
+     (! broken) &&
+    (let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+      in
+      (builtins.elem stdenv.system platforms)))
+    );
+    pkgs' = (if musl then pkgs.pkgsCross.musl64 else pkgs).ocaml-ng."ocamlPackages_${ocamlVersion}";
+    drvs = buildCandidates pkgs';
 in
 
-  lib.filterAttrs
-  (n: v:
-  let broken = if v ? meta && v.meta ? broken then v.meta.broken else false; in
-  ((! (builtins.elem n ignoredPackages)) &&
-   (! broken) &&
-  (let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
-    in
-    (builtins.elem stdenv.system platforms)))
-  )
-    pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"
+  if musl then with drvs; [
+    # just build a subset of the static overlay, with the most commonly used
+    # packages
+    piaf
+    carl
+    (carl.override { static = true; })
+    caqti-driver-postgresql
+  ]
+  else drvs
+
 

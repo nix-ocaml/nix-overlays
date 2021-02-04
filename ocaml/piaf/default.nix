@@ -11,8 +11,7 @@ let src = fetchFromGitHub {
 };
 
 in
-  {
-    piaf = ocamlPackages.buildDunePackage {
+  ocamlPackages.buildDunePackage {
       pname = "piaf";
       version = "0.0.1-dev";
       inherit src;
@@ -40,39 +39,4 @@ in
         description = "An HTTP library with HTTP/2 support written entirely in OCaml";
         license = lib.licenses.bsd3;
       };
-    };
-
-    carl = stdenv.mkDerivation {
-      name = "carl";
-      version = "0.0.1-dev";
-      inherit src;
-
-      nativeBuildInputs = [dune_2 ocaml findlib];
-
-      # remove the piaf directories. we're depending on piaf as a lib
-      postPatch = ''
-        rm -rf vendor lib lib_test multipart multipart_test
-      '';
-      buildPhase = ''
-        dune build bin/carl.exe --display=short --profile=release
-      '';
-      installPhase = ''
-        mkdir -p $out/bin
-        mv _build/default/bin/carl.exe $out/bin/carl
-      '';
-
-      buildInputs = [
-        piaf
-        cmdliner
-        fmt
-        camlzip
-        ezgzip
-      ];
-
-      meta = {
-        description = "`curl` clone implemented using Piaf.";
-        license = lib.licenses.bsd3;
-      };
-    };
-  }
-
+    }
