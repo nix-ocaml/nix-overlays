@@ -39,11 +39,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  httpafPackages = callPackage ./httpaf {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
   };
@@ -119,7 +114,6 @@ faradayPackages //
 graphqlPackages //
 glutenPackages //
 h2Packages //
-httpafPackages //
 janestreetPackages //
 junitPackages //
 kafka-packages //
@@ -189,6 +183,18 @@ websocketafPackages // {
 
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
+  };
+
+  httpaf = callPackage ./httpaf { ocamlPackages = oself; };
+  httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
+  httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
+  httpaf-mirage = callPackage ./httpaf/mirage.nix {
+    ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
+  };
+  httpaf-async = callPackage ./httpaf/async.nix {
+    ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
   };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
