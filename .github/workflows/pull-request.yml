@@ -24,6 +24,10 @@ jobs:
         with:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+      - name: fmt
+        run: |
+          nix-env -i nixpkgs-fmt
+          find . -iname '*.nix' | xargs nixpkgs-fmt --check
       - name: Build nix packages
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
