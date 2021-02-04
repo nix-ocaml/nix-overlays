@@ -586,8 +586,8 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppxlib sexplib0 base ];
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_sexp_conv/archive/13e9b27f5f9550b825128f8cd1f31d20dc8fa91b.tar.gz;
-      sha256 = "06pda057qbnycg5x01wybrvpbwdrrsn3p0xm92di1zj4fjj8z7w1";
+      url = https://github.com/janestreet/ppx_sexp_conv/archive/291fd9b59d19e29702e0e3170559250c1f382e42.tar.gz;
+      sha256 = "003mzsjy3abqv72rmfnlrjbk24mvl1ck7qz58b8a3xpmgyxz1kq1";
     };
   });
 
