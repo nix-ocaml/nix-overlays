@@ -51,10 +51,6 @@ let
     ocamlPackages = oself;
   };
 
-  logsPpxPackages = callPackage ./logs-ppx {
-    ocamlPackages = oself;
-  };
-
   menhirPackages =
     if !lib.versionAtLeast osuper.ocaml.version "4.07"
     then { }
@@ -113,7 +109,6 @@ janestreetPackages //
 junitPackages //
 kafka-packages //
 lambda-runtime-packages //
-logsPpxPackages //
 menhirPackages //
 morphPackages //
 multicorePackages //
@@ -213,43 +208,14 @@ websocketafPackages // {
 
   jose = callPackage ./jose { ocamlPackages = oself; };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/archive/0fcb60a4adce340759cfbe1393a6b0493257e93f.tar.gz;
-      sha256 = "08hsqz9hqp4hxg1r570d9lw5a9j2bgba0xc3dxyw1n27zh9k0db7";
-    };
-  });
-
-  js_of_ocaml = osuper.js_of_ocaml.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
-  js_of_ocaml-lwt = osuper.js_of_ocaml-lwt.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
-  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
-  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
-  js_of_ocaml-ppx_deriving_json = osuper.js_of_ocaml-ppx_deriving_json.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
-  js_of_ocaml-tyxml = osuper.js_of_ocaml-tyxml.overrideAttrs (_: {
-    src = js_of_ocaml-compiler.src;
-  });
-
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ke/archive/0b3d570f56c558766e8d53600e59ce65f3218556.tar.gz;
       sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
     };
   });
+
+  logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
   luv = callPackage ./luv { ocamlPackages = oself; };
 
