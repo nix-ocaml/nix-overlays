@@ -179,14 +179,8 @@ websocketafPackages // {
   httpaf = callPackage ./httpaf { ocamlPackages = oself; };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
-  httpaf-mirage = callPackage ./httpaf/mirage.nix {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-  httpaf-async = callPackage ./httpaf/async.nix {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
+  httpaf-mirage = callPackage ./httpaf/mirage.nix { ocamlPackages = oself; };
+  httpaf-async = callPackage ./httpaf/async.nix { ocamlPackages = oself; };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
