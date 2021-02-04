@@ -126,6 +126,7 @@ let
     "eliom"
     "ocsigen-toolkit"
     "ppx_import" # mystery
+    "visitors"
 
     # broken on 4.12
     "ocaml-lsp"
