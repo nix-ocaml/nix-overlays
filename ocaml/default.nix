@@ -4,10 +4,6 @@ oself: osuper:
 
 with oself;
 let
-  alcotestPackages = callPackage ./alcotest {
-    ocamlPackages = oself;
-  };
-
   archiPackages = callPackage ./archi {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
@@ -18,10 +14,6 @@ let
   };
 
   dataloader-packages = callPackage ./dataloader {
-    ocamlPackages = oself;
-  };
-
-  faradayPackages = callPackage ./faraday {
     ocamlPackages = oself;
   };
 
@@ -39,11 +31,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  httpafPackages = callPackage ./httpaf {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
   };
@@ -57,10 +44,6 @@ let
   };
 
   lambda-runtime-packages = callPackage ./lambda-runtime {
-    ocamlPackages = oself;
-  };
-
-  logsPpxPackages = callPackage ./logs-ppx {
     ocamlPackages = oself;
   };
 
@@ -97,34 +80,22 @@ let
     ocamlPackages = oself;
   };
 
-  subscriptionsTransportWsPackages = callPackage ./subscriptions-transport-ws {
-    ocamlPackages = oself;
-  };
-
-  tyxmlPackages = callPackage ./tyxml {
-    ocamlPackages = oself;
-  };
-
   websocketafPackages = callPackage ./websocketaf {
     ocamlPackages = oself;
     ocamlVersion = osuper.ocaml.version;
   };
 
 in
-alcotestPackages //
 archiPackages //
 cookiePackages //
 dataloader-packages //
-faradayPackages //
 graphqlPackages //
 glutenPackages //
 h2Packages //
-httpafPackages //
 janestreetPackages //
 junitPackages //
 kafka-packages //
 lambda-runtime-packages //
-logsPpxPackages //
 menhirPackages //
 morphPackages //
 multicorePackages //
@@ -132,9 +103,9 @@ oidcPackages //
 reasonPackages //
 redisPackages //
 sessionPackages //
-subscriptionsTransportWsPackages //
-tyxmlPackages //
 websocketafPackages // {
+  alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
+
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
@@ -187,9 +158,19 @@ websocketafPackages // {
     };
   });
 
+  faraday-async = callPackage ./faraday/async.nix { ocamlPackages = oself; };
+  faraday-lwt = callPackage ./faraday/lwt.nix { ocamlPackages = oself; };
+  faraday-lwt-unix = callPackage ./faraday/lwt-unix.nix { ocamlPackages = oself; };
+
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
   };
+
+  httpaf = callPackage ./httpaf { ocamlPackages = oself; };
+  httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
+  httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
+  httpaf-mirage = callPackage ./httpaf/mirage.nix { ocamlPackages = oself; };
+  httpaf-async = callPackage ./httpaf/async.nix { ocamlPackages = oself; };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -216,6 +197,8 @@ websocketafPackages // {
       sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
     };
   });
+
+  logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
   luv = callPackage ./luv { ocamlPackages = oself; };
 
@@ -361,6 +344,10 @@ websocketafPackages // {
     };
   });
 
+  subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
+    ocamlPackages = oself;
+  };
+
   syndic = buildDunePackage rec {
     pname = "syndic";
     version = "1.6.1";
@@ -370,6 +357,10 @@ websocketafPackages // {
     };
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
+
+  tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
+  tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
+  tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
   unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
