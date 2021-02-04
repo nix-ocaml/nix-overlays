@@ -1,7 +1,6 @@
 { stdenv, opaline, ocamlPackages, lib, dune_2, nodejs, gnutar, fetchFromGitHub }:
 
 with ocamlPackages;
-
 let
   bin_folder = if stdenv.isDarwin then "darwin" else "linux";
 in
@@ -52,4 +51,3 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 }
-

@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let buildDataloader = args: buildDunePackage ({
   version = "0.0.1-dev";
 
@@ -11,14 +10,14 @@ let buildDataloader = args: buildDunePackage ({
   };
 } // args);
 in
-  {
-    dataloader = buildDataloader {
-      pname = "dataloader";
-    };
+{
+  dataloader = buildDataloader {
+    pname = "dataloader";
+  };
 
-    dataloader-lwt = buildDataloader {
-      pname = "dataloader-lwt";
+  dataloader-lwt = buildDataloader {
+    pname = "dataloader-lwt";
 
-      propagatedBuildInputs = [ dataloader lwt ];
-    };
-  }
+    propagatedBuildInputs = [ dataloader lwt ];
+  };
+}

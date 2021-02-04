@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let buildReasonPkg = args: buildDunePackage ({
   version = "3.6.0";
 
@@ -12,7 +11,6 @@ let buildReasonPkg = args: buildDunePackage ({
 } // args);
 
 in
-
 {
   reason = buildReasonPkg {
     pname = "reason";

@@ -12,11 +12,10 @@ stdenv.mkDerivation rec {
     make clean
   '';
 
-  buildFlags =  [ "-j9" "world.opt" ];
+  buildFlags = [ "-j9" "world.opt" ];
 
   meta = with lib; {
     branch = "4.06";
     platforms = platforms.all;
   };
 }
-

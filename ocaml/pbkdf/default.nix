@@ -16,4 +16,3 @@ buildDunePackage rec {
 
   checkInputs = [ alcotest ];
 }
-

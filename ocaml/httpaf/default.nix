@@ -1,7 +1,6 @@
 { lib, ocamlPackages, ocamlVersion }:
 
 with ocamlPackages;
-
 let
   buildHttpaf = args: buildDunePackage ({
     version = "0.7.0-dev";
@@ -10,7 +9,8 @@ let
       sha256 = "0h5jfnrxqfg9jk49l8zq6g551nnm0qh29mnza1cjm4jb7vbsj54n";
     };
   } // args);
-in {
+in
+{
   httpaf = buildHttpaf {
     pname = "httpaf";
     propagatedBuildInputs = [ angstrom faraday ];
@@ -32,25 +32,25 @@ in {
     ];
   };
 } // (if (lib.versionOlder "4.08" ocamlVersion) then {
-    httpaf-async = buildHttpaf {
-      pname = "httpaf-async";
-      doCheck = false;
-      propagatedBuildInputs = [
-        httpaf
-        async
-        gluten-async
-        faraday-async
-        async_ssl
-      ];
-    };
+  httpaf-async = buildHttpaf {
+    pname = "httpaf-async";
+    doCheck = false;
+    propagatedBuildInputs = [
+      httpaf
+      async
+      gluten-async
+      faraday-async
+      async_ssl
+    ];
+  };
 
-    httpaf-mirage = buildHttpaf {
-      pname = "httpaf-mirage";
-      doCheck = false;
-      propagatedBuildInputs = [
-        conduit-mirage
-        httpaf-lwt
-        gluten-mirage
-      ];
-    };
-  } else {})
+  httpaf-mirage = buildHttpaf {
+    pname = "httpaf-mirage";
+    doCheck = false;
+    propagatedBuildInputs = [
+      conduit-mirage
+      httpaf-lwt
+      gluten-mirage
+    ];
+  };
+} else { })

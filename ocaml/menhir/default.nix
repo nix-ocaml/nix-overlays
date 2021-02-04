@@ -1,7 +1,6 @@
 { ocamlPackages }:
 
 with ocamlPackages;
-
 let
   buildMenhir = args: buildDunePackage (rec {
     version = "20201201";
@@ -12,7 +11,8 @@ let
     useDune2 = true;
   } // args);
 
-in {
+in
+{
   menhirSdk = buildMenhir {
     pname = "menhirSdk";
   };
