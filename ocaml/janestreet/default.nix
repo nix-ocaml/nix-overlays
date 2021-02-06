@@ -422,7 +422,7 @@ with ocamlPackages;
     hash = "0ciqs6f9ab73gq4krj14xzzba4ydcxph214m87i1s0xp25hwxr8v";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Expands [@cold] into [@inline never][@specialise never][@local never]";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ base ppxlib ];
   };
 
   ppx_compare = janePackage {
@@ -452,7 +452,7 @@ with ocamlPackages;
     hash = "1sriid4vh10p80wwvn46v1g16m646qw5r5xzwlymyz5gbvq2zf40";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Generate a list containing all values of a finite type";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
   };
 
   ppx_expect = (janePackage {
@@ -460,7 +460,7 @@ with ocamlPackages;
     hash = "05v6jzn1nbmwk3vzxxnb3380wzg2nb28jpb3v5m5c4ikn0jrhcwn";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Cram like framework for OCaml";
-    propagatedBuildInputs = [ ppx_here ppx_inline_test re ];
+    propagatedBuildInputs = [ ppx_here ppx_inline_test re stdio ];
     doCheck = false; # circular dependency with ppx_jane
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -483,7 +483,7 @@ with ocamlPackages;
     hash = "0s7rb4dhz4ibhh42a9sfxjj3zbwfyfmaihr92hpdv5j9xqn3n8mi";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Simpler notation for fixed point literals";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
   };
 
   ppx_hash = janePackage {
@@ -499,7 +499,7 @@ with ocamlPackages;
     hash = "09zcyigaalqccs9s0h7n0535clgfmqb9s4p1jbgcqji9zj8w426s";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Expands [%here] into its location";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
     doCheck = false; # test build rules broken
   };
 
@@ -526,7 +526,7 @@ with ocamlPackages;
     hash = "1ahk4mv63s9cw8ji62598ggw6b3lqpaljqa2ya7w91lify3lb76q";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Code style checker for Jane Street Packages";
-    propagatedBuildInputs = [ octavius ppxlib ];
+    propagatedBuildInputs = [ octavius ppxlib base ];
   };
 
   ppx_let = janePackage {
@@ -534,7 +534,7 @@ with ocamlPackages;
     hash = "1jq3g88xv9g6y9im67hiig3cfn5anwwnq09mp7yn7a86ha5r9w3i";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Monadic let-bindings";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
   };
 
   ppx_module_timer = janePackage {
@@ -542,7 +542,7 @@ with ocamlPackages;
     hash = "163q1rpblwv82fxwyf0p4j9zpsj0jzvkfmzb03r0l49gqhn89mp6";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Ppx rewriter that records top-level module startup times";
-    propagatedBuildInputs = [ time_now ];
+    propagatedBuildInputs = [ time_now stdio ];
   };
 
   ppx_optcomp = (janePackage {
@@ -550,7 +550,7 @@ with ocamlPackages;
     hash = "1wav3zgh4244x1ll562g735cwwrzyk5jj72niq9jgz9qjlpsprlk";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib stdio ];
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/ppx_optcomp/archive/a4422ecd7e0677569533b1dae07924f5d786e8f6.tar.gz;
@@ -563,7 +563,7 @@ with ocamlPackages;
     hash = "1d7rsdqiccxp2w4ykb9klarddm2qrrym3brbnhzx2hm78iyj3hzv";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Pattern matching on flat options";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
   };
 
   ppx_pattern_bind = janePackage {
@@ -623,7 +623,7 @@ with ocamlPackages;
     hash = "1sp1kn23qr0pfypa4ilvhqq5y11y13xpfygfl582ra9kik5xqfa1";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Stable types conversions generator";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib base ];
   };
 
   ppx_string = janePackage {

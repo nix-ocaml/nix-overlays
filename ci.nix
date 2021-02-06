@@ -156,4 +156,9 @@ if musl then with drvs; [
   caqti-driver-postgresql
 ]
 else
-  [ drvs pkgs.bucklescript-experimental pkgs.ocamlPackages-bs.merlin ]
+  let bucklescript-drvs = with pkgs.ocamlPackages-bs; [
+    pkgs.bucklescript-experimental
+    merlin
+    graphql_ppx
+  ]; in
+  [ drvs ] ++ bucklescript-drvs

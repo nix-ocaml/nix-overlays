@@ -40,6 +40,7 @@ in
   ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_06.overrideScope' (oself: osuper: {
     ocaml = import ./bucklescript-experimental/ocaml.nix {
       inherit (super) lib stdenv;
+      inherit (super.ocaml.meta) license;
       src = "${self.bucklescript-experimental.src}/ocaml";
       version = "4.06.1+BS";
     };
@@ -87,7 +88,7 @@ in
   };
 
   dune_2 =
-    if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.07"
+    if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.06"
     then self.ocamlPackages.dune_2
     else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
     then self.ocaml-ng.ocamlPackages_4_11.dune_2
