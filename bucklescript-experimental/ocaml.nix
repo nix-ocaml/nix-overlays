@@ -1,4 +1,4 @@
-{ stdenv, lib, src, version }:
+{ stdenv, lib, src, version, license }:
 
 stdenv.mkDerivation rec {
   inherit src version;
@@ -17,5 +17,6 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     branch = "4.06";
     platforms = platforms.all;
+    inherit license;
   };
 }

@@ -6,10 +6,9 @@ buildDunePackage {
   pname = "graphql_ppx";
   version = "1.1.0-dev";
 
-  # src = /Users/anmonteiro/projects/graphql_ppx;
   src = builtins.fetchurl {
-    url = https://github.com/reasonml-community/graphql-ppx/archive/b122c05c9c924f0e6538d0d853df0387a3fa6735.tar.gz;
-    sha256 = "1vk9kaiv41v0bq1m1wp5hh0lgi0gjii24g8a14kyyfa3mjidpmmb";
+    url = https://github.com/reasonml-community/graphql-ppx/archive/056dc58ac111b503d4f358238f11c52f5a801031.tar.gz;
+    sha256 = "0l0fyhhhifxkgyqlqa7j1bpsk0c3cngk9di53s2r054iylrc2g9b";
   };
 
   useDune2 = true;

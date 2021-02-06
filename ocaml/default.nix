@@ -137,7 +137,7 @@ websocketafPackages // {
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
   dune =
-    if lib.versionOlder "4.07" ocaml.version
+    if lib.versionOlder "4.06" ocaml.version
     then osuper.dune_2
     else osuper.dune;
 
@@ -310,12 +310,6 @@ websocketafPackages // {
       sha256 = "0ykdp55i6x1a5mbxjlvwcfvs4kvzxqnn2bi2lf224rk677h93sry";
     };
     propagatedBuildInputs = [
-      # XXX(anmonteiro): this propagates `base` and `stdio` even though
-      # ppxlib doesn't depend on them. Many JaneStreet PPXes do, however, and
-      # unfortunately they're hard to override without copying everything
-      # over (see https://github.com/NixOS/nixpkgs/issues/75485).
-      base
-      stdio
       ocaml-compiler-libs
       ocaml-migrate-parsetree-2-1
       ppx_derivers
