@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     runHook preBuild
-    dune build -p ${name} --display=short
+    dune build -p ${name}
     runHook postBuild
   '';
 
