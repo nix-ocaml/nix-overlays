@@ -39,7 +39,7 @@ in
 
   ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_06.overrideScope' (oself: osuper: {
     ocaml = import ./bucklescript-experimental/ocaml.nix {
-      stdenv = super.stdenv;
+      inherit (super) lib stdenv;
       src = "${self.bucklescript-experimental.src}/ocaml";
       version = "4.06.1+BS";
     };

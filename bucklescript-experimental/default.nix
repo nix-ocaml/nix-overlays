@@ -6,29 +6,25 @@ let
 in
 stdenv.mkDerivation rec {
   name = "bucklescript";
-  version = "8.3.0-dune";
+  version = "9.0.0-dune";
 
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "bucklescript";
-    rev = "de286f346";
-    sha256 = "00piz4smzrppg5bvbigpj347qhsl7ib46l9js64fcazhyihx5l7m";
+    rev = "db22c0df408c575233fbecc2088acca141a75bd3";
+    sha256 = "0yvlsrzmx7mnkbygh5xh2px510maj5kayn3dfw6s2b8d7l1fsbfz";
     fetchSubmodules = true;
   };
 
   nativeBuildInputs = [
     gnutar
-    nodejs
     dune_2
     ocaml
     findlib
     cppo
   ];
 
-  propagatedBuildInputs = [
-    reason
-    camlp4
-  ];
+  propagatedBuildInputs = [ reason ];
 
   dontConfigure = true;
 
