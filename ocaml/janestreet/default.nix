@@ -422,7 +422,7 @@ with ocamlPackages;
     hash = "0ciqs6f9ab73gq4krj14xzzba4ydcxph214m87i1s0xp25hwxr8v";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Expands [@cold] into [@inline never][@specialise never][@local never]";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ base ppxlib ];
   };
 
   ppx_compare = janePackage {
@@ -550,7 +550,7 @@ with ocamlPackages;
     hash = "1wav3zgh4244x1ll562g735cwwrzyk5jj72niq9jgz9qjlpsprlk";
     minimumOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
-    propagatedBuildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppxlib stdio ];
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/ppx_optcomp/archive/a4422ecd7e0677569533b1dae07924f5d786e8f6.tar.gz;
