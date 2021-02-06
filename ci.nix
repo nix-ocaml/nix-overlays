@@ -155,4 +155,5 @@ if musl then with drvs; [
   (carl.override { static = true; })
   caqti-driver-postgresql
 ]
-else drvs
+else
+  [ drvs pkgs.bucklescript-experimental pkgs.ocamlPackages-bs.merlin ]
