@@ -103,6 +103,10 @@ in
     musl64 = super.pkgsCross.musl64.appendOverlays (super.pkgsCross.musl64.callPackage ./static {
       inherit ocamlVersions;
     });
+
+    aarch64-multiplatform = super.pkgsCross.aarch64-multiplatform.appendOverlays (super.pkgsCross.aarch64-multiplatform.callPackage ./cross {
+      inherit ocamlVersions;
+    });
   };
 
 
