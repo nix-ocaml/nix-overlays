@@ -1,8 +1,33 @@
 diff --git a/Makefile b/Makefile
-index 41d8e2636..51118d91c 100644
+index 41d8e2636..a3a903bb9 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1018,7 +1018,7 @@ toplevel/opttoploop.cmx: otherlibs/dynlink/dynlink.cmxa
+@@ -511,13 +511,6 @@ endif
+ 
+ .PHONY: installoptopt
+ installoptopt:
+-	$(INSTALL_PROG) ocamlc.opt$(EXE) "$(INSTALL_BINDIR)"
+-	$(INSTALL_PROG) ocamlopt.opt$(EXE) "$(INSTALL_BINDIR)"
+-	$(INSTALL_PROG) lex/ocamllex.opt$(EXE) "$(INSTALL_BINDIR)"
+-	cd "$(INSTALL_BINDIR)"; \
+-	   $(LN) ocamlc.opt$(EXE) ocamlc$(EXE); \
+-	   $(LN) ocamlopt.opt$(EXE) ocamlopt$(EXE); \
+-	   $(LN) ocamllex.opt$(EXE) ocamllex$(EXE)
+ 	$(INSTALL_DATA) \
+ 	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
+ 	   file_formats/*.cmx \
+@@ -531,10 +524,6 @@ installoptopt:
+ 	$(INSTALL_DATA) \
+ 	   compilerlibs/*.cmxa compilerlibs/*.$(A) \
+ 	   "$(INSTALL_COMPLIBDIR)"
+-	$(INSTALL_DATA) \
+-	   $(BYTESTART:.cmo=.cmx) $(BYTESTART:.cmo=.$(O)) \
+-	   $(OPTSTART:.cmo=.cmx) $(OPTSTART:.cmo=.$(O)) \
+-	   "$(INSTALL_COMPLIBDIR)"
+ 	if test -f ocamlnat$(EXE) ; then \
+ 	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"; \
+ 	  $(INSTALL_DATA) \
+@@ -1018,7 +1007,7 @@ toplevel/opttoploop.cmx: otherlibs/dynlink/dynlink.cmxa
  make_opcodes := tools/make_opcodes$(EXE)
  
  bytecomp/opcodes.ml: runtime/caml/instruct.h $(make_opcodes)

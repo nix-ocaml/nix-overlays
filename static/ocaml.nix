@@ -5,21 +5,15 @@ let
       (remove "--enable-static" f);
   fixOCaml = ocaml:
     ((ocaml.override { useX11 = false; }).overrideAttrs (o: {
-      configurePlatforms = [ ];
       dontUpdateAutotoolsGnuConfigScripts = true;
     })).overrideDerivation (o: {
       preConfigure = ''
         configureFlagsArray+=("CC=$CC" "PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
-      configureFlags = o.configureFlags ++ [
-        "-host ${o.stdenv.hostPlatform.config}"
-        "-target ${o.stdenv.targetPlatform.config}"
-      ];
     });
 
   fixOCamlPackage = b:
     b.overrideAttrs (o: {
-      # hardeningDisable = ["pie"];
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
       configurePlatforms = [ ];
       nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);

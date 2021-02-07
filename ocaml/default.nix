@@ -145,7 +145,7 @@ websocketafPackages // {
   # backwards compatible.
   dune =
     if lib.versionOlder "4.06" ocaml.version
-    then osuper.dune_2
+    then oself.dune_2
     else osuper.dune;
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
