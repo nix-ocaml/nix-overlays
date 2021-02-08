@@ -1,6 +1,3 @@
-# TODO:
-# - patches for more versions of OCaml
-
 { lib, buildPackages, writeText, stdenv, bash }:
 let mergeInputs = names: attrs:
   let ret =
