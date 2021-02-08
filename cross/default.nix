@@ -5,7 +5,9 @@
     let
       overlayOcamlPackages = version: {
         "ocamlPackages_${version}" =
-          super.ocaml-ng."ocamlPackages_${version}".overrideScope'
+          builtins.foldl'
+            (acc: x: acc.overrideScope' x)
+            super.ocaml-ng."ocamlPackages_${version}"
             (super.callPackage ./ocaml.nix { });
       };
       oPs =

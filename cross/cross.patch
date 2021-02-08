@@ -1,60 +1,31 @@
-diff --git a/Makefile b/Makefile
-index 41d8e2636..a3a903bb9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -511,13 +511,6 @@ endif
+diff --git a/runtime/Makefile b/runtime/Makefile
+index 1abf2c8cd..475c530a2 100644
+--- a/runtime/Makefile
++++ b/runtime/Makefile
+@@ -272,7 +272,9 @@ caml/version.h : $(ROOTDIR)/tools/make-version-header.sh $(ROOTDIR)/VERSION
+ # Libraries and programs
  
- .PHONY: installoptopt
- installoptopt:
--	$(INSTALL_PROG) ocamlc.opt$(EXE) "$(INSTALL_BINDIR)"
--	$(INSTALL_PROG) ocamlopt.opt$(EXE) "$(INSTALL_BINDIR)"
--	$(INSTALL_PROG) lex/ocamllex.opt$(EXE) "$(INSTALL_BINDIR)"
--	cd "$(INSTALL_BINDIR)"; \
--	   $(LN) ocamlc.opt$(EXE) ocamlc$(EXE); \
--	   $(LN) ocamlopt.opt$(EXE) ocamlopt$(EXE); \
--	   $(LN) ocamllex.opt$(EXE) ocamllex$(EXE)
- 	$(INSTALL_DATA) \
- 	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
- 	   file_formats/*.cmx \
-@@ -531,10 +524,6 @@ installoptopt:
- 	$(INSTALL_DATA) \
- 	   compilerlibs/*.cmxa compilerlibs/*.$(A) \
- 	   "$(INSTALL_COMPLIBDIR)"
--	$(INSTALL_DATA) \
--	   $(BYTESTART:.cmo=.cmx) $(BYTESTART:.cmo=.$(O)) \
--	   $(OPTSTART:.cmo=.cmx) $(OPTSTART:.cmo=.$(O)) \
--	   "$(INSTALL_COMPLIBDIR)"
- 	if test -f ocamlnat$(EXE) ; then \
- 	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"; \
- 	  $(INSTALL_DATA) \
-@@ -1018,7 +1007,7 @@ toplevel/opttoploop.cmx: otherlibs/dynlink/dynlink.cmxa
- make_opcodes := tools/make_opcodes$(EXE)
+ ocamlrun$(EXE): prims.$(O) libcamlrun.$(A)
+-	$(call MAKE_OCAMLRUN,$@,$^ $(LIBS))
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
++	# $(call MAKE_OCAMLRUN,$@,$^ $(LIBS))
  
- bytecomp/opcodes.ml: runtime/caml/instruct.h $(make_opcodes)
--	runtime/ocamlrun$(EXE) $(make_opcodes) -opcodes < $< > $@
-+	$(OCAMLRUN) $(make_opcodes) -opcodes < $< > $@
- 
- bytecomp/opcodes.mli: bytecomp/opcodes.ml
- 	$(CAMLC) -i $< > $@
+ libcamlrun.$(A): $(libcamlrun_OBJECTS)
+ 	$(call MKLIB,$@, $^)
 diff --git a/tools/Makefile b/tools/Makefile
-index 07e2eda1a..357a381a5 100644
+index 07e2eda1a..0e75e5844 100644
 --- a/tools/Makefile
 +++ b/tools/Makefile
-@@ -248,7 +248,7 @@ $(make_opcodes): make_opcodes.ml
- 	$(CAMLC) $< -o $@
- 
- opnames.ml: $(ROOTDIR)/runtime/caml/instruct.h $(make_opcodes)
--	$(ROOTDIR)/runtime/ocamlrun$(EXE) $(make_opcodes) -opnames < $< > $@
-+	$(CAMLRUN) $(make_opcodes) -opnames < $< > $@
- 
- clean::
- 	rm -f opnames.ml make_opcodes make_opcodes.exe make_opcodes.ml
-@@ -331,7 +331,7 @@ caml_tex := caml-tex$(EXE)
+@@ -331,9 +331,8 @@ caml_tex := caml-tex$(EXE)
  
  $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str $(UNIXLIB))
  $(caml_tex): $(caml_tex_files)
 -	$(ROOTDIR)/runtime/ocamlrun$(EXE) $(ROOTDIR)/ocamlc$(EXE) -nostdlib \
-+	$(CAMLRUN) $(ROOTDIR)/ocamlc$(EXE) -nostdlib \
- 	                            -I $(ROOTDIR)/stdlib $(LINKFLAGS) -linkall \
- 	                            -o $@ -no-alias-deps $^
+-	                            -I $(ROOTDIR)/stdlib $(LINKFLAGS) -linkall \
+-	                            -o $@ -no-alias-deps $^
++	$(CAMLC) -nostdlib -I $(ROOTDIR)/stdlib $(LINKFLAGS) -linkall \
++	         -o $@ -no-alias-deps $^
  
+ # we need str and unix which depend on the bytecode version of other tools
+ # thus we delay building caml-tex to the opt.opt stage
