@@ -125,7 +125,6 @@ in
           preConfigure = ''
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
           '';
-          configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
 
           buildPhase = ''
             runHook preBuild
@@ -210,25 +209,30 @@ in
 
             }
 
-            make_host -j8 world
-            make_host opt-core
-            make_host ocamlc.opt ocamlopt.opt
-            make_host otherlibraries ocamldebugger
-            make_host ocamllex.opt ocamltoolsopt ocamltoolsopt.opt
+            make_host -j8 runtime coreall
+            make_host -j8 opt-core
+            make_host -j8 ocamlc.opt ocamlopt.opt
+            make_host -j8 ocamldoc compilerlibs/ocamltoplevel.cma otherlibraries ocamldebugger
+            make_host -j8 ocamllex.opt ocamltoolsopt ocamltoolsopt.opt ocamldoc.opt
 
             rm $(find . | grep -e '\.cm.$')
             make_target -j8 -C stdlib all allopt
             make_target ocaml ocamlc ocamlopt
-            make_target otherlibraries otherlibrariesopt ocamltoolsopt
-            make_target driver/main.cmx driver/optmain.cmx \
+            make_target -j8 otherlibraries otherlibrariesopt ocamltoolsopt
+            make_target -j8 driver/main.cmx driver/optmain.cmx \
               compilerlibs/ocamlcommon.cmxa \
               compilerlibs/ocamlbytecomp.cmxa \
               compilerlibs/ocamloptcomp.cmxa
+            make_target -j8 -C ocamldoc all allopt
 
             runHook postBuild
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
-          patches = [ ./cross.patch ];
+          patches = [
+            (if lib.versionOlder "4.12" ocaml.version then ./cross_4_12.patch
+            else if lib.versionOlder "4.12" ocaml.version then ./cross_4_11.patch else
+            throw "OCaml ${ocaml.version} not supported for cross-compilation")
+          ];
         });
       fixOCamlPackage = b:
         let

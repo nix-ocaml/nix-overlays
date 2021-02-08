@@ -108,6 +108,7 @@ in
       inherit ocamlVersions;
     });
 
+    # TODO: I think this already gets the static overlay?
     aarch64-multiplatform-musl =
       (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
         ((super.pkgsCross.aarch64-multiplatform-musl.callPackage ./cross {
