@@ -19,9 +19,7 @@
       ocaml = self.ocamlPackages.ocaml;
       ocamlPackages = oPs.ocamlPackages_4_11;
       ocamlPackages_latest = self.ocamlPackages;
-      opaline = super.opaline.override {
-        inherit (self) ocamlPackages;
-      };
+      opaline = super.buildPackages.opaline;
 
       ocaml-ng = super.ocaml-ng // oPs // {
         ocamlPackages = self.ocamlPackages;

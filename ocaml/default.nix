@@ -51,9 +51,7 @@ let
     if !lib.versionAtLeast osuper.ocaml.version "4.07"
     then { }
     else
-      callPackage ./menhir {
-        ocamlPackages = oself;
-      };
+      callPackage ./menhir { ocamlPackages = oself; };
 
   morphPackages = callPackage ./morph {
     ocamlPackages = oself;
@@ -372,6 +370,8 @@ websocketafPackages // {
       sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
     };
   });
+
+  stringext = callPackage ./stringext { ocamlPackages = oself; };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;

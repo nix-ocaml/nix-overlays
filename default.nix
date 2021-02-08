@@ -110,13 +110,12 @@ in
 
     aarch64-multiplatform-musl =
       (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
-        (super.pkgsCross.aarch64-multiplatform-musl.callPackage ./cross {
+        ((super.pkgsCross.aarch64-multiplatform-musl.callPackage ./cross {
           inherit ocamlVersions;
-        })
-      ).appendOverlays
-        (super.pkgsCross.aarch64-multiplatform-musl.callPackage ./static {
+        }) ++ (super.pkgsCross.aarch64-multiplatform-musl.callPackage ./static {
           inherit ocamlVersions;
-        });
+        }))
+      );
   };
 
 
