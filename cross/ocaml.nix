@@ -322,7 +322,6 @@ in
 
         setupHook = writeText "setupHook.sh" ''
           addOCamlPath () {
-            OCAMLPATH=
             export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${osuper.ocaml.version}/site-lib/"
             if test -n "''${createFindlibDestdir-}";
             then
