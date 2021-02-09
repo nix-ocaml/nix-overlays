@@ -8,7 +8,7 @@ let
       dontUpdateAutotoolsGnuConfigScripts = true;
     })).overrideDerivation (o: {
       preConfigure = ''
-        configureFlagsArray+=("CC=$CC" "PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
+        configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
     });
 
@@ -32,5 +32,4 @@ in
       ];
     });
     ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
-  }
-)
+  })
