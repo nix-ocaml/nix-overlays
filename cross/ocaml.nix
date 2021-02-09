@@ -16,7 +16,7 @@ in
 [
   (oself: osuper:
     let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
+      crossName = stdenv.hostPlatform.parsed.cpu.name;
       version = lib.stringAsChars
         (x: if x == "." then "_" else x)
         (builtins.substring 0 4 osuper.ocaml.version);
@@ -50,6 +50,10 @@ in
           '';
         });
 
+      base = osuper.base.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
+      });
+
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
         postInstall = ''
@@ -75,6 +79,43 @@ in
         '';
       });
 
+      lwt = osuper.lwt.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
+      });
+
+      mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ dune-configurator ]);
+      });
+
+      mirage-crypto-pk = osuper.mirage-crypto-pk.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ ppx_sexp_conv ]);
+      });
+
+      num = osuper.num.overrideAttrs (_: {
+        OCAMLFIND_TOOLCHAIN = "${crossName}";
+        postInstall = ''
+          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
+          mkdir -p $OCAMLFIND_DESTDIR
+          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
+        '';
+      });
+
+      ppx_sexp_conv = osuper.ppx_sexp_conv.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[
+          ppxlib
+        ]);
+      });
+
+      ppxlib = osuper.ppxlib.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[
+          stdlib-shims
+          ppx_derivers
+          ocaml-migrate-parsetree-2-1
+          ocaml-compiler-libs
+          sexplib0
+        ]);
+      });
+
       seq = osuper.seq.overrideAttrs (_: {
         installPhase = ''
           install_dest="$out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/seq/"
@@ -82,6 +123,11 @@ in
           cp META $install_dest
         '';
       });
+
+      ssl = osuper.ssl.overrideAttrs
+        (o: {
+          nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
+        });
 
       uchar = osuper.uchar.overrideAttrs (_: {
         installPhase = oself.topkg.installPhase;
@@ -95,15 +141,22 @@ in
         nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ angstrom ]);
       });
 
-      lwt = osuper.lwt.overrideAttrs
-        (o: {
-          nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
-        });
+      zarith = osuper.zarith.overrideAttrs (o: {
+        configurePlatforms = [ ];
+        OCAMLFIND_TOOLCHAIN = "${crossName}";
+        configureFlags = o.configureFlags ++ [
+          "-prefixnonocaml ${stdenv.cc.targetPrefix}"
+        ];
+        preBuild = ''
+          buildFlagsArray+=("host=${stdenv.hostPlatform.config}")
+        '';
+        postInstall = ''
+          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
+          mkdir -p $OCAMLFIND_DESTDIR
+          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
+        '';
+      });
 
-      ssl = osuper.ssl.overrideAttrs
-        (o: {
-          nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
-        });
     })
 
   (oself: osuper:

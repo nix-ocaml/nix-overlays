@@ -357,6 +357,14 @@ with ocamlPackages;
     minimumOCamlVersion = "4.04.2";
     meta.description = "S-expression parsing library";
     propagatedBuildInputs = [ base sexplib0 ];
+
+    patches = [
+      (fetchpatch {
+        url = https://github.com/janestreet/parsexp/commit/93a792773a4143accc425d97325d3db1083292f3.patch;
+        sha256 = "0ai48046f48mgc4as2dfbikdcfg522in5nahrqy1b28vih8qj8wp";
+      })
+    ];
+
   };
 
   patience_diff = janePackage {

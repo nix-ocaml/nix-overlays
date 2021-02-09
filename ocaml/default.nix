@@ -154,6 +154,8 @@ websocketafPackages // {
     };
   });
 
+  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -260,6 +262,15 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
+  num = osuper.num.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/num/archive/v1.4.tar.gz;
+      sha256 = "090gl27g84r3s2b12vgkz8fp269jqlrhx4lpg7008yviisv8hl01";
+    };
+
+    patches = [ ./num/findlib-install.patch ];
+  });
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
@@ -410,5 +421,13 @@ websocketafPackages // {
 
   uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
+  yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
+
+  zarith = osuper.zarith.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/zarith/archive/b229acfbdc85d3de3650283e4ad07b77c0f59c2f.tar.gz;
+      sha256 = "06kzlx6adczn0a40pwl66dn0jbmz4laah4v46fyxkhxybyg1cvcv";
+    };
+  });
 }
