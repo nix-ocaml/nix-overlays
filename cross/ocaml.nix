@@ -45,7 +45,7 @@ in
 
           buildPhase = ''
             runHook preBuild
-            dune build -p ${o.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} --display=short -x ${crossName}
+            dune build -p ${o.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
             runHook postBuild
           '';
 
@@ -348,11 +348,8 @@ in
       cppo = natocamlPackages.cppo;
       dune_2 = natocamlPackages.dune_2;
       dune = natocamlPackages.dune_2;
-      ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
-        buildInputs = [ oself.findlib ];
-        propagatedNativeBuildInputs = [ buildPackages.stdenv.cc ];
+      ocamlbuild = natocamlPackages.ocamlbuild.overrideAttrs (o: {
         propagatedBuildInputs = [ buildPackages.stdenv.cc ];
-        nativeBuildInputs = [ natfindlib natocaml ];
       });
 
       topkg = osuper.topkg.overrideAttrs (o:
