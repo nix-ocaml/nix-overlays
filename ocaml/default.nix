@@ -330,8 +330,6 @@ websocketafPackages // {
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-  ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2-1;
-
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.22.0/ppxlib-0.22.0.tbz;
