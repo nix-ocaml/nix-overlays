@@ -110,6 +110,13 @@ websocketafPackages // {
     doCheck = ! stdenv.isDarwin;
   });
 
+  base64 = osuper.base64.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-base64/releases/download/v3.5.0/base64-v3.5.0.tbz;
+      sha256 = "19735bvb3k263hzcvdhn4d5lfv2qscc9ib4q85wgxsvq0p0fk7aq";
+    };
+  });
+
   bigstring = osuper.bigstring.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
@@ -194,6 +201,8 @@ websocketafPackages // {
   irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
     doCheck = false;
   });
+
+  iter = osuper.iter.overrideAttrs (o: { doCheck = false; });
 
   janeStreet = janestreetPackages;
 
@@ -296,6 +305,14 @@ websocketafPackages // {
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
+  ppx_gen_rec = osuper.ppx_gen_rec.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/flowtype/ocaml-ppx_gen_rec/archive/05291d0e65e56da4485ae54599d94c83319f3700.tar.gz;
+      sha256 = "05pmx5jj635smp17vpqbc9b50cfz49d8hfgfcjf6b5g7awpdb499";
+    };
+    buildInputs = (lib.remove oself.ocaml-migrate-parsetree-1-8 o.buildInputs) ++ [ ppxlib ];
+  });
+
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
@@ -345,12 +362,7 @@ websocketafPackages // {
   routes = callPackage ./routes { ocamlPackages = oself; };
 
   ssl = osuper.ssl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/v0.5.10.tar.gz;
-      sha256 = "0vcc8p6i8lhs59y3ycikllc6j1adh9syh63g5ibnrp3yz3lk2cwl";
-    };
-
-    nativeBuildInputs = [ dune-configurator pkgconfig ];
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
   });
 

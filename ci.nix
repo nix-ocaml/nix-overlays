@@ -127,6 +127,7 @@ let
     "ocsigen-toolkit"
     "ppx_import" # mystery
     "visitors"
+    "mdx"
 
     # broken on 4.12
     "ocaml-lsp"
