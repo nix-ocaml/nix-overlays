@@ -202,6 +202,8 @@ websocketafPackages // {
     doCheck = false;
   });
 
+  iter = osuper.iter.overrideAttrs (o: { doCheck = false; });
+
   janeStreet = janestreetPackages;
 
   jose = callPackage ./jose { ocamlPackages = oself; };
