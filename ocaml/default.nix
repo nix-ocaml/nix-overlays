@@ -110,6 +110,13 @@ websocketafPackages // {
     doCheck = ! stdenv.isDarwin;
   });
 
+  base64 = osuper.base64.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-base64/releases/download/v3.5.0/base64-v3.5.0.tbz;
+      sha256 = "19735bvb3k263hzcvdhn4d5lfv2qscc9ib4q85wgxsvq0p0fk7aq";
+    };
+  });
+
   bigstring = osuper.bigstring.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
@@ -259,6 +266,8 @@ websocketafPackages // {
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
+
+  ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2-1;
 
   ocamlgraph = buildDunePackage {
     pname = "ocamlgraph";
