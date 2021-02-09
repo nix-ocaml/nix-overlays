@@ -362,12 +362,7 @@ websocketafPackages // {
   routes = callPackage ./routes { ocamlPackages = oself; };
 
   ssl = osuper.ssl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/v0.5.10.tar.gz;
-      sha256 = "0vcc8p6i8lhs59y3ycikllc6j1adh9syh63g5ibnrp3yz3lk2cwl";
-    };
-
-    nativeBuildInputs = [ dune-configurator pkgconfig ];
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
   });
 
