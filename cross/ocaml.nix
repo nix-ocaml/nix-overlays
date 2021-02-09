@@ -1,3 +1,13 @@
+# Note to the future reader:
+#
+# As opposed to the other overlays, this one effectively virtualizes an opam
+# switch. Dune is particular in how it finds its dependencies across build /
+# host platforms, and emulating an opam switch layout makes it work seamlessly.
+#
+# The only obvious downside is that there can only be one of each, even at
+# build time (e.g. OMP / ppxlib, etc that are possible to allow in the other
+# overlays).
+
 { lib, buildPackages, writeText, stdenv, bash }:
 let mergeInputs = names: attrs:
   let ret =
