@@ -93,6 +93,8 @@ in
         '';
       });
 
+      ocaml-migrate-parsetree = oself.ocaml-migrate-parsetree-2-1;
+
       seq = osuper.seq.overrideAttrs (_: {
         installPhase = ''
           install_dest="$out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/seq/"
