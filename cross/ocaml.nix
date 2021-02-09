@@ -370,10 +370,11 @@ in
             fi
             ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
           '';
-          buildInputs = (with oself; [ ocaml ]);
 
-          nativeBuildInputs = (with natocamlPackages; [ ocaml ]) ++
-          (with oself; [ ocamlbuild findlib buildPackages.stdenv.cc ]);
+          buildInputs = [ oself.ocaml ];
+
+          nativeBuildInputs = [ natocaml buildPackages.stdenv.cc ] ++
+          (with oself; [ ocamlbuild findlib ]);
 
           setupHook = writeText "setupHook.sh" ''
             addToolchainVariable () {
