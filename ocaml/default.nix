@@ -305,6 +305,14 @@ websocketafPackages // {
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
+  ppx_gen_rec = osuper.ppx_gen_rec.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/flowtype/ocaml-ppx_gen_rec/archive/05291d0e65e56da4485ae54599d94c83319f3700.tar.gz;
+      sha256 = "05pmx5jj635smp17vpqbc9b50cfz49d8hfgfcjf6b5g7awpdb499";
+    };
+    buildInputs = o.buildInputs ++ [ ppxlib ];
+  });
+
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
