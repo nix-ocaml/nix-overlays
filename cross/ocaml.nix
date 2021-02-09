@@ -25,34 +25,33 @@ in
     in
     {
       dune-configurator = osuper.dune-configurator.overrideAttrs (o: {
-        dontConfigure = true;
-        # nativeBuildInputs = with natocamlPackages; [ ocaml dune  ];
-        # nativeBuildInputs = (with natocamlPackages; [ ocaml dune buildPackages.stdenv.cc ]) ++ (with oself; [ ocaml findlib ]);
+        configurePlatforms = [ ];
       });
 
       buildDunePackage = args:
         (osuper.buildDunePackage args).overrideAttrs (o: {
-          nativeBuildInputs = (args.nativeBuildInputs or [ ]) ++ (with natocamlPackages; [ ocaml dune buildPackages.stdenv.cc ]);
+          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++
+            (with natocamlPackages; [ ocaml buildPackages.stdenv.cc ]);
 
           buildPhase = ''
             runHook preBuild
-            # dune build -p ${o.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES}
-            dune build -p ${o.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName} --display=short
+            dune build -p ${o.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} --display=short -x ${crossName}
             runHook postBuild
           '';
-          installPhase = ''
-            runHook preInstall
-            ${buildPackages.opaline}/bin/opaline -name ${o.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
-            runHook postInstall
-          '';
-          postInstall = ''
-            rm -rf $out/lib/ocaml/4.12.0-beta1/site-lib
-          '';
-        });
 
-      base = osuper.base.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
-      });
+          installPhase =
+            let
+              natPackage = natocamlPackages."${o.pname}";
+            in
+            ''
+              runHook preInstall
+              ${buildPackages.opaline}/bin/opaline -name ${o.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
+
+              rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+              cp -r ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+              runHook postInstall
+            '';
+        });
 
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
@@ -70,25 +69,9 @@ in
       });
 
       menhir = osuper.menhir.overrideAttrs (o: {
-        buildPhase = ''
-          dune build -p ${o.pname},menhirSdk,menhirLib -x ${crossName} --display=short
-        '';
         postInstall = ''
-          ls -lah ${natocamlPackages.menhir}/bin
           cp -r ${natocamlPackages.menhir}/bin/* $out/bin
         '';
-      });
-
-      lwt = osuper.lwt.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
-      });
-
-      mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ dune-configurator ]);
-      });
-
-      mirage-crypto-pk = osuper.mirage-crypto-pk.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ ppx_sexp_conv ]);
       });
 
       num = osuper.num.overrideAttrs (_: {
@@ -100,22 +83,6 @@ in
         '';
       });
 
-      ppx_sexp_conv = osuper.ppx_sexp_conv.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[
-          ppxlib
-        ]);
-      });
-
-      ppxlib = osuper.ppxlib.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[
-          stdlib-shims
-          ppx_derivers
-          ocaml-migrate-parsetree-2-1
-          ocaml-compiler-libs
-          sexplib0
-        ]);
-      });
-
       seq = osuper.seq.overrideAttrs (_: {
         installPhase = ''
           install_dest="$out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/seq/"
@@ -124,21 +91,8 @@ in
         '';
       });
 
-      ssl = osuper.ssl.overrideAttrs
-        (o: {
-          nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages;[ dune-configurator ]);
-        });
-
       uchar = osuper.uchar.overrideAttrs (_: {
         installPhase = oself.topkg.installPhase;
-      });
-
-      uri = osuper.uri.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ stringext ]);
-      });
-
-      uuuu = osuper.uuuu.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ (with natocamlPackages; [ angstrom ]);
       });
 
       zarith = osuper.zarith.overrideAttrs (o: {
@@ -286,8 +240,16 @@ in
         });
       fixOCamlPackage = b:
         let
-          inputs = mergeInputs [ "propagatedBuildInputs" "buildInputs" ] [ b ];
-          natInputs = mergeInputs [ "propagatedBuildInputs" "buildInputs" "nativePropagatedBuildInputs" "nativeBuildInputs" ] [ b ];
+          inputs = mergeInputs [
+            "propagatedBuildInputs"
+            "buildInputs"
+            "nativeBuildInputs"
+          ] [ b ];
+          natInputs = mergeInputs [
+            "propagatedBuildInputs"
+            "buildInputs"
+            "nativeBuildInputs"
+          ] [ b ];
 
           path =
             builtins.concatStringsSep ":"
@@ -340,7 +302,6 @@ in
 
         in
         b.overrideAttrs (o: {
-          # configurePlatforms = [ ];
           nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });
@@ -361,6 +322,7 @@ in
 
         setupHook = writeText "setupHook.sh" ''
           addOCamlPath () {
+            OCAMLPATH=
             export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${osuper.ocaml.version}/site-lib/"
             if test -n "''${createFindlibDestdir-}";
             then
@@ -397,13 +359,11 @@ in
             fi
             ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
           '';
-          buildInputs = (with oself; [ findlib ocaml ]);
-          nativeBuildInputs = [
-            oself.ocamlbuild
-            natocamlPackages.findlib
-            buildPackages.stdenv.cc
-            natocaml
-          ];
+          buildInputs = (with oself; [ ocaml ]);
+
+          nativeBuildInputs = (with natocamlPackages; [ ocaml ]) ++
+          (with oself; [ ocamlbuild findlib buildPackages.stdenv.cc ]);
+
           setupHook = writeText "setupHook.sh" ''
             addToolchainVariable () {
               if [ -z "''${selfBuild:-}" ]; then

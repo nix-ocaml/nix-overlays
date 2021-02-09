@@ -224,7 +224,7 @@ websocketafPackages // {
       url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
       sha256 = "00wbx1gr38b8pivv1blrzkrwq9qqqq0hbsvkdndcrzyh83q5ypwc";
     };
-    buildInputs = o.buildInputs ++ [ dune-configurator ocaml-syntax-shims ];
+    buildInputs = [ ocaml dune findlib cppo dune-configurator ];
   });
 
   magic-mime = callPackage ./magic-mime {
@@ -329,6 +329,8 @@ websocketafPackages // {
   });
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
+
+  ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2-1;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src = builtins.fetchurl {
