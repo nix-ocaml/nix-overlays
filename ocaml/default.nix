@@ -269,8 +269,6 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2-1;
-
   ocamlgraph = buildDunePackage {
     pname = "ocamlgraph";
     version = "2.0.0";
