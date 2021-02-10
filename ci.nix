@@ -1,4 +1,4 @@
-{ ocamlVersion, musl ? false }:
+{ ocamlVersion, target ? "native" }:
 let
   pkgs = import ./sources.nix { };
   inherit (pkgs) lib stdenv;
@@ -134,32 +134,68 @@ let
     "batteries"
   ];
 
-  buildCandidates = lib.filterAttrs
-    (n: v:
-      let broken = if v ? meta && v.meta ? broken then v.meta.broken else false; in
-      ((! (builtins.elem n ignoredPackages)) &&
-        (! broken) &&
-        (
-          let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
-          in
-          (builtins.elem stdenv.system platforms)
-        ))
-    );
-  pkgs' = (if musl then pkgs.pkgsCross.musl64 else pkgs).ocaml-ng."ocamlPackages_${ocamlVersion}";
-  drvs = buildCandidates pkgs';
+  buildCandidates = pkgs:
+    let
+      ocamlPackages = pkgs: pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+    in
+    lib.filterAttrs
+      (n: v:
+        let broken =
+          if v ? meta && v.meta ? broken then v.meta.broken else false;
+        in
+        ((! (builtins.elem n ignoredPackages)) &&
+          (! broken) &&
+          (
+            let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+            in
+            (builtins.elem stdenv.system platforms)
+          ))
+      )
+      ocamlPackages;
+
+  targets = {
+    native =
+      let
+        drvs = buildCandidates pkgs;
+        bucklescript-drvs = with pkgs.ocamlPackages-bs; [
+          pkgs.bucklescript-experimental
+          merlin
+          graphql_ppx
+        ];
+      in
+      [ drvs ] ++ bucklescript-drvs;
+
+
+    musl =
+      let drvs = buildCandidates pkgs.pkgsCross.musl64;
+      in
+      with drvs;
+      [
+        # just build a subset of the static overlay, with the most commonly used
+        # packages
+        piaf
+        carl
+        (carl.override {
+          static = true;
+        })
+        caqti-driver-postgresql
+      ];
+
+
+    arm64 =
+      let
+        drvs = buildCandidates pkgs.pkgsCross.arm64-multiplatform-musl;
+      in
+      with drvs; [
+        # just build a subset of the static overlay, with the most commonly used
+        # packages
+        piaf
+        carl
+        (carl.override {
+          static = true;
+        })
+        caqti-driver-postgresql
+      ];
+  };
 in
-if musl then with drvs; [
-  # just build a subset of the static overlay, with the most commonly used
-  # packages
-  piaf
-  carl
-  (carl.override { static = true; })
-  caqti-driver-postgresql
-]
-else
-  let bucklescript-drvs = with pkgs.ocamlPackages-bs; [
-    pkgs.bucklescript-experimental
-    merlin
-    graphql_ppx
-  ]; in
-  [ drvs ] ++ bucklescript-drvs
+targets."${target}"

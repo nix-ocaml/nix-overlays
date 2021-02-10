@@ -36,5 +36,11 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --arg musl true --show-trace --keep-going
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target musl --show-trace --keep-going
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
+      - name: Cross-compile nix packages to aarch64-multiplatform-musl (static)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          nix run -f ./sources.nix nix-build-uncached -c \
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target arm64 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
