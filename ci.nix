@@ -183,7 +183,7 @@ let
 
     arm64 =
       let
-        drvs = buildCandidates pkgs.pkgsCross.arm64-multiplatform-musl;
+        drvs = buildCandidates pkgs.pkgsCross.aarch64-multiplatform-musl;
       in
       with drvs; [
         # just build a subset of the static overlay, with the most commonly used
