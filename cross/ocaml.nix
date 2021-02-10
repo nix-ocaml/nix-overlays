@@ -9,18 +9,26 @@
 # overlays).
 
 { lib, buildPackages, writeText, stdenv, bash }:
-let mergeInputs = names: attrs:
-  let ret =
-    builtins.filter
-      lib.isDerivation
-      (lib.concatLists
-        (builtins.map
+let
+  __mergeInputs = acc: names: attrs:
+    let ret =
+      lib.foldl' (acc: x: acc // { "${x.name}" = x; })
+        { }
+        (builtins.concatMap
           (name:
-            lib.concatLists (lib.catAttrs name attrs))
-          names));
-  in
-  if ret == [ ] then [ ] else
-  lib.unique (ret ++ (mergeInputs names ret));
+            builtins.filter
+              (x: lib.isDerivation x && lib.hasInfix "ocaml" x.name)
+              (lib.concatLists (lib.catAttrs name attrs)))
+          names);
+    in
+    if ret == { } then acc
+    else
+      __mergeInputs (acc // ret) names (lib.attrValues ret);
+
+  mergeInputs = names: attrs:
+    let acc = __mergeInputs { } names [ attrs ];
+    in
+    lib.attrValues acc;
 
 in
 [
@@ -243,12 +251,14 @@ in
             "propagatedBuildInputs"
             "buildInputs"
             "nativeBuildInputs"
-          ] [ b ];
+          ]
+            b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
             "nativeBuildInputs"
-          ] [ b ];
+          ]
+            b;
 
           path =
             builtins.concatStringsSep ":"
