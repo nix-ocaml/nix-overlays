@@ -14,7 +14,7 @@ jobs:
           - { ocaml-version: 4_12, continue-on-error: true }
         config:
           - {os: "ubuntu-latest", target: "native"}
-          - {os: "macos-latest", "native"}
+          - {os: "macos-latest", target: "native"}
           - {os: "ubuntu-latest", target: "arm64"}
           - {os: "ubuntu-latest", target: "musl"}
     runs-on: ${{ matrix.config.os }}
