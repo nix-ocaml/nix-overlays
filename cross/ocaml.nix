@@ -41,7 +41,7 @@ in
       buildDunePackage = args:
         (osuper.buildDunePackage args).overrideAttrs (o: {
           nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++
-            (with natocamlPackages; [ ocaml buildPackages.stdenv.cc ]);
+            [ natocaml buildPackages.stdenv.cc ];
 
           buildPhase = ''
             runHook preBuild
@@ -136,6 +136,7 @@ in
       natfindlib = natocamlPackages.findlib;
       fixOCaml = ocaml: ocaml.overrideAttrs (o:
         {
+          enableParallelBuilding = true;
           nativeBuildInputs = [ buildPackages.stdenv.cc ];
           buildInputs = o.buildInputs;
           preConfigure = ''
@@ -185,12 +186,13 @@ in
               CAMLC="$PWD/ocamlc.wrapper"
               CAMLOPT="$PWD/ocamlopt.wrapper"
 
-              make CAMLDEP="$CAMLDEP -depend" \
-                OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
-                CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
-                CAMLC="$CAMLC" OCAMLC="$CAMLC" \
-                CAMLOPT="$CAMLOPT" OCAMLOPT="$CAMLOPT" \
-                $@
+              make ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} ''${enableParallelBuilding:+-l $NIX_BUILD_CORES} \
+                   CAMLDEP="$CAMLDEP -depend" \
+                   OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
+                   CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
+                   CAMLC="$CAMLC" OCAMLC="$CAMLC" \
+                   CAMLOPT="$CAMLOPT" OCAMLOPT="$CAMLOPT" \
+                   $@
             }
 
             make_host () {
@@ -199,34 +201,32 @@ in
 
               make_caml \
                 NATDYNLINK="$NATDYNLINK" NATDYNLINKOPTS="$NATDYNLINKOPTS" \
-                $@
+                "$@"
             }
 
-
-            # Target
             make_target () {
               CAMLC="$PWD/ocamlc.opt $TARGET_STATIC_LIBS $DYNAMIC_LIBS -nostdlib"
               CAMLOPT="$PWD/ocamlopt.opt $TARGET_STATIC_LIBS -nostdlib"
 
-            make_caml $@
-
+              make_caml "$@"
             }
 
-            make_host -j8 runtime coreall
-            make_host -j8 opt-core
-            make_host -j8 ocamlc.opt ocamlopt.opt
-            make_host -j8 ocamldoc compilerlibs/ocamltoplevel.cma otherlibraries ocamldebugger
-            make_host -j8 ocamllex.opt ocamltoolsopt ocamltoolsopt.opt ocamldoc.opt
+            make_host runtime coreall
+            make_host opt-core ocamlc.opt ocamlopt.opt ocamldoc \
+                      compilerlibs/ocamltoplevel.cma otherlibraries \
+                      ocamldebugger ocamllex.opt ocamltoolsopt \
+                      ocamltoolsopt.opt ocamldoc.opt
 
             rm $(find . | grep -e '\.cm.$')
-            make_target -j8 -C stdlib all allopt
-            make_target ocaml ocamlc ocamlopt
-            make_target -j8 otherlibraries otherlibrariesopt ocamltoolsopt
-            make_target -j8 driver/main.cmx driver/optmain.cmx \
-              compilerlibs/ocamlcommon.cmxa \
-              compilerlibs/ocamlbytecomp.cmxa \
-              compilerlibs/ocamloptcomp.cmxa
-            make_target -j8 -C ocamldoc all allopt
+            make_target -C stdlib all allopt
+            make_target ocaml ocamlc
+            make_target ocamlopt otherlibraries \
+                        otherlibrariesopt ocamltoolsopt \
+                        driver/main.cmx driver/optmain.cmx \
+                        compilerlibs/ocamlcommon.cmxa \
+                        compilerlibs/ocamlbytecomp.cmxa \
+                        compilerlibs/ocamloptcomp.cmxa
+            make_target -C ocamldoc all allopt
 
             runHook postBuild
           '';
