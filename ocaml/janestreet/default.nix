@@ -357,6 +357,8 @@ with ocamlPackages;
     minimumOCamlVersion = "4.04.2";
     meta.description = "S-expression parsing library";
     propagatedBuildInputs = [ base sexplib0 ];
+
+    patches = [ ./parsexp.patch ];
   };
 
   patience_diff = janePackage {

@@ -1,0 +1,31 @@
+diff --git a/runtime/Makefile b/runtime/Makefile
+index 1abf2c8cd..475c530a2 100644
+--- a/runtime/Makefile
++++ b/runtime/Makefile
+@@ -272,7 +272,9 @@ caml/version.h : $(ROOTDIR)/tools/make-version-header.sh $(ROOTDIR)/VERSION
+ # Libraries and programs
+ 
+ ocamlrun$(EXE): prims.$(O) libcamlrun.$(A)
+-	$(call MAKE_OCAMLRUN,$@,$^ $(LIBS))
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
++	# $(call MAKE_OCAMLRUN,$@,$^ $(LIBS))
+ 
+ libcamlrun.$(A): $(libcamlrun_OBJECTS)
+ 	$(call MKLIB,$@, $^)
+diff --git a/tools/Makefile b/tools/Makefile
+index 07e2eda1a..0e75e5844 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -331,9 +331,8 @@ caml_tex := caml-tex$(EXE)
+ 
+ $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str $(UNIXLIB))
+ $(caml_tex): $(caml_tex_files)
+-	$(ROOTDIR)/runtime/ocamlrun$(EXE) $(ROOTDIR)/ocamlc$(EXE) -nostdlib \
+-	                            -I $(ROOTDIR)/stdlib $(LINKFLAGS) -linkall \
+-	                            -o $@ -no-alias-deps $^
++	$(CAMLC) -nostdlib -I $(ROOTDIR)/stdlib $(LINKFLAGS) -linkall \
++	         -o $@ -no-alias-deps $^
+ 
+ # we need str and unix which depend on the bytecode version of other tools
+ # thus we delay building caml-tex to the opt.opt stage

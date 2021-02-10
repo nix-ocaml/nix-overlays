@@ -51,9 +51,7 @@ let
     if !lib.versionAtLeast osuper.ocaml.version "4.07"
     then { }
     else
-      callPackage ./menhir {
-        ocamlPackages = oself;
-      };
+      callPackage ./menhir { ocamlPackages = oself; };
 
   morphPackages = callPackage ./morph {
     ocamlPackages = oself;
@@ -145,7 +143,7 @@ websocketafPackages // {
   # backwards compatible.
   dune =
     if lib.versionOlder "4.06" ocaml.version
-    then osuper.dune_2
+    then oself.dune_2
     else osuper.dune;
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
@@ -155,6 +153,8 @@ websocketafPackages // {
       sha256 = "0vyi8sl5q077vb6yhz2lvzp9hnfmhvc6m4nd5sbwa482p3aplnl2";
     };
   });
+
+  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -224,7 +224,7 @@ websocketafPackages // {
       url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
       sha256 = "00wbx1gr38b8pivv1blrzkrwq9qqqq0hbsvkdndcrzyh83q5ypwc";
     };
-    buildInputs = o.buildInputs ++ [ dune-configurator ocaml-syntax-shims ];
+    buildInputs = [ ocaml dune findlib cppo dune-configurator ];
   });
 
   magic-mime = callPackage ./magic-mime {
@@ -263,6 +263,15 @@ websocketafPackages // {
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
+  num = osuper.num.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/num/archive/v1.4.tar.gz;
+      sha256 = "090gl27g84r3s2b12vgkz8fp269jqlrhx4lpg7008yviisv8hl01";
+    };
+
+    patches = [ ./num/findlib-install.patch ];
+  });
+
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
@@ -290,8 +299,8 @@ websocketafPackages // {
 
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-index/archive/0cac3767d76b3bc8ed9b2854ad01c8015f989b05.tar.gz;
-      sha256 = "162q3vvpv60902wvch5v61nky37mqgij7qnlkfv30g0wvpw1gx4a";
+      url = https://github.com/OCamlPro/ocp-index/archive/b33d9470c7cfd0d247dbb2c1e8ed7c1a7eed1054.tar.gz;
+      sha256 = "0y1jff2hk1igr44cx30pkbbikqg6iniahr6n81h54vvqzsg0q1wg";
     };
   });
 
@@ -373,6 +382,8 @@ websocketafPackages // {
     };
   });
 
+  stringext = callPackage ./stringext { ocamlPackages = oself; };
+
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;
   };
@@ -410,5 +421,13 @@ websocketafPackages // {
 
   uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
+  yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
+
+  zarith = osuper.zarith.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/zarith/archive/b229acfbdc85d3de3650283e4ad07b77c0f59c2f.tar.gz;
+      sha256 = "06kzlx6adczn0a40pwl66dn0jbmz4laah4v46fyxkhxybyg1cvcv";
+    };
+  });
 }

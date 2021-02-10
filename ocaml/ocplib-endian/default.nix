@@ -10,5 +10,5 @@ buildDunePackage rec {
     sha256 = "0qy5q7p11gxi5anhvi8jj6mr80ml0ih8lax5k579rsr2hsp3sns5";
   };
 
-  buildInputs = [ cppo ];
+  nativeBuildInputs = [ cppo ];
 }

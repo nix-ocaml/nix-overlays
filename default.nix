@@ -2,8 +2,8 @@
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
 self: super:
 let
-  inherit (super) lib stdenv pkgs;
-  gitignoreNix = pkgs.fetchFromGitHub {
+  inherit (super) lib stdenv fetchFromGitHub callPackage;
+  gitignoreNix = fetchFromGitHub {
     owner = "hercules-ci";
     repo = "gitignore.nix";
     rev = "00b237fb1813c48e20ee2021deb6f3f03843e9e4";
@@ -15,7 +15,7 @@ let
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" =
       super.ocaml-ng."ocamlPackages_${version}".overrideScope'
-        (pkgs.callPackage ./ocaml { });
+        (callPackage ./ocaml { });
   };
   ocamlVersions = [ "4_06" "4_08" "4_09" "4_10" "4_11" "4_12" ];
   oPs =
@@ -69,7 +69,7 @@ in
           sha256 = "05dzf3x8p37kvpwk7358s1ibmi8yx2dn02blh19298dh6d7dqbgv";
         };
       });
-    })).overrideScope' (pkgs.callPackage ./ocaml { });
+    })).overrideScope' (callPackage ./ocaml { });
   };
 
   ocamlformat = super.ocamlformat.overrideAttrs (o: {
@@ -83,7 +83,7 @@ in
   });
 
   # BuckleScript
-  bs-platform = pkgs.callPackage ./bs-platform {
+  bs-platform = callPackage ./bs-platform {
     ocamlPackages = self.ocamlPackages-bs;
   };
 
@@ -94,15 +94,24 @@ in
     then self.ocaml-ng.ocamlPackages_4_11.dune_2
     else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
 
-  bucklescript-experimental = pkgs.callPackage ./bucklescript-experimental {
+  bucklescript-experimental = callPackage ./bucklescript-experimental {
     ocamlPackages = self.ocamlPackages-bs;
     dune_2 = self.ocamlPackages.dune_2;
   };
 
   pkgsCross = super.pkgsCross // {
-    musl64 = super.pkgsCross.musl64.appendOverlays (super.pkgsCross.musl64.callPackage ./static {
+    musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static {
       inherit ocamlVersions;
     });
+
+    aarch64-multiplatform = super.pkgsCross.aarch64-multiplatform.appendOverlays (callPackage ./cross {
+      inherit ocamlVersions;
+    });
+
+    aarch64-multiplatform-musl =
+      (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
+        ((callPackage ./cross { inherit ocamlVersions; }) ++
+          (callPackage ./static { inherit ocamlVersions; })));
   };
 
 
@@ -125,5 +134,5 @@ in
     filterGitSource = args: gitignoreSource (filterSource args);
   };
 
-  cockroachdb = pkgs.callPackage ./cockroachdb { };
+  cockroachdb = callPackage ./cockroachdb { };
 }

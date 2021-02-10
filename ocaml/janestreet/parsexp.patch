@@ -1,0 +1,23 @@
+From 93a792773a4143accc425d97325d3db1083292f3 Mon Sep 17 00:00:00 2001
+From: Lucas Pluvinage <lucas.pluvinage@gmail.com>
+Date: Wed, 2 Dec 2020 14:30:09 +0100
+Subject: [PATCH] Use implicit executable dependency for gen_bytes0.exe (#6)
+
+Signed-off-by: Lucas Pluvinage <lucas@tarides.com>
+---
+ src/dune | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/dune b/src/dune
+index 754bb6c..6c02e4c 100644
+--- a/src/dune
++++ b/src/dune
+@@ -4,5 +4,5 @@
+   (pps ppx_js_style -check-doc-comments ppx_compare ppx_sexp_conv
+    -deriving-keep-w32=impl)))
+ 
+-(rule (targets bytes0.ml) (deps (:first_dep gen/gen_bytes0.exe))
+- (action (bash "./%{first_dep} > %{targets}")))
+\ No newline at end of file
++(rule (targets bytes0.ml)
++ (action (with-stdout-to %{targets} (run ./gen/gen_bytes0.exe))))

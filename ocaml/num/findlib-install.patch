@@ -1,0 +1,34 @@
+diff --git a/src/META.in b/src/META.in
+index 9a908a5..ba4f056 100644
+--- a/src/META.in
++++ b/src/META.in
+@@ -9,7 +9,6 @@ requires(toploop) = "num.core,num-top"
+ version = "%%VERSION%%"
+ description = "Arbitrary-precision rational arithmetic"
+ package "core" (
+-  directory = "^"
+   version = "%%VERSION%%"
+   browse_interfaces = ""
+   archive(byte) = "nums.cma"
+diff --git a/src/Makefile b/src/Makefile
+index 8ad0e2c..b32afab 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -86,14 +86,12 @@ endif
+ VERSION=$(shell sed -ne 's/^ *version *: *"\([^"]*\)".*$$/\1/p' ../num.opam)
+ 
+ install:
+-	$(INSTALL_DIR) $(DESTDIR)$(STDLIBDIR)
+ 	sed -e 's/%%VERSION%%/$(VERSION)/g' META.in > META
+-	$(OCAMLFIND) install num META
++	$(OCAMLFIND) install num META $(TOINSTALL)
+ 	rm -f META
+-	$(INSTALL_DATA) $(TOINSTALL) $(DESTDIR)$(STDLIBDIR)
+ ifeq "$(SUPPORTS_SHARED_LIBRARIES)" "true"
+-	$(INSTALL_DIR) $(DESTDIR)$(STDLIBDIR)/stublibs
+-	$(INSTALL_DLL) $(TOINSTALL_STUBS) $(DESTDIR)$(STDLIBDIR)/stublibs
++	$(INSTALL_DLL) -d $(shell ocamlfind printconf destdir)/stublibs/
++	$(INSTALL_DLL) $(TOINSTALL_STUBS) $(shell ocamlfind printconf destdir)/stublibs/
+ endif
+ 
+ findlib-install:
