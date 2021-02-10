@@ -17,7 +17,7 @@ let
         (builtins.concatMap
           (name:
             builtins.filter
-              (x: lib.isDerivation x && lib.hasInfix "ocaml" x.name)
+              lib.isDerivation
               (lib.concatLists (lib.catAttrs name attrs)))
           names);
     in
@@ -74,11 +74,11 @@ in
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
         postInstall = ''
-          ln -s $out/lib/ocaml/${osuper.ocaml.version}/site-lib/{,caml}zip
-
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
           mkdir -p $OCAMLFIND_DESTDIR
           mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
+          rm -rf $OCAMLFIND_DESTDIR/camlzip
+          ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
         '';
       });
 
