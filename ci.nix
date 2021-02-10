@@ -136,7 +136,7 @@ let
 
   buildCandidates = pkgs:
     let
-      ocamlPackages = pkgs: pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
     in
     lib.filterAttrs
       (n: v:
@@ -149,8 +149,7 @@ let
             let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
             in
             (builtins.elem stdenv.system platforms)
-          ))
-      )
+          )))
       ocamlPackages;
 
   targets = {
