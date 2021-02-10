@@ -220,10 +220,11 @@ in
             }
 
             make_host runtime coreall
-            make_host opt-core ocamlc.opt ocamlopt.opt
+            make_host opt-core
+            make_host ocamlc.opt ocamlopt.opt
             make_host ocamldoc compilerlibs/ocamltoplevel.cma otherlibraries \
-                      ocamldebugger ocamllex.opt ocamltoolsopt \
-                      ocamltoolsopt.opt ocamldoc.opt
+                      ocamldebugger
+            make_host ocamllex.opt ocamltoolsopt ocamltoolsopt.opt ocamldoc.opt
 
             rm $(find . | grep -e '\.cm.$')
             make_target -C stdlib all allopt
