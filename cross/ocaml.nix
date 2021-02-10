@@ -220,8 +220,8 @@ in
             }
 
             make_host runtime coreall
-            make_host opt-core ocamlc.opt ocamlopt.opt ocamldoc \
-                      compilerlibs/ocamltoplevel.cma otherlibraries \
+            make_host opt-core ocamlc.opt ocamlopt.opt
+            make_host ocamldoc compilerlibs/ocamltoplevel.cma otherlibraries \
                       ocamldebugger ocamllex.opt ocamltoolsopt \
                       ocamltoolsopt.opt ocamldoc.opt
 
