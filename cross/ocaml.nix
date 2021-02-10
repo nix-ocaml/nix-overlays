@@ -144,25 +144,12 @@ in
 
           buildPhase = ''
             runHook preBuild
-            buildFlagsArray+=("OCAMLYACC=${natocaml}/bin/ocamlyacc" "CAMLYACC=${natocaml}/bin/ocamlyacc" "CAMLRUN=${natocaml}/bin/ocamlrun" "OCAMLRUN=${natocaml}/bin/ocamlrun" -j16)
 
             write_wrapper () {
               TARGET="$1"
               RUN="$2"
 
               ARGS='for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done'
-
-              if [[ "$(uname)" != 'Linux' ]]; then
-                ARGS='
-            for ARG in "$@"
-            do
-              if (
-                [ "$ARG" != "-function-sections" ]
-              ); then
-                NEW_ARGS="$NEW_ARGS \"$ARG\""
-              fi
-            done'
-              fi
 
             cat > $TARGET <<EOF
             #!${bash}/bin/bash

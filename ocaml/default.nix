@@ -299,8 +299,8 @@ websocketafPackages // {
 
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-index/archive/0cac3767d76b3bc8ed9b2854ad01c8015f989b05.tar.gz;
-      sha256 = "162q3vvpv60902wvch5v61nky37mqgij7qnlkfv30g0wvpw1gx4a";
+      url = https://github.com/OCamlPro/ocp-index/archive/b33d9470c7cfd0d247dbb2c1e8ed7c1a7eed1054.tar.gz;
+      sha256 = "0y1jff2hk1igr44cx30pkbbikqg6iniahr6n81h54vvqzsg0q1wg";
     };
   });
 

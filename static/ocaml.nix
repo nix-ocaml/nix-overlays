@@ -4,9 +4,8 @@ let
     remove "--disable-shared"
       (remove "--enable-static" f);
   fixOCaml = ocaml:
-    ((ocaml.override { useX11 = false; }).overrideAttrs (o: {
+    (ocaml.override { useX11 = false; }).overrideAttrs (o: {
       dontUpdateAutotoolsGnuConfigScripts = true;
-    })).overrideDerivation (o: {
       preConfigure = ''
         configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
