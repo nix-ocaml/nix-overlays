@@ -12,12 +12,12 @@ jobs:
         setup:
           - { ocaml-version: 4_11, continue-on-error: false }
           - { ocaml-version: 4_12, continue-on-error: true }
-        target:
+        config:
           - {os: "ubuntu-latest", target: "native"}
           - {os: "macos-latest", "native"}
           - {os: "ubuntu-latest", target: "arm64"}
           - {os: "ubuntu-latest", target: "musl"}
-    runs-on: ${{ matrix.target.os }}
+    runs-on: ${{ matrix.config.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -35,5 +35,5 @@ jobs:
       - name: Build nix packages
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target ${{ matrix.target }} --show-trace --keep-going
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target ${{ matrix.config.target }} --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
