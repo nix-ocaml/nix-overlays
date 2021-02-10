@@ -150,6 +150,7 @@ in
           preConfigure = ''
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
           '';
+          configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
 
           buildPhase = ''
             runHook preBuild
@@ -221,10 +222,12 @@ in
 
             make_host runtime coreall
             make_host opt-core
-            make_host ocamlc.opt ocamlopt.opt
-            make_host ocamldoc compilerlibs/ocamltoplevel.cma otherlibraries \
+            make_host ocamlc.opt
+            make_host ocamlopt.opt
+            make_host compilerlibs/ocamltoplevel.cma otherlibraries \
                       ocamldebugger
-            make_host ocamllex.opt ocamltoolsopt ocamltoolsopt.opt ocamldoc.opt
+            make_host ocamllex.opt ocamltoolsopt \
+                      ocamltoolsopt.opt
 
             rm $(find . | grep -e '\.cm.$')
             make_target -C stdlib all allopt
@@ -235,7 +238,6 @@ in
                         compilerlibs/ocamlcommon.cmxa \
                         compilerlibs/ocamlbytecomp.cmxa \
                         compilerlibs/ocamloptcomp.cmxa
-            make_target -C ocamldoc all allopt
 
             runHook postBuild
           '';
