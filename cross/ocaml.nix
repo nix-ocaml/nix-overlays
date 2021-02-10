@@ -9,18 +9,26 @@
 # overlays).
 
 { lib, buildPackages, writeText, stdenv, bash }:
-let mergeInputs = names: attrs:
-  let ret =
-    builtins.filter
-      lib.isDerivation
-      (lib.concatLists
-        (builtins.map
+let
+  __mergeInputs = acc: names: attrs:
+    let ret =
+      lib.foldl' (acc: x: acc // { "${x.name}" = x; })
+        { }
+        (builtins.concatMap
           (name:
-            lib.concatLists (lib.catAttrs name attrs))
-          names));
-  in
-  if ret == [ ] then [ ] else
-  lib.unique (ret ++ (mergeInputs names ret));
+            builtins.filter
+              lib.isDerivation
+              (lib.concatLists (lib.catAttrs name attrs)))
+          names);
+    in
+    if ret == { } then acc
+    else
+      __mergeInputs (acc // ret) names (lib.attrValues ret);
+
+  mergeInputs = names: attrs:
+    let acc = __mergeInputs { } names [ attrs ];
+    in
+    lib.attrValues acc;
 
 in
 [
@@ -66,11 +74,11 @@ in
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
         postInstall = ''
-          ln -s $out/lib/ocaml/${osuper.ocaml.version}/site-lib/{,caml}zip
-
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
           mkdir -p $OCAMLFIND_DESTDIR
           mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
+          rm -rf $OCAMLFIND_DESTDIR/camlzip
+          ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
         '';
       });
 
@@ -142,6 +150,7 @@ in
           preConfigure = ''
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
           '';
+          configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
 
           buildPhase = ''
             runHook preBuild
@@ -212,10 +221,13 @@ in
             }
 
             make_host runtime coreall
-            make_host opt-core ocamlc.opt ocamlopt.opt ocamldoc \
-                      compilerlibs/ocamltoplevel.cma otherlibraries \
-                      ocamldebugger ocamllex.opt ocamltoolsopt \
-                      ocamltoolsopt.opt ocamldoc.opt
+            make_host opt-core
+            make_host ocamlc.opt
+            make_host ocamlopt.opt
+            make_host compilerlibs/ocamltoplevel.cma otherlibraries \
+                      ocamldebugger
+            make_host ocamllex.opt ocamltoolsopt \
+                      ocamltoolsopt.opt
 
             rm $(find . | grep -e '\.cm.$')
             make_target -C stdlib all allopt
@@ -226,14 +238,13 @@ in
                         compilerlibs/ocamlcommon.cmxa \
                         compilerlibs/ocamlbytecomp.cmxa \
                         compilerlibs/ocamloptcomp.cmxa
-            make_target -C ocamldoc all allopt
 
             runHook postBuild
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
             (if lib.versionOlder "4.12" ocaml.version then ./cross_4_12.patch
-            else if lib.versionOlder "4.12" ocaml.version then ./cross_4_11.patch else
+            else if lib.versionOlder "4.11" ocaml.version then ./cross_4_11.patch else
             throw "OCaml ${ocaml.version} not supported for cross-compilation")
           ];
         });
@@ -243,12 +254,14 @@ in
             "propagatedBuildInputs"
             "buildInputs"
             "nativeBuildInputs"
-          ] [ b ];
+          ]
+            b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
             "nativeBuildInputs"
-          ] [ b ];
+          ]
+            b;
 
           path =
             builtins.concatStringsSep ":"
