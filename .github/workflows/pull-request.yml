@@ -7,11 +7,22 @@ on:
 jobs:
   tests:
     strategy:
+      fail-fast: false
       matrix:
         setup:
           - { ocaml-version: 4_11, continue-on-error: false }
           - { ocaml-version: 4_12, continue-on-error: true }
         os: ["ubuntu-latest", "macos-latest"]
+        target:
+          - native
+        include:
+          setup:
+            - { ocaml-version: 4_11, continue-on-error: false }
+            - { ocaml-version: 4_12, continue-on-error: true }
+          os: ubuntu-latest
+          target:
+            - arm64
+            - musl
     runs-on: ${{ matrix.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -30,17 +41,5 @@ jobs:
       - name: Build nix packages
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --show-trace --keep-going
-        continue-on-error: ${{ matrix.setup.continue-on-error }}
-      - name: Cross-compile nix packages to musl64
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target musl --show-trace --keep-going
-        continue-on-error: ${{ matrix.setup.continue-on-error }}
-      - name: Cross-compile nix packages to aarch64-multiplatform-musl (static)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          nix run -f ./sources.nix nix-build-uncached -c \
-            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target arm64 --show-trace --keep-going
+            nix-build-uncached ./ci.nix --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} --argstr target ${{ matrix.target }} --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
