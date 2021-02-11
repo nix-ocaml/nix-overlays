@@ -1,4 +1,4 @@
-{ callPackage, libpq, dot-merlin-reader, opaline, lib, stdenv, pkgconfig, openssl }:
+{ callPackage, libpq, dot-merlin-reader, opaline, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -124,6 +124,8 @@ websocketafPackages // {
   });
 
   calendar = callPackage ./calendar { ocamlPackages = oself; };
+
+  camlbz2 = callPackage ./camlbz2 { ocamlPackages = oself; };
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 

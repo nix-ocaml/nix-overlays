@@ -79,7 +79,6 @@ let
     "sosa"
     "genspio"
     "irmin-unix"
-    "dose3"
 
     # too outdated / dont care for now
     "nocrypto"
