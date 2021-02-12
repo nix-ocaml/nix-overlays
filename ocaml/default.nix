@@ -259,6 +259,12 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  mongo = callPackage ./mongo { ocamlPackages = oself; };
+  mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
+  mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { ocamlPackages = oself; };
+  ppx_deriving_bson = callPackage ./mongo/ppx.nix { ocamlPackages = oself; };
+  bson = callPackage ./mongo/bson.nix { ocamlPackages = oself; };
+
   mrmime = callPackage ./mrmime { ocamlPackages = oself; };
 
   mtime = osuper.mtime.override { jsooSupport = false; };
