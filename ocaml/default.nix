@@ -331,6 +331,8 @@ websocketafPackages // {
   });
 
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
+  ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
+  ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
