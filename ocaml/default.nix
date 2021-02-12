@@ -307,8 +307,8 @@ websocketafPackages // {
 
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-index/archive/b33d9470c7cfd0d247dbb2c1e8ed7c1a7eed1054.tar.gz;
-      sha256 = "0y1jff2hk1igr44cx30pkbbikqg6iniahr6n81h54vvqzsg0q1wg";
+      url = https://github.com/OCamlPro/ocp-index/archive/5513fd18a39072fe223c630cb596c29773db3f0f.tar.gz;
+      sha256 = "0595xspmzbkszcf4jvyb4ji4r2vl2642i46y0yv87kkpg0r1flr4";
     };
   });
 
@@ -335,6 +335,11 @@ websocketafPackages // {
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mmottl/postgresql-ocaml/releases/download/5.0.0/postgresql-5.0.0.tbz;
+      sha256 = "1n7rgrh6z9jzs2wj1mjys0q0y8q7gy1v00jik631v0d4y9dl1kcw";
+    };
+
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
