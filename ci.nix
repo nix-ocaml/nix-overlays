@@ -78,7 +78,6 @@ let
     "nonstd"
     "sosa"
     "genspio"
-    "irmin-unix"
 
     # too outdated / dont care for now
     "nocrypto"
@@ -87,8 +86,6 @@ let
     # dune.configurator issue
     "cairo2"
     "gettext-stub"
-    "zmq"
-    "zmq-lwt"
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
@@ -126,7 +123,6 @@ let
     "ocsigen-toolkit"
     "ppx_import" # mystery
     "visitors"
-    "mdx"
 
     # broken on 4.12
     "ocaml-lsp"
