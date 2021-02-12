@@ -2,21 +2,14 @@
 
 with ocamlPackages;
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "ppx_rapper";
-  version = "1.1.0-dev";
+  version = "3.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/roddyyaga/ppx_rapper/archive/2.0.0.tar.gz;
-    sha256 = "1ijg852471hhihl7km58mkkkhnjnr21ihpfrxw1cn3jmv3scdd29";
+    url = "https://github.com/roddyyaga/ppx_rapper/archive/${version}.tar.gz";
+    sha256 = "077hr85nq2jmisdhgw1py6b2418ca8iwjy50aq6m75c24y1730xk";
   };
 
-  useDune2 = true;
-
-  propagatedBuildInputs = with ocamlPackages; [
-    caqti
-    caqti-lwt
-    base
-    pg_query
-  ];
+  propagatedBuildInputs = [ caqti pg_query ];
 }
