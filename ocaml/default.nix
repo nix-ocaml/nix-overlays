@@ -220,10 +220,6 @@ websocketafPackages // {
   luv = callPackage ./luv { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/5.4.0.tar.gz;
-      sha256 = "00wbx1gr38b8pivv1blrzkrwq9qqqq0hbsvkdndcrzyh83q5ypwc";
-    };
     buildInputs = [ ocaml dune findlib cppo dune-configurator ];
   });
 

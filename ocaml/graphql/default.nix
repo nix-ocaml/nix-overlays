@@ -5,8 +5,8 @@ let
   buildGraphql = args: buildDunePackage ({
     version = "0.13.0-dev";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/ocaml-graphql-server/archive/cab25bba231ac9debd19e2dddc7fd63c8cedfed2.tar.gz;
-      sha256 = "0inmc2r09rx9070bpnrrdllnncp1fcjhl765hy8pzz9zw36clyq5";
+      url = https://github.com/anmonteiro/ocaml-graphql-server/archive/716485a61fe0824250aed87e80c0dadf9937bd29.tar.gz;
+      sha256 = "1gsw5nc1q3cganifkmq1qf7x1vp3bimisllka8ygxmqbn6zqki12";
     };
   } // args);
 
