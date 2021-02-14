@@ -204,8 +204,6 @@ websocketafPackages // {
     doCheck = false;
   });
 
-  iter = osuper.iter.overrideAttrs (o: { doCheck = false; });
-
   janeStreet = janestreetPackages;
 
   jose = callPackage ./jose { ocamlPackages = oself; };
@@ -445,4 +443,9 @@ websocketafPackages // {
       sha256 = "06kzlx6adczn0a40pwl66dn0jbmz4laah4v46fyxkhxybyg1cvcv";
     };
   });
+
+  zmq = osuper.zmq.overrideAttrs
+    (o: {
+      buildInputs = o.buildInputs ++ [ dune-configurator ];
+    });
 }
