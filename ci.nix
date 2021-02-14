@@ -82,6 +82,8 @@ let
     # too outdated / dont care for now
     "nocrypto"
     "wodan"
+    "wodan-irmin"
+    "wodan-unix"
 
     # dune.configurator issue
     "cairo2"
@@ -114,7 +116,6 @@ let
     # graphql incompatible
     "irmin-graphql"
     "irmin-unix"
-
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
