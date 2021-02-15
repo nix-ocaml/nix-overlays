@@ -7,18 +7,14 @@ buildDunePackage {
   version = "1.1.0-dev";
 
   src = builtins.fetchurl {
-    url = https://github.com/reasonml-community/graphql-ppx/archive/056dc58ac111b503d4f358238f11c52f5a801031.tar.gz;
-    sha256 = "0l0fyhhhifxkgyqlqa7j1bpsk0c3cngk9di53s2r054iylrc2g9b";
+    url = https://github.com/reasonml-community/graphql-ppx/archive/48e7a45b399e8c2fddc950f4fc52da6a9a3c21fc.tar.gz;
+    sha256 = "0wxkp9ywmxhhs29rljn9lzlacqjqxgiacvvp4w1147zagmids066";
   };
 
   useDune2 = true;
   nativeBuildInputs = [ cppo ];
 
-  propagatedBuildInputs = [
-    yojson
-    ppxlib
-    reason
-  ];
+  propagatedBuildInputs = [ yojson ppxlib reason ];
 
   postInstall = ''
     mkdir $out/lib_bucklescript
