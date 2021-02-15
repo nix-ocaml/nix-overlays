@@ -74,8 +74,8 @@ in
 
   ocamlformat = super.ocamlformat.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/archive/60678b05f75d660fcde4c1b991758af9620dcea8.tar.gz;
-      sha256 = "02dax1wkdi9wkdwgs7kw8gm396ixj7v4h29ls0xl4vrlgkgmh5ww";
+      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.17.0/ocamlformat-0.17.0.tbz;
+      sha256 = "1b2a5h4374m12sp4zyxragysng6nmn4p7dvy5pnv0ifbbvfbqjaq";
     };
 
     buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
