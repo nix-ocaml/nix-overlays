@@ -75,10 +75,7 @@ let
     "genspio"
 
     # too outdated / dont care for now
-    "nocrypto"
-    "wodan"
     "wodan-irmin"
-    "wodan-unix"
 
     # dune.configurator issue
     "cairo2"
