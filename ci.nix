@@ -37,7 +37,6 @@ let
     "ocf"
     "omake_rc1"
     "pa_ounit"
-    "ppx_deriving_protobuf"
     "sodium"
     "sqlite3EZ"
     "type_conv_108_08_00"
@@ -49,7 +48,6 @@ let
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
-    "odn"
     "comparelib"
     "config-file"
     "erm_xmpp"
@@ -57,17 +55,14 @@ let
     "herelib"
     "higlo"
     "js_build_tools"
-    "lua-ml"
     "ocaml_optcomp"
     "ocamlscript"
     "ocsigen_deriving"
     "pa_bench"
     "pipebang"
-    "rope"
     "stog"
     "type_conv"
     "type_conv_112_01_01"
-    "typerep"
     "typerep_p4"
     "ulex"
     "lablgl"
@@ -80,14 +75,10 @@ let
     "genspio"
 
     # too outdated / dont care for now
-    "nocrypto"
-    "wodan"
     "wodan-irmin"
-    "wodan-unix"
 
     # dune.configurator issue
     "cairo2"
-    "gettext-stub"
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
@@ -114,13 +105,14 @@ let
     "caqti-driver-mariadb"
 
     # graphql incompatible
+    "irmin-containers"
     "irmin-graphql"
+    "irmin-mirage-graphql"
     "irmin-unix"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
     "ppx_bitstring"
-    "ppx_irmin"
     "ppx_deriving_rpc"
     "rpclib-lwt"
     "pgocaml_ppx"
