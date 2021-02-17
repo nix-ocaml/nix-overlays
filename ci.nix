@@ -37,7 +37,6 @@ let
     "ocf"
     "omake_rc1"
     "pa_ounit"
-    "ppx_deriving_protobuf"
     "sodium"
     "sqlite3EZ"
     "type_conv_108_08_00"
