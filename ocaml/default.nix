@@ -193,17 +193,6 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  irmin = osuper.irmin.overrideAttrs (o: {
-    doCheck = false;
-    checkInputs = [ ];
-  });
-  irmin-http = osuper.irmin-http.overrideAttrs (o: {
-    doCheck = false;
-  });
-  irmin-unix = osuper.irmin-unix.overrideAttrs (o: {
-    doCheck = false;
-  });
-
   janeStreet = janestreetPackages;
 
   jose = callPackage ./jose { ocamlPackages = oself; };

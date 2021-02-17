@@ -44,12 +44,11 @@ let
     "type_conv_109_60_01"
     "variantslib_p4"
     "xtmpl"
-    "async_inotify"
-    "async_smtp"
+    # "async_inotify"
+    # "async_smtp"
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
-    "odn"
     "comparelib"
     "config-file"
     "erm_xmpp"
@@ -57,17 +56,14 @@ let
     "herelib"
     "higlo"
     "js_build_tools"
-    "lua-ml"
     "ocaml_optcomp"
     "ocamlscript"
     "ocsigen_deriving"
     "pa_bench"
     "pipebang"
-    "rope"
     "stog"
     "type_conv"
     "type_conv_112_01_01"
-    "typerep"
     "typerep_p4"
     "ulex"
     "lablgl"
@@ -87,7 +83,6 @@ let
 
     # dune.configurator issue
     "cairo2"
-    "gettext-stub"
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
@@ -120,7 +115,6 @@ let
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
     "ppx_bitstring"
-    "ppx_irmin"
     "ppx_deriving_rpc"
     "rpclib-lwt"
     "pgocaml_ppx"
