@@ -105,7 +105,9 @@ let
     "caqti-driver-mariadb"
 
     # graphql incompatible
+    "irmin-containers"
     "irmin-graphql"
+    "irmin-mirage-graphql"
     "irmin-unix"
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
