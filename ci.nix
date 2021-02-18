@@ -125,6 +125,7 @@ let
     # broken on 4.12
     "ocaml-lsp"
     "batteries"
+    "accessor_core"
   ];
 
   buildCandidates = pkgs:
