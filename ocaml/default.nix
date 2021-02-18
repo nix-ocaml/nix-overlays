@@ -206,6 +206,13 @@ websocketafPackages // {
 
   logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/3.9.1/js_of_ocaml-3.9.1.tbz;
+      sha256 = "0ib551kfsjlp9vr3fk36hrbq7xxyl8bj6vcn3ccr0s370bsmgpm6";
+    };
+  });
+
   luv = callPackage ./luv { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
