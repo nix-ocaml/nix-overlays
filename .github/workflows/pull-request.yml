@@ -11,7 +11,7 @@ jobs:
       matrix:
         setup:
           - { ocaml-version: 4_11, continue-on-error: false }
-          - { ocaml-version: 4_12, continue-on-error: true }
+          - { ocaml-version: 4_12, continue-on-error: false }
         config:
           - {os: "ubuntu-latest", target: "native"}
           - {os: "macos-latest", target: "native"}
