@@ -126,6 +126,7 @@ let
     "ocaml-lsp"
     "batteries"
     "accessor_core"
+    "accessor_async"
   ];
 
   buildCandidates = pkgs:
