@@ -21,6 +21,7 @@
       ocamlPackages_latest = self.ocamlPackages;
       opaline = super.buildPackages.opaline;
 
+      # https://github.com/NixOS/nixpkgs/pull/113819
       tzdata = super.tzdata.overrideAttrs (_: {
         preInstall = ''
           mv zic.o zic.o.orig
