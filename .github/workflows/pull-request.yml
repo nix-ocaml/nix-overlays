@@ -1,3 +1,4 @@
+name: Pipeline
 on:
   pull_request:
   push:
@@ -15,18 +16,15 @@ jobs:
         run: |
           find . -iname '*.nix' | xargs nix run -f ./sources.nix nixpkgs-fmt -c nixpkgs-fmt --check
 
-  native:
+  native-linux:
     strategy:
       fail-fast: false
       matrix:
-        setup:
-          - { ocaml-version: 4_11, continue-on-error: false }
-          - { ocaml-version: 4_12, continue-on-error: false }
-        config:
-          - {os: "ubuntu-latest", target: "native"}
-          - {os: "macos-latest", target: "native"}
-    name: Native packages (${{ matrix.config.os }}, OCaml ${{ matrix.setup.ocaml-version }})
-    runs-on: ${{ matrix.config.os }}
+        ocaml-version:
+          - 4_11
+          - 4_12
+    name: Native packages (Linux, OCaml ${{ matrix.ocaml-version }})
+    runs-on: ubuntu-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -42,13 +40,40 @@ jobs:
         run: |
           nix run -f ./sources.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target ${{ matrix.config.target }} \
+                --argstr ocamlVersion ${{ matrix.ocaml-version }} \
+                --argstr target native
                 --show-trace --keep-going
-        continue-on-error: ${{ matrix.setup.continue-on-error }}
+
+  native-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-version:
+          - 4_11
+          - 4_12
+    name: Native packages (macOS, OCaml ${{ matrix.ocaml-version }})
+    runs-on: macos-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v12
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+      - uses: cachix/cachix-action@v8
+        with:
+          name: anmonteiro
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+      - name: Build nix packages
+        run: |
+          nix run -f ./sources.nix nix-build-uncached -c \
+              nix-build-uncached ./ci.nix \
+                --argstr ocamlVersion ${{ matrix.ocaml-version }} \
+                --argstr target native
+                --show-trace --keep-going
 
   cross-compilers:
-    needs: [native]
+    needs: [native-linux]
     strategy:
       fail-fast: false
       matrix:
