@@ -1,4 +1,3 @@
-name: "Validate PR"
 on:
   pull_request:
   push:
@@ -15,8 +14,6 @@ jobs:
         config:
           - {os: "ubuntu-latest", target: "native"}
           - {os: "macos-latest", target: "native"}
-          - {os: "ubuntu-latest", target: "arm64"}
-          - {os: "ubuntu-latest", target: "musl"}
     name: Native packages (${{ matrix.config.os }}, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ${{ matrix.config.os }}
     env:
