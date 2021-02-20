@@ -39,7 +39,7 @@ jobs:
           nix run -f ./sources.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.ocaml-version }} \
-                --argstr target native
+                --argstr target native \
                 --show-trace --keep-going
 
   native-macos:
@@ -65,7 +65,7 @@ jobs:
           nix run -f ./sources.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.ocaml-version }} \
-                --argstr target native
+                --argstr target native \
                 --show-trace --keep-going
 
   cross-compilers:
