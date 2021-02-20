@@ -116,7 +116,6 @@ let
     "ppx_deriving_rpc"
     "rpclib-lwt"
     "pgocaml_ppx"
-    "elpi"
     "eliom"
     "ocsigen-toolkit"
     "ppx_import" # mystery
