@@ -206,6 +206,8 @@ websocketafPackages // {
     };
   });
 
+  landmarks = callPackage ./landmarks { ocamlPackages = oself; };
+
   luv = callPackage ./luv { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
