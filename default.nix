@@ -75,7 +75,7 @@ in
   ocamlformat = super.ocamlformat.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.17.0/ocamlformat-0.17.0.tbz;
-      sha256 = "1b2a5h4374m12sp4zyxragysng6nmn4p7dvy5pnv0ifbbvfbqjaq";
+      sha256 = "0f1lxp697yq61z8gqxjjaqd2ns8fd1vjfggn55x0gh9dx098p138";
     };
 
     buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
