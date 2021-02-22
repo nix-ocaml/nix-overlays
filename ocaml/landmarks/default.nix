@@ -10,5 +10,5 @@ buildDunePackage rec {
     sha256 = "13h4ll463gdz4fa94d357sf0g0xv07wa022x0zbzrgi25ax12274";
   };
 
-  propagatedBuildInputs = [ ocaml-migrate-parsetree ];
+  propagatedBuildInputs = [ ppxlib ];
 }
