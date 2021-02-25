@@ -65,8 +65,8 @@ in
         version = "4.10.0+multicore+no-effect-syntax";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml-multicore/ocaml-multicore/archive/f7310b057a65159aa7627237bd14dca3a58e9a53.tar.gz;
-          sha256 = "05dzf3x8p37kvpwk7358s1ibmi8yx2dn02blh19298dh6d7dqbgv";
+          url = https://github.com/ocaml-multicore/ocaml-multicore/archive/eabff64f6d35507a9ebd9d649c159f73891bebbf.tar.gz;
+          sha256 = "0mda1rzwf1hr4kx15q67g1awbihqrcky6zi96ps14jgk83didv4j";
         };
       });
     })).overrideScope' (callPackage ./ocaml { });
