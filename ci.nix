@@ -4,6 +4,7 @@ let
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
     # camlp4 or not supported in 4.11+
+    "bap"
     "bin_prot_p4"
     "bolt"
     "camlp4"
