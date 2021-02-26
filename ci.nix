@@ -155,8 +155,9 @@ let
           merlin
           graphql_ppx
         ];
+        cockroachdb-drvs = with pkgs; [ cockroachdb-20_x cockroachdb-21_x ];
       in
-      [ drvs ] ++ bucklescript-drvs;
+      [ drvs ] ++ cockroachdb-drvs ++ bucklescript-drvs;
 
 
     musl =
