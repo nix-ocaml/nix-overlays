@@ -375,13 +375,6 @@ websocketafPackages // {
     propagatedBuildInputs = [ openssl.dev ];
   });
 
-  stdlib-shims = osuper.stdlib-shims.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/stdlib-shims/releases/download/0.3.0/stdlib-shims-0.3.0.tbz;
-      sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
-    };
-  });
-
   stringext = callPackage ./stringext { ocamlPackages = oself; };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
