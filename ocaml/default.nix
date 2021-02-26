@@ -116,6 +116,13 @@ websocketafPackages // {
     doCheck = false;
   });
 
+  bitstring = osuper.bitstring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/xguerin/bitstring/archive/v4.1.0.tar.gz;
+      sha256 = "1622ypmqmkk434s9cnyfz1yixpimgi8siphz5nzqllxycr2crw37";
+    };
+  });
+
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
   camlbz2 = callPackage ./camlbz2 { ocamlPackages = oself; };
