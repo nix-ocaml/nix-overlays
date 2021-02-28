@@ -1,8 +1,10 @@
-{ callPackage }:
+{ pkgs }:
 
+with pkgs;
 
 {
   cockroachdb-20_x = callPackage ./generic.nix (rec {
+    go = go_1_15;
     version = "20.2.5";
     src = builtins.fetchurl
       {
@@ -10,7 +12,9 @@
         sha256 = "181h0ywk6r661fy1z37jbdhxz8hn4q09n795l9063cqndm8gcr7r";
       };
   });
-  cockroachdb-21_x = callPackage ./generic.nix (rec{
+
+  cockroachdb-21_x = callPackage ./generic.nix (rec {
+    go = go_1_15;
     version = "21.1.0-alpha.3";
     src = builtins.fetchurl
       {
