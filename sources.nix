@@ -5,7 +5,7 @@ args@{ overlays ? [ (import ./.) ], ... }:
 import
   (builtins.fetchTarball {
     name = "nixos-unstable-2021-02-27";
-    url = https://github.com/nixos/nixpkgs/archive/5df05c902cde398e056eb6271d5fe13e418db4c6.tar.gz;
-    sha256 = "12plc7k251z1dmmrd29lyrpw0xmjvmf79yj568aapzrcki5mrw74";
+    url = https://github.com/nixos/nixpkgs/archive/b51b5a104b719721cabf0c7018da82e02014cbbd.tar.gz;
+    sha256 = "1pfag7wjv3wngywpii338cgfk5dlgap8ldxhwgizbr98i5yjk5ix";
   })
   (args // { inherit overlays; })
