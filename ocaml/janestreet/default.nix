@@ -161,8 +161,8 @@ with ocamlPackages;
     propagatedBuildInputs = [ ppx_base ppx_fields_conv ppx_let ppx_sexp_value splittable_random ];
   }).overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/base_quickcheck/archive/854396463466bd0f739b487b7ba4fb55b7ee49ef.tar.gz;
-      sha256 = "10dif9cinbq9wcmw1qmjsd6ajmfn68r16ivn5qf81z8jxxgwvgnj";
+      url = https://github.com/janestreet/base_quickcheck/archive/v0.14.1.tar.gz;
+      sha256 = "0n5h0ysn593awvz4crkvzf5r800hd1c55bx9mm9vbqs906zii6mn";
     };
   });
 
@@ -655,8 +655,8 @@ with ocamlPackages;
   }).overrideAttrs (_: {
     src = builtins.fetchurl
       {
-        url = https://github.com/janestreet/ppx_typerep_conv/archive/9fa81e6d6feee1049d23d06891aad55baf60dc06.tar.gz;
-        sha256 = "1m3lnxknfp2lx9v8qcncxw4qmvvpz566rgrwca2klxfczp8pzh1d";
+        url = https://github.com/janestreet/ppx_typerep_conv/archive/v0.14.2.tar.gz;
+        sha256 = "1g1sb3prscpa7jwnk08f50idcgyiiv0b9amkl0kymj5cghkdqw0n";
       };
   });
 

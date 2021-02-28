@@ -112,7 +112,6 @@ let
 
     # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
     # to fix them)
-    "ppx_bitstring"
     "ppx_deriving_rpc"
     "rpclib-lwt"
     "pgocaml_ppx"
@@ -156,8 +155,12 @@ let
           merlin
           graphql_ppx
         ];
+        cockroachdb-drvs = with pkgs; [
+          # cockroachdb-20_x
+          cockroachdb-21_x
+        ];
       in
-      [ drvs ] ++ bucklescript-drvs;
+      [ drvs ] ++ cockroachdb-drvs ++ bucklescript-drvs;
 
 
     musl =

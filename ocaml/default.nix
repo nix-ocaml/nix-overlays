@@ -116,6 +116,13 @@ websocketafPackages // {
     doCheck = false;
   });
 
+  bitstring = osuper.bitstring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/xguerin/bitstring/archive/v4.1.0.tar.gz;
+      sha256 = "1622ypmqmkk434s9cnyfz1yixpimgi8siphz5nzqllxycr2crw37";
+    };
+  });
+
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
   camlbz2 = callPackage ./camlbz2 { ocamlPackages = oself; };
@@ -373,13 +380,6 @@ websocketafPackages // {
   ssl = osuper.ssl.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
-  });
-
-  stdlib-shims = osuper.stdlib-shims.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/stdlib-shims/releases/download/0.3.0/stdlib-shims-0.3.0.tbz;
-      sha256 = "0jnqsv6pqp5b5g7lcjwgd75zqqvcwcl5a32zi03zg1kvj79p5gxs";
-    };
   });
 
   stringext = callPackage ./stringext { ocamlPackages = oself; };
