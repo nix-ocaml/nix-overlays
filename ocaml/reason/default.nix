@@ -2,11 +2,11 @@
 
 with ocamlPackages;
 let buildReasonPkg = args: buildDunePackage ({
-  version = "3.6.0";
+  version = "3.7.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/facebook/reason/archive/7bcfbc38c0eee785b0fdc4b6003ddf62799f084f.tar.gz;
-    sha256 = "1v5ipdbs9gwhdp09lx2hrn1jq95ncfd8cyz5xacxg2xq0n2q6qc2";
+    url = https://registry.npmjs.org/@esy-ocaml/reason/-/reason-3.7.0.tgz;
+    sha256 = "0spqbsphxnpp3jdy4amfgw58w6mam5gb4vn9gxm5nh9rkcz0iaqg";
   };
 } // args);
 
