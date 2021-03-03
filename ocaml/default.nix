@@ -244,13 +244,6 @@ websocketafPackages // {
         };
   });
 
-  mirage-clock = osuper.mirage-clock.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
-  mirage-clock-unix = osuper.mirage-clock-unix.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
-
   mongo = callPackage ./mongo { ocamlPackages = oself; };
   mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { ocamlPackages = oself; };
@@ -296,13 +289,6 @@ websocketafPackages // {
   });
 
   ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
-
-  ocp-index = osuper.ocp-index.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-index/archive/5513fd18a39072fe223c630cb596c29773db3f0f.tar.gz;
-      sha256 = "0595xspmzbkszcf4jvyb4ji4r2vl2642i46y0yv87kkpg0r1flr4";
-    };
-  });
 
   parmap = osuper.parmap.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -378,6 +364,11 @@ websocketafPackages // {
   routes = callPackage ./routes { ocamlPackages = oself; };
 
   ssl = osuper.ssl.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/savonet/ocaml-ssl/archive/80969e9844d1a8418d50ff93878b528bdadeb253.tar.gz;
+      sha256 = "17r4626mb3bf66bdq4lsk1h6z080ccw1jzxc4asryhpaascip8s4";
+    };
+
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
   });
@@ -426,8 +417,8 @@ websocketafPackages // {
 
   zarith = osuper.zarith.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/zarith/archive/b229acfbdc85d3de3650283e4ad07b77c0f59c2f.tar.gz;
-      sha256 = "06kzlx6adczn0a40pwl66dn0jbmz4laah4v46fyxkhxybyg1cvcv";
+      url = https://github.com/ocaml/Zarith/archive/release-1.12.tar.gz;
+      sha256 = "1098xpqsq3gwpz9k2gc6ahiz2zk0z0xxi1lwc07nvj2570y5ccnc";
     };
   });
 
