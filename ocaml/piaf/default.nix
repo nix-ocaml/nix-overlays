@@ -10,7 +10,7 @@ let src = fetchFromGitHub {
 };
 
 in
-ocamlPackages.buildDunePackage {
+buildDunePackage {
   pname = "piaf";
   version = "0.0.1-dev";
   inherit src;
