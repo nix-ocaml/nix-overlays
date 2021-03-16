@@ -325,27 +325,9 @@ websocketafPackages // {
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-  ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.22.0/ppxlib-0.22.0.tbz;
-      sha256 = "0ykdp55i6x1a5mbxjlvwcfvs4kvzxqnn2bi2lf224rk677h93sry";
-    };
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ocaml-migrate-parsetree-2-1
-      ppx_derivers
-      sexplib0
-      stdlib-shims
-    ];
-  });
-
-  ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2.1/ppx_deriving-v5.2.1.tbz;
-      sha256 = "11h75dsbv3rs03pl67hdd3lbim7wjzh257ij9c75fcknbfr5ysz9";
-    };
-    propagatedBuildInputs = [ ppxlib result ppx_derivers ];
-  });
+  ppxlib = osuper.ppxlib.override {
+    version = "0.22.0";
+  };
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -416,13 +398,6 @@ websocketafPackages // {
 
   yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-  zarith = osuper.zarith.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/Zarith/archive/release-1.12.tar.gz;
-      sha256 = "1098xpqsq3gwpz9k2gc6ahiz2zk0z0xxi1lwc07nvj2570y5ccnc";
-    };
-  });
 
   zmq = osuper.zmq.overrideAttrs
     (o: {
