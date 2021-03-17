@@ -97,6 +97,10 @@ reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
+  alcotest = osuper.alcotest.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
   arp = osuper.arp.overrideAttrs (_: {
