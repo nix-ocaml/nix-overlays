@@ -39,10 +39,6 @@ let
     ocamlPackages = oself;
   };
 
-  kafka-packages = callPackage ./kafka {
-    ocamlPackages = oself;
-  };
-
   lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
@@ -92,7 +88,6 @@ glutenPackages //
 h2Packages //
 janestreetPackages //
 junitPackages //
-kafka-packages //
 lambda-runtime-packages //
 menhirPackages //
 morphPackages //
