@@ -11,26 +11,26 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "bucklescript";
-    rev = "db22c0df408c575233fbecc2088acca141a75bd3";
-    sha256 = "0yvlsrzmx7mnkbygh5xh2px510maj5kayn3dfw6s2b8d7l1fsbfz";
+    rev = "5dcb618f4e3cf215c0207837ee7277d1531398ff";
+    sha256 = "0h92r392s90bg2h91j3v34ndbl9kgar6j1xvbdm7129my02nf1f6";
     fetchSubmodules = true;
   };
 
   nativeBuildInputs = [
     gnutar
-    dune_2
+    dune
     ocaml
     findlib
     cppo
   ];
 
-  propagatedBuildInputs = [ reason ];
+  propagatedBuildInputs = [ reason dune-action-plugin ];
 
   dontConfigure = true;
 
   buildPhase = ''
     runHook preBuild
-    dune build -p ${name}
+    dune build -p ${name} -j16
     runHook postBuild
   '';
 
@@ -42,7 +42,14 @@ stdenv.mkDerivation rec {
     cp -r ./_build/default/lib/es6 ./_build/default/lib/js $out/lib
 
     mkdir -p $out/lib/ocaml
-    tar -C $out/lib/ocaml -xzf $out/share/bucklescript/libocaml.tar.gz --strip-components=1
+    cd $out/lib/ocaml
+
+    tar xvf $OCAMLFIND_DESTDIR/bucklescript/libocaml.tar.gz
+    mv others/* .
+    mv runtime/* .
+    mv stdlib-412/stdlib_modules/* .
+    mv stdlib-412/* .
+    rm -rf others runtime stdlib-412
 
     runHook postInstall
   '';

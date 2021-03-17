@@ -39,10 +39,6 @@ let
     ocamlPackages = oself;
   };
 
-  kafka-packages = callPackage ./kafka {
-    ocamlPackages = oself;
-  };
-
   lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
@@ -92,7 +88,6 @@ glutenPackages //
 h2Packages //
 janestreetPackages //
 junitPackages //
-kafka-packages //
 lambda-runtime-packages //
 menhirPackages //
 morphPackages //
@@ -102,6 +97,10 @@ reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
+  alcotest = osuper.alcotest.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
   arp = osuper.arp.overrideAttrs (_: {
@@ -129,15 +128,30 @@ websocketafPackages // {
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
+  carton = osuper.carton.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   coin = callPackage ./coin { ocamlPackages = oself; };
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
+      sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
+    };
+  });
+
   cudf = callPackage ./cudf { ocamlPackages = oself; };
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
+
+  decompress = osuper.decompress.overrideAttrs (_: {
+    doCheck = false;
+  });
 
   dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
@@ -170,10 +184,10 @@ websocketafPackages // {
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
+  ezxmlm = osuper.ezxmlm.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://ygrek.org/p/release/ocaml-extlib/extlib-1.7.8.tar.gz";
-      sha256 = "0npq4hq3zym8nmlyji7l5cqk6drx2rkcx73d60rxqh5g8dla8p4k";
+      url = https://github.com/mirage/ezxmlm/releases/download/v1.1.0/ezxmlm-v1.1.0.tbz;
+      sha256 = "123dn4h993mlng9gzf4nc6mw75ja7ndcxkbkwfs48j5jk1z05j6d";
     };
   });
 
@@ -185,14 +199,18 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
+  hidapi = osuper.hidapi.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
+  });
+
   httpaf = callPackage ./httpaf { ocamlPackages = oself; };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { ocamlPackages = oself; };
   httpaf-async = callPackage ./httpaf/async.nix { ocamlPackages = oself; };
 
-  hidapi = osuper.hidapi.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
+  hxd = osuper.hxd.overrideAttrs (_: {
+    doCheck = false;
   });
 
   janeStreet = janestreetPackages;
@@ -257,6 +275,13 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
+  npy = osuper.npy.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/LaurentMazare/npy-ocaml/archive/0.0.9.tar.gz;
+      sha256 = "1gkw457lk38zacn4s738szmadkim9sxds7ynq0yf2hhh4bhnz6i0";
+    };
+  });
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -325,27 +350,9 @@ websocketafPackages // {
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-  ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.22.0/ppxlib-0.22.0.tbz;
-      sha256 = "0ykdp55i6x1a5mbxjlvwcfvs4kvzxqnn2bi2lf224rk677h93sry";
-    };
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ocaml-migrate-parsetree-2-1
-      ppx_derivers
-      sexplib0
-      stdlib-shims
-    ];
-  });
-
-  ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v5.2.1/ppx_deriving-v5.2.1.tbz;
-      sha256 = "11h75dsbv3rs03pl67hdd3lbim7wjzh257ij9c75fcknbfr5ysz9";
-    };
-    propagatedBuildInputs = [ ppxlib result ppx_derivers ];
-  });
+  ppxlib = osuper.ppxlib.override {
+    version = "0.22.0";
+  };
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -414,15 +421,15 @@ websocketafPackages // {
 
   uuuu = callPackage ./uuuu { ocamlPackages = oself; };
 
-  yojson = callPackage ./yojson { ocamlPackages = oself; };
-  yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-  zarith = osuper.zarith.overrideAttrs (_: {
+  visitors = osuper.visitors.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/Zarith/archive/release-1.12.tar.gz;
-      sha256 = "1098xpqsq3gwpz9k2gc6ahiz2zk0z0xxi1lwc07nvj2570y5ccnc";
+      url = https://gitlab.inria.fr/fpottier/visitors/repository/20210316/archive.tar.gz;
+      sha256 = "1scf51n23px1y24xxqsix7p4za283kw6giww2s1524y6h77kf1kb";
     };
   });
+
+  yojson = callPackage ./yojson { ocamlPackages = oself; };
+  yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 
   zmq = osuper.zmq.overrideAttrs
     (o: {

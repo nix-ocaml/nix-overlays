@@ -84,15 +84,9 @@ let
 
     # jbuild files
     "facile"
-    "atd"
-    "atdgen"
     "safepass"
     "ocsigen-start"
-    "ezxmlm"
-    "owl"
-    "npy"
     "torch"
-    "phylogenetics"
 
     # linking issues?
     "ocaml_libvirt"
@@ -119,13 +113,12 @@ let
     "eliom"
     "ocsigen-toolkit"
     "ppx_import" # mystery
-    "visitors"
 
     # broken on 4.12
     "ocaml-lsp"
-    "batteries"
     "accessor_core"
     "accessor_async"
+    "dose3"
   ];
 
   buildCandidates = pkgs:
