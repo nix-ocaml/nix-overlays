@@ -125,10 +125,6 @@ let
     "accessor_core"
     "accessor_async"
     "dose3"
-
-    # broken by ctypes 0.18
-    "async_ssl"
-    "async_smtp"
   ];
 
   buildCandidates = pkgs:
