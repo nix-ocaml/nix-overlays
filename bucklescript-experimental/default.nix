@@ -11,20 +11,20 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "bucklescript";
-    rev = "db22c0df408c575233fbecc2088acca141a75bd3";
-    sha256 = "0yvlsrzmx7mnkbygh5xh2px510maj5kayn3dfw6s2b8d7l1fsbfz";
+    rev = "5dcb618f4e3cf215c0207837ee7277d1531398ff";
+    sha256 = "0h92r392s90bg2h91j3v34ndbl9kgar6j1xvbdm7129my02nf1f6";
     fetchSubmodules = true;
   };
 
   nativeBuildInputs = [
     gnutar
-    dune_2
+    dune
     ocaml
     findlib
     cppo
   ];
 
-  propagatedBuildInputs = [ reason ];
+  propagatedBuildInputs = [ reason dune-action-plugin ];
 
   dontConfigure = true;
 
