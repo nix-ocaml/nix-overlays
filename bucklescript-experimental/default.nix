@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     runHook preBuild
-    dune build -p ${name}
+    dune build -p ${name} -j16
     runHook postBuild
   '';
 
@@ -42,7 +42,14 @@ stdenv.mkDerivation rec {
     cp -r ./_build/default/lib/es6 ./_build/default/lib/js $out/lib
 
     mkdir -p $out/lib/ocaml
-    tar -C $out/lib/ocaml -xzf $out/share/bucklescript/libocaml.tar.gz --strip-components=1
+    cd $out/lib/ocaml
+
+    tar xvf $OCAMLFIND_DESTDIR/bucklescript/libocaml.tar.gz
+    mv others/* .
+    mv runtime/* .
+    mv stdlib-412/stdlib_modules/* .
+    mv stdlib-412/* .
+    rm -rf others runtime stdlib-412
 
     runHook postInstall
   '';
