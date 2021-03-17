@@ -124,6 +124,10 @@ websocketafPackages // {
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
+  carton = osuper.carton.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   coin = callPackage ./coin { ocamlPackages = oself; };
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -140,6 +144,10 @@ websocketafPackages // {
   cudf = callPackage ./cudf { ocamlPackages = oself; };
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
+
+  decompress = osuper.decompress.overrideAttrs (_: {
+    doCheck = false;
+  });
 
   dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
@@ -187,14 +195,18 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
+  hidapi = osuper.hidapi.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
+  });
+
   httpaf = callPackage ./httpaf { ocamlPackages = oself; };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { ocamlPackages = oself; };
   httpaf-async = callPackage ./httpaf/async.nix { ocamlPackages = oself; };
 
-  hidapi = osuper.hidapi.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
+  hxd = osuper.hxd.overrideAttrs (_: {
+    doCheck = false;
   });
 
   janeStreet = janestreetPackages;
