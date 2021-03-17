@@ -170,13 +170,6 @@ websocketafPackages // {
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://ygrek.org/p/release/ocaml-extlib/extlib-1.7.8.tar.gz";
-      sha256 = "0npq4hq3zym8nmlyji7l5cqk6drx2rkcx73d60rxqh5g8dla8p4k";
-    };
-  });
-
   faraday-async = callPackage ./faraday/async.nix { ocamlPackages = oself; };
   faraday-lwt = callPackage ./faraday/lwt.nix { ocamlPackages = oself; };
   faraday-lwt-unix = callPackage ./faraday/lwt-unix.nix { ocamlPackages = oself; };
