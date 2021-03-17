@@ -172,6 +172,13 @@ websocketafPackages // {
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
+  ezxmlm = osuper.ezxmlm.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ezxmlm/releases/download/v1.1.0/ezxmlm-v1.1.0.tbz;
+      sha256 = "123dn4h993mlng9gzf4nc6mw75ja7ndcxkbkwfs48j5jk1z05j6d";
+    };
+  });
+
   faraday-async = callPackage ./faraday/async.nix { ocamlPackages = oself; };
   faraday-lwt = callPackage ./faraday/lwt.nix { ocamlPackages = oself; };
   faraday-lwt-unix = callPackage ./faraday/lwt-unix.nix { ocamlPackages = oself; };
@@ -252,6 +259,13 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
+  npy = osuper.npy.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/LaurentMazare/npy-ocaml/archive/0.0.9.tar.gz;
+      sha256 = "1gkw457lk38zacn4s738szmadkim9sxds7ynq0yf2hhh4bhnz6i0";
+    };
+  });
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {

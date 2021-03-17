@@ -84,15 +84,9 @@ let
 
     # jbuild files
     "facile"
-    "atd"
-    "atdgen"
     "safepass"
     "ocsigen-start"
-    "ezxmlm"
-    "owl"
-    "npy"
     "torch"
-    "phylogenetics"
 
     # linking issues?
     "ocaml_libvirt"
