@@ -235,8 +235,6 @@ websocketafPackages // {
 
   landmarks = callPackage ./landmarks { ocamlPackages = oself; };
 
-  luv = callPackage ./luv { ocamlPackages = oself; };
-
   lwt = osuper.lwt.overrideAttrs (o: {
     buildInputs = [ ocaml dune findlib cppo dune-configurator ];
   });
