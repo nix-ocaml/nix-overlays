@@ -28,15 +28,6 @@ in
   # with musl
   libpq = super.postgresql.override { enableSystemd = false; };
 
-  dot-merlin-reader = (super.dot-merlin-reader.override {
-    inherit (self) ocamlPackages;
-  }).overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/merlin/releases/download/v4.0-411/merlin-v4.0-411.tbz;
-      sha256 = "0m7az1p6sf4fyy763z921j2q2ahl5zf83dgsmpcv29cnjy088655";
-    };
-  });
-
   ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_12.overrideScope' (oself: osuper: {
     ocaml = import ./bucklescript-experimental/ocaml.nix {
       inherit (super) lib stdenv;
