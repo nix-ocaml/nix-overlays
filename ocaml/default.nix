@@ -191,9 +191,6 @@ websocketafPackages // {
     };
   });
 
-  faraday-async = callPackage ./faraday/async.nix { ocamlPackages = oself; };
-  faraday-lwt = callPackage ./faraday/lwt.nix { ocamlPackages = oself; };
-  faraday-lwt-unix = callPackage ./faraday/lwt-unix.nix { ocamlPackages = oself; };
 
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
