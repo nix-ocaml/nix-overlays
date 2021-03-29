@@ -108,10 +108,7 @@ let
     # to fix them)
     "ppx_deriving_rpc"
     "rpclib-lwt"
-    "pgocaml_ppx"
     "elpi"
-    "ocsigen-toolkit"
-    "ppx_import" # mystery
 
     # broken on 4.12
     "ocaml-lsp"

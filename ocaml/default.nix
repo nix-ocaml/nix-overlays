@@ -326,6 +326,24 @@ websocketafPackages // {
     buildInputs = (lib.remove oself.ocaml-migrate-parsetree-1-8 o.buildInputs) ++ [ ppxlib ];
   });
 
+  ppx_import = buildDunePackage rec {
+    pname = "ppx_import";
+    version = "1.8.0";
+
+    useDune2 = true;
+
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ppx_import/releases/download/v${version}/ppx_import-${version}.tbz";
+      sha256 = "0zqcj70yyp4ik4jc6jz3qs2xhb94vxc6yq9ij0d5cyak28klc3gv";
+    };
+
+    propagatedBuildInputs = [
+      ppx_tools_versioned
+      ocaml-migrate-parsetree
+    ];
+
+  };
+
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
