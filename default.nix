@@ -29,11 +29,9 @@ in
   libpq = super.postgresql.override { enableSystemd = false; };
 
   ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_12.overrideScope' (oself: osuper: {
-    ocaml = import ./bucklescript-experimental/ocaml.nix {
+    ocaml = import ./melange/ocaml.nix {
       inherit (super) lib stdenv;
       inherit (super.ocaml.meta) license;
-      src = "${self.bucklescript-experimental.src}/ocaml";
-      version = "4.12.0+BS";
     };
   });
 
@@ -73,9 +71,8 @@ in
       (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
   });
 
-  bucklescript-experimental = callPackage ./bucklescript-experimental {
+  melange = callPackage ./melange {
     ocamlPackages = self.ocamlPackages-bs;
-    dune_2 = self.ocamlPackages.dune_2;
   };
 
   pkgsCross = super.pkgsCross // {

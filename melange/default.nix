@@ -5,15 +5,12 @@ let
   bin_folder = if stdenv.isDarwin then "darwin" else "linux";
 in
 stdenv.mkDerivation rec {
-  name = "bucklescript";
+  name = "melange";
   version = "9.0.0-dune";
 
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "bucklescript";
-    rev = "5dcb618f4e3cf215c0207837ee7277d1531398ff";
-    sha256 = "0h92r392s90bg2h91j3v34ndbl9kgar6j1xvbdm7129my02nf1f6";
-    fetchSubmodules = true;
+  src = builtins.fetchurl {
+    url = https://github.com/melange-re/melange/archive/f5cb19b7.tar.gz;
+    sha256 = "0qrgc9rdzvkv95vb6d7zsi7dvjp1z7232prrvjcpq9ppkp1xhzb2";
   };
 
   nativeBuildInputs = [
@@ -44,7 +41,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out/lib/ocaml
     cd $out/lib/ocaml
 
-    tar xvf $OCAMLFIND_DESTDIR/bucklescript/libocaml.tar.gz
+    tar xvf $OCAMLFIND_DESTDIR/melange/libocaml.tar.gz
     mv others/* .
     mv runtime/* .
     mv stdlib-412/stdlib_modules/* .
