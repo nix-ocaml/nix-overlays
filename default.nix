@@ -73,18 +73,6 @@ in
       (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
   });
 
-  # BuckleScript
-  bs-platform = callPackage ./bs-platform {
-    ocamlPackages = self.ocamlPackages-bs;
-  };
-
-  dune_2 =
-    if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.06"
-    then self.ocamlPackages.dune_2
-    else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
-    then self.ocaml-ng.ocamlPackages_4_11.dune_2
-    else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
-
   bucklescript-experimental = callPackage ./bucklescript-experimental {
     ocamlPackages = self.ocamlPackages-bs;
     dune_2 = self.ocamlPackages.dune_2;
