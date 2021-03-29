@@ -8,7 +8,7 @@ buildDunePackage {
 
   src = builtins.fetchurl {
     url = https://github.com/reasonml-community/graphql-ppx/archive/refs/tags/v1.1.0.tar.gz;
-    sha256 = "0rqwra6gv1135rfsp2r5cvribzgjakxkp3r0gqgjky55i86zn0q0";
+    sha256 = "1dkkcr5ypphlx96n7h448cwazld9phygvlqr5giqvckqk72qc3pn";
   };
 
   useDune2 = true;
