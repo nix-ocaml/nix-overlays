@@ -1,4 +1,4 @@
-{ callPackage, libpq, dot-merlin-reader, opaline, lib, stdenv, openssl }:
+{ callPackage, libpq, opaline, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -191,7 +191,6 @@ websocketafPackages // {
     };
   });
 
-
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
   };
@@ -223,13 +222,6 @@ websocketafPackages // {
 
   logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/3.9.1/js_of_ocaml-3.9.1.tbz;
-      sha256 = "0ib551kfsjlp9vr3fk36hrbq7xxyl8bj6vcn3ccr0s370bsmgpm6";
-    };
-  });
-
   landmarks = callPackage ./landmarks { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
@@ -242,16 +234,20 @@ websocketafPackages // {
 
   merlin = osuper.merlin.overrideAttrs (o: {
     src =
-
       if (lib.versionOlder "4.12" osuper.ocaml.version)
       then
         builtins.fetchurl
           {
-            url = https://github.com/ocaml/merlin/releases/download/v4.0/merlin-v4.0-412.tbz;
-            sha256 = "0n60rf7w48kik9cl5m4kzklp8cxiamqad1qb01ikb8xma7f094p6";
+            url = https://github.com/ocaml/merlin/releases/download/v4.1-412/merlin-v4.1-412.tbz;
+            sha256 = "13cx0v999ijj48m2zb0rsgi1m42bywm7jc8fsqxkkf5xfggawk7v";
           }
       else if (lib.versionOlder "4.11" osuper.ocaml.version)
-      then dot-merlin-reader.src
+      then
+        builtins.fetchurl
+          {
+            url = https://github.com/ocaml/merlin/releases/download/v4.1-411/merlin-v4.1-411.tbz;
+            sha256 = "0zckb729mhp1329bcqp0mi1lxxipzbm4a5hqqzrf2g69k73nybly";
+          }
       else
         builtins.fetchurl {
           url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
@@ -270,13 +266,6 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
-
-  npy = osuper.npy.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/LaurentMazare/npy-ocaml/archive/0.0.9.tar.gz;
-      sha256 = "1gkw457lk38zacn4s738szmadkim9sxds7ynq0yf2hhh4bhnz6i0";
-    };
-  });
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -344,10 +333,6 @@ websocketafPackages // {
   });
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
-
-  ppxlib = osuper.ppxlib.override {
-    version = "0.22.0";
-  };
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
