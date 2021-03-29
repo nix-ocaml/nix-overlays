@@ -117,7 +117,6 @@ let
     "ocaml-lsp"
     "accessor_core"
     "accessor_async"
-    "dose3"
   ];
 
   buildCandidates = pkgs:

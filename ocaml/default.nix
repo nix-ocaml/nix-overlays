@@ -191,6 +191,13 @@ websocketafPackages // {
     };
   });
 
+  jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/ocaml-lsp/archive/440e98788a39dff08d74941b741f222af97b5c84.tar.gz;
+      sha256 = "0bwkglr6hmvq1yr8d8ap9bilivc612isq1c7gx963xwa9i6yidm7";
+    };
+  });
+
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
   };
