@@ -37,7 +37,7 @@ in
     };
   });
 
-  ocamlPackages = oPs.ocamlPackages_4_11;
+  ocamlPackages = oPs.ocamlPackages_4_12;
   ocamlPackages_latest = self.ocamlPackages;
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
