@@ -28,25 +28,14 @@ in
   # with musl
   libpq = super.postgresql.override { enableSystemd = false; };
 
-  dot-merlin-reader = (super.dot-merlin-reader.override {
-    inherit (self) ocamlPackages;
-  }).overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/merlin/releases/download/v4.0-411/merlin-v4.0-411.tbz;
-      sha256 = "0m7az1p6sf4fyy763z921j2q2ahl5zf83dgsmpcv29cnjy088655";
-    };
-  });
-
   ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_12.overrideScope' (oself: osuper: {
-    ocaml = import ./bucklescript-experimental/ocaml.nix {
+    ocaml = import ./melange/ocaml.nix {
       inherit (super) lib stdenv;
       inherit (super.ocaml.meta) license;
-      src = "${self.bucklescript-experimental.src}/ocaml";
-      version = "4.12.0+BS";
     };
   });
 
-  ocamlPackages = oPs.ocamlPackages_4_11;
+  ocamlPackages = oPs.ocamlPackages_4_12;
   ocamlPackages_latest = self.ocamlPackages;
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
@@ -82,21 +71,8 @@ in
       (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
   });
 
-  # BuckleScript
-  bs-platform = callPackage ./bs-platform {
+  melange = callPackage ./melange {
     ocamlPackages = self.ocamlPackages-bs;
-  };
-
-  dune_2 =
-    if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.06"
-    then self.ocamlPackages.dune_2
-    else if lib.versionAtLeast self.ocamlPackages.ocaml.version "4.02"
-    then self.ocaml-ng.ocamlPackages_4_11.dune_2
-    else throw "dune_2 is not available for OCaml ${self.ocamlPackages.ocaml.version}";
-
-  bucklescript-experimental = callPackage ./bucklescript-experimental {
-    ocamlPackages = self.ocamlPackages-bs;
-    dune_2 = self.ocamlPackages.dune_2;
   };
 
   pkgsCross = super.pkgsCross // {

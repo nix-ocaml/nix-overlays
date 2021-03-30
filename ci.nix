@@ -108,17 +108,12 @@ let
     # to fix them)
     "ppx_deriving_rpc"
     "rpclib-lwt"
-    "pgocaml_ppx"
     "elpi"
-    "eliom"
-    "ocsigen-toolkit"
-    "ppx_import" # mystery
 
     # broken on 4.12
     "ocaml-lsp"
     "accessor_core"
     "accessor_async"
-    "dose3"
   ];
 
   buildCandidates = pkgs:
@@ -143,8 +138,8 @@ let
     native =
       let
         drvs = buildCandidates pkgs;
-        bucklescript-drvs = with pkgs.ocamlPackages-bs; [
-          pkgs.bucklescript-experimental
+        melange-drvs = with pkgs.ocamlPackages-bs; [
+          pkgs.melange
           merlin
           graphql_ppx
         ];
@@ -153,7 +148,7 @@ let
           cockroachdb-21_x
         ];
       in
-      [ drvs ] ++ cockroachdb-drvs ++ bucklescript-drvs;
+      [ drvs ] ++ cockroachdb-drvs ++ melange-drvs;
 
 
     musl =
