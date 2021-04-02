@@ -138,17 +138,12 @@ let
     native =
       let
         drvs = buildCandidates pkgs;
-        melange-drvs = with pkgs.ocamlPackages-bs; [
-          pkgs.melange
-          merlin
-          graphql_ppx
-        ];
         cockroachdb-drvs = with pkgs; [
           # cockroachdb-20_x
           cockroachdb-21_x
         ];
       in
-      [ drvs ] ++ cockroachdb-drvs ++ melange-drvs;
+      [ drvs ] ++ cockroachdb-drvs;
 
 
     musl =
