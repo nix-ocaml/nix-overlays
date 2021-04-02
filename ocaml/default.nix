@@ -239,6 +239,21 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
+  melange =
+    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+      callPackage ./melange
+        {
+          ocamlPackages = oself;
+        } else null;
+
+  melange-compiler-libs =
+    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+      callPackage ./melange/compiler-libs.nix
+        {
+          ocamlPackages = oself;
+        } else null;
+
+
   merlin = osuper.merlin.overrideAttrs (o: {
     src =
       if (lib.versionOlder "4.12" osuper.ocaml.version)

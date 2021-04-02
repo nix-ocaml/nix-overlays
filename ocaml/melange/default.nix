@@ -1,16 +1,15 @@
 { stdenv, opaline, ocamlPackages, lib, dune_2, nodejs, gnutar, fetchFromGitHub }:
 
 with ocamlPackages;
-let
-  bin_folder = if stdenv.isDarwin then "darwin" else "linux";
-in
-stdenv.mkDerivation rec {
-  name = "melange";
-  version = "9.0.0-dune";
+
+
+buildDunePackage rec {
+  pname = "melange";
+  version = "0.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/f5cb19b7.tar.gz;
-    sha256 = "0qrgc9rdzvkv95vb6d7zsi7dvjp1z7232prrvjcpq9ppkp1xhzb2";
+    url = https://github.com/melange-re/melange/archive/d1ca4fc34ba477eb1332e1684266cbdd3a75aee9.tar.gz;
+    sha256 = "195n3hh447yk3msf4ja7a4h98f9cg26kf3pkbrzsxvddsn9ffyzi";
   };
 
   nativeBuildInputs = [
@@ -21,15 +20,14 @@ stdenv.mkDerivation rec {
     cppo
   ];
 
-  propagatedBuildInputs = [ reason dune-action-plugin ];
+  propagatedBuildInputs = [
+    cmdliner
+    dune-action-plugin
+    melange-compiler-libs
+    reason
+  ];
 
   dontConfigure = true;
-
-  buildPhase = ''
-    runHook preBuild
-    dune build -p ${name} -j16
-    runHook postBuild
-  '';
 
   installPhase = ''
     runHook preInstall

@@ -28,13 +28,6 @@ in
   # with musl
   libpq = super.postgresql.override { enableSystemd = false; };
 
-  ocamlPackages-bs = self.ocaml-ng.ocamlPackages_4_12.overrideScope' (oself: osuper: {
-    ocaml = import ./melange/ocaml.nix {
-      inherit (super) lib stdenv;
-      inherit (super.ocaml.meta) license;
-    };
-  });
-
   ocamlPackages = oPs.ocamlPackages_4_12;
   ocamlPackages_latest = self.ocamlPackages;
   opaline = (super.opaline.override {
@@ -70,10 +63,6 @@ in
     buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
       (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
   });
-
-  melange = callPackage ./melange {
-    ocamlPackages = self.ocamlPackages-bs;
-  };
 
   pkgsCross = super.pkgsCross // {
     musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static {
