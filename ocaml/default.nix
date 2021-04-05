@@ -394,6 +394,20 @@ websocketafPackages // {
 
   routes = callPackage ./routes { ocamlPackages = oself; };
 
+  sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;
+      sha256 = "0n0gg8iax9jjnv0azisjaqxr7p3vx2a5pwc9rsq40fsqbvmr1c7r";
+    };
+
+    propagatedBuildInputs = [
+      gen
+      uchar
+      ocaml-migrate-parsetree-2-1
+      ppxlib
+    ];
+  });
+
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/savonet/ocaml-ssl/archive/80969e9844d1a8418d50ff93878b528bdadeb253.tar.gz;
