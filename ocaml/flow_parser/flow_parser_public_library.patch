@@ -1,0 +1,13 @@
+diff --git a/src/parser/dune b/src/parser/dune
+index add19f320..91290b5f5 100644
+--- a/src/parser/dune
++++ b/src/parser/dune
+@@ -1,6 +1,8 @@
+ (library
+   (name flow_parser)
++  (public_name flow_parser)
+   (wrapped false)
++  (flags -w -16)
+   (modules (:standard \ flow_parser_js flow_parser_dot_js))
+   (libraries
+     sedlex

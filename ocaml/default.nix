@@ -191,6 +191,8 @@ websocketafPackages // {
     };
   });
 
+  flow_parser = callPackage ./flow_parser { ocamlPackages = oself; };
+
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/ocaml-lsp/archive/440e98788a39dff08d74941b741f222af97b5c84.tar.gz;
