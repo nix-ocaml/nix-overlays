@@ -412,8 +412,8 @@ websocketafPackages // {
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/80969e9844d1a8418d50ff93878b528bdadeb253.tar.gz;
-      sha256 = "17r4626mb3bf66bdq4lsk1h6z080ccw1jzxc4asryhpaascip8s4";
+      url = https://github.com/savonet/ocaml-ssl/archive/f7524f7.tar.gz;
+      sha256 = "0h3my07bpsxg688wg3pcxxm98i4jcdzsy8lpidc3b72377h4pnsc";
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
