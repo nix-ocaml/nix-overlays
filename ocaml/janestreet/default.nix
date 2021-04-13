@@ -52,6 +52,16 @@ with ocamlPackages;
     };
   });
 
+  parsexp = janePackage {
+    pname = "parsexp";
+    hash = "0rvbrf8ggh2imsbhqi15jzyyqbi3m5hzvy2iy2r4skx6m102mzpd";
+    minimumOCamlVersion = "4.04.2";
+    meta.description = "S-expression parsing library";
+    propagatedBuildInputs = [ base sexplib0 ];
+
+    patches = [ ./parsexp.patch ];
+  };
+
   ppx_custom_printf = (janePackage {
     pname = "ppx_custom_printf";
     hash = "0p9hgx0krxqw8hlzfv2bg2m3zi5nxsnzhyp0fj5936rapad02hc5";
