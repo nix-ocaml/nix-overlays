@@ -24,6 +24,7 @@ jobs:
     name: Native packages (Linux, OCaml ${{ matrix.ocaml-version }})
     runs-on: ubuntu-latest
     env:
+      TERM: dumb
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
@@ -48,6 +49,7 @@ jobs:
     name: Native packages (macOS, OCaml ${{ matrix.ocaml-version }})
     runs-on: macos-latest
     env:
+      TERM: dumb
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
@@ -78,6 +80,7 @@ jobs:
     name: ${{matrix.target}} packages (OCaml ${{ matrix.ocaml-version }})
     runs-on: ubuntu-latest
     env:
+      TERM: dumb
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
