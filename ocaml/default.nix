@@ -164,6 +164,16 @@ websocketafPackages // {
     then oself.dune_2
     else osuper.dune_1;
 
+  dune-site = buildDunePackage {
+    pname = "dune-site";
+    inherit (oself.dune) src version patches;
+    useDune2 = true;
+
+    dontAddPrefix = true;
+
+    propagatedBuildInputs = [ dune-private-libs ];
+  };
+
   dune-release = osuper.dune-release.overrideAttrs (o: {
     doCheck = false;
     src = builtins.fetchurl {

@@ -3,10 +3,10 @@
 with ocamlPackages;
 let
   buildH2 = args: buildDunePackage (rec {
-    version = "0.7.0";
+    version = "0.8.0";
     src = builtins.fetchurl {
       url = "https://github.com/anmonteiro/ocaml-h2/releases/download/${version}/h2-${version}.tbz";
-      sha256 = "1g2y823bfaq7gy0cz5x5y8gd900lc8sq9pssqkgj6z94fnh378k3";
+      sha256 = "0qcn3yvyz0h419fjg9nb20csfmwmh3ihz0zb0jfzdycf5w4mlry6";
     };
   } // args);
 in
