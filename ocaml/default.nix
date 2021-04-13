@@ -218,8 +218,6 @@ websocketafPackages // {
     doCheck = false;
   });
 
-  janeStreet = janestreetPackages;
-
   jose = callPackage ./jose { ocamlPackages = oself; };
 
   ke = osuper.ke.overrideAttrs (o: {
