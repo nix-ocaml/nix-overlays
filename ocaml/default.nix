@@ -376,11 +376,6 @@ websocketafPackages // {
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmottl/postgresql-ocaml/releases/download/5.0.0/postgresql-5.0.0.tbz;
-      sha256 = "1n7rgrh6z9jzs2wj1mjys0q0y8q7gy1v00jik631v0d4y9dl1kcw";
-    };
-
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
