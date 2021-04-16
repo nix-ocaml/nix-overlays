@@ -84,7 +84,6 @@ let
 
     # jbuild files
     "facile"
-    "safepass"
     "ocsigen-start"
     "torch"
 
