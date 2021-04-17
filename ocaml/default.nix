@@ -194,13 +194,6 @@ websocketafPackages // {
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  ezxmlm = osuper.ezxmlm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ezxmlm/releases/download/v1.1.0/ezxmlm-v1.1.0.tbz;
-      sha256 = "123dn4h993mlng9gzf4nc6mw75ja7ndcxkbkwfs48j5jk1z05j6d";
-    };
-  });
-
   flow_parser = callPackage ./flow_parser { ocamlPackages = oself; };
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
