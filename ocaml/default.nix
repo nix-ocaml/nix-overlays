@@ -462,8 +462,6 @@ websocketafPackages // {
     };
   });
 
-  x509 = callPackage ./x509 { ocamlPackages = oself; };
-
   yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 
