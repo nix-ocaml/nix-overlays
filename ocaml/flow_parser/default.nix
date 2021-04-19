@@ -4,11 +4,10 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "flow_parser";
-  version = "0.148.0";
+  version = "0.149.0";
   src = builtins.fetchurl {
-    # https://github.com/facebook/flow/pull/8640
-    url = https://github.com/facebook/flow/archive/73942e8.tar.gz;
-    sha256 = "04d0lzii1slfk9zlb1p1r74izwlpl9bsy0gwc7vrzp6r9mdc1ndd";
+    url = https://github.com/facebook/flow/archive/refs/tags/v0.149.0.tar.gz;
+    sha256 = "1cm3r4n2iscwvs593vr3vfxsqg81ask9nh3043lcq97999cxg3xq";
   };
 
   patches = [ ./flow_parser_public_library.patch ];
