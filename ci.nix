@@ -110,9 +110,9 @@ let
     "elpi"
 
     # broken on 4.12
-    "ocaml-lsp"
     "accessor_core"
     "accessor_async"
+    "ocaml_extlib-1-7-7"
   ];
 
   buildCandidates = pkgs:
