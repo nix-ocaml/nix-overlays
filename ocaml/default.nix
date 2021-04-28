@@ -1,4 +1,4 @@
-{ callPackage, libpq, opaline, lib, stdenv, openssl }:
+{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -132,8 +132,15 @@ websocketafPackages // {
     doCheck = false;
   });
 
-  caqti = callPackage ./caqti { ocamlPackages = oself; };
-  caqti-lwt = callPackage ./caqti/lwt.nix { ocamlPackages = oself; };
+  caqti = osuper.caqti.overrideAttrs (_: {
+    version = "1.5.1";
+    src = fetchFromGitHub {
+      owner = "paurkedal";
+      repo = "ocaml-caqti";
+      rev = "v1.5.1";
+      sha256 = "1vl61kdyj89whc3mh4k9bis6rbj9x2scf6hnv9afyalp4j65sqx1";
+    };
+  });
 
   coin = callPackage ./coin { ocamlPackages = oself; };
 
