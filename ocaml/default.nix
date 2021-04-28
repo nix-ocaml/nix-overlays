@@ -1,4 +1,4 @@
-{ callPackage, libpq, opaline, lib, stdenv, openssl }:
+{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -132,6 +132,16 @@ websocketafPackages // {
     doCheck = false;
   });
 
+  caqti = osuper.caqti.overrideAttrs (_: {
+    version = "1.5.1";
+    src = fetchFromGitHub {
+      owner = "paurkedal";
+      repo = "ocaml-caqti";
+      rev = "v1.5.1";
+      sha256 = "1vl61kdyj89whc3mh4k9bis6rbj9x2scf6hnv9afyalp4j65sqx1";
+    };
+  });
+
   coin = callPackage ./coin { ocamlPackages = oself; };
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -155,8 +165,11 @@ websocketafPackages // {
 
   dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
+  dream = callPackage ./dream { ocamlPackages = oself; };
+
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
+
   dune_1 = dune;
 
   dune =
@@ -291,6 +304,8 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
+  multipart-form-data = callPackage ./multipart-form-data { ocamlPackages = oself; };
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
