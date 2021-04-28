@@ -12,54 +12,54 @@ let src = fetchFromGitHub {
 in
 {
   dream = ocamlPackages.buildDunePackage
-  {
-    pname = "dream";
-    version = "1.0.0-dev";
-    inherit src;
+    {
+      pname = "dream";
+      version = "1.0.0-dev";
+      inherit src;
 
-    propagatedBuildInputs = with ocamlPackages; [
-      # base-unix
-      base64
-      bigarray-compat
-      caqti-lwt
-      # conf-libev
-      cstruct
-      fmt
-      graphql_parser
-      graphql-lwt
-      hmap
-      lwt
-      lwt_ppx
-      lwt_ssl
-      logs
-      magic-mime
-      mirage-crypto
-      mirage-crypto-rng
-      multipart-form-data
-      uri
-      yojson
-      # vendored dependencies, can we "unvendor" this?
-      gluten
-      gluten-lwt-unix
-      httpaf
-      httpaf-lwt-unix
-      h2
-      h2-lwt-unix
-      hpack
-      websocketaf
-      # dependencies of vendored packages
-      angstrom
-      bigstringaf
-      digestif
-      faraday
-      faraday-lwt-unix
-      psq
-      result
-    ];
+      propagatedBuildInputs = with ocamlPackages; [
+        # base-unix
+        base64
+        bigarray-compat
+        caqti-lwt
+        # conf-libev
+        cstruct
+        fmt
+        graphql_parser
+        graphql-lwt
+        hmap
+        lwt
+        lwt_ppx
+        lwt_ssl
+        logs
+        magic-mime
+        mirage-crypto
+        mirage-crypto-rng
+        multipart-form-data
+        uri
+        yojson
+        # vendored dependencies, can we "unvendor" this?
+        # gluten
+        # gluten-lwt-unix
+        # httpaf
+        # httpaf-lwt-unix
+        # h2
+        # h2-lwt-unix
+        # hpack
+        # websocketaf
+        # dependencies of vendored packages
+        angstrom
+        bigstringaf
+        digestif
+        faraday
+        faraday-lwt-unix
+        psq
+        result
+      ];
 
-    meta = {
-      description = " Easy-to-use, feature-complete Web framework without boilerplate";
-      license = lib.licenses.mit;
+      meta = {
+        description = " Easy-to-use, feature-complete Web framework without boilerplate";
+        license = lib.licenses.mit;
+      };
     };
-  };
 }
