@@ -132,6 +132,9 @@ websocketafPackages // {
     doCheck = false;
   });
 
+  caqti = callPackage ./caqti { ocamlPackages = oself; };
+  caqti-lwt = callPackage ./caqti/lwt.nix { ocamlPackages = oself; };
+
   coin = callPackage ./coin { ocamlPackages = oself; };
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
@@ -155,8 +158,11 @@ websocketafPackages // {
 
   dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
+  dream = callPackage ./dream { ocamlPackages = oself; };
+
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
+
   dune_1 = dune;
 
   dune =
@@ -291,6 +297,8 @@ websocketafPackages // {
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+
+  multipart-form-data = callPackage ./multipart-form-data { ocamlPackages = oself; };
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
