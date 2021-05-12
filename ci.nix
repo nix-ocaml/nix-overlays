@@ -118,6 +118,8 @@ let
     "ocaml-freestanding"
     "mirage-xen"
     "mirage-bootvar-xen"
+    "mirage-net-xen"
+    "netchannel"
 
     # broken
     "httpaf-mirage"
