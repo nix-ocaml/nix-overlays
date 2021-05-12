@@ -115,12 +115,16 @@ let
     "ocaml_extlib-1-7-7"
 
     # unavailable on macOS
+    "ocaml-freestanding"
     "mirage-xen"
 
     # broken
     "httpaf-mirage"
     "h2-mirage"
     "websocketaf-mirage"
+
+    # doesn't work with my fork of http/af
+    "paf"
   ];
 
   buildCandidates = pkgs:
