@@ -103,6 +103,15 @@ websocketafPackages // {
 
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
+  ansiterminal = buildDunePackage {
+    pname = "ANSITerminal";
+    version = "0.8.2";
+    src = builtins.fetchurl {
+      url = https://github.com/Chris00/ANSITerminal/releases/download/0.8.2/ANSITerminal-0.8.2.tbz;
+      sha256 = "04n15ki9h1qawlhkxbglzfbx0frm593nx2cahyh8riwc2g46q148";
+    };
+  };
+
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
