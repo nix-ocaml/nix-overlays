@@ -114,7 +114,9 @@ let
     "accessor_async"
     "ocaml_extlib-1-7-7"
 
+    # unavailable on macOS
     "ocaml-freestanding"
+    "mirage-xen"
   ];
 
   buildCandidates = pkgs:
