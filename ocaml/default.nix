@@ -103,6 +103,15 @@ websocketafPackages // {
 
   alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
 
+  ansiterminal = buildDunePackage {
+    pname = "ANSITerminal";
+    version = "0.8.2";
+    src = builtins.fetchurl {
+      url = https://github.com/Chris00/ANSITerminal/releases/download/0.8.2/ANSITerminal-0.8.2.tbz;
+      sha256 = "04n15ki9h1qawlhkxbglzfbx0frm593nx2cahyh8riwc2g46q148";
+    };
+  };
+
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
@@ -331,13 +340,6 @@ websocketafPackages // {
     };
     propagatedBuildInputs = [ stdlib-shims ];
   };
-
-  ocp-build = osuper.ocp-build.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-build/archive/104e4656ca6dba9edb03b62539c9f1e10abcaae8.tar.gz;
-      sha256 = "01qn6w6dc1g4pr4s031jblx41vv635r29hkasvlc71c5zs2szvwy";
-    };
-  });
 
   ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 

@@ -113,6 +113,23 @@ let
     "accessor_core"
     "accessor_async"
     "ocaml_extlib-1-7-7"
+
+    # unavailable on macOS
+    "ocaml-freestanding"
+    "mirage-xen"
+    "mirage-bootvar-xen"
+    "mirage-net-xen"
+    "netchannel"
+
+    # broken
+    "httpaf-mirage"
+    "h2-mirage"
+    "websocketaf-mirage"
+
+    # doesn't work with my fork of http/af
+    "paf"
+    "git-paf"
+    "irmin-mirage-git"
   ];
 
   buildCandidates = pkgs:
@@ -124,13 +141,13 @@ let
         let broken =
           if v ? meta && v.meta ? broken then v.meta.broken else false;
         in
-        ((! (builtins.elem n ignoredPackages)) &&
-          (! broken) &&
-          (
-            let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
-            in
-            (builtins.elem stdenv.system platforms)
-          )))
+        (! (builtins.elem n ignoredPackages)) &&
+        (! broken) &&
+        (
+          let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+          in
+          (builtins.elem stdenv.system platforms)
+        ))
       ocamlPackages;
 
   targets = {
