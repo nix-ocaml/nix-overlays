@@ -115,8 +115,13 @@ let
     "ocaml_extlib-1-7-7"
 
     # unavailable on macOS
-    "ocaml-freestanding"
     "mirage-xen"
+
+    # broken
+    "gluten-mirage"
+    "httpaf-mirage"
+    "h2-mirage"
+    "websocketaf-mirage"
   ];
 
   buildCandidates = pkgs:
@@ -128,13 +133,13 @@ let
         let broken =
           if v ? meta && v.meta ? broken then v.meta.broken else false;
         in
-        ((! (builtins.elem n ignoredPackages)) &&
-          (! broken) &&
-          (
-            let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
-            in
-            (builtins.elem stdenv.system platforms)
-          )))
+        (! (builtins.elem n ignoredPackages)) &&
+        (! broken) &&
+        (
+          let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+          in
+          (builtins.elem stdenv.system platforms)
+        ))
       ocamlPackages;
 
   targets = {
