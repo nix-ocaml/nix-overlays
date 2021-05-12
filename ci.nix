@@ -129,7 +129,7 @@ let
     # doesn't work with my fork of http/af
     "paf"
     "git-paf"
-    "mirage-git"
+    "irmin-mirage-git"
   ];
 
   buildCandidates = pkgs:
