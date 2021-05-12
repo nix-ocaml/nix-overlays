@@ -48,5 +48,8 @@ in
       mirage-flow
       cstruct
     ];
+    meta = {
+      broken = true;
+    };
   };
 } else { })
