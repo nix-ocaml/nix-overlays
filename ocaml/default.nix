@@ -326,13 +326,6 @@ websocketafPackages // {
     propagatedBuildInputs = [ stdlib-shims ];
   };
 
-  ocp-build = osuper.ocp-build.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-build/archive/104e4656ca6dba9edb03b62539c9f1e10abcaae8.tar.gz;
-      sha256 = "01qn6w6dc1g4pr4s031jblx41vv635r29hkasvlc71c5zs2szvwy";
-    };
-  });
-
   ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
 
   parmap = osuper.parmap.overrideAttrs (o: {
