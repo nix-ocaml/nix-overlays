@@ -118,7 +118,6 @@ let
     "mirage-xen"
 
     # broken
-    "gluten-mirage"
     "httpaf-mirage"
     "h2-mirage"
     "websocketaf-mirage"
