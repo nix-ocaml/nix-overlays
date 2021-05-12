@@ -113,6 +113,8 @@ let
     "accessor_core"
     "accessor_async"
     "ocaml_extlib-1-7-7"
+
+    "ocaml-freestanding"
   ];
 
   buildCandidates = pkgs:
