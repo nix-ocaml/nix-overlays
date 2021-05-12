@@ -117,6 +117,7 @@ let
     # unavailable on macOS
     "ocaml-freestanding"
     "mirage-xen"
+    "mirage-bootvar-xen"
 
     # broken
     "httpaf-mirage"
