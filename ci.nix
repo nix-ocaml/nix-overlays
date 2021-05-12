@@ -128,6 +128,7 @@ let
 
     # doesn't work with my fork of http/af
     "paf"
+    "git-paf"
   ];
 
   buildCandidates = pkgs:
