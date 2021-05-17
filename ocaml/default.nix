@@ -474,7 +474,7 @@ websocketafPackages // {
 
   visitors = osuper.visitors.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://gitlab.inria.fr/fpottier/visitors/repository/20210316/archive.tar.gz;
+      url = https://gitlab.inria.fr/fpottier/visitors/-/archive/20210316/archive.tar.gz;
       sha256 = "1scf51n23px1y24xxqsix7p4za283kw6giww2s1524y6h77kf1kb";
     };
   });
