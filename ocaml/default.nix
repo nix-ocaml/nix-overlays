@@ -43,6 +43,10 @@ let
     ocamlPackages = oself;
   };
 
+  lwtUtilPackages = callPackage ./tezos/lwt-utils.nix {
+    ocamlPackages = oself;
+  };
+
   morphPackages = callPackage ./morph {
     ocamlPackages = oself;
   };
@@ -82,6 +86,7 @@ glutenPackages //
 h2Packages //
 janestreetPackages //
 lambda-runtime-packages //
+lwtUtilPackages //
 morphPackages //
 multicorePackages //
 oidcPackages //
