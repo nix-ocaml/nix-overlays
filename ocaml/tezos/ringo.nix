@@ -8,20 +8,38 @@ let
 
 in
 
-ocamlPackages.buildDunePackage {
-  pname = "ringo";
-  version = "0.5.0";
-  inherit src;
+{
+  ringo = ocamlPackages.buildDunePackage {
+    pname = "ringo";
+    version = "0.5.0";
+    inherit src;
 
-  propagatedBuildInputs = with ocamlPackages; [
-    lwt
-  ];
+    # tests are broken
+    # doCheck = true;
 
-  # tests are broken
-  # doCheck = true;
+    meta = {
+      description = "Caches (bounded-size key-value stores) and other bounded-size stores";
+      license = lib.licenses.mit;
+    };
+  };
 
-  meta = {
-    description = "Caches (bounded-size key-value stores) and other bounded-size stores";
-    license = lib.licenses.mit;
+
+  ringo-lwt = ocamlPackages.buildDunePackage {
+    pname = "ringo-lwt";
+    version = "0.5.0";
+    inherit src;
+
+    propagatedBuildInputs = with ocamlPackages; [
+      ringo
+      lwt
+    ];
+
+    # tests are broken
+    doCheck = true;
+
+    meta = {
+      description = "Lwt-wrappers for Ringo caches";
+      license = lib.licenses.mit;
+    };
   };
 }
