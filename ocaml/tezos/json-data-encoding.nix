@@ -26,21 +26,20 @@ in
     };
   };
 
-  json-data-encoding-bson = ocamlPackages.buildDunePackage
-    {
-      pname = "json-data-encoding-bson";
-      version = "0.9.1";
-      inherit src;
+  json-data-encoding-bson = ocamlPackages.buildDunePackage {
+    pname = "json-data-encoding-bson";
+    version = "0.9.1";
+    inherit src;
 
 
-      propagatedBuildInputs = with ocamlPackages; [
-        json-data-encoding
-        ocplib-endian
-      ];
+    propagatedBuildInputs = with ocamlPackages; [
+      json-data-encoding
+      ocplib-endian
+    ];
 
-      meta = {
-        description = "Type-safe encoding to and decoding from JSON";
-        license = lib.licenses.mit;
-      };
+    meta = {
+      description = "Type-safe encoding to and decoding from JSON";
+      license = lib.licenses.mit;
     };
+  };
 }

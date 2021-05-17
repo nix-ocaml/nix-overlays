@@ -9,11 +9,20 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
+  bls12-381Packages = callPackage ./tezos/bls12-381.nix {
+    ocamlPackages = oself;
+    ocamlVersion = osuper.ocaml.version;
+  };
+
   cookiePackages = callPackage ./cookie {
     ocamlPackages = oself;
   };
 
   dataloader-packages = callPackage ./dataloader {
+    ocamlPackages = oself;
+  };
+
+  ffPackages = callPackage ./tezos/ff.nix {
     ocamlPackages = oself;
   };
 
@@ -91,8 +100,11 @@ let
 
 in
 archiPackages //
+bls12-381Packages //
 cookiePackages //
 dataloader-packages //
+ffPackages //
+glutenPackages //
 graphqlPackages //
 h2Packages //
 haclStarPackages //
@@ -385,6 +397,8 @@ websocketafPackages // {
 
   tar = callPackage ./tar { ocamlPackages = oself; };
   tar-unix = callPackage ./tar-unix { ocamlPackages = oself; };
+
+  tezos-rust-libs = callPackage ./tezos/tezos-rust-libs.nix { ocamlPackages = oself; };
 
   tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };

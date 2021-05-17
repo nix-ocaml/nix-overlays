@@ -1,0 +1,26 @@
+From 208ee0687340d176f7bd53af3de999658b611efb Mon Sep 17 00:00:00 2001
+From: Ulrik Strid <ulrik.strid@outlook.com>
+Date: Mon, 17 May 2021 11:56:06 +0000
+Subject: [PATCH] Update dune
+
+---
+ src/unix/dune | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/unix/dune b/src/unix/dune
+index f2d5cc3..482175f 100644
+--- a/src/unix/dune
++++ b/src/unix/dune
+@@ -12,7 +12,7 @@
+  (foreign_stubs
+   (language c)
+   (names rustc_bls12_381_ctypes_c_stubs)
+-  (flags (-I%{env:OPAM_SWITCH_PREFIX=}/lib/tezos-rust-libs))
++  (flags (-I%{env:OPAM_SWITCH_PREFIX=}))
+  )
+- (c_library_flags (-L%{env:OPAM_SWITCH_PREFIX=}/lib/tezos-rust-libs -lrustc_bls12_381 -lpthread))
++ (c_library_flags (-L%{env:OPAM_SWITCH_PREFIX=} -lrustc_bls12_381 -lpthread))
+ )
+-- 
+GitLab
+
