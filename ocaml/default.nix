@@ -35,6 +35,10 @@ let
     ocamlPackages = oself;
   };
 
+  jsonDataEncodingPackages = callPackage ./tezos/json-data-encoding.nix {
+    ocamlPackages = oself;
+  };
+
   lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
@@ -132,6 +136,9 @@ websocketafPackages // {
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
     };
   });
+
+
+  data-encoding = callPackage ./tezos/data-encoding.nix { ocamlPackages = oself; };
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
 
