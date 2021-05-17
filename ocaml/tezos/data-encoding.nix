@@ -13,12 +13,17 @@ ocamlPackages.buildDunePackage {
   version = "0.3.0";
   inherit src;
 
+  buildInputs = with ocamlPackages; [
+    alcotest
+  ];
+
+  doCheck = true;
+
   propagatedBuildInputs = with ocamlPackages; [
     ezjsonm
     zarith
     json-data-encoding
     json-data-encoding-bson
-    alcotest
     crowbar
   ];
 

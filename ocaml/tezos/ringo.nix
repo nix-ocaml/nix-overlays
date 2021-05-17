@@ -2,7 +2,7 @@
 
 let
   src = builtins.fetchurl {
-    url = 	https://gitlab.com/nomadic-labs/ringo/-/archive/v0.5/ringo-v0.5.tar.gz;
+    url = https://gitlab.com/nomadic-labs/ringo/-/archive/v0.5/ringo-v0.5.tar.gz;
     sha256 = "0hfi8hyyfmryy6z8sc4y3k6z0xhxvagxzafby8r5826fq271amcb";
   };
 
@@ -13,7 +13,7 @@ ocamlPackages.buildDunePackage {
   version = "0.5.0";
   inherit src;
 
-  buildInputs = with ocamlPackages; [
+  propagatedBuildInputs = with ocamlPackages; [
     lwt
   ];
 
