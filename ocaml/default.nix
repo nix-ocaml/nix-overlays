@@ -367,6 +367,9 @@ websocketafPackages // {
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
+  tar = callPackage ./tar { ocamlPackages = oself; };
+  tar-unix = callPackage ./tar-unix { ocamlPackages = oself; };
+
   tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
