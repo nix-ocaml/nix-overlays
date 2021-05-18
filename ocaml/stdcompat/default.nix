@@ -4,7 +4,7 @@ with ocamlPackages;
 
 let
   src = builtins.fetchurl {
-    url =https://github.com/thierry-martinez/stdcompat/releases/download/v15/stdcompat-15.tar.gz;
+    url = https://github.com/thierry-martinez/stdcompat/releases/download/v15/stdcompat-15.tar.gz;
     sha256 = "1xcwb529m4lg9cbnxa9m3x2nnl9nxzz1x5lxpvdfflg4zxl6yx2y";
   };
   name = "stdcompat";
@@ -21,8 +21,8 @@ stdenv.mkDerivation {
   ];
 
   buildPhase = ''
-   ./configure --prefix=$out
-   make
+    ./configure --prefix=$out
+    make
   '';
 
   installPhase = ''
@@ -31,7 +31,7 @@ stdenv.mkDerivation {
   '';
 
   checkPhase = ''
-   make all test
+    make all test
   '';
 
   meta = {
