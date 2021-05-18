@@ -29,9 +29,7 @@ ocamlPackages.buildDunePackage {
   '';
 
   installPhase = ''
-    cat ${name}.install
-    echo $OCAMLFIND_DESTDIR
-    ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR -name ${name}
+    ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR/lib -name ${name}
   '';
 
   meta = {

@@ -77,11 +77,7 @@ in
       tezos-rust-libs
     ];
 
-    patches = [
-      ./patches/bls12-381-unix-fix-path.patch
-    ];
-
-    OPAM_SWITCH_PREFIX = "${ocamlPackages.tezos-rust-libs}/lib/ocaml/${ocamlVersion}/site-lib/tezos-rust-libs";
+    OPAM_SWITCH_PREFIX = "${ocamlPackages.tezos-rust-libs}/lib/ocaml/${ocamlVersion}/site-lib";
 
     doCheck = true;
 
