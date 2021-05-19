@@ -26,7 +26,6 @@ in
 {
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl
-  # FIXME: gssSupport is currently problematic for static because libkrb5 fails
   libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };
 
   ocamlPackages = oPs.ocamlPackages_4_12;
