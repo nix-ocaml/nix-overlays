@@ -121,11 +121,6 @@ let
     "mirage-net-xen"
     "netchannel"
 
-    # broken
-    "httpaf-mirage"
-    "h2-mirage"
-    "websocketaf-mirage"
-
     # doesn't work with my fork of http/af
     "paf"
     "git-paf"

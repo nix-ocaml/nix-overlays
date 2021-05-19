@@ -5,8 +5,8 @@ let
   buildWebsocketaf = args: buildDunePackage ({
     version = "0.0.1-dev";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/websocketaf/archive/fb9926b6f653252e4ba5009bbb171a11c0e4e6fc.tar.gz;
-      sha256 = "105cbpcdbsx11p63v3s2cld1sixhm5kjjj4g6k9jvi2gs2p808hg";
+      url = https://github.com/anmonteiro/websocketaf/archive/d75942f936821231cb4ff46b95cf2753d7329233.tar.gz;
+      sha256 = "14y3cj3sd8kgijj7mw20rfr8hr7asj6mll6n4b9sjj02pqhfqqaz";
     };
   } // args);
 
