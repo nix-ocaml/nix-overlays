@@ -3,10 +3,10 @@
 with ocamlPackages;
 let
   buildGluten = args: buildDunePackage (rec {
-    version = "0.2.1";
+    version = "0.2.2-dev";
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/gluten/archive/410be2e.tar.gz;
-      sha256 = "1ngx9kci10pzgfjkzc3xczx8ppbhsqli5h3gfhzifpn09fkwkxrk";
+      url = https://github.com/anmonteiro/gluten/archive/475c361.tar.gz;
+      sha256 = "0la1r30k6siv064nvlml85qk7m70ysnzwq0mnk7vm34656vh6m05";
     };
   } // args);
 
@@ -48,8 +48,5 @@ in
       mirage-flow
       cstruct
     ];
-    meta = {
-      broken = true;
-    };
   };
 } else { })
