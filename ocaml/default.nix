@@ -311,6 +311,8 @@ websocketafPackages // {
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
+  multipart_form_upstream = callPackage ./multipart_form_upstream { ocamlPackages = oself; };
+
   multipart-form-data = callPackage ./multipart-form-data { ocamlPackages = oself; };
 
   num = osuper.num.overrideAttrs (o: {
@@ -395,6 +397,8 @@ websocketafPackages // {
     };
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
+
+  prettym = callPackage ./prettym { ocamlPackages = oself; };
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
