@@ -452,6 +452,8 @@ websocketafPackages // {
 
   unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
+  uri = callPackage ./uri { ocamlPackages = oself; };
+
   utop = osuper.utop.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/utop/releases/download/2.7.0/utop-2.7.0.tbz;
