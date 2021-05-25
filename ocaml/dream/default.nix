@@ -5,8 +5,7 @@ let src = fetchFromGitHub {
   owner = "aantron";
   repo = "dream";
   rev = "a0dcaf5b4729b24a37c89001bd23343e47190979";
-  # Seems like the sha is not checked?
-  sha256 = "051pxpmbcg8gy46ccid7fndam6qd87ckivgsj51c1y10wplsdhr3";
+  sha256 = "198d23hfnb552ynaj55xlxjaca4v65sbhff3bdvrwl7j362r3spr";
   fetchSubmodules = true;
 };
 
