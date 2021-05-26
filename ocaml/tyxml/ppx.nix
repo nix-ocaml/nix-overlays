@@ -13,6 +13,12 @@ buildDunePackage {
     markup
   ];
 
+  checkInputs = [
+    alcotest
+  ];
+
+  doCheck = true;
+
   meta = {
     description = "JSX syntax to write TyXML documents";
     license = lib.licenses.lgpl21;

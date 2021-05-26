@@ -13,6 +13,14 @@ buildDunePackage {
     reason
   ];
 
+  checkInputs = [
+    reason
+    alcotest
+  ];
+
+  # Tests are broken for some reason (pun intended)
+  # doCheck = true;
+
   meta = {
     description = "JSX syntax to write TyXML documents";
     license = lib.licenses.lgpl21;
