@@ -1,4 +1,4 @@
-{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl }:
+{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl, which }:
 
 oself: osuper:
 
@@ -152,6 +152,10 @@ websocketafPackages // {
   });
 
   coin = callPackage ./coin { ocamlPackages = oself; };
+
+  containers = osuper.containers.overrideAttrs (o: {
+    checkInputs = (o.checkInputs or [ ]) ++ [ which ];
+  });
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
