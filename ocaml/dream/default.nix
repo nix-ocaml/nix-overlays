@@ -1,4 +1,4 @@
-{ ocamlPackages, pkgs, fetchFromGitHub, lib }:
+{ ocamlPackages, fetchFromGitHub, lib }:
 
 with ocamlPackages;
 let src = fetchFromGitHub {
@@ -22,7 +22,6 @@ ocamlPackages.buildDunePackage
     bigarray-compat
     caqti-lwt
     # conf-libev
-    pkgs.libev
     cstruct
     fmt
     graphql_parser
