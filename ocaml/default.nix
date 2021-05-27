@@ -1,4 +1,4 @@
-{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl }:
+{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl, which }:
 
 oself: osuper:
 
@@ -152,6 +152,10 @@ websocketafPackages // {
   });
 
   coin = callPackage ./coin { ocamlPackages = oself; };
+
+  containers = osuper.containers.overrideAttrs (o: {
+    checkInputs = (o.checkInputs or [ ]) ++ [ which ];
+  });
 
   containers-data = osuper.containers-data.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -425,8 +429,8 @@ websocketafPackages // {
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/f7524f7.tar.gz;
-      sha256 = "0h3my07bpsxg688wg3pcxxm98i4jcdzsy8lpidc3b72377h4pnsc";
+      url = https://github.com/savonet/ocaml-ssl/archive/e6430aa.tar.gz;
+      sha256 = "0x10yjphzi0n0vgjqnlrwz1pc5kzza5mk08c6js29h8drf3nhkr1";
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
