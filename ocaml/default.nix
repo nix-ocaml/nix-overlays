@@ -219,6 +219,8 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  hashcons = callPackage ./hashcons { ocamlPackages = oself; };
+
   httpaf = callPackage ./httpaf { ocamlPackages = oself; };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
