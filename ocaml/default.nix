@@ -344,7 +344,7 @@ websocketafPackages // {
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
-  pyml = callPackage ./tezos/pyml.nix { ocamlPackages = oself; };
+  pyml = callPackage ./pyml { ocamlPackages = oself; };
 
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 

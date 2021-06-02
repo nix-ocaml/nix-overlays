@@ -15,20 +15,24 @@ stdenv.mkDerivation {
   version = "15";
   inherit src;
 
-  buildInputs = [
+  propagatedBuildInputs = [
     ocaml
     findlib
+    uchar
   ];
 
   buildPhase = ''
+    echo "out: $out"
     ./configure --prefix=$out
-    make
+    make all test
   '';
 
   installPhase = ''
     make install
-    cp $out/lib/${name}/* $OCAMLFIND_DESTDIR
+    cp -r $out/lib/${name} $OCAMLFIND_DESTDIR/
   '';
+
+  doCheck = true;
 
   checkPhase = ''
     make all test
