@@ -22,6 +22,5 @@ buildDunePackage rec {
     homepage = "https://github.com/mirage/ocaml-uri";
     description = "RFC3986 URI parsing library for OCaml";
     license = lib.licenses.isc;
-    maintainers = [ lib.maintainers.vbgl ];
   };
 }
