@@ -311,8 +311,6 @@ websocketafPackages // {
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
 
-  multipart_form_upstream = callPackage ./multipart_form_upstream { ocamlPackages = oself; };
-
   multipart-form-data = callPackage ./multipart-form-data { ocamlPackages = oself; };
 
   num = osuper.num.overrideAttrs (o: {

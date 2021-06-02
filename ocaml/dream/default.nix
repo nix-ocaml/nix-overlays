@@ -34,7 +34,7 @@ ocamlPackages.buildDunePackage
     magic-mime
     mirage-crypto
     mirage-crypto-rng
-    multipart_form_upstream
+    (multipart_form.override { upstream = true; })
     uri
     yojson
     # vendored dependencies, can we "unvendor" this?
