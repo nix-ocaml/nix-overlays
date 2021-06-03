@@ -6,7 +6,7 @@ buildDunePackage {
   pname = "tyxml-syntax";
   inherit (tyxml) src version;
 
-  propagatedBuildInputs = [ ppx_tools_versioned uutf re ];
+  propagatedBuildInputs = [ ppxlib uutf re ];
 
   meta = {
     description = "Common layer for the JSX and PPX syntaxes for Tyxml";

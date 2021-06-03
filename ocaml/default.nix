@@ -222,13 +222,6 @@ websocketafPackages // {
 
   flow_parser = callPackage ./flow_parser { ocamlPackages = oself; };
 
-  jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocaml-lsp/releases/download/1.5.0/jsonrpc-1.5.0.tbz;
-      sha256 = "0g82m3jrp4s0m3fn9xmm8khrb3acccq8ns9p62bqa09pjd4vgdk2";
-    };
-  });
-
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
   };
