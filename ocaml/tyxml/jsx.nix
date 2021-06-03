@@ -9,7 +9,7 @@ buildDunePackage {
   propagatedBuildInputs = [
     tyxml
     tyxml-syntax
-    ppx_tools_versioned
+    ppxlib
     reason
   ];
 
