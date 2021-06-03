@@ -396,6 +396,8 @@ websocketafPackages // {
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
+  prettym = callPackage ./prettym { ocamlPackages = oself; };
+
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
   redemon = callPackage ./redemon { ocamlPackages = oself; };

@@ -8,6 +8,12 @@ buildDunePackage {
 
   propagatedBuildInputs = [ ppxlib uutf re ];
 
+  checkInputs = [
+    alcotest
+  ];
+
+  doCheck = true;
+
   meta = {
     description = "Common layer for the JSX and PPX syntaxes for Tyxml";
     license = lib.licenses.lgpl21;

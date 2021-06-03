@@ -4,8 +4,8 @@ with ocamlPackages;
 let src = fetchFromGitHub {
   owner = "aantron";
   repo = "dream";
-  rev = "42625d123fbe11c2fb3e2dc2dd5926be7cd4a182";
-  sha256 = "051pxpmbcg8gy46ccid7fndam6qd87ckivgsj51c1y10wplsdhr3";
+  rev = "a0dcaf5b4729b24a37c89001bd23343e47190979";
+  sha256 = "198d23hfnb552ynaj55xlxjaca4v65sbhff3bdvrwl7j362r3spr";
   fetchSubmodules = true;
 };
 
@@ -13,7 +13,7 @@ in
 ocamlPackages.buildDunePackage
 {
   pname = "dream";
-  version = "1.0.0-dev";
+  version = "1.0.0-alpha2";
   inherit src;
 
   propagatedBuildInputs = with ocamlPackages; [
@@ -34,7 +34,7 @@ ocamlPackages.buildDunePackage
     magic-mime
     mirage-crypto
     mirage-crypto-rng
-    multipart-form-data
+    (multipart_form.override { upstream = true; })
     uri
     yojson
     # vendored dependencies, can we "unvendor" this?
@@ -56,8 +56,15 @@ ocamlPackages.buildDunePackage
     result
   ];
 
+  checkInputs = with ocamlPackages; [
+    ppx_expect
+    alcotest
+  ];
+
+  doCheck = true;
+
   meta = {
-    description = " Easy-to-use, feature-complete Web framework without boilerplate";
+    description = "Easy-to-use, feature-complete Web framework without boilerplate";
     license = lib.licenses.mit;
   };
 }
