@@ -18,7 +18,7 @@ stdenv.mkDerivation {
     findlib
     utop
   ];
-  
+
 
   propagatedBuildInputs = [
     pkgs.python3

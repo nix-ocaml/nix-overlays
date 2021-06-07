@@ -318,6 +318,8 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  odoc = callPackage ./odoc { ocamlPackages = oself; };
+
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
