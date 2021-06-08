@@ -7,9 +7,9 @@ buildDunePackage rec {
   version = "0.0.1-dev";
 
   src = builtins.fetchurl {
-    url = "https://github.com/EduardoRFS/ppx_let_locs/archive/12f6bba19a4e2af56671211ba0f8ce9b83f18819.tar.gz";
-    sha256 = "0jlrnq9b1p8qp1mc7bf65a4prr1ww39a8qj3nxmpd3b8yal9c23q";
+    url = "https://github.com/EduardoRFS/ppx_let_locs/archive/6278a439b95106d70470700e960f0793e4963959.tar.gz";
+    sha256 = "096dvyb087cnlrffk8jn0h6njbkv97h22qy8j13j9a4djqjs9ik4";
   };
 
-  propagatedBuildInputs = [ reason ppxlib ppx_optcomp ocaml-migrate-types ];
+  propagatedBuildInputs = [ reason ppxlib ppx_optcomp ];
 }
