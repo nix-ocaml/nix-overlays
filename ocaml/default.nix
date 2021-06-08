@@ -318,6 +318,8 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  ocaml-migrate-types = callPackage ./ocaml-migrate-types { ocamlPackages = oself; };
+
   odoc = callPackage ./odoc { ocamlPackages = oself; };
 
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
@@ -325,6 +327,8 @@ websocketafPackages // {
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { ocamlPackages = oself; };
+
+  ppx_let_locs = callPackage ./ppx_let_locs { ocamlPackages = oself; };
 
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
