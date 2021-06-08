@@ -9,8 +9,8 @@ buildDunePackage {
   minimumOCamlVersion = "4.02";
 
   src = builtins.fetchurl {
-    url = "https://github.com/ocaml/odoc/archive/refs/tags/2.0.0-beta2.tar.gz";
-    sha256 = "1jh1qny8mi4x283i3aa5zlq86y44yiwd5w8qwz28hj3bwc849zly";
+    url = "https://github.com/ocaml/odoc/archive/refs/tags/2.0.0-beta3.tar.gz";
+    sha256 = "00qpaslyag6f3f64sj2wnq0qyc40ajhla8pcg4x0gn6f6rlrgyxs";
   };
 
   useDune2 = true;
