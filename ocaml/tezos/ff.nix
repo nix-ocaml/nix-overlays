@@ -49,4 +49,29 @@ in
       license = lib.licenses.mit;
     };
   };
+
+  ff = ocamlPackages.buildDunePackage {
+    pname = "ff";
+    version = "0.6.1";
+    inherit src;
+
+    propagatedBuildInputs = with ocamlPackages; [
+      zarith
+      ff-sig
+    ];
+
+    checkInputs = with ocamlPackages; [
+      alcotest
+      ff-pbt
+      bisect_ppx
+    ];
+
+    # tests are broken
+    doCheck = true;
+
+    meta = {
+      description = "Minimal finite field signatures";
+      license = lib.licenses.mit;
+    };
+  };
 }
