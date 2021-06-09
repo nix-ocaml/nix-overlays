@@ -52,17 +52,18 @@ in
 
   ff = ocamlPackages.buildDunePackage {
     pname = "ff";
-    version = "0.6.1";
-    inherit src;
+    version = "0.4.0";
+    src = builtins.fetchurl {
+      url = https://gitlab.com/dannywillems/ocaml-ff/-/archive/0.4.0/ocaml-ff-0.4.0.tar.gz;
+      sha256 = "0mw12z24zyvs2dxwnh3d4a5ilp8dhlybgmpv6b26xbibp4i1lj5d";
+    };
 
     propagatedBuildInputs = with ocamlPackages; [
       zarith
-      ff-sig
     ];
 
     checkInputs = with ocamlPackages; [
       alcotest
-      ff-pbt
       bisect_ppx
     ];
 
