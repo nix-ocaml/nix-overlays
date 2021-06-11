@@ -133,6 +133,8 @@ websocketafPackages // {
     doCheck = ! stdenv.isDarwin;
   });
 
+  bisect_ppx = callPackage ./bisect_ppx { ocamlPackages = oself; };
+
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
