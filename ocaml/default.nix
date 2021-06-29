@@ -77,9 +77,7 @@ graphqlPackages //
 glutenPackages //
 h2Packages //
 janestreetPackages //
-junitPackages //
 lambda-runtime-packages //
-menhirPackages //
 morphPackages //
 multicorePackages //
 oidcPackages //
@@ -113,8 +111,6 @@ websocketafPackages // {
     };
     doCheck = false;
   });
-
-  bisect_ppx = callPackage ./bisect_ppx { ocamlPackages = oself; };
 
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
@@ -340,6 +336,20 @@ websocketafPackages // {
   rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
   routes = callPackage ./routes { ocamlPackages = oself; };
+
+  sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;
+      sha256 = "0n0gg8iax9jjnv0azisjaqxr7p3vx2a5pwc9rsq40fsqbvmr1c7r";
+    };
+
+    propagatedBuildInputs = [
+      gen
+      uchar
+      ocaml-migrate-parsetree-2-1
+      ppxlib
+    ];
+  });
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
