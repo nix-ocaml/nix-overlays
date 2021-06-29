@@ -299,8 +299,6 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  pbkdf = callPackage ./pbkdf { ocamlPackages = oself; };
-
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
@@ -407,6 +405,5 @@ websocketafPackages // {
     };
   });
 
-  yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 }

@@ -17,7 +17,7 @@ in
 
     propagatedBuildInputs = [ menhir fix merlin-extend ppx_derivers result ];
 
-    buildInputs = [ cppo menhir ];
+    buildInputs = [ cppo menhir menhirLib menhirSdk ];
 
     patches = [
       ./patches/0001-rename-labels.patch
