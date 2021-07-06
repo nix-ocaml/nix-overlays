@@ -149,6 +149,8 @@ websocketafPackages // {
 
   dream = callPackage ./dream { ocamlPackages = oself; };
 
+  dream-livereload = callPackage ./dream-livereload { ocamlPackages = oself; };
+
   dream-serve = callPackage ./dream-serve { ocamlPackages = oself; };
 
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
