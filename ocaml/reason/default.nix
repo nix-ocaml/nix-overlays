@@ -15,7 +15,7 @@ in
   reason = buildReasonPkg {
     pname = "reason";
 
-    propagatedBuildInputs = [ menhir fix merlin-extend ppx_derivers result ];
+    propagatedBuildInputs = [ menhir menhirLib menhirSdk fix merlin-extend ppx_derivers result ];
 
     buildInputs = [ cppo menhir ];
 

@@ -35,19 +35,9 @@ let
     ocamlPackages = oself;
   };
 
-  junitPackages = callPackage ./junit {
-    ocamlPackages = oself;
-  };
-
   lambda-runtime-packages = callPackage ./lambda-runtime {
     ocamlPackages = oself;
   };
-
-  menhirPackages =
-    if !lib.versionAtLeast osuper.ocaml.version "4.07"
-    then { }
-    else
-      callPackage ./menhir { ocamlPackages = oself; };
 
   morphPackages = callPackage ./morph {
     ocamlPackages = oself;
@@ -87,9 +77,7 @@ graphqlPackages //
 glutenPackages //
 h2Packages //
 janestreetPackages //
-junitPackages //
 lambda-runtime-packages //
-menhirPackages //
 morphPackages //
 multicorePackages //
 oidcPackages //
@@ -97,12 +85,6 @@ reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
-  alcotest = osuper.alcotest.overrideAttrs (_: {
-    doCheck = false;
-  });
-
-  alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
-
   ansiterminal = buildDunePackage {
     pname = "ANSITerminal";
     version = "0.8.2";
@@ -124,16 +106,7 @@ websocketafPackages // {
     doCheck = false;
   });
 
-  bitstring = osuper.bitstring.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/xguerin/bitstring/archive/v4.1.0.tar.gz;
-      sha256 = "1622ypmqmkk434s9cnyfz1yixpimgi8siphz5nzqllxycr2crw37";
-    };
-  });
-
   calendar = callPackage ./calendar { ocamlPackages = oself; };
-
-  camlbz2 = callPackage ./camlbz2 { ocamlPackages = oself; };
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
@@ -168,15 +141,11 @@ websocketafPackages // {
     };
   });
 
-  cudf = callPackage ./cudf { ocamlPackages = oself; };
-
   decimal = callPackage ./decimal { ocamlPackages = oself; };
 
   decompress = osuper.decompress.overrideAttrs (_: {
     doCheck = false;
   });
-
-  dose3 = callPackage ./dose3 { ocamlPackages = oself; };
 
   dream = callPackage ./dream { ocamlPackages = oself; };
 
@@ -209,8 +178,6 @@ websocketafPackages // {
       sha256 = "0vyi8sl5q077vb6yhz2lvzp9hnfmhvc6m4nd5sbwa482p3aplnl2";
     };
   });
-
-  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -258,10 +225,6 @@ websocketafPackages // {
   lwt = osuper.lwt.overrideAttrs (o: {
     buildInputs = [ ocaml dune findlib cppo dune-configurator ];
   });
-
-  magic-mime = callPackage ./magic-mime {
-    ocamlPackages = oself;
-  };
 
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version) then
@@ -330,53 +293,9 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  ocamlgraph = buildDunePackage {
-    pname = "ocamlgraph";
-    version = "2.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/backtracking/ocamlgraph/releases/download/2.0.0/ocamlgraph-2.0.0.tbz;
-      sha256 = "029692bvdz3hxpva9a2jg5w5381fkcw55ysdi8424lyyjxvjdzi0";
-    };
-    propagatedBuildInputs = [ stdlib-shims ];
-  };
-
-  ocplib-endian = callPackage ./ocplib-endian { ocamlPackages = oself; };
-
-  parmap = osuper.parmap.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
-
-  pbkdf = callPackage ./pbkdf { ocamlPackages = oself; };
-
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
-
-  ppx_gen_rec = osuper.ppx_gen_rec.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/flowtype/ocaml-ppx_gen_rec/archive/05291d0e65e56da4485ae54599d94c83319f3700.tar.gz;
-      sha256 = "05pmx5jj635smp17vpqbc9b50cfz49d8hfgfcjf6b5g7awpdb499";
-    };
-    buildInputs = (lib.remove oself.ocaml-migrate-parsetree-1-8 o.buildInputs) ++ [ ppxlib ];
-  });
-
-  ppx_import = buildDunePackage rec {
-    pname = "ppx_import";
-    version = "1.8.0";
-
-    useDune2 = true;
-
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppx_import/releases/download/v${version}/ppx_import-${version}.tbz";
-      sha256 = "0zqcj70yyp4ik4jc6jz3qs2xhb94vxc6yq9ij0d5cyak28klc3gv";
-    };
-
-    propagatedBuildInputs = [
-      ppx_tools_versioned
-      ocaml-migrate-parsetree
-    ];
-
-  };
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { ocamlPackages = oself; };
 
@@ -408,8 +327,6 @@ websocketafPackages // {
 
   rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
-  routes = callPackage ./routes { ocamlPackages = oself; };
-
   sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;
@@ -419,7 +336,7 @@ websocketafPackages // {
     propagatedBuildInputs = [
       gen
       uchar
-      ocaml-migrate-parsetree-2-1
+      ocaml-migrate-parsetree-2
       ppxlib
     ];
   });
@@ -433,8 +350,6 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
   });
-
-  stringext = callPackage ./stringext { ocamlPackages = oself; };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;
@@ -480,11 +395,5 @@ websocketafPackages // {
     };
   });
 
-  yojson = callPackage ./yojson { ocamlPackages = oself; };
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
-
-  zmq = osuper.zmq.overrideAttrs
-    (o: {
-      buildInputs = o.buildInputs ++ [ dune-configurator ];
-    });
 }

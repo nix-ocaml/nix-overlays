@@ -61,7 +61,7 @@ in
     };
 
     buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
-      (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2-1 ]);
+      (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2 ]);
   });
 
   pkgsCross = super.pkgsCross // {
