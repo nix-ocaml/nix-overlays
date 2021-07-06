@@ -85,12 +85,6 @@ reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
-  alcotest = osuper.alcotest.overrideAttrs (_: {
-    doCheck = false;
-  });
-
-  alcotest-mirage = callPackage ./alcotest/mirage.nix { ocamlPackages = oself; };
-
   ansiterminal = buildDunePackage {
     pname = "ANSITerminal";
     version = "0.8.2";
@@ -333,8 +327,6 @@ websocketafPackages // {
 
   rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
-  routes = callPackage ./routes { ocamlPackages = oself; };
-
   sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;
@@ -358,8 +350,6 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl.dev ];
   });
-
-  stringext = callPackage ./stringext { ocamlPackages = oself; };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
     ocamlPackages = oself;
