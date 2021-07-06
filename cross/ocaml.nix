@@ -101,7 +101,7 @@ in
         '';
       });
 
-      ocaml-migrate-parsetree = oself.ocaml-migrate-parsetree-2-1;
+      ocaml-migrate-parsetree = oself.ocaml-migrate-parsetree-2;
 
       seq = osuper.seq.overrideAttrs (_: {
         installPhase = ''
