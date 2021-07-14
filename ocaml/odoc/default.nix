@@ -33,7 +33,7 @@ buildDunePackage {
     fmt
     logs
     re
-    ocaml-migrate-parsetree-2-1
+    ocaml-migrate-parsetree-2
   ];
 
   checkInputs = [
