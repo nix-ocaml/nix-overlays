@@ -109,6 +109,7 @@ graphqlPackages //
 h2Packages //
 haclStarPackages //
 janestreetPackages //
+jsonDataEncodingPackages //
 lambda-runtime-packages //
 lwtUtilPackages //
 morphPackages //
