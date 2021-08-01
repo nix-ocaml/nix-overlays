@@ -33,6 +33,8 @@ buildDunePackage {
     fetchSubmodules = true;
   };
 
+  patches = [ ./unvendor.patch ];
+
   doCheck = true;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
 
@@ -54,6 +56,11 @@ buildDunePackage {
     unstrctrd
     base64
     rresult
+
+    httpaf
+    httpaf-lwt-unix
+    h2
+    h2-lwt-unix
   ];
 
   meta = {

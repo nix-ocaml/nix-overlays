@@ -19,7 +19,6 @@
 , multipart_form
 , uri
 , yojson
-
 , angstrom
 , bigstringaf
 , digestif
@@ -42,7 +41,13 @@ buildDunePackage {
     fetchSubmodules = true;
   };
 
+  version = "1.0.0-dev";
+  inherit src;
+
+  patches = [ ./unvendor.patch ];
+
   propagatedBuildInputs = [
+    # base-unix
     base64
     bigarray-compat
     caqti-lwt
@@ -58,16 +63,17 @@ buildDunePackage {
     magic-mime
     mirage-crypto
     mirage-crypto-rng
+    mirage-clock
     (multipart_form.override { upstream = true; })
     uri
     yojson
     # vendored dependencies, can we "unvendor" this?
     # gluten
     # gluten-lwt-unix
-    # httpaf
-    # httpaf-lwt-unix
-    # h2
-    # h2-lwt-unix
+    httpaf
+    httpaf-lwt-unix
+    h2
+    h2-lwt-unix
     # hpack
     # websocketaf
     # dependencies of vendored packages
