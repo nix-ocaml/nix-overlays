@@ -143,10 +143,6 @@ websocketafPackages // {
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
 
-  decompress = osuper.decompress.overrideAttrs (_: {
-    doCheck = false;
-  });
-
   dream = callPackage ./dream { ocamlPackages = oself; };
 
   dream-livereload = callPackage ./dream-livereload { ocamlPackages = oself; };
