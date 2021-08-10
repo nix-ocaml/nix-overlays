@@ -22,6 +22,7 @@ let
     "lablgtk3"
     "lablgtk3-gtkspell3"
     "camlimages"
+    "camlimages_4_2_4"
     "lablgtk3-sourceview3"
     "lablgtk-extras"
     "lens"
