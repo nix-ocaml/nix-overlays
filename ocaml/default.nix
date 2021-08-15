@@ -233,28 +233,32 @@ websocketafPackages // {
         } else null;
 
 
-  merlin = osuper.merlin.overrideAttrs (o: {
-    src =
-      if (lib.versionOlder "4.12" osuper.ocaml.version)
-      then
-        builtins.fetchurl
-          {
-            url = https://github.com/ocaml/merlin/releases/download/v4.1-412/merlin-v4.1-412.tbz;
-            sha256 = "13cx0v999ijj48m2zb0rsgi1m42bywm7jc8fsqxkkf5xfggawk7v";
-          }
-      else if (lib.versionOlder "4.11" osuper.ocaml.version)
-      then
-        builtins.fetchurl
-          {
-            url = https://github.com/ocaml/merlin/releases/download/v4.1-411/merlin-v4.1-411.tbz;
-            sha256 = "0zckb729mhp1329bcqp0mi1lxxipzbm4a5hqqzrf2g69k73nybly";
-          }
-      else
-        builtins.fetchurl {
-          url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
-          sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
-        };
-  });
+  merlin =
+    if (lib.versionOlder "4.13" osuper.ocaml.version) then
+    # No Merlin for 4.13, yet
+      null else
+      osuper.merlin.overrideAttrs (o: {
+        src =
+          if (lib.versionOlder "4.12" osuper.ocaml.version)
+          then
+            builtins.fetchurl
+              {
+                url = https://github.com/ocaml/merlin/releases/download/v4.1-412/merlin-v4.1-412.tbz;
+                sha256 = "13cx0v999ijj48m2zb0rsgi1m42bywm7jc8fsqxkkf5xfggawk7v";
+              }
+          else if (lib.versionOlder "4.11" osuper.ocaml.version)
+          then
+            builtins.fetchurl
+              {
+                url = https://github.com/ocaml/merlin/releases/download/v4.1-411/merlin-v4.1-411.tbz;
+                sha256 = "0zckb729mhp1329bcqp0mi1lxxipzbm4a5hqqzrf2g69k73nybly";
+              }
+          else
+            builtins.fetchurl {
+              url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
+              sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
+            };
+      });
 
   mongo = callPackage ./mongo { ocamlPackages = oself; };
   mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
