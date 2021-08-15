@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version: [4_11, 4_12]
+        ocaml-version: [4_11, 4_12, 4_13]
     name: Native packages (Linux, OCaml ${{ matrix.ocaml-version }})
     runs-on: ubuntu-latest
     env:
@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version: [4_11, 4_12]
+        ocaml-version: [4_11, 4_12, 4_13]
     name: Native packages (macOS, OCaml ${{ matrix.ocaml-version }})
     runs-on: macos-latest
     env:
@@ -72,6 +72,7 @@ jobs:
         ocaml-version:
           - 4_11
           - 4_12
+          - 4_13
         target:
           - arm64
           - musl
