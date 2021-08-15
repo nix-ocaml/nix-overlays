@@ -189,11 +189,11 @@ in
 
 
             make_caml () {
-              write_wrapper "$PWD/ocamlc.wrapper" "$CAMLC"
-              write_wrapper "$PWD/ocamlopt.wrapper" "$CAMLOPT"
+              write_wrapper "$TMP/ocamlc.wrapper" "$CAMLC"
+              write_wrapper "$TMP/ocamlopt.wrapper" "$CAMLOPT"
 
-              CAMLC="$PWD/ocamlc.wrapper"
-              CAMLOPT="$PWD/ocamlopt.wrapper"
+              CAMLC="$TMP/ocamlc.wrapper"
+              CAMLOPT="$TMP/ocamlopt.wrapper"
 
               make ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} ''${enableParallelBuilding:+-l $NIX_BUILD_CORES} \
                    CAMLDEP="$CAMLDEP -depend" \
