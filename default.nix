@@ -54,16 +54,6 @@ in
     })).overrideScope' (callPackage ./ocaml { });
   };
 
-  ocamlformat = super.ocamlformat.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.17.0/ocamlformat-0.17.0.tbz;
-      sha256 = "0f1lxp697yq61z8gqxjjaqd2ns8fd1vjfggn55x0gh9dx098p138";
-    };
-
-    buildInputs = (lib.remove self.ocamlPackages.ocaml-migrate-parsetree-1-8 o.buildInputs) ++
-      (with self.ocamlPackages; [ ppxlib dune-build-info ocaml-version ocaml-migrate-parsetree-2 ]);
-  });
-
   pkgsCross = super.pkgsCross // {
     musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static {
       inherit ocamlVersions;
