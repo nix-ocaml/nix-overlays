@@ -8,7 +8,7 @@
 # build time (e.g. OMP / ppxlib, etc that are possible to allow in the other
 # overlays).
 
-{ lib, buildPackages, writeText, stdenv, bash }:
+{ lib, buildPackages, writeText, writeScriptBin, stdenv, bash }:
 let
   __mergeInputs = acc: names: attrs:
     let ret =
@@ -142,6 +142,19 @@ in
       natocamlPackages = buildPackages.ocaml-ng."ocamlPackages_${version}";
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
+      genWrapper = name: camlBin: writeScriptBin name ''
+        #!${stdenv.shell}
+        NEW_ARGS=""
+
+        for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done
+        eval "${camlBin} $NEW_ARGS"
+      '';
+      ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${natocaml}/bin/ocamlc.opt -I ${natocaml}/lib/ocaml -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
+      ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${natocaml}/bin/ocamlopt.opt -I ${natocaml}/lib/ocaml -nostdlib ";
+
+      ocamlcTargetWrapper = genWrapper "ocamlcTarget.wrapper" "$BUILD_ROOT/ocamlc.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
+      ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
+
       fixOCaml = ocaml: ocaml.overrideAttrs (o:
         {
           enableParallelBuilding = true;
@@ -154,22 +167,6 @@ in
 
           buildPhase = ''
             runHook preBuild
-
-            write_wrapper () {
-              TARGET="$1"
-              RUN="$2"
-
-              ARGS='for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done'
-
-            cat > $TARGET <<EOF
-            #!${bash}/bin/bash
-            NEW_ARGS=""
-            $ARGS
-            eval "$RUN \$NEW_ARGS"
-            EOF
-
-              chmod +x $TARGET
-            }
 
             OCAML_HOST=${natocaml}
             OCAMLRUN="$OCAML_HOST/bin/ocamlrun"
@@ -189,12 +186,6 @@ in
 
 
             make_caml () {
-              write_wrapper "ocamlc.wrapper" "$CAMLC"
-              write_wrapper "ocamlopt.wrapper" "$CAMLOPT"
-
-              CAMLC="ocamlc.wrapper"
-              CAMLOPT="ocamlopt.wrapper"
-
               make ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} ''${enableParallelBuilding:+-l $NIX_BUILD_CORES} \
                    CAMLDEP="$CAMLDEP -depend" \
                    OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
@@ -205,8 +196,8 @@ in
             }
 
             make_host () {
-              CAMLC="$OCAML_HOST/bin/ocamlc.opt $HOST_STATIC_LIBS $DYNAMIC_LIBS -nostdlib"
-              CAMLOPT="$OCAML_HOST/bin/ocamlopt.opt $HOST_STATIC_LIBS -nostdlib"
+              CAMLC="${ocamlcHostWrapper}/bin/ocamlcHost.wrapper"
+              CAMLOPT="${ocamloptHostWrapper}/bin/ocamloptHost.wrapper"
 
               make_caml \
                 NATDYNLINK="$NATDYNLINK" NATDYNLINKOPTS="$NATDYNLINKOPTS" \
@@ -214,10 +205,10 @@ in
             }
 
             make_target () {
-              CAMLC="$PWD/ocamlc.opt $TARGET_STATIC_LIBS $DYNAMIC_LIBS -nostdlib"
-              CAMLOPT="$PWD/ocamlopt.opt $TARGET_STATIC_LIBS -nostdlib"
+              CAMLC="${ocamlcTargetWrapper}/bin/ocamlcTarget.wrapper"
+              CAMLOPT="${ocamloptTargetWrapper}/bin/ocamloptTarget.wrapper"
 
-              make_caml "$@"
+              make_caml BUILD_ROOT="$PWD" TARGET_OCAMLC="$TARGET_OCAMLC" TARGET_OCAMLOPT="$TARGET_OCAMLOPT" "$@"
             }
 
             make_host runtime coreall
