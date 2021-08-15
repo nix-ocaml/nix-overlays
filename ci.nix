@@ -22,6 +22,7 @@ let
     "lablgtk3"
     "lablgtk3-gtkspell3"
     "camlimages"
+    "camlimages_4_2_4"
     "lablgtk3-sourceview3"
     "lablgtk-extras"
     "lens"
@@ -125,6 +126,12 @@ let
     "paf"
     "git-paf"
     "irmin-mirage-git"
+
+
+    # broken on macOS?
+    "llvm"
+    "hacl-star-raw"
+    "hacl-star"
   ];
 
   buildCandidates = pkgs:
@@ -136,6 +143,8 @@ let
         let broken =
           if v ? meta && v.meta ? broken then v.meta.broken else false;
         in
+        # don't build tezos stuff
+        (! ((builtins.substring 0 5 n) == "tezos")) &&
         (! (builtins.elem n ignoredPackages)) &&
         (! broken) &&
         (

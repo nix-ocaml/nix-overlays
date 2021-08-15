@@ -143,10 +143,6 @@ websocketafPackages // {
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
 
-  decompress = osuper.decompress.overrideAttrs (_: {
-    doCheck = false;
-  });
-
   dream = callPackage ./dream { ocamlPackages = oself; };
 
   dream-livereload = callPackage ./dream-livereload { ocamlPackages = oself; };
@@ -172,14 +168,6 @@ websocketafPackages // {
 
     propagatedBuildInputs = [ dune-private-libs ];
   };
-
-  dune-release = osuper.dune-release.overrideAttrs (o: {
-    doCheck = false;
-    src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/dune-release/archive/5384dff2f79908352f0388bd2621ece3e783b6fe.tar.gz;
-      sha256 = "0vyi8sl5q077vb6yhz2lvzp9hnfmhvc6m4nd5sbwa482p3aplnl2";
-    };
-  });
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
