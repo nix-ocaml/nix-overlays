@@ -98,14 +98,6 @@ websocketafPackages // {
     doCheck = ! stdenv.isDarwin;
   });
 
-  bigstring = osuper.bigstring.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/ocaml-bigstring/archive/0.3.tar.gz;
-      sha256 = "0nipiqarr6d7j2xz9gp5z0pl2x3bs0yg7w7phg10kd7p5sazjrsc";
-    };
-    doCheck = false;
-  });
-
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
@@ -316,6 +308,13 @@ websocketafPackages // {
   reenv = callPackage ./reenv { ocamlPackages = oself; };
 
   rosetta = callPackage ./rosetta { ocamlPackages = oself; };
+
+  routes = osuper.routes.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/anuragsoni/routes/releases/download/1.0.0/routes-1.0.0.tbz;
+      sha256 = "1s24lbfkbyj5a873viy811vs8hrfxvsz7dqm6vz4bmf06i440aar";
+    };
+  });
 
   sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
     src = builtins.fetchurl {
