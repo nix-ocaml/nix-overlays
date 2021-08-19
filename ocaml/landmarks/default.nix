@@ -7,7 +7,7 @@ buildDunePackage rec {
   version = "1.4";
   src = builtins.fetchurl {
     url = "https://github.com/LexiFi/landmarks/archive/v${version}.tar.gz";
-    sha256 = "0gcg1zc2x1xqi8p2gx8nr3nmas1c96xnbcwr92zi08lwsxmyqjdm";
+    sha256 = "0dnakz18lcgfd4pfjqjg6w5nh2qby45z0xp7d7qqgzlgj991b20d";
   };
 
   propagatedBuildInputs = [ ppxlib ];
