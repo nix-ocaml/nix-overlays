@@ -203,6 +203,7 @@ websocketafPackages // {
   logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
   landmarks = callPackage ./landmarks { ocamlPackages = oself; };
+  landmarks-ppx = callPackage ./landmarks/ppx.nix { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
     buildInputs = [ ocaml dune findlib cppo dune-configurator ];

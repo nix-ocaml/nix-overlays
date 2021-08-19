@@ -4,10 +4,10 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "landmarks";
-  version = "1.4-dev";
+  version = "1.4";
   src = builtins.fetchurl {
-    url = https://github.com/LexiFi/landmarks/archive/ea90c65.tar.gz;
-    sha256 = "0bvjr4c018k8xh8irc6yldc5qw6vi0vdpg4mv104wkmvzgysd5xf";
+    url = "https://github.com/LexiFi/landmarks/archive/v${version}.tar.gz";
+    sha256 = "0dnakz18lcgfd4pfjqjg6w5nh2qby45z0xp7d7qqgzlgj991b20d";
   };
 
   propagatedBuildInputs = [ ppxlib ];
