@@ -4,15 +4,15 @@ with ocamlPackages;
 
 let
   src = fetchzip {
-    url = https://gitlab.com/tezos/tezos-rust-libs/-/archive/v1.1/tezos-rust-libs-v1.1.zip;
-    sha256 = "08wpcq6cbdvxdhazcpqzz4pywagy3fdbys07q2anbk6lq45rc2w6";
+    url = https://gitlab.com/tezos/tezos-rust-libs/-/archive/1f196947ab783d270ff41db2860ee76515c58608/tezos-rust-libs-1f196947ab783d270ff41db2860ee76515c58608.zip;
+    sha256 = "0rf6y8pa6fipsyfww6hd9phy7c14d8lk1gcmf477hpkxjpb00cvs";
   };
   name = "tezos-rust-libs";
 in
 
 ocamlPackages.buildDunePackage {
   pname = name;
-  version = "1.1";
+  version = "2.0-dev";
   inherit src;
 
   buildInputs = with ocamlPackages; [
@@ -23,8 +23,6 @@ ocamlPackages.buildDunePackage {
   propagatedBuildInputs = [ pkgs.cargo pkgs.rustc ];
 
   buildPhase = ''
-    mkdir .cargo
-    mv cargo-config .cargo/config
     cargo build --target-dir target --release
   '';
 
