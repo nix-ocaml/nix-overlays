@@ -52,16 +52,6 @@ with ocamlPackages;
     };
   });
 
-  parsexp = janePackage {
-    pname = "parsexp";
-    hash = "0rvbrf8ggh2imsbhqi15jzyyqbi3m5hzvy2iy2r4skx6m102mzpd";
-    minimumOCamlVersion = "4.04.2";
-    meta.description = "S-expression parsing library";
-    propagatedBuildInputs = [ base sexplib0 ];
-
-    patches = [ ./parsexp.patch ];
-  };
-
   ppx_custom_printf = (janePackage {
     pname = "ppx_custom_printf";
     hash = "0p9hgx0krxqw8hlzfv2bg2m3zi5nxsnzhyp0fj5936rapad02hc5";
@@ -86,19 +76,6 @@ with ocamlPackages;
     src = builtins.fetchurl {
       url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
       sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
-    };
-  });
-
-  ppx_optcomp = (janePackage {
-    pname = "ppx_optcomp";
-    hash = "1wav3zgh4244x1ll562g735cwwrzyk5jj72niq9jgz9qjlpsprlk";
-    minimumOCamlVersion = "4.04.2";
-    meta.description = "Optional compilation for OCaml";
-    propagatedBuildInputs = [ ppxlib stdio ];
-  }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_optcomp/archive/a4422ecd7e0677569533b1dae07924f5d786e8f6.tar.gz;
-      sha256 = "1szyb7hjln28dak2hb97hgnax64agwv9hy066l42mmgjxijghzlg";
     };
   });
 
