@@ -361,13 +361,6 @@ websocketafPackages // {
 
   unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
-  utop = osuper.utop.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.7.0/utop-2.7.0.tbz;
-      sha256 = "1p9z7jk2dqs7qlgjliz6qhn3dw048hhbr6znyb03qz16vx9sqs70";
-    };
-  });
-
   uunf = osuper.uunf.overrideAttrs (o: {
     # https://github.com/ocaml/ocaml/issues/9839
     configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
