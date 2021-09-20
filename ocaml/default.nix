@@ -385,7 +385,9 @@ websocketafPackages // {
     # https://github.com/ocaml/ocaml/issues/9839
     configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
       ''
+        runHook preConfigure
         ulimit -s 9216
+        runHook postConfigure
       '';
   });
 
