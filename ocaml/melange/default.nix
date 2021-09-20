@@ -27,8 +27,6 @@ buildDunePackage rec {
     reason
   ];
 
-  dontConfigure = true;
-
   installPhase = ''
     runHook preInstall
     ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
