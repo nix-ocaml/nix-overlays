@@ -32,8 +32,6 @@ in
   ocamlPackages_latest = self.ocamlPackages;
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
-  }).overrideAttrs (o: {
-    nativeBuildInputs = o.buildInputs;
   });
 
   # 4.06, 4.09 and 4.10 treated specially out of convenience because:
