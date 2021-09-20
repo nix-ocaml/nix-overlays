@@ -276,6 +276,15 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  ocaml_text = osuper.ocaml_text.overrideDerivation (o: {
+    configurePhase = ''
+      runHook preConfigure
+      ${o.configurePhase}
+      runHook postConfigure
+    '';
+
+  });
+
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
     preConfigure = "";
   });
