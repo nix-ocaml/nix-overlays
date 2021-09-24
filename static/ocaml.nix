@@ -17,13 +17,16 @@ let
       configurePlatforms = [ ];
       nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
       buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
-      # propagatedNativeBuildInputs = (o.propagatedNativeBuildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
     });
 
 in
 (oself: osuper:
   lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper // {
     ocaml = fixOCaml osuper.ocaml;
+
+    ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
+      hardeningDisable = [ "pie" ];
+    });
 
     zarith = osuper.zarith.overrideDerivation (o: {
       configureFlags = o.configureFlags ++ [
