@@ -14,7 +14,7 @@ jobs:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: fmt
         run: |
-          find . -iname '*.nix' | xargs nix run -f ./sources.nix nixpkgs-fmt -c nixpkgs-fmt --check
+          find . -iname '*.nix' | xargs nix run -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt --check
 
   native-linux:
     strategy:
@@ -34,7 +34,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix run -f ./sources.nix nix-build-uncached -c \
+          nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.ocaml-version }} \
                 --argstr target native \
@@ -58,7 +58,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix run -f ./sources.nix nix-build-uncached -c \
+          nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.ocaml-version }} \
                 --argstr target native \
@@ -88,7 +88,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix run -f ./sources.nix nix-build-uncached -c \
+          nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.ocaml-version }} \
                 --argstr target ${{ matrix.target }} \
