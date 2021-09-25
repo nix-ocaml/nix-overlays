@@ -51,7 +51,9 @@
       configureFlags = (removeUnknownConfigureFlags o.configureFlags);
     });
 
-    openssl = (super.openssl_1_1.override { static = true; });
+    openssl = (super.openssl.override { static = true; }).overrideAttrs (o: {
+      configureFlags = lib.remove "no-shared" o.configureFlags;
+    });
 
     # db48 = super.db48.overrideAttrs (o: {
     # hardeningDisable = (o.hardeningDisable or [ ]) ++ [ "format" ];
