@@ -1,4 +1,4 @@
-{ lib, ocamlVersions }:
+{ lib, buildPackages, ocamlVersions }:
 
 [
   (self: super:
@@ -8,7 +8,9 @@
           builtins.foldl'
             (acc: x: acc.overrideScope' x)
             super.ocaml-ng."ocamlPackages_${version}"
-            (super.callPackage ./ocaml.nix { });
+            (super.callPackage ./ocaml.nix {
+              inherit buildPackages;
+            });
       };
       oPs =
         lib.fold lib.mergeAttrs { }
@@ -23,7 +25,7 @@
 
       ocaml-ng = super.ocaml-ng // oPs // {
         ocamlPackages = self.ocamlPackages;
-        # ocamlPackages_latest = self.ocamlPackages;
+        ocamlPackages_latest = self.ocamlPackages;
       };
     })
 ]

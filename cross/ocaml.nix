@@ -159,7 +159,6 @@ in
         {
           enableParallelBuilding = true;
           nativeBuildInputs = [ buildPackages.stdenv.cc ];
-          buildInputs = o.buildInputs;
           preConfigure = ''
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
           '';
@@ -306,6 +305,7 @@ in
         in
         b.overrideAttrs (o: {
           nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
+          buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });
 
