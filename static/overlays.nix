@@ -3,10 +3,8 @@
 
 (self: super:
   let
-    inherit (super) lib;
+    inherit (super) lib config;
     removeUnknownConfigureFlags = f: with lib;
-      # TODO(anmonteiro): probably don't need to remove `"--disable-shared"`,
-      # the middleware below already does it.
       remove "--disable-shared"
         (remove "--enable-static" f);
 
@@ -14,44 +12,34 @@
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
     });
 
-    inherit (super.stdenvAdapters) makeStaticBinaries propagateBuildInputs;
+    defaultMkDerivationFromStdenv = import "${import ../sources.nix}/pkgs/stdenv/generic/make-derivation.nix" { inherit lib config; };
 
-    inherit (lib) foldl optional flip id composeExtensions optionalAttrs optionalString;
-    makeStaticLibraries = stdenv: stdenv //
-      {
-        mkDerivation = args: stdenv.mkDerivation (args // {
+    withOldMkDerivation = stdenvSuperArgs: k: stdenvSelf:
+      let
+        mkDerivationFromStdenv-super = stdenvSuperArgs.mkDerivationFromStdenv or defaultMkDerivationFromStdenv;
+        mkDerivationSuper = mkDerivationFromStdenv-super stdenvSelf;
+      in
+      k stdenvSelf mkDerivationSuper;
+
+    extendMkDerivationArgs = old: f: withOldMkDerivation old (_: mkDerivationSuper: args:
+      mkDerivationSuper (args // f args));
+    makeStaticLibraries = stdenv:
+      stdenv.override (old: {
+        # hostPlatform = old.hostPlatform // { isStatic = true; };
+        mkDerivationFromStdenv = extendMkDerivationArgs old (args: {
           dontDisableStatic = true;
+        } // lib.optionalAttrs (!(args.dontAddStaticConfigureFlags or false)) {
           configureFlags = (args.configureFlags or [ ]) ++ [
             "--enable-static"
-            "--disable-shared"
           ];
-          cmakeFlags =
-            let flags = (args.cmakeFlags or [ ]); in
-            (if flags == null then [ ] else flags) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
-          mesonFlags =
-            let flags = (args.mesonFlags or [ ]); in
-            (if flags == null then [ ] else flags) ++ [ "-Ddefault_library=static" ];
+          cmakeFlags = (args.cmakeFlags or [ ]) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
+          mesonFlags = (args.mesonFlags or [ ]) ++ [ "-Ddefault_library=static" ];
         });
-      };
+      });
 
-
-    disablePieHardening = stdenv: stdenv //
-      {
-        mkDerivation = args: stdenv.mkDerivation (args // {
-          hardeningDisable = [ "pie" ];
-          configureFlags = super.lib.remove "--disable-shared" (args.configureFlags or [ ]);
-        });
-      };
-    staticAdapters = [
-      # this one comes first to remove `--disable-shared` added by `makeStaticLibraries`
-      disablePieHardening
-      makeStaticLibraries
-      # propagateBuildInputs
-    ];
-    # ++ optional (!super.stdenv.hostPlatform.isDarwin) makeStaticBinaries;
   in
   {
-    stdenv = foldl (flip id) super.stdenv staticAdapters;
+    stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
 
     zlib = (super.zlib.override {
       static = true;
@@ -60,31 +48,21 @@
     }).overrideAttrs (o: {
       configureFlags = (removeUnknownConfigureFlags o.configureFlags);
     });
-    openssl = (super.openssl_1_1.override { static = true; }).overrideAttrs (o: {
-      # OpenSSL doesn't like the `--enable-static` / `--disable-shared` flags.
-      configureFlags = (removeUnknownConfigureFlags o.configureFlags);
-    });
-    boost = super.boost.override {
-      # Don’t use new stdenv for boost because it doesn’t like the
-      # --disable-shared flag
-      stdenv = super.stdenv;
-    };
-    perl = super.perl.override {
-      # Don’t use new stdenv zlib because
-      # it doesn’t like the --disable-shared flag
-      stdenv = super.stdenv;
-    };
 
-    db48 = super.db48.overrideAttrs (o: {
-      hardeningDisable = (o.hardeningDisable or [ ]) ++ [ "format" ];
+    openssl = (super.openssl.override { static = true; }).overrideAttrs (o: {
+      configureFlags = lib.remove "no-shared" o.configureFlags;
     });
 
-    clasp = super.clasp.overrideAttrs (o: {
-      configurePlatforms = [ ];
-      configureFlags = ((removeUnknownConfigureFlags o.configureFlags) ++ [ "--static" ]);
+    # db48 = super.db48.overrideAttrs (o: {
+    # hardeningDisable = (o.hardeningDisable or [ ]) ++ [ "format" ];
+    # });
 
-      preBuild = "cd build/release_static";
-    });
+    # clasp = super.clasp.overrideAttrs (o: {
+    # configurePlatforms = [ ];
+    # configureFlags = ((removeUnknownConfigureFlags o.configureFlags) ++ [ "--static" ]);
 
-    kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
+    # preBuild = "cd build/release_static";
+    # });
+
+    # kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
   })

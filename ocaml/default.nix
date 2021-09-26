@@ -276,6 +276,18 @@ websocketafPackages // {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  ocaml_text = osuper.ocaml_text.overrideDerivation (o: {
+    configurePhase = ''
+      runHook preConfigure
+      ${o.configurePhase}
+      runHook postConfigure
+    '';
+  });
+
+  ocp-build = osuper.ocp-build.overrideDerivation (o: {
+    preConfigure = "";
+  });
+
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
@@ -286,9 +298,7 @@ websocketafPackages // {
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
 
-  postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
+  postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
@@ -359,31 +369,27 @@ websocketafPackages // {
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
-  unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
-
-  utop = osuper.utop.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.7.0/utop-2.7.0.tbz;
-      sha256 = "1p9z7jk2dqs7qlgjliz6qhn3dw048hhbr6znyb03qz16vx9sqs70";
-    };
+  twt = osuper.twt.overrideDerivation (o: {
+    configurePhase = ''
+      runHook preConfigure
+      ${o.configurePhase}
+      runHook postConfigure
+    '';
   });
+
+  unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
   uunf = osuper.uunf.overrideAttrs (o: {
     # https://github.com/ocaml/ocaml/issues/9839
     configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
       ''
+        runHook preConfigure
         ulimit -s 9216
+        runHook postConfigure
       '';
   });
 
   uuuu = callPackage ./uuuu { ocamlPackages = oself; };
-
-  visitors = osuper.visitors.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://gitlab.inria.fr/fpottier/visitors/-/archive/20210316/archive.tar.gz;
-      sha256 = "1scf51n23px1y24xxqsix7p4za283kw6giww2s1524y6h77kf1kb";
-    };
-  });
 
   yuscii = callPackage ./yuscii { ocamlPackages = oself; };
 }
