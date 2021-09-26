@@ -89,6 +89,13 @@ websocketafPackages // {
 
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
+  camlp5 = osuper.camlp5.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/camlp5/camlp5/archive/rel8.00.02.tar.gz;
+      sha256 = "1zbp8mr9ms4253nh9z34dd2ppin4bri82j7xy3jdk73k9dbmr31w";
+    };
+  });
+
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
   carton = osuper.carton.overrideAttrs (_: {
