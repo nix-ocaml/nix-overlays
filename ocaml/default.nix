@@ -176,6 +176,7 @@ websocketafPackages // {
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { ocamlPackages = oself; };
   h2-mirage = callPackage ./h2/mirage.nix { ocamlPackages = oself; };
   h2-async = callPackage ./h2/async.nix { ocamlPackages = oself; };
+  hpack = callPackage ./h2/hpack.nix { ocamlPackages = oself; };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
