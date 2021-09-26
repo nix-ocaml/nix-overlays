@@ -4,8 +4,8 @@ with ocamlPackages;
 let src = fetchFromGitHub {
   owner = "anmonteiro";
   repo = "piaf";
-  rev = "0.1.0";
-  sha256 = "190qa43h13i6i2ygb694g8929i036137xvxcc34xs6rmrx4xbbgn";
+  rev = "4cd3eef";
+  sha256 = "01ifmpaznsranh7ayir3z7910fbxl99jhg14fpdzn6a3448b40rj";
   fetchSubmodules = true;
 };
 
@@ -16,7 +16,7 @@ buildDunePackage {
   inherit src;
 
   doCheck = true;
-  checkInputs = [ alcotest alcotest-lwt ];
+  checkInputs = [ alcotest alcotest-lwt dune-site ];
 
   propagatedBuildInputs = [
     logs
