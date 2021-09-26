@@ -24,6 +24,10 @@ in
   lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper // {
     ocaml = fixOCaml osuper.ocaml;
 
+    ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
+      hardeningDisable = [ "pie" ];
+    });
+
     zarith = osuper.zarith.overrideDerivation (o: {
       configureFlags = o.configureFlags ++ [
         "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
