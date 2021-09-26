@@ -5,8 +5,6 @@
   let
     inherit (super) lib config;
     removeUnknownConfigureFlags = f: with lib;
-      # TODO(anmonteiro): probably don't need to remove `"--disable-shared"`,
-      # the middleware below already does it.
       remove "--disable-shared"
         (remove "--enable-static" f);
 

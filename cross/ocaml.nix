@@ -40,16 +40,16 @@ in
         (builtins.substring 0 4 osuper.ocaml.version);
       natocamlPackages = buildPackages.ocaml-ng."ocamlPackages_${version}";
       natocaml = natocamlPackages.ocaml;
+      natdune = natocamlPackages.dune;
+      natfindlib = natocamlPackages.findlib;
     in
     {
-      dune-configurator = osuper.dune-configurator.overrideAttrs (o: {
-        configurePlatforms = [ ];
-      });
-
       buildDunePackage = args:
         (osuper.buildDunePackage args).overrideAttrs (o: {
-          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++
-            [ natocaml buildPackages.stdenv.cc ];
+          nativeBuildInputs =
+            [ natocaml natdune natfindlib buildPackages.stdenv.cc ] ++
+            # XXX(anmonteiro): apparently important that this comes after
+            (o.nativeBuildInputs or [ ]);
 
           buildPhase = ''
             runHook preBuild
@@ -285,7 +285,7 @@ in
             ocamlcp(${crossName}) = "${ocaml}/bin/ocamlcp"
             ocamlmklib(${crossName}) = "${ocaml}/bin/ocamlmklib"
             ocamlmktop(${crossName}) = "${ocaml}/bin/ocamlmktop"
-            ocamldoc(${crossName}) = "${ocaml}/bin/ocamldoc"
+            ocamldoc(${crossName}) = "${natocaml}/bin/ocamldoc"
             ocamldep(${crossName}) = "${ocaml}/bin/ocamldep"
           '';
 
@@ -304,7 +304,7 @@ in
 
         in
         b.overrideAttrs (o: {
-          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
+          # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
           buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });

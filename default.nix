@@ -58,13 +58,14 @@ in
     });
 
     aarch64-multiplatform = super.pkgsCross.aarch64-multiplatform.appendOverlays (callPackage ./cross {
-      inherit ocamlVersions;
+      inherit ocamlVersions lib;
+      buildPackages = self;
     });
 
     aarch64-multiplatform-musl =
       (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
-        ((callPackage ./cross { inherit ocamlVersions; }) ++
-          (callPackage ./static { inherit ocamlVersions; })));
+        ((callPackage ./cross { inherit lib ocamlVersions; }) ++
+          (callPackage ./static { inherit lib ocamlVersions; })));
   };
 
 

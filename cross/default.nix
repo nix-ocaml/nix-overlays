@@ -19,7 +19,7 @@
     in
     {
       ocaml = self.ocamlPackages.ocaml;
-      ocamlPackages = oPs.ocamlPackages_4_11;
+      ocamlPackages = oPs.ocamlPackages_4_12;
       ocamlPackages_latest = self.ocamlPackages;
       opaline = super.buildPackages.opaline;
 
