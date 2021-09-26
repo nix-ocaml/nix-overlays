@@ -26,11 +26,6 @@ let
     ocamlVersion = osuper.ocaml.version;
   };
 
-  h2Packages = callPackage ./h2 {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
   };
@@ -75,7 +70,6 @@ cookiePackages //
 dataloader-packages //
 graphqlPackages //
 glutenPackages //
-h2Packages //
 janestreetPackages //
 lambda-runtime-packages //
 morphPackages //
@@ -176,6 +170,12 @@ websocketafPackages // {
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
   };
+
+  h2 = callPackage ./h2 { ocamlPackages = oself; };
+  h2-lwt = callPackage ./h2/lwt.nix { ocamlPackages = oself; };
+  h2-lwt-unix = callPackage ./h2/lwt-unix.nix { ocamlPackages = oself; };
+  h2-mirage = callPackage ./h2/mirage.nix { ocamlPackages = oself; };
+  h2-async = callPackage ./h2/async.nix { ocamlPackages = oself; };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
