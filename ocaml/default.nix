@@ -47,10 +47,6 @@ let
     ocamlPackages = oself;
   };
 
-  reasonPackages = callPackage ./reason {
-    ocamlPackages = oself;
-  };
-
   redisPackages = callPackage ./redis {
     ocamlPackages = oself;
   };
@@ -75,7 +71,6 @@ lambda-runtime-packages //
 morphPackages //
 multicorePackages //
 oidcPackages //
-reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
@@ -345,7 +340,11 @@ websocketafPackages // {
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
+  reason = callPackage ./reason { ocamlPackages = oself; };
+  rtop = callPackage ./reason/rtop.nix { ocamlPackages = oself; };
+
   reason-native = osuper.reason-native // { qcheck-rely = null; };
+
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };
