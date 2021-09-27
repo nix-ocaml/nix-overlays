@@ -221,14 +221,14 @@ websocketafPackages // {
   });
 
   melange =
-    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+    if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange
         {
           ocamlPackages = oself;
         } else null;
 
   melange-compiler-libs =
-    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+    if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange/compiler-libs.nix
         {
           ocamlPackages = oself;
