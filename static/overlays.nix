@@ -57,6 +57,7 @@
       configureFlags = lib.remove "no-shared" o.configureFlags;
     });
 
+    libkrb5 = addDisableShared super.libkrb5;
     # db48 = super.db48.overrideAttrs (o: {
     # hardeningDisable = (o.hardeningDisable or [ ]) ++ [ "format" ];
     # });
