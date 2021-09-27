@@ -1,0 +1,28 @@
+diff --git a/runtime/Makefile b/runtime/Makefile
+index 3e40bdc6e..e8e4bc404 100644
+--- a/runtime/Makefile
++++ b/runtime/Makefile
+@@ -265,7 +265,9 @@ build_config.h: $(ROOTDIR)/Makefile.config sak$(EXE)
+ # Libraries and programs
+ 
+ ocamlrun$(EXE): prims.$(O) libcamlrun.$(A)
+-	$(MKEXE) -o $@ $^ $(LIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
++	# $(MKEXE) -o $@ $^ $(LIBS)
+ 
+ ocamlruns$(EXE): prims.$(O) libcamlrun_non_shared.$(A)
+ 	$(call MKEXE_USING_COMPILER,$@,$^ $(LIBS))
+diff --git a/tools/Makefile b/tools/Makefile
+index 094f213e0..b20cefb3e 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -316,7 +316,7 @@ caml_tex := caml-tex$(EXE)
+ # configuration.
+ $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str $(UNIXLIB))
+ $(caml_tex): $(caml_tex_files)
+-	$(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) -nostdlib -I $(ROOTDIR)/stdlib \
++	$(CAMLC)  -nostdlib -I $(ROOTDIR)/stdlib \
+ 	  $(LINKFLAGS) -linkall -o $@ -no-alias-deps $^
+ 
+ # we need str and unix which depend on the bytecode version of other tools
