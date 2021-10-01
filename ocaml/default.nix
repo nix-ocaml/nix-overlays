@@ -295,6 +295,10 @@ websocketafPackages // {
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
+  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
+    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
+  });
+
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { ocamlPackages = oself; };
 
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
