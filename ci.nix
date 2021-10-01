@@ -134,6 +134,9 @@ let
     "llvm"
     "hacl-star-raw"
     "hacl-star"
+
+    # broken with ppxlib 0.23
+    "bistro"
   ];
 
   buildCandidates = pkgs:
