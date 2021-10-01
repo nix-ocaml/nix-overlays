@@ -52,6 +52,21 @@ with ocamlPackages;
     };
   });
 
+
+  ppx_accessor = (janePackage {
+    pname = "ppx_accessor";
+    version = "0.14.2";
+    minimumOCamlVersion = "4.09";
+    hash = "01nifsh7gap28cpvff6i569lqr1gmyhrklkisgri538cp4pf1wq1";
+    meta.description = "[@@deriving] plugin to generate accessors for use with the Accessor libraries";
+    propagatedBuildInputs = [ accessor ];
+  }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_accessor/archive/3d850187403c95673da1fb30b056c4dd459799bd.tar.gz;
+      sha256 = "1rpzsh8m33r9006crq935yfs53cm5bf5wa4m3v0pwy8yfdhl3sks";
+    };
+  });
+
   ppx_custom_printf = (janePackage {
     pname = "ppx_custom_printf";
     hash = "0p9hgx0krxqw8hlzfv2bg2m3zi5nxsnzhyp0fj5936rapad02hc5";
