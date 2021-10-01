@@ -124,6 +124,8 @@ let
 
     # doesn't work with my fork of http/af
     "paf"
+    "paf-le"
+    "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
 
