@@ -155,6 +155,8 @@ websocketafPackages // {
     propagatedBuildInputs = [ dune-private-libs ];
   };
 
+  easy-format = callPackage ./easy-format { };
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
