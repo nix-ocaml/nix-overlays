@@ -30,15 +30,20 @@ let
     in
     lib.attrValues acc;
 
+  getNativeOCamlPackages = osuper:
+    let
+      version = lib.stringAsChars
+        (x: if x == "." then "_" else x)
+        (builtins.substring 0 4 osuper.ocaml.version);
+
+    in
+    buildPackages.ocaml-ng."ocamlPackages_${version}";
 in
 [
   (oself: osuper:
     let
       crossName = stdenv.hostPlatform.parsed.cpu.name;
-      version = lib.stringAsChars
-        (x: if x == "." then "_" else x)
-        (builtins.substring 0 4 osuper.ocaml.version);
-      natocamlPackages = buildPackages.ocaml-ng."ocamlPackages_${version}";
+      natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
       natdune = natocamlPackages.dune;
       natfindlib = natocamlPackages.findlib;
@@ -136,10 +141,7 @@ in
   (oself: osuper:
     let
       crossName = lib.head (lib.splitString "-" stdenv.system);
-      version = lib.stringAsChars
-        (x: if x == "." then "_" else x)
-        (builtins.substring 0 4 osuper.ocaml.version);
-      natocamlPackages = buildPackages.ocaml-ng."ocamlPackages_${version}";
+      natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
       genWrapper = name: camlBin: writeScriptBin name ''
@@ -339,6 +341,7 @@ in
       cppo = natocamlPackages.cppo;
       dune_2 = natocamlPackages.dune_2;
       dune = natocamlPackages.dune_2;
+
       ocamlbuild = natocamlPackages.ocamlbuild.overrideAttrs (o: {
         propagatedBuildInputs = [ buildPackages.stdenv.cc ];
       });
@@ -375,4 +378,15 @@ in
           '';
         });
     })
+
+  (oself: osuper:
+    let
+      natocamlPackages = getNativeOCamlPackages osuper;
+    in
+    {
+      js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ [ natocamlPackages.js_of_ocaml ];
+      });
+    }
+  )
 ]
