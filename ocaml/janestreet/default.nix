@@ -114,12 +114,24 @@ with ocamlPackages;
     meta.description = "Generation of runtime types from type declarations";
     propagatedBuildInputs = [ ppxlib typerep ];
   }).overrideAttrs (_: {
-    src = builtins.fetchurl
-      {
-        url = https://github.com/janestreet/ppx_typerep_conv/archive/v0.14.2.tar.gz;
-        sha256 = "1g1sb3prscpa7jwnk08f50idcgyiiv0b9amkl0kymj5cghkdqw0n";
-      };
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_typerep_conv/archive/v0.14.2.tar.gz;
+      sha256 = "1g1sb3prscpa7jwnk08f50idcgyiiv0b9amkl0kymj5cghkdqw0n";
+    };
   });
 
-
+  ppx_variants_conv = (janePackage {
+    pname = "ppx_variants_conv";
+    version = "0.14.1";
+    minimumOCamlVersion = "4.04.2";
+    hash = "0q6a43zrwqzdz7aja0k44a2llyjjj5xzi2kigwhsnww3g0r5ig84";
+    meta.description = "Generation of accessor and iteration functions for ocaml variant types";
+    propagatedBuildInputs = [ variantslib ppxlib ];
+  }).overrideAttrs
+    (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/janestreet/ppx_variants_conv/archive/6103f6fc56f978c847ba7c1f2d9f38ee93a5e337.tar.gz;
+        sha256 = "13006x3jl4fdp845rg2s1h01f44w27ij4i85pqll4r286lsvyyqq";
+      };
+    });
 }
