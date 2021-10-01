@@ -315,6 +315,7 @@ websocketafPackages // {
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
+  reason-native = osuper.reason-native // { qcheck-rely = null; };
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };
