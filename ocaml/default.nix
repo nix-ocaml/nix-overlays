@@ -155,7 +155,7 @@ websocketafPackages // {
     propagatedBuildInputs = [ dune-private-libs ];
   };
 
-  easy-format = callPackage ./easy-format { };
+  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
