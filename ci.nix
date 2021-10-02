@@ -63,6 +63,7 @@ let
 
     # too long to build or broken
     "z3"
+    "nonstd"
     "genspio"
 
     # too outdated / dont care for now
