@@ -38,6 +38,8 @@ let
     "type_conv_109_60_01"
     "variantslib_p4"
     "xtmpl"
+    "async_inotify"
+    "async_smtp"
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
@@ -63,17 +65,22 @@ let
     "z3"
     "genspio"
 
-    # marked broken
+    # too outdated / dont care for now
     "wodan-irmin"
 
+    # dune.configurator issue
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
     # jbuild files
-    "nonstd"
     "facile"
+    "ocsigen-start"
+    "torch"
 
     # linking issues?
+    "tsdl"
+    "owee"
+    "spacetime_lib"
     "prof_spacetime"
     "mariadb"
     "caqti-driver-mariadb"
