@@ -46,6 +46,7 @@ let
     "comparelib"
     "config-file"
     "erm_xmpp"
+    "gmetadom"
     "herelib"
     "higlo"
     "js_build_tools"
