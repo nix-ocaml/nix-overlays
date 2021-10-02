@@ -307,7 +307,7 @@ in
         in
         b.overrideAttrs (o: {
           # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-          buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
+          # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });
 
@@ -316,11 +316,7 @@ in
       ocaml = fixOCaml osuper.ocaml;
 
       findlib = osuper.findlib.overrideAttrs (o: {
-        configurePlatforms = [ ];
-
         nativeBuildInputs = with buildPackages; [
-          m4
-          ncurses
           natocaml
           buildPackages.stdenv.cc
         ];
@@ -378,15 +374,4 @@ in
           '';
         });
     })
-
-  (oself: osuper:
-    let
-      natocamlPackages = getNativeOCamlPackages osuper;
-    in
-    {
-      js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ [ natocamlPackages.js_of_ocaml ];
-      });
-    }
-  )
 ]

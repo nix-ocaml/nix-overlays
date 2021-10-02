@@ -203,6 +203,12 @@ websocketafPackages // {
     };
   });
 
+  # remove when https://github.com/NixOS/nixpkgs/pull/140222 is merged.
+  # XXX(anmonteiro): This makes it so that we don't cross compile JSOO in the
+  # ARM64 + Musl64 targets. If we care about JSOO in the future we should
+  # make sure that workflow is supported.
+  logs = callPackage ./logs { ocamlPackages = oself; jsooSupport = false; };
+
   logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
   landmarks = callPackage ./landmarks { ocamlPackages = oself; };
