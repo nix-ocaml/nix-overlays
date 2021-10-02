@@ -18,21 +18,15 @@ let
     "fieldslib_p4"
     "gtktop"
     "lablgtk_2_14"
-    "lablgtk"
-    "lablgtk3"
     "lablgtk3-gtkspell3"
-    "camlimages"
     "camlimages_4_2_4"
-    "lablgtk3-sourceview3"
     "lablgtk-extras"
-    "lens"
     "magick"
     "mezzo"
     "mlgmp"
     "ocaml_cairo"
     "ocaml_cryptgps"
     "ocaml_data_notation"
-    "ocaml_http"
     "ocamlnat"
     "ocamlsdl"
     "ocf"
@@ -44,15 +38,12 @@ let
     "type_conv_109_60_01"
     "variantslib_p4"
     "xtmpl"
-    "async_inotify"
-    "async_smtp"
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
     "comparelib"
     "config-file"
     "erm_xmpp"
-    "gmetadom"
     "herelib"
     "higlo"
     "js_build_tools"
@@ -67,33 +58,22 @@ let
     "typerep_p4"
     "ulex"
     "lablgl"
-    "labltk"
 
     # too long to build or broken
     "z3"
-    "nonstd"
-    "sosa"
     "genspio"
 
-    # too outdated / dont care for now
+    # marked broken
     "wodan-irmin"
 
-    # dune.configurator issue
-    "cairo2"
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
     # jbuild files
+    "nonstd"
     "facile"
-    "ocsigen-start"
-    "torch"
 
     # linking issues?
-    "ocaml_libvirt"
-    "ocaml-r"
-    "tsdl"
-    "owee"
-    "spacetime_lib"
     "prof_spacetime"
     "mariadb"
     "caqti-driver-mariadb"
@@ -206,4 +186,5 @@ let
       ];
   };
 in
+
 targets."${target}"
