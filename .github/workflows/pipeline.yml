@@ -20,8 +20,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version: [4_11, 4_12]
-    name: Native packages (Linux, OCaml ${{ matrix.ocaml-version }})
+        setup:
+          - { ocaml-version: 4_11, continue-on-error: false }
+          - { ocaml-version: 4_12, continue-on-error: false }
+          - { ocaml-version: 4_13, continue-on-error: true }
+    name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -36,16 +39,19 @@ jobs:
         run: |
           nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
-                --argstr ocamlVersion ${{ matrix.ocaml-version }} \
+                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
-
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
   native-macos:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version: [4_11, 4_12]
-    name: Native packages (macOS, OCaml ${{ matrix.ocaml-version }})
+        setup:
+          - { ocaml-version: 4_11, continue-on-error: false }
+          - { ocaml-version: 4_12, continue-on-error: false }
+          - { ocaml-version: 4_13, continue-on-error: true }
+    name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: macos-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -60,22 +66,24 @@ jobs:
         run: |
           nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
-                --argstr ocamlVersion ${{ matrix.ocaml-version }} \
+                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   cross-compilers:
     needs: [native-linux]
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version:
-          - 4_11
-          - 4_12
+        setup:
+          - { ocaml-version: 4_11, continue-on-error: false }
+          - { ocaml-version: 4_12, continue-on-error: false }
+          - { ocaml-version: 4_13, continue-on-error: true }
         target:
           - arm64
           - musl
-    name: ${{matrix.target}} packages (OCaml ${{ matrix.ocaml-version }})
+    name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -90,7 +98,8 @@ jobs:
         run: |
           nix run -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
-                --argstr ocamlVersion ${{ matrix.ocaml-version }} \
+                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target ${{ matrix.target }} \
                 --show-trace --keep-going
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
 

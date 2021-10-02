@@ -165,6 +165,11 @@ in
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
           '';
           configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
+          postConfigure = ''
+            echo 'SAK_CC=${buildPackages.stdenv.cc}/bin/gcc' >> Makefile.config
+            echo 'SAK_CFLAGS=$(OC_CFLAGS) $(OC_CPPFLAGS)' >> Makefile.config
+            echo 'SAK_LINK=$(SAK_CC) $(SAK_CFLAGS) $(OUTPUTEXE)$(1) $(2)' >> Makefile.config
+          '';
 
           buildPhase = ''
             runHook preBuild
@@ -235,9 +240,10 @@ in
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "4.12" ocaml.version then ./cross_4_12.patch
-            else if lib.versionOlder "4.11" ocaml.version then ./cross_4_11.patch else
-            throw "OCaml ${ocaml.version} not supported for cross-compilation")
+            (if lib.versionOlder "4.13" ocaml.version then ./cross_4_13.patch
+            else if lib.versionOlder "4.12" ocaml.version then ./cross_4_12.patch
+            else if lib.versionOlder "4.11" ocaml.version then ./cross_4_11.patch
+            else throw "OCaml ${ocaml.version} not supported for cross-compilation")
           ];
         });
       fixOCamlPackage = b:

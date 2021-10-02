@@ -47,10 +47,6 @@ let
     ocamlPackages = oself;
   };
 
-  reasonPackages = callPackage ./reason {
-    ocamlPackages = oself;
-  };
-
   redisPackages = callPackage ./redis {
     ocamlPackages = oself;
   };
@@ -75,7 +71,6 @@ lambda-runtime-packages //
 morphPackages //
 multicorePackages //
 oidcPackages //
-reasonPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
@@ -93,6 +88,13 @@ websocketafPackages // {
   });
 
   calendar = callPackage ./calendar { ocamlPackages = oself; };
+
+  camlp5 = osuper.camlp5.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/camlp5/camlp5/archive/rel8.00.02.tar.gz;
+      sha256 = "1zbp8mr9ms4253nh9z34dd2ppin4bri82j7xy3jdk73k9dbmr31w";
+    };
+  });
 
   carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
@@ -219,42 +221,21 @@ websocketafPackages // {
   });
 
   melange =
-    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+    if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange
         {
           ocamlPackages = oself;
         } else null;
 
   melange-compiler-libs =
-    if (lib.versionOlder "4.12" osuper.ocaml.version) then
+    if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange/compiler-libs.nix
         {
           ocamlPackages = oself;
         } else null;
 
 
-  merlin = osuper.merlin.overrideAttrs (o: {
-    src =
-      if (lib.versionOlder "4.12" osuper.ocaml.version)
-      then
-        builtins.fetchurl
-          {
-            url = https://github.com/ocaml/merlin/releases/download/v4.1-412/merlin-v4.1-412.tbz;
-            sha256 = "13cx0v999ijj48m2zb0rsgi1m42bywm7jc8fsqxkkf5xfggawk7v";
-          }
-      else if (lib.versionOlder "4.11" osuper.ocaml.version)
-      then
-        builtins.fetchurl
-          {
-            url = https://github.com/ocaml/merlin/releases/download/v4.1-411/merlin-v4.1-411.tbz;
-            sha256 = "0zckb729mhp1329bcqp0mi1lxxipzbm4a5hqqzrf2g69k73nybly";
-          }
-      else
-        builtins.fetchurl {
-          url = https://github.com/ocaml/merlin/releases/download/v3.4.2/merlin-v3.4.2.tbz;
-          sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
-        };
-  });
+  merlin = callPackage ./merlin { ocamlPackages = oself; };
 
   mongo = callPackage ./mongo { ocamlPackages = oself; };
   mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
@@ -341,7 +322,11 @@ websocketafPackages // {
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
+  reason = callPackage ./reason { ocamlPackages = oself; };
+  rtop = callPackage ./reason/rtop.nix { ocamlPackages = oself; };
+
   reason-native = osuper.reason-native // { qcheck-rely = null; };
+
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };

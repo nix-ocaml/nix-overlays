@@ -137,6 +137,9 @@ let
 
     # broken with ppxlib 0.23
     "bistro"
+
+    # broken on OCaml 4.13
+    "hol_light"
   ];
 
   buildCandidates = pkgs:
