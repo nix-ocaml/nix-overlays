@@ -18,21 +18,15 @@ let
     "fieldslib_p4"
     "gtktop"
     "lablgtk_2_14"
-    "lablgtk"
-    "lablgtk3"
     "lablgtk3-gtkspell3"
-    "camlimages"
     "camlimages_4_2_4"
-    "lablgtk3-sourceview3"
     "lablgtk-extras"
-    "lens"
     "magick"
     "mezzo"
     "mlgmp"
     "ocaml_cairo"
     "ocaml_cryptgps"
     "ocaml_data_notation"
-    "ocaml_http"
     "ocamlnat"
     "ocamlsdl"
     "ocf"
@@ -67,19 +61,16 @@ let
     "typerep_p4"
     "ulex"
     "lablgl"
-    "labltk"
 
     # too long to build or broken
     "z3"
     "nonstd"
-    "sosa"
     "genspio"
 
     # too outdated / dont care for now
     "wodan-irmin"
 
     # dune.configurator issue
-    "cairo2"
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
@@ -89,8 +80,6 @@ let
     "torch"
 
     # linking issues?
-    "ocaml_libvirt"
-    "ocaml-r"
     "tsdl"
     "owee"
     "spacetime_lib"
@@ -206,4 +195,5 @@ let
       ];
   };
 in
+
 targets."${target}"
