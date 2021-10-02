@@ -155,6 +155,8 @@ websocketafPackages // {
     propagatedBuildInputs = [ dune-private-libs ];
   };
 
+  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -200,6 +202,12 @@ websocketafPackages // {
       sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
     };
   });
+
+  # remove when https://github.com/NixOS/nixpkgs/pull/140222 is merged.
+  # XXX(anmonteiro): This makes it so that we don't cross compile JSOO in the
+  # ARM64 + Musl64 targets. If we care about JSOO in the future we should
+  # make sure that workflow is supported.
+  logs = callPackage ./logs { ocamlPackages = oself; jsooSupport = false; };
 
   logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
 
@@ -293,6 +301,10 @@ websocketafPackages // {
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
+  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
+    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
+  });
+
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { ocamlPackages = oself; };
 
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
@@ -302,6 +314,20 @@ websocketafPackages // {
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
+
+  ppxlib = osuper.ppxlib.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.23.0/ppxlib-0.23.0.tbz;
+      sha256 = "1r8jzrqrklwgdbc9qwmp36shhkwgjvrr9nj7rxma3mdrhv0kcn0v";
+    };
+
+    propagatedBuildInputs = [
+      ocaml-compiler-libs
+      ppx_derivers
+      stdio
+      stdlib-shims
+    ];
+  });
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -315,6 +341,7 @@ websocketafPackages // {
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
+  reason-native = osuper.reason-native // { qcheck-rely = null; };
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };
@@ -337,7 +364,6 @@ websocketafPackages // {
     propagatedBuildInputs = [
       gen
       uchar
-      ocaml-migrate-parsetree-2
       ppxlib
     ];
   });

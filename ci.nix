@@ -124,6 +124,8 @@ let
 
     # doesn't work with my fork of http/af
     "paf"
+    "paf-le"
+    "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
 
@@ -132,6 +134,9 @@ let
     "llvm"
     "hacl-star-raw"
     "hacl-star"
+
+    # broken with ppxlib 0.23
+    "bistro"
   ];
 
   buildCandidates = pkgs:

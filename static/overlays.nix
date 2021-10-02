@@ -12,6 +12,10 @@
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
     });
 
+    addDisableShared = o: o.overrideAttrs (o: {
+      configureFlags = o.configureFlags ++ [ "--disable-shared" ];
+    });
+
     defaultMkDerivationFromStdenv = import "${import ../sources.nix}/pkgs/stdenv/generic/make-derivation.nix" { inherit lib config; };
 
     withOldMkDerivation = stdenvSuperArgs: k: stdenvSelf:
@@ -65,4 +69,5 @@
     # });
 
     # kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
+    libkrb5 = addDisableShared super.libkrb5;
   })

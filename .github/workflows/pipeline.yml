@@ -27,8 +27,8 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v12
-      - uses: cachix/cachix-action@v8
+      - uses: cachix/install-nix-action@v14
+      - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -51,8 +51,8 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v12
-      - uses: cachix/cachix-action@v8
+      - uses: cachix/install-nix-action@v14
+      - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -81,8 +81,8 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v12
-      - uses: cachix/cachix-action@v8
+      - uses: cachix/install-nix-action@v14
+      - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
