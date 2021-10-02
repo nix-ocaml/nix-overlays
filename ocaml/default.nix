@@ -114,14 +114,6 @@ websocketafPackages // {
 
   coin = callPackage ./coin { ocamlPackages = oself; };
 
-  containers = osuper.containers.overrideAttrs (o: {
-    checkInputs = (o.checkInputs or [ ]) ++ [ which ];
-  });
-
-  containers-data = osuper.containers-data.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
-
   ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
