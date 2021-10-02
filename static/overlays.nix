@@ -70,5 +70,4 @@
     # });
 
     # kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
-    libkrb5 = addDisableShared super.libkrb5;
   })
