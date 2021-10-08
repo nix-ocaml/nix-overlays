@@ -369,14 +369,6 @@ websocketafPackages // {
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
-  twt = osuper.twt.overrideDerivation (o: {
-    configurePhase = ''
-      runHook preConfigure
-      ${o.configurePhase}
-      runHook postConfigure
-    '';
-  });
-
   unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
 
   uunf = osuper.uunf.overrideAttrs (o: {
