@@ -4,10 +4,10 @@ with ocamlPackages;
 
 buildDunePackage rec {
   pname = "unstrctrd";
-  version = "0.2.0";
+  version = "0.3";
   src = builtins.fetchurl {
-    url = https://github.com/dinosaure/unstrctrd/releases/download/v0.2/unstrctrd-v0.2.tbz;
-    sha256 = "0yb9n7zrdvcsawwjj9dxfwqc9gq12bmaynnfyjm5yd0s876vyh0h";
+    url = "https://github.com/dinosaure/unstrctrd/releases/download/v${version}/unstrctrd-v${version}.tbz";
+    sha256 = "0nzdinks5j5drk3ihj0p9vv9wc7zdw9rz3y886360xxrlvlv2mbk";
   };
 
   propagatedBuildInputs = [

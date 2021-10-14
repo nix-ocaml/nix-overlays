@@ -2,12 +2,12 @@
 
 with ocamlPackages;
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "prettym";
-  version = "0.0.1";
+  version = "0.0.2";
   src = builtins.fetchurl {
-    url = https://github.com/dinosaure/prettym/releases/download/0.0.1/prettym-0.0.1.tbz;
-    sha256 = "4920decb20187df0a1f651e8d5abf456b341633adf3e7b23aa01adf28f6e95b4";
+    url = "https://github.com/dinosaure/prettym/releases/download/${version}/prettym-${version}.tbz";
+    sha256 = "1df5zccnmqc30rla53wbvk9j24jdlmwbfj9zhzcla11vv2fh6aq8";
   };
 
   propagatedBuildInputs = [
