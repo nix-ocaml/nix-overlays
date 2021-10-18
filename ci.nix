@@ -119,6 +119,8 @@ let
     "lablgtk3"
     "lablgtk3-gtkspell3"
     "lablgtk3-sourceview3"
+    "labltk"
+    "camlimages"
 
     # broken with ppxlib 0.23
     "bistro"
