@@ -116,6 +116,9 @@ let
     "hacl-star"
     "ocaml_libvirt"
     "cairo2"
+    "lablgtk3"
+    "lablgtk3-gtkspell3"
+    "lablgtk3-sourceview3"
 
     # broken with ppxlib 0.23
     "bistro"
