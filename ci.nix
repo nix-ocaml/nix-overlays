@@ -114,6 +114,7 @@ let
     "llvm"
     "hacl-star-raw"
     "hacl-star"
+    "ocaml_libvirt"
 
     # broken with ppxlib 0.23
     "bistro"
