@@ -115,6 +115,7 @@ let
     "hacl-star-raw"
     "hacl-star"
     "ocaml_libvirt"
+    "cairo2"
 
     # broken with ppxlib 0.23
     "bistro"
