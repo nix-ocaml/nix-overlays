@@ -66,9 +66,7 @@ let
     "z3"
     "nonstd"
     "genspio"
-
-    # too outdated / dont care for now
-    "wodan-irmin"
+    "lwt-exit"
 
     # dune.configurator issue
     "ocamlfuse"
