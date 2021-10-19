@@ -67,6 +67,7 @@ let
     "nonstd"
     "genspio"
     "lwt-exit"
+    "ocaml-r"
 
     # dune.configurator issue
     "ocamlfuse"
