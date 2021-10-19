@@ -66,9 +66,8 @@ let
     "z3"
     "nonstd"
     "genspio"
-
-    # too outdated / dont care for now
-    "wodan-irmin"
+    "lwt-exit"
+    "ocaml-r"
 
     # dune.configurator issue
     "ocamlfuse"
@@ -93,12 +92,6 @@ let
     "irmin-mirage-graphql"
     "irmin-unix"
 
-    # not ppxlib >= 0.18 compatible (I don't use these, so I haven't bothered
-    # to fix them)
-    "ppx_deriving_rpc"
-    "rpclib-lwt"
-    "elpi"
-
     # broken on 4.12
     "accessor_core"
     "accessor_async"
@@ -118,14 +111,21 @@ let
     "git-paf"
     "irmin-mirage-git"
 
-
     # broken on macOS?
     "llvm"
     "hacl-star-raw"
     "hacl-star"
+    "ocaml_libvirt"
+    "cairo2"
+    "lablgtk3"
+    "lablgtk3-gtkspell3"
+    "lablgtk3-sourceview3"
+    "labltk"
+    "camlimages"
 
     # broken with ppxlib 0.23
     "bistro"
+    "elpi"
 
     # broken on OCaml 4.13
     "hol_light"

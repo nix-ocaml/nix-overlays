@@ -62,8 +62,8 @@ with ocamlPackages;
     propagatedBuildInputs = [ accessor ];
   }).overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_accessor/archive/3d850187403c95673da1fb30b056c4dd459799bd.tar.gz;
-      sha256 = "1rpzsh8m33r9006crq935yfs53cm5bf5wa4m3v0pwy8yfdhl3sks";
+      url = https://github.com/janestreet/ppx_accessor/archive/v0.14.3.tar.gz;
+      sha256 = "19gq2kg2d68wp5ph8mk5fpai13dafqqd3i23hn76s3mc1lyc3q1a";
     };
   });
 
