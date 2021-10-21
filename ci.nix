@@ -93,7 +93,6 @@ let
     "irmin-unix"
 
     # broken on 4.12
-    "accessor_core"
     "accessor_async"
     "ocaml_extlib-1-7-7"
 
