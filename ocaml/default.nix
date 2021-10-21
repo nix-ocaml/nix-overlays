@@ -284,20 +284,6 @@ websocketafPackages // {
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
 
-  ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.23.0/ppxlib-0.23.0.tbz;
-      sha256 = "1r8jzrqrklwgdbc9qwmp36shhkwgjvrr9nj7rxma3mdrhv0kcn0v";
-    };
-
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ppx_derivers
-      stdio
-      stdlib-shims
-    ];
-  });
-
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/bc744e25765c7d6b4f65e3a484021aa736d7c919.tar.gz;
