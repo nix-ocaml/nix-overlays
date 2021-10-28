@@ -18,6 +18,10 @@ buildDunePackage {
   doCheck = true;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
 
+  postPatch = ''
+    substituteInPlace ./vendor/dune --replace "mrmime.prettym" "prettym"
+  '';
+
   propagatedBuildInputs = [
     logs
     lwt_ssl
