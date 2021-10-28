@@ -4,7 +4,7 @@ with ocamlPackages;
 
 buildDunePackage {
   pname = "pg_query";
-  version = "0.9.4-dev";
+  version = "0.9.7";
 
   unpackPhase = ''
     runHook preUnpack
@@ -13,8 +13,8 @@ buildDunePackage {
   '';
 
   src = builtins.fetchurl {
-    url = https://github.com/roddyyaga/pg_query-ocaml/archive/0.9.5.tar.gz;
-    sha256 = "1kjj02y9k7hxj76xr3kbdxw2nk2pw80mvmc8hixw62bb9riapm4x";
+    url = https://github.com/roddyyaga/pg_query-ocaml/archive/0.9.7.tar.gz;
+    sha256 = "04hzmx5hml9c1nlcpjx1wcfgi7lalir0qk2xx9m7ljfwhw469fhc";
   };
 
   useDune2 = true;
