@@ -47,6 +47,9 @@ buildDunePackage {
     angstrom
   ] ++ (if upstream then upstream_propagatedBuildInputs else propagatedBuildInputs));
 
+  postPatch = ''
+    substituteInPlace ./lib/dune --replace "mrmime.prettym" "prettym"
+  '';
 
   doCheck = true;
   checkInputs = [ alcotest rosetta ];
