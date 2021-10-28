@@ -112,8 +112,6 @@ websocketafPackages // {
     };
   });
 
-  coin = callPackage ./coin { ocamlPackages = oself; };
-
   ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
@@ -138,16 +136,6 @@ websocketafPackages // {
     if lib.versionOlder "4.06" ocaml.version
     then oself.dune_2
     else osuper.dune_1;
-
-  dune-site = buildDunePackage {
-    pname = "dune-site";
-    inherit (oself.dune) src version patches;
-    useDune2 = true;
-
-    dontAddPrefix = true;
-
-    propagatedBuildInputs = [ dune-private-libs ];
-  };
 
   easy-format = callPackage ./easy-format { ocamlPackages = oself; };
 
@@ -231,8 +219,6 @@ websocketafPackages // {
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { ocamlPackages = oself; };
   bson = callPackage ./mongo/bson.nix { ocamlPackages = oself; };
 
-  mrmime = callPackage ./mrmime { ocamlPackages = oself; };
-
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
@@ -252,14 +238,6 @@ websocketafPackages // {
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
-  });
-
-  ocaml_text = osuper.ocaml_text.overrideDerivation (o: {
-    configurePhase = ''
-      runHook preConfigure
-      ${o.configurePhase}
-      runHook postConfigure
-    '';
   });
 
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
@@ -292,8 +270,6 @@ websocketafPackages // {
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
-  prettym = callPackage ./prettym { ocamlPackages = oself; };
-
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
   reason = callPackage ./reason { ocamlPackages = oself; };
@@ -304,8 +280,6 @@ websocketafPackages // {
   redemon = callPackage ./redemon { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };
-
-  rosetta = callPackage ./rosetta { ocamlPackages = oself; };
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -355,8 +329,6 @@ websocketafPackages // {
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
-  unstrctrd = callPackage ./unstrctrd { ocamlPackages = oself; };
-
   uunf = osuper.uunf.overrideAttrs (o: {
     # https://github.com/ocaml/ocaml/issues/9839
     configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
@@ -367,7 +339,7 @@ websocketafPackages // {
       '';
   });
 
-  uuuu = callPackage ./uuuu { ocamlPackages = oself; };
-
-  yuscii = callPackage ./yuscii { ocamlPackages = oself; };
+  yuscii = osuper.yuscii.overrideAttrs (_: {
+    doCheck = false;
+  });
 }
