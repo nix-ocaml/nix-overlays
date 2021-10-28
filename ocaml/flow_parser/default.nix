@@ -1,25 +1,16 @@
-{ ocamlPackages, stdenv }:
+{ ocamlPackages }:
 
 with ocamlPackages;
 
-stdenv.mkDerivation rec {
+buildDunePackage rec {
   pname = "flow_parser";
-  version = "0.159.0";
+  version = "0.149.0";
   src = builtins.fetchurl {
-    url = https://github.com/facebook/flow/archive/refs/tags/v0.159.0.tar.gz;
-    sha256 = "17q0vxgri0ks8j13w94ysh19hlbmgy0ja7cs8087ngji0sjcd0hb";
+    url = https://github.com/facebook/flow/archive/refs/tags/v0.149.0.tar.gz;
+    sha256 = "1cm3r4n2iscwvs593vr3vfxsqg81ask9nh3043lcq97999cxg3xq";
   };
 
-  buildPhase = ''
-    make -C src/parser build-parser
-  '';
-
-  installPhase = ''
-    make -C src/parser ocamlfind-install
-  '';
-
-  # patches = [ ./flow_parser_public_library.patch ];
-  nativeBuildInputs = [ ocamlbuild ocaml findlib ];
+  patches = [ ./flow_parser_public_library.patch ];
   propagatedBuildInputs = [
     ppx_deriving
     ppx_gen_rec
