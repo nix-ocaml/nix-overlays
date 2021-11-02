@@ -42,7 +42,8 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell --extra-experimental-features nix-command -f ./boot.nix nix-build-uncached -c \
+          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
+          nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
@@ -72,7 +73,8 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell --extra-experimental-features nix-command -f ./boot.nix nix-build-uncached -c \
+          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
+          nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
@@ -107,7 +109,8 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell --extra-experimental-features nix-command -f ./boot.nix nix-build-uncached -c \
+          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
+          nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target ${{ matrix.target }} \
