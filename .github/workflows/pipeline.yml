@@ -16,7 +16,6 @@ jobs:
             experimental-features = nix-command
       - name: fmt
         run: |
-          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
           find . -iname '*.nix' | xargs nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt --check
 
   native-linux:
@@ -43,7 +42,6 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
           nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
@@ -74,7 +72,6 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
           nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
@@ -110,7 +107,6 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
           nix shell -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
