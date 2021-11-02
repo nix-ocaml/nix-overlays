@@ -16,6 +16,7 @@ jobs:
             experimental-features = nix-command
       - name: fmt
         run: |
+          echo "experimental-features = nix-command" >> ~/.config/nix/nix.conf
           find . -iname '*.nix' | xargs nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt --check
 
   native-linux:
