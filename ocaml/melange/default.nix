@@ -8,8 +8,8 @@ buildDunePackage rec {
   version = "0.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/8dba4a8.tar.gz;
-    sha256 = "1a12vyw9501ra4bngkswnf2fczznzw01jfhy4wwwxizks4xy68m7";
+    url = https://github.com/melange-re/melange/archive/a11ceb1.tar.gz;
+    sha256 = "0njivayll8hl56ys93z4q14l563ksiv1j6m7kkfbrlgx0dz6lxhx";
   };
 
   nativeBuildInputs = [
