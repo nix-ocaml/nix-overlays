@@ -223,7 +223,7 @@ websocketafPackages // {
   bson = callPackage ./mongo/bson.nix { ocamlPackages = oself; };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
   });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
