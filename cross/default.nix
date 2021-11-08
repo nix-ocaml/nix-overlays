@@ -21,7 +21,7 @@
       ocaml = self.ocamlPackages.ocaml;
       ocamlPackages = oPs.ocamlPackages_4_12;
       ocamlPackages_latest = self.ocamlPackages;
-      opaline = super.buildPackages.opaline;
+      opaline = buildPackages.opaline;
 
       ocaml-ng = super.ocaml-ng // oPs // {
         ocamlPackages = self.ocamlPackages;

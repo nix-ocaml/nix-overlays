@@ -83,6 +83,10 @@ websocketafPackages // {
     };
   };
 
+  afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
+    nativeBuildInputs = [ ocaml findlib ];
+  });
+
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
@@ -193,7 +197,7 @@ websocketafPackages // {
   landmarks-ppx = callPackage ./landmarks/ppx.nix { ocamlPackages = oself; };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-    buildInputs = [ ocaml dune findlib cppo dune-configurator ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo dune-configurator ];
   });
 
   melange =
@@ -210,7 +214,6 @@ websocketafPackages // {
           ocamlPackages = oself;
         } else null;
 
-
   merlin = callPackage ./merlin { ocamlPackages = oself; };
 
   mongo = callPackage ./mongo { ocamlPackages = oself; };
@@ -218,6 +221,10 @@ websocketafPackages // {
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { ocamlPackages = oself; };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { ocamlPackages = oself; };
   bson = callPackage ./mongo/bson.nix { ocamlPackages = oself; };
+
+  mrmime = osuper.mrmime.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm ];
+  });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
 
@@ -242,6 +249,10 @@ websocketafPackages // {
 
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
     preConfigure = "";
+  });
+
+  ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
