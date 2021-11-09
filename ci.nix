@@ -135,6 +135,8 @@ let
     "ocsigen-start"
     "ocsigen-toolkit"
     "ppxfind"
+    "ocaml-migrate-parsetree-1-8"
+    "ocaml-migrate-parsetree"
   ];
 
   buildCandidates = pkgs:
