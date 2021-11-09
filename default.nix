@@ -54,6 +54,7 @@ in
 
   pkgsCross = super.pkgsCross // {
     musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static {
+      pkgsNative = self;
       inherit ocamlVersions;
     });
 

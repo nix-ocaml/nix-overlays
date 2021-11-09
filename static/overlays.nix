@@ -45,12 +45,9 @@
   {
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
 
-    zlib = (super.zlib.override {
+    zlib = removeUnknownFlagsAdapter (super.zlib.override {
       static = true;
-      # shared = false;
       splitStaticOutput = false;
-    }).overrideAttrs (o: {
-      configureFlags = (removeUnknownConfigureFlags o.configureFlags);
     });
 
     openssl = (super.openssl.override { static = true; }).overrideAttrs (o: {
