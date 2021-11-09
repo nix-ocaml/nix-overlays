@@ -91,6 +91,13 @@ websocketafPackages // {
     doCheck = ! stdenv.isDarwin;
   });
 
+  batteries = osuper.batteries.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/2e027673.tar.gz;
+      sha256 = "09gp2k3434xbchc8mm97ksqmi7ds7x204pqwf9d1kv56yvrcd6ld";
+    };
+  });
+
   calendar = callPackage ./calendar { ocamlPackages = oself; };
 
   camlp5 = osuper.camlp5.overrideAttrs (o: {
