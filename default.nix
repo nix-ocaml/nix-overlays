@@ -40,13 +40,13 @@ in
   # - 4.06 is used by BuckleScript
   ocaml-ng = super.ocaml-ng // oPs // {
     ocamlPackages = self.ocamlPackages;
-    ocamlPackages_multicore = (oPs.ocamlPackages_4_10.overrideScope' (oself: osuper: {
+    ocamlPackages_multicore = (oPs.ocamlPackages_4_12.overrideScope' (oself: osuper: {
       ocaml = osuper.ocaml.overrideAttrs (_: {
-        version = "4.10.0+multicore+no-effect-syntax";
-        hardeningDisable = [ "strictoverflow" ];
+        version = "4.12.0+multicore+effects";
+        # hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml-multicore/ocaml-multicore/archive/eabff64f6d35507a9ebd9d649c159f73891bebbf.tar.gz;
-          sha256 = "0mda1rzwf1hr4kx15q67g1awbihqrcky6zi96ps14jgk83didv4j";
+          url = https://github.com/ocaml-multicore/ocaml-multicore/archive/9468d8c91feac55c9b390e50c25b739de043e5e0.tar.gz;
+          sha256 = "0zymc0rm5kmydr97jdjbj0wdvlb0ldw57f2i7d915vf8xd0xz9ba";
         };
       });
     })).overrideScope' (callPackage ./ocaml { });

@@ -92,7 +92,6 @@ websocketafPackages // {
   });
 
   batteries = osuper.batteries.overrideAttrs (o: {
-
     src =
       if lib.versionOlder "4.13" osuper.ocaml.version then
         builtins.fetchurl
