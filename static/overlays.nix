@@ -45,29 +45,12 @@
   {
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
 
-    zlib = (super.zlib.override {
+    zlib = removeUnknownFlagsAdapter (super.zlib.override {
       static = true;
-      # shared = false;
       splitStaticOutput = false;
-    }).overrideAttrs (o: {
-      configureFlags = (removeUnknownConfigureFlags o.configureFlags);
     });
 
     openssl = (super.openssl.override { static = true; }).overrideAttrs (o: {
       configureFlags = lib.remove "no-shared" o.configureFlags;
     });
-
-    libkrb5 = addDisableShared super.libkrb5;
-    # db48 = super.db48.overrideAttrs (o: {
-    # hardeningDisable = (o.hardeningDisable or [ ]) ++ [ "format" ];
-    # });
-
-    # clasp = super.clasp.overrideAttrs (o: {
-    # configurePlatforms = [ ];
-    # configureFlags = ((removeUnknownConfigureFlags o.configureFlags) ++ [ "--static" ]);
-
-    # preBuild = "cd build/release_static";
-    # });
-
-    # kmod = removeUnknownFlagsAdapter (super.kmod.override { withStatic = true; });
   })

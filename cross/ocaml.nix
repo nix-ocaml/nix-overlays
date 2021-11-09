@@ -90,6 +90,12 @@ in
       afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
 
+        postPatch = ''
+          ${o.postPatch}
+          head -n -3 ./build.sh > ./temp.sh
+          mv temp.sh build.sh
+          chmod a+x ./build.sh
+        '';
         installPhase = ''
           ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ ${o.pname}.install
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
