@@ -134,6 +134,7 @@ let
     "eliom"
     "ocsigen-start"
     "ocsigen-toolkit"
+    "ppxfind"
   ];
 
   buildCandidates = pkgs:
