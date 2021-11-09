@@ -282,6 +282,23 @@ websocketafPackages // {
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
 
+  ppx_bitstring = osuper.ppx_bitstring.overrideAttrs (o: {
+    buildInputs = [ bitstring ppxlib ];
+  });
+
+  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
+    buildInputs = [
+      bigarray-compat
+      containers
+      cppo
+      ctypes
+      integers
+      num
+      ppxlib
+      re
+    ];
+  });
+
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
   ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
