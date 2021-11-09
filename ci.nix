@@ -131,6 +131,9 @@ let
     "ppx_import"
     "ppx_tools_versioned"
     "iri"
+    "eliom"
+    "ocsigen-start"
+    "ocsigen-toolkit"
   ];
 
   buildCandidates = pkgs:
