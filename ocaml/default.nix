@@ -28,6 +28,7 @@ let
 
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
+    inherit osuper;
   };
 
   lambda-runtime-packages = callPackage ./lambda-runtime {
@@ -311,6 +312,7 @@ websocketafPackages // {
     };
   });
 
+  sedlex = oself.sedlex_2;
   sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;

@@ -128,6 +128,9 @@ let
 
     # broken on OCaml 4.13
     "hol_light"
+    "ppx_import"
+    "ppx_tools_versioned"
+    "iri"
   ];
 
   buildCandidates = pkgs:

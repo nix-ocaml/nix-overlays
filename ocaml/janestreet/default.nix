@@ -1,4 +1,4 @@
-{ ocamlPackages, openssl, fetchpatch, zstd }:
+{ ocamlPackages, osuper, openssl, fetchpatch, zstd }:
 
 with ocamlPackages;
 
@@ -51,7 +51,6 @@ with ocamlPackages;
       sha256 = "0f24sagyzhfr6x68fynhsn5cd1p72vkqm25wnfg8164sivas148x";
     };
   });
-
 
   ppx_accessor = (janePackage {
     pname = "ppx_accessor";
@@ -149,4 +148,9 @@ with ocamlPackages;
         sha256 = "13006x3jl4fdp845rg2s1h01f44w27ij4i85pqll4r286lsvyyqq";
       };
     });
+
+  protocol_version_header = osuper.protocol_version_header.overrideAttrs (_: {
+    propagatedBuildInputs = [ core_kernel ocaml-migrate-parsetree-2 ];
+  });
 }
+
