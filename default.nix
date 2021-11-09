@@ -66,7 +66,10 @@ in
     aarch64-multiplatform-musl =
       (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
         ((callPackage ./cross { inherit ocamlVersions; }) ++
-          (callPackage ./static { inherit ocamlVersions; })));
+          (callPackage ./static {
+            pkgsNative = self;
+            inherit ocamlVersions;
+          })));
   };
 
 
