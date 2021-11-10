@@ -1,4 +1,4 @@
-{ callPackage, fetchFromGitHub, libpq, opaline, lib, stdenv, openssl, which }:
+{ callPackage, gcc, libpq, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -75,15 +75,6 @@ oidcPackages //
 redisPackages //
 sessionPackages //
 websocketafPackages // {
-  ansiterminal = buildDunePackage {
-    pname = "ANSITerminal";
-    version = "0.8.2";
-    src = builtins.fetchurl {
-      url = https://github.com/Chris00/ANSITerminal/releases/download/0.8.2/ANSITerminal-0.8.2.tbz;
-      sha256 = "04n15ki9h1qawlhkxbglzfbx0frm593nx2cahyh8riwc2g46q148";
-    };
-  };
-
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib ];
   });
@@ -120,12 +111,9 @@ websocketafPackages // {
   });
 
   caqti = osuper.caqti.overrideAttrs (_: {
-    version = "1.5.1";
-    src = fetchFromGitHub {
-      owner = "paurkedal";
-      repo = "ocaml-caqti";
-      rev = "v1.5.1";
-      sha256 = "1vl61kdyj89whc3mh4k9bis6rbj9x2scf6hnv9afyalp4j65sqx1";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.6.0/caqti-v1.6.0.tbz;
+      sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
     };
   });
 
@@ -325,8 +313,8 @@ websocketafPackages // {
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/bc744e25765c7d6b4f65e3a484021aa736d7c919.tar.gz;
-      sha256 = "07vqa59p3pbk8bhizvn2z0p5z615cxyh4lnr1i4skn03s5wqvjin";
+      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/e030f13a3.tar.gz;
+      sha256 = "0yfb5c8g8h40m4b722qfl00vgddj6apzcd2lhzv01npn2ipnm280";
     };
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
@@ -350,18 +338,6 @@ websocketafPackages // {
   });
 
   sedlex = oself.sedlex_2;
-  sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;
-      sha256 = "0n0gg8iax9jjnv0azisjaqxr7p3vx2a5pwc9rsq40fsqbvmr1c7r";
-    };
-
-    propagatedBuildInputs = [
-      gen
-      uchar
-      ppxlib
-    ];
-  });
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -391,17 +367,7 @@ websocketafPackages // {
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
-  uunf = osuper.uunf.overrideAttrs (o: {
-    # https://github.com/ocaml/ocaml/issues/9839
-    configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
-      ''
-        runHook preConfigure
-        ulimit -s 9216
-        runHook postConfigure
-      '';
-  });
-
-  yuscii = osuper.yuscii.overrideAttrs (_: {
-    doCheck = false;
+  yuscii = osuper.yuscii.overrideAttrs (o: {
+    checkInputs = o.checkInputs ++ [ gcc ];
   });
 }
