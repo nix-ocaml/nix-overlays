@@ -329,8 +329,7 @@ in
 
         in
         b.overrideAttrs (o: {
-          # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-          # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
+          buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });
 

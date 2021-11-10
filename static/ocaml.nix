@@ -15,7 +15,7 @@ let
     b.overrideAttrs (o: {
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
       configurePlatforms = [ ];
-      nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
+      # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
       buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
     });
 
