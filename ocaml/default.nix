@@ -28,6 +28,7 @@ let
 
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
+    inherit osuper;
   };
 
   lambda-runtime-packages = callPackage ./lambda-runtime {
@@ -39,7 +40,7 @@ let
   };
 
   multicorePackages =
-    if osuper.ocaml.version == "4.10.0+multicore+no-effect-syntax" then {
+    if osuper.ocaml.version == "4.12.0+multicore+effects" then {
       domainslib = callPackage ./domainslib { ocamlPackages = oself; };
     } else { };
 
@@ -171,6 +172,16 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
+  gsl = osuper.gsl.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "4.13" osuper.ocaml.version then
+        builtins.fetchurl
+          {
+            url = https://github.com/mmottl/gsl-ocaml/archive/76f8d93cc.tar.gz;
+            sha256 = "0s1h7xrlmq8djaxywq48s1jm7x5f6j7mfkljjw8kk52dfjsfwxw0";
+          } else o.src;
+  });
+
   h2 = callPackage ./h2 { ocamlPackages = oself; };
   h2-lwt = callPackage ./h2/lwt.nix { ocamlPackages = oself; };
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { ocamlPackages = oself; };
@@ -255,6 +266,8 @@ websocketafPackages // {
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
+  ocaml-lsp = if lib.versionOlder "4.13" osuper.ocaml.version then null else osuper.ocaml-lsp;
+
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
@@ -269,6 +282,14 @@ websocketafPackages // {
 
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
+  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/biocaml/phylogenetics/releases/download/v0.0.0/phylogenetics-0.0.0.tbz;
+      sha256 = "0knfh2s0jfnsc0vsq5yw5xla7m7i98xd0qv512dyh3jhkh7m00l9";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhirLib ];
+  });
+
   piaf = callPackage ./piaf { ocamlPackages = oself; };
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
@@ -280,6 +301,23 @@ websocketafPackages // {
   ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
+
+  ppx_bitstring = osuper.ppx_bitstring.overrideAttrs (o: {
+    buildInputs = [ bitstring ppxlib ];
+  });
+
+  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
+    buildInputs = [
+      bigarray-compat
+      containers
+      cppo
+      ctypes
+      integers
+      num
+      ppxlib
+      re
+    ];
+  });
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
@@ -311,6 +349,7 @@ websocketafPackages // {
     };
   });
 
+  sedlex = oself.sedlex_2;
   sedlex_3 = osuper.sedlex_2.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/sedlex/archive/v2.3.tar.gz;

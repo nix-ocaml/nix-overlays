@@ -128,6 +128,16 @@ let
 
     # broken on OCaml 4.13
     "hol_light"
+    "ppx_import"
+    "ppx_tools_versioned"
+    "iri"
+    "eliom"
+    "ocsigen-start"
+    "ocsigen-toolkit"
+    "ppxfind"
+    "ocaml-migrate-parsetree-1-8"
+    "ocaml-migrate-parsetree"
+    "wasm"
   ];
 
   buildCandidates = pkgs:
