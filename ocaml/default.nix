@@ -367,7 +367,7 @@ websocketafPackages // {
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
 
-  yuscii = osuper.yuscii.overrideAttrs (_: {
+  yuscii = osuper.yuscii.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ gcc ];
   });
 }
