@@ -40,7 +40,7 @@ let
   };
 
   multicorePackages =
-    if osuper.ocaml.version == "4.10.0+multicore+no-effect-syntax" then {
+    if osuper.ocaml.version == "4.12.0+multicore+effects" then {
       domainslib = callPackage ./domainslib { ocamlPackages = oself; };
     } else { };
 
@@ -265,6 +265,8 @@ websocketafPackages // {
   });
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
+
+  ocaml-lsp = if lib.versionOlder "4.13" osuper.ocaml.version then null else osuper.ocaml-lsp;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
