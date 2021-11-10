@@ -280,11 +280,12 @@ websocketafPackages // {
 
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
-  phylogenetics = osuper.phylogenetics.overrideAttrs (_: {
+  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/biocaml/phylogenetics/releases/download/v0.0.0/phylogenetics-0.0.0.tbz;
       sha256 = "0knfh2s0jfnsc0vsq5yw5xla7m7i98xd0qv512dyh3jhkh7m00l9";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhirLib ];
   });
 
   piaf = callPackage ./piaf { ocamlPackages = oself; };
