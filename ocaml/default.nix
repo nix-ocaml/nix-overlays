@@ -172,11 +172,14 @@ websocketafPackages // {
     ocamlPackages = oself;
   };
 
-  gsl = osuper.gsl.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmottl/gsl-ocaml/archive/76f8d93cc.tar.gz;
-      sha256 = "0s1h7xrlmq8djaxywq48s1jm7x5f6j7mfkljjw8kk52dfjsfwxw0";
-    };
+  gsl = osuper.gsl.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "4.13" osuper.ocaml.version then
+        builtins.fetchurl
+          {
+            url = https://github.com/mmottl/gsl-ocaml/archive/76f8d93cc.tar.gz;
+            sha256 = "0s1h7xrlmq8djaxywq48s1jm7x5f6j7mfkljjw8kk52dfjsfwxw0";
+          } else o.src;
   });
 
   h2 = callPackage ./h2 { ocamlPackages = oself; };
