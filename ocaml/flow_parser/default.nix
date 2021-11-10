@@ -14,7 +14,7 @@ buildDunePackage rec {
   propagatedBuildInputs = [
     ppx_deriving
     ppx_gen_rec
-    sedlex_3
+    sedlex_2
     wtf8
   ];
 }
