@@ -17,11 +17,6 @@ let
     ocamlPackages = oself;
   };
 
-  multicorePackages =
-    if osuper.ocaml.version == "4.12.0+multicore+effects" then {
-      domainslib = callPackage ./domainslib { ocamlPackages = oself; };
-    } else { };
-
   oidcPackages = callPackage ./oidc {
     ocamlPackages = oself;
   };
@@ -38,7 +33,6 @@ in
 cookiePackages //
 janestreetPackages //
 morphPackages //
-multicorePackages //
 oidcPackages //
 redisPackages //
 sessionPackages // {
@@ -113,6 +107,11 @@ sessionPackages // {
   };
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
+
+  domainslib =
+    if osuper.ocaml.version == "4.12.0+multicore+effects" then
+      callPackage ./domainslib { ocamlPackages = oself; }
+    else null;
 
   dream = callPackage ./dream { ocamlPackages = oself; };
 
@@ -234,17 +233,13 @@ sessionPackages // {
 
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange
-        {
-          ocamlPackages = oself;
-        } else null;
+      callPackage ./melange { ocamlPackages = oself; }
+    else null;
 
   melange-compiler-libs =
     if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange/compiler-libs.nix
-        {
-          ocamlPackages = oself;
-        } else null;
+      callPackage ./melange/compiler-libs.nix { ocamlPackages = oself; }
+    else null;
 
   merlin = callPackage ./merlin { ocamlPackages = oself; };
 
@@ -275,7 +270,10 @@ sessionPackages // {
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
-  ocaml-lsp = if lib.versionOlder "4.13" osuper.ocaml.version then null else osuper.ocaml-lsp;
+  ocaml-lsp =
+    if lib.versionOlder "4.13" osuper.ocaml.version then
+      null
+    else osuper.ocaml-lsp;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
