@@ -1,7 +1,12 @@
-{ stdenv, opaline, ocamlPackages, lib, dune_2, nodejs, gnutar, fetchFromGitHub }:
-
-with ocamlPackages;
-
+{ stdenv
+, opaline
+, buildDunePackage
+, cppo
+, cmdliner
+, dune-action-plugin
+, melange-compiler-libs
+, reason
+}:
 
 buildDunePackage rec {
   pname = "melange";
@@ -12,13 +17,7 @@ buildDunePackage rec {
     sha256 = "0njivayll8hl56ys93z4q14l563ksiv1j6m7kkfbrlgx0dz6lxhx";
   };
 
-  nativeBuildInputs = [
-    gnutar
-    dune
-    ocaml
-    findlib
-    cppo
-  ];
+  nativeBuildInputs = [ cppo ];
 
   propagatedBuildInputs = [
     cmdliner

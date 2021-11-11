@@ -1,6 +1,12 @@
-{ lib, ocamlPackages }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, alcotest
+, junit
+, junit_alcotest
+, reason
+, cmdliner
+, re
+}:
 
 buildDunePackage {
   pname = "reenv";
@@ -10,11 +16,7 @@ buildDunePackage {
     sha256 = "1bv8rxnjnydfrvc55xbywsl98hq664khg5agacyk7ba0r1vlblh6";
   };
 
-  buildInputs = [
-    alcotest
-    junit
-    junit_alcotest
-  ];
+  checkInputs = [ alcotest junit junit_alcotest ];
 
   doCheck = true;
 

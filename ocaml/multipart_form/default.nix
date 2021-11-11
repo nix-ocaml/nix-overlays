@@ -1,6 +1,23 @@
-{ ocamlPackages, upstream ? false }:
-
-with ocamlPackages;
+{ upstream ? false
+, buildDunePackage
+, unstrctrd
+, lwt
+, prettym
+, logs
+, ke
+, bigstringaf
+, astring
+, mrmime
+, faraday
+, base64
+, pecu
+, rosetta
+, rresult
+, uutf
+, fmt
+, angstrom
+, alcotest
+}:
 
 let
   upstream_src = builtins.fetchurl {

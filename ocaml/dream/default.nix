@@ -1,27 +1,51 @@
-{ ocamlPackages, fetchFromGitHub, lib }:
+{ lib
+, fetchFromGitHub
+, buildDunePackage
+, base64
+, bigarray-compat
+, caqti-lwt
+, cstruct
+, fmt
+, graphql_parser
+, graphql-lwt
+, hmap
+, lwt
+, lwt_ppx
+, lwt_ssl
+, logs
+, magic-mime
+, mirage-crypto
+, mirage-crypto-rng
+, multipart_form
+, uri
+, yojson
 
-with ocamlPackages;
-let src = fetchFromGitHub {
-  owner = "aantron";
-  repo = "dream";
-  rev = "a0dcaf5b4729b24a37c89001bd23343e47190979";
-  sha256 = "198d23hfnb552ynaj55xlxjaca4v65sbhff3bdvrwl7j362r3spr";
-  fetchSubmodules = true;
-};
+, angstrom
+, bigstringaf
+, digestif
+, faraday
+, faraday-lwt-unix
+, psq
+, result
+, ppx_expect
+, alcotest
+}:
 
-in
-ocamlPackages.buildDunePackage
-{
+buildDunePackage {
   pname = "dream";
   version = "1.0.0-alpha2";
-  inherit src;
+  src = fetchFromGitHub {
+    owner = "aantron";
+    repo = "dream";
+    rev = "a0dcaf5b4729b24a37c89001bd23343e47190979";
+    sha256 = "198d23hfnb552ynaj55xlxjaca4v65sbhff3bdvrwl7j362r3spr";
+    fetchSubmodules = true;
+  };
 
-  propagatedBuildInputs = with ocamlPackages; [
-    # base-unix
+  propagatedBuildInputs = [
     base64
     bigarray-compat
     caqti-lwt
-    # conf-libev
     cstruct
     fmt
     graphql_parser
@@ -56,11 +80,7 @@ ocamlPackages.buildDunePackage
     result
   ];
 
-  checkInputs = with ocamlPackages; [
-    ppx_expect
-    alcotest
-  ];
-
+  checkInputs = [ ppx_expect alcotest ];
   doCheck = true;
 
   meta = {

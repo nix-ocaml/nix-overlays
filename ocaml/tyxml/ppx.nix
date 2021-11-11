@@ -1,22 +1,19 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, tyxml
+, tyxml-syntax
+, ppxlib
+, reason
+, markup
+, alcotest
+}:
 
 buildDunePackage {
   pname = "tyxml-ppx";
   inherit (tyxml) src version;
-  propagatedBuildInputs = [
-    tyxml
-    tyxml-syntax
-    ppxlib
-    reason
-    markup
-  ];
+  propagatedBuildInputs = [ tyxml tyxml-syntax ppxlib reason markup ];
 
-  checkInputs = [
-    alcotest
-  ];
-
+  checkInputs = [ alcotest ];
   doCheck = true;
 
   meta = {

@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, ppx_rapper, lwt, caqti-lwt }:
 
 buildDunePackage {
   pname = "ppx_rapper_lwt";

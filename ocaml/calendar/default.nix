@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, alcotest, re }:
 
 buildDunePackage {
   pname = "calendar";

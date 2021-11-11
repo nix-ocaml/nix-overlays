@@ -1,6 +1,4 @@
-{ stdenv, ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, caqti, pg_query }:
 
 buildDunePackage rec {
   pname = "ppx_rapper";

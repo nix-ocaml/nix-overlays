@@ -1,6 +1,15 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, ocaml
+, cppo
+, menhir
+, menhirLib
+, menhirSdk
+, fix
+, merlin-extend
+, ppx_derivers
+, result
+}:
 
 buildDunePackage {
   pname = "reason";

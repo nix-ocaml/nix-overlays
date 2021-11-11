@@ -1,6 +1,4 @@
-{ stdenv, ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, ppx_inline_test, ppx_deriving, ctypes }:
 
 buildDunePackage {
   pname = "pg_query";
@@ -19,9 +17,5 @@ buildDunePackage {
 
   useDune2 = true;
 
-  propagatedBuildInputs = with ocamlPackages; [
-    ppx_inline_test
-    ppx_deriving
-    ctypes
-  ];
+  propagatedBuildInputs = [ ppx_inline_test ppx_deriving ctypes ];
 }

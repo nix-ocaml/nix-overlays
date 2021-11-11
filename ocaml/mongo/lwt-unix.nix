@@ -1,10 +1,8 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, mongo, mongo-lwt, gluten-lwt-unix }:
 
 buildDunePackage {
   pname = "mongo-lwt-unix";
-  inherit (bson) src version;
+  inherit (mongo) src version;
 
   propagatedBuildInputs = [ mongo-lwt gluten-lwt-unix ];
 }

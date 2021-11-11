@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, ppxlib, ppx_deriving, bson }:
 
 buildDunePackage {
   pname = "ppx_deriving_bson";
