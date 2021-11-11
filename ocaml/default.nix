@@ -9,17 +9,12 @@ let
     inherit osuper;
   };
 
-  oidcPackages = callPackage ./oidc {
-    ocamlPackages = oself;
-  };
-
   sessionPackages = callPackage ./session {
     ocamlPackages = oself;
   };
 
 in
 janestreetPackages //
-oidcPackages //
 sessionPackages // {
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib ];
@@ -278,6 +273,9 @@ sessionPackages // {
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
+
+  oidc = callPackage ./oidc { ocamlPackages = oself; };
+  oidc-client = callPackage ./oidc/client.nix { ocamlPackages = oself; };
 
   pg_query = callPackage ./pg_query { ocamlPackages = oself; };
 
