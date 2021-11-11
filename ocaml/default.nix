@@ -12,11 +12,6 @@ let
     ocamlPackages = oself;
   };
 
-  glutenPackages = callPackage ./gluten {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
     inherit osuper;
@@ -55,7 +50,6 @@ let
 in
 cookiePackages //
 graphqlPackages //
-glutenPackages //
 janestreetPackages //
 lambda-runtime-packages //
 morphPackages //
@@ -165,6 +159,19 @@ websocketafPackages // {
   };
 
   flow_parser = callPackage ./flow_parser { ocamlPackages = oself; };
+
+  gluten = callPackage ./gluten {
+    ocamlPackages = oself;
+  };
+  gluten-lwt = callPackage ./gluten/lwt.nix {
+    ocamlPackages = oself;
+  };
+  gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix {
+    ocamlPackages = oself;
+  };
+  gluten-async = callPackage ./gluten/async.nix {
+    ocamlPackages = oself;
+  };
 
   graphql_ppx = callPackage ./graphql_ppx {
     ocamlPackages = oself;
