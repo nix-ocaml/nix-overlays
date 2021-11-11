@@ -17,10 +17,6 @@ let
     inherit osuper;
   };
 
-  lambda-runtime-packages = callPackage ./lambda-runtime {
-    ocamlPackages = oself;
-  };
-
   morphPackages = callPackage ./morph {
     ocamlPackages = oself;
   };
@@ -51,7 +47,6 @@ in
 cookiePackages //
 graphqlPackages //
 janestreetPackages //
-lambda-runtime-packages //
 morphPackages //
 multicorePackages //
 oidcPackages //
@@ -216,6 +211,13 @@ websocketafPackages // {
       sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
     };
   });
+
+  lambda-runtime = callPackage ./lambda-runtime {
+    ocamlPackages = oself;
+  };
+  vercel = callPackage ./lambda-runtime/vercel.nix {
+    ocamlPackages = oself;
+  };
 
   logs = osuper.logs.override { jsooSupport = false; };
 
