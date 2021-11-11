@@ -45,6 +45,12 @@ with oself;
     };
   });
 
+  conan = callPackage ./conan { };
+  conan-lwt = callPackage ./conan/lwt.nix { };
+  conan-unix = callPackage ./conan/unix.nix { };
+  conan-database = callPackage ./conan/database.nix { };
+  conan-cli = callPackage ./conan/cli.nix { };
+
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
