@@ -34,10 +34,6 @@ in
     inherit (self) ocamlPackages;
   });
 
-  # 4.06, 4.09 and 4.10 treated specially out of convenience because:
-  # - 4.09 is still used in some of my projects
-  # - 4.10 is the latest stable version
-  # - 4.06 is used by BuckleScript
   ocaml-ng = super.ocaml-ng // oPs // {
     ocamlPackages = self.ocamlPackages;
     ocamlPackages_multicore = (oPs.ocamlPackages_4_12.overrideScope' (oself: osuper: {
