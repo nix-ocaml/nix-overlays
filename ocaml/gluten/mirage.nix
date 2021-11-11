@@ -1,6 +1,11 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage
+, faraday-lwt
+, gluten
+, gluten-lwt
+, conduit-mirage
+, mirage-flow
+, cstruct
+}:
 
 buildDunePackage {
   pname = "gluten-mirage";
