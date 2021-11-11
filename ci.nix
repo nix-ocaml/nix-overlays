@@ -131,9 +131,6 @@ let
     "ppx_import"
     "ppx_tools_versioned"
     "iri"
-    "eliom"
-    "ocsigen-start"
-    "ocsigen-toolkit"
     "ppxfind"
     "ocaml-migrate-parsetree-1-8"
     "ocaml-migrate-parsetree"
@@ -165,7 +162,6 @@ let
       let
         drvs = buildCandidates pkgs;
         cockroachdb-drvs = with pkgs; [
-          # cockroachdb-20_x
           cockroachdb-21_x
         ];
       in
