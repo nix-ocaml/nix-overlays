@@ -38,11 +38,6 @@ let
     ocamlPackages = oself;
   };
 
-  websocketafPackages = callPackage ./websocketaf {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
 in
 cookiePackages //
 graphqlPackages //
@@ -51,8 +46,7 @@ morphPackages //
 multicorePackages //
 oidcPackages //
 redisPackages //
-sessionPackages //
-websocketafPackages // {
+sessionPackages // {
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib ];
   });
@@ -385,6 +379,22 @@ websocketafPackages // {
   tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
+
+  websocketaf = callPackage ./websocketaf {
+    ocamlPackages = oself;
+  };
+  websocketaf-lwt = callPackage ./websocketaf/lwt.nix {
+    ocamlPackages = oself;
+  };
+  websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix {
+    ocamlPackages = oself;
+  };
+  websocketaf-async = callPackage ./websocketaf/async.nix {
+    ocamlPackages = oself;
+  };
+  websocketaf-mirage = callPackage ./websocketaf/mirage.nix {
+    ocamlPackages = oself;
+  };
 
   yuscii = osuper.yuscii.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ gcc ];
