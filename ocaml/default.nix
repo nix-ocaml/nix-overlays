@@ -4,10 +4,6 @@ oself: osuper:
 
 with oself;
 let
-  cookiePackages = callPackage ./cookie {
-    ocamlPackages = oself;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
     inherit osuper;
@@ -26,7 +22,6 @@ let
   };
 
 in
-cookiePackages //
 janestreetPackages //
 morphPackages //
 oidcPackages //
@@ -85,6 +80,10 @@ sessionPackages // {
       sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
     };
   });
+
+  cookie = callPackage ./cookie { ocamlPackages = oself; };
+  session-cookie = callPackage ./cookie/session.nix { ocamlPackages = oself; };
+  session-cookie-lwt = callPackage ./cookie/session-lwt.nix { ocamlPackages = oself; };
 
   ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
