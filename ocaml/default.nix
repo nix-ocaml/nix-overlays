@@ -21,10 +21,6 @@ let
     ocamlPackages = oself;
   };
 
-  redisPackages = callPackage ./redis {
-    ocamlPackages = oself;
-  };
-
   sessionPackages = callPackage ./session {
     ocamlPackages = oself;
   };
@@ -34,7 +30,6 @@ cookiePackages //
 janestreetPackages //
 morphPackages //
 oidcPackages //
-redisPackages //
 sessionPackages // {
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib ];
@@ -346,6 +341,10 @@ sessionPackages // {
   reason-native = osuper.reason-native // { qcheck-rely = null; };
 
   redemon = callPackage ./redemon { ocamlPackages = oself; };
+
+  redis = callPackage ./redis { ocamlPackages = oself; };
+  redis-lwt = callPackage ./redis/lwt.nix { ocamlPackages = oself; };
+  redis-sync = callPackage ./redis/sync.nix { ocamlPackages = oself; };
 
   reenv = callPackage ./reenv { ocamlPackages = oself; };
 
