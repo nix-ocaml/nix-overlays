@@ -1,16 +1,9 @@
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
 self: super:
+
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  gitignoreNix = fetchFromGitHub {
-    owner = "hercules-ci";
-    repo = "gitignore.nix";
-    rev = "00b237fb1813c48e20ee2021deb6f3f03843e9e4";
-    sha256 = "186pvp1y5fid8mm8c7ycjzwzhv7i6s3hh33rbi05ggrs7r3as3yy";
-  };
-
-  gitignoreSource = (import gitignoreNix { inherit lib; }).gitignoreSource;
 
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" =
@@ -71,23 +64,29 @@ in
 
   # Other packages
 
-  lib = super.lib // rec {
-    inherit gitignoreSource;
-    filterSource = { src, dirs ? [ ], files ? [ ] }: (super.lib.cleanSourceWith rec {
+  lib = lib.fix (self: lib //
+    (import
+      (builtins.fetchTarball {
+        url = https://github.com/hercules-ci/gitignore.nix/archive/5b9e0ff9d3b551234b4f3eb3983744fa354b17f1.tar.gz;
+        sha256 = "01l4phiqgw9xgaxr6jr456qmww6kzghqrnbc7aiiww3h6db5vw53";
+      })
+      { inherit lib; }) // {
+    filterSource = { src, dirs ? [ ], files ? [ ] }: (self.cleanSourceWith {
       inherit src;
       # Good examples: https://github.com/NixOS/nixpkgs/blob/master/lib/sources.nix
       filter = name: type:
         let
           path = toString name;
           baseName = baseNameOf path;
-          relPath = lib.removePrefix (toString src + "/") path;
+          relPath = self.removePrefix (toString src + "/") path;
         in
-        lib.any (dir: dir == relPath || (lib.hasPrefix "${dir}/" relPath)) dirs ||
-          (type == "regular" && (lib.any (file: file == baseName) files));
+        self.any (dir: dir == relPath || (self.hasPrefix "${dir}/" relPath)) dirs ||
+          (type == "regular" && (self.any (file: file == baseName) files));
     });
-    filterGitSource = args: gitignoreSource (filterSource args);
-  };
 
-  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x cockroachdb-dev;
+    filterGitSource = args: self.gitignoreSource (self.filterSource args);
+  });
+
+  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x;
   cockroachdb = self.cockroachdb-21_x;
 }
