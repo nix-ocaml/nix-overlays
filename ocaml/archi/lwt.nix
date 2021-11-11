@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, archi, lwt }:
 
 buildDunePackage {
   pname = "archi-lwt";

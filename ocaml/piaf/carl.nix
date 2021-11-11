@@ -1,6 +1,15 @@
-{ lib, stdenv, ocamlPackages, static ? false }:
-
-with ocamlPackages;
+{ lib
+, stdenv
+, static ? false
+, piaf
+, ocaml
+, dune
+, findlib
+, cmdliner
+, camlzip
+, ezgzip
+, fmt
+}:
 
 stdenv.mkDerivation {
   name = "carl";

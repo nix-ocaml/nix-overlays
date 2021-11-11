@@ -1,6 +1,5 @@
-{ ocamlPackages }:
+{ buildDunePackage, archi, async }:
 
-with ocamlPackages;
 buildDunePackage {
   pname = "archi-async";
   inherit (archi) version src;

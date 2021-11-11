@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, cookie, session }:
 
 buildDunePackage {
   pname = "session-cookie";

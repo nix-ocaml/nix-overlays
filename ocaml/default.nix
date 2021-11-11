@@ -1,4 +1,4 @@
-{ callPackage, gcc, libpq, lib, stdenv, openssl }:
+{ gcc, libpq, lib, stdenv, openssl }:
 
 oself: osuper:
 
@@ -13,18 +13,9 @@ with oself;
     doCheck = ! stdenv.isDarwin;
   });
 
-  archi = callPackage ./archi {
-    ocamlPackages = oself;
-
-  };
-
-  archi-lwt = callPackage ./archi/lwt.nix {
-    ocamlPackages = oself;
-  };
-
-  archi-async = callPackage ./archi/async.nix {
-    ocamlPackages = oself;
-  };
+  archi = callPackage ./archi { };
+  archi-lwt = callPackage ./archi/lwt.nix { };
+  archi-async = callPackage ./archi/async.nix { };
 
   batteries = osuper.batteries.overrideAttrs (o: {
     src =
@@ -38,7 +29,7 @@ with oself;
         o.src;
   });
 
-  calendar = callPackage ./calendar { ocamlPackages = oself; };
+  calendar = callPackage ./calendar { };
 
   camlp5 = osuper.camlp5.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -46,8 +37,6 @@ with oself;
       sha256 = "1zbp8mr9ms4253nh9z34dd2ppin4bri82j7xy3jdk73k9dbmr31w";
     };
   });
-
-  carl = callPackage ./piaf/carl.nix { ocamlPackages = oself; };
 
   carton = osuper.carton.overrideAttrs (_: {
     doCheck = false;
@@ -60,9 +49,9 @@ with oself;
     };
   });
 
-  cookie = callPackage ./cookie { ocamlPackages = oself; };
-  session-cookie = callPackage ./cookie/session.nix { ocamlPackages = oself; };
-  session-cookie-lwt = callPackage ./cookie/session-lwt.nix { ocamlPackages = oself; };
+  cookie = callPackage ./cookie { };
+  session-cookie = callPackage ./cookie/session.nix { };
+  session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
   ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -71,26 +60,23 @@ with oself;
     };
   });
 
-  dataloader = callPackage ./dataloader {
-    ocamlPackages = oself;
-  };
+  dataloader = callPackage ./dataloader { };
+  dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
-  dataloader-lwt = callPackage ./dataloader/lwt.nix {
-    ocamlPackages = oself;
-  };
-
-  decimal = callPackage ./decimal { ocamlPackages = oself; };
+  decimal = callPackage ./decimal { };
 
   domainslib =
     if osuper.ocaml.version == "4.12.0+multicore+effects" then
-      callPackage ./domainslib { ocamlPackages = oself; }
+      callPackage ./domainslib { }
     else null;
 
-  dream = callPackage ./dream { ocamlPackages = oself; };
+  dream = callPackage ./dream {
+    multipart_form = multipart_form.override { upstream = true; };
+  };
 
-  dream-livereload = callPackage ./dream-livereload { ocamlPackages = oself; };
+  dream-livereload = callPackage ./dream-livereload { };
 
-  dream-serve = callPackage ./dream-serve { ocamlPackages = oself; };
+  dream-serve = callPackage ./dream-serve { };
 
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
@@ -102,7 +88,7 @@ with oself;
     then oself.dune_2
     else osuper.dune_1;
 
-  easy-format = callPackage ./easy-format { ocamlPackages = oself; };
+  easy-format = callPackage ./easy-format { };
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -276,7 +262,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ menhirLib ];
   });
 
-  piaf = callPackage ./piaf { ocamlPackages = oself; };
+  piaf = callPackage ./piaf { };
+  carl = callPackage ./piaf/carl.nix { };
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];

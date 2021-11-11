@@ -1,8 +1,6 @@
-{ ocamlPackages }:
+{ buildDunePackage, ppx_deriving, ppx_gen_rec, sedlex_2, wtf8 }:
 
-with ocamlPackages;
-
-buildDunePackage rec {
+buildDunePackage {
   pname = "flow_parser";
   version = "0.149.0";
   src = builtins.fetchurl {

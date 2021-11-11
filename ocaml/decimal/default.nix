@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, zarith }:
 
 buildDunePackage rec {
   pname = "decimal";

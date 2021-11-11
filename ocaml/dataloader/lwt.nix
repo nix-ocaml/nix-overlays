@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, dataloader, lwt }:
 
 buildDunePackage {
   pname = "dataloader-lwt";

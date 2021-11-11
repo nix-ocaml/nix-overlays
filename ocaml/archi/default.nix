@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, alcotest, hmap }:
 
 buildDunePackage {
   version = "0.1.1-dev";
