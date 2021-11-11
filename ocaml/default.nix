@@ -9,10 +9,6 @@ let
     inherit osuper;
   };
 
-  morphPackages = callPackage ./morph {
-    ocamlPackages = oself;
-  };
-
   oidcPackages = callPackage ./oidc {
     ocamlPackages = oself;
   };
@@ -23,7 +19,6 @@ let
 
 in
 janestreetPackages //
-morphPackages //
 oidcPackages //
 sessionPackages // {
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
@@ -236,6 +231,9 @@ sessionPackages // {
     else null;
 
   merlin = callPackage ./merlin { ocamlPackages = oself; };
+
+  morph = callPackage ./morph { ocamlPackages = oself; };
+  morph_graphql_server = callPackage ./morph/graphql.nix { ocamlPackages = oself; };
 
   mongo = callPackage ./mongo { ocamlPackages = oself; };
   mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
