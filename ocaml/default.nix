@@ -182,6 +182,10 @@ with oself;
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
 
+  mrmime = osuper.mrmime.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
+  });
+
   mtime = osuper.mtime.override { jsooSupport = false; };
 
   multipart_form = callPackage ./multipart_form { };
