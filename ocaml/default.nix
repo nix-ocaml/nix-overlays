@@ -8,10 +8,6 @@ let
     ocamlPackages = oself;
   };
 
-  graphqlPackages = callPackage ./graphql {
-    ocamlPackages = oself;
-  };
-
   janestreetPackages = callPackage ./janestreet {
     ocamlPackages = oself;
     inherit osuper;
@@ -40,7 +36,6 @@ let
 
 in
 cookiePackages //
-graphqlPackages //
 janestreetPackages //
 morphPackages //
 multicorePackages //
@@ -159,6 +154,19 @@ sessionPackages // {
     ocamlPackages = oself;
   };
   gluten-async = callPackage ./gluten/async.nix {
+    ocamlPackages = oself;
+  };
+
+  graphql_parser = callPackage ./graphql/parser.nix {
+    ocamlPackages = oself;
+  };
+  graphql = callPackage ./graphql {
+    ocamlPackages = oself;
+  };
+  graphql-lwt = callPackage ./graphql/lwt.nix {
+    ocamlPackages = oself;
+  };
+  graphql-async = callPackage ./graphql/async.nix {
     ocamlPackages = oself;
   };
 

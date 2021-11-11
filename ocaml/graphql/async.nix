@@ -3,8 +3,8 @@
 with ocamlPackages;
 
 buildDunePackage {
-  pname = "graphql";
+  pname = "graphql-async";
   inherit (graphql_parser) src version;
   checkInputs = [ alcotest ];
-  propagatedBuildInputs = [ graphql_parser yojson rresult seq ];
+  propagatedBuildInputs = [ graphql async ];
 }
