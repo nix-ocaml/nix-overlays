@@ -4,11 +4,6 @@ oself: osuper:
 
 with oself;
 let
-  archiPackages = callPackage ./archi {
-    ocamlPackages = oself;
-    ocamlVersion = osuper.ocaml.version;
-  };
-
   cookiePackages = callPackage ./cookie {
     ocamlPackages = oself;
   };
@@ -62,7 +57,6 @@ let
   };
 
 in
-archiPackages //
 cookiePackages //
 dataloader-packages //
 graphqlPackages //
@@ -82,6 +76,19 @@ websocketafPackages // {
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
+
+  archi = callPackage ./archi {
+    ocamlPackages = oself;
+
+  };
+
+  archi-lwt = callPackage ./archi/lwt.nix {
+    ocamlPackages = oself;
+  };
+
+  archi-async = callPackage ./archi/async.nix {
+    ocamlPackages = oself;
+  };
 
   batteries = osuper.batteries.overrideAttrs (o: {
     src =
