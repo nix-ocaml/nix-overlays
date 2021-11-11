@@ -8,10 +8,6 @@ let
     ocamlPackages = oself;
   };
 
-  dataloader-packages = callPackage ./dataloader {
-    ocamlPackages = oself;
-  };
-
   graphqlPackages = callPackage ./graphql {
     ocamlPackages = oself;
   };
@@ -58,7 +54,6 @@ let
 
 in
 cookiePackages //
-dataloader-packages //
 graphqlPackages //
 glutenPackages //
 janestreetPackages //
@@ -130,6 +125,14 @@ websocketafPackages // {
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
     };
   });
+
+  dataloader = callPackage ./dataloader {
+    ocamlPackages = oself;
+  };
+
+  dataloader-lwt = callPackage ./dataloader/lwt.nix {
+    ocamlPackages = oself;
+  };
 
   decimal = callPackage ./decimal { ocamlPackages = oself; };
 
