@@ -5,10 +5,6 @@ oself: osuper:
 with oself;
 
 {
-  afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
-    nativeBuildInputs = [ ocaml findlib ];
-  });
-
   arp = osuper.arp.overrideAttrs (_: {
     doCheck = ! stdenv.isDarwin;
   });
@@ -165,10 +161,6 @@ with oself;
   landmarks = callPackage ./landmarks { };
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
-  lwt = osuper.lwt.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo dune-configurator ];
-  });
-
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange { }
@@ -189,10 +181,6 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
-
-  mrmime = osuper.mrmime.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
-  });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
 
@@ -256,19 +244,6 @@ with oself;
 
   ppx_bitstring = osuper.ppx_bitstring.overrideAttrs (o: {
     buildInputs = [ bitstring ppxlib ];
-  });
-
-  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
-    buildInputs = [
-      bigarray-compat
-      containers
-      cppo
-      ctypes
-      integers
-      num
-      ppxlib
-      re
-    ];
   });
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
@@ -339,10 +314,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-
-  yuscii = osuper.yuscii.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ gcc ];
-  });
 
   # Jane Street packages
   async_ssl = janePackage {
