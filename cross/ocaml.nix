@@ -329,8 +329,9 @@ in
 
         in
         b.overrideAttrs (o: {
-          # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-          # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
+          # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
+          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
+          buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
         });
 

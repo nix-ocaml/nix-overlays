@@ -15,7 +15,8 @@ let
     b.overrideAttrs (o: {
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
       configurePlatforms = [ ];
-      nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]) ++ (o.propagatedBuildInputs or [ ]);
+      # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
+      nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
       buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
     });
 

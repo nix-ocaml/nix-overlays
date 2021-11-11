@@ -4,12 +4,13 @@ with ocamlPackages;
 let src = fetchFromGitHub {
   owner = "anmonteiro";
   repo = "piaf";
-  rev = "4cd3eef";
-  sha256 = "01ifmpaznsranh7ayir3z7910fbxl99jhg14fpdzn6a3448b40rj";
+  rev = "93067d0a67b97f1d76e82eedb19cb9893c52845d";
+  sha256 = "1ddq58kkgcvpz45adr1faa2pzbahf5prdc9spmd8wyh0jraxcllc";
   fetchSubmodules = true;
 };
 
 in
+
 buildDunePackage {
   pname = "piaf";
   version = "0.0.1-dev";
@@ -18,16 +19,13 @@ buildDunePackage {
   doCheck = true;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
 
-  postPatch = ''
-    substituteInPlace ./vendor/dune --replace "mrmime.prettym" "prettym"
-  '';
-
   propagatedBuildInputs = [
     logs
     lwt_ssl
-    magic-mime
     ssl
     uri
+    ipaddr
+    magic-mime
 
     # (vendored) httpaf dependencies
     angstrom
@@ -35,7 +33,10 @@ buildDunePackage {
     gluten-lwt-unix
     psq
     pecu
-    mrmime
+    prettym
+    unstrctrd
+    base64
+    rresult
   ];
 
   meta = {
