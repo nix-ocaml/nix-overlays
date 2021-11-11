@@ -92,6 +92,6 @@ in
     filterGitSource = args: gitignoreSource (filterSource args);
   };
 
-  inherit (callPackage ./cockroachdb { pkgs = self; }) cockroachdb-21_x;
+  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x cockroachdb-dev;
   cockroachdb = self.cockroachdb-21_x;
 }

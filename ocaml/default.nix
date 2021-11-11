@@ -246,10 +246,6 @@ with oself;
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
-  ppx_bitstring = osuper.ppx_bitstring.overrideAttrs (o: {
-    buildInputs = [ bitstring ppxlib ];
-  });
-
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {

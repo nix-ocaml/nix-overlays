@@ -162,7 +162,6 @@ let
       let
         drvs = buildCandidates pkgs;
         cockroachdb-drvs = with pkgs; [
-          # cockroachdb-20_x
           cockroachdb-21_x
         ];
       in
