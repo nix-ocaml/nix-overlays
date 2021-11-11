@@ -9,13 +9,8 @@ let
     inherit osuper;
   };
 
-  sessionPackages = callPackage ./session {
-    ocamlPackages = oself;
-  };
-
 in
-janestreetPackages //
-sessionPackages // {
+janestreetPackages // {
   afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib ];
   });
@@ -351,6 +346,9 @@ sessionPackages // {
   });
 
   sedlex = oself.sedlex_2;
+
+  session = callPackage ./session { ocamlPackages = oself; };
+  session-redis-lwt = callPackage ./session/redis.nix { ocamlPackages = oself; };
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
