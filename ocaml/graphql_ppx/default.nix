@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, cppo, yojson, ppxlib, reason }:
 
 buildDunePackage {
   pname = "graphql_ppx";

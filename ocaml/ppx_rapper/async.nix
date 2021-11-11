@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, async, caqti-async, ppx_rapper }:
 
 buildDunePackage {
   pname = "ppx_rapper_async";

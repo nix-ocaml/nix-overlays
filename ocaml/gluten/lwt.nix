@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, gluten, lwt }:
 
 buildDunePackage {
   pname = "gluten-lwt";

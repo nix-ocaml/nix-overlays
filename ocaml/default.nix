@@ -100,37 +100,20 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  flow_parser = callPackage ./flow_parser { ocamlPackages = oself; };
+  flow_parser = callPackage ./flow_parser { };
 
-  gluten = callPackage ./gluten {
-    ocamlPackages = oself;
-  };
-  gluten-lwt = callPackage ./gluten/lwt.nix {
-    ocamlPackages = oself;
-  };
-  gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix {
-    ocamlPackages = oself;
-  };
-  gluten-async = callPackage ./gluten/async.nix {
-    ocamlPackages = oself;
-  };
+  gluten = callPackage ./gluten { };
+  gluten-lwt = callPackage ./gluten/lwt.nix { };
+  gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
+  gluten-mirage = callPackage ./gluten/mirage.nix { };
+  gluten-async = callPackage ./gluten/async.nix { };
 
-  graphql_parser = callPackage ./graphql/parser.nix {
-    ocamlPackages = oself;
-  };
-  graphql = callPackage ./graphql {
-    ocamlPackages = oself;
-  };
-  graphql-lwt = callPackage ./graphql/lwt.nix {
-    ocamlPackages = oself;
-  };
-  graphql-async = callPackage ./graphql/async.nix {
-    ocamlPackages = oself;
-  };
+  graphql_parser = callPackage ./graphql/parser.nix { };
+  graphql = callPackage ./graphql { };
+  graphql-lwt = callPackage ./graphql/lwt.nix { };
+  graphql-async = callPackage ./graphql/async.nix { };
 
-  graphql_ppx = callPackage ./graphql_ppx {
-    ocamlPackages = oself;
-  };
+  graphql_ppx = callPackage ./graphql_ppx { };
 
   gsl = osuper.gsl.overrideAttrs (o: {
     src =
@@ -142,28 +125,28 @@ with oself;
           } else o.src;
   });
 
-  h2 = callPackage ./h2 { ocamlPackages = oself; };
-  h2-lwt = callPackage ./h2/lwt.nix { ocamlPackages = oself; };
-  h2-lwt-unix = callPackage ./h2/lwt-unix.nix { ocamlPackages = oself; };
-  h2-mirage = callPackage ./h2/mirage.nix { ocamlPackages = oself; };
-  h2-async = callPackage ./h2/async.nix { ocamlPackages = oself; };
-  hpack = callPackage ./h2/hpack.nix { ocamlPackages = oself; };
+  h2 = callPackage ./h2 { };
+  h2-lwt = callPackage ./h2/lwt.nix { };
+  h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
+  h2-mirage = callPackage ./h2/mirage.nix { };
+  h2-async = callPackage ./h2/async.nix { };
+  hpack = callPackage ./h2/hpack.nix { };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  httpaf = callPackage ./httpaf { ocamlPackages = oself; };
-  httpaf-lwt = callPackage ./httpaf/lwt.nix { ocamlPackages = oself; };
-  httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { ocamlPackages = oself; };
-  httpaf-mirage = callPackage ./httpaf/mirage.nix { ocamlPackages = oself; };
-  httpaf-async = callPackage ./httpaf/async.nix { ocamlPackages = oself; };
+  httpaf = callPackage ./httpaf { };
+  httpaf-lwt = callPackage ./httpaf/lwt.nix { };
+  httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
+  httpaf-mirage = callPackage ./httpaf/mirage.nix { };
+  httpaf-async = callPackage ./httpaf/async.nix { };
 
   hxd = osuper.hxd.overrideAttrs (_: {
     doCheck = false;
   });
 
-  jose = callPackage ./jose { ocamlPackages = oself; };
+  jose = callPackage ./jose { };
 
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -172,19 +155,15 @@ with oself;
     };
   });
 
-  lambda-runtime = callPackage ./lambda-runtime {
-    ocamlPackages = oself;
-  };
-  vercel = callPackage ./lambda-runtime/vercel.nix {
-    ocamlPackages = oself;
-  };
+  lambda-runtime = callPackage ./lambda-runtime { };
+  vercel = callPackage ./lambda-runtime/vercel.nix { };
 
   logs = osuper.logs.override { jsooSupport = false; };
 
-  logs-ppx = callPackage ./logs-ppx { ocamlPackages = oself; };
+  logs-ppx = callPackage ./logs-ppx { };
 
-  landmarks = callPackage ./landmarks { ocamlPackages = oself; };
-  landmarks-ppx = callPackage ./landmarks/ppx.nix { ocamlPackages = oself; };
+  landmarks = callPackage ./landmarks { };
+  landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
   lwt = osuper.lwt.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo dune-configurator ];
@@ -192,24 +171,24 @@ with oself;
 
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange { ocamlPackages = oself; }
+      callPackage ./melange { }
     else null;
 
   melange-compiler-libs =
     if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange/compiler-libs.nix { ocamlPackages = oself; }
+      callPackage ./melange/compiler-libs.nix { }
     else null;
 
-  merlin = callPackage ./merlin { ocamlPackages = oself; };
+  merlin = callPackage ./merlin { };
 
-  morph = callPackage ./morph { ocamlPackages = oself; };
-  morph_graphql_server = callPackage ./morph/graphql.nix { ocamlPackages = oself; };
+  morph = callPackage ./morph { };
+  morph_graphql_server = callPackage ./morph/graphql.nix { };
 
-  mongo = callPackage ./mongo { ocamlPackages = oself; };
-  mongo-lwt = callPackage ./mongo/lwt.nix { ocamlPackages = oself; };
-  mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { ocamlPackages = oself; };
-  ppx_deriving_bson = callPackage ./mongo/ppx.nix { ocamlPackages = oself; };
-  bson = callPackage ./mongo/bson.nix { ocamlPackages = oself; };
+  mongo = callPackage ./mongo { };
+  mongo-lwt = callPackage ./mongo/lwt.nix { };
+  mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
+  ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
+  bson = callPackage ./mongo/bson.nix { };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
@@ -217,9 +196,9 @@ with oself;
 
   mtime = osuper.mtime.override { jsooSupport = false; };
 
-  multipart_form = callPackage ./multipart_form { ocamlPackages = oself; };
+  multipart_form = callPackage ./multipart_form { };
 
-  multipart-form-data = callPackage ./multipart-form-data { ocamlPackages = oself; };
+  multipart-form-data = callPackage ./multipart-form-data { };
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -249,10 +228,10 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
-  oidc = callPackage ./oidc { ocamlPackages = oself; };
-  oidc-client = callPackage ./oidc/client.nix { ocamlPackages = oself; };
+  oidc = callPackage ./oidc { };
+  oidc-client = callPackage ./oidc/client.nix { };
 
-  pg_query = callPackage ./pg_query { ocamlPackages = oself; };
+  pg_query = callPackage ./pg_query { };
 
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -269,11 +248,11 @@ with oself;
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
 
-  ppx_jsx_embed = callPackage ./ppx_jsx_embed { ocamlPackages = oself; };
+  ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
-  ppx_rapper = callPackage ./ppx_rapper { ocamlPackages = oself; };
-  ppx_rapper_async = callPackage ./ppx_rapper/async.nix { ocamlPackages = oself; };
-  ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { ocamlPackages = oself; };
+  ppx_rapper = callPackage ./ppx_rapper { };
+  ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
+  ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_bitstring = osuper.ppx_bitstring.overrideAttrs (o: {
     buildInputs = [ bitstring ppxlib ];
@@ -294,8 +273,6 @@ with oself;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
-  ppxfind = callPackage ./ppxfind { ocamlPackages = oself; };
-
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/e030f13a3.tar.gz;
@@ -306,18 +283,18 @@ with oself;
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
-  reason = callPackage ./reason { ocamlPackages = oself; };
-  rtop = callPackage ./reason/rtop.nix { ocamlPackages = oself; };
+  reason = callPackage ./reason { };
+  rtop = callPackage ./reason/rtop.nix { };
 
   reason-native = osuper.reason-native // { qcheck-rely = null; };
 
-  redemon = callPackage ./redemon { ocamlPackages = oself; };
+  redemon = callPackage ./redemon { };
 
-  redis = callPackage ./redis { ocamlPackages = oself; };
-  redis-lwt = callPackage ./redis/lwt.nix { ocamlPackages = oself; };
-  redis-sync = callPackage ./redis/sync.nix { ocamlPackages = oself; };
+  redis = callPackage ./redis { };
+  redis-lwt = callPackage ./redis/lwt.nix { };
+  redis-sync = callPackage ./redis/sync.nix { };
 
-  reenv = callPackage ./reenv { ocamlPackages = oself; };
+  reenv = callPackage ./reenv { };
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -328,8 +305,8 @@ with oself;
 
   sedlex = oself.sedlex_2;
 
-  session = callPackage ./session { ocamlPackages = oself; };
-  session-redis-lwt = callPackage ./session/redis.nix { ocamlPackages = oself; };
+  session = callPackage ./session { };
+  session-redis-lwt = callPackage ./session/redis.nix { };
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -341,9 +318,7 @@ with oself;
     propagatedBuildInputs = [ openssl.dev ];
   });
 
-  subscriptions-transport-ws = callPackage ./subscriptions-transport-ws {
-    ocamlPackages = oself;
-  };
+  subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
   syndic = buildDunePackage rec {
     pname = "syndic";
@@ -355,25 +330,15 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
-  tyxml-jsx = callPackage ./tyxml/jsx.nix { ocamlPackages = oself; };
-  tyxml-ppx = callPackage ./tyxml/ppx.nix { ocamlPackages = oself; };
-  tyxml-syntax = callPackage ./tyxml/syntax.nix { ocamlPackages = oself; };
+  tyxml-jsx = callPackage ./tyxml/jsx.nix { };
+  tyxml-ppx = callPackage ./tyxml/ppx.nix { };
+  tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
-  websocketaf = callPackage ./websocketaf {
-    ocamlPackages = oself;
-  };
-  websocketaf-lwt = callPackage ./websocketaf/lwt.nix {
-    ocamlPackages = oself;
-  };
-  websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix {
-    ocamlPackages = oself;
-  };
-  websocketaf-async = callPackage ./websocketaf/async.nix {
-    ocamlPackages = oself;
-  };
-  websocketaf-mirage = callPackage ./websocketaf/mirage.nix {
-    ocamlPackages = oself;
-  };
+  websocketaf = callPackage ./websocketaf { };
+  websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
+  websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
+  websocketaf-async = callPackage ./websocketaf/async.nix { };
+  websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   yuscii = osuper.yuscii.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ gcc ];

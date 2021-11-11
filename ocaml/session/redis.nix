@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, redis-lwt, session }:
 
 buildDunePackage {
   pname = "session-redis-lwt";

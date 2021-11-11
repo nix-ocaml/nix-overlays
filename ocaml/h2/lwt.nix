@@ -1,6 +1,4 @@
-{ lib, ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, gluten-lwt, h2, lwt }:
 
 buildDunePackage {
   inherit (h2) version src;

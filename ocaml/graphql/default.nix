@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, graphql_parser, yojson, rresult, seq, alcotest }:
 
 buildDunePackage {
   pname = "graphql";

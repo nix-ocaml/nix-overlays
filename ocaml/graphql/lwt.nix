@@ -1,10 +1,8 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, graphql, lwt, alcotest }:
 
 buildDunePackage {
   pname = "graphql-lwt";
-  inherit (graphql_parser) src version;
+  inherit (graphql) src version;
   checkInputs = [ alcotest ];
   propagatedBuildInputs = [ graphql lwt ];
 }

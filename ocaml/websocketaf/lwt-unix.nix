@@ -1,6 +1,9 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage
+, websocketaf
+, websocketaf-lwt
+, faraday-lwt-unix
+, gluten-lwt-unix
+}:
 
 buildDunePackage {
   pname = "websocketaf-lwt-unix";

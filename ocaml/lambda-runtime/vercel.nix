@@ -1,6 +1,12 @@
-{ ocamlPackages }:
+{ buildDunePackage
+, lambda-runtime
+, piaf
+, yojson
+, ppx_deriving_yojson
+, lwt
+, base64
 
-with ocamlPackages;
+}:
 
 buildDunePackage {
   pname = "vercel";

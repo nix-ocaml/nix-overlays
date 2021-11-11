@@ -1,10 +1,8 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, mongo, lwt, mirage-crypto, gluten-lwt, pbkdf, base64 }:
 
 buildDunePackage {
   pname = "mongo-lwt";
-  inherit (bson) src version;
+  inherit (mongo) src version;
 
   propagatedBuildInputs = [ mongo lwt mirage-crypto gluten-lwt pbkdf base64 ];
 }

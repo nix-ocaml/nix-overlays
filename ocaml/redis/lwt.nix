@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, redis, lwt, ounit, containers }:
 
 buildDunePackage {
   pname = "redis-lwt";

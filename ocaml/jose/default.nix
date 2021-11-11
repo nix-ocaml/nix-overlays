@@ -1,6 +1,13 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage
+, base64
+, mirage-crypto
+, x509
+, cstruct
+, astring
+, yojson
+, zarith
+, result
+}:
 
 buildDunePackage rec {
   pname = "jose";

@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, angstrom, faraday }:
 
 buildDunePackage {
   pname = "bson";

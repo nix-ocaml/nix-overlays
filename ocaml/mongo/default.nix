@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ buildDunePackage, bson }:
 
 buildDunePackage {
   pname = "mongo";

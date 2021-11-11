@@ -1,6 +1,5 @@
-{ ocamlPackages, lib }:
+{ lib, buildDunePackage, jose, uri, yojson, logs }:
 
-with ocamlPackages;
 
 buildDunePackage {
   pname = "oidc";
@@ -10,7 +9,7 @@ buildDunePackage {
     sha256 = "1k729n94zx5qjc701s41dn4bjyqxznzbrwck713rni4w3yzparys";
   };
 
-  propagatedBuildInputs = [ jose uri yojson logs logs ];
+  propagatedBuildInputs = [ jose uri yojson logs ];
 
   meta = {
     description = "Base functions and types to work with OpenID Connect.";

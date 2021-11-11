@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, angstrom, faraday }:
 
 buildDunePackage {
   version = "0.7.0-dev";

@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, websocketaf, gluten-lwt, lwt, digestif }:
 
 buildDunePackage {
   pname = "websocketaf-lwt";

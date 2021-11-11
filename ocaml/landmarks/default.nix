@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, ppxlib }:
 
 buildDunePackage rec {
   pname = "landmarks";

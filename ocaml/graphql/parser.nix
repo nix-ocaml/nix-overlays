@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, alcotest, menhir, fmt, re }:
 
 buildDunePackage {
   pname = "graphql_parser";

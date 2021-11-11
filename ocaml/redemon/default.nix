@@ -1,6 +1,4 @@
-{ lib, ocamlPackages }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, luv, cmdliner, logs, fmt }:
 
 buildDunePackage {
   pname = "redemon";

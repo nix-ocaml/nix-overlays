@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, mirage-crypto, mirage-crypto-rng, base64 }:
 
 buildDunePackage {
   pname = "session";

@@ -1,9 +1,12 @@
-{ ocamlPackages }:
+{ buildDunePackage
+, httpaf
+, async
+, gluten-async
+, faraday-async
+, async_ssl
+}:
 
-with ocamlPackages;
-
-buildDunePackage
-{
+buildDunePackage {
   inherit (httpaf) version src;
   pname = "httpaf-async";
   doCheck = false;

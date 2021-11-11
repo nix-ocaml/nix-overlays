@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, cppo, reason, utop }:
 
 buildDunePackage {
   inherit (reason) src version;

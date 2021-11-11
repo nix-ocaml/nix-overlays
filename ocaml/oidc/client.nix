@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, oidc, jose, uri, yojson, logs, piaf }:
 
 buildDunePackage {
   pname = "oidc-client";

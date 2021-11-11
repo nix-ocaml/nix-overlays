@@ -1,9 +1,6 @@
-{ ocamlPackages }:
+{ buildDunePackage, menhir, menhirLib }:
 
-with ocamlPackages;
-
-
-buildDunePackage rec {
+buildDunePackage {
   pname = "melange-compiler-libs";
   version = "0.0.0";
 

@@ -1,6 +1,12 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, reason
+, logs
+, lwt
+, morph
+, graphql
+, graphql-lwt
+}:
 
 buildDunePackage {
   pname = "morph_graphql_server";

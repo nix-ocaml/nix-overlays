@@ -1,6 +1,11 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage
+, websocketaf
+, async
+, gluten-async
+, faraday-async
+, async_ssl
+, digestif
+}:
 
 buildDunePackage {
   pname = "websocketaf-async";

@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, bigstringaf, faraday, ke }:
 
 buildDunePackage {
   pname = "gluten";

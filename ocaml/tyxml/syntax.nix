@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, ppxlib, uutf, re, tyxml, alcotest }:
 
 buildDunePackage {
   pname = "tyxml-syntax";
@@ -8,9 +6,7 @@ buildDunePackage {
 
   propagatedBuildInputs = [ ppxlib uutf re ];
 
-  checkInputs = [
-    alcotest
-  ];
+  checkInputs = [ alcotest ];
 
   doCheck = true;
 

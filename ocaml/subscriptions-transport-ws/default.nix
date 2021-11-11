@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, websocketaf, graphql }:
 
 buildDunePackage {
   pname = "subscriptions-transport-ws";

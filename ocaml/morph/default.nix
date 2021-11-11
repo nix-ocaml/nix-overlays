@@ -1,6 +1,20 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, reason
+, fmt
+, hmap
+, logs
+, lwt
+, piaf
+, session
+, cookie
+, digestif
+, session-cookie
+, session-cookie-lwt
+, magic-mime
+, uri
+, routes
+}:
 
 buildDunePackage {
   pname = "morph";

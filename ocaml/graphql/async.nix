@@ -1,10 +1,8 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, graphql, async, alcotest }:
 
 buildDunePackage {
   pname = "graphql-async";
-  inherit (graphql_parser) src version;
+  inherit (graphql) src version;
   checkInputs = [ alcotest ];
   propagatedBuildInputs = [ graphql async ];
 }

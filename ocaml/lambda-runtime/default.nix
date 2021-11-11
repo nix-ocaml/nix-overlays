@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, yojson, ppx_deriving_yojson, piaf, uri, logs, lwt }:
 
 buildDunePackage {
   pname = "lambda-runtime";

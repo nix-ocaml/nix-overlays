@@ -1,6 +1,4 @@
-{ ocamlPackages }:
-
-with ocamlPackages;
+{ buildDunePackage, angstrom, faraday, gluten, httpaf, base64 }:
 
 buildDunePackage {
   pname = "websocketaf";

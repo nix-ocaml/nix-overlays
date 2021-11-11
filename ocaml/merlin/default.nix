@@ -1,6 +1,13 @@
-{ ocamlPackages, lib, substituteAll }:
-
-with ocamlPackages;
+{ lib
+, substituteAll
+, ocaml
+, dune_2
+, buildDunePackage
+, dot-merlin-reader
+, yojson
+, csexp
+, result
+}:
 
 let
   merlinVersion = "4.1";

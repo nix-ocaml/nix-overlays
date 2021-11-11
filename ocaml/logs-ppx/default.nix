@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, ppxlib }:
 
 buildDunePackage {
   pname = "logs-ppx";
@@ -10,9 +8,7 @@ buildDunePackage {
     sha256 = "0j8x81qc7k8p87rrw2nv9wasjjnq4hrfwcwk3a682p90gzdx9vcy";
   };
 
-  propagatedBuildInputs = with ocamlPackages; [
-    ppxlib
-  ];
+  propagatedBuildInputs = [ ppxlib ];
 
   meta = {
     description = "PPX to cut down on boilerplate when using Logs";

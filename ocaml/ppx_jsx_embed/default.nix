@@ -1,6 +1,4 @@
-{ stdenv, opaline, ocamlPackages, lib, dune_2, nodejs, gnutar, fetchFromGitHub }:
-
-with ocamlPackages;
+{ buildDunePackage, reason, ppxlib }:
 
 buildDunePackage {
   pname = "ppx_jsx_embed";

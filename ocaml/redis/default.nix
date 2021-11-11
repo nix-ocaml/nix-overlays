@@ -1,6 +1,4 @@
-{ ocamlPackages, lib }:
-
-with ocamlPackages;
+{ lib, buildDunePackage, uuidm, re }:
 
 buildDunePackage {
   pname = "redis";
