@@ -123,7 +123,6 @@ let
     "camlimages"
 
     # broken with ppxlib 0.23
-    "bistro"
     "elpi"
 
     # broken on OCaml 4.13
