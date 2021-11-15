@@ -160,11 +160,12 @@ let
     native =
       let
         drvs = buildCandidates pkgs;
-        cockroachdb-drvs = with pkgs; [
+        otherDrvs = with pkgs; [
           cockroachdb-21_x
+          nixUnstable
         ];
       in
-      [ drvs ] ++ cockroachdb-drvs;
+      [ drvs ] ++ otherDrvs;
 
 
     musl =
