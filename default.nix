@@ -62,6 +62,13 @@ in
   };
 
 
+  nixUnstable = super.nixUnstable.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/nixos/nix/archive/bceda304982a34c65d5a1dab449cb5bc59f63b83.tar.gz;
+      sha256 = "122wbh8srahcgavkhmqwl9hllyppgra7m6f52yxbiwrznbaxxvbc";
+    };
+  });
+
   # Other packages
 
   lib = lib.fix (self: lib //
