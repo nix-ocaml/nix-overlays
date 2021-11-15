@@ -53,9 +53,8 @@ in
     inherit (self) ocamlPackages;
   });
 
-
   pkgsCross = super.pkgsCross // {
-    musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static { pkgsNative = self; });
+    musl64 = super.pkgsCross.musl64.appendOverlays (callPackage ./static { });
 
     aarch64-multiplatform =
       super.pkgsCross.aarch64-multiplatform.appendOverlays
@@ -64,7 +63,7 @@ in
     aarch64-multiplatform-musl =
       (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
         ((callPackage ./cross { }) ++
-        (callPackage ./static { pkgsNative = self; })));
+        (callPackage ./static { })));
   };
 
   nixUnstable = super.nixUnstable.overrideAttrs (o:

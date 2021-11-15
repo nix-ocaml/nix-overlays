@@ -1,4 +1,4 @@
-{ pkgsNative, lib, callPackage }:
+{ buildPackages, lib, callPackage }:
 # Loosely adapted from https://github.com/serokell/tezos-packaging/blob/b7617f99/nix/static.nix
 
 [
@@ -8,7 +8,7 @@
   # This should be revisited in the future, as it makes the fetchers
   # unusable at runtime in the target env. XXX(anmonteiro: is this true?)
   (self: super:
-    lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) pkgsNative)
+    lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) buildPackages)
 
   (import ./overlays.nix)
 
