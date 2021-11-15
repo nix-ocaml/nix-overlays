@@ -8,6 +8,9 @@
   } // flake-utils.lib.eachDefaultSystem (system: {
     packages = import ./boot.nix {
       inherit system;
+      config = {
+        allowUnfree = true;
+      };
     };
     legacyPackages = self.packages."${system}";
   }));
