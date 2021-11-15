@@ -1,7 +1,14 @@
 {
   description = "ocaml-packages-overlay";
 
-  outputs = { self }: {
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+
+  outputs = { self, flake-utils }: ({
     overlay = final: prev: (import ./default.nix) final prev;
-  };
+  } // flake-utils.lib.eachDefaultSystem (system: {
+    packages = import ./boot.nix {
+      inherit system;
+    };
+    legacyPackages = self.packages."${system}";
+  }));
 }
