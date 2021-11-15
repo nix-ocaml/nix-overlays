@@ -1,4 +1,4 @@
-{ pkgsNative, lib, ocamlVersions }:
+{ buildPackages, lib, callPackage }:
 # Loosely adapted from https://github.com/serokell/tezos-packaging/blob/b7617f99/nix/static.nix
 
 [
@@ -8,31 +8,9 @@
   # This should be revisited in the future, as it makes the fetchers
   # unusable at runtime in the target env. XXX(anmonteiro: is this true?)
   (self: super:
-    lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) pkgsNative)
+    lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) buildPackages)
 
   (import ./overlays.nix)
 
-  (self: super:
-    let
-      overlayOcamlPackages = version: {
-        "ocamlPackages_${version}" =
-          super.ocaml-ng."ocamlPackages_${version}".overrideScope'
-            (super.callPackage ./ocaml.nix { })
-        ;
-      };
-      oPs =
-        lib.fold lib.mergeAttrs { }
-          (builtins.map overlayOcamlPackages ocamlVersions);
-
-    in
-    {
-      ocamlPackages = oPs.ocamlPackages_4_12;
-      ocamlPackages_latest = self.ocamlPackages;
-
-      ocaml-ng = super.ocaml-ng // oPs // {
-        ocamlPackages = self.ocamlPackages;
-        ocamlPackages_latest = self.ocamlPackages;
-      };
-    }
-  )
+  (lib.overlayOcamlPackages [ (callPackage ./ocaml.nix { }) ])
 ]
