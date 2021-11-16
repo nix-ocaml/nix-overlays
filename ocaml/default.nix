@@ -1,6 +1,10 @@
-{ gcc, libpq, lib, stdenv, openssl }:
+{ gcc, lib, libpq, libsodium, stdenv, openssl, pkg-config, lmdb }:
 
 oself: osuper:
+
+let
+  lmdb-pkg = lmdb;
+in
 
 with oself;
 
@@ -148,6 +152,29 @@ with oself;
     doCheck = false;
   });
 
+  lmdb = osuper.buildDunePackage {
+    pname = "lmdb";
+    version = "1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/Drup/ocaml-lmdb/archive/1.0.tar.gz;
+      sha256 = "0nkax7v4yggk21yxgvx3ax8fg74yl1bhj4z09szfblmsxsy5ydd4";
+    };
+    nativeBuildInputs = [ dune-configurator pkg-config ];
+    buildInputs = [ lmdb-pkg ];
+    propagatedBuildInputs = [ bigstringaf ];
+  };
+
+  mustache = osuper.mustache.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/rgrinberg/ocaml-mustache/archive/d0c45499f9a5ee91c38cf605ae20ecee47142fd8.tar.gz;
+      sha256 = "0dl7islmm9pdwmbkj9dfvbw16kvaxf47w34x38hgqlgvqyfdvcp8";
+    };
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+  });
+
+
+
   jose = callPackage ./jose { };
 
   ke = osuper.ke.overrideAttrs (o: {
@@ -246,6 +273,16 @@ with oself;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
+  postgres_async = osuper.buildDunePackage {
+    pname = "postgres_async";
+    version = "0.14.0";
+    src = builtins.fetchurl {
+      url = https://ocaml.janestreet.com/ocaml-core/v0.14/files/postgres_async-v0.14.0.tar.gz;
+      sha256 = "0pspfk4bsknxi0hjxav8z1r1y9ngkbq9iw9igy85rxh4a7c92s51";
+    };
+    propagatedBuildInputs = [ ppx_jane core core_kernel async ];
+  };
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/e030f13a3.tar.gz;
@@ -255,6 +292,20 @@ with oself;
   });
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
+
+  reanalyze =
+    if lib.versionOlder "4.13" osuper.ocaml.version then
+      null else
+      osuper.buildDunePackage {
+        pname = "reanalyze";
+        version = "2.17.0";
+        src = builtins.fetchurl {
+          url = https://github.com/rescript-association/reanalyze/archive/refs/tags/v2.17.0.tar.gz;
+          sha256 = "0mdsawd08qkxw5cy3qfj49zims4cq3sh0kdlm43c7pshm930qbhj";
+        };
+
+        nativeBuildInputs = [ cppo ];
+      };
 
   reason = callPackage ./reason { };
   rtop = callPackage ./reason/rtop.nix { };
@@ -280,6 +331,20 @@ with oself;
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
+
+  sodium = buildDunePackage rec {
+    pname = "sodium";
+    version = "0.6.0+dev";
+
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/ocaml-sodium/archive/4c92a94a330f969bf4db7fb0ea07602d80c03b14.tar.gz;
+      sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
+    };
+
+    buildInputs = [ ocaml findlib ocamlbuild ];
+    propagatedBuildInputs = [ ctypes libsodium ];
+    hardeningDisable = lib.optional stdenv.isDarwin "strictoverflow";
+  };
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -314,6 +379,17 @@ with oself;
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   # Jane Street packages
+  async_websocket = osuper.buildDunePackage {
+    pname = "async_websocket";
+    version = "0.14.0";
+    src = builtins.fetchurl {
+      url = https://ocaml.janestreet.com/ocaml-core/v0.14/files/async_websocket-v0.14.0.tar.gz;
+      sha256 = "1q630fd5wyyfg07jrsw9f57hphmrp7pkcy4kz5gggkfqn1kkfkph";
+    };
+    propagatedBuildInputs = [ ppx_jane cryptokit async core_kernel ];
+  };
+
+
   async_ssl = janePackage {
     pname = "async_ssl";
     hash = "0ykys3ckpsx5crfgj26v2q3gy6wf684aq0bfb4q8p92ivwznvlzy";
