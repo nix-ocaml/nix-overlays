@@ -293,16 +293,19 @@ with oself;
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
-  reanalyze = osuper.buildDunePackage {
-    pname = "reanalyze";
-    version = "2.17.0";
-    src = builtins.fetchurl {
-      url = https://github.com/rescript-association/reanalyze/archive/refs/tags/v2.17.0.tar.gz;
-      sha256 = "0mdsawd08qkxw5cy3qfj49zims4cq3sh0kdlm43c7pshm930qbhj";
-    };
+  reanalyze =
+    if lib.versionOlder "4.13" osuper.ocaml.version then
+      null else
+      osuper.buildDunePackage {
+        pname = "reanalyze";
+        version = "2.17.0";
+        src = builtins.fetchurl {
+          url = https://github.com/rescript-association/reanalyze/archive/refs/tags/v2.17.0.tar.gz;
+          sha256 = "0mdsawd08qkxw5cy3qfj49zims4cq3sh0kdlm43c7pshm930qbhj";
+        };
 
-    nativeBuildInputs = [ cppo ];
-  };
+        nativeBuildInputs = [ cppo ];
+      };
 
   reason = callPackage ./reason { };
   rtop = callPackage ./reason/rtop.nix { };
