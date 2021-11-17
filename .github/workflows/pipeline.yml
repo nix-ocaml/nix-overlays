@@ -36,7 +36,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell -f ./boot.nix nix-build-uncached -c \
+          nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
@@ -62,7 +62,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell -f ./boot.nix nix-build-uncached -c \
+          nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
@@ -93,7 +93,7 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
       - name: Build nix packages
         run: |
-          nix shell -f ./boot.nix nix-build-uncached -c \
+          nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
               nix-build-uncached ./ci.nix \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target ${{ matrix.target }} \
