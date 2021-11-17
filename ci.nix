@@ -163,6 +163,7 @@ let
         otherDrvs = with pkgs; [
           cockroachdb-21_x
           nixUnstable
+          esy
         ];
       in
       [ drvs ] ++ otherDrvs;

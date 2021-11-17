@@ -15,6 +15,7 @@ in
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
   });
+  esy = callPackage ./ocaml/esy { };
 
   pkgsCross =
     let

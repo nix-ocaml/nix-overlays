@@ -1,6 +1,8 @@
 { buildDunePackage
 , base64
 , mirage-crypto
+, mirage-crypto-pk
+, mirage-crypto-ec
 , x509
 , cstruct
 , astring
@@ -20,6 +22,8 @@ buildDunePackage rec {
   propagatedBuildInputs = [
     base64
     mirage-crypto
+    mirage-crypto-pk
+    mirage-crypto-ec
     x509
     cstruct
     astring
