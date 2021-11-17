@@ -36,16 +36,20 @@ let
         createFindlibDestdir = true;
       });
   });
+in
 
-  esy-solve-cudf = esyOcamlPkgs.buildDunePackage rec {
+with esyOcamlPkgs;
+
+let
+  esy-solve-cudf = buildDunePackage rec {
     pname = "esy-solve-cudf";
     version = "0.1.10";
-    buildInputs = with esyOcamlPkgs; [
+    buildInputs = [
       ocaml
       findlib
       dune
     ];
-    propagatedBuildInputs = with esyOcamlPkgs; [
+    propagatedBuildInputs = [
       cmdliner
       cudf
       mccs
@@ -55,7 +59,6 @@ let
       owner = "andreypopp";
       repo = pname;
       rev = "v${version}";
-      # sha256 = "174q1wkr31dn8vsvnlj4hzfgvbamqq74n7wxhbccriqmv8lz5a3g";
       sha256 = "1ky2mkyl676bxphyx0d3vqr58za185nq46h0lai89631g94ia1d7";
     };
 
@@ -89,7 +92,8 @@ let
   };
 
 in
-esyOcamlPkgs.buildDunePackage rec {
+
+buildDunePackage {
   pname = "esy";
   version = esyVersion;
 
@@ -97,12 +101,12 @@ esyOcamlPkgs.buildDunePackage rec {
 
   src = fetchFromGitHub {
     owner = githubInfo.owner;
-    repo = pname;
+    repo = "esy";
     rev = githubInfo.rev;
     sha256 = githubInfo.sha256;
   };
 
-  nativeBuildInputs = with esyOcamlPkgs; [
+  nativeBuildInputs = [
     makeWrapper
     dune-configurator
   ];
@@ -112,7 +116,7 @@ esyOcamlPkgs.buildDunePackage rec {
     bash
   ];
 
-  buildInputs = with esyOcamlPkgs; [
+  buildInputs = [
     angstrom
     cmdliner
     reason
@@ -143,7 +147,7 @@ esyOcamlPkgs.buildDunePackage rec {
 
   buildPhase = ''
     runHook preBuild
-    dune build -p ${pname}
+    dune build -p esy
     runHook postBuild
   '';
 
@@ -162,18 +166,17 @@ esyOcamlPkgs.buildDunePackage rec {
   #     |- esy-solve-cudf
   #       |- package.json
   #       |- esySolveCudfCommand.exe
-  fixupPhase = ''
+  postInstall = ''
     mkdir -p $out/lib/default/bin
     mkdir -p $out/lib/default/esy-build-package/bin
     mkdir -p $out/lib/node_modules/esy-solve-cudf
-    mv $out/bin/esy $out/lib/default/bin/esy.exe
-    mv $out/bin/esyInstallRelease.js $out/lib/default/bin/
-    # mv $out/bin/esy-build-package $out/lib/default/esy-build-package/bin/esyBuildPackageCommand.exe
-    # mv $out/bin/esy-rewrite-prefix $out/lib/default/esy-build-package/bin/esyRewritePrefixCommand.exe
-    ln -s $out/lib/default/bin/esy.exe $out/bin/esy
+    mkdir -p $out/lib/esy
+    # mv $out/bin/esyInstallRelease.js $out/lib/default/bin/
     cp ${esyNpm} $out/package.json
-    cp ${esySolveCudfNpm} $out/lib/node_modules/esy-solve-cudf/package.json
-    cp ${esy-solve-cudf}/bin/esy-solve-cudf $out/lib/node_modules/esy-solve-cudf/esySolveCudfCommand.exe
+    # cp ${esySolveCudfNpm} $out/lib/node_modules/esy-solve-cudf/package.json
+    ln -s ${esy-solve-cudf}/bin/esy-solve-cudf $out/lib/esy/esySolveCudfCommand
+    ls $out/lib/esy
+
 
     # wrapProgram \
       # $out/bin/esy \
