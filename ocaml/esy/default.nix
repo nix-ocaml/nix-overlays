@@ -16,18 +16,13 @@
 let
   currentVersion = "0.6.11";
 
-  currentGithubInfo = {
+  githubInfo = {
     owner = "esy";
     rev = "v${currentVersion}";
     sha256 = "sha256-LEfhtz0dBObE+167toMp1mz5onMbp7h2RVB+RgtbahM=";
   };
 
-in
-
-{ githubInfo ? currentGithubInfo, version ? currentVersion }:
-
-let
-  esyVersion = version;
+  esyVersion = currentVersion;
 
   esyOcamlPkgs = ocamlPackages.overrideScope' (self: super: {
     # buildDunePackage = (super.buildDunePackage.override { dune_1 = super.dune_one; });
