@@ -32,7 +32,6 @@ let
     "ocf"
     "omake_rc1"
     "pa_ounit"
-    "sodium"
     "sqlite3EZ"
     "type_conv_108_08_00"
     "type_conv_109_60_01"
