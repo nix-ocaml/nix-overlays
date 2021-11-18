@@ -1,4 +1,4 @@
-{ gcc, lib, libpq, libsodium, stdenv, openssl, pkg-config, lmdb }:
+{ gcc, lib, libpq, stdenv, openssl, pkg-config, lmdb }:
 
 oself: osuper:
 
@@ -331,20 +331,6 @@ with oself;
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
-
-  sodium = buildDunePackage rec {
-    pname = "sodium";
-    version = "0.6.0+dev";
-
-    src = builtins.fetchurl {
-      url = https://github.com/ahrefs/ocaml-sodium/archive/4c92a94a330f969bf4db7fb0ea07602d80c03b14.tar.gz;
-      sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
-    };
-
-    buildInputs = [ ocaml findlib ocamlbuild ];
-    propagatedBuildInputs = [ ctypes libsodium ];
-    hardeningDisable = lib.optional stdenv.isDarwin "strictoverflow";
-  };
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
