@@ -134,6 +134,7 @@ let
     "ocaml-migrate-parsetree-1-8"
     "ocaml-migrate-parsetree"
     "wasm"
+    "pythonlib"
   ];
 
   buildCandidates = pkgs:
