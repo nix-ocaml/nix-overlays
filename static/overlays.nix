@@ -63,4 +63,11 @@
     openssl = (super.openssl.override { static = true; }).overrideAttrs (o: {
       configureFlags = lib.remove "no-shared" o.configureFlags;
     });
+
+    curl = super.curl.override {
+      gssSupport = false;
+      brotliSupport = false;
+    };
+
+    libkrb5 = super.libkrb5.override { staticOnly = true; };
   })

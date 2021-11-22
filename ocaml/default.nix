@@ -6,7 +6,7 @@ let
   lmdb-pkg = lmdb;
   script = writeScriptBin "pkg-config" ''
     #!${stdenv.shell}
-    ${stdenv.hostPlatform.config}-pkg-config $@
+    ${pkg-config}/bin/pkg-config $@
   '';
 in
 
@@ -293,7 +293,7 @@ with oself;
         sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
       };
 
-      nativeBuildInputs = [ pkg-config ocaml findlib ];
+      nativeBuildInputs = [ script pkg-config ocaml findlib ];
       propagatedBuildInputs = [ curl lwt ];
       createFindlibDestdir = true;
     };
