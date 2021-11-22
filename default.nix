@@ -17,6 +17,8 @@ in
   });
   esy = callPackage ./ocaml/esy { };
 
+  pkgsStatic = super.pkgsStatic.appendOverlays (callPackage ./static { });
+
   pkgsCross =
     let
       static-overlays = callPackage ./static { };

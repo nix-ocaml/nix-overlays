@@ -1,6 +1,3 @@
-# An important note about these overlays: `pkgsStatic` propagates all build
-# inputs. See: https://github.com/NixOS/nixpkgs/issues/83667
-
 (self: super:
   let
     inherit (super) lib config;
@@ -33,9 +30,7 @@
         mkDerivationFromStdenv = extendMkDerivationArgs old (args: {
           dontDisableStatic = true;
         } // lib.optionalAttrs (!(args.dontAddStaticConfigureFlags or false)) {
-          configureFlags = (args.configureFlags or [ ]) ++ [
-            "--enable-static"
-          ];
+          configureFlags = (args.configureFlags or [ ]) ++ [ "--enable-static" ];
           cmakeFlags = (args.cmakeFlags or [ ]) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
           mesonFlags = (args.mesonFlags or [ ]) ++ [ "-Ddefault_library=static" ];
         });
