@@ -265,7 +265,7 @@ with oself;
       '';
     in
     {
-      nativeBuildInputs = o.nativeBuildInputs ++ [ ocaml findlib script ];
+      nativeBuildInputs = o.nativeBuildInputs ++ [ ocaml findlib ];
     });
 
   ocaml-lsp =
