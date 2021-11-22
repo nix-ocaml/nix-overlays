@@ -31,8 +31,9 @@ in
 
     zarith = osuper.zarith.overrideDerivation (o: {
       configureFlags = o.configureFlags ++ [
-        "-host ${o.stdenv.hostPlatform.config} -prefixnonocaml ${o.stdenv.hostPlatform.config}-"
+        "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
       ];
     });
+
     ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
   })

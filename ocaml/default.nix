@@ -1,9 +1,13 @@
-{ gcc, lib, libpq, stdenv, openssl, pkg-config, lmdb }:
+{ gcc, lib, libpq, stdenv, openssl, pkg-config, lmdb, curl, writeScriptBin, libsodium }:
 
 oself: osuper:
 
 let
   lmdb-pkg = lmdb;
+  script = writeScriptBin "pkg-config" ''
+    #!${stdenv.shell}
+    ${stdenv.hostPlatform.config}-pkg-config $@
+  '';
 in
 
 with oself;
@@ -36,6 +40,19 @@ with oself;
       url = https://github.com/camlp5/camlp5/archive/rel8.00.02.tar.gz;
       sha256 = "1zbp8mr9ms4253nh9z34dd2ppin4bri82j7xy3jdk73k9dbmr31w";
     };
+  });
+  camlzip = osuper.camlzip.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/xavierleroy/camlzip/archive/refs/tags/rel111.tar.gz;
+      sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
+    };
+    nativeBuildInputs = [ ocaml findlib ];
+  });
+  astring = osuper.astring.overrideAttrs (o: {
+    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
+  });
+  rresult = osuper.rresult.overrideAttrs (o: {
+    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
   carton = osuper.carton.overrideAttrs (_: {
@@ -152,6 +169,10 @@ with oself;
     doCheck = false;
   });
 
+  ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
+  });
+
   lmdb = osuper.buildDunePackage {
     pname = "lmdb";
     version = "1.0";
@@ -236,6 +257,17 @@ with oself;
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
+  ocamlnet = osuper.ocamlnet.overrideAttrs (o:
+    let
+      script = writeScriptBin "cpp" ''
+        #!${stdenv.shell}
+        ${stdenv.hostPlatform.config}-cpp $@
+      '';
+    in
+    {
+      nativeBuildInputs = o.nativeBuildInputs ++ [ ocaml findlib ];
+    });
+
   ocaml-lsp =
     if lib.versionOlder "4.13" osuper.ocaml.version then
       null
@@ -252,6 +284,23 @@ with oself;
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
+
+  ocurl =
+    stdenv.mkDerivation rec {
+      name = "ocurl-0.9.1";
+      src = builtins.fetchurl {
+        url = "http://ygrek.org.ua/p/release/ocurl/${name}.tar.gz";
+        sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
+      };
+
+      nativeBuildInputs = [ pkg-config ocaml findlib ];
+      propagatedBuildInputs = [ curl lwt ];
+      createFindlibDestdir = true;
+    };
+  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
+  });
+
 
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
@@ -331,6 +380,17 @@ with oself;
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
+
+  sodium = buildDunePackage {
+    pname = "sodium";
+    version = "0.8+ahrefs";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/ocaml-sodium/archive/4c92a94a330f969bf4db7fb0ea07602d80c03b14.tar.gz;
+      sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
+    };
+    patches = [ ./sodium-cc-patch.patch ];
+    propagatedBuildInputs = [ ctypes libsodium ];
+  };
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {

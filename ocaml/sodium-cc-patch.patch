@@ -1,0 +1,13 @@
+diff --git a/lib_gen/dune b/lib_gen/dune
+index ac538a6..982e208 100644
+--- a/lib_gen/dune
++++ b/lib_gen/dune
+@@ -38,7 +38,7 @@
+ (rule
+   (deps sodium_types_detect.c)
+   (targets sodium_types_detect)
+-  (action (bash "cc -I \"$(ocamlfind query ctypes)\" -I \"$(ocamlc -where)\" -o sodium_types_detect sodium_types_detect.c")))
++  (action (bash "$CC -I \"$(ocamlfind query ctypes)\" -I \"$(ocamlc -where)\" -o sodium_types_detect sodium_types_detect.c")))
+ 
+ (rule
+   (deps sodium_types_detect)
