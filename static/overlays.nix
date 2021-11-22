@@ -1,6 +1,6 @@
 (self: super:
   let
-    inherit (super) lib config;
+    inherit (super) lib config fetchpatch;
     removeUnknownConfigureFlags = f: with lib;
       remove "--disable-shared"
         (remove "--enable-static" f);
@@ -39,6 +39,21 @@
   in
   {
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
+
+    alsa-lib = super.alsa-lib.overrideAttrs (o: {
+      patches = o.patches ++ [
+        (fetchpatch {
+          url = https://github.com/alsa-project/alsa-lib/commit/81e7923fbfad45b2f353a4d6e3053af51f5f7d0b.patch;
+          sha256 = "1nqm10jkvkfy5p2sx79i22ikj2q8b9mn0whcs8blgjmpy1pv7kb2";
+        })
+      ];
+    });
+
+    lmdb = super.lmdb.overrideAttrs (o: {
+      postPatch = ''
+        sed -i 's/ILIBS\t= liblmdb.a liblmdb$(SOEXT)/ILIBS\t= liblmdb.a/g' ./Makefile
+      '';
+    });
 
     zlib = removeUnknownFlagsAdapter (super.zlib.override {
       static = true;
