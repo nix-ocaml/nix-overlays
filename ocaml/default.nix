@@ -180,7 +180,7 @@ with oself;
       url = https://github.com/Drup/ocaml-lmdb/archive/1.0.tar.gz;
       sha256 = "0nkax7v4yggk21yxgvx3ax8fg74yl1bhj4z09szfblmsxsy5ydd4";
     };
-    nativeBuildInputs = [ script dune-configurator pkg-config ];
+    nativeBuildInputs = [ dune-configurator pkg-config ];
     buildInputs = [ lmdb-pkg ];
     propagatedBuildInputs = [ bigstringaf ];
   };
@@ -293,7 +293,7 @@ with oself;
         sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
       };
 
-      nativeBuildInputs = [ script pkg-config ocaml findlib ];
+      nativeBuildInputs = [ pkg-config ocaml findlib ];
       propagatedBuildInputs = [ curl lwt ];
       createFindlibDestdir = true;
     };
