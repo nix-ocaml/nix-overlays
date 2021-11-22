@@ -49,12 +49,6 @@
       ];
     });
 
-    lmdb = super.lmdb.overrideAttrs (o: {
-      postPatch = ''
-        sed -i 's/ILIBS\t= liblmdb.a liblmdb$(SOEXT)/ILIBS\t= liblmdb.a/g' ./Makefile
-      '';
-    });
-
     zlib = removeUnknownFlagsAdapter (super.zlib.override {
       static = true;
       splitStaticOutput = false;

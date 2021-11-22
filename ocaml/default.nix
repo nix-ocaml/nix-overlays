@@ -180,7 +180,7 @@ with oself;
       url = https://github.com/Drup/ocaml-lmdb/archive/1.0.tar.gz;
       sha256 = "0nkax7v4yggk21yxgvx3ax8fg74yl1bhj4z09szfblmsxsy5ydd4";
     };
-    nativeBuildInputs = [ dune-configurator pkg-config ];
+    nativeBuildInputs = [ script dune-configurator pkg-config ];
     buildInputs = [ lmdb-pkg ];
     propagatedBuildInputs = [ bigstringaf ];
   };
