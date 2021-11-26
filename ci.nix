@@ -162,6 +162,8 @@ let
         drvs = buildCandidates pkgs;
         otherDrvs = with pkgs; [
           cockroachdb-21_x
+          cockroachdb-22_x
+          mongodb-4_2
           nixUnstable
           esy
         ];
