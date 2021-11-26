@@ -1,4 +1,4 @@
-{ callPackage, go_1_15 }:
+{ callPackage, go_1_15, go_1_16 }:
 
 {
   cockroachdb-21_x = callPackage ./generic.nix (rec {
@@ -10,13 +10,13 @@
     };
   });
 
-  # cockroachdb-dev = callPackage ./generic.nix (rec {
-  # go = go_1_16;
-  # version = "21.2.0-rc.3";
-  # src = builtins.fetchurl {
-  # url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-  # sha256 = "010plyi4jdpayabckdz3vq8nw983mb76sz23pnlgyyxgkcbbhg2p";
-  # };
-  # extraDeps = [ git ];
-  # });
+  cockroachdb-22_x = callPackage ./generic.nix (rec {
+    go = go_1_16;
+    version = "21.2.0";
+    src = builtins.fetchurl {
+      url = "https://binaries.cockroachdb.com/cockroach-v21.2.0.src.tgz";
+      sha256 = "0h9fv0i72xkxzr743rm4rg69w7qj3fa2qgqk7rx181xvlwhsrgrs";
+    };
+    patches = [ ./makefile-redact-safe-patch.patch ];
+  });
 }

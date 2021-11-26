@@ -10,22 +10,48 @@
 , installShellFiles
 , removeReferencesTo
 , go
+, fetchpatch
+, yacc
+, perl
+, ccache
+, bazel
+, git
 , govers
 , src
 , version
+, patches ? [ ]
 }:
 
 let
+  isNewVersion = lib.versionOlder "21.2" version;
   darwinDeps = [ libunwind libedit ];
   linuxDeps = [ ncurses6 ];
 
   buildInputs = if stdenv.isDarwin then darwinDeps else linuxDeps;
-  nativeBuildInputs = [ installShellFiles cmake xz which autoconf removeReferencesTo go govers ];
+  nativeBuildInputs =
+    [ installShellFiles cmake xz which autoconf removeReferencesTo go govers ]
+    ++ lib.optional isNewVersion [ yacc git perl ];
+
+  patch = (fetchpatch {
+    # https://github.com/cockroachdb/cockroach/issues/72529
+    url = https://github.com/cockroachdb/krb5/commit/f78edbe30816f049e1360cb6e203fabfdf7b98df.patch;
+    sha256 = "07hq1ks99piamdhiqk7klvvdai0s54bpxv9nn4zlki88zr13sc8g";
+  });
+  postConfigure =
+    if isNewVersion then ''
+      pushd src/github.com/cockroachdb/cockroach/c-deps/krb5/src
+      patch -p1 aclocal.m4 ${patch}
+      rm -rf ./configure
+      popd
+    '' else ''
+      mkdir $NIX_BUILD_TOP/go
+      export GOPATH=$NIX_BUILD_TOP/go
+    '';
 
 in
 stdenv.mkDerivation rec {
   pname = "cockroach";
-  inherit version src;
+  inherit version src patches;
 
   goPackagePath = "github.com/cockroachdb/cockroach";
 
@@ -33,9 +59,10 @@ stdenv.mkDerivation rec {
 
   inherit nativeBuildInputs buildInputs;
   configurePhase = ''
-    mkdir $NIX_BUILD_TOP/go
-    export GOPATH=$NIX_BUILD_TOP/go
     export GOCACHE=$TMPDIR/go-cache
+    mkdir fake-home
+    export HOME=$PWD/fake-home
+    ${postConfigure}
   '';
 
   buildPhase = ''

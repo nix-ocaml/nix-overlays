@@ -1,0 +1,13 @@
+diff --git a/src/github.com/cockroachdb/cockroach/Makefile b/src/github.com/cockroachdb/cockroach/Makefile
+index 1d00da6..54d7ee3 100644
+--- a/src/github.com/cockroachdb/cockroach/Makefile
++++ b/src/github.com/cockroachdb/cockroach/Makefile
+@@ -1538,7 +1538,7 @@ bin/.docgen_http: bin/docgen bin/.bootstrap
+ .PHONY: docs/generated/redact_safe.md
+
+ docs/generated/redact_safe.md:
+-	./build/bazelutil/generate_redact_safe.sh >$@.tmp || { rm -f $@.tmp; exit 1; }
++	./build/bazelutil/generate_redact_safe.sh >$@.tmp || true
+ 	@mv -f $@.tmp $@
+
+ #### WARNING ####

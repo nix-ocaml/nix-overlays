@@ -77,6 +77,6 @@ in
     inherit overlayOcamlPackages;
   });
 
-  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x;
+  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_x;
 }
