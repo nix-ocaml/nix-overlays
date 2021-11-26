@@ -35,7 +35,7 @@ let
   patch = (fetchpatch {
     # https://github.com/cockroachdb/cockroach/issues/72529
     url = https://github.com/cockroachdb/krb5/commit/f78edbe30816f049e1360cb6e203fabfdf7b98df.patch;
-    sha256 = "07hq1ks99piamdhiqk7klvvdai0s54bpxv9nn4zlki88zr13sc8g";
+    sha256 = "sha256-DzE9Qv4IxUk/sTbtfhcpGkTV9qbzTBxhqyrelPQMGB4=";
   });
   postConfigure =
     if isNewVersion then ''
