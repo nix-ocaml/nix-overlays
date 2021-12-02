@@ -485,6 +485,16 @@ with oself;
     };
   });
 
+  memtrace = osuper.buildDunePackage {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/memtrace/archive/918dcededf1.tar.gz;
+      sha256 = "1w1fif25n9h4dk4xkwdyx98x3nwpkdipf74m1dfrv1dhz6qbpls3";
+    };
+    pname = "memtrace";
+    version = "0.1.2-dev";
+  };
+
+
   ppx_accessor = (janePackage {
     pname = "ppx_accessor";
     version = "0.14.2";
