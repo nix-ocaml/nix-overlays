@@ -1,5 +1,4 @@
-{ gcc
-, lib
+{ lib
 , libpq
 , stdenv
 , openssl
@@ -9,15 +8,14 @@
 , writeScriptBin
 , libsodium
 , cairo
-, gtk2-x11
 , gtk2
 }:
 
-let nativeCairo = cairo; in
 
 oself: osuper:
 
 let
+  nativeCairo = cairo;
   lmdb-pkg = lmdb;
   script = writeScriptBin "pkg-config" ''
     #!${stdenv.shell}
