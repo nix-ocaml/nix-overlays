@@ -1,6 +1,7 @@
 { lib
 , libpq
 , stdenv
+, darwin
 , openssl
 , pkg-config
 , lmdb
