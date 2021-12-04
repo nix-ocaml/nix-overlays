@@ -68,6 +68,11 @@ with oself;
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
+  cairo2 = osuper.cairo2.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++
+      lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.ApplicationServices ];
+  });
+
   cairo2-gtk = buildDunePackage {
     pname = "cairo2-gtk";
     inherit (cairo2) version src;
