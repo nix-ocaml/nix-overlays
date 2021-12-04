@@ -1,8 +1,22 @@
-{ gcc, lib, libpq, stdenv, openssl, pkg-config, lmdb, curl, writeScriptBin, libsodium }:
+{ lib
+, libpq
+, stdenv
+, darwin
+, openssl
+, pkg-config
+, lmdb
+, curl
+, writeScriptBin
+, libsodium
+, cairo
+, gtk2
+}:
+
 
 oself: osuper:
 
 let
+  nativeCairo = cairo;
   lmdb-pkg = lmdb;
   script = writeScriptBin "pkg-config" ''
     #!${stdenv.shell}
@@ -54,6 +68,18 @@ with oself;
   rresult = osuper.rresult.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
+
+  cairo2 = osuper.cairo2.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++
+      lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.ApplicationServices ];
+  });
+
+  cairo2-gtk = buildDunePackage {
+    pname = "cairo2-gtk";
+    inherit (cairo2) version src;
+    nativeBuildInputs = [ nativeCairo gtk2.dev pkg-config dune-configurator ];
+    propagatedBuildInputs = [ cairo2 lablgtk ];
+  };
 
   carton = osuper.carton.overrideAttrs (_: {
     doCheck = false;
@@ -172,6 +198,24 @@ with oself;
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
+
+  itv-tree = stdenv.mkDerivation {
+    name = "itv-tree";
+    version = "2.1";
+    src = builtins.fetchurl {
+      url = https://github.com/UnixJunkie/interval-tree/archive/v2.1.tar.gz;
+      sha256 = "07za9mdfx4kf0i4ikf543p89w73d3i31cb4l08a005n5jq9ada55";
+    };
+    buildPhase = ''
+      ocaml setup.ml -configure --prefix $prefix
+      ocaml setup.ml -build
+    '';
+    installPhase = ''
+      ocaml setup.ml -install
+    '';
+    nativeBuildInputs = [ ocaml ocamlbuild findlib ];
+    createFindlibDestdir = true;
+  };
 
   lmdb = osuper.buildDunePackage {
     pname = "lmdb";
