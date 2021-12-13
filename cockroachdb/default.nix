@@ -1,7 +1,7 @@
 { callPackage, go_1_15, go_1_16 }:
 
 {
-  cockroachdb-21_x = callPackage ./generic.nix (rec {
+  cockroachdb-21_1_x = callPackage ./generic.nix (rec {
     go = go_1_15;
     version = "21.1.8";
     src = builtins.fetchurl {
@@ -10,7 +10,7 @@
     };
   });
 
-  cockroachdb-22_x = callPackage ./generic.nix (rec {
+  cockroachdb-21_2_x = callPackage ./generic.nix (rec {
     go = go_1_16;
     version = "21.2.2";
     src = builtins.fetchurl {
