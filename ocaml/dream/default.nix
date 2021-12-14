@@ -1,33 +1,39 @@
 { lib
 , fetchFromGitHub
 , buildDunePackage
+, alcotest
+, angstrom
 , base64
 , bigarray-compat
+, bigstringaf
 , caqti-lwt
 , cstruct
-, fmt
-, graphql_parser
-, graphql-lwt
-, hmap
-, lwt
-, lwt_ppx
-, lwt_ssl
-, logs
-, magic-mime
-, mirage-crypto
-, mirage-crypto-rng
-, multipart_form
-, uri
-, yojson
-, angstrom
-, bigstringaf
 , digestif
 , faraday
 , faraday-lwt-unix
+, fmt
+, graphql_parser
+, graphql-lwt
+, h2
+, h2-lwt-unix
+, hmap
+, httpaf
+, httpaf-lwt-unix
+, logs
+, lwt
+, lwt_ppx
+, lwt_ssl
+, magic-mime
+, mirage-clock
+, mirage-crypto
+, mirage-crypto-rng
+, multipart_form
+, ppx_expect
 , psq
 , result
-, ppx_expect
-, alcotest
+, uri
+, websocketaf
+, yojson
 }:
 
 buildDunePackage {
@@ -36,15 +42,12 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "dream";
-    rev = "a0dcaf5b4729b24a37c89001bd23343e47190979";
-    sha256 = "198d23hfnb552ynaj55xlxjaca4v65sbhff3bdvrwl7j362r3spr";
+    rev = "98e68ff814829aae46e3b458a2e3df28efcc31d3";
+    sha256 = "sha256-XfE6Bp4XMAmgEvP9hVnGDSTMisqLQMclF9HeMBtIUTw=";
     fetchSubmodules = true;
   };
 
-  version = "1.0.0-dev";
-  inherit src;
-
-  patches = [ ./unvendor.patch ];
+  # patches = [ ./unvendor.patch ];
 
   propagatedBuildInputs = [
     # base-unix
@@ -66,6 +69,7 @@ buildDunePackage {
     mirage-clock
     (multipart_form.override { upstream = true; })
     uri
+    websocketaf
     yojson
     # vendored dependencies, can we "unvendor" this?
     # gluten
@@ -75,7 +79,6 @@ buildDunePackage {
     h2
     h2-lwt-unix
     # hpack
-    # websocketaf
     # dependencies of vendored packages
     angstrom
     bigstringaf
