@@ -46,7 +46,7 @@ in
       };
     in
     {
-      name = "${lib.substring 0 (lib.stringLength o.version - 7) o.version}${lib.substring 0 7 rev}";
+      name = "nix-${lib.substring 0 (lib.stringLength o.version - 7) o.version}${lib.substring 0 7 rev}";
       inherit src;
     });
 
