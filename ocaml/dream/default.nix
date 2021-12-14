@@ -42,8 +42,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "dream";
-    rev = "98e68ff814829aae46e3b458a2e3df28efcc31d3";
-    sha256 = "sha256-XfE6Bp4XMAmgEvP9hVnGDSTMisqLQMclF9HeMBtIUTw=";
+    rev = "055d8196633d1bd9a3280d97a6367a1eabcc7796";
+    sha256 = "sha256-DP5a7d5/d8MpUi9QTUAd90vWfZ8MWlJqbyEZXKFu4bg=";
     fetchSubmodules = true;
   };
 
