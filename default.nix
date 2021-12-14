@@ -37,19 +37,6 @@ in
           (cross-overlays ++ static-overlays));
     };
 
-  nixUnstable = super.nixUnstable.overrideAttrs (o:
-    let
-      rev = "bceda304982a34c65d5a1dab449cb5bc59f63b83";
-      src = builtins.fetchurl {
-        url = "https://github.com/nixos/nix/archive/${rev}.tar.gz";
-        sha256 = "122wbh8srahcgavkhmqwl9hllyppgra7m6f52yxbiwrznbaxxvbc";
-      };
-    in
-    {
-      name = "nix-${lib.substring 0 (lib.stringLength o.version - 7) o.version}${lib.substring 0 7 rev}";
-      inherit src;
-    });
-
   # Other packages
 
   lib = lib.fix (self: lib //
