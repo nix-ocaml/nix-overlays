@@ -4,7 +4,11 @@ self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages = import ./ocaml/overlay-ocaml-packages.nix { inherit lib callPackage; };
+  overlayOcamlPackages =
+    import ./ocaml/overlay-ocaml-packages.nix {
+      inherit lib callPackage;
+    };
+
 in
 
 (overlayOcamlPackages [ (callPackage ./ocaml { }) ] self super) // {
