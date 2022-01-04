@@ -1,4 +1,5 @@
 { stdenv
+, clang12Stdenv
 , lib
 , cmake
 , xz
@@ -23,6 +24,7 @@
 }:
 
 let
+  stdenv = clang12Stdenv;
   isNewVersion = lib.versionOlder "21.2" version;
   darwinDeps = [ libunwind libedit ];
   linuxDeps = [ ncurses6 ];

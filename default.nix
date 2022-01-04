@@ -4,7 +4,11 @@ self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages = import ./ocaml/overlay-ocaml-packages.nix { inherit lib callPackage; };
+  overlayOcamlPackages =
+    import ./ocaml/overlay-ocaml-packages.nix {
+      inherit lib callPackage;
+    };
+
 in
 
 (overlayOcamlPackages [ (callPackage ./ocaml { }) ] self super) // {
@@ -37,19 +41,6 @@ in
           (cross-overlays ++ static-overlays));
     };
 
-  nixUnstable = super.nixUnstable.overrideAttrs (o:
-    let
-      rev = "bceda304982a34c65d5a1dab449cb5bc59f63b83";
-      src = builtins.fetchurl {
-        url = "https://github.com/nixos/nix/archive/${rev}.tar.gz";
-        sha256 = "122wbh8srahcgavkhmqwl9hllyppgra7m6f52yxbiwrznbaxxvbc";
-      };
-    in
-    {
-      name = "${lib.substring 0 (lib.stringLength o.version - 7) o.version}${lib.substring 0 7 rev}";
-      inherit src;
-    });
-
   # Other packages
 
   lib = lib.fix (self: lib //
@@ -77,6 +68,6 @@ in
     inherit overlayOcamlPackages;
   });
 
-  inherit (callPackage ./cockroachdb { }) cockroachdb-21_x cockroachdb-22_x;
-  cockroachdb = self.cockroachdb-21_x;
+  inherit (callPackage ./cockroachdb { }) cockroachdb-21_1_x cockroachdb-21_2_x;
+  cockroachdb = self.cockroachdb-21_1_x;
 }

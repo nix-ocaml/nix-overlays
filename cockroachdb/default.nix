@@ -1,21 +1,21 @@
-{ callPackage, go_1_15, go_1_16 }:
+{ callPackage, go_1_15, go_1_16, go_1_17 }:
 
 {
-  cockroachdb-21_x = callPackage ./generic.nix (rec {
+  cockroachdb-21_1_x = callPackage ./generic.nix (rec {
     go = go_1_15;
-    version = "21.1.8";
+    version = "21.1.12";
     src = builtins.fetchurl {
       url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-      sha256 = "04i2y8qzhipyrbvyqyjflmqrzzc9vl3ic22h09n777ha95x0r7b7";
+      sha256 = "116zzrwzs6sbkwvnxgs8aidqxhc5a3vrk3acbgdnjbyfxxrrkv8j";
     };
   });
 
-  cockroachdb-22_x = callPackage ./generic.nix (rec {
-    go = go_1_16;
-    version = "21.2.0";
+  cockroachdb-21_2_x = callPackage ./generic.nix (rec {
+    go = go_1_17;
+    version = "21.2.3";
     src = builtins.fetchurl {
-      url = "https://binaries.cockroachdb.com/cockroach-v21.2.0.src.tgz";
-      sha256 = "0h9fv0i72xkxzr743rm4rg69w7qj3fa2qgqk7rx181xvlwhsrgrs";
+      url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
+      sha256 = "1lyxkwyljg82dd8m5b18zbvli02znj2aq2yqf8bpbrsd1psv3m8w";
     };
     patches = [ ./makefile-redact-safe-patch.patch ];
   });
