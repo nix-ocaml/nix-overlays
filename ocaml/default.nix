@@ -337,6 +337,10 @@ with oself;
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
+  parmap = osuper.parmap.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   pg_query = callPackage ./pg_query { };
 
   piaf = callPackage ./piaf { };
