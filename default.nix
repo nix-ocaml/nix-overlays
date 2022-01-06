@@ -21,7 +21,7 @@ in
   });
   inherit esy;
 
-  esy-fhs = callPackage ./ocaml/esy/fhs.nix { inherit esy; inherit (self) buildFHSUserEnv; };
+  esy-fhs = callPackage ./ocaml/esy/fhs.nix { inherit (self) buildFHSUserEnv esy; };
 
   pkgsStatic = super.pkgsStatic.appendOverlays (callPackage ./static { });
 
