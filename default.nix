@@ -8,7 +8,7 @@ let
     import ./ocaml/overlay-ocaml-packages.nix {
       inherit lib callPackage;
     };
-
+  esy = callPackage ./ocaml/esy { };
 in
 
 (overlayOcamlPackages [ (callPackage ./ocaml { }) ] self super) // {
@@ -19,7 +19,9 @@ in
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
   });
-  esy = callPackage ./ocaml/esy { };
+  inherit esy;
+
+  esy-fhs = callPackage ./ocaml/esy/fhs.nix { inherit esy; inherit (self) buildFHSUserEnv; };
 
   pkgsStatic = super.pkgsStatic.appendOverlays (callPackage ./static { });
 
