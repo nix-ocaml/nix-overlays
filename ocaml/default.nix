@@ -454,6 +454,16 @@ with oself;
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
+  uunf = osuper.uunf.overrideAttrs (o: {
+    # https://github.com/ocaml/ocaml/issues/9839
+    configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
+      ''
+        runHook preConfigure
+        ulimit -s 16384
+        runHook postConfigure
+      '';
+  });
+
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
