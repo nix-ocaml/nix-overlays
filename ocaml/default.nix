@@ -28,6 +28,7 @@ with oself;
 
 {
   arp = osuper.arp.overrideAttrs (_: {
+    buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
     doCheck = ! stdenv.isDarwin;
   });
 
