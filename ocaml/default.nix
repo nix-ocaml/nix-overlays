@@ -51,6 +51,14 @@ with oself;
     };
     nativeBuildInputs = [ ocaml findlib ];
   });
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/johnwhitington/cpdf-source/archive/v2.5.tar.gz;
+      sha256 = "1qnih4sdlhilv1xxqjj2xjk3afxi6g329xh7j0wikpiwhqa20wib";
+    };
+  });
+
+
   astring = osuper.astring.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
