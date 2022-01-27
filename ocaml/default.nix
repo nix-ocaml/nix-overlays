@@ -28,6 +28,7 @@ with oself;
 
 {
   arp = osuper.arp.overrideAttrs (_: {
+    buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
     doCheck = ! stdenv.isDarwin;
   });
 
@@ -50,6 +51,14 @@ with oself;
     };
     nativeBuildInputs = [ ocaml findlib ];
   });
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/johnwhitington/cpdf-source/archive/v2.5.tar.gz;
+      sha256 = "1qnih4sdlhilv1xxqjj2xjk3afxi6g329xh7j0wikpiwhqa20wib";
+    };
+  });
+
+
   astring = osuper.astring.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
@@ -453,16 +462,6 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
-
-  uunf = osuper.uunf.overrideAttrs (o: {
-    # https://github.com/ocaml/ocaml/issues/9839
-    configurePhase = lib.optionalString (lib.versionOlder "4.11" osuper.ocaml.version)
-      ''
-        runHook preConfigure
-        ulimit -s 16384
-        runHook postConfigure
-      '';
-  });
 
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
