@@ -134,6 +134,10 @@ let
     "ocaml-migrate-parsetree"
     "wasm"
     "pythonlib"
+
+    # Broken / EOL
+    "morph"
+    "morph_graphql_server"
   ];
 
   buildCandidates = pkgs:

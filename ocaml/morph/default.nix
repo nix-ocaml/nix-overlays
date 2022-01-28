@@ -44,5 +44,6 @@ buildDunePackage {
   meta = {
     description = "Webframework for Reason and OCaml.";
     license = lib.licenses.mit;
+    broken = true;
   };
 }
