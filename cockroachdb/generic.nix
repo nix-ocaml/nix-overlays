@@ -1,6 +1,9 @@
-{ stdenv
-, clang12Stdenv
-, lib
+{ lib
+, src
+, stdenv
+, buildGoModule
+, fetchurl
+, fetchFromGitHub
 , cmake
 , xz
 , which
@@ -11,67 +14,35 @@
 , installShellFiles
 , removeReferencesTo
 , go
-, fetchpatch
-, yacc
-, perl
-, ccache
-, bazel
-, git
-, govers
-, src
 , version
 , patches ? [ ]
 }:
 
-let
-  stdenv = clang12Stdenv;
-  isNewVersion = lib.versionOlder "21.2" version;
-  darwinDeps = [ libunwind libedit ];
-  linuxDeps = [ ncurses6 ];
-
-  buildInputs = if stdenv.isDarwin then darwinDeps else linuxDeps;
-  nativeBuildInputs =
-    [ installShellFiles cmake xz which autoconf removeReferencesTo go govers ]
-    ++ lib.optional isNewVersion [ yacc git perl ];
-
-  patch = (fetchpatch {
-    # https://github.com/cockroachdb/cockroach/issues/72529
-    url = https://github.com/cockroachdb/krb5/commit/f78edbe30816f049e1360cb6e203fabfdf7b98df.patch;
-    sha256 = "sha256-LDj28IxG7Bs76mwZAbstoJ++fhydoNm0tk2ccXdvP5w=";
-  });
-  postConfigure =
-    if isNewVersion then ''
-      pushd src/github.com/cockroachdb/cockroach/c-deps/krb5/src
-      patch -p1 aclocal.m4 ${patch}
-      rm -rf ./configure
-      popd
-    '' else ''
-      mkdir $NIX_BUILD_TOP/go
-      export GOPATH=$NIX_BUILD_TOP/go
-    '';
-
-in
-stdenv.mkDerivation rec {
+buildGoModule rec {
   pname = "cockroach";
-  inherit version src patches;
+  inherit src version;
 
-  goPackagePath = "github.com/cockroachdb/cockroach";
+  vendorSha256 = null;
 
-  NIX_CFLAGS_COMPILE = lib.optionals stdenv.cc.isGNU [ "-Wno-error=deprecated-copy" "-Wno-error=redundant-move" "-Wno-error=pessimizing-move" ];
+  NIX_CFLAGS_COMPILE = lib.optionals stdenv.cc.isGNU [
+    "-Wno-error=deprecated-copy"
+    "-Wno-error=redundant-move"
+    "-Wno-error=pessimizing-move"
+  ];
 
-  inherit nativeBuildInputs buildInputs;
-  configurePhase = ''
-    export GOCACHE=$TMPDIR/go-cache
-    mkdir fake-home
-    export HOME=$PWD/fake-home
-    ${postConfigure}
+  nativeBuildInputs = [ installShellFiles cmake xz which autoconf ];
+  buildInputs = if stdenv.isDarwin then [ libunwind libedit ] else [ ncurses6 ];
+
+  inherit patches;
+
+  postPatch = ''
+    patchShebangs .
   '';
-
   buildPhase = ''
     runHook preBuild
-    patchShebangs .
+    export HOME=$TMPDIR
     make buildoss
-    cd src/${goPackagePath}
+    cd src/github.com/cockroachdb/cockroach
     for asset in man autocomplete; do
       ./cockroachoss gen $asset
     done
@@ -84,19 +55,24 @@ stdenv.mkDerivation rec {
     install -D cockroachoss $out/bin/cockroach
     installShellCompletion cockroach.bash
 
-    mkdir -p $man/share/man
-    cp -r man $man/share/man
+    installManPage man/man1/*
 
     runHook postInstall
   '';
 
   outputs = [ "out" "man" ];
 
+  # fails with `GOFLAGS=-trimpath`
+  allowGoReference = true;
+  preFixup = ''
+    find $out -type f -exec ${removeReferencesTo}/bin/remove-references-to -t ${go} '{}' +
+  '';
+
   meta = with lib; {
     homepage = "https://www.cockroachlabs.com";
     description = "A scalable, survivable, strongly-consistent SQL database";
     license = licenses.bsl11;
-    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
-    maintainers = with maintainers; [ rushmorem thoughtpolice rvolosatovs ];
+    # platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+    maintainers = with maintainers; [ rushmorem thoughtpolice turion ];
   };
 }
