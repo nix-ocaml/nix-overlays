@@ -235,8 +235,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
   });
 
-
-
   jose = callPackage ./jose { };
 
   ke = osuper.ke.overrideAttrs (o: {
@@ -313,6 +311,10 @@ with oself;
     if lib.versionOlder "4.13" osuper.ocaml.version then
       null
     else osuper.ocaml-lsp;
+
+  inherit (callPackage ./ocamlformat-rpc { })
+    ocamlformat-rpc# latest version
+    ocamlformat-rpc_0_20_0 ocamlformat-rpc_0_20_1;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
