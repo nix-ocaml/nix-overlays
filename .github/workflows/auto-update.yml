@@ -31,10 +31,10 @@ jobs:
         run: |
           git config --global user.name 'UpdateBot'
           git config --global user.email 'ulrikstrid@users.noreply.github.com'
-          git checkout -b "auto-update/$GITHUB_JOB-$GITHUB_RUN_ID"
+          git checkout -b auto-update-sources
           git add sources.nix
           git commit -m "Update sources"
-          git push --set-upstream origin "auto-update/$GITHUB_JOB-$GITHUB_RUN_ID"
+          git push --set-upstream origin auto-update-sources
       - name: Open pull request
         uses: repo-sync/pull-request@v2
         env:
@@ -42,7 +42,7 @@ jobs:
           GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
         with:
           destination_branch: "master"
-          source_branch: auto-update/${{env.GITHUB_JOB}}-${{env.GITHUB_RUN_ID}}
+          source_branch: auto-update-sources
           pr_title: "Update sources"
           pr_body: ":robot_face: Updating sources to the latest version.\nDiff between current and this version can be seen here: ${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
