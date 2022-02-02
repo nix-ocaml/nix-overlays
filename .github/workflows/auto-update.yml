@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - "ulrikstrid/auto-update"
+  schedule:
+    - cron: "0 2 * * *"
+
 jobs:
   update-sources:
     runs-on: ubuntu-latest
@@ -20,21 +23,26 @@ jobs:
             const script = require('./.github/workflows/auto-update.js')
             return await script({github, context, core, require})
       - name: "format sources.nix"
-        run: |
-          find . -iname '*.nix' | xargs nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt ./sources.nix
+        run: nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt ./sources.nix
       - name: Commit updated sources
+        env:
+          GITHUB_JOB: ${{ env.GITHUB_JOB }}
+          GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
         run: |
           git config --global user.name 'UpdateBot'
           git config --global user.email 'ulrikstrid@users.noreply.github.com'
-          git checkout "$(env.GITHUB_JOB)-$(env.GITHUB_RUN_ID)"
+          git checkout -b "auto-update/$GITHUB_JOB-$GITHUB_RUN_ID"
           git add sources.nix
           git commit -m "Update sources"
-          git push --set-upstream origin "$(env.GITHUB_JOB)-$(env.GITHUB_RUN_ID)"
+          git push --set-upstream origin "auto-update/$GITHUB_JOB-$GITHUB_RUN_ID"
       - name: Open pull request
         uses: repo-sync/pull-request@v2
+        env:
+          GITHUB_JOB: ${{ env.GITHUB_JOB }}
+          GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
         with:
           destination_branch: "master"
-          source_branch: "${{env.GITHUB_JOB}}-${{env.GITHUB_RUN_ID}}"
+          source_branch: auto-update/${{env.GITHUB_JOB}}-${{env.GITHUB_RUN_ID}}
           pr_title: "Update sources"
           pr_body: ":robot_face: Updating sources to the latest version.\nDiff between current and this version can be seen here: ${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
