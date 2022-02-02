@@ -1,6 +1,8 @@
 name: Auto-update
 on:
   push:
+    branches:
+      - 'ulrikstrid/auto-update'
 
 jobs:
   update: ubuntu-latest
