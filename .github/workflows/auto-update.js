@@ -1,4 +1,8 @@
 const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, "0");
+const day = today.getDate().toString().padStart(2, "0");
+
 const source_regex =
   /name = "nixos-unstable-(20[0-9\-]+)";.    url = https:\/\/github\.com\/nixos\/nixpkgs\/archive\/([0-9a-z]+)\.tar\.gz;.    sha256 = "([0-9a-z]+)";/s;
 
@@ -33,8 +37,6 @@ module.exports = async ({ github, context, core, require }) => {
     return revision;
   });
 
-  const sources = readFileSync(source_path).toString();
-
   function get_sha256(url) {
     return new Promise((resolve, reject) => {
       exec(
@@ -51,16 +53,13 @@ module.exports = async ({ github, context, core, require }) => {
     });
   }
 
-  Promise.all([revisions, sources]).then(async ([revision, old_source]) => {
+  return revisions.then(async (revision) => {
     const next_sha = revision.metric.revision;
     const next_url = `https://github.com/nixos/nixpkgs/archive/${next_sha}.tar.gz`;
 
     const next_sha256 = await get_sha256(next_url);
 
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0");
-    const day = today.getDate().toString().padStart(2, "0");
-
+    const old_source = readFileSync(source_path).toString();
     const next_source = old_source.replace(
       source_regex,
       `name = "nixos-unstable-${year}-${month}-${day}";
