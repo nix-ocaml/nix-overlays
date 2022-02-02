@@ -17,7 +17,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const script = require('./auto-update.js')
+            const script = require('./.github/workflows/auto-update.js')
             await script({github, context, core, require})
       - name: "format sources.nix"
         run: |
