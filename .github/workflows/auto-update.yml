@@ -18,7 +18,7 @@ jobs:
           result-encoding: string
           script: |
             const script = require('./.github/workflows/auto-update.js')
-            await script({github, context, core, require})
+            return await script({github, context, core, require})
       - name: "format sources.nix"
         run: |
           find . -iname '*.nix' | xargs nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt ./sources.nix
