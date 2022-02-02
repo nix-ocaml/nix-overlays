@@ -4,7 +4,7 @@ const source_regex =
 
 module.exports = async ({ github, context, core, require }) => {
   const https = require("https");
-  const { readFile, writeFile } = require("fs/promises");
+  const { readFileSync, writeFileSync } = require("fs");
   const { exec } = require("child_process");
 
   const source_path = "./sources.nix";
@@ -33,9 +33,7 @@ module.exports = async ({ github, context, core, require }) => {
     return revision;
   });
 
-  const sources = readFile(source_path).then((source) => {
-    return source.toString();
-  });
+  const sources = readFileSync(source_path).toString();
 
   function get_sha256(url) {
     return new Promise((resolve, reject) => {
@@ -70,7 +68,7 @@ module.exports = async ({ github, context, core, require }) => {
     sha256 = "${next_sha256}";`
     );
 
-    writeFile(source_path, next_source);
+    writeFileSync(source_path, next_source);
 
     const [_full_match, _old_date, old_git_sha] =
       old_source.match(source_regex);
