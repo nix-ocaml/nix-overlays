@@ -1,12 +1,14 @@
 { lib, buildDunePackage, ppxlib }:
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "logs-ppx";
-  version = "0.1.0";
+  version = "0.2.0";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/logs-ppx/archive/v0.1.0.tar.gz;
-    sha256 = "0j8x81qc7k8p87rrw2nv9wasjjnq4hrfwcwk3a682p90gzdx9vcy";
+    url = "https://github.com/ulrikstrid/${pname}/releases/download/v${version}/logs-ppx-${version}.tbz";
+    sha256 = "1cdzq08c54b93ysw94ykhnb51h8sx61b9sh3jl3xrmjrz4z08gq5";
   };
+
+  doCheck = true;
 
   propagatedBuildInputs = [ ppxlib ];
 
