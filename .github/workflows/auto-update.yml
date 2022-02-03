@@ -34,7 +34,7 @@ jobs:
           git checkout -b auto-update-sources
           git add sources.nix
           git commit -m "Update sources"
-          git push --set-upstream origin auto-update-sources
+          git push --set-upstream origin auto-update-sources --force
       - name: Open pull request
         uses: repo-sync/pull-request@v2
         env:
