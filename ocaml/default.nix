@@ -151,7 +151,7 @@ with oself;
       url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.3.tar.gz;
       sha256 = "0034x8hb8wdw5mv9kh7rjhf1az2b7qbbdrx56lkr3hm370nprzvq";
     };
-    patches = [ ./install_topfind.patch ];
+    patches = [ ./ldconf.patch ./install_topfind.patch ];
   });
 
   flow_parser = callPackage ./flow_parser { };
