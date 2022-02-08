@@ -36,6 +36,13 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
+  biniou = osuper.biniou.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/biniou/archive/3c92addbbfb9652e6a70a2acddf6fde2f240a4aa.tar.gz;
+      sha256 = "15p6ffk8cw6m5lg3pq573r3zlkn1sy1dzp2cxaldcdxyy4dykr09";
+    };
+  });
+
   calendar = callPackage ./calendar { };
 
   camlp5 = osuper.camlp5.overrideAttrs (o: {
@@ -77,6 +84,8 @@ with oself;
     nativeBuildInputs = [ nativeCairo gtk2.dev pkg-config dune-configurator ];
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
+
+  camlidl = callPackage ./camlidl { };
 
   carton = osuper.carton.overrideAttrs (_: {
     doCheck = false;
@@ -424,6 +433,13 @@ with oself;
 
   reason-native = osuper.reason-native // { qcheck-rely = null; };
 
+  react = osuper.react.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/react/archive/aebf35179964e73a7ef557c6a56175c7abdb9947.tar.gz;
+      sha256 = "04rqmigdbgah4yvdjpk3ai9j7d3zhp2hz2qd482p1q2k3bbn52kh";
+    };
+  });
+
   redemon = callPackage ./redemon { };
 
   redis = callPackage ./redis { };
@@ -493,6 +509,13 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+
+  xmlm = osuper.xmlm.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/xmlm/archive/refs/tags/v1.4.0.tar.gz;
+      sha256 = "1qx89nzwv9qx6zw9xbrzlsvpmxwb30iji41kdw10x40ylwfnra4x";
+    };
+  });
 
   # Jane Street packages
   async_websocket = osuper.buildDunePackage {
