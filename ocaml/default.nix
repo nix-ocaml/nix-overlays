@@ -146,6 +146,14 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
+  findlib = osuper.findlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.3.tar.gz;
+      sha256 = "0034x8hb8wdw5mv9kh7rjhf1az2b7qbbdrx56lkr3hm370nprzvq";
+    };
+    patches = [ ./install_topfind.patch ];
+  });
+
   flow_parser = callPackage ./flow_parser { };
 
   gluten = callPackage ./gluten { };
@@ -296,6 +304,13 @@ with oself;
 
   ocaml = osuper.ocaml.override { flambdaSupport = true; };
 
+  ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/ocamlbuild/archive/ecbfefb69659085de7e3e45e0ce1848987b06101.tar.gz;
+      sha256 = "1irh4nph089fk6imlr5yxymz6spmlipqf93wpxx5mf4wbwydwryw";
+    };
+  });
+
   ocamlnet = osuper.ocamlnet.overrideAttrs (o:
     let
       script = writeScriptBin "cpp" ''
@@ -345,6 +360,7 @@ with oself;
   });
 
 
+  oauth = callPackage ./oidc/oauth.nix { };
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
@@ -464,6 +480,13 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
+
+  uutf = osuper.uutf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
+      sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
+    };
+  });
 
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
