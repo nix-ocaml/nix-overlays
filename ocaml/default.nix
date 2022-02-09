@@ -684,6 +684,13 @@ with oself;
     '';
   });
 
+  uuuu = osuper.uuuu.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/uuuu/releases/download/v0.3.0/uuuu-0.3.0.tbz;
+      sha256 = "19n39yc7spgzpk9i70r0nhkwsb0bfbvbgpf8d863p0a3wgryhzkb";
+    };
+  });
+
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
