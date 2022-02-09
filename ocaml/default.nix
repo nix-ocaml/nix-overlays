@@ -46,6 +46,14 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
+  atd = osuper.atd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/atd/archive/531c36ac5636f9e661884863f62feff49cd40db5.tar.gz;
+      sha256 = "19gmcb340qr639h1cryldkqckmsd4lq5h78s3llasm4w7cxxnnf7";
+    };
+
+  });
+
   biniou = osuper.biniou.overrideAttrs (o: {
     patches = [
       (fetchpatch {
