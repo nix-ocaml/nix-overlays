@@ -742,6 +742,18 @@ with oself;
     };
   });
 
+  utop = osuper.utop.overrideAttrs (_: {
+    version = "2.9.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/releases/download/2.9.0/utop-2.9.0.tbz;
+      sha256 = "17jd61bc6pva5wqmnc9xq70ysyjplrzf1p25sq1s7wgrfq2vlyyd";
+    };
+
+    prePatch = ''
+      substituteInPlace src/lib/uTop_main.ml --replace "Clflags.unsafe_string" "(ref false)"
+    '';
+  });
+
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
