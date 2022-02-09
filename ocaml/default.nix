@@ -48,8 +48,8 @@ with oself;
 
   atd = osuper.atd.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/atd/archive/531c36ac5636f9e661884863f62feff49cd40db5.tar.gz;
-      sha256 = "19gmcb340qr639h1cryldkqckmsd4lq5h78s3llasm4w7cxxnnf7";
+      url = https://github.com/anmonteiro/atd/archive/ac9b826354e3b2103b8b95599c26e04b7868d0bf.tar.gz;
+      sha256 = "1108c9dhadp8mh925jrfnr83my0rsnpsxhrl2my3fgzq738lrx2l";
     };
 
   });
@@ -223,6 +223,13 @@ with oself;
     patches = [ ./ldconf.patch ./install_topfind.patch ];
   });
 
+  fix = osuper.fix.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://gitlab.inria.fr/fpottier/fix/-/archive/20220121/archive.tar.gz;
+      sha256 = "1bd8xnk3qf7nfsmk3z6hksvcascndbl7pp2a50ndj8hzf7hdnfwm";
+    };
+  });
+
   flow_parser = callPackage ./flow_parser { };
 
   fmt = osuper.fmt.overrideAttrs (_: {
@@ -354,6 +361,14 @@ with oself;
     if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
       callPackage ./melange/compiler-libs.nix { }
     else null;
+
+  # This overrides Menhir too.
+  menhirLib = osuper.menhirLib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://gitlab.inria.fr/fpottier/menhir/-/archive/e5c3087028286016ed72880fe5e702077b28441a.tar.gz;
+      sha256 = "0pis7mghrnl5ahqv3gm0ybjb1032ifixsnfz5skg6n8jl4pggi2w";
+    };
+  });
 
   merlin = callPackage ./merlin { };
 
