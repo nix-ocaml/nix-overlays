@@ -144,8 +144,7 @@ let
     "odate"
 
     # incompatible with newer yojson
-    "refmterr"
-    "rely"
+    "reason-native"
   ];
 
   buildCandidates = pkgs:
