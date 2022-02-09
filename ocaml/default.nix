@@ -350,11 +350,18 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (_: {
+    version = "5.5.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/1edb00f0a179d85b1546cad45fd5b5b6dd87a295.tar.gz;
-      sha256 = "1bqgqcadxz7z9gfwqb336n8dczz08vrs1bn7nnv52303fbvmncyn";
+      url = https://github.com/ocsigen/lwt/archive/bab52d9744cb2d5cd3cfe86cda65ba73752998ee.tar.gz;
+      sha256 = "0g8vhbdg9y46sn62k7p08wanz4pznanwqr85xzl0c158ighss6c5";
     };
+
+    prePatch = ''
+      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"      
+    '';
   });
+
+  lwt_react = callPackage ./lwt/react.nix { };
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     prePatch = ''
