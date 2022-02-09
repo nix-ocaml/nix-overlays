@@ -557,6 +557,15 @@ with oself;
     propagatedBuildInputs = [ ppx_jane core core_kernel async ];
   };
 
+  ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    propagatedBuildInputs = [
+      ppx_derivers
+      result
+    ];
+    # Tests use `Pervasives`.
+    doCheck = false;
+  });
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/e030f13a3.tar.gz;
