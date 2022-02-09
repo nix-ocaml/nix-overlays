@@ -651,6 +651,13 @@ with oself;
     };
   });
 
+  uunf = osuper.uunf.overrideAttrs (_: {
+    buildPhase = ''
+      export OCAMLRUNPARAM="l=1100000"
+      ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build
+    '';
+  });
+
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
