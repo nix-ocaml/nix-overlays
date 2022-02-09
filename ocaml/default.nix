@@ -496,6 +496,13 @@ with oself;
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
+  ocsigen-toolkit = osuper.ocsigen-toolkit.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/ocsigen-toolkit/archive/499e8260df6487ebdacb9fcccb2f9dec36df8063.tar.gz;
+      sha256 = "10zlgp7wmrwwzq6298y7q4hlsmpq587vlcppj81hly3as1jq16ni";
+    };
+  });
+
   ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
