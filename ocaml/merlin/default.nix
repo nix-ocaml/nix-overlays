@@ -10,7 +10,7 @@
 }:
 
 let
-  merlinVersion = "4.1";
+  merlinVersion = "4.4";
 
   ocamlVersionShorthand = lib.concatStrings
     (lib.take 2 (lib.splitVersion ocaml.version));
@@ -26,16 +26,16 @@ buildDunePackage {
     if (lib.versionOlder "4.13" ocaml.version) then
       builtins.fetchurl
         {
-          url = https://github.com/kit-ty-kate/merlin/archive/38c13ee8907c84fd26245c7e06d03f370b2d7e74.tar.gz;
-          sha256 = "0anm7vmx4qbz3hs2aah5zfv3lgpkbj9chxswlnh166x8m0n77fll";
+          url = https://github.com/ocaml/merlin/releases/download/v4.4-413/merlin-4.4-413.tbz;
+          sha256 = "1ilmh2gqpwgr51w2ba8r0s5zkj75h00wkw4az61ssvivn9jxr7k0";
         }
     else
       if (lib.versionOlder "4.12" ocaml.version)
       then
         builtins.fetchurl
           {
-            url = https://github.com/ocaml/merlin/releases/download/v4.1-412/merlin-v4.1-412.tbz;
-            sha256 = "13cx0v999ijj48m2zb0rsgi1m42bywm7jc8fsqxkkf5xfggawk7v";
+            url = https://github.com/ocaml/merlin/releases/download/v4.4-412/merlin-4.4-412.tbz;
+            sha256 = "18xjpsiz7xbgjdnsxfc52l7yfh22harj0birlph4xm42d14pkn0n";
           }
       else if (lib.versionOlder "4.11" ocaml.version)
       then
@@ -56,7 +56,7 @@ buildDunePackage {
       dot_merlin_reader = "${dot-merlin-reader}/bin/dot-merlin-reader";
       dune = "${dune_2}/bin/dune";
     })
-  ];
+  ] ++ lib.optional (lib.versionOlder "4.12" ocaml.version) ./camlp-streams.patch;
 
   buildInputs = [ dot-merlin-reader yojson csexp result ];
 
