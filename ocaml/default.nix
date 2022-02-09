@@ -50,7 +50,7 @@ with oself;
     patches = [
       (fetchpatch {
         url = https://raw.githubusercontent.com/ocaml-bench/sandmark/2c5102156afd81cb4c0c91ab77375d5fc5d332bf/dependencies/packages/biniou/biniou.1.2.1/files/biniou-use-camlp-streams.patch;
-        sha256 = "0i71rqlpd0fjkh9s90y2r5iwdx1lsnxm1mf82yvqysq3l133qsyl";
+        sha256 = "sha256-xwB+zpV1xZQyQgyF+NS+B/doxTZyE7vitXb+iN3sBbg=";
       })
     ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
