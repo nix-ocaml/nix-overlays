@@ -375,6 +375,13 @@ with oself;
     };
   });
 
+  ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ygrek/ocaml-extlib/archive/434b1dea.tar.gz;
+      sha256 = "0wa6wi8fwg4yba8j6s8g0s89wpwbi2by5kf17p5ihh682m8v23xm";
+    };
+  });
+
   ocamlnet = osuper.ocamlnet.overrideAttrs (o:
     let
       script = writeScriptBin "cpp" ''
@@ -427,11 +434,12 @@ with oself;
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
-  ounit2 = osuper.ounit2.overrideAttrs (_: {
+  ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
       sha256 = "04src5dc95bchimvnlbxih78pn95336b6rimbknqx8ch1qggp406";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
   });
 
   parmap = osuper.parmap.overrideAttrs (_: {
