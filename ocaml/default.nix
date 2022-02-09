@@ -128,7 +128,7 @@ with oself;
     };
   });
 
-  cmdliner = osuper.cmdliner.overrideAttrs (_: {
+  cmdliner_1_1 = osuper.cmdliner.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.0.tar.gz;
       sha256 = "0617piq2ykfxk0mi9vvyi98pgdy4xav3ji9s7kk2a27sa6k6qns3";
@@ -589,6 +589,7 @@ with oself;
       url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
+    buildPhase = "ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build --with-cmdliner false";
   });
 
   uutf = osuper.uutf.overrideAttrs (_: {
