@@ -756,8 +756,8 @@ with oself;
   });
   sexplib = osuper.sexplib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/sexplib0/archive/f13a9b2.tar.gz;
-      sha256 = "10jg2qgwhgb4dcyzs87r2wbwkjpyasnf0gwjm9vj1igdwiyj66rl";
+      url = https://github.com/janestreet/sexplib/archive/aac0c119.tar.gz;
+      sha256 = "14jsk3z7w41x4s27f2m8sskxdcnkmzv0l0nag0gb2f03jigr7k76";
     };
   });
 
