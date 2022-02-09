@@ -628,6 +628,13 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
+  toml = osuper.toml.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
+      sha256 = "0ck5bqyly3hxdb0kqgkjjl531893r7m4bhk6i93bv1wq2y58igzq";
+    };
+  });
+
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
