@@ -356,6 +356,12 @@ with oself;
     };
   });
 
+  lwt_log = osuper.lwt_log.overrideAttrs (_: {
+    prePatch = ''
+      substituteInPlace src/core/lwt_log_core.ml --replace "String.lowercase" "String.lowercase_ascii"
+    '';
+  });
+
   mustache = osuper.mustache.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/rgrinberg/ocaml-mustache/archive/d0c45499f9a5ee91c38cf605ae20ecee47142fd8.tar.gz;
