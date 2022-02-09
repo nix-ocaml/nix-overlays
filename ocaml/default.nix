@@ -486,7 +486,12 @@ with oself;
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
-  ptime = (osuper.ptime.override { jsooSupport = false; });
+  ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
+      sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
+    };
+  });
 
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
@@ -551,8 +556,8 @@ with oself;
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/e6430aa.tar.gz;
-      sha256 = "0x10yjphzi0n0vgjqnlrwz1pc5kzza5mk08c6js29h8drf3nhkr1";
+      url = https://github.com/savonet/ocaml-ssl/archive/a76f796a1.tar.gz;
+      sha256 = "0kmg154bnyxf3jhrhmgdamgj92078px6kdy0w2pfgx7llikw9fp3";
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -574,6 +579,10 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
+
+  # These require crowbar which is still not compatible with newer cmdliner.
+  pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
+  unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {
