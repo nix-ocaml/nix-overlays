@@ -142,6 +142,9 @@ let
 
     # incompatible with newer menhir
     "odate"
+
+    # incompatible with newer yojson
+    "refmterr"
   ];
 
   buildCandidates = pkgs:
