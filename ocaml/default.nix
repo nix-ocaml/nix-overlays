@@ -319,6 +319,13 @@ with oself;
     };
   });
 
+  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml-ocamlbuild/archive/852302c8f35b946e2ec275c529a79e46d8749be6.tar.gz;
+      sha256 = "11dj6sg77bzmnrja2vjsaarpwzfn1gbqia2l6y4pml5klpp712iv";
+    };
+  });
+
   lmdb = osuper.buildDunePackage {
     pname = "lmdb";
     version = "1.0";
