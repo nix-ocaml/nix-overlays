@@ -312,6 +312,13 @@ with oself;
     createFindlibDestdir = true;
   };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/4.0.0/js_of_ocaml-4.0.0.tbz;
+      sha256 = "0pj9jjrmi0xxrzmygv4b5whsibw1jxy3wgibmws85x5jwlczh0nz";
+    };
+  });
+
   lmdb = osuper.buildDunePackage {
     pname = "lmdb";
     version = "1.0";
