@@ -162,7 +162,7 @@ with oself;
   decimal = callPackage ./decimal { };
 
   domainslib =
-    if osuper.ocaml.version == "4.12.0+multicore+effects" then
+    if lib.versionAtLeast ocaml.version "5.00" then
       callPackage ./domainslib { }
     else null;
 
@@ -699,11 +699,15 @@ with oself;
   };
 
 
-  sexplib0 = osuper.sexplib0.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/sexplib0/archive/f13a9b2.tar.gz;
-      sha256 = "10jg2qgwhgb4dcyzs87r2wbwkjpyasnf0gwjm9vj1igdwiyj66rl";
-    };
+  sexplib0 = osuper.sexplib0.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        builtins.fetchurl
+          {
+            url = https://github.com/janestreet/sexplib0/archive/f13a9b2.tar.gz;
+            sha256 = "10jg2qgwhgb4dcyzs87r2wbwkjpyasnf0gwjm9vj1igdwiyj66rl";
+          }
+      else o.src;
   });
   sexplib = osuper.sexplib.overrideAttrs (_: {
     src = builtins.fetchurl {
