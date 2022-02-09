@@ -853,6 +853,17 @@ with oself;
     version = "0.1.2-dev";
   };
 
+  secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://gitlab.com/nomadic-labs/ocaml-secp256k1-internal/-/archive/0.3/ocaml-secp256k1-internal-0.3.tar.bz2;
+      sha256 = "0qrscikxq2bp8xb0i4rjfhs6vf9sm2ajynylvmxw2c0gsxz1z76c";
+    };
+    version = "0.3.1";
+    prePatch = ''
+      substituteInPlace src/secp256k1_wrap.c \
+        --replace "alloc_custom" "caml_alloc_custom"
+    '';
+  });
 
   sexplib0 = osuper.sexplib0.overrideAttrs (o: {
     src =
