@@ -118,6 +118,8 @@ with oself;
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
+  calendar = callPackage ./calendar { };
+
   cairo2 = osuper.cairo2.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++
       lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.ApplicationServices ];
