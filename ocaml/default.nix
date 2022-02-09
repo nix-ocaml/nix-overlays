@@ -96,6 +96,13 @@ with oself;
     nativeBuildInputs = [ ocaml findlib ];
   });
 
+  coin = osuper.coin.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
+      sha256 = "0069qqswd1ik5ay3d5q1v1pz0ql31kblfsnv0ax0z8jwvacp3ack";
+    };
+  });
+
   cpdf = osuper.cpdf.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/johnwhitington/cpdf-source/archive/v2.5.tar.gz;
