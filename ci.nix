@@ -136,6 +136,9 @@ let
     # Broken / EOL
     "morph"
     "morph_graphql_server"
+
+    # Broken on OCaml 5.00
+    fontconfig
   ];
 
   buildCandidates = pkgs:
