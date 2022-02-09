@@ -145,6 +145,10 @@ let
 
     # incompatible with newer yojson
     "reason-native"
+
+    # Incompatible with JSOO 4
+    "incr_dom"
+    "bonsai"
   ];
 
   buildCandidates = pkgs:
