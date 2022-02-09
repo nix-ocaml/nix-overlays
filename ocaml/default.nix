@@ -96,6 +96,11 @@ with oself;
     nativeBuildInputs = [ ocaml findlib ];
   });
 
+  camomile = osuper.camomile.overrideAttrs (_: {
+    patches = [ ./camomile.patch ];
+    propagatedBuildInputs = [ camlp-streams ];
+  });
+
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
