@@ -246,6 +246,10 @@ with oself;
     };
   });
 
+  gapi_ocaml = osuper.gapi_ocaml.overrideAttrs (_: {
+    patches = [ ./gapi.patch ];
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
