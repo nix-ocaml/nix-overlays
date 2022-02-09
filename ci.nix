@@ -145,6 +145,7 @@ let
 
     # incompatible with newer yojson
     "refmterr"
+    "rely"
   ];
 
   buildCandidates = pkgs:
