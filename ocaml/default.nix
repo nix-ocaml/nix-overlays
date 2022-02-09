@@ -388,6 +388,21 @@ with oself;
   });
 
   lambda-runtime = callPackage ./lambda-runtime { };
+  lambdaTerm = osuper.lambdaTerm.overrideAttrs (_: {
+    prePatch = ''
+      substituteInPlace src/lTerm_key.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
+      substituteInPlace src/lTerm_resources.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
+      substituteInPlace src/lTerm_text_impl.ml --replace "mark_open_tag" "mark_open_stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "mark_close_tag" "mark_close_stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "print_open_tag" "print_open_stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "print_close_tag" "print_close_stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_set_formatter_tag_functions" "Format.pp_set_formatter_stag_functions"
+      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_open_tag" "Format.pp_open_stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_close_tag" "Format.pp_close_stag"
+      substituteInPlace src/lTerm_text.mli --replace "Format.tag" "Format.stag"
+      substituteInPlace src/lTerm_text_impl.ml --replace "Format.tag" "Format.stag"
+    '';
+  });
   vercel = callPackage ./lambda-runtime/vercel.nix { };
 
   logs = osuper.logs.override { jsooSupport = false; };
