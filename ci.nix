@@ -139,6 +139,9 @@ let
 
     # Broken on OCaml 5.00
     "fontconfig"
+
+    # incompatible with newer menhir
+    "odate"
   ];
 
   buildCandidates = pkgs:

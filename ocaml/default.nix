@@ -653,6 +653,7 @@ with oself;
 
   uunf = osuper.uunf.overrideAttrs (_: {
     buildPhase = ''
+      # big enough stack size
       export OCAMLRUNPARAM="l=1100000"
       ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build
     '';
