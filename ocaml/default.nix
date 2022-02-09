@@ -744,6 +744,9 @@ with oself;
 
   reenv = callPackage ./reenv { };
 
+  rock = callPackage ./opium/rock.nix { };
+  opium = callPackage ./opium { };
+
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/anuragsoni/routes/releases/download/1.0.0/routes-1.0.0.tbz;
