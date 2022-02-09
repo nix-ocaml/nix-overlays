@@ -156,6 +156,17 @@ with oself;
     };
   });
 
+  cudf = buildDunePackage {
+    pname = "cudf";
+    version = "0.5.97+500";
+    src = builtins.fetchurl {
+      url = https://gitlab.com/irill/cudf/-/archive/419631fac6dac1eaa68abe15152fbba52100aa27.tar.gz;
+      sha256 = "0yiisyl5a6la9mlhplfyjxl21ccwv6axjbb1v76xm69324z2xf9g";
+    };
+
+    propagatedBuildInputs = [ ocaml_extlib ];
+  };
+
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
@@ -381,6 +392,9 @@ with oself;
       sha256 = "0wa6wi8fwg4yba8j6s8g0s89wpwbi2by5kf17p5ihh682m8v23xm";
     };
   });
+
+  # Tests don't work on 5.00 because of the Stream.t type.
+  ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: { doCheck = false; });
 
   ocamlnet = osuper.ocamlnet.overrideAttrs (o:
     let
