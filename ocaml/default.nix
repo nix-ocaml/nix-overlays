@@ -1,8 +1,8 @@
 { fetchpatch
 , lib
 , libpq
-, stdenv
 , darwin
+, stdenv
 , openssl
 , pkg-config
 , lmdb
@@ -108,13 +108,6 @@ with oself;
     };
   });
 
-  cpdf = osuper.cpdf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/johnwhitington/cpdf-source/archive/v2.5.tar.gz;
-      sha256 = "1qnih4sdlhilv1xxqjj2xjk3afxi6g329xh7j0wikpiwhqa20wib";
-    };
-  });
-
   astring = osuper.astring.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
@@ -124,11 +117,6 @@ with oself;
   });
 
   calendar = callPackage ./calendar { };
-
-  cairo2 = osuper.cairo2.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++
-      lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.ApplicationServices ];
-  });
 
   cairo2-gtk = buildDunePackage {
     pname = "cairo2-gtk";
@@ -216,6 +204,14 @@ with oself;
     if lib.versionOlder "4.06" ocaml.version
     then oself.dune_2
     else osuper.dune_1;
+
+  dune_2 = osuper.dune_2.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
+      sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
+    };
+    buildInputs = with darwin.apple_sdk.frameworks; [ Foundation CoreServices ];
+  });
 
   easy-format = callPackage ./easy-format { };
 
@@ -357,7 +353,7 @@ with oself;
     };
 
     prePatch = ''
-      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"      
+      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"
     '';
   });
 
