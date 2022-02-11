@@ -571,6 +571,14 @@ with oself;
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
+  piqi = osuper.piqi.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
+
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
