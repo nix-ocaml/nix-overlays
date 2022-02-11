@@ -625,6 +625,8 @@ with oself;
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
+  ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
+
   ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
