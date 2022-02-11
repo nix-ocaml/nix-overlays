@@ -1,11 +1,11 @@
-{ lib, buildDunePackage, dune, stdune, dyn }:
+{ lib, buildDunePackage, dune, dune-private-libs }:
 
 
 buildDunePackage {
-  pname = "fiber";
+  pname = "dune-site";
   inherit (dune) src version;
 
-  propagatedBuildInputs = [ dyn stdune ];
+  propagatedBuildInputs = [ dune-private-libs ];
   dontAddPrefix = true;
   preBuild = ''
     rm -rf vendor/csexp

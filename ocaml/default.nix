@@ -223,6 +223,7 @@ with oself;
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
   dune-action-plugin = callPackage ./dune/action-plugin.nix { };
   dune-glob = callPackage ./dune/glob.nix { };
+  dune-site = callPackage ./dune/site.nix { };
 
   easy-format = callPackage ./easy-format { };
 
