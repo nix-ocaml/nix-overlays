@@ -295,6 +295,8 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
+  hacl_x25519 = osuper.hacl_x25519.overrideAttrs (_: { doCheck = false; });
+
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
@@ -541,10 +543,6 @@ with oself;
     createFindlibDestdir = true;
   };
 
-  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
-  });
-
   oauth = callPackage ./oidc/oauth.nix { };
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
@@ -596,6 +594,10 @@ with oself;
     ];
   });
 
+  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
+  });
+
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 
   postgres_async = osuper.buildDunePackage {
@@ -626,6 +628,15 @@ with oself;
   });
 
   ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
+
+  printbox-text = osuper.printbox-text.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/printbox/archive/refs/tags/v0.6.tar.gz;
+      sha256 = "1hr6g23b8z0p9kk1g996bzbrrziqk9b2c1za5xyzcq5g3xxqipij";
+    };
+    preBuild = "rm -rf ./dune";
+    doCheck = false;
+  });
 
   ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (_: {
     src = builtins.fetchurl {
