@@ -632,6 +632,14 @@ with oself;
     };
   });
 
+  pycaml = osuper.pycaml.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
+
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else
