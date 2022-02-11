@@ -212,6 +212,17 @@ with oself;
     };
     buildInputs = with darwin.apple_sdk.frameworks; [ Foundation CoreServices ];
   });
+  dune-configurator = callPackage ./dune/configurator.nix { };
+  dyn = callPackage ./dune/dyn.nix { };
+  ordering = callPackage ./dune/ordering.nix { };
+  stdune = callPackage ./dune/stdune.nix { };
+  fiber = callPackage ./dune/fiber.nix { };
+  xdg = callPackage ./dune/xdg.nix { };
+  dune-private-libs = callPackage ./dune/private-libs.nix { };
+  dune-rpc = callPackage ./dune/rpc.nix { };
+  dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
+  dune-action-plugin = callPackage ./dune/action-plugin.nix { };
+  dune-glob = callPackage ./dune/glob.nix { };
 
   easy-format = callPackage ./easy-format { };
 
