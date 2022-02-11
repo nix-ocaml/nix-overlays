@@ -313,6 +313,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
+  iter = osuper.iter.overrideAttrs (_: { doCheck = false; });
   itv-tree = stdenv.mkDerivation {
     name = "itv-tree";
     version = "2.1";
@@ -325,7 +326,9 @@ with oself;
       ocaml setup.ml -build
     '';
     installPhase = ''
+      runHook preInstall
       ocaml setup.ml -install
+      runHook postInstall
     '';
     nativeBuildInputs = [ ocaml ocamlbuild findlib ];
     createFindlibDestdir = true;
