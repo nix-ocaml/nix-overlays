@@ -768,6 +768,14 @@ with oself;
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
+  xml-light = osuper.xml-light.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
+
   xmlm = osuper.xmlm.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/xmlm/archive/refs/tags/v1.4.0.tar.gz;
