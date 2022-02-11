@@ -720,6 +720,10 @@ with oself;
       url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
       sha256 = "0ck5bqyly3hxdb0kqgkjjl531893r7m4bhk6i93bv1wq2y58igzq";
     };
+
+    preConfigure = ''
+      echo '(using menhir 2.1)' >> ./dune-project
+    '';
   });
 
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
