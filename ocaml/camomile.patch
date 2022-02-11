@@ -1,0 +1,211 @@
+diff --git a/Camomile/dune b/Camomile/dune
+index 8387923..7df1a75 100644
+--- a/Camomile/dune
++++ b/Camomile/dune
+@@ -9,7 +9,7 @@
+  (name camomileLibrary)
+  (public_name camomile.library)
+  (wrapped true)
+- (libraries bigarray camomileDefaultConfig)
++ (libraries bigarray camomileDefaultConfig camlp-streams)
+  (modules
+   :standard \ camomileDefaultConfig
+   camomile_do_not_use
+diff --git a/Camomile/internal/byte_labeled_dag.ml b/Camomile/internal/byte_labeled_dag.ml
+index 48cb354..e3a1101 100644
+--- a/Camomile/internal/byte_labeled_dag.ml
++++ b/Camomile/internal/byte_labeled_dag.ml
+@@ -87,7 +87,7 @@ let make_bytes def vs =
+           branch.(Char.code c') <- Some node;
+           scan d c leaf branch rest
+   in
+-  let comp (s1, _) (s2, _) = Pervasives.compare s1 s2 in
++  let comp (s1, _) (s2, _) = Stdlib.compare s1 s2 in
+   let vs = List.sort comp vs in
+   match vs with
+     (_, _) :: _ ->
+diff --git a/Camomile/internal/unidata.ml b/Camomile/internal/unidata.ml
+index 5027a8b..d74c6cb 100644
+--- a/Camomile/internal/unidata.ml
++++ b/Camomile/internal/unidata.ml
+@@ -299,13 +299,6 @@ module Make (Config : ConfigInt.Type) = struct
+     | `Buhid
+     | `Tagbanwa ]
+ 
+-  (* little hack to maintain 4.02.3 compat with warnings *)
+-  module String = struct
+-    [@@@ocaml.warning "-3-32"]
+-    let lowercase_ascii = StringLabels.lowercase
+-    include String
+-  end
+-
+   let script_of_name name =
+     match String.lowercase_ascii name with
+     | "common" -> `Common
+diff --git a/Camomile/public/charEncoding.ml b/Camomile/public/charEncoding.ml
+index 7b7939c..f78926f 100644
+--- a/Camomile/public/charEncoding.ml
++++ b/Camomile/public/charEncoding.ml
+@@ -131,12 +131,12 @@ module type Interface = sig
+       {!OOChannel.obj_output_channel} which
+       receives Unicode characters and outputs them to [outchan] using
+       the encoding [enc]. *)
+-  class out_channel : t -> Pervasives.out_channel -> [UChar.t] obj_output_channel
++  class out_channel : t -> Stdlib.out_channel -> [UChar.t] obj_output_channel
+ 
+   (** [new in_channel enc inchan] creates the intput channel object
+       {!OOChannel.obj_input_channel} which
+       reads bytes from [inchan] and converts them to Unicode characters. *)
+-  class in_channel : t -> Pervasives.in_channel -> [UChar.t] obj_input_channel
++  class in_channel : t -> Stdlib.in_channel -> [UChar.t] obj_input_channel
+ 
+   (** [ustream_of enc chars] converts the byte stream [chars]
+       to the Unicode character stream by the encoding [enc]. *)
+diff --git a/Camomile/public/charEncoding.mli b/Camomile/public/charEncoding.mli
+index b9e0979..07e0a16 100644
+--- a/Camomile/public/charEncoding.mli
++++ b/Camomile/public/charEncoding.mli
+@@ -130,12 +130,12 @@ module type Interface = sig
+       {!OOChannel.obj_output_channel} which
+       receives Unicode characters and outputs them to [outchan] using
+       the encoding [enc]. *)
+-  class out_channel : t -> Pervasives.out_channel -> [UChar.t] obj_output_channel
++  class out_channel : t -> Stdlib.out_channel -> [UChar.t] obj_output_channel
+ 
+   (** [new in_channel enc inchan] creates the intput channel object 
+       {!OOChannel.obj_input_channel} which
+       reads bytes from [inchan] and converts them to Unicode characters. *)
+-  class in_channel : t -> Pervasives.in_channel -> [UChar.t] obj_input_channel
++  class in_channel : t -> Stdlib.in_channel -> [UChar.t] obj_input_channel
+ 
+   (** [ustream_of enc chars] converts the byte stream [chars] 
+       to the Unicode character stream by the encoding [enc]. *)
+diff --git a/Camomile/public/oOChannel.mli b/Camomile/public/oOChannel.mli
+index 716ec40..6c8b796 100644
+--- a/Camomile/public/oOChannel.mli
++++ b/Camomile/public/oOChannel.mli
+@@ -113,7 +113,7 @@ class char_obj_output_channel_of : char_output_channel ->
+   [char] obj_output_channel
+ 
+ (** Convert an OCaml input channel to an OO-based character input channel *)
+-class of_in_channel : Pervasives.in_channel -> char_input_channel
++class of_in_channel : Stdlib.in_channel -> char_input_channel
+ 
+ (** Convert an OCaml output channel to an OO-based character output channel *)
+-class of_out_channel : Pervasives.out_channel -> char_output_channel
++class of_out_channel : Stdlib.out_channel -> char_output_channel
+diff --git a/Camomile/public/uCS4.ml b/Camomile/public/uCS4.ml
+index 02f83e9..f3dbe4e 100644
+--- a/Camomile/public/uCS4.ml
++++ b/Camomile/public/uCS4.ml
+@@ -140,5 +140,5 @@ end
+ 
+ let compare (a:t) (b:t) =
+   match Array1.dim a - Array1.dim b with
+-    0 -> Pervasives.compare a b
++    0 -> Stdlib.compare a b
+   | sgn -> sgn
+diff --git a/Camomile/public/uCol.ml b/Camomile/public/uCol.ml
+index cc4c0cd..752593d 100644
+--- a/Camomile/public/uCol.ml
++++ b/Camomile/public/uCol.ml
+@@ -52,14 +52,14 @@ sig
+       If [prec] is omitted, the maximum possible strength is used.
+       If [variable] is omitted, the default of the locale
+       (usually [`Shifted]) is used.
+-      The meaning of the returned value is similar to Pervasives.compare *)
++      The meaning of the returned value is similar to Stdlib.compare *)
+   val compare :
+     ?locale:string -> ?prec:precision -> ?variable:variable_option ->
+     text -> text -> int
+ 
+   (** Binary comparison of sort_key gives the same result as [compare].
+       i.e.
+-      [compare t1 t2 = Pervasives.compare (sort_key t1) (sort_key t2)]
++      [compare t1 t2 = Stdlib.compare (sort_key t1) (sort_key t2)]
+       If the same texts are repeatedly compared,
+       pre-computation of sort_key gives better performance. *)
+   val sort_key :
+@@ -731,7 +731,7 @@ module Make (Config : ConfigInt.Type) (Text : UnicodeString.Type) = struct
+       | _ ->
+         let key1 = key_of_inc prec col_info x1 in
+         let key2 = key_of_inc prec col_info x2 in
+-        Pervasives.compare key1 key2
++        Stdlib.compare key1 key2
+ 
+   let compare ?locale ?prec ?variable t1 t2 =
+     let col_info =
+@@ -782,7 +782,7 @@ module Make (Config : ConfigInt.Type) (Text : UnicodeString.Type) = struct
+       | _ ->
+         let key = key_of_inc prec col_info x in
+         (*      Printf.printf "key_of_inc %s\n" (String.escaped key);*)
+-        Pervasives.compare k key
++        Stdlib.compare k key
+ 
+   let compare_with_key ?locale ?prec ?variable k t =
+     let col_info =
+diff --git a/Camomile/public/uTF8.ml b/Camomile/public/uTF8.ml
+index fc62c1a..2306cb6 100644
+--- a/Camomile/public/uTF8.ml
++++ b/Camomile/public/uTF8.ml
+@@ -194,7 +194,7 @@ let rec iter_aux proc s i =
+ 
+ let iter proc s = iter_aux proc s 0
+ 
+-let compare s1 s2 = Pervasives.compare s1 s2
++let compare s1 s2 = Stdlib.compare s1 s2
+ 
+ exception Malformed_code
+ 
+diff --git a/Camomile/tools/dune b/Camomile/tools/dune
+index 4e06e8f..9c1988b 100644
+--- a/Camomile/tools/dune
++++ b/Camomile/tools/dune
+@@ -12,7 +12,7 @@
+         camomilestringprep)
+  (flags -I Camomile :standard)
+  (modules :standard \ camomilelocaledef camomilelocaledef_lexer iana)
+- (libraries toolslib camomile camomile.library))
++ (libraries toolslib camomile camomile.library camlp-streams))
+ 
+ (executable
+  (name iana)
+@@ -21,6 +21,6 @@
+ 
+ (executable
+  (name camomilelocaledef)
+- (libraries toolslib camomile.library)
++ (libraries toolslib camomile.library camlp-streams)
+  (flags -I Camomile :standard)
+  (modules camomilelocaledef camomilelocaledef_lexer))
+diff --git a/Camomile/tools/parse_specialcasing.ml b/Camomile/tools/parse_specialcasing.ml
+index 1d0a483..d3a62ac 100644
+--- a/Camomile/tools/parse_specialcasing.ml
++++ b/Camomile/tools/parse_specialcasing.ml
+@@ -49,13 +49,6 @@ let us_of_codes codes = List.map uchar_of_code codes
+ let not_pat = Str.regexp "not_\\(.*\\)"
+ let locale_pat = Str.regexp "\\(..\\)\\(_\\(..\\)\\)?\\(_\\(.+\\)\\)?"
+ 
+-(* little hack to maintain 4.02.3 compat with warnings *)
+-module String = struct
+-  [@@@ocaml.warning "-3-32"]
+-  let lowercase_ascii = StringLabels.lowercase
+-  include String
+-end
+-
+ let rec parse_condition condition =
+   let s = String.lowercase_ascii condition in
+   match s with
+diff --git a/Camomile/toolslib/absCe.ml b/Camomile/toolslib/absCe.ml
+index e18e950..8d20b84 100644
+--- a/Camomile/toolslib/absCe.ml
++++ b/Camomile/toolslib/absCe.ml
+@@ -49,7 +49,7 @@ type elt =
+   | `FirstImplicit
+   | `FirstTrailing ]
+ 
+-module Elt = struct type t = elt let compare = Pervasives.compare end
++module Elt = struct type t = elt let compare = Stdlib.compare end
+ module EltMap = Map.Make (Elt)
+ 
+ type ce = AbsOrd.point * AbsOrd.point * AbsOrd.point

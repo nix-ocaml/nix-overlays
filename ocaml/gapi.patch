@@ -1,0 +1,57 @@
+diff --git a/src/gapi/gapiJson.ml b/src/gapi/gapiJson.ml
+index 84cf539d..08f862b5 100644
+--- a/src/gapi/gapiJson.ml
++++ b/src/gapi/gapiJson.ml
+@@ -14,7 +14,7 @@ type json_metadata = { name : string; data_type : json_data_type }
+ let metadata_description { name = n; data_type = dt } =
+   Printf.sprintf "name=%s data_type=%s" n (json_data_type_to_string dt)
+ 
+-type json_data_model = (json_metadata, Yojson.Safe.json) AnnotatedTree.t
++type json_data_model = (json_metadata, Yojson.Safe.t) AnnotatedTree.t
+ 
+ let unexpected r e x =
+   ( match e with
+diff --git a/src/gapi/gapiJson.mli b/src/gapi/gapiJson.mli
+index 313478d4..1253c150 100644
+--- a/src/gapi/gapiJson.mli
++++ b/src/gapi/gapiJson.mli
+@@ -10,12 +10,12 @@ type json_metadata = { name : string; data_type : json_data_type }
+ val metadata_description : json_metadata -> string
+ 
+ type json_data_model =
+-  (json_metadata, Yojson.Safe.json) GapiCore.AnnotatedTree.t
++  (json_metadata, Yojson.Safe.t) GapiCore.AnnotatedTree.t
+ 
+ val unexpected : string -> json_data_model -> 'a -> 'a
+ 
+ val render_value :
+-  string -> Yojson.Safe.json -> Yojson.Safe.json -> json_data_model list
++  string -> Yojson.Safe.t -> Yojson.Safe.t -> json_data_model list
+ 
+ val render_string_value :
+   ?default:string -> string -> string -> json_data_model list
+@@ -78,9 +78,9 @@ val parse_string_element : string -> json_data_model -> string
+ val parse_dictionary_entry :
+   string * string -> json_data_model -> string * string
+ 
+-val json_to_data_model : Yojson.Safe.json -> json_data_model
++val json_to_data_model : Yojson.Safe.t -> json_data_model
+ 
+-val data_model_to_json : json_data_model -> Yojson.Safe.json
++val data_model_to_json : json_data_model -> Yojson.Safe.t
+ 
+ val parse_json_response :
+   (json_data_model -> 'a) -> GapiPipe.OcamlnetPipe.t -> 'a
+diff --git a/src/gapi/gapiServiceAccountCredentials.mli b/src/gapi/gapiServiceAccountCredentials.mli
+index ca1085a3..16cb8c50 100644
+--- a/src/gapi/gapiServiceAccountCredentials.mli
++++ b/src/gapi/gapiServiceAccountCredentials.mli
+@@ -33,7 +33,7 @@ val client_x509_cert_url : (t, string) GapiLens.t
+ 
+ val to_data_model : t -> GapiJson.json_data_model
+ 
+-val to_json : t -> Yojson.Safe.json
++val to_json : t -> Yojson.Safe.t
+ 
+ val parse_json : string -> t
+ 

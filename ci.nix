@@ -136,6 +136,19 @@ let
     # Broken / EOL
     "morph"
     "morph_graphql_server"
+
+    # Broken on OCaml 5.00
+    "fontconfig"
+
+    # incompatible with newer menhir
+    "odate"
+
+    # incompatible with newer yojson
+    "reason-native"
+
+    # Incompatible with JSOO 4
+    "incr_dom"
+    "bonsai"
   ];
 
   buildCandidates = pkgs:
@@ -168,7 +181,7 @@ let
           cockroachdb-22_x
           mongodb-4_2
           # nixUnstable
-          esy
+          # esy
         ];
       in
       [ drvs ] ++ otherDrvs;

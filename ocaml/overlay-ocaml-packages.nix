@@ -30,13 +30,14 @@ in
     ocamlPackages = self.ocamlPackages;
     ocamlPackages_multicore = (oPs.ocamlPackages_4_12.overrideScope' (oself: osuper: {
       ocaml = osuper.ocaml.overrideAttrs (_: {
-        version = "4.12.0+multicore+effects";
-        # hardeningDisable = [ "strictoverflow" ];
+        version = "5.00+trunk";
+        hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml-multicore/ocaml-multicore/archive/9468d8c91feac55c9b390e50c25b739de043e5e0.tar.gz;
-          sha256 = "0zymc0rm5kmydr97jdjbj0wdvlb0ldw57f2i7d915vf8xd0xz9ba";
+          url = https://github.com/ocaml/ocaml/archive/9176cf5b337a23bef66655390c40562286a4af0f.tar.gz;
+          sha256 = "0x0nrr2w3b9029j1vn3bp2q9kwyjyr1259ysgw1qc4m75vsgpqg0";
         };
       });
+
     })).overrideScope' (callPackage ./. { });
   };
 }

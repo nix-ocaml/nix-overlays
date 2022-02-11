@@ -4,8 +4,8 @@ buildDunePackage {
   pname = "graphql_parser";
   version = "0.13.0-dev";
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/ocaml-graphql-server/archive/5354276b91f7b58a04f6de471528bede00d97478.tar.gz;
-    sha256 = "0f4ji4lszqkgkgw4k9acbyk3v5yk697h5gvpfv1nd2cw9vac6d4r";
+    url = https://github.com/anmonteiro/ocaml-graphql-server/archive/8266322ca1c5297bd875acf6ed42f8d14168c7d8.tar.gz;
+    sha256 = "1pbyk42ym4j645m7wrqxbjq71mi24n4jk3ss6b8nvhdsl621c1sy";
   };
   nativeBuildInputs = [ menhir ];
   checkInputs = [ alcotest ];

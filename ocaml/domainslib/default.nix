@@ -2,9 +2,9 @@
 
 buildDunePackage {
   pname = "domainslib";
-  version = "0.2.2-dev";
+  version = "0.5.0-dev";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/domainslib/archive/8aa79bbc0ceeeb373fc5a1bc946705bd8235a20d.tar.gz;
-    sha256 = "0m17zyhxwkj7ffzai2wvin5fm3iq2mmx0mi2l3ia4dsx6ksv9p3f";
+    url = https://github.com/ocaml-multicore/domainslib/archive/00f016cbb226e539c038f4700d354296d6c140ba.tar.gz;
+    sha256 = "0qblng694npdisyb4q0ka1rxi78hj6fd229lw1azkgpfbyy036c7";
   };
 }

@@ -23,6 +23,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: multicore, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
@@ -49,6 +50,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: multicore, continue-on-error: true }
     name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: macos-latest
     env:
@@ -77,6 +79,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: multicore, continue-on-error: true }
         target:
           - arm64
           - musl
