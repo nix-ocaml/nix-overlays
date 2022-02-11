@@ -372,6 +372,13 @@ with oself;
     '';
   });
 
+  lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://gitlab.com/nomadic-labs/lwt-watcher/-/archive/70f826c503cc094ed2de3aa81fa385ea9fddb903.tar.gz;
+      sha256 = "0q1qdmagldhwrcqiinsfag6zxcn5wbvn2p10wpyi8rgk27q3l8sk";
+    };
+  });
+
   lwt_react = callPackage ./lwt/react.nix { };
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
