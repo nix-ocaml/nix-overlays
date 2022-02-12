@@ -531,6 +531,10 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
+  ocplib-json-typed = osuper.ocplib-json-typed.overrideAttrs (o: {
+    preConfigure = "echo '(lang dune 2.0)' > dune-project";
+  });
+
   ocurl = stdenv.mkDerivation rec {
     name = "ocurl-0.9.1";
     src = builtins.fetchurl {
