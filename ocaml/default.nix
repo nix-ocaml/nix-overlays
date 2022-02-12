@@ -574,6 +574,7 @@ with oself;
   piqi = osuper.piqi.overrideAttrs (o: {
     installPhase = ''
       runHook preInstall
+      mkdir -p $OCAMLFIND_DESTDIR/piqirun
       ${o.installPhase}
       runHook postInstall
     '';
