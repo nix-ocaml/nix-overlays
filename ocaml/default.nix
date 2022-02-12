@@ -571,11 +571,13 @@ with oself;
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
+  # ${o.installPhase}
   piqi = osuper.piqi.overrideAttrs (o: {
     installPhase = ''
       runHook preInstall
       mkdir -p $OCAMLFIND_DESTDIR/piqirun
-      ${o.installPhase}
+      make install;
+      make ocaml-install;
       runHook postInstall
     '';
   });
