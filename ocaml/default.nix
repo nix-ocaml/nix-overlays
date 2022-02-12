@@ -225,6 +225,15 @@ with oself;
   dune-glob = callPackage ./dune/glob.nix { };
   dune-site = callPackage ./dune/site.nix { };
 
+  dune-release = osuper.dune-release.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/dune-release/releases/download/1.6.0/dune-release-1.6.0.tbz;
+      sha256 = "07jrra3wdm733bvimzh1j85jmws8dsp7gxwlbz8my0chh9c706qf";
+    };
+    doCheck = false;
+    patches = [ ];
+  });
+
   easy-format = callPackage ./easy-format { };
 
   ezgzip = buildDunePackage rec {
