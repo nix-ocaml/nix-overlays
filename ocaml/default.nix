@@ -1,8 +1,8 @@
 { fetchpatch
 , lib
 , libpq
-, stdenv
 , darwin
+, stdenv
 , openssl
 , pkg-config
 , lmdb
@@ -108,13 +108,6 @@ with oself;
     };
   });
 
-  cpdf = osuper.cpdf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/johnwhitington/cpdf-source/archive/v2.5.tar.gz;
-      sha256 = "1qnih4sdlhilv1xxqjj2xjk3afxi6g329xh7j0wikpiwhqa20wib";
-    };
-  });
-
   astring = osuper.astring.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
@@ -124,11 +117,6 @@ with oself;
   });
 
   calendar = callPackage ./calendar { };
-
-  cairo2 = osuper.cairo2.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++
-      lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.ApplicationServices ];
-  });
 
   cairo2-gtk = buildDunePackage {
     pname = "cairo2-gtk";
@@ -217,6 +205,35 @@ with oself;
     then oself.dune_2
     else osuper.dune_1;
 
+  dune_2 = osuper.dune_2.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
+      sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
+    };
+    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Foundation CoreServices ]);
+  });
+  dune-configurator = callPackage ./dune/configurator.nix { };
+  dyn = callPackage ./dune/dyn.nix { };
+  ordering = callPackage ./dune/ordering.nix { };
+  stdune = callPackage ./dune/stdune.nix { };
+  fiber = callPackage ./dune/fiber.nix { };
+  xdg = callPackage ./dune/xdg.nix { };
+  dune-private-libs = callPackage ./dune/private-libs.nix { };
+  dune-rpc = callPackage ./dune/rpc.nix { };
+  dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
+  dune-action-plugin = callPackage ./dune/action-plugin.nix { };
+  dune-glob = callPackage ./dune/glob.nix { };
+  dune-site = callPackage ./dune/site.nix { };
+
+  dune-release = osuper.dune-release.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/dune-release/releases/download/1.6.0/dune-release-1.6.0.tbz;
+      sha256 = "07jrra3wdm733bvimzh1j85jmws8dsp7gxwlbz8my0chh9c706qf";
+    };
+    doCheck = false;
+    patches = [ ];
+  });
+
   easy-format = callPackage ./easy-format { };
 
   ezgzip = buildDunePackage rec {
@@ -287,6 +304,8 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
+  hacl_x25519 = osuper.hacl_x25519.overrideAttrs (_: { doCheck = false; });
+
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
@@ -305,6 +324,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
+  iter = osuper.iter.overrideAttrs (_: { doCheck = false; });
   itv-tree = stdenv.mkDerivation {
     name = "itv-tree";
     version = "2.1";
@@ -317,7 +337,9 @@ with oself;
       ocaml setup.ml -build
     '';
     installPhase = ''
+      runHook preInstall
       ocaml setup.ml -install
+      runHook postInstall
     '';
     nativeBuildInputs = [ ocaml ocamlbuild findlib ];
     createFindlibDestdir = true;
@@ -357,8 +379,15 @@ with oself;
     };
 
     prePatch = ''
-      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"      
+      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"
     '';
+  });
+
+  lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://gitlab.com/nomadic-labs/lwt-watcher/-/archive/70f826c503cc094ed2de3aa81fa385ea9fddb903.tar.gz;
+      sha256 = "0q1qdmagldhwrcqiinsfag6zxcn5wbvn2p10wpyi8rgk27q3l8sk";
+    };
   });
 
   lwt_react = callPackage ./lwt/react.nix { };
@@ -511,6 +540,16 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
+  ocplib-json-typed = osuper.ocplib-json-typed.overrideAttrs (o: {
+    preConfigure = "echo '(lang dune 2.0)' > dune-project";
+  });
+  ocplib-json-typed-browser = osuper.ocplib-json-typed-browser.overrideAttrs (o: {
+    preConfigure = "echo '(lang dune 2.0)' > dune-project";
+  });
+  ocplib-json-typed-bson = osuper.ocplib-json-typed-bson.overrideAttrs (o: {
+    preConfigure = "echo '(lang dune 2.0)' > dune-project";
+  });
+
   ocurl = stdenv.mkDerivation rec {
     name = "ocurl-0.9.1";
     src = builtins.fetchurl {
@@ -522,10 +561,6 @@ with oself;
     propagatedBuildInputs = [ curl lwt ];
     createFindlibDestdir = true;
   };
-
-  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
-  });
 
   oauth = callPackage ./oidc/oauth.nix { };
   oidc = callPackage ./oidc { };
@@ -555,6 +590,23 @@ with oself;
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
+  piqi = osuper.piqi.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $OCAMLFIND_DESTDIR/piqirun
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
+
+  piqi-ocaml = osuper.piqi-ocaml.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
+
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
@@ -576,6 +628,10 @@ with oself;
       stdio
       stdlib-shims
     ];
+  });
+
+  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
@@ -607,11 +663,30 @@ with oself;
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
+  ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
+
+  printbox-text = osuper.printbox-text.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/printbox/archive/refs/tags/v0.6.tar.gz;
+      sha256 = "1hr6g23b8z0p9kk1g996bzbrrziqk9b2c1za5xyzcq5g3xxqipij";
+    };
+    preBuild = "rm -rf ./dune";
+    doCheck = false;
+  });
+
   ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
       sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
     };
+  });
+
+  pycaml = osuper.pycaml.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
   });
 
   reanalyze =
@@ -702,6 +777,10 @@ with oself;
       url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
       sha256 = "0ck5bqyly3hxdb0kqgkjjl531893r7m4bhk6i93bv1wq2y58igzq";
     };
+
+    preConfigure = ''
+      echo '(using menhir 2.1)' >> ./dune-project
+    '';
   });
 
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
@@ -759,6 +838,14 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+
+  xml-light = osuper.xml-light.overrideAttrs (o: {
+    installPhase = ''
+      runHook preInstall
+      ${o.installPhase}
+      runHook postInstall
+    '';
+  });
 
   xmlm = osuper.xmlm.overrideAttrs (_: {
     src = builtins.fetchurl {

@@ -127,7 +127,6 @@ let
     # broken on OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
-    "ppxfind"
     "ocaml-migrate-parsetree-1-8"
     "ocaml-migrate-parsetree"
     "wasm"

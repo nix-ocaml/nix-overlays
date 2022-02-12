@@ -34,6 +34,4 @@ in
         "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
       ];
     });
-
-    ppxfind = osuper.ppxfind.overrideAttrs (o: { dontStrip = true; });
   })
