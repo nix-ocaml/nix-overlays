@@ -537,6 +537,9 @@ with oself;
   ocplib-json-typed-browser = osuper.ocplib-json-typed-browser.overrideAttrs (o: {
     preConfigure = "echo '(lang dune 2.0)' > dune-project";
   });
+  ocplib-json-typed-bson = osuper.ocplib-json-typed-bson.overrideAttrs (o: {
+    preConfigure = "echo '(lang dune 2.0)' > dune-project";
+  });
 
   ocurl = stdenv.mkDerivation rec {
     name = "ocurl-0.9.1";
