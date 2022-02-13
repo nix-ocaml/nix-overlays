@@ -207,9 +207,13 @@ with oself;
 
   dune_2 = osuper.dune_2.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
-      sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
+      url = https://github.com/ocaml/dune/archive/94cdddb.tar.gz;
+      sha256 = "0kmx0nb2aj3pf98xydp7zryv75i9s9a8gsi20k1xpwlap1ls26ps";
     };
+    # src = builtins.fetchurl {
+    # url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
+    # sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
+    # };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Foundation CoreServices ]);
   });
   dune-configurator = callPackage ./dune/configurator.nix { };
