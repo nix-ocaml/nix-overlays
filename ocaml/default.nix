@@ -210,11 +210,10 @@ with oself;
       url = https://github.com/ocaml/dune/archive/4aebbb0d1aa4242744b1a372f3703fcda429596e.tar.gz;
       sha256 = "1s48khykbzq2lvbi6wl67p6sxqdw1h1f23dfy77fzhdazg4fxg82";
     };
-    # src = builtins.fetchurl {
-    # url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
-    # sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
-    # };
-    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Foundation CoreServices ]);
+    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+      Foundation
+      CoreServices
+    ]);
   });
   dune-configurator = callPackage ./dune/configurator.nix { };
   dyn = callPackage ./dune/dyn.nix { };
