@@ -207,8 +207,8 @@ with oself;
 
   dune_2 = osuper.dune_2.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/94cdddb.tar.gz;
-      sha256 = "0kmx0nb2aj3pf98xydp7zryv75i9s9a8gsi20k1xpwlap1ls26ps";
+      url = https://github.com/ocaml/dune/archive/a4e8220.tar.gz;
+      sha256 = "0mmn7qcci88js1dfxkaf6jmbrp26121ddriw0xwrnaqyhhcr7h1r";
     };
     # src = builtins.fetchurl {
     # url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
