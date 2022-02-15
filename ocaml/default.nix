@@ -567,7 +567,12 @@ with oself;
   });
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
+      sha256 = "1rgncdbbwa5j0wx0p8n44y29mpx98v6fmy8s0djri12frlm0k5dl";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
+    propagatedBuildInputs = [ bigarray-compat ];
   });
 
   ocplib-json-typed = osuper.ocplib-json-typed.overrideAttrs (o: {
