@@ -148,6 +148,8 @@ let
     # Incompatible with JSOO 4
     "incr_dom"
     "bonsai"
+
+    "wodan-unix"
   ];
 
   buildCandidates = pkgs:
