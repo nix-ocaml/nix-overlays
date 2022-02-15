@@ -854,6 +854,14 @@ with oself;
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
+  wodan-unix = osuper.wodan-unix.overrideAttrs (_: {
+    prePatch = ''
+      substituteInPlace src/wodan-unix/dune \
+        --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
+    '';
+
+  });
+
   xmlm = osuper.xmlm.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/xmlm/archive/refs/tags/v1.4.0.tar.gz;
