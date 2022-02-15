@@ -620,23 +620,6 @@ with oself;
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
-  piqi = osuper.piqi.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $OCAMLFIND_DESTDIR/piqirun
-      ${o.installPhase}
-      runHook postInstall
-    '';
-  });
-
-  piqi-ocaml = osuper.piqi-ocaml.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      ${o.installPhase}
-      runHook postInstall
-    '';
-  });
-
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
@@ -868,14 +851,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-
-  xml-light = osuper.xml-light.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      ${o.installPhase}
-      runHook postInstall
-    '';
-  });
 
   xmlm = osuper.xmlm.overrideAttrs (_: {
     src = builtins.fetchurl {
