@@ -207,10 +207,13 @@ with oself;
 
   dune_2 = osuper.dune_2.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.0.0/fiber-3.0.0.tbz";
-      sha256 = "0d9allg6d96502icimmxwpcc82xr200d16vlrm3yn0cmmc97xgl6";
+      url = https://github.com/ocaml/dune/archive/4aebbb0d1aa4242744b1a372f3703fcda429596e.tar.gz;
+      sha256 = "1s48khykbzq2lvbi6wl67p6sxqdw1h1f23dfy77fzhdazg4fxg82";
     };
-    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Foundation CoreServices ]);
+    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+      Foundation
+      CoreServices
+    ]);
   });
   dune-configurator = callPackage ./dune/configurator.nix { };
   dyn = callPackage ./dune/dyn.nix { };
@@ -371,16 +374,13 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
-  lwt = osuper.lwt.overrideAttrs (_: {
+  lwt = osuper.lwt.overrideAttrs (o: {
     version = "5.5.0";
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/bab52d9744cb2d5cd3cfe86cda65ba73752998ee.tar.gz;
-      sha256 = "0g8vhbdg9y46sn62k7p08wanz4pznanwqr85xzl0c158ighss6c5";
+      url = https://github.com/ocsigen/lwt/archive/34f98c6.tar.gz;
+      sha256 = "0hp4kzj2h4ayspjkwhx2f8aiscbb9r6lcm2kx88yfw0nd4dm3qfj";
     };
-
-    prePatch = ''
-      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"
-    '';
   });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
@@ -480,6 +480,33 @@ with oself;
 
   multipart-form-data = callPackage ./multipart-form-data { };
 
+  nocrypto = buildDunePackage {
+    pname = "nocrypto";
+    version = "0.5.4+dune";
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-nocrypto/archive/b31c381.tar.gz;
+      sha256 = "1ajyiz48zr5wpc48maxfjn4sj9knrmbcdzq0vn407fc3y0wdxf52";
+    };
+    nativeBuildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ cstruct ppx_deriving ppx_sexp_conv sexplib zarith cstruct-lwt cpuid ];
+
+  };
+  bigarray-compat = osuper.bigarray-compat.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/bigarray-compat/releases/download/v1.1.0/bigarray-compat-1.1.0.tbz;
+      sha256 = "1m8q6ywik6h0wrdgv8ah2s617y37n1gdj4qvc86yi12winj6ji23";
+    };
+
+  });
+  mmap = osuper.mmap.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
+      sha256 = "0fxv8qff9fsribymjgka7rq050i9yisph74nx642i5z7ng8ahlxq";
+    };
+  });
+
+
+
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/num/archive/v1.4.tar.gz;
@@ -537,7 +564,12 @@ with oself;
   });
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
+      sha256 = "1rgncdbbwa5j0wx0p8n44y29mpx98v6fmy8s0djri12frlm0k5dl";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
+    propagatedBuildInputs = [ bigarray-compat ];
   });
 
   ocplib-json-typed = osuper.ocplib-json-typed.overrideAttrs (o: {
@@ -589,23 +621,6 @@ with oself;
 
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
-
-  piqi = osuper.piqi.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $OCAMLFIND_DESTDIR/piqirun
-      ${o.installPhase}
-      runHook postInstall
-    '';
-  });
-
-  piqi-ocaml = osuper.piqi-ocaml.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      ${o.installPhase}
-      runHook postInstall
-    '';
-  });
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
@@ -839,12 +854,12 @@ with oself;
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
-  xml-light = osuper.xml-light.overrideAttrs (o: {
-    installPhase = ''
-      runHook preInstall
-      ${o.installPhase}
-      runHook postInstall
+  wodan-unix = osuper.wodan-unix.overrideAttrs (_: {
+    prePatch = ''
+      substituteInPlace src/wodan-unix/dune \
+        --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
     '';
+
   });
 
   xmlm = osuper.xmlm.overrideAttrs (_: {
@@ -962,11 +977,12 @@ with oself;
           }
       else o.src;
   });
-  sexplib = osuper.sexplib.overrideAttrs (_: {
+  sexplib = osuper.sexplib.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/sexplib/archive/aac0c119.tar.gz;
-      sha256 = "14jsk3z7w41x4s27f2m8sskxdcnkmzv0l0nag0gb2f03jigr7k76";
+      url = https://github.com/janestreet/sexplib/archive/eb772fb.tar.gz;
+      sha256 = "0k405ks0pyx8849ydws3aiybwj1nx226h3fh5gfqgv8qpp80a8i5";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
   });
 
   ppx_accessor = (janePackage {
