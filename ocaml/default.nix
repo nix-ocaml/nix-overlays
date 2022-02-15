@@ -374,16 +374,13 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
-  lwt = osuper.lwt.overrideAttrs (_: {
+  lwt = osuper.lwt.overrideAttrs (o: {
     version = "5.5.0";
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/bab52d9744cb2d5cd3cfe86cda65ba73752998ee.tar.gz;
-      sha256 = "0g8vhbdg9y46sn62k7p08wanz4pznanwqr85xzl0c158ighss6c5";
+      url = https://github.com/ocsigen/lwt/archive/34f98c6.tar.gz;
+      sha256 = "0hp4kzj2h4ayspjkwhx2f8aiscbb9r6lcm2kx88yfw0nd4dm3qfj";
     };
-
-    prePatch = ''
-      substituteInPlace src/unix/config/discover.ml --replace "String.uppercase" "String.uppercase_ascii"
-    '';
   });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
@@ -972,11 +969,12 @@ with oself;
           }
       else o.src;
   });
-  sexplib = osuper.sexplib.overrideAttrs (_: {
+  sexplib = osuper.sexplib.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/sexplib/archive/aac0c119.tar.gz;
-      sha256 = "14jsk3z7w41x4s27f2m8sskxdcnkmzv0l0nag0gb2f03jigr7k76";
+      url = https://github.com/janestreet/sexplib/archive/eb772fb.tar.gz;
+      sha256 = "0k405ks0pyx8849ydws3aiybwj1nx226h3fh5gfqgv8qpp80a8i5";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
   });
 
   ppx_accessor = (janePackage {
