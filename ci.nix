@@ -180,7 +180,7 @@ let
           cockroachdb-22_x
           mongodb-4_2
           # nixUnstable
-          # esy
+          esy
         ];
       in
       [ drvs ] ++ otherDrvs;
