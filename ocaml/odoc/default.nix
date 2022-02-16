@@ -1,12 +1,31 @@
-{ ocamlPackages, pkgs, lib }:
-
-with ocamlPackages;
+{ lib
+, buildDunePackage
+, odoc-parser
+, astring
+, cmdliner
+, cppo
+, fpath
+, result
+, tyxml
+, fmt
+, bisect_ppx
+, ppx_expect
+, ocaml-version
+, lwt
+, findlib
+, alcotest
+, markup
+, yojson
+, sexplib
+, jq
+, which
+}:
 
 buildDunePackage {
   pname = "odoc";
   version = "2.1.0";
 
-  minimumOCamlVersion = "4.02";
+  minimumOCamlVersion = "4.03";
 
   src = builtins.fetchurl {
     url = "https://github.com/ocaml/odoc/archive/refs/tags/2.1.0.tar.gz";
@@ -36,12 +55,12 @@ buildDunePackage {
     markup
     yojson
     sexplib
-    pkgs.jq
-    pkgs.which
+    jq
+    which
   ];
 
   # something is broken
-  # doCheck = true;
+  doCheck = false;
 
   meta = {
     description = "A documentation generator for OCaml";
