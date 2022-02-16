@@ -19,7 +19,7 @@ let
   githubInfo = {
     owner = "esy";
     rev = "v${currentVersion}";
-    sha256 = "sha256-LEfhtz0dBObE+167toMp1mz5onMbp7h2RVB+RgtbahM=";
+    sha256 = "sha256-W3GZ088rju3xAa4/y0sY/Zp2UWJqbF2Ke9oMDSPv598=";
   };
 
   esyVersion = currentVersion;
