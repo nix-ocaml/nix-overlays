@@ -11,10 +11,10 @@
 #    }' \
 #  --pure
 
-{ callPackage, bash, binutils, coreutils, makeWrapper, lib, fetchFromGitHub, ocamlPackages }:
+{ callPackage, bash, binutils, coreutils, makeWrapper, lib, fetchFromGitHub, fetchFromGitLab, ocamlPackages }:
 
 let
-  currentVersion = "0.6.11";
+  currentVersion = "0.6.12";
 
   githubInfo = {
     owner = "esy";
@@ -24,7 +24,7 @@ let
 
   esyVersion = currentVersion;
 
-  esyOcamlPkgs = ocamlPackages.overrideScope' (self: super: {
+  esyOcamlPkgs = ocamlPackages.overrideScope' (self: super: rec {
     # buildDunePackage = (super.buildDunePackage.override { dune_1 = super.dune_one; });
 
     cmdliner =
@@ -35,6 +35,17 @@ let
         };
         createFindlibDestdir = true;
       });
+
+    menhirLib = super.menhirLib.overrideAttrs (_: {
+      version = "20211012";
+      src = fetchFromGitLab {
+        domain = "gitlab.inria.fr";
+        owner = "fpottier";
+        repo = "menhir";
+        rev = "20211012";
+        sha256 = "sha256-gHw9LmA4xudm6iNPpop4VDi988ge4pHZFLaEva4qbiI=";
+      };
+    });
   });
 in
 
@@ -83,7 +94,7 @@ let
   # current version information.
   esyNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy/${esyVersion}";
-    sha256 = "1gnd2saq969nxrxfks257n0hp5s4ywh9r91hwgwyg9misgivd3m7";
+    sha256 = "0v43x5s34fsw70zgi9zvfpmjakkbfxpzc6zy0a70bzw293qvy7i0";
   };
 
   esySolveCudfNpm = builtins.fetchurl {
