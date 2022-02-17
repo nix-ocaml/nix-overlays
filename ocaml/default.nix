@@ -501,6 +501,12 @@ with oself;
     };
 
   });
+  bigstring = osuper.bigstring.overrideAttrs (_: {
+    
+    postPatch  = if lib.versionAtLeast ocaml.version "5.00" then ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '' else "";
+  });
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
