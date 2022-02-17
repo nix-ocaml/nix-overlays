@@ -33,8 +33,8 @@ in
         version = "5.00+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/d7eced90326191f23d25e3fb5faf891982a51d37.tar.gz;
-          sha256 = "0dd25yjjkpy093dcmkyr2i7cp4f36vs8c91wfq192qmk4cvw9fqz";
+          url = https://github.com/ocaml/ocaml/archive/e7b3839fcd1925473beb4bcf9cdf82c87213dc59.tar.gz;
+          sha256 = "0dkv5yi78qkgr274dcrmddwm3bj1as2iz1nsg375wwy9hsd91gsj";
         };
       });
 
