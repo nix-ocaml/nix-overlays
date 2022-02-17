@@ -98,6 +98,10 @@ with oself;
 
   camomile = osuper.camomile.overrideAttrs (_: {
     patches = [ ./camomile.patch ];
+     postPatch  = if lib.versionAtLeast ocaml.version "5.00" then ''
+      substituteInPlace Camomile/dune --replace " bigarray" ""
+      substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
+    '' else "";
     propagatedBuildInputs = [ camlp-streams ];
   });
 
