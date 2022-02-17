@@ -207,8 +207,8 @@ with oself;
 
   dune_2 = osuper.dune_2.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/4aebbb0d1aa4242744b1a372f3703fcda429596e.tar.gz;
-      sha256 = "1s48khykbzq2lvbi6wl67p6sxqdw1h1f23dfy77fzhdazg4fxg82";
+      url = https://github.com/ocaml/dune/archive/435f026896a0410546c4cef73c005bbca364a177.tar.gz;
+      sha256 = "1jqiaqxyab487f2gzghy5l10asljkb824xjaryl2vpck85yiqbp1";
     };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       Foundation
