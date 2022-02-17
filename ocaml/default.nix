@@ -472,6 +472,9 @@ with oself;
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
+
+    # https://github.com/mirage/mrmime/issues/91
+    doCheck = !lib.versionAtLeast ocaml.version "5.00";
   });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
