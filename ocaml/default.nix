@@ -605,6 +605,8 @@ with oself;
     };
   });
 
+  odoc = callPackage ./odoc { };
+
   ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
