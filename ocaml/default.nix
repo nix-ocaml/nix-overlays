@@ -1026,10 +1026,18 @@ with oself;
     propagatedBuildInputs = [ ppx_here ppx_inline_test re stdio ];
     doCheck = false; # circular dependency with ppx_jane
   }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
-      sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
-    };
+    src =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        builtins.fetchurl
+          {
+            url = https://github.com/janestreet/ppx_expect/archive/13087c65faa754b53f911de2391c2335dfb40b35.tar.gz;
+            sha256 = "0j98ba07nmln9a2w1jmc33ahzr6vm5clx3cn79jk3bw8z23jahxn";
+          }
+      else
+        builtins.fetchurl {
+          url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
+          sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
+        };
   });
 
   ppx_sexp_conv = (janePackage {
