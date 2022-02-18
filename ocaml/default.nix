@@ -207,8 +207,8 @@ with oself;
 
   dune_2 = osuper.dune_2.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/4aebbb0d1aa4242744b1a372f3703fcda429596e.tar.gz;
-      sha256 = "1s48khykbzq2lvbi6wl67p6sxqdw1h1f23dfy77fzhdazg4fxg82";
+      url = https://github.com/ocaml/dune/archive/435f026896a0410546c4cef73c005bbca364a177.tar.gz;
+      sha256 = "1jqiaqxyab487f2gzghy5l10asljkb824xjaryl2vpck85yiqbp1";
     };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       Foundation
@@ -516,7 +516,11 @@ with oself;
     patches = [ ./num/findlib-install.patch ];
   });
 
-  ocaml = osuper.ocaml.override { flambdaSupport = true; };
+  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
+    enableParallelBuilding = true;
+    makefile = ./ocaml-Makefile.nixpkgs;
+    buildFlags = [ "nixpkgs_world_bootstrap_world_opt" ];
+  });
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1022,10 +1026,18 @@ with oself;
     propagatedBuildInputs = [ ppx_here ppx_inline_test re stdio ];
     doCheck = false; # circular dependency with ppx_jane
   }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
-      sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
-    };
+    src =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        builtins.fetchurl
+          {
+            url = https://github.com/janestreet/ppx_expect/archive/13087c65faa754b53f911de2391c2335dfb40b35.tar.gz;
+            sha256 = "0j98ba07nmln9a2w1jmc33ahzr6vm5clx3cn79jk3bw8z23jahxn";
+          }
+      else
+        builtins.fetchurl {
+          url = https://github.com/janestreet/ppx_expect/archive/7f46c2d22a87b99c70a220c1b13aaa34c6d217ff.tar.gz;
+          sha256 = "0vkrmcf1s07qc1l7apbdr8y28x77s8shbsyb6jzwjkx3flyahqmh";
+        };
   });
 
   ppx_sexp_conv = (janePackage {
