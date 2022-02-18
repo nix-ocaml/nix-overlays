@@ -773,8 +773,8 @@ with oself;
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/a76f796a1.tar.gz;
-      sha256 = "0kmg154bnyxf3jhrhmgdamgj92078px6kdy0w2pfgx7llikw9fp3";
+      url = https://github.com/savonet/ocaml-ssl/archive/35e6dfa65181cccdfeee898702f45eca8afebbd4.tar.gz;
+      sha256 = "1h2z0g9ghnj7q3xjjw7h5hh9ijdj19lfbg5lrpw3q8hb1frlz729";
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -801,6 +801,45 @@ with oself;
 
     preConfigure = ''
       echo '(using menhir 2.1)' >> ./dune-project
+    '';
+  });
+
+  tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+      substituteInPlace proto_010_PtGRANAD/lib_protocol/dune.inc \
+        --replace "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68" "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68-58"
+    '';
+  });
+
+  tezos-protocol-011-PtHangz2 = osuper.tezos-protocol-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+      substituteInPlace proto_011_PtHangz2/lib_protocol/dune.inc --replace "-w +a-4-40..42-44-45-48" "-w +a-4-40..42-44-45-48-58"
+    '';
+  });
+
+  tezos-011-PtHangz2-test-helpers = osuper.tezos-011-PtHangz2-test-helpers.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-protocol-011-PtHangz2-parameters = osuper.tezos-protocol-011-PtHangz2-parameters.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-protocol-plugin-011-PtHangz2 = osuper.tezos-protocol-plugin-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-client-011-PtHangz2 = osuper.tezos-client-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
     '';
   });
 
