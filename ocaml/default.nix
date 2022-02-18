@@ -828,6 +828,45 @@ with oself;
     '';
   });
 
+  tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+      substituteInPlace proto_010_PtGRANAD/lib_protocol/dune.inc \
+        --replace "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68" "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68-58"
+    '';
+  });
+
+  tezos-protocol-011-PtHangz2 = osuper.tezos-protocol-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+      substituteInPlace proto_011_PtHangz2/lib_protocol/dune.inc --replace "-w +a-4-40..42-44-45-48" "-w +a-4-40..42-44-45-48-58"
+    '';
+  });
+
+  tezos-011-PtHangz2-test-helpers = osuper.tezos-011-PtHangz2-test-helpers.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-protocol-011-PtHangz2-parameters = osuper.tezos-protocol-011-PtHangz2-parameters.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-protocol-plugin-011-PtHangz2 = osuper.tezos-protocol-plugin-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
+  tezos-client-011-PtHangz2 = osuper.tezos-client-011-PtHangz2.overrideAttrs (_: {
+    postPatch = ''
+      echo "(lang dune 3.0)" > dune-project
+    '';
+  });
+
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
