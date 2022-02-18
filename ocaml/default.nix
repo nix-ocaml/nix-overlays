@@ -98,6 +98,11 @@ with oself;
 
   camomile = osuper.camomile.overrideAttrs (_: {
     patches = [ ./camomile.patch ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace Camomile/dune --replace " bigarray" ""
+        substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
+      '' else "";
     propagatedBuildInputs = [ camlp-streams ];
   });
 
@@ -176,6 +181,10 @@ with oself;
 
     propagatedBuildInputs = [ ocaml_extlib ];
   };
+
+  crowbar = osuper.crowbar.overrideAttrs (o: {
+    patches = [ ./crowbar_multicore.patch ];
+  });
 
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
@@ -472,6 +481,9 @@ with oself;
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
+
+    # https://github.com/mirage/mrmime/issues/91
+    doCheck = !lib.versionAtLeast ocaml.version "5.00";
   });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
@@ -497,6 +509,13 @@ with oself;
       sha256 = "1m8q6ywik6h0wrdgv8ah2s617y37n1gdj4qvc86yi12winj6ji23";
     };
 
+  });
+  bigstring = osuper.bigstring.overrideAttrs (_: {
+
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace src/dune --replace " bigarray" ""
+      '' else "";
   });
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -628,6 +647,8 @@ with oself;
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
+  pp = osuper.pp.overrideAttrs (_: { doCheck = false; });
+
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
     checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
@@ -748,6 +769,9 @@ with oself;
 
   reenv = callPackage ./reenv { };
 
+  rock = callPackage ./opium/rock.nix { };
+  opium = callPackage ./opium { };
+
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/anuragsoni/routes/releases/download/1.0.0/routes-1.0.0.tbz;
@@ -773,7 +797,7 @@ with oself;
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/35e6dfa65181cccdfeee898702f45eca8afebbd4.tar.gz;
+      url = https://github.com/savonet/ocaml-ssl/archive/35e6dfa.tar.gz;
       sha256 = "1h2z0g9ghnj7q3xjjw7h5hh9ijdj19lfbg5lrpw3q8hb1frlz729";
     };
 
@@ -1137,4 +1161,6 @@ with oself;
   protocol_version_header = osuper.protocol_version_header.overrideAttrs (_: {
     propagatedBuildInputs = [ core_kernel ocaml-migrate-parsetree-2 ];
   });
+
+  yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
 }

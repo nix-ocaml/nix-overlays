@@ -14,10 +14,10 @@
   cockroachdb-21_2_x = callPackage ./generic.nix (rec {
     go = go_1_17;
     buildGoModule = buildGo117Module;
-    version = "21.2.4";
+    version = "21.2.5";
     src = builtins.fetchurl {
       url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-      sha256 = "1zflfn4fszg6b1g2z3pw16gni6aismm35n3d87vchasb1l5gvryx";
+      sha256 = "0a06vdyiwfdq7ycqw8ckwxx01f6xnbn8a1gmjkzls34m4px5yzzn";
     };
     patches = [ ./makefile-redact-safe-patch.patch ];
   });
