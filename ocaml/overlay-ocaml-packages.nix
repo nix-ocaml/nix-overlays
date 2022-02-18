@@ -1,5 +1,3 @@
-{ lib, callPackage }:
-
 let
   ocamlVersions = [ "4_06" "4_08" "4_09" "4_10" "4_11" "4_12" "4_13" ];
 in
@@ -9,6 +7,7 @@ extraOverlays:
 self: super:
 
 let
+  inherit (super) lib callPackage;
   overlayOcamlPackages = version: {
     "ocamlPackages_${version}" =
       builtins.foldl'

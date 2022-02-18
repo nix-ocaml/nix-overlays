@@ -876,36 +876,6 @@ with oself;
   pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
   unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
 
-  uuidm = osuper.uuidm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
-      sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
-    };
-    buildPhase = "ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build --with-cmdliner false";
-  });
-
-  uutf = osuper.uutf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
-      sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
-    };
-  });
-
-  uunf = osuper.uunf.overrideAttrs (_: {
-    buildPhase = ''
-      # big enough stack size
-      export OCAMLRUNPARAM="l=1100000"
-      ${topkg.buildPhase}
-    '';
-  });
-
-  uuuu = osuper.uuuu.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/uuuu/releases/download/v0.3.0/uuuu-0.3.0.tbz;
-      sha256 = "19n39yc7spgzpk9i70r0nhkwsb0bfbvbgpf8d863p0a3wgryhzkb";
-    };
-  });
-
   utop = osuper.utop.overrideAttrs (_: {
     version = "2.9.0";
     src = builtins.fetchurl {
@@ -916,6 +886,36 @@ with oself;
     prePatch = ''
       substituteInPlace src/lib/uTop_main.ml --replace "Clflags.unsafe_string" "(ref false)"
     '';
+  });
+
+  uuidm = osuper.uuidm.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
+      sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
+    };
+    buildPhase = "ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build --with-cmdliner false";
+  });
+
+  uunf = osuper.uunf.overrideAttrs (_: {
+    buildPhase = ''
+      # big enough stack size
+      export OCAMLRUNPARAM="l=1100000"
+      ${topkg.buildPhase}
+    '';
+  });
+
+  uutf = osuper.uutf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
+      sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
+    };
+  });
+
+  uuuu = osuper.uuuu.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/uuuu/releases/download/v0.3.0/uuuu-0.3.0.tbz;
+      sha256 = "19n39yc7spgzpk9i70r0nhkwsb0bfbvbgpf8d863p0a3wgryhzkb";
+    };
   });
 
   websocketaf = callPackage ./websocketaf { };
@@ -947,6 +947,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
     patches = [ ./camlpstreams.patch ];
   });
+
+  yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
 
   # Jane Street packages
   async_websocket = osuper.buildDunePackage {
@@ -1162,6 +1164,4 @@ with oself;
   protocol_version_header = osuper.protocol_version_header.overrideAttrs (_: {
     propagatedBuildInputs = [ core_kernel ocaml-migrate-parsetree-2 ];
   });
-
-  yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
 }

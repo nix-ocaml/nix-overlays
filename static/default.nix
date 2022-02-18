@@ -1,4 +1,4 @@
-{ buildPackages, lib, callPackage }:
+{ buildPackages }:
 # Loosely adapted from https://github.com/serokell/tezos-packaging/blob/b7617f99/nix/static.nix
 
 [
@@ -8,9 +8,12 @@
   # This should be revisited in the future, as it makes the fetchers
   # unusable at runtime in the target env. XXX(anmonteiro: is this true?)
   (self: super:
-    lib.filterAttrs (n: _: lib.hasPrefix "fetch" n) buildPackages)
+    super.lib.filterAttrs (n: _: super.lib.hasPrefix "fetch" n) buildPackages)
 
   (import ./overlays.nix)
 
-  (lib.overlayOcamlPackages [ (callPackage ./ocaml.nix { }) ])
+  (self: super:
+    super.lib.overlayOcamlPackages [ (super.callPackage ./ocaml.nix { }) ]
+      self
+      super)
 ]
