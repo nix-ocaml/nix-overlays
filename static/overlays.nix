@@ -38,6 +38,11 @@
 
   in
   {
+    crossSystem = { 
+      isStatic = true;
+      config = "static-x86_64-unknown-linux-musl";
+    };
+    
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
 
     alsa-lib = super.alsa-lib.overrideAttrs (o: {
