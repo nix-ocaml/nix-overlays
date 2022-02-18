@@ -35,8 +35,8 @@ let
   ];
 
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/multipart_form/archive/6ad738e423d53c53ab494d6e6526f42140db1098.tar.gz;
-    sha256 = "1w2bzpvsc1i6ifi9jmcgz2f8shnfgdmrkzh1jj3mj2dlqcgpipxx";
+    url = https://github.com/anmonteiro/multipart_form/archive/f4ed204.tar.gz;
+    sha256 = "18pk9j9w2b7idjppskagn740yjs6c7ly415x884ipnzmm8vpmkz0";
   };
   version = "0.1.0-dev";
   propagatedBuildInputs = [
