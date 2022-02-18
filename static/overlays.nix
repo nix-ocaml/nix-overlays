@@ -38,6 +38,7 @@
 
   in
   {
+    runtimeShell = "${super.bash}${super.bash.shellPath}";
     runtimeShellPackage = super.bash;
     
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
