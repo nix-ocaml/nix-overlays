@@ -182,6 +182,10 @@ with oself;
     propagatedBuildInputs = [ ocaml_extlib ];
   };
 
+  crowbar = osuper.crowbar.overrideAttrs (o: {
+    patches = [ ./crowbar_multicore.patch ];
+  });
+
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
