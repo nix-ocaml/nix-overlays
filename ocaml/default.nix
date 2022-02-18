@@ -183,6 +183,7 @@ with oself;
   };
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
+    doCheck = false;
     patches = [ ./crowbar_multicore.patch ];
   });
 
