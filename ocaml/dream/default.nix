@@ -34,6 +34,7 @@
 , uri
 , websocketaf
 , yojson
+, camlp-streams
 }:
 
 buildDunePackage {
@@ -87,7 +88,12 @@ buildDunePackage {
     faraday-lwt-unix
     psq
     result
+    camlp-streams
   ];
+
+  postPatch = ''
+    substituteInPlace ./src/eml/dune --replace "(modules eml)" "(modules eml) (libraries camlp-streams)"
+  '';
 
   checkInputs = [ ppx_expect alcotest ];
   doCheck = true;

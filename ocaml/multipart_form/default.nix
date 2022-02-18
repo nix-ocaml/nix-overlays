@@ -66,6 +66,7 @@ buildDunePackage {
 
   postPatch = ''
     substituteInPlace ./lib/dune --replace "mrmime.prettym" "prettym"
+    substituteInPlace ./lib_lwt/dune --replace " bigarray " " "
   '';
 
   doCheck = true;
