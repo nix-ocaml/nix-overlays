@@ -98,6 +98,11 @@ with oself;
 
   camomile = osuper.camomile.overrideAttrs (_: {
     patches = [ ./camomile.patch ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace Camomile/dune --replace " bigarray" ""
+        substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
+      '' else "";
     propagatedBuildInputs = [ camlp-streams ];
   });
 
@@ -472,6 +477,9 @@ with oself;
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
+
+    # https://github.com/mirage/mrmime/issues/91
+    doCheck = !lib.versionAtLeast ocaml.version "5.00";
   });
 
   mtime = osuper.mtime.override { jsooSupport = false; };
@@ -497,6 +505,13 @@ with oself;
       sha256 = "1m8q6ywik6h0wrdgv8ah2s617y37n1gdj4qvc86yi12winj6ji23";
     };
 
+  });
+  bigstring = osuper.bigstring.overrideAttrs (_: {
+
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace src/dune --replace " bigarray" ""
+      '' else "";
   });
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -747,6 +762,9 @@ with oself;
   redis-sync = callPackage ./redis/sync.nix { };
 
   reenv = callPackage ./reenv { };
+
+  rock = callPackage ./opium/rock.nix { };
+  opium = callPackage ./opium { };
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
