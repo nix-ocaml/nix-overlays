@@ -301,18 +301,20 @@ in
               ocamldep = "${natocaml}/bin/ocamldep"
             '';
 
-          aarch64_findlib_conf = with oself; writeText "${b.name}-${crossName}.conf" ''
-            path(${crossName}) = "${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
-            ldconf(${crossName})="ignore"
-            stdlib(${crossName}) = "${ocaml}/lib/ocaml"
-            ocamlc(${crossName}) = "${ocaml}/bin/ocamlc"
-            ocamlopt(${crossName}) = "${ocaml}/bin/ocamlopt"
-            ocamlcp(${crossName}) = "${ocaml}/bin/ocamlcp"
-            ocamlmklib(${crossName}) = "${ocaml}/bin/ocamlmklib"
-            ocamlmktop(${crossName}) = "${ocaml}/bin/ocamlmktop"
-            ocamldoc(${crossName}) = "${natocaml}/bin/ocamldoc"
-            ocamldep(${crossName}) = "${ocaml}/bin/ocamldep"
-          '';
+          aarch64_findlib_conf =
+            let ocaml = oself.ocaml; in
+            writeText "${b.name}-${crossName}.conf" ''
+              path(${crossName}) = "${oself.findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
+              ldconf(${crossName})="ignore"
+              stdlib(${crossName}) = "${ocaml}/lib/ocaml"
+              ocamlc(${crossName}) = "${ocaml}/bin/ocamlc"
+              ocamlopt(${crossName}) = "${ocaml}/bin/ocamlopt"
+              ocamlcp(${crossName}) = "${ocaml}/bin/ocamlcp"
+              ocamlmklib(${crossName}) = "${ocaml}/bin/ocamlmklib"
+              ocamlmktop(${crossName}) = "${ocaml}/bin/ocamlmktop"
+              ocamldoc(${crossName}) = "${natocaml}/bin/ocamldoc"
+              ocamldep(${crossName}) = "${ocaml}/bin/ocamldep"
+            '';
 
           findlib_conf = stdenv.mkDerivation {
             name = "${b.name}-findlib-conf";
@@ -333,6 +335,7 @@ in
           nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
           buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
+          OCAMLPATH = natPath;
         });
 
     in

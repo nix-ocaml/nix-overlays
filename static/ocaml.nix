@@ -1,4 +1,4 @@
-{ lib, callPackage }:
+{ lib }:
 let
   removeUnknownConfigureFlags = f: with lib;
     remove "--disable-shared"

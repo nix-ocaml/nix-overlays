@@ -4,10 +4,7 @@ self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages =
-    import ./ocaml/overlay-ocaml-packages.nix {
-      inherit lib callPackage;
-    };
+  overlayOcamlPackages = import ./ocaml/overlay-ocaml-packages.nix;
 
 in
 
@@ -29,7 +26,6 @@ in
       cross-overlays = callPackage ./cross { };
     in
     super.pkgsCross // {
-
       musl64 = super.pkgsCross.musl64.appendOverlays static-overlays;
 
       aarch64-multiplatform =
