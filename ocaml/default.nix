@@ -183,6 +183,7 @@ with oself;
   };
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
+    doCheck = false;
     patches = [ ./crowbar_multicore.patch ];
   });
 
@@ -420,8 +421,8 @@ with oself;
 
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ke/archive/0b3d570f56c558766e8d53600e59ce65f3218556.tar.gz;
-      sha256 = "01i20hxjbvzh2i82g8lk44hvnij5gjdlnapcm55balknpflyxv9f";
+      url = https://github.com/mirage/ke/archive/56a8c86.tar.gz;
+      sha256 = "1n8yfjpmhga4mqh17r8z2qs9kw13bsl3022lplijw9ys0cwicii0";
     };
   });
 
