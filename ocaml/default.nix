@@ -1098,4 +1098,6 @@ with oself;
   protocol_version_header = osuper.protocol_version_header.overrideAttrs (_: {
     propagatedBuildInputs = [ core_kernel ocaml-migrate-parsetree-2 ];
   });
+
+  yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
 }
