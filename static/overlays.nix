@@ -38,10 +38,7 @@
 
   in
   {
-    crossSystem = { 
-      isStatic = true;
-      config = "static-x86_64-unknown-linux-musl";
-    };
+    runtimeShellPackage = super.bash;
     
     stdenv = lib.foldl (lib.flip lib.id) super.stdenv [ makeStaticLibraries ];
 
