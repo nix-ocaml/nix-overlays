@@ -542,6 +542,7 @@ with oself;
     };
   });
 
+  dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
 
   morph = callPackage ./morph { };
