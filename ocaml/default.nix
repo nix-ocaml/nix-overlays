@@ -215,6 +215,12 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  cstruct-sexp = osuper.cstruct-sexp.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lib_test/dune --replace "bigarray" ""
+    '';
+  });
+
   cstruct-unix = osuper.cstruct-unix.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./unix/dune --replace "bigarray" ""
@@ -820,8 +826,12 @@ with oself;
 
   pp = osuper.pp.overrideAttrs (_: { doCheck = false; });
 
-  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
+  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ppx/dune --replace " bigarray" ""
+    '';
+    # To avoid bringing in OMP
+    doCheck = false;
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
@@ -1160,6 +1170,12 @@ with oself;
     };
   });
 
+  bin_prot = osuper.bin_prot.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+  });
+
   core = (janePackage {
     pname = "core";
     hash = "1m9h73pk9590m8ngs1yf4xrw61maiqmi9glmlrl12qhi0wcja5f3";
@@ -1342,6 +1358,6 @@ with oself;
   });
 
   protocol_version_header = osuper.protocol_version_header.overrideAttrs (_: {
-    propagatedBuildInputs = [ core_kernel ocaml-migrate-parsetree-2 ];
+    propagatedBuildInputs = [ core ppx_jane ];
   });
 }
