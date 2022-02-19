@@ -355,6 +355,11 @@ with oself;
     };
   });
 
+  fpath = osuper.fpath.overrideAttrs (_: {
+    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
+    buildInputs = [ ];
+  });
+
   fileutils = osuper.fileutils.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
     postPatch = ''
@@ -867,6 +872,8 @@ with oself;
   };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ ppxlib cppo ];
+    buildInputs = [ ];
     propagatedBuildInputs = [
       ppx_derivers
       result

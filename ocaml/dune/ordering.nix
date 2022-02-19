@@ -4,6 +4,5 @@
 buildDunePackage {
   pname = "ordering";
   inherit (dune) src version;
-
-  dontConfigure = true;
+  dontAddPrefix = true;
 }

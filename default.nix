@@ -5,6 +5,7 @@ self: super:
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
   overlayOcamlPackages = import ./ocaml/overlay-ocaml-packages.nix;
+  staticLightOverlay = overlayOcamlPackages [ (super.callPackage ./static/ocaml.nix { }) ];
 
 in
 
@@ -18,7 +19,7 @@ in
   });
   esy = callPackage ./ocaml/esy { };
 
-  pkgsStatic = super.pkgsStatic.appendOverlays (callPackage ./static { });
+  pkgsStatic = super.pkgsStatic.extend staticLightOverlay;
 
   pkgsCross =
     let
@@ -26,11 +27,11 @@ in
       cross-overlays = callPackage ./cross { };
     in
     super.pkgsCross // {
-      musl64 = super.pkgsCross.musl64.appendOverlays static-overlays;
+      musl64 = super.pkgsCross.musl64.extend staticLightOverlay;
+      musl64Static = super.pkgsCross.musl64.appendOverlays static-overlays;
 
       aarch64-multiplatform =
-        super.pkgsCross.aarch64-multiplatform.appendOverlays
-          cross-overlays;
+        super.pkgsCross.aarch64-multiplatform.appendOverlays cross-overlays;
 
       aarch64-multiplatform-musl =
         (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
