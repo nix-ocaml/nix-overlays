@@ -1,4 +1,5 @@
 { fetchpatch
+, fetchFromGitHub
 , lib
 , libpq
 , darwin
@@ -224,6 +225,10 @@ with oself;
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
     };
+
+    postPatch = ''
+      substituteInPlace ./Makefile --replace "bigarray" ""
+    '';
   });
 
   cudf = buildDunePackage {
@@ -235,6 +240,11 @@ with oself;
     };
 
     propagatedBuildInputs = [ ocaml_extlib ];
+
+    postPatch = ''
+      substituteInPlace ./cudf.ml --replace "Pervasives." "Stdlib."
+      substituteInPlace ./cudf_types_pp.ml --replace "Pervasives." "Stdlib."
+    '';
   };
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
@@ -338,9 +348,31 @@ with oself;
     };
   });
 
+  fileutils = osuper.fileutils.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+    postPatch = ''
+      substituteInPlace "src/lib/fileutils/dune" --replace "(libraries " "(libraries camlp-streams "
+    '';
+  });
+
   gapi_ocaml = osuper.gapi_ocaml.overrideAttrs (_: {
     patches = [ ./gapi.patch ];
   });
+
+  gen = buildDunePackage {
+    pname = "gen";
+    version = "v1.0";
+    src = fetchFromGitHub {
+      owner = "c-cube";
+      repo = "gen";
+      rev = "v1.0";
+      sha256 = "1z5nw5wljvcqp8q07h336bbvf9paynia0jsdh4486hlkbmr1ask1";
+    };
+    nativeBuildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ seq ];
+  };
+
+  gettext-stub = disableTests osuper.gettext-stub;
 
   gg = osuper.gg.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -377,6 +409,9 @@ with oself;
             url = https://github.com/mmottl/gsl-ocaml/archive/76f8d93cc.tar.gz;
             sha256 = "0s1h7xrlmq8djaxywq48s1jm7x5f6j7mfkljjw8kk52dfjsfwxw0";
           } else o.src;
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bigarray" ""
+    '';
   });
 
   h2 = callPackage ./h2 { };
@@ -390,6 +425,9 @@ with oself;
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
+    postPatch = ''
+      substituteInPlace ./src/hidapi_stubs.c --replace "alloc_custom" "caml_alloc_custom"
+    '';
   });
 
   httpaf = callPackage ./httpaf { };
@@ -402,11 +440,34 @@ with oself;
     doCheck = false;
   });
 
+  integers = osuper.integers.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/signed.ml --replace "Pervasives" "Stdlib"
+      substituteInPlace ./src/unsigned.ml --replace "Pervasives" "Stdlib"
+    '';
+  });
+
+  io-page-unix = osuper.io-page-unix.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lib/dune --replace "bigarray" ""
+    '';
+  });
+
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
-  iter = osuper.iter.overrideAttrs (_: { doCheck = false; });
+  iter = osuper.iter.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/iter/archive/8be24288.tar.gz;
+      sha256 = "0hkgia50lqwh13b5f0515z2w17q8pqd3nrnza76ns9h34qag55l9";
+    };
+    postPatch = ''
+      substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
+
   itv-tree = buildDunePackage {
     pname = "itv-tree";
     version = "2.1";
@@ -422,6 +483,14 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   };
 
+  javalib = osuper.javalib.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/ptrees/ptset.ml --replace "Pervasives." "Stdlib."
+      substituteInPlace ./src/jFile.ml --replace "Pervasives." "Stdlib."
+    '';
+
+  });
+
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/js_of_ocaml/releases/download/4.0.0/js_of_ocaml-4.0.0.tbz;
@@ -436,6 +505,12 @@ with oself;
     };
   });
 
+  kafka = osuper.kafka.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lib/ocaml_kafka.c --replace "= alloc_small" "= caml_alloc_small"
+    '';
+  });
+
   lablgtk = osuper.lablgtk.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/garrigue/lablgtk/archive/78fcdd2.tar.gz;
@@ -443,6 +518,13 @@ with oself;
     };
     patches = [ ./lablgtk.patch ];
     propagatedBuildInputs = [ camlp-streams ];
+  });
+
+  lacaml = osuper.lacaml.overrideAttrs (_: {
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace src/dune --replace " bigarray" ""
+      '' else "";
   });
 
   lmdb = osuper.buildDunePackage {
@@ -623,10 +705,10 @@ with oself;
     };
   });
 
-  ocaml_extlib = osuper.ocaml_extlib.overrideAttrs (_: {
+  ocaml_extlib-1-7-8 = osuper.ocaml_extlib-1-7-8.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ygrek/ocaml-extlib/archive/434b1dea.tar.gz;
-      sha256 = "0wa6wi8fwg4yba8j6s8g0s89wpwbi2by5kf17p5ihh682m8v23xm";
+      url = https://github.com/ygrek/ocaml-extlib/archive/9e9270de9d6c33e08a18096f7fb75b4205e6c1ed.tar.gz;
+      sha256 = "006zc8jc1zx20iis06z3gppmikc6pfarx5ikdhihggk7k1wam6c1";
     };
   });
 
@@ -704,6 +786,13 @@ with oself;
   });
 
   odoc = callPackage ./odoc { };
+  odoc-parser = osuper.odoc-parser.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
+    '';
+    propagatedBuildInputs = [ camlp-streams ];
+
+  });
 
   ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {

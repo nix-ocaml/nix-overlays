@@ -139,6 +139,10 @@ let
     # Broken on OCaml 5.00
     "fontconfig"
     "cpdf"
+    "merlin"
+    "erm_xml"
+    "functory"
+    "getopt"
 
     # incompatible with newer menhir
     "odate"

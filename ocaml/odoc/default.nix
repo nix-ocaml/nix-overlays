@@ -1,6 +1,7 @@
 { lib
 , buildDunePackage
 , odoc-parser
+, camlp-streams
 , astring
 , cmdliner
 , cppo
