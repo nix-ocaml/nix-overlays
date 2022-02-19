@@ -1,0 +1,107 @@
+diff --git a/src/Makefile b/src/Makefile
+index 3dc031ec..86a231d3 100755
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -1,10 +1,11 @@
+ # Makefile for lablgtk.
+ 
+-COMPILER = $(CAMLC) $(MLFLAGS) $(MLBYTEFLAGS) -w s-3+52 -c
+-LINKER = $(CAMLC) $(MLFLAGS) $(MLBYTEFLAGS)
+-COMPOPT = $(CAMLOPT) $(MLFLAGS) -w s -c
+-LINKOPT = $(CAMLOPT) $(MLFLAGS)
+-LIBRARIAN = $(CAMLMKLIB) -verbose -ocamlc "$(CAMLC)" -ocamlopt "$(CAMLOPT)"
++CAMLP_STREAMS = $(shell ocamlfind query camlp-streams)
++COMPILER = $(OCAMLFIND) ocamlc -package camlp-streams $(MLFLAGS) $(MLBYTEFLAGS) -w s-3+52 -c
++LINKER = $(OCAMLFIND) ocamlc -package camlp-streams -verbose -output-complete-exe $(MLFLAGS) $(MLBYTEFLAGS) $(CAMLP_STREAMS)/camlp_streams.cma
++COMPOPT = $(OCAMLFIND) opt -package camlp-streams $(MLFLAGS) -w s -c
++LINKOPT = $(OCAMLFIND) opt -package camlp-streams $(MLFLAGS)
++LIBRARIAN = $(OCAMLFIND) ocamlmklib -package camlp-streams -verbose -ocamlc "$(CAMLC)" -ocamlopt "$(CAMLOPT)"
+ TOPLEVEL = $(CAMLMKTOP) $(MLFLAGS)
+ CAMLP4 = $(CAMLP4O) pr_o.cmo
+ 
+diff --git a/src/propcc.ml b/src/propcc.ml
+index 6dc7bd21..901f7511 100644
+--- a/src/propcc.ml
++++ b/src/propcc.ml
+@@ -21,7 +21,7 @@ let camlize id =
+             i < String.length id - 1 && is_not_uppercase id.[i+1])
+         then
+           Buffer.add_char b '_';
+-        Buffer.add_char b (Char.lowercase c)
++        Buffer.add_char b (Char.lowercase_ascii c)
+     | '-' -> Buffer.add_char b '_'
+     | c -> Buffer.add_char b c
+   done;
+@@ -540,7 +540,7 @@ let ooutfile = ref ""
+ 
+ let process_file f =
+   let base = Filename.chop_extension f in
+-  let baseM = String.capitalize base in
++  let baseM = String.capitalize_ascii base in
+   prefix := baseM;
+   (* Input *)
+   (* Redefining saves space in bytecode! *)
+@@ -688,7 +688,7 @@ let process_file f =
+          (type_name name ~attrs) gtk_class;
+        let tag =
+          try List.assoc "tag" attrs with
+-           Not_found -> !tagprefix ^ String.lowercase name
++           Not_found -> !tagprefix ^ String.lowercase_ascii name
+        in
+        if props <> [] then
+          begin
+@@ -806,7 +806,7 @@ let process_file f =
+   let ppf = Format.formatter_of_out_channel oc in
+   let out fmt = Format.fprintf ppf fmt in
+   List.iter !oheaders ~f:(fun s -> out "%s@." s);
+-  out "open %s@." (String.capitalize (Filename.chop_extension !outfile));
++  out "open %s@." (String.capitalize_ascii (Filename.chop_extension !outfile));
+   out "@[<hv>";
+   let oprop ~name ~gtype ppf pname =
+     try
+@@ -895,7 +895,7 @@ let process_file f =
+            List.iter vprops
+              ~f:(fun (pname, mlname, gtype, _) ->
+                 out "@ @[<hv4>| `%s p ->@ param %a p@]"
+-                  (String.uppercase mlname) (oprop ~name ~gtype) pname);
++                  (String.uppercase_ascii mlname) (oprop ~name ~gtype) pname);
+            out "@]@ "
+          end;
+        let wsig = List.mem_assoc "wrapsig" attrs in
+diff --git a/src/varcc.ml b/src/varcc.ml
+index d0eded9b..80eab584 100644
+--- a/src/varcc.ml
++++ b/src/varcc.ml
+@@ -1,7 +1,7 @@
+ (* -*- caml -*- *)
+ (* $Id$ *)
+ 
+-(* Compile a list of variant tags into CPP defines *) 
++(* Compile a list of variant tags into CPP defines *)
+ 
+ open StdLabels
+ 
+@@ -23,7 +23,7 @@ let camlize id =
+     if id.[i] >= 'A' && id.[i] <= 'Z' then
+       begin
+         if i > 0 then Buffer.add_char b '_';
+-        Buffer.add_char b (Char.lowercase id.[i])
++        Buffer.add_char b (Char.lowercase_ascii id.[i])
+       end
+     else Buffer.add_char b id.[i]
+   done;
+@@ -184,11 +184,11 @@ let declaration ~hc ~cc (strm__ : _ Stream.t) =
+                                   ~len:(String.length prefix - 1)
+                             with
+                               Some '#', prefix ->
+-                                prefix ^ String.uncapitalize tag ^ suffix
++                                prefix ^ String.uncapitalize_ascii tag ^ suffix
+                             | Some '^', prefix ->
+-                                prefix ^ String.uppercase tag ^ suffix
++                                prefix ^ String.uppercase_ascii tag ^ suffix
+                             | _ -> prefix ^ tag ^ suffix
+-                        and cname = String.capitalize name in
++                        and cname = String.capitalize_ascii name in
+                         all_convs :=
+                           (name, mlname, tags, flags) :: !all_convs;
+                         let tags =

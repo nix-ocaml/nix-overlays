@@ -138,6 +138,7 @@ let
 
     # Broken on OCaml 5.00
     "fontconfig"
+    "cpdf"
 
     # incompatible with newer menhir
     "odate"

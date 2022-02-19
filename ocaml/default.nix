@@ -23,6 +23,8 @@ let
     #!${stdenv.shell}
     ${pkg-config}/bin/pkg-config $@
   '';
+
+  disableTests = d: d.overrideAttrs (_: { doCheck = false; });
 in
 
 with oself;
@@ -36,6 +38,8 @@ with oself;
     # A snapshot test is failing because of the cmdliner upgrade.
     doCheck = false;
   });
+
+  ansiterminal = disableTests osuper.ansiterminal;
 
   arp = osuper.arp.overrideAttrs (_: {
     buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
@@ -64,6 +68,17 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
 
+  bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/aantron/bisect_ppx/archive/refs/tags/2.8.0.tar.gz;
+      sha256 = "0xsk7kvc2drx5llb7mws9d5iavfk0k2qlfkpki1k5acyvdj6yvhd";
+    };
+    postPatch = ''
+      substituteInPlace src/ppx/register.ml --replace "String.uppercase" "String.uppercase_ascii"
+      substituteInPlace src/runtime/native/runtime.ml --replace "String.uppercase" "String.uppercase_ascii"
+    '';
+  });
+
   bos = osuper.bos.overrideAttrs
     (_: {
       src = builtins.fetchurl {
@@ -72,10 +87,26 @@ with oself;
       };
     });
 
+  bz2 = osuper.bz2.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace bz2.ml --replace "Pervasives" "Stdlib"
+      substituteInPlace bz2.mli --replace "Pervasives" "Stdlib"
+    '';
+  });
+
   camlp5 = osuper.camlp5.overrideAttrs (o: {
+    postPatch = ''
+      cp -r ./ocaml_stuff/4.14.0 ./ocaml_stuff/5.00.0
+      cp ./ocaml_src/lib/versdep/4.14.0.ml ./ocaml_src/lib/versdep/5.00.0.ml
+      substituteInPlace odyl/odyl.ml --replace "Printexc.catch" ""
+      substituteInPlace ocaml_src/odyl/odyl.ml --replace "Printexc.catch" ""
+    '';
+    nativeBuildInputs = [ ocaml findlib ];
+    propagatedBuildInputs = [ camlp-streams fmt fix ];
+
     src = builtins.fetchurl {
-      url = https://github.com/camlp5/camlp5/archive/rel8.00.02.tar.gz;
-      sha256 = "1zbp8mr9ms4253nh9z34dd2ppin4bri82j7xy3jdk73k9dbmr31w";
+      url = https://github.com/camlp5/camlp5/archive/610c5f3.tar.gz;
+      sha256 = "0p2w37r3scf5drv179s99nrygvr1rfa5cm84rgfypmjgg90h3n8m";
     };
   });
 
@@ -123,6 +154,12 @@ with oself;
 
   calendar = callPackage ./calendar { };
 
+  cairo2 = osuper.cairo2.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bigarray" ""
+    '';
+  });
+
   cairo2-gtk = buildDunePackage {
     pname = "cairo2-gtk";
     inherit (cairo2) version src;
@@ -132,9 +169,21 @@ with oself;
 
   camlidl = callPackage ./camlidl { };
 
-  carton = osuper.carton.overrideAttrs (_: {
-    doCheck = false;
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/johnwhitington/cpdf-source/archive/a0e93444b.tar.gz;
+      sha256 = "10bl1x8shssx4fxiimg46js363dnlfms70k8x6jgn4fifa0vilzg";
+    };
   });
+
+  camlpdf = osuper.camlpdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/johnwhitington/camlpdf/archive/563afd602.tar.gz;
+      sha256 = "0i52hr1zbdzpcn6hfylg748csaxcnaqi43amk315raxhsxirfc9k";
+    };
+  });
+
+  carton = disableTests osuper.carton;
 
   caqti = osuper.caqti.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -163,6 +212,12 @@ with oself;
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
+
+  cstruct-unix = osuper.cstruct-unix.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./unix/dune --replace "bigarray" ""
+    '';
+  });
 
   ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -287,6 +342,20 @@ with oself;
     patches = [ ./gapi.patch ];
   });
 
+  gg = osuper.gg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/gg/archive/refs/tags/v1.0.0.tar.gz;
+      sha256 = "1vp46w9pwc94fj857xmbzq1ngp48y9b9fyvliaizmbzhhl8dx684";
+    };
+    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
+
+    buildPhase = ''
+      runHook preBuild
+      ${topkg.buildPhase}
+      runHook postBuild
+    '';
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -338,24 +407,19 @@ with oself;
   });
 
   iter = osuper.iter.overrideAttrs (_: { doCheck = false; });
-  itv-tree = stdenv.mkDerivation {
-    name = "itv-tree";
+  itv-tree = buildDunePackage {
+    pname = "itv-tree";
     version = "2.1";
     src = builtins.fetchurl {
-      url = https://github.com/UnixJunkie/interval-tree/archive/v2.1.tar.gz;
-      sha256 = "07za9mdfx4kf0i4ikf543p89w73d3i31cb4l08a005n5jq9ada55";
+      url = https://github.com/anmonteiro/interval-tree/archive/2fb2f2b.tar.gz;
+      sha256 = "1gfb4dicqfs5cgyp03w39fm4x8yymxzajdzx1iybxg0c2ivax47c";
     };
-    buildPhase = ''
-      ocaml setup.ml -configure --prefix $prefix
-      ocaml setup.ml -build
+
+    postPatch = ''
+      substituteInPlace ./setup.ml --replace "Pervasives." "Stdlib."
     '';
-    installPhase = ''
-      runHook preInstall
-      ocaml setup.ml -install
-      runHook postInstall
-    '';
-    nativeBuildInputs = [ ocaml ocamlbuild findlib ];
-    createFindlibDestdir = true;
+
+    propagatedBuildInputs = [ camlp-streams ];
   };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
@@ -370,6 +434,15 @@ with oself;
       url = https://github.com/ocsigen/js_of_ocaml-ocamlbuild/archive/852302c8f35b946e2ec275c529a79e46d8749be6.tar.gz;
       sha256 = "11dj6sg77bzmnrja2vjsaarpwzfn1gbqia2l6y4pml5klpp712iv";
     };
+  });
+
+  lablgtk = osuper.lablgtk.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/garrigue/lablgtk/archive/78fcdd2.tar.gz;
+      sha256 = "0b7pz1391m9x03r9f9yixzj09slnk02nixddpzb40vgpq3zizarr";
+    };
+    patches = [ ./lablgtk.patch ];
+    propagatedBuildInputs = [ camlp-streams ];
   });
 
   lmdb = osuper.buildDunePackage {
