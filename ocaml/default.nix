@@ -101,6 +101,7 @@ with oself;
       cp ./ocaml_src/lib/versdep/4.14.0.ml ./ocaml_src/lib/versdep/5.00.0.ml
       substituteInPlace odyl/odyl.ml --replace "Printexc.catch" ""
       substituteInPlace ocaml_src/odyl/odyl.ml --replace "Printexc.catch" ""
+      patchShebangs ./etc/META.pl
     '';
     nativeBuildInputs = [ ocaml findlib ];
     propagatedBuildInputs = [ camlp-streams fmt fix ];
@@ -560,6 +561,12 @@ with oself;
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     prePatch = ''
       substituteInPlace src/core/lwt_log_core.ml --replace "String.lowercase" "String.lowercase_ascii"
+    '';
+  });
+
+  markup = osuper.markup.overrideAttrs (o: {
+    prePatch = ''
+      substituteInPlace src/common.ml --replace " = lowercase" " = lowercase_ascii"
     '';
   });
 
@@ -1232,6 +1239,16 @@ with oself;
       url = https://github.com/janestreet/ppx_accessor/archive/v0.14.3.tar.gz;
       sha256 = "19gq2kg2d68wp5ph8mk5fpai13dafqqd3i23hn76s3mc1lyc3q1a";
     };
+  });
+
+  lambdasoup = osuper.lambdasoup.overrideAttrs (o: {
+    prePatch = ''
+      substituteInPlace src/soup.ml --replace "lowercase " "lowercase_ascii "
+    '';
+    postPatch = ''
+      substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
 
   ppx_custom_printf = (janePackage {
