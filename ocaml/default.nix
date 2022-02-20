@@ -285,6 +285,13 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  dum = osuper.dum.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
+      substituteInPlace "dum.ml" --replace "Obj.final_tag" "Obj.custom_tag"
+    '';
+  });
+
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
 
@@ -605,6 +612,8 @@ with oself;
   });
 
   lambda-runtime = callPackage ./lambda-runtime { };
+  vercel = callPackage ./lambda-runtime/vercel.nix { };
+
   lambdaTerm = osuper.lambdaTerm.overrideAttrs (_: {
     prePatch = ''
       substituteInPlace src/lTerm_key.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
@@ -620,7 +629,6 @@ with oself;
       substituteInPlace src/lTerm_text_impl.ml --replace "Format.tag" "Format.stag"
     '';
   });
-  vercel = callPackage ./lambda-runtime/vercel.nix { };
 
   logs = osuper.logs.override { jsooSupport = false; };
 
@@ -649,6 +657,18 @@ with oself;
 
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
+
+  mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/nberth/mlgmpidl/archive/refs/tags/1.2.14.tar.gz;
+      sha256 = "0y5qb73nbiz81bg599by695f5kvm0ax199jax7xygbx48s9pm2fr";
+    };
+    postPatch = ''
+      substituteInPlace Makefile --replace " bigarray" ""
+      substituteInPlace Makefile --replace "$(OCAMLOPT) -p " "$(OCAMLOPT) "
+      substituteInPlace gmp_caml.c --replace "alloc_custom" "caml_alloc_custom"
+    '';
+  });
 
   morph = callPackage ./morph { };
   morph_graphql_server = callPackage ./morph/graphql.nix { };
