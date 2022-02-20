@@ -354,14 +354,6 @@ in
         postInstall = ''
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
-
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot
-
-
-          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib \
-                $out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib
-
-          cp -r ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
         '';
 
         setupHook = writeText "setupHook.sh" ''
@@ -386,7 +378,7 @@ in
       });
 
       topkg = osuper.topkg.overrideAttrs (o:
-        let run = "${natocaml}/bin/ocaml -I ${oself.findlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml";
+        let run = "${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml";
         in
         {
           selfBuild = true;
