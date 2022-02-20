@@ -18,7 +18,8 @@ let
       configurePlatforms = [ ];
       # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
       nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-      buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
+      buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ])
+        ++ lib.optional (o.doCheck or false) (o.checkInputs or [ ]);
     });
 
 in

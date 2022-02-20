@@ -452,6 +452,10 @@ with oself;
     };
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
+      substituteInPlace ./src/wrappers.h --replace "copy_double" "caml_copy_double"
+      substituteInPlace ./src/wrappers.h --replace "alloc_small" "caml_alloc_small"
+      substituteInPlace ./src/mlgsl_matrix.h --replace "alloc_small" "caml_alloc_small"
+
     '';
   });
 
