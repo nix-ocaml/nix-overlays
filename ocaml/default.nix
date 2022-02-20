@@ -4,7 +4,7 @@
 , libpq
 , darwin
 , stdenv
-, openssl
+, openssl-oc
 , pkg-config
 , lmdb
 , curl
@@ -12,6 +12,7 @@
 , libsodium
 , cairo
 , gtk2
+, zlib-oc
 }:
 
 
@@ -127,6 +128,7 @@ with oself;
       sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
     };
     nativeBuildInputs = [ ocaml findlib ];
+    propagatedBuildInputs = [ zlib-oc ];
   });
 
   camomile = osuper.camomile.overrideAttrs (_: {
@@ -987,7 +989,7 @@ with oself;
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
-    propagatedBuildInputs = [ openssl.dev ];
+    propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
@@ -1151,7 +1153,7 @@ with oself;
     hash = "0ykys3ckpsx5crfgj26v2q3gy6wf684aq0bfb4q8p92ivwznvlzy";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ async ctypes-0_17 openssl ];
+    propagatedBuildInputs = [ async ctypes-0_17 openssl-oc ];
   };
 
   base = osuper.base.overrideAttrs (_: {

@@ -24,7 +24,7 @@ in
 
   pkgsCross =
     let
-      static-overlays = callPackage ./static { };
+      static-overlays = callPackage ./static { inherit (self) pkgsStatic; };
       cross-overlays = callPackage ./cross { };
     in
     super.pkgsCross // {
@@ -71,4 +71,8 @@ in
     cockroachdb-21_2_x
     cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
-}
+} // (
+  lib.mapAttrs'
+    (n: p: lib.nameValuePair "${n}-oc" p)
+    { inherit (super) zlib openssl; }
+)
