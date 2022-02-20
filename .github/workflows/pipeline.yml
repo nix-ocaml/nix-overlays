@@ -1,7 +1,5 @@
 name: Pipeline
 on:
-  pull_request:
-    types: [review_requested]
   push:
     branches:
       - master

@@ -2,9 +2,11 @@ name: Auto-update
 on:
   push:
     branches:
-      - "ulrikstrid/auto-update"
+      # Escape hatch to easily make and test changes to this flow
+      - "ulrikstrid/auto-update-pr"
+      - "anmonteiro/auto-update-pr"
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "30 */11 * * *"
 
 jobs:
   update-sources:
