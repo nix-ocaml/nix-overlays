@@ -64,7 +64,11 @@ in
 
           installPhase =
             let
-              natPackage = natocamlPackages."${o.pname}";
+              natPackage =
+                natocamlPackages."${o.pname}" or
+                  # Some legacy packages are called `ocaml_X`, e.g. extlib and
+                  # sqlite3
+                  natocamlPackages."ocaml_${o.pname}";
             in
             ''
               runHook preInstall

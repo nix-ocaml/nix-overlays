@@ -4,7 +4,7 @@
 , libpq
 , darwin
 , stdenv
-, openssl
+, openssl-oc
 , pkg-config
 , lmdb
 , curl
@@ -12,6 +12,7 @@
 , libsodium
 , cairo
 , gtk2
+, zlib-oc
 }:
 
 
@@ -20,10 +21,16 @@ oself: osuper:
 let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
-  script = writeScriptBin "pkg-config" ''
-    #!${stdenv.shell}
-    ${pkg-config}/bin/pkg-config $@
-  '';
+  pkg-config-script =
+    let pkg-config-pkg =
+      if stdenv.cc.targetPrefix == ""
+      then "${pkg-config}/bin/pkg-config"
+      else "${stdenv.cc.targetPrefix}pkg-config";
+    in
+    writeScriptBin "pkg-config" ''
+      #!${stdenv.shell}
+      ${pkg-config-pkg} $@
+    '';
 
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
 in
@@ -127,6 +134,7 @@ with oself;
       sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
     };
     nativeBuildInputs = [ ocaml findlib ];
+    propagatedBuildInputs = [ zlib-oc ];
   });
 
   camomile = osuper.camomile.overrideAttrs (_: {
@@ -355,6 +363,11 @@ with oself;
     };
   });
 
+  fpath = osuper.fpath.overrideAttrs (_: {
+    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
+    buildInputs = [ ];
+  });
+
   fileutils = osuper.fileutils.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
     postPatch = ''
@@ -538,7 +551,7 @@ with oself;
       url = https://github.com/Drup/ocaml-lmdb/archive/1.0.tar.gz;
       sha256 = "0nkax7v4yggk21yxgvx3ax8fg74yl1bhj4z09szfblmsxsy5ydd4";
     };
-    nativeBuildInputs = [ script dune-configurator pkg-config ];
+    nativeBuildInputs = [ pkg-config-script dune-configurator pkg-config ];
     buildInputs = [ lmdb-pkg ];
     propagatedBuildInputs = [ bigstringaf ];
   };
@@ -746,7 +759,10 @@ with oself;
     ocamlformat-rpc_0_20_1;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [
+      pkg-config-script
+      dune-configurator
+    ];
   });
 
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
@@ -779,7 +795,7 @@ with oself;
       sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
     };
 
-    nativeBuildInputs = [ script pkg-config ocaml findlib ];
+    nativeBuildInputs = [ pkg-config-script pkg-config ocaml findlib ];
     propagatedBuildInputs = [ curl lwt ];
     createFindlibDestdir = true;
   };
@@ -867,6 +883,8 @@ with oself;
   };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ ppxlib cppo ];
+    buildInputs = [ ];
     propagatedBuildInputs = [
       ppx_derivers
       result
@@ -980,7 +998,7 @@ with oself;
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
-    propagatedBuildInputs = [ openssl.dev ];
+    propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
@@ -1144,7 +1162,7 @@ with oself;
     hash = "0ykys3ckpsx5crfgj26v2q3gy6wf684aq0bfb4q8p92ivwznvlzy";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ async ctypes-0_17 openssl ];
+    propagatedBuildInputs = [ async ctypes-0_17 openssl-oc ];
   };
 
   base = osuper.base.overrideAttrs (_: {
