@@ -6,6 +6,7 @@ let
   fixOCaml = ocaml:
     (ocaml.override { useX11 = false; }).overrideAttrs (o: {
       dontUpdateAutotoolsGnuConfigScripts = true;
+      dontDisableStatic = true;
       preConfigure = ''
         configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';

@@ -19,6 +19,7 @@ in
   });
   esy = callPackage ./ocaml/esy { };
 
+  pkgsMusl = super.pkgsMusl.extend staticLightOverlay;
   pkgsStatic = super.pkgsStatic.extend staticLightOverlay;
 
   pkgsCross =
