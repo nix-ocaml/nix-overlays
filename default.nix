@@ -28,8 +28,7 @@ in
       cross-overlays = callPackage ./cross { };
     in
     super.pkgsCross // {
-      musl64 = super.pkgsCross.musl64.extend staticLightOverlay;
-      musl64Static = super.pkgsCross.musl64.appendOverlays static-overlays;
+      musl64 = super.pkgsCross.musl64.appendOverlays static-overlays;
 
       aarch64-multiplatform =
         super.pkgsCross.aarch64-multiplatform.appendOverlays cross-overlays;
