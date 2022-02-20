@@ -1069,6 +1069,10 @@ with oself;
     '';
   });
 
+  tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ocp-ocamlres];
+  });
+
   tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
     postPatch = ''
       echo "(lang dune 3.0)" > dune-project
