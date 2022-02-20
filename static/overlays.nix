@@ -16,6 +16,9 @@ in
 {
   inherit (pkgsStatic) libev;
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
-} // (
-  lib.mapAttrs' renameForOCaml { inherit (pkgsStatic) zlib openssl; }
-)
+  zlib-oc = super.zlib.override { static = true; splitStaticOutput = false; };
+  openssl-oc = super.openssl.override { static = true; };
+}
+# // (
+# lib.mapAttrs' renameForOCaml { inherit (pkgsStatic) zlib openssl; }
+# )
