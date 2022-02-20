@@ -26,12 +26,10 @@
       mkDerivationSuper (args // f args));
     makeStaticLibraries = stdenv:
       stdenv.override (old: {
-        # hostPlatform = old.hostPlatform // { isStatic = true; };
         mkDerivationFromStdenv = extendMkDerivationArgs old (args: {
           dontDisableStatic = true;
         } // lib.optionalAttrs (!(args.dontAddStaticConfigureFlags or false)) {
           configureFlags = (args.configureFlags or [ ]) ++ [ "--enable-static" ];
-          cmakeFlags = (args.cmakeFlags or [ ]) ++ [ "-DBUILD_SHARED_LIBS:BOOL=OFF" ];
           mesonFlags = (args.mesonFlags or [ ]) ++ [ "-Ddefault_library=static" ];
         });
       });
