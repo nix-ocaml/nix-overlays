@@ -31,10 +31,10 @@ jobs:
         run: |
           git config --global user.name 'UpdateBot'
           git config --global user.email 'ulrikstrid@users.noreply.github.com'
-          git checkout -b auto-update-sources-${{ env.GITHUB_RUN_ID }}
+          git checkout -b "auto-update-sources-$(GITHUB_RUN_ID)
           git add sources.nix
           git commit -m "Update sources"
-          git push --set-upstream origin auto-update-sources-${{ env.GITHUB_RUN_ID }}
+          git push --set-upstream origin auto-update-sources-$(GITHUB_RUN_ID)
       - name: Open pull request
         uses: repo-sync/pull-request@v2
         env:
