@@ -1,5 +1,20 @@
-args@{ overlays ? [ (import ./.) ], ... }:
+args@{ system ? null, patches ? [ ], overlays ? [ (import ./.) ], ... }:
 
 # `git ls-remote https://github.com/nixos/nixpkgs-channels nixos-unstable`
 
-import (import ./sources.nix) (args // { inherit overlays; })
+let
+  systemArgs = if system == null then { } else { inherit system; };
+  patchChannel = system: channel: patches:
+    if patches == [ ]
+    then channel
+    else
+      (import channel systemArgs).pkgs.applyPatches {
+        name = "nixpkgs-patched";
+        src = channel;
+        patches = patches;
+      };
+  channel = patchChannel system (import ./sources.nix) patches;
+
+in
+
+import channel (args // { inherit overlays; } // systemArgs)
