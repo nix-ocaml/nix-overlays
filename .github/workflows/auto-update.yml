@@ -38,11 +38,11 @@ jobs:
       - name: Open pull request
         uses: repo-sync/pull-request@v2
         env:
-          GITHUB_JOB: ${{ env.GITHUB_JOB }}
+          GITHUB_JOB: ${{ env.GITHUB_JOB }} 
           GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
         with:
           destination_branch: "master"
-          source_branch: auto-update-sources-${{ GITHUB_RUN_ID }}
+          source_branch: auto-update-sources-${{ github.job }}
           pr_title: "Update sources"
           pr_body: ":robot_face: Updating sources to the latest version.\nDiff between current and this version can be seen here: ${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
