@@ -752,8 +752,9 @@ with oself;
     ocamlformat-rpc_0_20_0
     ocamlformat-rpc_0_20_1;
 
+  sqlite3 = oself.ocaml_sqlite3;
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ script dune-configurator ];
   });
 
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
