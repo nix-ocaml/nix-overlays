@@ -352,10 +352,10 @@ in
       ocaml = fixOCaml osuper.ocaml;
 
       findlib = osuper.findlib.overrideAttrs (o: {
-        nativeBuildInputs = with buildPackages; [
-          natocaml
-          buildPackages.stdenv.cc
-        ];
+        postInstall = ''
+          rm -rf $out/bin/ocamlfind
+          cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
+        '';
 
         setupHook = writeText "setupHook.sh" ''
           addOCamlPath () {
