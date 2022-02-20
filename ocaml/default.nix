@@ -49,6 +49,23 @@ with oself;
 
   ansiterminal = disableTests osuper.ansiterminal;
 
+  apron = osuper.apron.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
+      substituteInPlace mlapronidl/scalar.idl --replace " alloc_small" " caml_alloc_small"
+      substituteInPlace mlapronidl/linexpr0.idl --replace " callback2" " caml_callback2"
+      substituteInPlace mlapronidl/manager.idl --replace " invalid_argument" " caml_invalid_argument"
+      substituteInPlace mlapronidl/apron_caml.c --replace "alloc_custom" "caml_alloc_custom"
+      substituteInPlace mlapronidl/apron_caml.c --replace "serialize_int_8" "caml_serialize_int_8"
+      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_uint_8" "caml_deserialize_uint_8"
+      substituteInPlace mlapronidl/apron_caml.c --replace " serialize_block_1" " caml_serialize_block_1"
+      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_block_1" "caml_deserialize_block_1"
+      substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
+      substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
+      substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
+    '';
+  });
+
   arp = osuper.arp.overrideAttrs (_: {
     buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
     doCheck = ! stdenv.isDarwin;
