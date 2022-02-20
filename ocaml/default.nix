@@ -49,6 +49,23 @@ with oself;
 
   ansiterminal = disableTests osuper.ansiterminal;
 
+  apron = osuper.apron.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
+      substituteInPlace mlapronidl/scalar.idl --replace " alloc_small" " caml_alloc_small"
+      substituteInPlace mlapronidl/linexpr0.idl --replace " callback2" " caml_callback2"
+      substituteInPlace mlapronidl/manager.idl --replace " invalid_argument" " caml_invalid_argument"
+      substituteInPlace mlapronidl/apron_caml.c --replace "alloc_custom" "caml_alloc_custom"
+      substituteInPlace mlapronidl/apron_caml.c --replace "serialize_int_8" "caml_serialize_int_8"
+      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_uint_8" "caml_deserialize_uint_8"
+      substituteInPlace mlapronidl/apron_caml.c --replace " serialize_block_1" " caml_serialize_block_1"
+      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_block_1" "caml_deserialize_block_1"
+      substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
+      substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
+      substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
+    '';
+  });
+
   arp = osuper.arp.overrideAttrs (_: {
     buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
     doCheck = ! stdenv.isDarwin;
@@ -284,6 +301,13 @@ with oself;
   dream-livereload = callPackage ./dream-livereload { };
 
   dream-serve = callPackage ./dream-serve { };
+
+  dum = osuper.dum.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
+      substituteInPlace "dum.ml" --replace "Obj.final_tag" "Obj.custom_tag"
+    '';
+  });
 
   # Make `dune` effectively be Dune v2.  This works because Dune 2 is
   # backwards compatible.
@@ -605,6 +629,8 @@ with oself;
   });
 
   lambda-runtime = callPackage ./lambda-runtime { };
+  vercel = callPackage ./lambda-runtime/vercel.nix { };
+
   lambdaTerm = osuper.lambdaTerm.overrideAttrs (_: {
     prePatch = ''
       substituteInPlace src/lTerm_key.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
@@ -620,7 +646,6 @@ with oself;
       substituteInPlace src/lTerm_text_impl.ml --replace "Format.tag" "Format.stag"
     '';
   });
-  vercel = callPackage ./lambda-runtime/vercel.nix { };
 
   logs = osuper.logs.override { jsooSupport = false; };
 
@@ -649,6 +674,18 @@ with oself;
 
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
+
+  mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/nberth/mlgmpidl/archive/refs/tags/1.2.14.tar.gz;
+      sha256 = "0y5qb73nbiz81bg599by695f5kvm0ax199jax7xygbx48s9pm2fr";
+    };
+    postPatch = ''
+      substituteInPlace Makefile --replace " bigarray" ""
+      substituteInPlace Makefile --replace "$(OCAMLOPT) -p " "$(OCAMLOPT) "
+      substituteInPlace gmp_caml.c --replace "alloc_custom" "caml_alloc_custom"
+    '';
+  });
 
   morph = callPackage ./morph { };
   morph_graphql_server = callPackage ./morph/graphql.nix { };
