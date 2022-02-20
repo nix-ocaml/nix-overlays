@@ -918,12 +918,14 @@ with oself;
   };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ ppxlib cppo ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
     buildInputs = [ ];
     propagatedBuildInputs = [
+      ppxlib
       ppx_derivers
       result
     ];
+    buildInputs = [ ];
     # Tests use `Pervasives`.
     doCheck = false;
   });
