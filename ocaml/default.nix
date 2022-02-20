@@ -758,7 +758,6 @@ with oself;
     ocamlformat-rpc_0_20_0
     ocamlformat-rpc_0_20_1;
 
-  sqlite3 = oself.ocaml_sqlite3;
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [
       pkg-config-script
