@@ -925,7 +925,6 @@ with oself;
       ppx_derivers
       result
     ];
-    buildInputs = [ ];
     # Tests use `Pervasives`.
     doCheck = false;
   });
