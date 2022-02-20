@@ -192,7 +192,7 @@ let
 
 
     musl =
-      let drvs = buildCandidates pkgs.pkgsCross.musl64;
+      let drvs = buildCandidates pkgs.pkgsCross.musl64Static;
       in
       with drvs;
       [
