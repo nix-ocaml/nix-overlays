@@ -905,7 +905,12 @@ with oself;
 
   ppx_tools = callPackage ./ppx_tools { };
 
-  postgresql = (osuper.postgresql.override { postgresql = libpq; });
+  postgresql =
+    (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (_: {
+      postPatch = ''
+        substituteInPlace src/dune --replace " bigarray" ""
+      '';
+    });
 
   postgres_async = osuper.buildDunePackage {
     pname = "postgres_async";
