@@ -903,9 +903,7 @@ with oself;
     ];
   });
 
-  ppx_tools = osuper.ppx_tools.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
-  });
+  ppx_tools = callPackage ./ppx_tools { };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; });
 

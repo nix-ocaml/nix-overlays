@@ -261,9 +261,14 @@ in
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "4.13" ocaml.version then ./cross_4_13.patch
-            else if lib.versionOlder "4.12" ocaml.version then ./cross_4_12.patch
-            else if lib.versionOlder "4.11" ocaml.version then ./cross_4_11.patch
+            (if lib.versionOlder "5.00" ocaml.version
+            then ./cross_5_00.patch
+            else if lib.versionOlder "4.13" ocaml.version
+            then ./cross_4_13.patch
+            else if lib.versionOlder "4.12" ocaml.version
+            then ./cross_4_12.patch
+            else if lib.versionOlder "4.11" ocaml.version
+            then ./cross_4_11.patch
             else throw "OCaml ${ocaml.version} not supported for cross-compilation")
           ];
         });
