@@ -23,7 +23,7 @@ let
   lmdb-pkg = lmdb;
   script = writeScriptBin "pkg-config" ''
     #!${stdenv.shell}
-    ${pkg-config}/bin/pkg-config $@
+    ${stdenv.cc.targetPrefix}pkg-config $@
   '';
 
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
