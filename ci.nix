@@ -204,6 +204,7 @@ let
           static = true;
         })
         caqti-driver-postgresql
+        ppx_deriving
       ];
 
 
@@ -220,6 +221,7 @@ let
           static = true;
         })
         caqti-driver-postgresql
+        ppx_deriving
       ];
   };
 in
