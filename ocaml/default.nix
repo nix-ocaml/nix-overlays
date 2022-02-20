@@ -1070,7 +1070,7 @@ with oself;
   });
 
   tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ocp-ocamlres];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ ocp-ocamlres ];
   });
 
   tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
