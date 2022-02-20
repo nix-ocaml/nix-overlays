@@ -378,6 +378,10 @@ with oself;
     };
   });
 
+  ff-pbt = osuper.ff-pbt.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ alcotest ];
+  });
+
   flow_parser = callPackage ./flow_parser { };
 
   fmt = osuper.fmt.overrideAttrs (_: {
@@ -1152,6 +1156,10 @@ with oself;
       url = https://github.com/mirage/uuuu/releases/download/v0.3.0/uuuu-0.3.0.tbz;
       sha256 = "19n39yc7spgzpk9i70r0nhkwsb0bfbvbgpf8d863p0a3wgryhzkb";
     };
+  });
+
+  uucp = osuper.uucp.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ uucd ];
   });
 
   websocketaf = callPackage ./websocketaf { };
