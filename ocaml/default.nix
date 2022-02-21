@@ -83,6 +83,13 @@ with oself;
 
   });
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/a7276a8d41b31035423235b2395aa82ab5d6f392.tar.gz;
+      sha256 = "0b5wy0m83ynw2lz50vx67p1dfgdkbc8y6kfkvxhi8zxpiwm27kml";
+    };
+  });
+
   biniou = osuper.biniou.overrideAttrs (o: {
     patches = [
       (fetchpatch {
