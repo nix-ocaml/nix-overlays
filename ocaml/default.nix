@@ -4,6 +4,7 @@
 , libpq
 , darwin
 , stdenv
+, gmp-oc
 , openssl-oc
 , pkg-config
 , lmdb
@@ -1197,6 +1198,10 @@ with oself;
   });
 
   yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
+
+  zarith = osuper.zarith.overrideAttrs (_: {
+    propagatedBuildInputs = [ gmp-oc ];
+  });
 
   # Jane Street packages
   async_websocket = osuper.buildDunePackage {
