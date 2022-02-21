@@ -151,7 +151,6 @@ let
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
-    "ocaml-migrate-parsetree-1-8"
 
     # incompatible with newer menhir
     "odate"
