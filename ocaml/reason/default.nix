@@ -16,12 +16,12 @@ buildDunePackage {
   version = "3.7.0";
 
   src =
-    if (lib.versionOlder "4.13" ocaml.version) then
+    if (lib.versionOlder "4.13" ocaml.version)
+    then
       builtins.fetchurl
         {
-          # https://github.com/reasonml/reason/pull/2657 -- OCaml 4.13 support
-          url = https://github.com/reasonml/reason/archive/ccc34729994b4a80d4f6274cc0165cd9113444d6.tar.gz;
-          sha256 = "00hy9wpp7qyjs1nzq0hmjywqsz1xb9360icrrdr32pp9j84bym4i";
+          url = https://github.com/reasonml/reason/archive/9b459245de02b89a27100d34209a819dd9921de2.tar.gz;
+          sha256 = "03i33i32ljzbqfmgahcp7x35v0p4983q0hsmbryj1jkndvzlad4f";
         } else
     # Melange depends on the 4.08 AST, and until that's fixed we use this Reason version
       builtins.fetchurl {

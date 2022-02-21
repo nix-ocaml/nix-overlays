@@ -83,6 +83,13 @@ with oself;
 
   });
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/a7276a8d41b31035423235b2395aa82ab5d6f392.tar.gz;
+      sha256 = "0b5wy0m83ynw2lz50vx67p1dfgdkbc8y6kfkvxhi8zxpiwm27kml";
+    };
+  });
+
   biniou = osuper.biniou.overrideAttrs (o: {
     patches = [
       (fetchpatch {
@@ -257,10 +264,16 @@ with oself;
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
     };
-
     postPatch = ''
       substituteInPlace ./Makefile --replace "bigarray" ""
     '';
+  });
+
+  ctypes = osuper.ctypes.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/ocaml-ctypes/archive/57f069897b36f784ff0296c40f726e3baf5d8a1d.tar.gz;
+      sha256 = "05wy8nxprj4ka1dk5h4nmnmlrqildmlrqx37pbyvc8az16awz5x3";
+    };
   });
 
   cudf = buildDunePackage {
@@ -288,6 +301,17 @@ with oself;
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
   decimal = callPackage ./decimal { };
+
+  decompress = disableTests osuper.decompress;
+
+  dolog = buildDunePackage {
+    pname = "dolog";
+    version = "6.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/UnixJunkie/dolog/archive/refs/tags/v6.0.0.tar.gz;
+      sha256 = "0idxs1lnpsh49hvxnrkb3ijybd83phzbxfcichchw511k9ismlia";
+    };
+  };
 
   domainslib =
     if lib.versionAtLeast ocaml.version "5.00" then
@@ -319,7 +343,9 @@ with oself;
     then oself.dune_2
     else osuper.dune_1;
 
-  dune_2 = osuper.dune_2.overrideAttrs (_: {
+  dune_2 = dune_3;
+
+  dune_3 = osuper.dune_3.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/dune/archive/435f026896a0410546c4cef73c005bbca364a177.tar.gz;
       sha256 = "1jqiaqxyab487f2gzghy5l10asljkb824xjaryl2vpck85yiqbp1";
@@ -329,6 +355,7 @@ with oself;
       CoreServices
     ]);
   });
+
   dune-configurator = callPackage ./dune/configurator.nix { };
   dyn = callPackage ./dune/dyn.nix { };
   ordering = callPackage ./dune/ordering.nix { };
@@ -580,7 +607,22 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lutils = buildDunePackage {
+    pname = "lutils";
+    version = "1.51.3";
+    src = builtins.fetchurl {
+      url = https://gricad-gitlab.univ-grenoble-alpes.fr/verimag/synchrone/lutils/-/archive/1.51.3/lutils-1.51.3.tar.gz;
+      sha256 = "0brbv0hzddac8v9kfm97i81d0x9nnlfpmwgk0mzc2vpy3p3vd315";
+    };
+    propagatedBuildInputs = [ num camlp-streams ];
+
+    postPatch = ''
+      substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
+    '';
+  };
+
   lwt = osuper.lwt.overrideAttrs (o: {
+
     version = "5.5.0";
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
     src = builtins.fetchurl {
@@ -696,6 +738,21 @@ with oself;
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
 
+  mimic = osuper.mimic.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dinosaure/mimic/archive/d548777d2f33b88ea04b2d0550df020578419b4e.tar.gz;
+      sha256 = "17mk21f76yl0yiskybnvd4zwr073m1rh2l5hswj34dyvcfzz153y";
+    };
+
+    postPatch = ''
+      substituteInPlace lib/implicit.ml --replace "Obj.extension_id" "Obj.Extension_constructor.id"
+      substituteInPlace lib/implicit.ml --replace "Stdlib.Obj.((extension_id (extension_constructor t" "Stdlib.Obj.Extension_constructor.((id (of_val t"
+      substituteInPlace test/dune --replace "bigarray" ""
+
+
+    '';
+  });
+
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
 
@@ -727,13 +784,14 @@ with oself;
     };
 
   });
-  bigstring = osuper.bigstring.overrideAttrs (_: {
 
+  bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.00" then ''
         substituteInPlace src/dune --replace " bigarray" ""
       '' else "";
   });
+
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
@@ -741,7 +799,11 @@ with oself;
     };
   });
 
-
+  npy = osuper.npy.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+  });
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -804,6 +866,13 @@ with oself;
 
   ocp-build = osuper.ocp-build.overrideDerivation (o: {
     preConfigure = "";
+  });
+
+  ocp-index = osuper.ocp-index.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocp-index/archive/a6b3a022522359a38618777c685363a750cb82d4.tar.gz;
+      sha256 = "1rh1z48qj946zq2vmxrfib0p3br1p5gkpfb48rq5kz3j82sfs2jk";
+    };
   });
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
@@ -882,6 +951,17 @@ with oself;
     '';
     # To avoid bringing in OMP
     doCheck = false;
+  });
+
+  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (_: {
+    postPatch =
+      if lib.versionOlder "4.14" osuper.ocaml.version
+      then ''
+        substituteInPlace "src/custom/ppx_cstubs_custom.cppo.ml" --replace \
+        "(str, _sg, _sn, newenv)" \
+        "(str, _sg, _sn, _shp, newenv)"
+      ''
+      else "";
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
@@ -1017,6 +1097,17 @@ with oself;
   });
 
   sedlex = oself.sedlex_2;
+  sedlex_2 = osuper.sedlex_2.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/sedlex/archive/refs/tags/v2.5.tar.gz;
+      sha256 = "199ql06hpk3p2n1hbghl1iky8zwr7lzl8n4qf14pfp0lvgvdr62v";
+    };
+    preBuild = ''
+      substituteInPlace src/lib/dune --replace "(libraries " "(libraries camlp-streams "
+    '';
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
@@ -1053,6 +1144,15 @@ with oself;
     };
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
+
+  tar = osuper.tar.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.0.0/tar-mirage-v2.0.0.tbz;
+      sha256 = "0aaazix3d6a3jjskzyilg2jwlfp54dw5mfxzkvc65xswaqgly80b";
+    };
+    buildInputs = [ ];
+
+  });
 
   toml = osuper.toml.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1104,6 +1204,12 @@ with oself;
     '';
   });
 
+  tyxml = osuper.tyxml.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/tyxml/archive/c28e871df6db66a261ba541aa15caad314c78ddc.tar.gz;
+      sha256 = "10vbg9qdmmb96vrpv65px2ipshckzn12k2z611261ii7ab2y4s2s";
+    };
+  });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
@@ -1130,6 +1236,10 @@ with oself;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
     buildPhase = "${topkg.buildPhase} --with-cmdliner false";
+  });
+
+  uucp = osuper.uucp.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ uucd ];
   });
 
   uunf = osuper.uunf.overrideAttrs (_: {

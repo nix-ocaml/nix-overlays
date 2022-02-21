@@ -260,7 +260,7 @@ in
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "5.00" ocaml.version
+            (if lib.versionOlder "4.14" ocaml.version
             then ./cross_5_00.patch
             else if lib.versionOlder "4.13" ocaml.version
             then ./cross_4_13.patch
