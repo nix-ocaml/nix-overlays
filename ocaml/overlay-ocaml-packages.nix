@@ -40,8 +40,8 @@ let
         minor_version = "14";
         patch_version = "0-alpha2";
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-alpha2.tar.gz;
-          sha256 = "17dxkiq5rrzpkgf90615lpn0s8jn08gmxj6am8dld6y9fand4qr7";
+          url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-beta1.tar.gz;
+          sha256 = "15dy594vbgkzw3rzf9v2z4ng0r6h26jfv8dgq9csy87xcw4000hv";
         };
       };
 
@@ -51,8 +51,8 @@ let
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/e7b3839fcd1925473beb4bcf9cdf82c87213dc59.tar.gz;
-          sha256 = "0dkv5yi78qkgr274dcrmddwm3bj1as2iz1nsg375wwy9hsd91gsj";
+          url = https://github.com/ocaml/ocaml/archive/53a45c9dc08856e8ca0bb165d559fba62f00d725.tar.gz;
+          sha256 = "1bfva27ma902qhgib2hic8r6br35qnf7kgmy1q7c3isjjn1i4v3n";
         };
       };
 
