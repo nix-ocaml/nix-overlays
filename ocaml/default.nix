@@ -264,10 +264,16 @@ with oself;
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
     };
-
     postPatch = ''
       substituteInPlace ./Makefile --replace "bigarray" ""
     '';
+  });
+
+  ctypes = osuper.ctypes.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/ocaml-ctypes/archive/57f069897b36f784ff0296c40f726e3baf5d8a1d.tar.gz;
+      sha256 = "05wy8nxprj4ka1dk5h4nmnmlrqildmlrqx37pbyvc8az16awz5x3";
+    };
   });
 
   cudf = buildDunePackage {
@@ -295,6 +301,8 @@ with oself;
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
   decimal = callPackage ./decimal { };
+
+  decompress = disableTests osuper.decompress;
 
   domainslib =
     if lib.versionAtLeast ocaml.version "5.00" then
@@ -705,6 +713,21 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
+
+  mimic = osuper.mimic.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dinosaure/mimic/archive/d548777d2f33b88ea04b2d0550df020578419b4e.tar.gz;
+      sha256 = "17mk21f76yl0yiskybnvd4zwr073m1rh2l5hswj34dyvcfzz153y";
+    };
+
+    postPatch = ''
+      substituteInPlace lib/implicit.ml --replace "Obj.extension_id" "Obj.Extension_constructor.id"
+      substituteInPlace lib/implicit.ml --replace "Stdlib.Obj.((extension_id (extension_constructor t" "Stdlib.Obj.Extension_constructor.((id (of_val t"
+      substituteInPlace test/dune --replace "bigarray" ""
+
+
+    '';
+  });
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
