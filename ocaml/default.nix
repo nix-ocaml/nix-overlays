@@ -304,6 +304,15 @@ with oself;
 
   decompress = disableTests osuper.decompress;
 
+  dolog = buildDunePackage {
+    pname = "dolog";
+    version = "6.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/UnixJunkie/dolog/archive/refs/tags/v6.0.0.tar.gz;
+      sha256 = "0idxs1lnpsh49hvxnrkb3ijybd83phzbxfcichchw511k9ismlia";
+    };
+  };
+
   domainslib =
     if lib.versionAtLeast ocaml.version "5.00" then
       callPackage ./domainslib { }
@@ -1227,6 +1236,10 @@ with oself;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
     buildPhase = "${topkg.buildPhase} --with-cmdliner false";
+  });
+
+  uucp = osuper.uucp.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ uucd ];
   });
 
   uunf = osuper.uunf.overrideAttrs (_: {
