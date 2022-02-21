@@ -38,7 +38,8 @@ let
       ocamlPackages_4_14 = newOCamlScope {
         major_version = "4";
         minor_version = "14";
-        patch_version = "0-alpha2";
+        patch_version = "0-beta1";
+        hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
           url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-beta1.tar.gz;
           sha256 = "15dy594vbgkzw3rzf9v2z4ng0r6h26jfv8dgq9csy87xcw4000hv";
