@@ -271,7 +271,7 @@ with oself;
     '';
   });
 
-  ctypes = osuper.ctypes.overrideAttrs (_: {
+  ctypes = osuper.ctypes.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/57f069897b36f784ff0296c40f726e3baf5d8a1d.tar.gz;
       sha256 = "05wy8nxprj4ka1dk5h4nmnmlrqildmlrqx37pbyvc8az16awz5x3";
