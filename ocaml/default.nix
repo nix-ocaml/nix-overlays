@@ -598,7 +598,22 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lutils = buildDunePackage {
+    pname = "lutils";
+    version = "1.51.3";
+    src = builtins.fetchurl {
+      url = https://gricad-gitlab.univ-grenoble-alpes.fr/verimag/synchrone/lutils/-/archive/1.51.3/lutils-1.51.3.tar.gz;
+      sha256 = "0brbv0hzddac8v9kfm97i81d0x9nnlfpmwgk0mzc2vpy3p3vd315";
+    };
+    propagatedBuildInputs = [ num camlp-streams ];
+
+    postPatch = ''
+      substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
+    '';
+  };
+
   lwt = osuper.lwt.overrideAttrs (o: {
+
     version = "5.5.0";
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
     src = builtins.fetchurl {
@@ -760,13 +775,14 @@ with oself;
     };
 
   });
-  bigstring = osuper.bigstring.overrideAttrs (_: {
 
+  bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.00" then ''
         substituteInPlace src/dune --replace " bigarray" ""
       '' else "";
   });
+
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
@@ -774,7 +790,11 @@ with oself;
     };
   });
 
-
+  npy = osuper.npy.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+  });
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -929,8 +949,8 @@ with oself;
       if lib.versionOlder "4.14" osuper.ocaml.version
       then ''
         substituteInPlace "src/custom/ppx_cstubs_custom.cppo.ml" --replace \
-          "(str, _sg, _sn, newenv)" \
-          "(str, _sg, _sn, _shp, newenv)"
+        "(str, _sg, _sn, newenv)" \
+        "(str, _sg, _sn, _shp, newenv)"
       ''
       else "";
   });
@@ -1068,6 +1088,17 @@ with oself;
   });
 
   sedlex = oself.sedlex_2;
+  sedlex_2 = osuper.sedlex_2.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/sedlex/archive/refs/tags/v2.5.tar.gz;
+      sha256 = "199ql06hpk3p2n1hbghl1iky8zwr7lzl8n4qf14pfp0lvgvdr62v";
+    };
+    preBuild = ''
+      substituteInPlace src/lib/dune --replace "(libraries " "(libraries camlp-streams "
+    '';
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
