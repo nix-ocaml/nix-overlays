@@ -144,11 +144,11 @@ let
     "functory"
     "getopt"
 
-
     # Incompatible with 4.14
     "pcap-format"
     "notty"
     "ppx_tools"
+    "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
     "ocaml-migrate-parsetree-1-8"
