@@ -1276,10 +1276,6 @@ with oself;
     };
   });
 
-  uucp = osuper.uucp.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ uucd ];
-  });
-
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
