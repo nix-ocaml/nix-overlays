@@ -1,6 +1,5 @@
 name: Pipeline
 on:
-  pull_request:
   push:
     branches:
       - master
@@ -23,6 +22,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
       - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
@@ -50,6 +50,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: true }
     name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: macos-latest
@@ -61,7 +62,7 @@ jobs:
       - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
@@ -79,6 +80,7 @@ jobs:
         setup:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
+          - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: true }
         target:
           - arm64
@@ -93,7 +95,7 @@ jobs:
       - uses: cachix/cachix-action@v10
         with:
           name: anmonteiro
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./boot.nix nix-build-uncached -c \
@@ -102,4 +104,3 @@ jobs:
                 --argstr target ${{ matrix.target }} \
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
-

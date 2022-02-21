@@ -38,6 +38,14 @@ in
           (cross-overlays ++ static-overlays));
     };
 
+
+  ocamlformat = super.ocamlformat.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \
+        --replace \
+        "String.capitalize" "String.capitalize_ascii"
+    '';
+  });
   # Other packages
 
   lib = lib.fix (self: lib //
