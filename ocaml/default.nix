@@ -1129,7 +1129,7 @@ with oself;
       url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
-    buildPhase = "ocaml -I ${findlib}/lib/ocaml/${ocaml.version}/site-lib/ pkg/pkg.ml build --with-cmdliner false";
+    buildPhase = "${topkg.buildPhase} --with-cmdliner false";
   });
 
   uunf = osuper.uunf.overrideAttrs (_: {

@@ -180,7 +180,6 @@ in
 
       fixOCaml = ocaml: ocaml.overrideAttrs (o:
         {
-          enableParallelBuilding = true;
           nativeBuildInputs = [ buildPackages.stdenv.cc ];
           preConfigure = ''
             configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
@@ -247,7 +246,7 @@ in
             make_host ocamllex.opt ocamltoolsopt \
                       ocamltoolsopt.opt
 
-            rm $(find . | grep -e '\.cm.$')
+            rm $(find . | grep -E '\.cm.?.$')
             make_target -C stdlib all allopt
             make_target ocaml ocamlc
             make_target ocamlopt otherlibraries \
@@ -311,9 +310,9 @@ in
             '';
 
           aarch64_findlib_conf =
-            let ocaml = oself.ocaml; in
+            let inherit (oself) ocaml findlib; in
             writeText "${b.name}-${crossName}.conf" ''
-              path(${crossName}) = "${oself.findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
+              path(${crossName}) = "${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
               ldconf(${crossName})="ignore"
               stdlib(${crossName}) = "${ocaml}/lib/ocaml"
               ocamlc(${crossName}) = "${ocaml}/bin/ocamlc"
