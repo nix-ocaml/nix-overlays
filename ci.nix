@@ -144,6 +144,15 @@ let
     "functory"
     "getopt"
 
+
+    # Incompatible with 4.14
+    "pcap-format"
+    "notty"
+    "ppx_tools"
+    "ocsigen_server"
+    "ocsigen-toolkit"
+    "ocaml-migrate-parsetree-1-8"
+
     # incompatible with newer menhir
     "odate"
 

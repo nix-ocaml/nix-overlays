@@ -806,6 +806,13 @@ with oself;
     preConfigure = "";
   });
 
+  ocp-index = osuper.ocp-index.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocp-index/archive/a6b3a022522359a38618777c685363a750cb82d4.tar.gz;
+      sha256 = "1rh1z48qj946zq2vmxrfib0p3br1p5gkpfb48rq5kz3j82sfs2jk";
+    };
+  });
+
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
@@ -882,6 +889,17 @@ with oself;
     '';
     # To avoid bringing in OMP
     doCheck = false;
+  });
+
+  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (_: {
+    postPatch =
+      if lib.versionOlder "4.14" osuper.ocaml.version
+      then ''
+        substituteInPlace "src/custom/ppx_cstubs_custom.cppo.ml" --replace \
+          "(str, _sg, _sn, newenv)" \
+          "(str, _sg, _sn, _shp, newenv)"
+      ''
+      else "";
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
@@ -1054,6 +1072,15 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
+  tar = osuper.tar.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.0.0/tar-mirage-v2.0.0.tbz;
+      sha256 = "0aaazix3d6a3jjskzyilg2jwlfp54dw5mfxzkvc65xswaqgly80b";
+    };
+    buildInputs = [ ];
+
+  });
+
   toml = osuper.toml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
@@ -1104,6 +1131,12 @@ with oself;
     '';
   });
 
+  tyxml = osuper.tyxml.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/tyxml/archive/c28e871df6db66a261ba541aa15caad314c78ddc.tar.gz;
+      sha256 = "10vbg9qdmmb96vrpv65px2ipshckzn12k2z611261ii7ab2y4s2s";
+    };
+  });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };

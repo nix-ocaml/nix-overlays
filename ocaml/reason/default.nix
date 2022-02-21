@@ -16,7 +16,16 @@ buildDunePackage {
   version = "3.7.0";
 
   src =
-    if (lib.versionOlder "4.13" ocaml.version) then
+    if (lib.versionOlder "4.14" ocaml.version)
+    then
+      builtins.fetchurl
+        {
+          # https://github.com/reasonml/reason/pull/2657 -- OCaml 4.13 support
+          url = https://github.com/reasonml/reason/archive/512a227a4d2d18f042145a31891568b644a18ca9.tar.gz;
+          sha256 = "1j9q40fzg9x3hxxwa1fjcva1fz5qjpq8hhq0v36qkvkvcia67766";
+        }
+    else if (lib.versionOlder "4.13" ocaml.version)
+    then
       builtins.fetchurl
         {
           # https://github.com/reasonml/reason/pull/2657 -- OCaml 4.13 support
@@ -44,5 +53,5 @@ buildDunePackage {
   useDune2 = true;
   patches = [
     ./patches/0001-rename-labels.patch
-  ];
+  ] ++ lib.optional (lib.versionOlder "5.00" ocaml.version) ./5_00.patch;
 }
