@@ -319,7 +319,9 @@ with oself;
     then oself.dune_2
     else osuper.dune_1;
 
-  dune_2 = osuper.dune_2.overrideAttrs (_: {
+  dune_2 = dune_3;
+
+  dune_3 = osuper.dune_3.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/dune/archive/435f026896a0410546c4cef73c005bbca364a177.tar.gz;
       sha256 = "1jqiaqxyab487f2gzghy5l10asljkb824xjaryl2vpck85yiqbp1";
@@ -329,6 +331,7 @@ with oself;
       CoreServices
     ]);
   });
+
   dune-configurator = callPackage ./dune/configurator.nix { };
   dyn = callPackage ./dune/dyn.nix { };
   ordering = callPackage ./dune/ordering.nix { };
