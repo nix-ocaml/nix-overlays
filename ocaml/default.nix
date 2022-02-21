@@ -182,6 +182,10 @@ with oself;
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
+  bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   rresult = osuper.rresult.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
@@ -415,8 +419,7 @@ with oself;
   });
 
   fpath = osuper.fpath.overrideAttrs (_: {
-    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
-    buildInputs = [ ];
+    nativeBuildInputs = [ ocaml findlib ocamlbuild ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
@@ -504,8 +507,9 @@ with oself;
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
 
-  hxd = osuper.hxd.overrideAttrs (_: {
+  hxd = osuper.hxd.overrideAttrs (o: {
     doCheck = false;
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
   integers = osuper.integers.overrideAttrs (_: {
@@ -622,9 +626,8 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-
-    version = "5.5.0";
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/lwt/archive/34f98c6.tar.gz;
       sha256 = "0hp4kzj2h4ayspjkwhx2f8aiscbb9r6lcm2kx88yfw0nd4dm3qfj";
@@ -650,6 +653,14 @@ with oself;
     prePatch = ''
       substituteInPlace src/common.ml --replace " = lowercase" " = lowercase_ascii"
     '';
+  });
+
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ dune-configurator pkg-config-script pkg-config ];
+    buildInputs = [ dune-configurator ];
+  });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    buildInputs = [ dune-configurator ];
   });
 
   mustache = osuper.mustache.overrideAttrs (o: {
