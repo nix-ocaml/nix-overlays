@@ -223,11 +223,13 @@ with oself;
 
   carton = disableTests osuper.carton;
 
-  caqti = osuper.caqti.overrideAttrs (_: {
+  caqti = osuper.caqti.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.6.0/caqti-v1.6.0.tbz;
       sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
     };
+    buildInputs = [ ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
   cmdliner_1_1 = osuper.cmdliner.overrideAttrs (_: {
