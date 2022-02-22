@@ -82,7 +82,7 @@ jobs:
           - { ocaml-version: 4_12, continue-on-error: false }
           - { ocaml-version: 4_13, continue-on-error: false }
           - { ocaml-version: 4_14, continue-on-error: false }
-          - { ocaml-version: 5_00, continue-on-error: true }
+          - { ocaml-version: 5_00, continue-on-error: false }
         target:
           - arm64
           - musl
