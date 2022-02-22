@@ -733,6 +733,20 @@ with oself;
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
 
+  metrics = osuper.metrics.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/metrics/releases/download/v0.4.0/metrics-0.4.0.tbz;
+      sha256 = "1bw9wdzmw6xxhaww95xayias1mmypqcmkdf32cbkg42h9dd7bf4i";
+    };
+
+    postPatch = ''
+      substituteInPlace src/unix/dune --replace "mtime.clock.os" ""
+    '';
+  });
+
+  # https://github.com/mirage/metrics/issues/57
+  irmin-test = null;
+
   mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/nberth/mlgmpidl/archive/refs/tags/1.2.14.tar.gz;
