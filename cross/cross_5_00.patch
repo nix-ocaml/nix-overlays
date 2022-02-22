@@ -45,6 +45,21 @@ index a60f1343d..a69a0f496 100644
      # ocamlopt generates PIC code or doesn't generate code at all
      [],
    [AS_CASE([$host],
+diff --git a/runtime/Makefile b/runtime/Makefile
+index 7bb6f001e..708ad0830 100644
+--- a/runtime/Makefile
++++ b/runtime/Makefile
+@@ -322,7 +322,9 @@ build_config.h: $(ROOTDIR)/Makefile.config sak$(EXE)
+ # Libraries and programs
+ 
+ ocamlrun$(EXE): prims.$(O) libcamlrun.$(A)
+-	$(MKEXE) -o $@ $^ $(LIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
++	# $(MKEXE) -o $@ $^ $(LIBS)
+ 
+ ocamlruns$(EXE): prims.$(O) libcamlrun_non_shared.$(A)
+ 	$(call MKEXE_USING_COMPILER,$@,$^ $(LIBS))
 diff --git a/tools/Makefile b/tools/Makefile
 index 0275e37ce..29b66fbea 100644
 --- a/tools/Makefile
