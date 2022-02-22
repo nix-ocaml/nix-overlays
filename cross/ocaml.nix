@@ -216,6 +216,7 @@ in
                    CAMLDEP="$CAMLDEP -depend" \
                    OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
                    CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
+                   NEW_OCAMLRUN="$OCAMLRUN" \
                    CAMLC="$CAMLC" OCAMLC="$CAMLC" \
                    CAMLOPT="$CAMLOPT" OCAMLOPT="$CAMLOPT" \
                    $@
@@ -260,8 +261,10 @@ in
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "4.14" ocaml.version
+            (if lib.versionOlder "5.00" ocaml.version
             then ./cross_5_00.patch
+            else if lib.versionOlder "4.14" ocaml.version
+            then ./cross_4_14.patch
             else if lib.versionOlder "4.13" ocaml.version
             then ./cross_4_13.patch
             else if lib.versionOlder "4.12" ocaml.version
