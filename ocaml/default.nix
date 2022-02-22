@@ -87,8 +87,8 @@ with oself;
 
   batteries = osuper.batteries.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-batteries-team/batteries-included/archive/a7276a8d41b31035423235b2395aa82ab5d6f392.tar.gz;
-      sha256 = "0b5wy0m83ynw2lz50vx67p1dfgdkbc8y6kfkvxhi8zxpiwm27kml";
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/67859ac54d2feb7f65ad6abe48b1ff08ece3afd1.tar.gz;
+      sha256 = "0krsgisyal809nx1xpnbfpd1h3x95s1x3s4vsdpymv4hrxrqxks5";
     };
   });
 
