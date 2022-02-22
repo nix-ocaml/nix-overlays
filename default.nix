@@ -81,5 +81,5 @@ in
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
-    { inherit (super) zlib openssl; }
+    { inherit (super) zlib openssl gmp libffi; }
 )
