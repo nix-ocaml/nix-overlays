@@ -164,6 +164,7 @@ let
 
     # https://github.com/mirage/metrics/issues/57
     "metrics-unix"
+    "metrics-mirage"
 
   ];
 
