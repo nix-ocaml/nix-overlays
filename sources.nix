@@ -1,8 +1,8 @@
 {
   unstable = builtins.fetchTarball {
-    name = "nixos-unstable-2022-02-20";
-    url = https://github.com/nixos/nixpkgs/archive/d0ae0897999e.tar.gz;
-    sha256 = "0cibk4pwfpspk9r40m3rnfa8j0q6g2x15bd3mriinxsa85mf45kr";
+    name = "nixos-unstable-2022-02-22";
+    url = https://github.com/nixos/nixpkgs/archive/d5f237872975e6fb6f76eef1368b5634ffcd266f.tar.gz;
+    sha256 = "0fsjwhqgxyd2v86glr2560gr3zx9mb6fhllydmrxi5i04c549vsr";
   };
 
   staging = builtins.fetchTarball {
