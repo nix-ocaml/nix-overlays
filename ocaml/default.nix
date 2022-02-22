@@ -2,8 +2,10 @@
 , fetchFromGitHub
 , lib
 , libpq
+, libffi-oc
 , darwin
 , stdenv
+, gmp-oc
 , openssl-oc
 , pkg-config
 , lmdb
@@ -265,7 +267,7 @@ with oself;
     '';
   });
 
-  ctypes-0_17 = osuper.ctypes.overrideAttrs (_: {
+  ctypes-0_17 = oself.ctypes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/0.17.1.tar.gz;
       sha256 = "1sd74bcsln51bnz11c82v6h6fv23dczfyfqqvv9rxa9wp4p3qrs1";
@@ -275,11 +277,13 @@ with oself;
     '';
   });
 
-  ctypes = osuper.ctypes.overrideAttrs (_: {
+  ctypes = osuper.ctypes.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/ocaml-ctypes/archive/57f069897b36f784ff0296c40f726e3baf5d8a1d.tar.gz;
       sha256 = "05wy8nxprj4ka1dk5h4nmnmlrqildmlrqx37pbyvc8az16awz5x3";
     };
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
   });
 
   cudf = buildDunePackage {
@@ -409,6 +413,10 @@ with oself;
       url = https://gitlab.inria.fr/fpottier/fix/-/archive/20220121/archive.tar.gz;
       sha256 = "1bd8xnk3qf7nfsmk3z6hksvcascndbl7pp2a50ndj8hzf7hdnfwm";
     };
+  });
+
+  ff-pbt = osuper.ff-pbt.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ alcotest ];
   });
 
   flow_parser = callPackage ./flow_parser { };
@@ -1186,6 +1194,10 @@ with oself;
     '';
   });
 
+  tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ ocp-ocamlres ];
+  });
+
   tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
     postPatch = ''
       echo "(lang dune 3.0)" > dune-project
@@ -1316,6 +1328,10 @@ with oself;
   });
 
   yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
+
+  zarith = osuper.zarith.overrideAttrs (_: {
+    propagatedBuildInputs = [ gmp-oc ];
+  });
 
   # Jane Street packages
   async_websocket = osuper.buildDunePackage {
