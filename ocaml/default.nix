@@ -410,7 +410,7 @@ with oself;
   });
 
   ff-pbt = osuper.ff-pbt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ alcotest ];
+    propagatedBuildInputs = o.buildInputs ++ [ alcotest ];
   });
 
   flow_parser = callPackage ./flow_parser { };
