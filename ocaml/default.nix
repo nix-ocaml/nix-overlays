@@ -85,8 +85,8 @@ with oself;
 
   batteries = osuper.batteries.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-batteries-team/batteries-included/archive/a7276a8d41b31035423235b2395aa82ab5d6f392.tar.gz;
-      sha256 = "0b5wy0m83ynw2lz50vx67p1dfgdkbc8y6kfkvxhi8zxpiwm27kml";
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/67859ac54d2feb7f65ad6abe48b1ff08ece3afd1.tar.gz;
+      sha256 = "0krsgisyal809nx1xpnbfpd1h3x95s1x3s4vsdpymv4hrxrqxks5";
     };
   });
 
@@ -182,6 +182,10 @@ with oself;
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
+  bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   rresult = osuper.rresult.overrideAttrs (o: {
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
@@ -219,11 +223,13 @@ with oself;
 
   carton = disableTests osuper.carton;
 
-  caqti = osuper.caqti.overrideAttrs (_: {
+  caqti = osuper.caqti.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.6.0/caqti-v1.6.0.tbz;
       sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
     };
+    buildInputs = [ ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
   cmdliner_1_1 = osuper.cmdliner.overrideAttrs (_: {
@@ -421,8 +427,7 @@ with oself;
   });
 
   fpath = osuper.fpath.overrideAttrs (_: {
-    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
-    buildInputs = [ ];
+    nativeBuildInputs = [ ocaml findlib ocamlbuild ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
@@ -510,8 +515,9 @@ with oself;
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
 
-  hxd = osuper.hxd.overrideAttrs (_: {
+  hxd = osuper.hxd.overrideAttrs (o: {
     doCheck = false;
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
   integers = osuper.integers.overrideAttrs (_: {
@@ -628,9 +634,8 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-
-    version = "5.5.0";
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/lwt/archive/34f98c6.tar.gz;
       sha256 = "0hp4kzj2h4ayspjkwhx2f8aiscbb9r6lcm2kx88yfw0nd4dm3qfj";
@@ -656,6 +661,14 @@ with oself;
     prePatch = ''
       substituteInPlace src/common.ml --replace " = lowercase" " = lowercase_ascii"
     '';
+  });
+
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ dune-configurator pkg-config-script pkg-config ];
+    buildInputs = [ dune-configurator ];
+  });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    buildInputs = [ dune-configurator ];
   });
 
   mustache = osuper.mustache.overrideAttrs (o: {
@@ -684,19 +697,10 @@ with oself;
   vercel = callPackage ./lambda-runtime/vercel.nix { };
 
   lambdaTerm = osuper.lambdaTerm.overrideAttrs (_: {
-    prePatch = ''
-      substituteInPlace src/lTerm_key.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
-      substituteInPlace src/lTerm_resources.ml --replace "StringLabels.lowercase" "StringLabels.lowercase_ascii"
-      substituteInPlace src/lTerm_text_impl.ml --replace "mark_open_tag" "mark_open_stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "mark_close_tag" "mark_close_stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "print_open_tag" "print_open_stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "print_close_tag" "print_close_stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_set_formatter_tag_functions" "Format.pp_set_formatter_stag_functions"
-      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_open_tag" "Format.pp_open_stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "Format.pp_close_tag" "Format.pp_close_stag"
-      substituteInPlace src/lTerm_text.mli --replace "Format.tag" "Format.stag"
-      substituteInPlace src/lTerm_text_impl.ml --replace "Format.tag" "Format.stag"
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/lambda-term/releases/download/3.2.0/lambda-term-3.2.0.tar.gz;
+      sha256 = "1brcqy4kaxki6f865fcqp2bh75wi7qg9s30z2p5b5nlk4qiag8k0";
+    };
   });
 
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (o: {
@@ -947,6 +951,21 @@ with oself;
 
   });
 
+  # omd = buildDunePackage {
+  # pname = "omd";
+  # version = "next";
+  # src = builtins.fetchurl {
+  # url = https://github.com/ocaml/omd/archive/2e121af7b104e2f4a4e179c120f94150d39db774.tar.gz;
+  # sha256 = "111y56rljkmhfp090h3mz0wy50lnkmf496y40bkk4sks4fvgn085";
+  # };
+  # };
+
+  otfm = osuper.otfm.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
+    '';
+  });
+
   ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
@@ -1007,10 +1026,11 @@ with oself;
   ppx_tools = callPackage ./ppx_tools { };
 
   postgresql =
-    (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (_: {
+    (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
       postPatch = ''
         substituteInPlace src/dune --replace " bigarray" ""
       '';
+      nativeBuildInputs = o.nativeBuildInputs ++ [ libpq ];
     });
 
   postgres_async = osuper.buildDunePackage {
@@ -1027,6 +1047,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
     buildInputs = [ ];
     propagatedBuildInputs = [
+      findlib
       ppxlib
       ppx_derivers
       result
