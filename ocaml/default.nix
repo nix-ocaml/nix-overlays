@@ -746,6 +746,9 @@ with oself;
 
   irmin-fs = disableTests osuper.irmin-fs;
   irmin-chunk = disableTests osuper.irmin-chunk;
+  irmin-pack = disableTests osuper.irmin-pack;
+  irmin-git = disableTests osuper.irmin-git;
+  irmin-http = disableTests osuper.irmin-http;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
 
