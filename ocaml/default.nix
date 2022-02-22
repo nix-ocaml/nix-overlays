@@ -928,6 +928,21 @@ with oself;
 
   });
 
+  omd = buildDunePackage {
+    pname = "omd";
+    version = "next";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/omd/archive/2e121af7b104e2f4a4e179c120f94150d39db774.tar.gz;
+      sha256 = "111y56rljkmhfp090h3mz0wy50lnkmf496y40bkk4sks4fvgn085";
+    };
+  };
+
+  otfm = osuper.otfm.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
+    '';
+  });
+
   ounit2 = osuper.ounit2.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
@@ -1008,6 +1023,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
     buildInputs = [ ];
     propagatedBuildInputs = [
+      findlib
       ppxlib
       ppx_derivers
       result
