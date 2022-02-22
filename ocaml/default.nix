@@ -415,7 +415,7 @@ with oself;
 
   cmdliner = osuper.cmdliner.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-    buildInputs = [ ];
+    buildInputs = [ topkg ];
   });
 
   fmt = osuper.fmt.overrideAttrs (o: {
