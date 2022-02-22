@@ -1,12 +1,13 @@
 name: Auto-update
 on:
+  pull_request:
   push:
     branches:
       # Escape hatch to easily make and test changes to this flow
       - "ulrikstrid/auto-update-pr"
       - "anmonteiro/auto-update-pr"
   schedule:
-    - cron: "30 */11 * * *"
+    - cron: 30 */11 */2 * *
 
 jobs:
   update-sources:
