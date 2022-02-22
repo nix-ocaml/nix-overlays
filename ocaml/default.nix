@@ -421,11 +421,17 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  fmt = osuper.fmt.overrideAttrs (_: {
+  cmdliner = osuper.cmdliner.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
+    buildInputs = [ topkg ];
+  });
+
+  fmt = osuper.fmt.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/fmt/archive/e76a883424a450ea10824b69a476f8987fab24c7.tar.gz;
       sha256 = "0ynxq5bv4sjrza4rv52hcvxya31n9n5vvnskk26r1pamxbpagw57";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   fpath = osuper.fpath.overrideAttrs (_: {
@@ -684,6 +690,10 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  jsonm = osuper.jsonm.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
+  });
+
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ke/archive/56a8c86.tar.gz;
@@ -701,7 +711,9 @@ with oself;
     };
   });
 
-  logs = osuper.logs.override { jsooSupport = false; };
+  logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
+  });
 
   logs-ppx = callPackage ./logs-ppx { };
 
@@ -728,6 +740,25 @@ with oself;
 
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
+
+  metrics = osuper.metrics.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/metrics/releases/download/v0.4.0/metrics-0.4.0.tbz;
+      sha256 = "1bw9wdzmw6xxhaww95xayias1mmypqcmkdf32cbkg42h9dd7bf4i";
+    };
+
+    postPatch = ''
+      substituteInPlace src/unix/dune --replace "mtime.clock.os" ""
+    '';
+  });
+
+  irmin-fs = disableTests osuper.irmin-fs;
+  irmin-chunk = disableTests osuper.irmin-chunk;
+  irmin-pack = disableTests osuper.irmin-pack;
+  irmin-git = disableTests osuper.irmin-git;
+  irmin-http = disableTests osuper.irmin-http;
+  # https://github.com/mirage/metrics/issues/57
+  irmin-test = null;
 
   mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -772,7 +803,16 @@ with oself;
     doCheck = !lib.versionAtLeast ocaml.version "5.00";
   });
 
-  mtime = osuper.mtime.override { jsooSupport = false; };
+  mtime = (osuper.mtime.override { jsooSupport = false; }).overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
+    buildInputs = [ topkg ];
+    postPatch = "env";
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/mtime/archive/refs/tags/v1.4.0.tar.gz;
+      sha256 = "0r88q17ygsm3gq7hh89vzmq2ny3ha8im8sy5nn9xa4br9cz7khwx";
+    };
+    buildPhase = "${topkg.run} build";
+  });
 
   multipart_form = callPackage ./multipart_form { };
 
@@ -1062,11 +1102,12 @@ with oself;
     doCheck = false;
   });
 
-  ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (_: {
+  ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
       sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   pycaml = osuper.pycaml.overrideAttrs (o: {
@@ -1283,11 +1324,12 @@ with oself;
     '';
   });
 
-  uutf = osuper.uutf.overrideAttrs (_: {
+  uutf = osuper.uutf.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
       sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   uuuu = osuper.uuuu.overrideAttrs (_: {
