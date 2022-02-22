@@ -744,6 +744,7 @@ with oself;
     '';
   });
 
+  irmin-fs = disableTests osuper.irmin-fs;
   irmin-chunk = disableTests osuper.irmin-chunk;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
