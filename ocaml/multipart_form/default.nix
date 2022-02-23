@@ -7,7 +7,6 @@
 , ke
 , bigstringaf
 , astring
-, mrmime
 , faraday
 , base64
 , pecu
@@ -40,9 +39,12 @@ let
   };
   version = "0.1.0-dev";
   propagatedBuildInputs = [
-    astring
-    mrmime
+    bigstringaf
     faraday
+    ke
+    logs
+    prettym
+    unstrctrd
   ];
 
 in
@@ -65,7 +67,6 @@ buildDunePackage {
   ] ++ (if upstream then upstream_propagatedBuildInputs else propagatedBuildInputs));
 
   postPatch = ''
-    substituteInPlace ./lib/dune --replace "mrmime.prettym" "prettym"
     substituteInPlace ./lib_lwt/dune --replace " bigarray " " "
   '';
 

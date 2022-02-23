@@ -18,6 +18,6 @@
       self
       super))
   (self: super: {
-    opaline = super.buildPackages.opaline;
+    opaline = buildPackages.opaline;
   })
 ]
