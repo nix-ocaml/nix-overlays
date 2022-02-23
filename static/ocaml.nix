@@ -2,7 +2,7 @@
 let
   removeUnknownConfigureFlags = f: with lib;
     remove "--disable-shared"
-      (remove "--enable-static" f);
+      (remove "--enable-static" (if isList f then f else [ f ]));
   fixOCaml = ocaml:
     (ocaml.override { useX11 = false; }).overrideAttrs (o: {
       dontUpdateAutotoolsGnuConfigScripts = true;

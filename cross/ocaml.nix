@@ -279,12 +279,13 @@ in
           inputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
-            "nativeBuildInputs"
+            "checkInputs"
+            # "nativeBuildInputs"
           ]
             b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
-            "buildInputs"
+            # "buildInputs"
             "nativeBuildInputs"
           ]
             b;

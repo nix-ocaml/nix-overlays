@@ -1,8 +1,7 @@
 let pkgs = import ./boot.nix { };
 in
-with ocaml-ng.ocamlPackages_4_14;
+with pkgs.pkgsCross.aarch64-multiplatform.ocaml-ng.ocamlPackages_4_13;
 [
-
   apron
   astring
   atd
@@ -13,7 +12,6 @@ with ocaml-ng.ocamlPackages_4_14;
   biniou
   biniou
   bitv
-  bolt
   bos
   bz2
   calendar
@@ -22,25 +20,18 @@ with ocaml-ng.ocamlPackages_4_14;
   camomile
   camomile
   carton
-  cil
   coin
-  config-file
   cpdf
-  cryptgps
   csv
   ctypes
   digestif
   dolog
   dum
-  dypgen
   elina
   eliom
-  enumerate
   erm_xml
-  erm_xmpp
-  expat
-  expat
-  extlib
+  ocaml_expat
+  ocaml_extlib
   farfadet
   fmt
   fontconfig
@@ -51,7 +42,6 @@ with ocaml-ng.ocamlPackages_4_14;
   gg
   gmetadom
   hacl-star
-  hacl-star
   hmap
   inifiles
   inotify
@@ -59,40 +49,30 @@ with ocaml-ng.ocamlPackages_4_14;
   javalib
   jsonm
   lablgl
-  lablgtk-extras
   lablgtk
-  labltk
   llvm
   logs
   lua-ml
-  macaque
-  magick
   mirage-crypto
   mirage-crypto-ec
   mirage-crypto-pk
   mirage-crypto-rng-async
   mirage-crypto-rng-mirage
   mirage-crypto-rng
-  mlgmp
   mlgmpidl
   mtime
-  mysql
+  ocaml_mysql
   nocrypto
   notty
   num
-  ocaml-cairo
-  ocaml-libvirt
-  ocamlnat
+  ocaml_libvirt
   ocamlnet
-  ocamlsdl
   ocb-stubblr
   ocp-ocamlres
   ocplib-simplex
-  ocsigen-deriving
   ocsigen-start
   ocsigen-toolkit
   ocurl
-  odn
   omd
   otfm
   ounit
@@ -111,13 +91,11 @@ with ocaml-ng.ocamlPackages_4_14;
   sedlex
   sodium
   sosa
-  sqlite3EZ
   stdcompat
   torch
   tsdl
   twt
   uchar
-  ulex
   uucd
   uucp
   uunf
@@ -129,5 +107,24 @@ with ocaml-ng.ocamlPackages_4_14;
   xml-light
   xmlm
   z3
-
 ]
+
+# bolt
+# cil
+# config-file
+# ocaml_cryptgps
+# dypgen
+# enumerate
+# erm_xmpp
+# lablgtk-extras
+# labltk
+# macaque
+# magick
+# mlgmp
+# ocaml_cairo
+# ocamlnat
+# ocamlsdl
+# ocsigen_deriving
+# ocaml_data_notation
+# sqlite3EZ
+# ulex
