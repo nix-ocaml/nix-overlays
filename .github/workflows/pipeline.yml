@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - auto-update-sources-*
 jobs:
   fmt:
     runs-on: ubuntu-latest
