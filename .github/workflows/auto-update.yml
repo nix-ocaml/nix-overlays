@@ -6,7 +6,7 @@ on:
       - "ulrikstrid/auto-update-pr"
       - "anmonteiro/auto-update-pr"
   schedule:
-    - cron: "30 */11 * * *"
+    - cron: "30 */11 */2 * *"
 
 jobs:
   update-sources:
