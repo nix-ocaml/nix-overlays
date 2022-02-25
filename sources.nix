@@ -1,6 +1,6 @@
 {
   unstable = builtins.fetchTarball {
-    name = "nixos-unstable-2022-02-23";
+    name = "nixos-unstable-2022-02-25";
     url = https://github.com/nixos/nixpkgs/archive/7f9b6e2babf232412682c09e57ed666d8f84ac2d.tar.gz;
     sha256 = "03nb8sbzgc3c0qdr1jbsn852zi3qp74z4qcy7vrabvvly8rbixp2";
   };
