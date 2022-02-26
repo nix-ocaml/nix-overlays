@@ -6,7 +6,7 @@ on:
       - "ulrikstrid/auto-update-pr"
       - "anmonteiro/auto-update-pr"
   schedule:
-    - cron: "30 */11 */2 * *"
+    - cron: "30 11 */2 * *"
 
 jobs:
   update-sources:
@@ -49,4 +49,4 @@ jobs:
           pr_body: ":robot_face: Updating sources to the latest version.\nDiff between current and this version can be seen here: ${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
           pr_assignee: "anmonteiro,ulrikstrid"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
