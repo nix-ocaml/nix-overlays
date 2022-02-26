@@ -4,7 +4,6 @@ const source_regex =
   /name = "nixos-unstable-(20[0-9\-]+)";.    url = https:\/\/github\.com\/nixos\/nixpkgs\/archive\/([0-9a-z]+)\.tar\.gz;.    sha256 = "([0-9a-z]+)";/s;
 
 module.exports = async ({ github, context, core, require }) => {
-  console.log("running...");
   const https = require("https");
   const { URL } = require("url");
   const { readFileSync, writeFileSync } = require("fs");
@@ -12,10 +11,7 @@ module.exports = async ({ github, context, core, require }) => {
 
   const http_request = (uri) => {
     return new Promise((resolve, reject) => {
-      console.log("http request to: ", uri);
       const url = new URL(uri);
-
-      console.log(url);
 
       return https
         .get(
@@ -38,7 +34,6 @@ module.exports = async ({ github, context, core, require }) => {
             });
 
             res.on("end", () => {
-              console.log("is it ever here?");
               const response = Buffer.concat(response_data);
               const response_string = response.toString();
               resolve(JSON.parse(response_string));
@@ -76,7 +71,6 @@ module.exports = async ({ github, context, core, require }) => {
   }
 
   const get_newest = (revisions) => {
-    console.log(revisions);
     const urls = revisions
       .map((revision) => revision.metric.revision)
       .map(
@@ -85,12 +79,6 @@ module.exports = async ({ github, context, core, require }) => {
       );
 
     return Promise.all(urls.map(http_request)).then(([big, small]) => {
-      console.log({
-        big,
-        small,
-        big_comitter: big.commit.committer,
-        small_committer: small.commit.committer,
-      });
       const big_date = new Date(big.commit.committer.date);
       const small_date = new Date(small.commit.committer.date);
       if (big_date > small_date) {
