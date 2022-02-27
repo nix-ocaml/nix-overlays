@@ -465,17 +465,7 @@ with oself;
   gettext-stub = disableTests osuper.gettext-stub;
 
   gg = osuper.gg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/gg/archive/refs/tags/v1.0.0.tar.gz;
-      sha256 = "1vp46w9pwc94fj857xmbzq1ngp48y9b9fyvliaizmbzhhl8dx684";
-    };
     nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
-
-    buildPhase = ''
-      runHook preBuild
-      ${topkg.buildPhase}
-      runHook postBuild
-    '';
   });
 
   gluten = callPackage ./gluten { };
@@ -1213,7 +1203,6 @@ with oself;
       sha256 = "0aaazix3d6a3jjskzyilg2jwlfp54dw5mfxzkvc65xswaqgly80b";
     };
     buildInputs = [ ];
-
   });
 
   toml = osuper.toml.overrideAttrs (_: {
