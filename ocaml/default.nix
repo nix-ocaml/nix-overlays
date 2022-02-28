@@ -159,7 +159,6 @@ with oself;
       url = https://github.com/xavierleroy/camlzip/archive/refs/tags/rel111.tar.gz;
       sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
     };
-    nativeBuildInputs = [ ocaml findlib ];
     propagatedBuildInputs = [ zlib-oc ];
   });
 
@@ -180,16 +179,8 @@ with oself;
     };
   });
 
-  astring = osuper.astring.overrideAttrs (o: {
-    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
-  });
-
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
-  });
-
-  rresult = osuper.rresult.overrideAttrs (o: {
-    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
   });
 
   calendar = callPackage ./calendar { };
@@ -230,8 +221,6 @@ with oself;
       url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.6.0/caqti-v1.6.0.tbz;
       sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
     };
-    buildInputs = [ ];
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
   });
 
   cmdliner_1_1 = osuper.cmdliner.overrideAttrs (_: {
@@ -421,21 +410,11 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  cmdliner = osuper.cmdliner.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-    buildInputs = [ topkg ];
-  });
-
   fmt = osuper.fmt.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/fmt/archive/e76a883424a450ea10824b69a476f8987fab24c7.tar.gz;
       sha256 = "0ynxq5bv4sjrza4rv52hcvxya31n9n5vvnskk26r1pamxbpagw57";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-  });
-
-  fpath = osuper.fpath.overrideAttrs (_: {
-    nativeBuildInputs = [ ocaml findlib ocamlbuild ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
@@ -463,10 +442,6 @@ with oself;
   };
 
   gettext-stub = disableTests osuper.gettext-stub;
-
-  gg = osuper.gg.overrideAttrs (_: {
-    nativeBuildInputs = [ ocaml findlib ocamlbuild topkg ];
-  });
 
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
@@ -680,10 +655,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  jsonm = osuper.jsonm.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-  });
-
   ke = osuper.ke.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ke/archive/56a8c86.tar.gz;
@@ -701,9 +672,7 @@ with oself;
     };
   });
 
-  logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-  });
+  logs = (osuper.logs.override { jsooSupport = false; });
 
   logs-ppx = callPackage ./logs-ppx { };
 
@@ -794,9 +763,6 @@ with oself;
   });
 
   mtime = (osuper.mtime.override { jsooSupport = false; }).overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
-    buildInputs = [ topkg ];
-    postPatch = "env";
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/mtime/archive/refs/tags/v1.4.0.tar.gz;
       sha256 = "0r88q17ygsm3gq7hh89vzmq2ny3ha8im8sy5nn9xa4br9cz7khwx";
@@ -879,17 +845,6 @@ with oself;
   # Tests don't work on 5.00 because of the Stream.t type.
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: { doCheck = false; });
 
-  ocamlnet = osuper.ocamlnet.overrideAttrs (o:
-    let
-      script = writeScriptBin "cpp" ''
-        #!${stdenv.shell}
-        ${stdenv.hostPlatform.config}-cpp $@
-      '';
-    in
-    {
-      nativeBuildInputs = o.nativeBuildInputs ++ [ ocaml findlib ];
-    });
-
   ocaml-lsp =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else osuper.ocaml-lsp;
@@ -922,7 +877,6 @@ with oself;
       url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
       sha256 = "1rgncdbbwa5j0wx0p8n44y29mpx98v6fmy8s0djri12frlm0k5dl";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
     propagatedBuildInputs = [ bigarray-compat ];
   });
 
@@ -1061,7 +1015,6 @@ with oself;
   };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cppo ];
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -1097,7 +1050,6 @@ with oself;
       url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
       sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   reanalyze =
@@ -1310,7 +1262,6 @@ with oself;
       url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
       sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   uuuu = osuper.uuuu.overrideAttrs (_: {
