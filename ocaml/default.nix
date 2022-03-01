@@ -354,9 +354,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (_: {
+    # Dune 3.1.0 -- with dynamic dependencies.
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/435f026896a0410546c4cef73c005bbca364a177.tar.gz;
-      sha256 = "1jqiaqxyab487f2gzghy5l10asljkb824xjaryl2vpck85yiqbp1";
+      url = https://github.com/ocaml/dune/archive/443f89320cc426593f5536bbc895a483be471e69.tar.gz;
+      sha256 = "1bg3a4gqx0j5f1nb9cb80flfywzv84fls7z2xfhfq2psnxhvdf2b";
     };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       Foundation
