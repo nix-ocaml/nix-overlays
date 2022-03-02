@@ -4,7 +4,7 @@ buildDunePackage {
   pname = "domainslib";
   version = "0.5.0-dev";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/domainslib/archive/00f016cbb226e539c038f4700d354296d6c140ba.tar.gz;
-    sha256 = "0qblng694npdisyb4q0ka1rxi78hj6fd229lw1azkgpfbyy036c7";
+    url = https://github.com/ocaml-multicore/domainslib/archive/4ac01e870615e32291f0145a7cbdd5528b88ea59.tar.gz;
+    sha256 = "1cqfxn4qf3jn18fscmzq8s4lqfzjsxk3yq4rqb2v1yy1wk0vp7gl";
   };
 }
