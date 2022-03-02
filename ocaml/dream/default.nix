@@ -92,9 +92,9 @@ buildDunePackage {
   ];
 
   /*
-  postPatch = ''
+    postPatch = ''
     substituteInPlace ./src/eml/dune --replace "(modules eml)" "(modules eml) (libraries camlp-streams)"
-  '';
+    '';
   */
 
   checkInputs = [ ppx_expect alcotest ];

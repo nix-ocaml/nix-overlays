@@ -22,7 +22,7 @@ buildDunePackage {
         {
           url = https://github.com/EduardoRFS/reason/archive/70984e94eae3084e56d0cfdf7d5d3be1ecda7b18.tar.gz;
           sha256 = "00m0az1r7zcfjsy312lr7xyk244f511llxbj8y2kiv4n1hx2fsar";
-        } else 
+        } else
     # Melange depends on the 4.08 AST, and until that's fixed we use this Reason version
       builtins.fetchurl {
         url = https://registry.npmjs.org/@esy-ocaml/reason/-/reason-3.7.0.tgz;
