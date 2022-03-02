@@ -943,6 +943,7 @@ with oself;
   pg_query = callPackage ./pg_query { };
 
   piaf = callPackage ./piaf { };
+  piaf-dream-compat = callPackage ./piaf/dream-compat.nix { };
   carl = callPackage ./piaf/carl.nix { };
 
   pp = osuper.pp.overrideAttrs (_: { doCheck = false; });
