@@ -41,10 +41,10 @@ buildDunePackage {
   pname = "dream";
   version = "1.0.0-alpha2";
   src = fetchFromGitHub {
-    owner = "aantron";
+    owner = "EduardoRFS";
     repo = "dream";
-    rev = "055d8196633d1bd9a3280d97a6367a1eabcc7796";
-    sha256 = "sha256-DP5a7d5/d8MpUi9QTUAd90vWfZ8MWlJqbyEZXKFu4bg=";
+    rev = "bd4c4b09b0ace2144384f97848bcfd6ad0856e7e";
+    sha256 = "sha256-8vD8qIk4TZ3d1h0E6ACmAyCpT58WwJCgmjjNNH/JDQM=";
     fetchSubmodules = true;
   };
 
@@ -91,9 +91,11 @@ buildDunePackage {
     camlp-streams
   ];
 
+  /*
   postPatch = ''
     substituteInPlace ./src/eml/dune --replace "(modules eml)" "(modules eml) (libraries camlp-streams)"
   '';
+  */
 
   checkInputs = [ ppx_expect alcotest ];
   doCheck = true;
