@@ -134,7 +134,7 @@ buildDunePackage {
     bos
     fmt
     fpath
-    lambdaTerm
+    lambda-term
     logs
     lwt
     lwt_ppx
