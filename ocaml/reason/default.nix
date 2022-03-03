@@ -20,8 +20,8 @@ buildDunePackage {
     then
       builtins.fetchurl
         {
-          url = https://github.com/EduardoRFS/reason/archive/70984e94eae3084e56d0cfdf7d5d3be1ecda7b18.tar.gz;
-          sha256 = "00m0az1r7zcfjsy312lr7xyk244f511llxbj8y2kiv4n1hx2fsar";
+          url = https://github.com/reasonml/reason/archive/64689cb65951cd30d13b8c63a21ed956834ee26a.tar.gz;
+          sha256 = "00whcci10yf7hkbzksakr92zna351229c7cqabp3sm87h4hzfhzc";
         } else
     # Melange depends on the 4.08 AST, and until that's fixed we use this Reason version
       builtins.fetchurl {
