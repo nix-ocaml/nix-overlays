@@ -681,13 +681,6 @@ with oself;
   lambda-runtime = callPackage ./lambda-runtime { };
   vercel = callPackage ./lambda-runtime/vercel.nix { };
 
-  lambdaTerm = osuper.lambdaTerm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/lambda-term/releases/download/3.2.0/lambda-term-3.2.0.tar.gz;
-      sha256 = "1brcqy4kaxki6f865fcqp2bh75wi7qg9s30z2p5b5nlk4qiag8k0";
-    };
-  });
-
   logs = (osuper.logs.override { jsooSupport = false; });
 
   logs-ppx = callPackage ./logs-ppx { };
