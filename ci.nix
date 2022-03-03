@@ -199,7 +199,8 @@ let
           # mongodb-4_2
           # nixUnstable
           esy
-        ];
+        ] ++
+        lib.optional stdenv.isLinux [ pkgs.kubernetes ];
       in
       [ drvs ] ++ otherDrvs;
 
