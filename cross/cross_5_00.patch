@@ -19,32 +19,6 @@ index 07748cb5c..48f43fb98 100644
  	   "$(INSTALL_COMPLIBDIR)"
  ifeq "$(INSTALL_OCAMLNAT)" "true"
  	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"
-diff --git a/configure b/configure
-index aa3fa4047..107da69d4 100755
---- a/configure
-+++ b/configure
-@@ -14476,7 +14476,7 @@ fi
- # e.g. Ubuntu >= 17.10 for i386, which uses the glibc dynamic loader.
- 
- case $arch in #(
--  amd64|aarch64|s390x|none) :
-+  amd64|arm64|s390x|none) :
-     # ocamlopt generates PIC code or doesn't generate code at all
-      ;; #(
-   *) :
-diff --git a/configure.ac b/configure.ac
-index a60f1343d..a69a0f496 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -1172,7 +1172,7 @@ AS_IF([test -z "$PARTIALLD"],
- # e.g. Ubuntu >= 17.10 for i386, which uses the glibc dynamic loader.
- 
- AS_CASE([$arch],
--  [amd64|aarch64|s390x|none],
-+  [amd64|arm64|s390x|none],
-     # ocamlopt generates PIC code or doesn't generate code at all
-     [],
-   [AS_CASE([$host],
 diff --git a/runtime/Makefile b/runtime/Makefile
 index 7bb6f001e..708ad0830 100644
 --- a/runtime/Makefile
