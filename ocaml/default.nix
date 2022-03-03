@@ -697,7 +697,7 @@ with oself;
 
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange { }
+      callPackage ./melange { cmdliner = cmdliner_1_1; }
     else null;
 
   melange-compiler-libs =
