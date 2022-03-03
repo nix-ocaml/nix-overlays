@@ -200,7 +200,7 @@ let
           # nixUnstable
           esy
         ] ++
-        lib.optional stdenv.isLinux [ pkgs.kubernetes ];
+        lib.optional stdenv.isLinux [ pkgs.kubernetes pkgs.kubectl ];
       in
       [ drvs ] ++ otherDrvs;
 
