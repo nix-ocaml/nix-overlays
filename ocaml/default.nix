@@ -308,7 +308,9 @@ with oself;
       sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
     };
 
-    patches = [];
+    patches = [ ];
+
+    doCheck = lib.versionAtLeast ocaml.version "5.00";
   });
 
   dataloader = callPackage ./dataloader { };
