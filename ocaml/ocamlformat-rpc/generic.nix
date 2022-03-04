@@ -4,7 +4,25 @@
 , ocaml-ng
 , version
 , tarballName ? "ocamlformat-${version}.tbz"
-,
+, buildDunePackage
+, odoc-parser
+, ocamlformat-rpc-lib
+, base
+, cmdliner
+, dune-build-info
+, either
+, fix
+, fpath
+, menhir
+, menhirLib
+, menhirSdk
+, ocaml-version
+, ocp-indent
+, re
+, stdio
+, uuseg
+, uutf
+, result
 }:
 
 let
@@ -16,10 +34,8 @@ let
         "0.20.1" = "sha256-fTpRZFQW+ngoc0T6A69reEUAZ6GmHkeQvxspd5zRAjU=";
       }."${version}";
     };
-  ocamlPackages = ocaml-ng.ocamlPackages;
 in
 
-with ocamlPackages;
 
 buildDunePackage {
   pname = "ocamlformat-rpc";
@@ -56,4 +72,3 @@ buildDunePackage {
     license = lib.licenses.mit;
   };
 }
-

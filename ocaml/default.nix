@@ -242,6 +242,8 @@ with oself;
     };
   });
 
+  cmdliner_1_0 = osuper.cmdliner;
+
   cmdliner = osuper.cmdliner.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.0.tar.gz;
@@ -854,7 +856,7 @@ with oself;
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else osuper.ocaml-lsp;
 
-  inherit (callPackage ./ocamlformat-rpc { })
+  inherit (callPackage ./ocamlformat-rpc { cmdliner = cmdliner_1_0; })
     ocamlformat-rpc# latest version
     ocamlformat-rpc_0_20_0
     ocamlformat-rpc_0_20_1;
