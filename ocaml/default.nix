@@ -242,7 +242,7 @@ with oself;
     };
   });
 
-  cmdliner_1_1 = osuper.cmdliner.overrideAttrs (_: {
+  cmdliner = osuper.cmdliner.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.0.tar.gz;
       sha256 = "0617piq2ykfxk0mi9vvyi98pgdy4xav3ji9s7kk2a27sa6k6qns3";
@@ -300,7 +300,7 @@ with oself;
     '';
   };
 
-  crowbar = (osuper.crowbar.override { cmdliner = cmdliner_1_1; }).overrideAttrs (o: {
+  crowbar = osuper.crowbar.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "stedolan";
       repo = "crowbar";
@@ -698,7 +698,7 @@ with oself;
 
   melange =
     if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange { cmdliner = cmdliner_1_1; }
+      callPackage ./melange { }
     else null;
 
   melange-compiler-libs =
@@ -1214,6 +1214,10 @@ with oself;
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
+  # These require crowbar which is still not compatible with newer cmdliner.
+  pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
+  unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
+
   utop = osuper.utop.overrideAttrs (_: {
     version = "2.9.0";
     src = builtins.fetchurl {
@@ -1231,7 +1235,7 @@ with oself;
       url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
-    buildInputs = [ topkg cmdliner_1_1 ];
+    buildInputs = [ topkg cmdliner ];
   });
 
   uucp = osuper.uucp.overrideAttrs (o: {
