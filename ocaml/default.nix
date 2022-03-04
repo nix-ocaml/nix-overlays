@@ -870,7 +870,35 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
 
-  ocp-build = osuper.ocp-build.overrideDerivation (o: {
+  ez_subst = buildDunePackage {
+    pname = "ez_subst";
+    version = "0.2.1";
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ez_subst/archive/refs/tags/v0.2.1.tar.gz;
+      sha256 = "1mvrzd81paqcwqdm691n7izmaiw9s54as4a2h1wz4yvmai3sqmjx";
+    };
+  };
+
+  ez_cmdliner = buildDunePackage {
+    pname = "ez_cmdliner";
+    version = "0.4.3";
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ez_cmdliner/archive/refs/tags/v0.4.3.tar.gz;
+      sha256 = "07cnd1yw0pfzhjj6kdy040my3lmmma0r8v66wf4r3wibpw4a1am4";
+    };
+    propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
+  };
+
+  ocplib_stuff = buildDunePackage {
+    pname = "ocplib_stuff";
+    version = "0.3.0";
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocplib_stuff/archive/refs/tags/v0.3.0.tar.gz;
+      sha256 = "0r5xh2aj1mbmj6ncxzkjzadgz42gw4x0qxxqdcm2m6531pcyfpq5";
+    };
+  };
+
+  ocp-build = (osuper.ocp-build.override { cmdliner = cmdliner_1_0; }).overrideDerivation (o: {
     preConfigure = "";
   });
 
