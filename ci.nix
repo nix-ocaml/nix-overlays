@@ -166,6 +166,11 @@ let
     "metrics-unix"
     "metrics-mirage"
 
+    # incompatible with cmdliner 1.1
+    "functoria"
+    "functoria-runtime"
+    "mirage"
+
   ];
 
   buildCandidates = pkgs:
