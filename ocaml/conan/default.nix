@@ -25,7 +25,7 @@ buildDunePackage {
     sha256 = "1xrg238bzqj0gk2i49va9nqzq7yl917awpi41nwkc1lq7k98alb2";
   };
 
-  doCheck = true;
+  doCheck = false;
   propagatedBuildInputs = [ re uutf ptime ];
   checkInputs = [
     alcotest

@@ -170,7 +170,9 @@ let
     "functoria"
     "functoria-runtime"
     "mirage"
-
+    "mirage-unix"
+    "mirage-runtime"
+    "mirage-crypto-rng-mirage"
   ];
 
   buildCandidates = pkgs:
