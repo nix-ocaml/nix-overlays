@@ -180,6 +180,7 @@ let
         # don't build tezos stuff
         (! ((builtins.substring 0 5 n) == "tezos")) &&
         (! (builtins.elem n ignoredPackages)) &&
+        lib.isDerivation v &&
         (! broken) &&
         (
           let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
