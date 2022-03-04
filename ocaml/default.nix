@@ -513,9 +513,11 @@ with oself;
       url = https://github.com/dinosaure/hxd/releases/download/v0.3.2/hxd-0.3.2.tbz;
       sha256 = "17zcmdyz8jmi0m8ixsq39jy0d60v62dys8nw5nrpk3jkp2mr00m0";
     };
+    doCheck = false;
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  index = disableTests osuper.index;
   integers = osuper.integers.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/signed.ml --replace "Pervasives" "Stdlib"
