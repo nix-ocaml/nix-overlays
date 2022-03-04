@@ -21,8 +21,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "a9da7c0";
-    sha256 = "07x9642mjd87z38sj5cs7smzdyrrd80g8bcgh3n5wff7891dnaw5";
+    rev = "d9924ec";
+    sha256 = "sha256-iwr/ymE6EMjExwA9OeUbhDy9pwsffM6IkS33fYSbQ1c=";
   };
 
   doCheck = true;
