@@ -695,7 +695,12 @@ with oself;
       sha256 = "0dl7islmm9pdwmbkj9dfvbw16kvaxf47w34x38hgqlgvqyfdvcp8";
     };
 
+    doCheck = false;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+    postPatch = ''
+      rm -rf bin/dune
+      rm -rf bin/mustache_cli.ml
+    '';
   });
 
   lambda-runtime = callPackage ./lambda-runtime { };
