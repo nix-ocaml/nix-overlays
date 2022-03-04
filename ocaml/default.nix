@@ -675,6 +675,13 @@ with oself;
     '';
   });
 
+  mdx = osuper.mdx.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/realworldocaml/mdx/archive/493ed9184cad24ba203c8fe72c12b95a7658eb9a.tar.gz;
+      sha256 = "0yh77i0cz9y12cn1xflmrafyhgnw5cc10pd2qh7l956pf8xpkhj3";
+    };
+  });
+
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     buildInputs = [ dune-configurator ];
