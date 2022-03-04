@@ -300,9 +300,15 @@ with oself;
     '';
   };
 
-  crowbar = osuper.crowbar.overrideAttrs (o: {
-    doCheck = false;
-    patches = [ ./crowbar_multicore.patch ];
+  crowbar = (osuper.crowbar.override { cmdliner = cmdliner_1_1; }).overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "stedolan";
+      repo = "crowbar";
+      rev = "0cbe3ea7e990a7d233360e6a74b1cb5e712501ad";
+      sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
+    };
+
+    patches = [];
   });
 
   dataloader = callPackage ./dataloader { };
@@ -1205,10 +1211,6 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
-
-  # These require crowbar which is still not compatible with newer cmdliner.
-  pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
-  unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
 
   utop = osuper.utop.overrideAttrs (_: {
     version = "2.9.0";
