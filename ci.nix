@@ -188,56 +188,37 @@ let
         ))
       ocamlPackages;
 
-  targets = {
-    native =
-      let
-        drvs = buildCandidates pkgs;
-        otherDrvs = with pkgs; [
-          # cockroachdb-21_1_x
-          # cockroachdb-21_2_x
-          cockroachdb-22_x
-          # mongodb-4_2
-          # nixUnstable
-          esy
-        ] ++
-        lib.optional stdenv.isLinux [ pkgs.kubernetes pkgs.kubectl ];
-      in
-      [ drvs ] ++ otherDrvs;
+  crossTarget = pkgs:
+    with (buildCandidates pkgs);
+    [
+      # just build a subset of the static overlay, with the most commonly used
+      # packages
+      piaf
+      carl
+      (carl.override { static = true; })
+      caqti-driver-postgresql
+      ppx_deriving
+    ];
 
-
-    musl =
-      let drvs = buildCandidates pkgs.pkgsCross.musl64;
-      in
-      with drvs;
-      [
-        # just build a subset of the static overlay, with the most commonly used
-        # packages
-        piaf
-        carl
-        (carl.override {
-          static = true;
-        })
-        caqti-driver-postgresql
-        ppx_deriving
-      ];
-
-
-    arm64 =
-      let
-        drvs = buildCandidates pkgs.pkgsCross.aarch64-multiplatform-musl;
-      in
-      with drvs; [
-        # just build a subset of the static overlay, with the most commonly used
-        # packages
-        piaf
-        carl
-        (carl.override {
-          static = true;
-        })
-        caqti-driver-postgresql
-        ppx_deriving
-      ];
-  };
 in
 
-targets."${target}"
+with pkgs;
+
+{
+  native =
+    lib.attrValues (buildCandidates pkgs)
+    ++ [
+      # cockroachdb-21_1_x cockroachdb-21_2_x
+      cockroachdb-22_x
+      # mongodb-4_2
+      # nixUnstable
+      esy
+    ]
+    ++ lib.optional stdenv.isLinux [ kubernetes ];
+
+
+  musl = crossTarget pkgs.pkgsCross.musl64;
+
+  arm64 = crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl;
+
+}."${target}"
