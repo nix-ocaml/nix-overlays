@@ -91,6 +91,14 @@ in
         '';
       });
 
+      cmdliner = osuper.cmdliner.overrideAttrs (_: {
+        installPhase = ''
+          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
+          mkdir -p $OCAMLFIND_DESTDIR
+          make install LIBDIR=$OCAMLFIND_DESTDIR/cmdliner
+        '';
+      });
+
       afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
 
