@@ -190,10 +190,29 @@ with oself;
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
+
+  cohttp = osuper.cohttp.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.0.0/cohttp-5.0.0.tbz;
+      sha256 = "01asr99hdfw1qkg8wvnslzb1gxfvjs2n421s3gb5b0w1djwg8vzx";
+    };
+    checkInputs = o.checkInputs ++ [ crowbar ];
+  });
+  cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ core_unix ];
+  });
+
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
       sha256 = "0069qqswd1ik5ay3d5q1v1pz0ql31kblfsnv0ax0z8jwvacp3ack";
+    };
+  });
+
+  conduit = osuper.conduit.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-conduit/releases/download/v5.1.0/conduit-5.1.0.tbz;
+      sha256 = "1kci4cm9m9g50cp0g210cj3dqciq16ahbc49k7hfkfwwhwz8q775";
     };
   });
 
@@ -321,6 +340,22 @@ with oself;
   decimal = callPackage ./decimal { };
 
   decompress = disableTests osuper.decompress;
+
+  dns = osuper.dns.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-dns/releases/download/v6.1.4/dns-6.1.4.tbz;
+      sha256 = "0xlhfz7qnkpsqcn3fs3y426iwgzy08swbddlwzinvklhad263vww";
+    };
+  });
+  dns-client = osuper.dns-client.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ca-certs ca-certs-nss tls tls-mirage happy-eyeballs tcpip ];
+  });
+  dns-mirage = osuper.dns-mirage.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ tcpip ];
+  });
+  dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ tls-mirage ];
+  });
 
   dolog = buildDunePackage {
     pname = "dolog";
@@ -463,6 +498,27 @@ with oself;
 
   gettext-stub = disableTests osuper.gettext-stub;
 
+  git = osuper.git.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-git/archive/0de355b.tar.gz;
+      sha256 = "1x5waa8kandjlf798bd635f1bvnhpkq7hcc3awhg053g9phqfcmv";
+    };
+  });
+  git-unix = osuper.git-unix.overrideAttrs (_: {
+    buildInputs = [ ];
+    propagatedBuildInputs = [
+      awa
+      awa-mirage
+      cmdliner
+      mirage-clock
+      mirage-clock-unix
+      tcpip
+      git
+      happy-eyeballs-lwt
+      mirage-unix
+    ];
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -485,6 +541,10 @@ with oself;
       substituteInPlace ./src/dune --replace "bigarray" ""
     '';
   });
+
+  happy-eyeballs = callPackage ./happy-eyeballs { };
+  happy-eyeballs-lwt = callPackage ./happy-eyeballs/lwt.nix { };
+  happy-eyeballs-mirage = callPackage ./happy-eyeballs/mirage.nix { };
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -1410,6 +1470,13 @@ with oself;
       url = https://github.com/janestreet/core_kernel/archive/v0.14.1.tar.gz;
       sha256 = "0f24sagyzhfr6x68fynhsn5cd1p72vkqm25wnfg8164sivas148x";
     };
+  });
+
+  core_unix = (janePackage {
+    pname = "core_unix";
+    hash = "sha256-kxGQfJL4T/ae6EkHJy6BOBxYjpU/toqymF3PaPqtLkc=";
+    meta.description = "Unix-specific portions of Core";
+    propagatedBuildInputs = [ core ];
   });
 
   memtrace = osuper.buildDunePackage {

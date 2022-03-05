@@ -173,6 +173,9 @@ let
     "mirage-unix"
     "mirage-runtime"
     "mirage-crypto-rng-mirage"
+    "git-unix"
+    "git-cohttp"
+    "git-cohttp-unix"
   ];
 
   buildCandidates = pkgs:
