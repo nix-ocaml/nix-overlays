@@ -1094,8 +1094,6 @@ with oself;
     ];
   });
 
-  ppx_tools = callPackage ./ppx_tools { };
-
   postgresql =
     (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
       postPatch = ''
@@ -1135,6 +1133,8 @@ with oself;
   });
 
   ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
+
+  ppx_tools = callPackage ./ppx_tools { };
 
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
     src = builtins.fetchurl {
