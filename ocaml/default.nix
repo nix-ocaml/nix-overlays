@@ -390,8 +390,8 @@ with oself;
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/dune-release/releases/download/1.6.0/dune-release-1.6.0.tbz;
-      sha256 = "07jrra3wdm733bvimzh1j85jmws8dsp7gxwlbz8my0chh9c706qf";
+      url = https://github.com/ocamllabs/dune-release/releases/download/1.6.1/dune-release-1.6.1.tbz;
+      sha256 = "0qxprr21b3qp6rqcd3zmilfypssw227s1c48lpakrkh69g5jxxia";
     };
     doCheck = false;
     patches = [ ];
@@ -1282,7 +1282,6 @@ with oself;
       url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
-    buildInputs = [ topkg cmdliner ];
   });
 
   uucp = osuper.uucp.overrideAttrs (o: {

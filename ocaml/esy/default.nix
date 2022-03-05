@@ -35,6 +35,13 @@ let
         };
         createFindlibDestdir = true;
       });
+    uuidm = super.uuidm.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.7.tbz";
+        sha256 = "1ivxb3hxn9bk62rmixx6px4fvn52s4yr1bpla7rgkcn8981v45r8";
+      };
+
+    });
 
     menhirLib = super.menhirLib.overrideAttrs (_: {
       version = "20211012";
