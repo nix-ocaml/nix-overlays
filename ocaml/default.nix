@@ -1021,14 +1021,14 @@ with oself;
 
   });
 
-  # omd = buildDunePackage {
-  # pname = "omd";
-  # version = "next";
-  # src = builtins.fetchurl {
-  # url = https://github.com/ocaml/omd/archive/2e121af7b104e2f4a4e179c120f94150d39db774.tar.gz;
-  # sha256 = "111y56rljkmhfp090h3mz0wy50lnkmf496y40bkk4sks4fvgn085";
-  # };
-  # };
+  omd = buildDunePackage {
+    pname = "omd";
+    version = "next";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/omd/archive/128576b.tar.gz;
+      sha256 = "0vfbhbxh560nvcgbgp8x6097g2bpa7g8dcf0ib6ys8z7p09bq1xw";
+    };
+  };
 
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
