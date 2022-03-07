@@ -760,15 +760,8 @@ with oself;
   landmarks = callPackage ./landmarks { };
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
-  melange =
-    if (lib.versionOlder "4.12" osuper.ocaml.version && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange { }
-    else null;
-
-  melange-compiler-libs =
-    if ((lib.versionOlder "4.12" osuper.ocaml.version) && !(lib.versionOlder "4.13" osuper.ocaml.version)) then
-      callPackage ./melange/compiler-libs.nix { }
-    else null;
+  melange = callPackage ./melange { };
+  melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   # This overrides Menhir too.
   menhirLib = osuper.menhirLib.overrideAttrs (_: {

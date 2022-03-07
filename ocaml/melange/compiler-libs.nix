@@ -1,13 +1,37 @@
-{ buildDunePackage, menhir, menhirLib }:
+{ buildDunePackage, menhir, menhirLib, ocaml, lib }:
 
-buildDunePackage {
-  pname = "melange-compiler-libs";
-  version = "0.0.0";
+let
+  is_412 =
+    lib.versionOlder "4.12" ocaml.version &&
+    !(lib.versionOlder "4.13" ocaml.version);
+  is_414 =
+    lib.versionOlder "4.14" ocaml.version &&
+    !(lib.versionOlder "5.00" ocaml.version);
 
-  src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange-compiler-libs/archive/83e3017.tar.gz;
-    sha256 = "02h0gzhk6bdxy6iarp8lk6yl80cskxiraqmbplpa5nqn7r9h2d3l";
-  };
+in
 
-  propagatedBuildInputs = [ menhir menhirLib ];
-}
+if is_412 || is_414
+then
+  buildDunePackage
+  {
+    pname = "melange-compiler-libs";
+    version = "0.0.0";
+
+    src =
+      if is_412
+      then
+        builtins.fetchurl
+          {
+            url = https://github.com/melange-re/melange-compiler-libs/archive/83e3017.tar.gz;
+            sha256 = "02h0gzhk6bdxy6iarp8lk6yl80cskxiraqmbplpa5nqn7r9h2d3l";
+          }
+      else
+        builtins.fetchurl {
+          url = https://github.com/melange-re/melange-compiler-libs/archive/d63b724.tar.gz;
+          sha256 = "1fcyjmpzxp0pfmrq6vjczaic7rh0d8xwdnjp0fqlb1xqq9ppy3x3";
+        };
+
+    propagatedBuildInputs = [ menhir menhirLib ];
+  }
+
+else null
