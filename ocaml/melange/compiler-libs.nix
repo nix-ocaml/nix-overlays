@@ -22,14 +22,15 @@ then
       then
         builtins.fetchurl
           {
-            url = https://github.com/melange-re/melange-compiler-libs/archive/39d7060.tar.gz;
-            sha256 = "0cjjrn65xcvj3298hcn4lpf5r5cm4c61sxpzp8xagl534gbwjyhp";
+            url = https://github.com/melange-re/melange-compiler-libs/archive/83e3017.tar.gz;
+            sha256 = "02h0gzhk6bdxy6iarp8lk6yl80cskxiraqmbplpa5nqn7r9h2d3l";
           }
       else
         builtins.fetchurl {
-          url = https://github.com/melange-re/melange-compiler-libs/archive/d63b724.tar.gz;
-          sha256 = "1fcyjmpzxp0pfmrq6vjczaic7rh0d8xwdnjp0fqlb1xqq9ppy3x3";
+          url = https://github.com/melange-re/melange-compiler-libs/archive/39d7060.tar.gz;
+          sha256 = "0cjjrn65xcvj3298hcn4lpf5r5cm4c61sxpzp8xagl534gbwjyhp";
         };
+
 
     propagatedBuildInputs = [ menhir menhirLib ];
   }
