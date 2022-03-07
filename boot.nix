@@ -1,4 +1,9 @@
-args@{ system ? null, patches ? [ ], overlays ? [ (import ./.) ], ... }:
+{ system ? null
+, patches ? [ ]
+, extraOverlays ? [ ]
+, overlays ? [ (import ./.) ]
+, ...
+}@args:
 
 # `git ls-remote https://github.com/nixos/nixpkgs-channels nixos-unstable`
 
@@ -17,4 +22,4 @@ let
 
 in
 
-import channel (args // { inherit overlays; } // systemArgs)
+import channel (args // { inherit (overlays ++ extraOverlays); } // systemArgs)
