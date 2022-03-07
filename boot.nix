@@ -22,4 +22,4 @@ let
 
 in
 
-import channel (args // { inherit (overlays ++ extraOverlays); } // systemArgs)
+import channel (args // { overlays = (overlays ++ extraOverlays); } // systemArgs)
