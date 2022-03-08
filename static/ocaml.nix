@@ -2,7 +2,7 @@
 let
   removeUnknownConfigureFlags = f: with lib;
     remove "--disable-shared"
-      (remove "--enable-static" f);
+      (remove "--enable-static" (if isList f then f else [ f ]));
   fixOCaml = ocaml:
     (ocaml.override { useX11 = false; }).overrideAttrs (o: {
       dontUpdateAutotoolsGnuConfigScripts = true;
@@ -17,8 +17,8 @@ let
       configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
       configurePlatforms = [ ];
       # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
-      nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-      buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
+      # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
+      # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
     });
 
 in

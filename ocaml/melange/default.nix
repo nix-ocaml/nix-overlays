@@ -6,43 +6,56 @@
 , dune-action-plugin
 , melange-compiler-libs
 , reason
+, lib
+, ocaml
 }:
 
-buildDunePackage rec {
-  pname = "melange";
-  version = "0.0.0";
+let
+  is_412 =
+    lib.versionOlder "4.12" ocaml.version &&
+    !(lib.versionOlder "4.13" ocaml.version);
 
-  src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/a11ceb1.tar.gz;
-    sha256 = "0njivayll8hl56ys93z4q14l563ksiv1j6m7kkfbrlgx0dz6lxhx";
-  };
+in
 
-  nativeBuildInputs = [ cppo ];
+if is_412
+then
+  buildDunePackage
+  rec {
+    pname = "melange";
+    version = "0.0.0";
 
-  propagatedBuildInputs = [
-    cmdliner
-    dune-action-plugin
-    melange-compiler-libs
-    reason
-  ];
+    src = builtins.fetchurl {
+      url = https://github.com/melange-re/melange/archive/f7e378b.tar.gz;
+      sha256 = "1d8n1xac9wv4qk12rqyfb9y8r30hf9c7ask2hjyhnripyjzyy4dc";
+    };
 
-  installPhase = ''
-    runHook preInstall
-    ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
+    nativeBuildInputs = [ cppo ];
 
-    cp package.json bsconfig.json $out
-    cp -r ./_build/default/lib/es6 ./_build/default/lib/js $out/lib
+    propagatedBuildInputs = [
+      cmdliner
+      dune-action-plugin
+      melange-compiler-libs
+      reason
+    ];
 
-    mkdir -p $out/lib/melange
-    cd $out/lib/melange
+    installPhase = ''
+      runHook preInstall
+      ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
 
-    tar xvf $OCAMLFIND_DESTDIR/melange/libocaml.tar.gz
-    mv others/* .
-    mv runtime/* .
-    mv stdlib-412/stdlib_modules/* .
-    mv stdlib-412/* .
-    rm -rf others runtime stdlib-412
+      cp package.json bsconfig.json $out
+      cp -r ./_build/default/lib/es6 ./_build/default/lib/js $out/lib
 
-    runHook postInstall
-  '';
-}
+      mkdir -p $out/lib/melange
+      cd $out/lib/melange
+
+      tar xvf $OCAMLFIND_DESTDIR/melange/libocaml.tar.gz
+      mv others/* .
+      mv runtime/* .
+      mv stdlib-412/stdlib_modules/* .
+      mv stdlib-412/* .
+      rm -rf others runtime stdlib-412
+
+      runHook postInstall
+    '';
+  }
+else null

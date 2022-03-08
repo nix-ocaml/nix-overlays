@@ -91,6 +91,14 @@ in
         '';
       });
 
+      cmdliner = osuper.cmdliner.overrideAttrs (_: {
+        installPhase = ''
+          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
+          mkdir -p $OCAMLFIND_DESTDIR
+          make install LIBDIR=$OCAMLFIND_DESTDIR/cmdliner
+        '';
+      });
+
       afl-persistent = osuper.afl-persistent.overrideAttrs (o: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
 
@@ -216,6 +224,7 @@ in
                    CAMLDEP="$CAMLDEP -depend" \
                    OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
                    CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
+                   NEW_OCAMLRUN="$OCAMLRUN" \
                    CAMLC="$CAMLC" OCAMLC="$CAMLC" \
                    CAMLOPT="$CAMLOPT" OCAMLOPT="$CAMLOPT" \
                    $@
@@ -260,8 +269,10 @@ in
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "4.14" ocaml.version
+            (if lib.versionOlder "5.00" ocaml.version
             then ./cross_5_00.patch
+            else if lib.versionOlder "4.14" ocaml.version
+            then ./cross_4_14.patch
             else if lib.versionOlder "4.13" ocaml.version
             then ./cross_4_13.patch
             else if lib.versionOlder "4.12" ocaml.version
@@ -276,12 +287,13 @@ in
           inputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
-            "nativeBuildInputs"
+            "checkInputs"
+            # "nativeBuildInputs"
           ]
             b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
-            "buildInputs"
+            # "buildInputs"
             "nativeBuildInputs"
           ]
             b;
@@ -339,9 +351,6 @@ in
 
         in
         b.overrideAttrs (o: {
-          # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
-          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-          buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
           OCAMLFIND_CONF = "${findlib_conf}/findlib.conf";
           OCAMLPATH = natPath;
         });
@@ -355,18 +364,6 @@ in
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
         '';
-
-        setupHook = writeText "setupHook.sh" ''
-          addOCamlPath () {
-            export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${osuper.ocaml.version}/site-lib/"
-            if test -n "''${createFindlibDestdir-}";
-            then
-              mkdir -p $OCAMLFIND_DESTDIR
-            fi
-          }
-
-          addEnvHooks "$targetOffset" addOCamlPath
-        '';
       });
 
       cppo = natocamlPackages.cppo;
@@ -377,26 +374,24 @@ in
         propagatedBuildInputs = [ buildPackages.stdenv.cc ];
       });
 
-      topkg = osuper.topkg.overrideAttrs (o:
+      topkg = natocamlPackages.topkg.overrideAttrs (o:
         let run = "${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml";
         in
         {
           selfBuild = true;
-          buildPhase = "${run} build";
+
           passthru = {
             inherit run;
           };
+
+          buildPhase = "${run} build";
+
           installPhase = ''
             if [ -z "''${selfBuild:-}" ]; then
               OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
             fi
             ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
           '';
-
-          buildInputs = [ oself.ocaml ];
-
-          nativeBuildInputs = [ natocaml buildPackages.stdenv.cc ] ++
-          (with oself; [ ocamlbuild findlib ]);
 
           setupHook = writeText "setupHook.sh" ''
             addToolchainVariable () {

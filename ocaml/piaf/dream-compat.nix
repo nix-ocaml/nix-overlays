@@ -3,27 +3,40 @@
 , fetchFromGitHub
 , alcotest
 , alcotest-lwt
+, angstrom
+, base64
 , buildDunePackage
 , dune-site
+, faraday
+, gluten-lwt-unix
+, h2
 , h2-lwt-unix
+, httpaf
 , httpaf-lwt-unix
-, multipart_form
 , ipaddr
 , logs
 , lwt_ssl
 , magic-mime
+, pecu
+, prettym
+, psq
+, rresult
+, ssl
+, unstrctrd
 , uri
 }:
 
 buildDunePackage {
   pname = "piaf";
-  version = "0.0.1-dev";
+  version = "0.0.1-unvendor";
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "d9924ec";
-    sha256 = "sha256-iwr/ymE6EMjExwA9OeUbhDy9pwsffM6IkS33fYSbQ1c=";
+    rev = "a4ea85f29f41bd37d88aac2bb94a89967a8136a7";
+    sha256 = "sha256-0Q6ARgCS+ub0q5n0gKaBBslrvfpz1nfSTVs2uhYKvyg=";
   };
+
+  patches = [ ./unvendor.patch ];
 
   doCheck = true;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
@@ -31,12 +44,25 @@ buildDunePackage {
   propagatedBuildInputs = [
     logs
     lwt_ssl
+    ssl
     uri
     ipaddr
     magic-mime
 
-    multipart_form
+    # (vendored) httpaf dependencies
+    angstrom
+    faraday
+    gluten-lwt-unix
+    psq
+    pecu
+    prettym
+    unstrctrd
+    base64
+    rresult
+
+    httpaf
     httpaf-lwt-unix
+    h2
     h2-lwt-unix
   ];
 

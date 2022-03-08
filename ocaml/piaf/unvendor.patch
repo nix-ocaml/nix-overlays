@@ -1,0 +1,104 @@
+diff --git a/lib/dune b/lib/dune
+index fce1520..9bbaaed 100644
+--- a/lib/dune
++++ b/lib/dune
+@@ -3,10 +3,10 @@
+  (public_name piaf)
+  (libraries
+   piaf.multipart
+-  piaf.h2
+-  piaf.h2-lwt-unix
+-  piaf.httpaf
+-  piaf.httpaf-lwt-unix
++  h2
++  h2-lwt-unix
++  httpaf
++  httpaf-lwt-unix
+   logs
+   logs.lwt
+   lwt
+diff --git a/vendor/dune b/vendor/dune
+index 3104592..ce323e5 100644
+--- a/vendor/dune
++++ b/vendor/dune
+@@ -1,80 +1,5 @@
+ (data_only_dirs *)
+ 
+-(subdir
+- httpaf/lib
+- (library
+-  (name httpaf)
+-  (public_name piaf.httpaf)
+-  (libraries angstrom faraday bigstringaf result)))
+-
+-(subdir
+- httpaf/lwt
+- (library
+-  (name httpaf_lwt)
+-  (public_name piaf.httpaf-lwt)
+-  (libraries httpaf lwt gluten gluten-lwt)))
+-
+-(subdir
+- httpaf/lwt-unix
+- (library
+-  (name httpaf_lwt_unix)
+-  (public_name piaf.httpaf-lwt-unix)
+-  (libraries
+-   faraday-lwt-unix
+-   piaf.httpaf
+-   piaf.httpaf-lwt
+-   gluten-lwt-unix
+-   lwt.unix)))
+-
+-(subdir
+- ocaml-h2/hpack/util
+- (executables
+-  (names gen_huffman gen_static)
+-  (libraries compiler-libs.common)))
+-
+-(subdir
+- ocaml-h2/hpack/src
+- (library
+-  (name hpack)
+-  (public_name piaf.hpack)
+-  (libraries angstrom faraday))
+- (rule
+-  (targets huffman_table.ml)
+-  (deps ../util/huffman_table.txt)
+-  (action
+-   (with-stdout-to
+-    %{targets}
+-    (run ../util/gen_huffman.exe %{deps})))))
+-
+-(subdir
+- ocaml-h2/lib
+- (library
+-  (name h2)
+-  (public_name piaf.h2)
+-  (libraries
+-   angstrom
+-   base64
+-   faraday
+-   bigstringaf
+-   piaf.httpaf
+-   result
+-   psq
+-   piaf.hpack)))
+-
+-(subdir
+- ocaml-h2/lwt
+- (library
+-  (name h2_lwt)
+-  (public_name piaf.h2-lwt)
+-  (libraries lwt piaf.h2 gluten gluten-lwt)))
+-
+-(subdir
+- ocaml-h2/lwt-unix
+- (library
+-  (name h2_lwt_unix)
+-  (public_name piaf.h2-lwt-unix)
+-  (libraries faraday-lwt-unix piaf.h2 piaf.h2-lwt gluten-lwt-unix lwt.unix)))
+-
+ (subdir
+  multipart_form/lib
+  (library

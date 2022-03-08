@@ -13,5 +13,6 @@
       };
     };
     legacyPackages = self.packages."${system}";
+    makePkgs = attrs: import ./boot.nix attrs;
   }));
 }
