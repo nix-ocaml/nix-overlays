@@ -464,6 +464,13 @@ with oself;
     '';
   });
 
+  functoria = osuper.functoria.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/functoria/releases/download/v3.1.2/functoria-3.1.2.tbz;
+      sha256 = "1yh0gkf6f2g960mcnrpilhj3xrszr98hy4zkav078f6amxcmwyl4";
+    };
+  });
+
   gapi_ocaml = osuper.gapi_ocaml.overrideAttrs (_: {
     patches = [ ./gapi.patch ];
   });
@@ -898,7 +905,7 @@ with oself;
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: { doCheck = false; });
 
   ocaml-lsp =
-    if lib.versionOlder "4.13" osuper.ocaml.version then null
+    if lib.versionOlder "4.14" osuper.ocaml.version then null
     else osuper.ocaml-lsp;
 
   inherit (callPackage ./ocamlformat-rpc { cmdliner = cmdliner_1_0; })
