@@ -25,8 +25,8 @@ then
     version = "0.0.0";
 
     src = builtins.fetchurl {
-      url = https://github.com/melange-re/melange/archive/f7e378b.tar.gz;
-      sha256 = "1d8n1xac9wv4qk12rqyfb9y8r30hf9c7ask2hjyhnripyjzyy4dc";
+      url = https://github.com/melange-re/melange/archive/434941c.tar.gz;
+      sha256 = "16grqf0r1l8yxdxyp6halbfl1h039911743wbbwgly8wa2di06m4";
     };
 
     nativeBuildInputs = [ cppo ];

@@ -866,6 +866,19 @@ with oself;
     };
   });
 
+  notty = buildDunePackage {
+    pname = "notty";
+    version = "0.2.3+dev";
+    src = builtins.fetchurl {
+      url = https://github.com/pqwy/notty/archive/e4deddd2c72549947af4c7c6b0eae0d5eb0d74c2.tar.gz;
+      sha256 = "0nr4kv3rylzx5blzhymlnd02fsmaysk45d7c882mbzr9g0blk3nb";
+    };
+
+    nativeBuildInputs = [ cppo ];
+    propagatedBuildInputs = [ uucp uuseg uutf lwt ];
+    strictDeps = true;
+  };
+
   npy = osuper.npy.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""

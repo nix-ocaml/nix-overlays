@@ -146,7 +146,6 @@ let
 
     # Incompatible with 4.14
     "pcap-format"
-    "notty"
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
