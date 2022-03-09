@@ -874,8 +874,8 @@ with oself;
 
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/num/archive/v1.4.tar.gz;
-      sha256 = "090gl27g84r3s2b12vgkz8fp269jqlrhx4lpg7008yviisv8hl01";
+      url = https://github.com/ocaml/num/archive/703e1f88.tar.gz;
+      sha256 = "1b84kc4vfg4cipwwjav97pzbj7yk4ahpixj3ccbrnxhyazndyhqx";
     };
 
     patches = [ ./num/findlib-install.patch ];

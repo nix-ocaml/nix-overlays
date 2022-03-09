@@ -38,11 +38,11 @@ let
       ocamlPackages_4_14 = newOCamlScope {
         major_version = "4";
         minor_version = "14";
-        patch_version = "0-beta1";
+        patch_version = "0-rc1";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-beta1.tar.gz;
-          sha256 = "15dy594vbgkzw3rzf9v2z4ng0r6h26jfv8dgq9csy87xcw4000hv";
+          url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-rc1.tar.gz;
+          sha256 = "0q3j56w2sg1251cy2wlqm4p85f6s4g3wh04fi23z7w6bqap375yh";
         };
       };
 
