@@ -917,8 +917,32 @@ with oself;
   # Tests don't work on 5.00 because of the Stream.t type.
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: { doCheck = false; });
 
+  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.00" osuper.ocaml.version
+      then
+        builtins.fetchGit
+          {
+            url = "https://github.com/EduardoRFS/ocaml-lsp.git";
+            submodules = true;
+            ref = "500";
+            rev = "24fcebcec9f1e99815b036a6d45c0f912e8e8a19";
+          }
+      else o.src;
+  });
+
+  lsp = osuper.lsp.overrideAttrs (o: {
+    preBuild =
+      if lib.versionOlder "5.00" osuper.ocaml.version then
+        ''
+          rm -r ocaml-lsp-server/vendor/{octavius,cmdliner}
+        '' else o.preBuild;
+  });
+
   ocaml-lsp =
-    if lib.versionOlder "4.14" osuper.ocaml.version then null
+    if lib.versionOlder "4.14" osuper.ocaml.version &&
+      ! (lib.versionOlder "5.00" osuper.ocaml.version)
+    then null
     else osuper.ocaml-lsp;
 
   inherit (callPackage ./ocamlformat-rpc { cmdliner = cmdliner_1_0; })
@@ -1019,14 +1043,16 @@ with oself;
 
   });
 
-  # omd = buildDunePackage {
-  # pname = "omd";
-  # version = "next";
-  # src = builtins.fetchurl {
-  # url = https://github.com/ocaml/omd/archive/2e121af7b104e2f4a4e179c120f94150d39db774.tar.gz;
-  # sha256 = "111y56rljkmhfp090h3mz0wy50lnkmf496y40bkk4sks4fvgn085";
-  # };
-  # };
+  omd = buildDunePackage {
+    pname = "omd";
+    version = "next";
+
+    src = builtins.fetchurl {
+      url = https://github.com/EduardoRFS/omd/archive/7b866aacbc119e2be5.tar.gz;
+      sha256 = "070jm2vfrcjpshabhii87ws0nm1alirkkqj0x41rpimn4zdid00p";
+    };
+    propagatedBuildInputs = [ camlp-streams bigarray-compat ];
+  };
 
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
