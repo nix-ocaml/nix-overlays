@@ -116,6 +116,9 @@ module.exports = async ({github, context, core, require}) => {
     // Only write the file if the commit hash has changed
     // Otherwise just cancel the workflow. We don't need to do anything
     if (next_sha.startsWith(old_git_sha)) {
+      core.notice(
+          `Hashes were the same (old: ${old_git_sha}, new: ${next_sha})`)
+
       github.rest.actions.cancelWorkflowRun({
         owner : context.repo.owner,
         repo : context.repo.repo,
