@@ -108,12 +108,22 @@ module.exports = async ({github, context, core, require}) => {
     url = ${next_url};
     sha256 = "${next_sha256}";`);
 
-    writeFileSync(source_path, next_source);
-
     const [_full_match, _channel_variant, _old_date, old_git_sha] =
         old_source.match(source_regex);
     const url =
         `https://github.com/NixOS/nixpkgs/compare/${old_git_sha}...${next_sha}`;
+
+    // Only write the file if the commit hash has changed
+    // Otherwise just cancel the workflow. We don't need to do anything
+    if (next_sha.startsWith(old_git_sha)) {
+      github.rest.actions.cancelWorkflowRun({
+        owner : context.repo.owner,
+        repo : context.repo.repo,
+        run_id : context.runId
+      })
+    } else {
+      writeFileSync(source_path, next_source);
+    }
 
     return url;
   });
