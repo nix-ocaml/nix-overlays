@@ -65,6 +65,11 @@ buildDunePackage {
     uutf
   ];
 
+  postPatch = ''
+    substituteInPlace "vendor/parse-wyc/menhir-recover/emitter.ml" --replace \
+      "String.capitalize" "String.capitalize_ascii"
+  '';
+
   meta = {
     homepage = "https://github.com/ocaml-ppx/ocamlformat";
     description = "Auto-formatter for OCaml code, RPC interface";
