@@ -157,6 +157,7 @@ let
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
+    "ogg"
 
     # incompatible with newer menhir
     "odate"
