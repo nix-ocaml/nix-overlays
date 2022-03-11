@@ -101,6 +101,7 @@ let
     "mirage-bootvar-xen"
     "mirage-net-xen"
     "netchannel"
+    "ffmpeg-avutil"
 
     # doesn't work with my fork of http/af
     "paf"
