@@ -101,7 +101,14 @@ let
     "mirage-bootvar-xen"
     "mirage-net-xen"
     "netchannel"
+    "ffmpeg"
+    "ffmpeg-av"
+    "ffmpeg-avdevice"
+    "ffmpeg-avfilter"
     "ffmpeg-avutil"
+    "ffmpeg-avcodec"
+    "ffmpeg-swscale"
+    "ffmpeg-swresample"
 
     # doesn't work with my fork of http/af
     "paf"
