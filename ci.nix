@@ -158,6 +158,11 @@ let
     "ocsigen_server"
     "ocsigen-toolkit"
     "ogg"
+    "theora"
+    "flac"
+    "speex"
+    "opus"
+    "vorbis"
 
     # incompatible with newer menhir
     "odate"
