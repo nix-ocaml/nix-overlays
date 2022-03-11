@@ -1,6 +1,6 @@
 { ocamlVersion, target ? "native" }:
 let
-  pkgs = import ./boot.nix { };
+  pkgs = import ./. { };
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
     # camlp4 or not supported in 4.11+

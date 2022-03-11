@@ -1,7 +1,7 @@
 { system ? null
 , patches ? [ ]
 , extraOverlays ? [ ]
-, overlays ? [ (import ./.) ]
+, overlays ? [ (import ./overlay) ]
 , ...
 }@args:
 
