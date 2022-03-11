@@ -20,7 +20,15 @@ buildDunePackage {
   pname = "dot-merlin-reader";
   version = version;
   src =
-    if (lib.versionOlder "4.14" ocaml.version)
+    if (lib.versionOlder "5.00" ocaml.version)
+    then
+
+      builtins.fetchurl
+        {
+          url = https://github.com/ocaml/merlin/archive/fce8fb220c6677a4e1f1677efa2e5b5b13f12254.tar.gz;
+          sha256 = "1n53b7isla3jyva3kpizxrmyjja6w62c2p799lzla2jy96ldjpcj";
+        }
+    else if (lib.versionOlder "4.14" ocaml.version)
     then
       builtins.fetchurl
         {
