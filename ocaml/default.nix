@@ -17,7 +17,6 @@
 , zlib-oc
 }:
 
-
 oself: osuper:
 
 let
@@ -386,8 +385,8 @@ with oself;
   dune_3 = osuper.dune_3.overrideAttrs (_: {
     # Dune 3.1.0 -- with dynamic dependencies.
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/443f89320cc426593f5536bbc895a483be471e69.tar.gz;
-      sha256 = "1bg3a4gqx0j5f1nb9cb80flfywzv84fls7z2xfhfq2psnxhvdf2b";
+      url = https://github.com/ocaml/dune/archive/50d6b4cc.tar.gz;
+      sha256 = "199zh1c52l6d0dkql81ma1m04df08hlyw32w68ry1j9h75q163fp";
     };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       Foundation
@@ -1236,6 +1235,8 @@ with oself;
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
+
+  sendfile = callPackage ./sendfile { };
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
