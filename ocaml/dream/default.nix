@@ -23,6 +23,8 @@
 , lwt
 , lwt_ppx
 , lwt_ssl
+, gluten
+, gluten-lwt-unix
 , magic-mime
 , mirage-clock
 , mirage-crypto
@@ -39,7 +41,7 @@
 
 buildDunePackage {
   pname = "dream";
-  version = "1.0.0-alpha2";
+  version = "1.0.0-alpha4";
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "dream";
@@ -73,8 +75,8 @@ buildDunePackage {
     websocketaf
     yojson
     # vendored dependencies, can we "unvendor" this?
-    # gluten
-    # gluten-lwt-unix
+    gluten
+    gluten-lwt-unix
     httpaf
     httpaf-lwt-unix
     h2
@@ -90,10 +92,6 @@ buildDunePackage {
     result
     camlp-streams
   ];
-
-  postPatch = ''
-    substituteInPlace ./src/eml/dune --replace "(modules eml)" "(modules eml) (libraries camlp-streams)"
-  '';
 
   checkInputs = [ ppx_expect alcotest ];
   doCheck = true;
