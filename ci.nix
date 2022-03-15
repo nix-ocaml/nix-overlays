@@ -178,6 +178,8 @@ let
     "metrics-unix"
     "metrics-mirage"
 
+    "piaf-unvendor"
+
     # incompatible with cmdliner 1.1
     "git-unix"
     "git-cohttp"
