@@ -179,6 +179,9 @@ let
     "metrics-mirage"
 
     "piaf-dream-compat"
+    "dream"
+    "dream-livereload"
+    "dream-serve"
 
     # incompatible with cmdliner 1.1
     "git-unix"
