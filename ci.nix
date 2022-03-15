@@ -178,7 +178,7 @@ let
     "metrics-unix"
     "metrics-mirage"
 
-    "piaf-unvendor"
+    "piaf-dream-compat"
 
     # incompatible with cmdliner 1.1
     "git-unix"
