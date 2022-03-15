@@ -9,48 +9,33 @@
 , caqti-lwt
 , cstruct
 , digestif
-, faraday
-, faraday-lwt-unix
 , fmt
 , graphql_parser
 , graphql-lwt
-, h2
-, h2-lwt-unix
 , hmap
-, httpaf
-, httpaf-lwt-unix
 , logs
 , lwt
 , lwt_ppx
 , lwt_ssl
-, gluten
-, gluten-lwt-unix
 , magic-mime
 , mirage-clock
 , mirage-crypto
 , mirage-crypto-rng
 , multipart_form
+, multipart_form-lwt
 , ppx_expect
 , psq
 , result
 , uri
-, websocketaf
 , yojson
 , camlp-streams
+, dream-pure
+, dream-httpaf
 }:
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "dream";
-  version = "1.0.0-alpha4";
-  src = fetchFromGitHub {
-    owner = "aantron";
-    repo = "dream";
-    rev = "055d8196633d1bd9a3280d97a6367a1eabcc7796";
-    sha256 = "sha256-DP5a7d5/d8MpUi9QTUAd90vWfZ8MWlJqbyEZXKFu4bg=";
-    fetchSubmodules = true;
-  };
-
-  # patches = [ ./unvendor.patch ];
+  inherit (dream-pure) src version;
 
   propagatedBuildInputs = [
     # base-unix
@@ -70,28 +55,31 @@ buildDunePackage {
     mirage-crypto
     mirage-crypto-rng
     mirage-clock
-    (multipart_form.override { upstream = true; })
+    multipart_form
+    multipart_form-lwt
     uri
-    websocketaf
     yojson
-    # vendored dependencies, can we "unvendor" this?
-    gluten
-    gluten-lwt-unix
-    httpaf
-    httpaf-lwt-unix
-    h2
-    h2-lwt-unix
-    # hpack
-    # dependencies of vendored packages
-    angstrom
-    bigstringaf
-    digestif
-    faraday
-    faraday-lwt-unix
-    psq
-    result
-    camlp-streams
+    dream-pure
+    dream-httpaf
   ];
+
+  postPatch = ''
+    substituteInPlace src/http/shared/dune --replace "dream-httpaf." ""
+    substituteInPlace src/http/dune --replace "dream-httpaf." ""
+    substituteInPlace src/http/adapt.ml \
+      --replace "[ \`write ] H2.Body.t" "H2.Body.Writer.t" \
+      --replace "H2.Body.write_string" "H2.Body.Writer.write_string" \
+      --replace "H2.Body.write_bigstring" "H2.Body.Writer.write_bigstring" \
+      --replace "H2.Body.flush" "H2.Body.Writer.flush" \
+      --replace "H2.Body.close_writer" "H2.Body.Writer.close"
+    substituteInPlace src/http/http.ml \
+      --replace "H2.Body.schedule_read" "H2.Body.Reader.schedule_read" \
+      --replace "H2.Body.close_reader" "H2.Body.Reader.close"
+  '';
+
+  preBuild = ''
+    rm -rf src/vendor
+  '';
 
   checkInputs = [ ppx_expect alcotest ];
   doCheck = true;

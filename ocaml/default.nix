@@ -355,6 +355,9 @@ with oself;
       callPackage ./domainslib { }
     else null;
 
+
+  dream-pure = callPackage ./dream/pure.nix { };
+  dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream = callPackage ./dream {
     multipart_form = multipart_form.override { upstream = true; };
   };
@@ -843,6 +846,7 @@ with oself;
   });
 
   multipart_form = callPackage ./multipart_form { };
+  multipart_form-lwt = callPackage ./multipart_form/lwt.nix { multipart_form = multipart_form.override { upstream = true; }; };
 
   multipart-form-data = callPackage ./multipart-form-data { };
 
