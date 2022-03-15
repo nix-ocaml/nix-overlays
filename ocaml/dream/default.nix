@@ -31,6 +31,7 @@
 , camlp-streams
 , dream-pure
 , dream-httpaf
+, httpaf
 }:
 
 buildDunePackage rec {
@@ -61,7 +62,10 @@ buildDunePackage rec {
     yojson
     dream-pure
     dream-httpaf
+    httpaf
   ];
+
+  patches = [ ./upload.patch ];
 
   postPatch = ''
     substituteInPlace src/http/shared/dune --replace "dream-httpaf." ""

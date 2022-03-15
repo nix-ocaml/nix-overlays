@@ -16,7 +16,9 @@
 
 buildDunePackage {
   pname = "multipart_form-lwt";
-  inherit (multipart_form) src version doCheck;
+  inherit (multipart_form) src version;
+
+  doCheck = false;
 
   propagatedBuildInputs = [
     angstrom

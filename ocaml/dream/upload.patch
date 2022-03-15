@@ -1,0 +1,25 @@
+diff --git a/src/server/dune b/src/server/dune
+index d7dd67b..9fc71de 100644
+--- a/src/server/dune
++++ b/src/server/dune
+@@ -16,6 +16,7 @@
+   unstrctrd
+   uri
+   yojson
++  faraday
+  )
+  (preprocess (pps lwt_ppx))
+  (instrumentation (backend bisect_ppx)))
+diff --git a/src/server/upload.ml b/src/server/upload.ml
+index e296c8e..ae899b8 100644
+--- a/src/server/upload.ml
++++ b/src/server/upload.ml
+@@ -121,7 +121,7 @@ and upload (request : Message.request) =
+       let `Parse th, stream =
+         Multipart_form_lwt.stream ~identify body content_type in
+       Lwt.async (fun () -> let%lwt _ = th in Lwt.return_unit);
+-      state'.stream <- stream;
++      state'.stream <- (stream |> Lwt_stream.map (fun (x, h, s) -> x, h, Lwt_stream.map (fun b -> Bigstringaf.to_string b.Faraday.buffer) s));
+       state'.state_init <- false;
+       state request
+ 

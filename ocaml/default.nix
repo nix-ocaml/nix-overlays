@@ -358,9 +358,7 @@ with oself;
 
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
-  dream = callPackage ./dream {
-    multipart_form = multipart_form.override { upstream = true; };
-  };
+  dream = callPackage ./dream { };
 
   dream-livereload = callPackage ./dream-livereload { };
 
@@ -846,7 +844,7 @@ with oself;
   });
 
   multipart_form = callPackage ./multipart_form { };
-  multipart_form-lwt = callPackage ./multipart_form/lwt.nix { multipart_form = multipart_form.override { upstream = true; }; };
+  multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
   multipart-form-data = callPackage ./multipart-form-data { };
 
@@ -1078,7 +1076,6 @@ with oself;
   pg_query = callPackage ./pg_query { };
 
   piaf = callPackage ./piaf { };
-  piaf-dream-compat = callPackage ./piaf/dream-compat.nix { };
   carl = callPackage ./piaf/carl.nix { };
 
   pp = osuper.pp.overrideAttrs (_: { doCheck = false; });
