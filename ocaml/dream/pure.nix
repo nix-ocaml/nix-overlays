@@ -10,7 +10,7 @@
 , uri
 , ppx_expect
 , alcotest
-  # , ppx_yojson_conv
+, ppx_yojson_conv_lib
 , bisect_ppx
 }:
 
@@ -40,7 +40,7 @@ buildDunePackage rec {
   checkInputs = [
     ppx_expect
     alcotest
-    # ppx_yojson_conv
+    ppx_yojson_conv_lib
     bisect_ppx
   ];
   doCheck = false;

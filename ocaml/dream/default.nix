@@ -1,37 +1,41 @@
 { lib
 , fetchFromGitHub
 , buildDunePackage
-, alcotest
-, angstrom
-, base64
 , bigarray-compat
-, bigstringaf
+, camlp-streams
+, caqti
 , caqti-lwt
 , cstruct
-, digestif
+, dream-httpaf
+, dream-pure
 , fmt
 , graphql_parser
 , graphql-lwt
-, hmap
-, logs
 , lwt
 , lwt_ppx
 , lwt_ssl
+, logs
 , magic-mime
 , mirage-clock
 , mirage-crypto
 , mirage-crypto-rng
 , multipart_form
 , multipart_form-lwt
-, ppx_expect
-, psq
-, result
+, ptime
+, ssl
 , uri
 , yojson
-, camlp-streams
-, dream-pure
-, dream-httpaf
-, httpaf
+# test-inputs
+, bisect_ppx
+, alcotest
+, crunch
+, lambdasoup
+, ppx_expect
+, ppx_yojson_conv_lib
+, reason
+, tyxml
+, tyxml-jsx
+, tyxml-ppx
 }:
 
 buildDunePackage rec {
@@ -39,31 +43,48 @@ buildDunePackage rec {
   inherit (dream-pure) src version;
 
   propagatedBuildInputs = [
-    # base-unix
-    base64
     bigarray-compat
+    camlp-streams
+    caqti
     caqti-lwt
     cstruct
+    dream-httpaf
+    dream-pure
     fmt
     graphql_parser
     graphql-lwt
-    hmap
     lwt
     lwt_ppx
     lwt_ssl
     logs
     magic-mime
+    mirage-clock
     mirage-crypto
     mirage-crypto-rng
-    mirage-clock
     multipart_form
     multipart_form-lwt
+    ptime
+    ssl
     uri
     yojson
-    dream-pure
-    dream-httpaf
-    httpaf
   ];
+
+  buildInputs = [
+     bisect_ppx
+  ];
+
+  checkInputs = [
+    alcotest
+    crunch
+    lambdasoup
+    ppx_expect
+    ppx_yojson_conv_lib
+    reason
+    tyxml
+    tyxml-jsx
+    tyxml-ppx
+  ];
+  doCheck = true;
 
   patches = [ ./upload.patch ];
 
@@ -84,9 +105,6 @@ buildDunePackage rec {
   preBuild = ''
     rm -rf src/vendor
   '';
-
-  checkInputs = [ ppx_expect alcotest ];
-  doCheck = true;
 
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";
