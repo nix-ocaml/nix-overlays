@@ -1157,8 +1157,6 @@ with oself;
 
   ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
 
-  ppx_tools = callPackage ./ppx_tools { };
-
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/printbox/archive/refs/tags/v0.6.tar.gz;
