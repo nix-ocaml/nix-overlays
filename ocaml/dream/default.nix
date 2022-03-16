@@ -88,20 +88,6 @@ buildDunePackage rec {
 
   patches = [ ./upload.patch ];
 
-  postPatch = ''
-    substituteInPlace src/http/shared/dune --replace "dream-httpaf." ""
-    substituteInPlace src/http/dune --replace "dream-httpaf." ""
-    substituteInPlace src/http/adapt.ml \
-      --replace "[ \`write ] H2.Body.t" "H2.Body.Writer.t" \
-      --replace "H2.Body.write_string" "H2.Body.Writer.write_string" \
-      --replace "H2.Body.write_bigstring" "H2.Body.Writer.write_bigstring" \
-      --replace "H2.Body.flush" "H2.Body.Writer.flush" \
-      --replace "H2.Body.close_writer" "H2.Body.Writer.close"
-    substituteInPlace src/http/http.ml \
-      --replace "H2.Body.schedule_read" "H2.Body.Reader.schedule_read" \
-      --replace "H2.Body.close_reader" "H2.Body.Reader.close"
-  '';
-
   preBuild = ''
     rm -rf src/vendor
   '';

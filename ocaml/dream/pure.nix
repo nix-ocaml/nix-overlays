@@ -43,6 +43,7 @@ buildDunePackage rec {
     ppx_yojson_conv_lib
     bisect_ppx
   ];
+
   doCheck = false;
 
   meta = {

@@ -58,9 +58,10 @@ buildDunePackage rec {
     websocketaf-lwt-unix
   ];
 
+  patches = [ ./upload.patch ];
+
   preBuild = ''
     rm -rf src/vendor
-    substituteInPlace src/http/shared/dune --replace "dream-httpaf." ""
   '';
 
   doCheck = false;
