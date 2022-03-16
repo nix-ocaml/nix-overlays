@@ -21,7 +21,7 @@ buildDunePackage rec {
     owner = "aantron";
     repo = "dream";
     rev = "7f196a2573e535b8307e8dc418c2f6094cfeed33";
-    sha256 = "xtdAe3hC4DRA92RGcne0MRNkNKK3YwEh890ACZmuPL4=";
+    sha256 = "oC1L/pgrvyed0SimAPtIvPcPzDzJhyKjd71J7zu+R88=";
     fetchSubmodules = true;
     leaveDotGit = false;
     deepClone = false;

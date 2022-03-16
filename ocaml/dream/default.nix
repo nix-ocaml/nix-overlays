@@ -25,7 +25,7 @@
 , ssl
 , uri
 , yojson
-# test-inputs
+  # test-inputs
 , bisect_ppx
 , alcotest
 , crunch
@@ -70,7 +70,7 @@ buildDunePackage rec {
   ];
 
   buildInputs = [
-     bisect_ppx
+    bisect_ppx
   ];
 
   checkInputs = [
