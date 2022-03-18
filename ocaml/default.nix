@@ -1186,6 +1186,18 @@ with oself;
     };
   });
 
+  pure-splitmix = buildDunePackage rec {
+    pname = "pure-splitmix";
+    version = "0.3";
+
+    src = fetchFromGitHub {
+      owner = "Lysxia";
+      repo = pname;
+      rev = version;
+      sha256 = "RUnsAB4hMV87ItCyGhc47bHGY1iOwVv9kco2HxnzqbU=";
+    };
+  };
+
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else
