@@ -972,6 +972,17 @@ with oself;
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
 
+  ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
+    version = "0.2.3";
+
+    src = fetchFromGitHub {
+      owner = "serokell";
+      repo = o.pname;
+      rev = version;
+      sha256 = "w4NzCbaDxoM9CnoZHe8kS+dnd8n+pfWhPxQ1dDSQNHU=";
+    };
+  });
+
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
     version = "0.3.0";
