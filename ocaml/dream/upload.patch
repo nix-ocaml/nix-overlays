@@ -1,0 +1,322 @@
+diff --git a/src/http/adapt.ml b/src/http/adapt.ml
+index fd5f737..34aeb6f 100644
+--- a/src/http/adapt.ml
++++ b/src/http/adapt.ml
+@@ -79,11 +79,11 @@ let forward_body
+ 
+ let forward_body_h2
+     (response : Message.response)
+-    (body : [ `write ] H2.Body.t) =
++    (body : H2.Body.Writer.t) =
+ 
+   forward_body_general
+     response
+-    (H2.Body.write_string body)
+-    (H2.Body.write_bigstring body)
+-    (H2.Body.flush body)
+-    (fun _code -> H2.Body.close_writer body)
++    (H2.Body.Writer.write_string body)
++    (H2.Body.Writer.write_bigstring body)
++    (H2.Body.Writer.flush body)
++    (fun _code -> H2.Body.Writer.close body)
+diff --git a/src/http/dune b/src/http/dune
+index cac581f..b8f4f63 100644
+--- a/src/http/dune
++++ b/src/http/dune
+@@ -8,17 +8,17 @@
+   dream-pure
+   dream.server
+   dream-httpaf
+-  dream-httpaf.gluten
+-  dream-httpaf.gluten-lwt-unix
+-  dream-httpaf.h2
+-  dream-httpaf.h2-lwt-unix
+-  dream-httpaf.httpaf
+-  dream-httpaf.httpaf-lwt-unix
++  gluten
++  gluten-lwt-unix
++  h2
++  h2-lwt-unix
++  httpaf
++  httpaf-lwt-unix
+   lwt
+   lwt.unix
+   lwt_ssl
+   ssl
+-  dream-httpaf.websocketaf
++  websocketaf
+  )
+  (preprocess (pps lwt_ppx))
+  (instrumentation (backend bisect_ppx)))
+diff --git a/src/http/http.ml b/src/http/http.ml
+index a74508b..85414dc 100644
+--- a/src/http/http.ml
++++ b/src/http/http.ml
+@@ -202,13 +202,13 @@ let wrap_handler_h2
+     let body =
+       H2.Reqd.request_body conn in
+     let read ~data ~flush:_ ~ping:_ ~pong:_ ~close ~exn:_ =
+-      H2.Body.schedule_read
++      H2.Body.Reader.schedule_read
+         body
+         ~on_eof:(fun () -> close 1000)
+         ~on_read:(fun buffer ~off ~len -> data buffer off len true false)
+     in
+     let close _code =
+-      H2.Body.close_reader body in
++      H2.Body.Reader.close body in
+     let body =
+       Stream.reader ~read ~close ~abort:close in
+     let body =
+diff --git a/src/http/shared/dune b/src/http/shared/dune
+index 0766872..4ce6a95 100644
+--- a/src/http/shared/dune
++++ b/src/http/shared/dune
+@@ -4,7 +4,7 @@
+  (libraries
+   bigstringaf
+   dream-pure
+-  dream-httpaf.websocketaf
++  websocketaf
+  )
+  (preprocess (pps lwt_ppx))
+  (instrumentation (backend bisect_ppx)))
+diff --git a/src/mirage/adapt.ml b/src/mirage/adapt.ml
+index bf5d7e5..1c413ba 100644
+--- a/src/mirage/adapt.ml
++++ b/src/mirage/adapt.ml
+@@ -69,11 +69,11 @@ let forward_body
+ 
+ let forward_body_h2
+     (response : Dream.response)
+-    (body : [ `write ] H2.Body.t) =
++    (body : H2.Body.Writer.t) =
+ 
+   forward_body_general
+     response
+-    (H2.Body.write_string body)
+-    (H2.Body.write_bigstring body)
+-    (H2.Body.flush body)
+-    (fun _code -> H2.Body.close_writer body)
++    (H2.Body.Writer.write_string body)
++    (H2.Body.Writer.write_bigstring body)
++    (H2.Body.Writer.flush body)
++    (fun _code -> H2.Body.Writer.close body)
+diff --git a/src/server/dune b/src/server/dune
+index d7dd67b..9fc71de 100644
+--- a/src/server/dune
++++ b/src/server/dune
+@@ -16,6 +16,7 @@
+   unstrctrd
+   uri
+   yojson
++  faraday
+  )
+  (preprocess (pps lwt_ppx))
+  (instrumentation (backend bisect_ppx)))
+diff --git a/src/server/upload.ml b/src/server/upload.ml
+index e296c8e..beef2d1 100644
+--- a/src/server/upload.ml
++++ b/src/server/upload.ml
+@@ -121,7 +121,7 @@ and upload (request : Message.request) =
+       let `Parse th, stream =
+         Multipart_form_lwt.stream ~identify body content_type in
+       Lwt.async (fun () -> let%lwt _ = th in Lwt.return_unit);
+-      state'.stream <- stream;
++      state'.stream <- (stream |> Lwt_stream.map (fun (x, h, s) -> x, h, Lwt_stream.map (fun b -> Bigstringaf.to_string b.Faraday.buffer) s));
+       state'.state_init <- false;
+       state request
+ 
+diff --git a/src/vendor/dune b/src/vendor/dune
+index ac440a8..d4dae9d 100644
+--- a/src/vendor/dune
++++ b/src/vendor/dune
+@@ -14,7 +14,7 @@
+   (name alpn)
+   (public_name dream-mirage.paf.alpn)
+   (modules alpn)
+-  (libraries dream-mirage.paf dream-httpaf.httpaf dream-httpaf.h2)))
++  (libraries dream-mirage.paf httpaf h2)))
+ 
+ (subdir paf/lib
+  (library
+@@ -29,7 +29,7 @@
+   (wrapped false)
+   (public_name dream-mirage.paf.le)
+   (modules lE)
+-  (libraries dream-httpaf.httpaf dream-mirage.paf mirage-time mirage-stack duration tls-mirage emile
++  (libraries httpaf dream-mirage.paf mirage-time mirage-stack duration tls-mirage emile
+     letsencrypt)))
+ 
+ 
+@@ -37,7 +37,7 @@
+ (subdir gluten/lib
+  (library
+   (name gluten)
+-  (public_name dream-httpaf.gluten)
++  (public_name gluten)
+   (libraries
+    bigstringaf
+    faraday)))
+@@ -45,18 +45,18 @@
+ (subdir gluten/lwt
+  (library
+   (name gluten_lwt)
+-  (public_name dream-httpaf.gluten-lwt)
++  (public_name gluten-lwt)
+   (libraries
+-   dream-httpaf.gluten
++   gluten
+    lwt)))
+ 
+ (subdir gluten/lwt-unix
+  (library
+   (name gluten_lwt_unix)
+-  (public_name dream-httpaf.gluten-lwt-unix)
++  (public_name gluten-lwt-unix)
+   (libraries
+    faraday-lwt-unix
+-   dream-httpaf.gluten-lwt
++   gluten-lwt
+    lwt.unix
+    (select
+     ssl_io.ml
+@@ -75,43 +75,43 @@
+ (subdir websocketaf/lib
+  (library
+   (name websocketaf)
+-  (public_name dream-httpaf.websocketaf)
++  (public_name websocketaf)
+   (libraries
+    angstrom
+    base64
+    bigstringaf
+    faraday
+-   dream-httpaf.gluten
++   gluten
+    httpaf
+    result)))
+ 
+ (subdir websocketaf/lwt
+  (library
+   (name websocketaf_lwt)
+-  (public_name dream-httpaf.websocketaf-lwt)
++  (public_name websocketaf-lwt)
+   (libraries
+    base64
+    digestif.ocaml
+-   dream-httpaf.gluten-lwt
++   gluten-lwt
+    lwt
+-   dream-httpaf.websocketaf)))
++   websocketaf)))
+ 
+ (subdir websocketaf/lwt-unix
+  (library
+   (name websocketaf_lwt_unix)
+-  (public_name dream-httpaf.websocketaf-lwt-unix)
++  (public_name websocketaf-lwt-unix)
+   (libraries
+    faraday-lwt-unix
+-   dream-httpaf.gluten-lwt-unix
++   gluten-lwt-unix
+    lwt.unix
+-   dream-httpaf.websocketaf-lwt)))
++   websocketaf-lwt)))
+ 
+ 
+ 
+ (subdir httpaf/lib
+  (library
+   (name httpaf)
+-  (public_name dream-httpaf.httpaf)
++  (public_name httpaf)
+   (libraries
+    angstrom
+    bigstringaf
+@@ -121,22 +121,22 @@
+ (subdir httpaf/lwt
+  (library
+   (name httpaf_lwt)
+-  (public_name dream-httpaf.httpaf-lwt)
++  (public_name httpaf-lwt)
+   (libraries
+-   dream-httpaf.gluten
+-   dream-httpaf.gluten-lwt
+-   dream-httpaf.httpaf
++   gluten
++   gluten-lwt
++   httpaf
+    lwt)))
+ 
+ (subdir httpaf/lwt-unix
+  (library
+   (name httpaf_lwt_unix)
+-  (public_name dream-httpaf.httpaf-lwt-unix)
++  (public_name httpaf-lwt-unix)
+   (libraries
+    faraday-lwt-unix
+-   dream-httpaf.gluten-lwt-unix
+-   dream-httpaf.httpaf
+-   dream-httpaf.httpaf-lwt
++   gluten-lwt-unix
++   httpaf
++   httpaf-lwt
+    lwt.unix)))
+ 
+ 
+@@ -150,7 +150,7 @@
+ (subdir h2/hpack/src
+  (library
+   (name hpack)
+-  (public_name dream-httpaf.hpack)
++  (public_name hpack)
+   (libraries
+    angstrom
+    faraday))
+@@ -165,34 +165,34 @@
+ (subdir h2/lib
+  (library
+   (name h2)
+-  (public_name dream-httpaf.h2)
++  (public_name h2)
+   (libraries
+    angstrom
+    base64
+    bigstringaf
+    faraday
+-   dream-httpaf.hpack
+-   dream-httpaf.httpaf
++   hpack
++   httpaf
+    psq
+    result)))
+ 
+ (subdir h2/lwt
+  (library
+   (name h2_lwt)
+-  (public_name dream-httpaf.h2-lwt)
++  (public_name h2-lwt)
+   (libraries
+-   dream-httpaf.gluten
+-   dream-httpaf.gluten-lwt
++   gluten
++   gluten-lwt
+    lwt
+-   dream-httpaf.h2)))
++   h2)))
+ 
+ (subdir h2/lwt-unix
+  (library
+   (name h2_lwt_unix)
+-  (public_name dream-httpaf.h2-lwt-unix)
++  (public_name h2-lwt-unix)
+   (libraries
+    faraday-lwt-unix
+-   dream-httpaf.gluten-lwt-unix
+-   dream-httpaf.h2
+-   dream-httpaf.h2-lwt
++   gluten-lwt-unix
++   h2
++   h2-lwt
+    lwt.unix)))

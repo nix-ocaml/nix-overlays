@@ -178,8 +178,6 @@ let
     "metrics-unix"
     "metrics-mirage"
 
-    "piaf-dream-compat"
-    "dream"
     "dream-livereload"
     "dream-serve"
 
