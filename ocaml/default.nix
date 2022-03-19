@@ -974,6 +974,17 @@ with oself;
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
 
+  ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
+    version = "0.2.3";
+
+    src = fetchFromGitHub {
+      owner = "serokell";
+      repo = o.pname;
+      rev = version;
+      sha256 = "w4NzCbaDxoM9CnoZHe8kS+dnd8n+pfWhPxQ1dDSQNHU=";
+    };
+  });
+
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
     version = "0.3.0";
@@ -1175,6 +1186,18 @@ with oself;
       sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
     };
   });
+
+  pure-splitmix = buildDunePackage rec {
+    pname = "pure-splitmix";
+    version = "0.3";
+
+    src = fetchFromGitHub {
+      owner = "Lysxia";
+      repo = pname;
+      rev = version;
+      sha256 = "RUnsAB4hMV87ItCyGhc47bHGY1iOwVv9kco2HxnzqbU=";
+    };
+  };
 
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
