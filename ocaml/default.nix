@@ -1137,8 +1137,8 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/patricoferris/ppxlib/archive/91c39e958fca1dabf16f64dc7699ace7752f0014.tar.gz;
-      sha256 = "0g1dnxc2nqsgqda3jx8xy4fxz6isyffyr6c2pfasxsmv4qw20s6b";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.26.0/ppxlib-0.26.0.tbz;
+      sha256 = "1zbyh6pr6fih2c1p6gs8y0q0ag1kzs41z4pyama96qsqx9kpn4b3";
     };
     propagatedBuildInputs = [
       ocaml-compiler-libs
