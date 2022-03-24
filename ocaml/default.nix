@@ -137,13 +137,9 @@ with oself;
 
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/aantron/bisect_ppx/archive/refs/tags/2.8.0.tar.gz;
-      sha256 = "0xsk7kvc2drx5llb7mws9d5iavfk0k2qlfkpki1k5acyvdj6yvhd";
+      url = https://github.com/aantron/bisect_ppx/archive/refs/tags/2.8.1.tar.gz;
+      sha256 = "14wdqigd98c3fq0hv6sqjwh3hnd9ac0rr2yvpn3i96nlp3d944nm";
     };
-    postPatch = ''
-      substituteInPlace src/ppx/register.ml --replace "String.uppercase" "String.uppercase_ascii"
-      substituteInPlace src/runtime/native/runtime.ml --replace "String.uppercase" "String.uppercase_ascii"
-    '';
   });
 
   bos = osuper.bos.overrideAttrs
