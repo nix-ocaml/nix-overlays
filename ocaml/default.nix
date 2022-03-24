@@ -240,8 +240,8 @@ with oself;
 
   caqti = osuper.caqti.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.6.0/caqti-v1.6.0.tbz;
-      sha256 = "0kb7phb3hbyz541nhaw3lb4ndar5gclzb30lsq83q0s70pbc1w0v";
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.8.0/caqti-v1.8.0.tbz;
+      sha256 = "04jbk9x14963p2r82mdmkw8b64p7yv3qlcabwa8054az6czj6c16";
     };
   });
 
