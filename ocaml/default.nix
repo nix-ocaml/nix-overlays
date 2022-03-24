@@ -84,6 +84,25 @@ with oself;
 
   });
 
+  multiformats = buildDunePackage {
+    pname = "multiformats";
+    version = "dev";
+    src = builtins.fetchurl {
+      url = https://github.com/crackcomm/ocaml-multiformats/archive/380208ded45bc33cfadc5de6709846b3a8b84615.tar.gz;
+      sha256 = "00qx8n16rxwjs1fs8z86f7byzradf38n2msxdj8p83n87vpcmm7f";
+    };
+    propagatedBuildInputs = [ ppx_jane ppx_deriving core_kernel stdint digestif ];
+  };
+
+  base32 = buildDunePackage {
+    pname = "base32";
+    version = "dev";
+    src = builtins.fetchurl {
+      url = https://gitlab.com/public.dream/dromedar/ocaml-base32/-/archive/main/ocaml-base32-main.tar.gz;
+      sha256 = "0babid89q3vpgvq10cw233k9xzblsk89vh02ymviblgfjhm92lk5";
+    };
+  };
+
   batteries = osuper.batteries.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-batteries-team/batteries-included/archive/67859ac54d2feb7f65ad6abe48b1ff08ece3afd1.tar.gz;
@@ -249,8 +268,8 @@ with oself;
 
   cmdliner = osuper.cmdliner.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.0.tar.gz;
-      sha256 = "0617piq2ykfxk0mi9vvyi98pgdy4xav3ji9s7kk2a27sa6k6qns3";
+      url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.1.tar.gz;
+      sha256 = "07846phk06hi90a764ijlrkv9xh69bdn2msi5ah6c43s8pcf7rnv";
     };
     buildPhase = "make all PREFIX=$out";
     installPhase = ''
