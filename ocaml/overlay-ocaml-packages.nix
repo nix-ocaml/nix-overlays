@@ -35,17 +35,6 @@ let
   custom-ocaml-ng =
     super.ocaml-ng //
     (if !(super.ocaml-ng ? "ocamlPackages_5_00") then {
-      ocamlPackages_4_14 = newOCamlScope {
-        major_version = "4";
-        minor_version = "14";
-        patch_version = "0-rc1";
-        hardeningDisable = [ "strictoverflow" ];
-        src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/refs/tags/4.14.0-rc1.tar.gz;
-          sha256 = "0q3j56w2sg1251cy2wlqm4p85f6s4g3wh04fi23z7w6bqap375yh";
-        };
-      };
-
       ocamlPackages_5_00 = newOCamlScope {
         major_version = "5";
         minor_version = "00";
