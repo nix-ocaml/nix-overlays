@@ -68,6 +68,7 @@ let
     "lwt-exit"
     "ocaml-r"
 
+    "melange"
     # dune.configurator issue
     "ocamlfuse"
     "google-drive-ocamlfuse"
