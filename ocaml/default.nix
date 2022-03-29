@@ -1066,7 +1066,7 @@ with oself;
     postPatch = ''
       substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
     '';
-    propagatedBuildInputs = [ camlp-streams ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
 
   });
 
