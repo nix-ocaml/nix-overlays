@@ -190,6 +190,14 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
 
+  containers = osuper.containers.overrideAttrs (o: {
+    version = "3.7.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/c-cube/ocaml-containers/archive/v3.7.tar.gz";
+      sha256 = "0pn5yl1b6ij1j63qh8y6qazk5qyh1q40zchrwsrsva3yb73s74z9";
+    };
+  });
+
   cohttp = osuper.cohttp.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.0.0/cohttp-5.0.0.tbz;
