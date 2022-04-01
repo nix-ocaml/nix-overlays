@@ -129,6 +129,7 @@ let
     "lablgtk3-sourceview3"
     "labltk"
     "camlimages"
+    "apron"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -152,6 +153,7 @@ let
     "erm_xml"
     "functory"
     "getopt"
+    "benchmark"
 
     # Incompatible with 4.14
     "pcap-format"
