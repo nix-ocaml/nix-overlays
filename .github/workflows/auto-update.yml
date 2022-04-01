@@ -1,10 +1,11 @@
 name: Auto-update
 on:
-  push:
-    branches:
-      # Escape hatch to easily make and test changes to this flow
-      - "ulrikstrid/auto-update-pr"
-      - "anmonteiro/auto-update-pr"
+  pull_request:
+    types:
+      - opened
+    paths:
+      - '.github/workflows/auto-update.js'
+      - '.github/workflows/auto-update.yml'
   schedule:
     - cron: "30 11 */2 * *"
 
@@ -46,7 +47,7 @@ jobs:
           destination_branch: "master"
           source_branch: auto-update-sources-${{ github.run_id }}
           pr_title: "Update sources"
-          pr_body: ":robot_face: Updating sources to the latest version.\nDiff between current and this version can be seen here: ${{steps.update-sources.outputs.result}}"
+          pr_body: ":robot_face: Updating sources to the latest version.\n${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
           pr_assignee: "anmonteiro,ulrikstrid"
           github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
