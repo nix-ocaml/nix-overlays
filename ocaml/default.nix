@@ -190,6 +190,14 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
 
+  containers = osuper.containers.overrideAttrs (o: {
+    version = "3.7.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/c-cube/ocaml-containers/archive/v3.7.tar.gz";
+      sha256 = "0pn5yl1b6ij1j63qh8y6qazk5qyh1q40zchrwsrsva3yb73s74z9";
+    };
+  });
+
   cohttp = osuper.cohttp.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.0.0/cohttp-5.0.0.tbz;
@@ -1054,6 +1062,13 @@ with oself;
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
+  ocaml-compiler-libs = osuper.ocaml-compiler-libs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/janestreet/ocaml-compiler-libs/releases/download/v0.12.4/ocaml-compiler-libs-v0.12.4.tbz";
+      sha256 = "0q3pl20pkx410gw9g4m26qq6dmzi9qan2dqlga6c2ifc6pnckjaf";
+    };
+  });
+
   ocsigen-toolkit = osuper.ocsigen-toolkit.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/ocsigen-toolkit/archive/499e8260df6487ebdacb9fcccb2f9dec36df8063.tar.gz;
@@ -1066,7 +1081,7 @@ with oself;
     postPatch = ''
       substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
     '';
-    propagatedBuildInputs = [ camlp-streams ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
 
   });
 
@@ -1084,6 +1099,12 @@ with oself;
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
+    '';
+  });
+
+  owl = osuper.owl.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/base/dune --replace " bigarray" ""
     '';
   });
 
@@ -1114,7 +1135,7 @@ with oself;
     doCheck = false;
   });
 
-  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (_: {
+  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
     postPatch =
       if lib.versionOlder "4.14" osuper.ocaml.version
       then ''
@@ -1123,6 +1144,8 @@ with oself;
         "(str, _sg, _sn, _shp, newenv)"
       ''
       else "";
+
+    buildInputs = o.buildInputs ++ [ osuper.findlib ];
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
