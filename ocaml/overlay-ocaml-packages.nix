@@ -35,7 +35,7 @@ let
   custom-ocaml-ng =
     super.ocaml-ng //
     (if !(super.ocaml-ng ? "ocamlPackages_5_00") then {
-      ocamlPackages_4_14 = super.ocaml-ng.ocamlPackages_4_13' (oself: osuper: {
+      ocamlPackages_4_14 = super.ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           hardeningDisable = [ "strictoverflow" ];
         });
