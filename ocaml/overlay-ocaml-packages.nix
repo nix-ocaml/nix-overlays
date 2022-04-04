@@ -35,6 +35,12 @@ let
   custom-ocaml-ng =
     super.ocaml-ng //
     (if !(super.ocaml-ng ? "ocamlPackages_5_00") then {
+      ocamlPackages_4_14 = super.ocaml-ng.ocamlPackages_4_13' (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          hardeningDisable = [ "strictoverflow" ];
+        });
+      });
+
       ocamlPackages_5_00 = newOCamlScope {
         major_version = "5";
         minor_version = "00";
@@ -62,7 +68,7 @@ let
 in
 {
   ocaml = self.ocamlPackages.ocaml;
-  ocamlPackages = oPs.ocamlPackages_4_12;
+  ocamlPackages = oPs.ocamlPackages_4_13;
   ocamlPackages_latest = self.ocamlPackages;
 
   ocaml-ng = custom-ocaml-ng // oPs // {
