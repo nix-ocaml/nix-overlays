@@ -916,8 +916,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-    makefile = ./ocaml-Makefile.nixpkgs;
-    buildFlags = [ "nixpkgs_world_bootstrap_world_opt" ];
   });
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
