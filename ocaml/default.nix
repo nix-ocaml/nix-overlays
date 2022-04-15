@@ -448,14 +448,6 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  findlib = osuper.findlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.3.tar.gz;
-      sha256 = "0034x8hb8wdw5mv9kh7rjhf1az2b7qbbdrx56lkr3hm370nprzvq";
-    };
-    patches = [ ./ldconf.patch ./install_topfind.patch ];
-  });
-
   fix = osuper.fix.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://gitlab.inria.fr/fpottier/fix/-/archive/20220121/archive.tar.gz;
@@ -1212,12 +1204,7 @@ with oself;
     doCheck = false;
   });
 
-  ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
-      sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
-    };
-  });
+  ptime = (osuper.ptime.override { jsooSupport = false; });
 
   pure-splitmix = buildDunePackage rec {
     pname = "pure-splitmix";
@@ -1405,18 +1392,6 @@ with oself;
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
   unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
-
-  utop = osuper.utop.overrideAttrs (_: {
-    version = "2.9.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.9.0/utop-2.9.0.tbz;
-      sha256 = "17jd61bc6pva5wqmnc9xq70ysyjplrzf1p25sq1s7wgrfq2vlyyd";
-    };
-
-    prePatch = ''
-      substituteInPlace src/lib/uTop_main.ml --replace "Clflags.unsafe_string" "(ref false)"
-    '';
-  });
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {
