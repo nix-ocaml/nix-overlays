@@ -696,6 +696,15 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lru = osuper.lru.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/lru.ml \
+        --replace \
+        "include H let hash _ x = hash x" \
+        "include H let hash _ x = hash x;; let seeded_hash = hash"
+    '';
+  });
+
   lutils = buildDunePackage {
     pname = "lutils";
     version = "1.51.3";

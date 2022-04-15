@@ -161,6 +161,8 @@ let
     "ocsigen_server"
     "ocsigen-toolkit"
     "ocsipersist"
+    "ocsipersist-pgsql"
+    "ocsipersist-sqlite"
     "ogg"
     "theora"
     "flac"
