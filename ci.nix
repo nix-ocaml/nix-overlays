@@ -160,6 +160,7 @@ let
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
+    "ocsipersist"
     "ogg"
     "theora"
     "flac"
