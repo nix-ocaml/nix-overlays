@@ -47,8 +47,8 @@ let
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/589033467d50a43f16cdb346dadb3a0d70849d19.tar.gz;
-          sha256 = "11v7shdhbh3mq0c4b0xylkmdqsv5m5a9knzy70r59jmsbm0r09k0";
+          url = https://github.com/ocaml/ocaml/archive/7585460b818662d9f753f849249b3f571a86b58d.tar.gz;
+          sha256 = "0nw8sph3bmn11aihxq3icnfkpvwg3mhhkm1x0y1kpimi6570qx7x";
         };
       };
 
