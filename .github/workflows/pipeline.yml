@@ -48,6 +48,7 @@ jobs:
                 --argstr target native \
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
+
   native-macos:
     strategy:
       fail-fast: false
@@ -58,6 +59,7 @@ jobs:
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: true }
     name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'anmonteiro/nix-overlays'
     runs-on: macos-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
