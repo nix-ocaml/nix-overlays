@@ -101,7 +101,7 @@ module.exports = async ({ github, context, core, require }) => {
     return http_request(
       `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
     ).then(({ commits }) => {
-      const all_commits = [...prev_commits, ...commits];
+      const all_commits = [...prev_commits, ...(commits || [])];
       if (commits.length < 100) {
         return all_commits.filter((c) => c.commit.message.startsWith("ocaml"));
       } else {
@@ -145,7 +145,7 @@ module.exports = async ({ github, context, core, require }) => {
       const post_text = `
 Commits touching OCaml packages:
 ${ocaml_packages_text}
-      
+
 Diff URL: ${url}
       `;
 
