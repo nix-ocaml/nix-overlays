@@ -133,9 +133,10 @@ with oself;
   });
 
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
+    # https://github.com/aantron/bisect_ppx/pull/400
     src = builtins.fetchurl {
-      url = https://github.com/aantron/bisect_ppx/archive/refs/tags/2.8.1.tar.gz;
-      sha256 = "14wdqigd98c3fq0hv6sqjwh3hnd9ac0rr2yvpn3i96nlp3d944nm";
+      url = https://github.com/aantron/bisect_ppx/archive/be22c980dd58a2b277ea4710074afbd0bdddbf77.tar.gz;
+      sha256 = "162bjhhlkp1afji6mpzpq08ap5gkyy8xi1749jl3vdrz21vy180y";
     };
   });
 
