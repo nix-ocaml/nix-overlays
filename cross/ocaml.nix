@@ -91,7 +91,9 @@ in
         '';
       });
 
-      cmdliner = osuper.cmdliner.overrideAttrs (_: {
+      cmdliner = osuper.cmdliner.overrideAttrs (o: {
+        nativeBuildInputs = o.nativeBuildInputs ++ [ oself.findlib ];
+
         installPhase = ''
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
           mkdir -p $OCAMLFIND_DESTDIR
