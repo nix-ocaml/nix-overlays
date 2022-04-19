@@ -1,5 +1,6 @@
 name: Auto-update
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - opened
@@ -41,7 +42,7 @@ jobs:
       - name: Open pull request
         uses: repo-sync/pull-request@v2
         env:
-          GITHUB_JOB: ${{ env.GITHUB_JOB }} 
+          GITHUB_JOB: ${{ env.GITHUB_JOB }}
           GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
         with:
           destination_branch: "master"
