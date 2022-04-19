@@ -15,7 +15,6 @@
 , cairo
 , gtk2
 , zlib-oc
-, coreutils
 }:
 
 oself: osuper:
@@ -1141,6 +1140,13 @@ with oself;
       url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.26.0/ppxlib-0.26.0.tbz;
       sha256 = "1zbyh6pr6fih2c1p6gs8y0q0ag1kzs41z4pyama96qsqx9kpn4b3";
     };
+    patches = [
+      # OCaml 5.00 support
+      (fetchpatch {
+        url = https://github.com/patricoferris/ppxlib/commit/91c39e958fca1dabf16f64dc7699ace7752f0014.patch;
+        sha256 = "0fwwnria9jyzj0inm418p7k1j8p3r357yhksq1rwbl8b7kh7myz9";
+      })
+    ];
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -1171,8 +1177,8 @@ with oself;
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/e030f13a3.tar.gz;
-      sha256 = "0yfb5c8g8h40m4b722qfl00vgddj6apzcd2lhzv01npn2ipnm280";
+      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/64c3af9.tar.gz;
+      sha256 = "1xzk0z6304ivm2lfrmd7mqxnirsimbq89ds3fkh6dvjyysav2mqi";
     };
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
