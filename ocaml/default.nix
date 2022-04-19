@@ -15,6 +15,7 @@
 , cairo
 , gtk2
 , zlib-oc
+, coreutils
 }:
 
 oself: osuper:
@@ -275,10 +276,6 @@ with oself;
       url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.1.tar.gz;
       sha256 = "07846phk06hi90a764ijlrkv9xh69bdn2msi5ah6c43s8pcf7rnv";
     };
-    buildPhase = "make all PREFIX=$out";
-    installPhase = ''
-      make install LIBDIR=$OCAMLFIND_DESTDIR/cmdliner
-    '';
   });
 
   conan = callPackage ./conan { };
@@ -407,10 +404,9 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (_: {
-    # Dune 3.1.0 -- with dynamic dependencies.
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/50d6b4cc.tar.gz;
-      sha256 = "199zh1c52l6d0dkql81ma1m04df08hlyw32w68ry1j9h75q163fp";
+      url = https://github.com/ocaml/dune/releases/download/3.1.0/fiber-3.1.0.tbz;
+      sha256 = "10cxa4ljajzlhb8jfc2ax8diyymydv3dfmjqxh86xia5105m4z87";
     };
     buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       Foundation
@@ -451,14 +447,6 @@ with oself;
     };
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
-
-  findlib = osuper.findlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.3.tar.gz;
-      sha256 = "0034x8hb8wdw5mv9kh7rjhf1az2b7qbbdrx56lkr3hm370nprzvq";
-    };
-    patches = [ ./ldconf.patch ./install_topfind.patch ];
-  });
 
   fix = osuper.fix.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -709,6 +697,15 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lru = osuper.lru.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/lru.ml \
+        --replace \
+        "include H let hash _ x = hash x" \
+        "include H let hash _ x = hash x;; let seeded_hash = hash"
+    '';
+  });
+
   lutils = buildDunePackage {
     pname = "lutils";
     version = "1.51.3";
@@ -920,8 +917,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-    makefile = ./ocaml-Makefile.nixpkgs;
-    buildFlags = [ "nixpkgs_world_bootstrap_world_opt" ];
   });
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
@@ -1218,12 +1213,7 @@ with oself;
     doCheck = false;
   });
 
-  ptime = (osuper.ptime.override { jsooSupport = false; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/ptime/archive/refs/tags/v0.8.6.tar.gz;
-      sha256 = "0ch52j7raj1av2bj1880j47lv18p4x0bfy6l3gg4m10v9mycl5r3";
-    };
-  });
+  ptime = (osuper.ptime.override { jsooSupport = false; });
 
   pure-splitmix = buildDunePackage rec {
     pname = "pure-splitmix";
@@ -1411,18 +1401,6 @@ with oself;
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
   unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
-
-  utop = osuper.utop.overrideAttrs (_: {
-    version = "2.9.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.9.0/utop-2.9.0.tbz;
-      sha256 = "17jd61bc6pva5wqmnc9xq70ysyjplrzf1p25sq1s7wgrfq2vlyyd";
-    };
-
-    prePatch = ''
-      substituteInPlace src/lib/uTop_main.ml --replace "Clflags.unsafe_string" "(ref false)"
-    '';
-  });
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {

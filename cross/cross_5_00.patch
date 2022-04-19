@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index 07748cb5c..48f43fb98 100644
+index 928248cbd..2cc9d399f 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -565,8 +565,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+@@ -563,8 +563,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
  endif
  	$(INSTALL_DATA) \
  	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
@@ -11,7 +11,7 @@ index 07748cb5c..48f43fb98 100644
  	   file_formats/*.cmx \
  	   lambda/*.cmx \
  	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
-@@ -580,7 +578,6 @@ endif
+@@ -578,7 +576,6 @@ endif
  	$(INSTALL_DATA) \
  	   $(BYTESTART:.cmo=.cmx) $(BYTESTART:.cmo=.$(O)) \
  	   $(OPTSTART:.cmo=.cmx) $(OPTSTART:.cmo=.$(O)) \
@@ -35,15 +35,15 @@ index 7bb6f001e..708ad0830 100644
  ocamlruns$(EXE): prims.$(O) libcamlrun_non_shared.$(A)
  	$(call MKEXE_USING_COMPILER,$@,$^ $(LIBS))
 diff --git a/tools/Makefile b/tools/Makefile
-index 0275e37ce..29b66fbea 100644
+index eff3f9d37..c4d9d9331 100644
 --- a/tools/Makefile
 +++ b/tools/Makefile
-@@ -316,7 +316,7 @@ caml_tex := caml-tex$(EXE)
+@@ -317,7 +317,7 @@ caml_tex := caml-tex$(EXE)
  # configuration.
- $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str $(UNIXLIB))
+ $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str unix)
  $(caml_tex): $(caml_tex_files)
--	$(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) -nostdlib -I $(ROOTDIR)/stdlib \
-+	$(CAMLC)  -nostdlib -I $(ROOTDIR)/stdlib \
+-	$(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) $(STDLIBFLAGS) \
++	$(CAMLC) $(STDLIBFLAGS) \
  	  $(LINKFLAGS) -linkall -o $@ -no-alias-deps $^
  
  # we need str and unix which depend on the bytecode version of other tools
