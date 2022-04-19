@@ -100,8 +100,8 @@ module.exports = async ({ github, context, core, require }) => {
   function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = []) {
     return http_request(
       `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
-    ).then(({ commits }) => {
-      const all_commits = [...prev_commits, ...(commits || [])];
+    ).then(({ commits = [] }) => {
+      const all_commits = [...prev_commits, ...commits];
       if (commits.length < 100) {
         return all_commits.filter((c) => c.commit.message.startsWith("ocaml"));
       } else {
