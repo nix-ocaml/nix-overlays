@@ -15,6 +15,7 @@
 , cairo
 , gtk2
 , zlib-oc
+, coreutils
 }:
 
 oself: osuper:
@@ -270,7 +271,8 @@ with oself;
 
   cmdliner_1_0 = osuper.cmdliner;
 
-  cmdliner = osuper.cmdliner.overrideAttrs (_: {
+  cmdliner = osuper.cmdliner.overrideAttrs (_: rec {
+    pname = "cmdliner";
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/cmdliner/archive/refs/tags/v1.1.1.tar.gz;
       sha256 = "07846phk06hi90a764ijlrkv9xh69bdn2msi5ah6c43s8pcf7rnv";
