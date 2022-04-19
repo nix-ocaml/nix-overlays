@@ -1144,7 +1144,7 @@ with oself;
       # OCaml 5.00 support
       (fetchpatch {
         url = https://github.com/patricoferris/ppxlib/commit/91c39e958fca1dabf16f64dc7699ace7752f0014.patch;
-        sha256 = "0fwwnria9jyzj0inm418p7k1j8p3r357yhksq1rwbl8b7kh7myz9";
+        sha256 = "sha256-RVHA0UAJwB0DbxRrEVqtBPu8TRAxxazg3X+whyjq3Uk=";
       })
     ];
     propagatedBuildInputs = [
