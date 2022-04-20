@@ -110,6 +110,7 @@ let
     "ffmpeg-avcodec"
     "ffmpeg-swscale"
     "ffmpeg-swresample"
+    "dssi"
 
     # doesn't work with my fork of http/af
     "paf"
@@ -130,6 +131,7 @@ let
     "labltk"
     "camlimages"
     "apron"
+    "bjack"
 
     # broken with ppxlib 0.23
     "elpi"

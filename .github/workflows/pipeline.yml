@@ -28,9 +28,6 @@ jobs:
           - { ocaml-version: 5_00, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
-    # We want to run on external PRs, but not on our own internal PRs as
-    # they'll be run by the push to the branch.
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'anmonteiro/nix-overlays'
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -59,7 +56,6 @@ jobs:
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: true }
     name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'anmonteiro/nix-overlays'
     runs-on: macos-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -93,7 +89,6 @@ jobs:
           - arm64
           - musl
     name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }})
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'anmonteiro/nix-overlays'
     runs-on: ubuntu-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
