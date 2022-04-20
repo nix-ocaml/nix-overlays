@@ -110,6 +110,7 @@ let
     "ffmpeg-avcodec"
     "ffmpeg-swscale"
     "ffmpeg-swresample"
+    "dssi"
 
     # doesn't work with my fork of http/af
     "paf"
