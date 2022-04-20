@@ -1,6 +1,8 @@
 { ocamlVersion, target ? "native" }:
 let
-  pkgs = import ./boot.nix { };
+  pkgs = import ./boot.nix {
+    patches = [ ./add-janestreet-packages-0_15.patch ];
+  };
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
     # camlp4 or not supported in 4.11+
