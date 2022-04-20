@@ -131,6 +131,7 @@ let
     "labltk"
     "camlimages"
     "apron"
+    "bjack"
 
     # broken with ppxlib 0.23
     "elpi"
