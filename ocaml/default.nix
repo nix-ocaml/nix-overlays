@@ -1544,7 +1544,7 @@ with oself;
         [
           (fetchpatch {
             url = https://github.com/janestreet/base/commit/705fb94f84dfb05fd97747ee0c255cce890afcf1.patch;
-            sha256 = "1fvxi05nj56zxxa3hz9n67lpkawvwlccz9lhyf8lwm3hih44q92d";
+            sha256 = "sha256-ByuGM+e1A7dRWPzMXxoRdBGMegkycIFK2jpguWu9wIY=";
           })
         ] else [ ];
   });
