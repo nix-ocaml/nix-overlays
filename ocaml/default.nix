@@ -1530,7 +1530,7 @@ with oself;
         [
           (fetchpatch {
             url = https://github.com/janestreet/sexplib/commit/aac0c11905c5cfcc07941677167c63c20f9ceba8.patch;
-            sha256 = "01yy3hwqyh5viv97w127lk9lpd901m2pzl1sik1r6iz75py6gp08";
+            sha256 = "sha256-vQIssYnfvlfmOM6Ix+BIHLNYXbCX60Kgn7prQs0bP2o=";
           })
         ] else [ ];
     postPatch = ''
