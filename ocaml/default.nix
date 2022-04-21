@@ -1471,6 +1471,9 @@ with oself;
 
   core_unix = osuper.core_unix.overrideAttrs (_: {
     # https://github.com/janestreet/core_unix/issues/2
+    preBuild = ''
+      patchShebangs "unix_pseudo_terminal/src/discover.sh"
+    '';
     postPatch =
       if stdenv.isDarwin then ''
         substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
