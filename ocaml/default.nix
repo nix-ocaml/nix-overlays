@@ -1489,4 +1489,35 @@ with oself;
       '' else ""}
     '';
   });
+
+  memtrace = osuper.buildDunePackage {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/memtrace/archive/918dcededf1.tar.gz;
+      sha256 = "1w1fif25n9h4dk4xkwdyx98x3nwpkdipf74m1dfrv1dhz6qbpls3";
+    };
+    pname = "memtrace";
+    version = "0.1.2-dev";
+  };
+
+  postgres_async = osuper.buildDunePackage {
+    pname = "postgres_async";
+    version = "0.15.0";
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/postgres_async/archive/refs/tags/v0.15.0.tar.gz;
+      sha256 = "1gqq5fzs921kvchfyv95jz1rswdp624wjp350h659frwmgk33d8h";
+    };
+    propagatedBuildInputs = [ ppx_jane core core_kernel async ];
+  };
+
+  sexplib0 = osuper.sexplib0.overrideAttrs (o: {
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [
+          (fetchpatch {
+            url = https://github.com/janestreet/sexplib0/commit/5efaf01fa9b226f84490e3d480a9bebf0a1106bf.patch;
+            sha256 = "16ff95irb1y78z833cd442k59kn9kw2nc86r7b9vyq85nm2vwd1j";
+          })
+        ]
+      else [ ];
+  });
 }
