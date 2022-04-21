@@ -1479,13 +1479,14 @@ with oself;
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     # https://github.com/janestreet/core_unix/issues/2
-    postPatch =
-      if stdenv.isDarwin then ''
-        ${o.postPatch}
+    postPatch = ''
+      ${o.postPatch}
 
+      ${if stdenv.isDarwin then ''
         substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
-          "int ret = clock_getcpuclockid(pid, &clock);" \
-          "int ret = -1;"
-      '' else o.postPatch;
+        "int ret = clock_getcpuclockid(pid, &clock);" \
+        "int ret = -1;"
+      '' else ""}
+    '';
   });
 }
