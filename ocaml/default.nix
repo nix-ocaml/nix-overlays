@@ -1479,6 +1479,10 @@ with oself;
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     # https://github.com/janestreet/core_unix/issues/2
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [ ./core_unix.patch ] else [ ];
+
     postPatch = ''
       ${o.postPatch}
 
@@ -1492,8 +1496,8 @@ with oself;
 
   memtrace = osuper.buildDunePackage {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/memtrace/archive/918dcededf1.tar.gz;
-      sha256 = "1w1fif25n9h4dk4xkwdyx98x3nwpkdipf74m1dfrv1dhz6qbpls3";
+      url = https://github.com/janestreet/memtrace/releases/download/v0.2.2/memtrace-0.2.2.tbz;
+      sha256 = "13y4qh9vyz1qkg8v8gicaxcnsm992gx4zyky1ays0ddj0rh6c04m";
     };
     pname = "memtrace";
     version = "0.1.2-dev";
@@ -1515,7 +1519,7 @@ with oself;
         [
           (fetchpatch {
             url = https://github.com/janestreet/sexplib0/commit/5efaf01fa9b226f84490e3d480a9bebf0a1106bf.patch;
-            sha256 = "16ff95irb1y78z833cd442k59kn9kw2nc86r7b9vyq85nm2vwd1j";
+            sha256 = "sha256-s0Sw1sI3ei4d+kvNElvD6s3ammdJiqgJsizfF5QDf5A=";
           })
         ]
       else [ ];
@@ -1545,6 +1549,17 @@ with oself;
         ] else [ ];
   });
 
+  core = osuper.core.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        builtins.fetchurl
+          {
+            url = https://github.com/janestreet/core/archive/7b556f1a7d25254f06b7aaf3c2534633be5a0a9e.tar.gz;
+            sha256 = "0qpn9ks3329g1zkqs0z3cal06pi2niqr6v1gm1gp3cr3sprs31gn";
+          }
+      else o.src;
+  });
+
   ppx_expect = osuper.ppx_expect.overrideAttrs (_: {
     patches =
       if lib.versionAtLeast ocaml.version "5.00" then
@@ -1552,6 +1567,18 @@ with oself;
           (fetchpatch {
             url = https://github.com/janestreet/ppx_expect/commit/8dd65c4ce6a8a81ebb99046ea5cc867aea187a8a.patch;
             sha256 = "1hyc04vgk3ljwp8m2wvrvaggdrmzkcr5wdx9b88n9bshw86wf9g5";
+          })
+        ]
+      else [ ];
+  });
+
+  sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [
+          (fetchpatch {
+            url = https://github.com/anmonteiro/sexp_pretty/commit/4667849007831027c5887edcfae4182d7a6d32d9.patch;
+            sha256 = "0v28c8bkxa9wm6spq8cfzf8jvydiga6s9h155xbbwjraady278z2";
           })
         ]
       else [ ];
