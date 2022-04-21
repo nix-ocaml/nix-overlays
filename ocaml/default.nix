@@ -1566,7 +1566,7 @@ with oself;
         [
           (fetchpatch {
             url = https://github.com/janestreet/ppx_expect/commit/8dd65c4ce6a8a81ebb99046ea5cc867aea187a8a.patch;
-            sha256 = "1hyc04vgk3ljwp8m2wvrvaggdrmzkcr5wdx9b88n9bshw86wf9g5";
+            sha256 = "sha256-NjpLOHUp2qUSIzKJNuuwNcRxR1FU5R/ugrK3m0vOnl0=";
           })
         ]
       else [ ];
