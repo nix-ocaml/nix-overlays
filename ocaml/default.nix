@@ -203,6 +203,14 @@ with oself;
     checkInputs = o.checkInputs ++ [ crowbar ];
   });
   cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace examples/async/dune --replace \
+        "async_kernel" "async_kernel core_unix.command_unix"
+      substituteInPlace examples/async/hello_world.ml --replace \
+        "Command.run" "Command_unix.run"
+      substituteInPlace examples/async/receive_post.ml --replace \
+        "Command.run" "Command_unix.run"
+    '';
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ core_unix ];
   });
 
