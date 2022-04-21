@@ -1520,4 +1520,40 @@ with oself;
         ]
       else [ ];
   });
+  sexplib = osuper.sexplib.overrideAttrs (_: {
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [
+          (fetchpatch {
+            url = https://github.com/janestreet/sexplib/commit/aac0c11905c5cfcc07941677167c63c20f9ceba8.patch;
+            sha256 = "01yy3hwqyh5viv97w127lk9lpd901m2pzl1sik1r6iz75py6gp08";
+          })
+        ] else [ ];
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+  });
+
+  base = osuper.base.overrideAttrs (_: {
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [
+          (fetchpatch {
+            url = https://github.com/janestreet/base/commit/705fb94f84dfb05fd97747ee0c255cce890afcf1.patch;
+            sha256 = "1fvxi05nj56zxxa3hz9n67lpkawvwlccz9lhyf8lwm3hih44q92d";
+          })
+        ] else [ ];
+  });
+
+  ppx_expect = osuper.ppx_expect.overrideAttrs (_: {
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [
+          (fetchpatch {
+            url = https://github.com/janestreet/ppx_expect/commit/8dd65c4ce6a8a81ebb99046ea5cc867aea187a8a.patch;
+            sha256 = "1hyc04vgk3ljwp8m2wvrvaggdrmzkcr5wdx9b88n9bshw86wf9g5";
+          })
+        ]
+      else [ ];
+  });
 }
