@@ -1578,7 +1578,7 @@ with oself;
         [
           (fetchpatch {
             url = https://github.com/anmonteiro/sexp_pretty/commit/4667849007831027c5887edcfae4182d7a6d32d9.patch;
-            sha256 = "0v28c8bkxa9wm6spq8cfzf8jvydiga6s9h155xbbwjraady278z2";
+            sha256 = "sha256-u4KyDiYBssIqYeyYdidTbFN9tmDeJg8y1eM5tkZKXzo";
           })
         ]
       else [ ];

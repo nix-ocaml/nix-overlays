@@ -1,4 +1,4 @@
-commit a894e4567130fee1802a076deacc5ef13ddce960
+commit eaf7157bfb33d6f14ab33685072ad49668896c57
 Author: Antonio Nuno Monteiro <anmonteiro@gmail.com>
 Date:   Thu Apr 21 12:32:48 2022 -0700
 
@@ -15,6 +15,19 @@ index 8d036fb..d4cfe82 100644
 +#else
 +void unused(){};
  #endif /* JSC_PTHREAD_NP */
+diff --git a/core_unix/src/core_unix_stubs.c b/core_unix/src/core_unix_stubs.c
+index 3172803..c6f25bc 100644
+--- a/core_unix/src/core_unix_stubs.c
++++ b/core_unix/src/core_unix_stubs.c
+@@ -1282,7 +1282,7 @@ CAMLprim value core_unix_sched_setscheduler(
+ #warning "_POSIX_PRIORITY_SCHEDULING not present; sched_setscheduler undefined"
+ CAMLprim value core_unix_sched_setscheduler(
+   value __unused v_pid, value __unused v_policy, value __unused v_priority)
+-{  invalid_argument("sched_setscheduler unimplemented"); }
++{  caml_invalid_argument("sched_setscheduler unimplemented"); }
+ #endif
+ 
+ 
 diff --git a/linux_ext/src/linux_ext_stubs.c b/linux_ext/src/linux_ext_stubs.c
 index a9983e8..c840aa6 100644
 --- a/linux_ext/src/linux_ext_stubs.c
@@ -25,3 +38,14 @@ index a9983e8..c840aa6 100644
  
 +void unused(){};
  #endif /* JSC_LINUX_EXT */
+diff --git a/unix_pseudo_terminal/src/unix_pseudo_terminal_stubs.c b/unix_pseudo_terminal/src/unix_pseudo_terminal_stubs.c
+index cb8beb2..b017674 100644
+--- a/unix_pseudo_terminal/src/unix_pseudo_terminal_stubs.c
++++ b/unix_pseudo_terminal/src/unix_pseudo_terminal_stubs.c
+@@ -92,4 +92,6 @@ CAMLprim value unix_ptsname(value mlfd)
+   CAMLreturn (mlname);
+ }
+ 
++#else
++void unused(){}
+ #endif /* JSC_UNIX_PTY */
