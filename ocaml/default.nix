@@ -1469,16 +1469,15 @@ with oself;
 
   # Jane Street Libraries
 
-  core_unix = osuper.core_unix.overrideAttrs (_: {
+  core_unix = osuper.core_unix.overrideAttrs (o: {
     # https://github.com/janestreet/core_unix/issues/2
-    preBuild = ''
-      patchShebangs "unix_pseudo_terminal/src/discover.sh"
-    '';
     postPatch =
       if stdenv.isDarwin then ''
+        ${o.postPatch}
+
         substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
           "int ret = clock_getcpuclockid(pid, &clock);" \
           "int ret = -1;"
-      '' else "";
+      '' else o.postPatch;
   });
 }
