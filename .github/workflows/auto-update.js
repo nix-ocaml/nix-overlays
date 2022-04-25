@@ -1,7 +1,4 @@
-const { url } = require("inspector");
-
-const source_regex =
-  /name = "nixos-unstable-(small-)?(20[0-9\-]+)";.    url = https:\/\/github\.com\/nixos\/nixpkgs\/archive\/([0-9a-z]+)\.tar\.gz;.    sha256 = "([0-9a-z]+)";/s;
+const source_regex = /name = "nixos-unstable-(small-)?(20[0-9\-]+)";/s;
 
 module.exports = async ({ github, context, core, require }) => {
   const https = require("https");
@@ -44,58 +41,30 @@ module.exports = async ({ github, context, core, require }) => {
     });
   };
 
-  const get_revisions = () =>
-    http_request(
-      "https://monitoring.nixos.org/prometheus/api/v1/query?query=channel_revision"
-    )
-      .then((res) => res.data.result)
-      .then((rev) => [
-        rev.find((d) => d.metric.channel === "nixos-unstable"),
-        rev.find((d) => d.metric.channel === "nixos-unstable-small"),
-      ]);
-
-  function get_sha256(url) {
+  function update_flake() {
     return new Promise((resolve, reject) => {
-      exec(
-        `nix-prefetch-url --type sha256 --unpack ${url}`,
-        (error, stdout, stderr) => {
-          if (error) {
-            return reject(error);
-          }
-
-          const lines = stdout.trim().split("\n");
-          resolve(lines[0]);
+      exec(`nix flake update`, (error, stdout, stderr) => {
+        if (error) {
+          return reject(error);
         }
-      );
+
+        const shas = [
+          ...stderr.matchAll(
+            /NixOS\/nixpkgs\/(.*)' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/g
+          ),
+        ].map(([_, sha, date]) => ({
+          sha,
+          date,
+        }));
+
+        if (shas.length < 2) {
+          return reject(new Error("No update"));
+        }
+
+        return resolve(shas);
+      });
     });
   }
-
-  const get_newest = (revisions) => {
-    const urls = revisions
-      .map((revision) => revision.metric.revision)
-      .map(
-        (commit_sha) =>
-          `https://api.github.com/repos/nixos/nixpkgs/commits/${commit_sha}`
-      );
-
-    return Promise.all(urls.map(http_request)).then(([big, small]) => {
-      const big_date = new Date(big.commit.committer.date);
-      const small_date = new Date(small.commit.committer.date);
-      if (big_date > small_date) {
-        return {
-          date: big_date,
-          sha: big.sha,
-          channel: "nixos-unstable",
-        };
-      } else {
-        return {
-          date: small_date,
-          sha: small.sha,
-          channel: "nixos-unstable-small",
-        };
-      }
-    });
-  };
 
   function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = []) {
     return http_request(
@@ -110,32 +79,22 @@ module.exports = async ({ github, context, core, require }) => {
     });
   }
 
-  const url = get_revisions()
-    .then(get_newest)
-    .then(async (revision) => {
-      const next_sha = revision.sha;
-      const next_url = `https://github.com/nixos/nixpkgs/archive/${next_sha}.tar.gz`;
+  const url = update_flake()
+    .then(async ([prev_rev, curr_rev]) => {
       const source_path = "./sources.nix";
 
-      const next_sha256 = await get_sha256(next_url);
-
-      const year = revision.date.getFullYear();
-      const month = (revision.date.getMonth() + 1).toString().padStart(2, "0");
-      const day = revision.date.getDate().toString().padStart(2, "0");
+      const flake_lock = JSON.parse(readFileSync("./flake.lock"));
 
       const old_source = readFileSync(source_path).toString();
       const next_source = old_source.replace(
         source_regex,
-        `name = "${revision.channel}-${year}-${month}-${day}";
-    url = ${next_url};
-    sha256 = "${next_sha256}";`
+        `name = "${flake_lock.nodes.nixpkgs.original.ref}-${curr_rev.date}";`
       );
 
-      const [_full_match, _channel_variant, _old_date, old_git_sha] =
-        old_source.match(source_regex);
-      const url = `https://github.com/NixOS/nixpkgs/compare/${old_git_sha}...${next_sha}`;
+      const [_full_match, _channel_variant] = old_source.match(source_regex);
+      const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
-      const ocaml_commits = await get_ocaml_commits(old_git_sha, next_sha);
+      const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.reduce((prev, commit) => {
         return `${prev}
@@ -151,21 +110,24 @@ Diff URL: ${url}
 
       // Only write the file if the commit hash has changed
       // Otherwise just cancel the workflow. We don't need to do anything
-      if (false && next_sha.startsWith(old_git_sha)) {
-        core.notice(
-          `Hashes were the same (old: ${old_git_sha}, new: ${next_sha})`
-        );
-
-        github.rest.actions.cancelWorkflowRun({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          run_id: context.runId,
-        });
+      if (curr_rev.sha.startsWith(prev_rev.sha)) {
+        throw new Error("Shas were the same");
       } else {
         writeFileSync(source_path, next_source);
       }
 
       return post_text;
+    })
+    .catch((error) => {
+      console.error(error);
+      core.notice(error.message);
+      github.rest.actions.cancelWorkflowRun({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        run_id: context.runId,
+      });
+
+      return "";
     });
 
   return url;
