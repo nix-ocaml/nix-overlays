@@ -12,6 +12,8 @@ let
   ];
 in
 
+nixpkgs:
+
 extraOverlays:
 
 self: super:
@@ -22,7 +24,7 @@ let
     super.ocaml-ng.ocamlPackages_4_13.overrideScope'
       (oself: osuper:
         let
-          sources = "${import ../sources.nix}/pkgs/development/compilers/ocaml/generic.nix";
+          sources = "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix";
         in
         {
           ocaml = (callPackage

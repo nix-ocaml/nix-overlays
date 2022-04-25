@@ -3,8 +3,8 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = { self, flake-utils }: ({
-    overlay = final: prev: (import ./default.nix) final prev;
+  outputs = { self, nixpkgs, flake-utils }: ({
+    overlays.default = final: prev: (import ./default.nix { inherit nixpkgs; }) final prev;
   } // flake-utils.lib.eachDefaultSystem (system: {
     packages = import ./boot.nix {
       inherit system;
