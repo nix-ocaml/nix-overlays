@@ -518,6 +518,10 @@ with oself;
   graphql-async = callPackage ./graphql/async.nix { };
 
   graphql_ppx = callPackage ./graphql_ppx { };
+  graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
+    # https://github.com/NixOS/nixpkgs/pull/170664
+    nativeBuildInputs = [ crunch ];
+  });
 
   gsl = osuper.gsl.overrideAttrs (o: {
     src = builtins.fetchurl {
