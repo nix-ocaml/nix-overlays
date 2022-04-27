@@ -41,10 +41,6 @@ with oself;
 
 {
   alcotest = osuper.alcotest.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/alcotest/releases/download/1.5.0/alcotest-js-1.5.0.tbz;
-      sha256 = "0v4ghia378g3l53r61fj98ljha0qxl82xp26y9frjy1dw03ija2l";
-    };
     # A snapshot test is failing because of the cmdliner upgrade.
     doCheck = false;
   });
@@ -262,13 +258,6 @@ with oself;
 
   carton = disableTests osuper.carton;
 
-  caqti = osuper.caqti.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.8.0/caqti-v1.8.0.tbz;
-      sha256 = "04jbk9x14963p2r82mdmkw8b64p7yv3qlcabwa8054az6czj6c16";
-    };
-  });
-
   cmdliner_1_0 = osuper.cmdliner;
 
   cmdliner = osuper.cmdliner.overrideAttrs (_: {
@@ -301,11 +290,6 @@ with oself;
   });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/ocaml-ctypes/archive/57f069897b36f784ff0296c40f726e3baf5d8a1d.tar.gz;
-      sha256 = "05wy8nxprj4ka1dk5h4nmnmlrqildmlrqx37pbyvc8az16awz5x3";
-    };
-
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
   });
 
