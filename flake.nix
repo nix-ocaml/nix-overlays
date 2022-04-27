@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }: ({
-    overlays.default = final: prev: (import ./default.nix nixpkgs) final prev;
+    overlays.default = (import ./default.nix nixpkgs);
   } // flake-utils.lib.eachDefaultSystem (system: {
     # Packages are using the flake
     packages = import nixpkgs {
@@ -18,6 +18,6 @@
       };
     };
     legacyPackages = self.packages."${system}";
-    makePkgs = attrs: import ./boot.nix { inherit nixpkgs; } attrs;
+    makePkgs = attrs: import ./boot.nix attrs;
   }));
 }

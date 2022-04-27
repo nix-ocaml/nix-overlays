@@ -1,3 +1,4 @@
+# `nixpkgs` here are the `nixpkgs` sources, i.e. the flake input
 nixpkgs:
 
 # This might be helfpul later:
@@ -6,7 +7,9 @@ self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages = import ./ocaml/overlay-ocaml-packages.nix nixpkgs;
+  overlayOcamlPackages = extraOverlays: import ./ocaml/overlay-ocaml-packages.nix {
+    inherit nixpkgs extraOverlays;
+  };
   staticLightOverlay = overlayOcamlPackages [ (super.callPackage ./static/ocaml.nix { }) ];
 in
 

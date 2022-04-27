@@ -1,4 +1,9 @@
+{ nixpkgs, extraOverlays }:
+
+self: super:
+
 let
+  inherit (super) lib callPackage;
   ocamlVersions = [
     "4_06"
     "4_08"
@@ -10,29 +15,15 @@ let
     "4_14"
     "5_00"
   ];
-in
-
-nixpkgs:
-
-extraOverlays:
-
-self: super:
-
-let
-  inherit (super) lib callPackage;
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
     super.ocaml-ng.ocamlPackages_4_13.overrideScope'
-      (oself: osuper:
-        let
-          sources = "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix";
-        in
-        {
-          ocaml = (callPackage
-            (import sources {
-              inherit major_version minor_version patch_version;
-            })
-            { }).overrideAttrs (_: { inherit src; } // extraOpts);
-        });
+      (oself: osuper: {
+        ocaml = (callPackage
+          (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
+            inherit major_version minor_version patch_version;
+          })
+          { }).overrideAttrs (_: { inherit src; } // extraOpts);
+      });
 
   custom-ocaml-ng =
     super.ocaml-ng //
