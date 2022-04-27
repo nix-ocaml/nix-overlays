@@ -520,7 +520,7 @@ with oself;
   graphql_ppx = callPackage ./graphql_ppx { };
   graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
     # https://github.com/NixOS/nixpkgs/pull/170664
-    nativeBuildInputs = [ crunch ];
+    nativeBuildInputs = [ ocaml dune findlib crunch ];
   });
 
   gsl = osuper.gsl.overrideAttrs (o: {
