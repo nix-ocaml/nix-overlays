@@ -1560,6 +1560,13 @@ with oself;
       else o.src;
   });
 
+  jst-config = osuper.jst-config.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/jst-config/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "06xlyg0cyvv742haypdjbl82b5h5mla9hhcg3q67csq1nfxyalvh";
+    };
+  });
+
   ppx_expect = osuper.ppx_expect.overrideAttrs (_: {
     patches =
       if lib.versionAtLeast ocaml.version "5.00" then
