@@ -100,22 +100,15 @@ let
 
     # broken on macOS?
     "llvm"
-    "hacl-star-raw"
-    "hacl-star"
     "ocaml_libvirt"
-    "cairo2"
-    "lablgtk3"
-    "lablgtk3-gtkspell3"
-    "lablgtk3-sourceview3"
     "labltk"
     "camlimages"
-    "apron"
     "bjack"
 
     # broken with ppxlib 0.23
     "elpi"
 
-    # broken on OCaml 4.13
+    # broken since OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
     "ocaml-migrate-parsetree-1-8"
@@ -123,21 +116,15 @@ let
     "wasm"
     "pythonlib"
 
-    # Broken / EOL
-    "morph"
-    "morph_graphql_server"
-
     # Broken on OCaml 5.00
     "fontconfig"
     "cpdf"
-    "merlin"
     "erm_xml"
     "functory"
     "getopt"
     "benchmark"
 
-    # Incompatible with 4.14
-    "pcap-format"
+    # Broken since OCaml 4.14
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
