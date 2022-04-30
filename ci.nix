@@ -158,9 +158,6 @@ let
     "git-unix"
     "git-cohttp"
     "git-cohttp-unix"
-
-    # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
-    "elina"
   ];
 
   buildCandidates = pkgs:
