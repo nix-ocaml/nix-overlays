@@ -1586,6 +1586,13 @@ with oself;
       else [ ];
   });
 
+  ppx_sexp_conv = osuper.ppx_sexp_conv.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_sexp_conv/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "179f1iz504l008b3p3d9q2nj44wv7y31pc997x32m6aq1j2lfip3";
+    };
+  });
+
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
     patches =
       if lib.versionAtLeast ocaml.version "5.00" then
