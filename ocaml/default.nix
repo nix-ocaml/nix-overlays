@@ -812,9 +812,6 @@ with oself;
     '';
   });
 
-  morph = callPackage ./morph { };
-  morph_graphql_server = callPackage ./morph/graphql.nix { };
-
   mongo = callPackage ./mongo { };
   mongo-lwt = callPackage ./mongo/lwt.nix { };
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
