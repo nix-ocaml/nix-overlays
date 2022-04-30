@@ -152,7 +152,6 @@ let
     "metrics-unix"
     "metrics-mirage"
 
-    "dream-livereload"
     "dream-serve"
 
     # incompatible with cmdliner 1.1
