@@ -104,6 +104,8 @@ let
     "labltk"
     "camlimages"
     "bjack"
+    "async_inotify"
+    "async_smtp"
 
     # broken with ppxlib 0.23
     "elpi"
