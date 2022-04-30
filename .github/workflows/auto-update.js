@@ -66,6 +66,43 @@ module.exports = async ({ github, context, core, require }) => {
     });
   }
 
+  const get_revisions = () =>
+    http_request(
+      "https://monitoring.nixos.org/prometheus/api/v1/query?query=channel_revision"
+    )
+      .then((res) => res.data.result)
+      .then((rev) => [
+        rev.find((d) => d.metric.channel === "nixos-unstable"),
+        rev.find((d) => d.metric.channel === "nixos-unstable-small"),
+      ]);
+
+  const get_newest = (revisions) => {
+    const urls = revisions
+      .map((revision) => revision.metric.revision)
+      .map(
+        (commit_sha) =>
+          `https://api.github.com/repos/nixos/nixpkgs/commits/${commit_sha}`
+      );
+
+    return Promise.all(urls.map(http_request)).then(([big, small]) => {
+      const big_date = new Date(big.commit.committer.date);
+      const small_date = new Date(small.commit.committer.date);
+      if (big_date > small_date) {
+        return {
+          date: big_date,
+          sha: big.sha,
+          channel: "nixos-unstable",
+        };
+      } else {
+        return {
+          date: small_date,
+          sha: small.sha,
+          channel: "nixos-unstable-small",
+        };
+      }
+    });
+  };
+
   function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = []) {
     return http_request(
       `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
@@ -79,19 +116,28 @@ module.exports = async ({ github, context, core, require }) => {
     });
   }
 
-  const url = update_flake()
-    .then(async ([prev_rev, curr_rev]) => {
+  const url = get_revisions()
+    .then(get_newest)
+    .then(async (revision) => {
       const source_path = "./sources.nix";
+      const flake_path = "./flake.nix";
+      const old_flake = readFileSync(flake_path).toString();
+      const next_flake = old_flake.replace(
+        /rev=[a-z0-9]+/,
+        `rev=${revision.sha}`
+      );
 
-      const flake_lock = JSON.parse(readFileSync("./flake.lock"));
+      writeFileSync(flake_path, next_flake);
 
+      const [prev_rev, curr_rev] = await update_flake();
+
+      const flake_lock = JSON.parse(readFileSync("./flake.lock").toString());
       const old_source = readFileSync(source_path).toString();
       const next_source = old_source.replace(
         source_regex,
         `name = "${flake_lock.nodes.nixpkgs.original.ref}-${curr_rev.date}";`
       );
-
-      const [_full_match, _channel_variant] = old_source.match(source_regex);
+      writeFileSync(source_path, next_source);
       const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
