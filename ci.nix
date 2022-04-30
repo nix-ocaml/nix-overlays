@@ -12,7 +12,6 @@ let
     "earlybird"
     "gtktop"
     "lablgtk_2_14"
-    "lablgtk3-gtkspell3"
     "camlimages_4_2_4"
     "lablgtk-extras"
     "magick"
@@ -44,7 +43,6 @@ let
     "z3"
     "nonstd"
     "genspio"
-    "lwt-exit"
     "ocaml-r"
 
     "melange"
