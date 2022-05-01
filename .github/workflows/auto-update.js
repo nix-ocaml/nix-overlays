@@ -50,7 +50,7 @@ module.exports = async ({ github, context, core, require }) => {
 
         const shas = [
           ...stderr.matchAll(
-            /NixOS\/nixpkgs\/(.*)' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/g
+            /NixOS\/nixpkgs\/(.*)' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/gi
           ),
         ].map(([_, sha, date]) => ({
           sha,
@@ -121,7 +121,7 @@ module.exports = async ({ github, context, core, require }) => {
     .then(async (revision) => {
       const source_path = "./sources.nix";
       const flake_path = "./flake.nix";
-      const old_flake = readFileSync(flake_path).toString();
+      const old_flake = readFileSync(flake_path).toString('utf8');
       const next_flake = old_flake.replace(
         /rev=[a-z0-9]+/,
         `rev=${revision.sha}`
@@ -131,7 +131,7 @@ module.exports = async ({ github, context, core, require }) => {
 
       const [prev_rev, curr_rev] = await update_flake();
 
-      const flake_lock = JSON.parse(readFileSync("./flake.lock").toString());
+      const flake_lock = JSON.parse(readFileSync("./flake.lock").toString('utf8'));
       const old_source = readFileSync(source_path).toString();
       const next_source = old_source.replace(
         source_regex,
