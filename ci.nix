@@ -161,6 +161,9 @@ let
 
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
+
+    # incompatible with ppxlib 0.26
+    "ppx_deriving_bson"
   ];
 
   buildCandidates = pkgs:
