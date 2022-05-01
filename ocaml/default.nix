@@ -1173,6 +1173,13 @@ with oself;
     doCheck = false;
   });
 
+  ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/hammerlab/ppx_deriving_cmdliner/archive/bc06e6c3ad161df66f46f731f97142ae5358e633.tar.gz;
+      sha256 = "0xzj36vzzch6hc5zh1crjarwbmfycd61vh894v2jyai15zspf780";
+    };
+  });
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/64c3af9.tar.gz;
