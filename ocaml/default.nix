@@ -1185,6 +1185,13 @@ with oself;
 
   ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
 
+  ppx_import = osuper.ppx_import.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppx_import/archive/0d066f04788770ff555b855538aed1663830132f.tar.gz;
+      sha256 = "0fk6pn7gsif2a00mbgv4a64jg5azi5gjhp5gsy450jmhjmb5qd63";
+    };
+  });
+
   ppx_tools = callPackage ./ppx_tools { };
 
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
