@@ -1,7 +1,6 @@
 { system ? null
 , patches ? [ ]
 , extraOverlays ? [ ]
-, overlays ? [ (import ./.) ]
 , ...
 }@args:
 
@@ -19,8 +18,9 @@ let
         src = channel;
         patches = patches;
       };
-  channel = patchChannel system (import ./sources.nix) allPatches;
-
+  nixpkgs = (import ./sources.nix);
+  channel = patchChannel system nixpkgs allPatches;
+  overlays = [ (import ./default.nix nixpkgs) ] ++ extraOverlays;
 in
 
-import channel (args // { overlays = (overlays ++ extraOverlays); } // systemArgs)
+import channel (args // { inherit overlays; } // systemArgs)
