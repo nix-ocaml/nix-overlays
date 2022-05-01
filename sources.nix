@@ -6,7 +6,7 @@ let
 in
 {
   unstable = builtins.fetchTarball {
-    name = "nixos-unstable-2022-04-23";
+    name = "undefined-2022-04-28";
     url = "https://github.com/nixos/nixpkgs/archive/${src.rev}.tar.gz";
     sha256 = src.narHash;
   };
