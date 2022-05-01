@@ -163,7 +163,7 @@ let
     "elina"
 
     # incompatible with ppxlib 0.26
-    ppx_deriving_bson
+    "ppx_deriving_bson"
   ];
 
   buildCandidates = pkgs:
