@@ -1,7 +1,4 @@
-const { url } = require("inspector");
-
-const source_regex =
-  /name = "nixos-unstable-(small-)?(20[0-9\-]+)";.    url = https:\/\/github\.com\/nixos\/nixpkgs\/archive\/([0-9a-z]+)\.tar\.gz;.    sha256 = "([0-9a-z]+)";/s;
+const source_regex = /name = "nixos-unstable-(small-)?(20[0-9\-]+)";/s;
 
 module.exports = async ({ github, context, core, require }) => {
   const https = require("https");
@@ -44,6 +41,31 @@ module.exports = async ({ github, context, core, require }) => {
     });
   };
 
+  function update_flake() {
+    return new Promise((resolve, reject) => {
+      exec(`nix flake update`, (error, stdout, stderr) => {
+        if (error) {
+          return reject(error);
+        }
+
+        const shas = [
+          ...stderr.matchAll(
+            /NixOS\/nixpkgs\/(.*)' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/gi
+          ),
+        ].map(([_, sha, date]) => ({
+          sha,
+          date,
+        }));
+
+        if (shas.length < 2) {
+          return reject(new Error("No update"));
+        }
+
+        return resolve(shas);
+      });
+    });
+  }
+
   const get_revisions = () =>
     http_request(
       "https://monitoring.nixos.org/prometheus/api/v1/query?query=channel_revision"
@@ -53,22 +75,6 @@ module.exports = async ({ github, context, core, require }) => {
         rev.find((d) => d.metric.channel === "nixos-unstable"),
         rev.find((d) => d.metric.channel === "nixos-unstable-small"),
       ]);
-
-  function get_sha256(url) {
-    return new Promise((resolve, reject) => {
-      exec(
-        `nix-prefetch-url --type sha256 --unpack ${url}`,
-        (error, stdout, stderr) => {
-          if (error) {
-            return reject(error);
-          }
-
-          const lines = stdout.trim().split("\n");
-          resolve(lines[0]);
-        }
-      );
-    });
-  }
 
   const get_newest = (revisions) => {
     const urls = revisions
@@ -113,29 +119,28 @@ module.exports = async ({ github, context, core, require }) => {
   const url = get_revisions()
     .then(get_newest)
     .then(async (revision) => {
-      const next_sha = revision.sha;
-      const next_url = `https://github.com/nixos/nixpkgs/archive/${next_sha}.tar.gz`;
       const source_path = "./sources.nix";
+      const flake_path = "./flake.nix";
+      const old_flake = readFileSync(flake_path).toString('utf8');
+      const next_flake = old_flake.replace(
+        /rev=[a-z0-9]+/,
+        `rev=${revision.sha}`
+      );
 
-      const next_sha256 = await get_sha256(next_url);
+      writeFileSync(flake_path, next_flake);
 
-      const year = revision.date.getFullYear();
-      const month = (revision.date.getMonth() + 1).toString().padStart(2, "0");
-      const day = revision.date.getDate().toString().padStart(2, "0");
+      const [prev_rev, curr_rev] = await update_flake();
 
+      const flake_lock = JSON.parse(readFileSync("./flake.lock").toString('utf8'));
       const old_source = readFileSync(source_path).toString();
       const next_source = old_source.replace(
         source_regex,
-        `name = "${revision.channel}-${year}-${month}-${day}";
-    url = ${next_url};
-    sha256 = "${next_sha256}";`
+        `name = "${flake_lock.nodes.nixpkgs.original.ref}-${curr_rev.date}";`
       );
+      writeFileSync(source_path, next_source);
+      const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
-      const [_full_match, _channel_variant, _old_date, old_git_sha] =
-        old_source.match(source_regex);
-      const url = `https://github.com/NixOS/nixpkgs/compare/${old_git_sha}...${next_sha}`;
-
-      const ocaml_commits = await get_ocaml_commits(old_git_sha, next_sha);
+      const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.reduce((prev, commit) => {
         return `${prev}
@@ -151,21 +156,24 @@ Diff URL: ${url}
 
       // Only write the file if the commit hash has changed
       // Otherwise just cancel the workflow. We don't need to do anything
-      if (false && next_sha.startsWith(old_git_sha)) {
-        core.notice(
-          `Hashes were the same (old: ${old_git_sha}, new: ${next_sha})`
-        );
-
-        github.rest.actions.cancelWorkflowRun({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          run_id: context.runId,
-        });
+      if (curr_rev.sha.startsWith(prev_rev.sha)) {
+        throw new Error("Shas were the same");
       } else {
         writeFileSync(source_path, next_source);
       }
 
       return post_text;
+    })
+    .catch((error) => {
+      console.error(error);
+      core.notice(error.message);
+      github.rest.actions.cancelWorkflowRun({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        run_id: context.runId,
+      });
+
+      return "";
     });
 
   return url;
