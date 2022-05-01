@@ -211,7 +211,7 @@ with pkgs;
       cockroachdb-22_x
       # mongodb-4_2
       # nixUnstable
-      # esy
+      esy
     ]
     ++ lib.optional stdenv.isLinux [ kubernetes ];
 
