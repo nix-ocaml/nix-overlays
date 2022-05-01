@@ -39,10 +39,8 @@ in
 with oself;
 
 {
-  alcotest = osuper.alcotest.overrideAttrs (_: {
-    # A snapshot test is failing because of the cmdliner upgrade.
-    doCheck = false;
-  });
+  # A snapshot test is failing because of the cmdliner upgrade.
+  alcotest = disableTests osuper.alcotest;
 
   ansiterminal = disableTests osuper.ansiterminal;
 
@@ -491,9 +489,7 @@ with oself;
     propagatedBuildInputs = [ seq ];
   };
 
-  gen_js_api = osuper.gen_js_api.overrideAttrs (_: {
-    doCheck = false;
-  });
+  gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-stub = disableTests osuper.gettext-stub;
 
@@ -556,7 +552,7 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
-  hacl_x25519 = osuper.hacl_x25519.overrideAttrs (_: { doCheck = false; });
+  hacl_x25519 = disableTests osuper.hacl_x25519;
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -931,7 +927,7 @@ with oself;
   });
 
   # Tests don't work on 5.00 because of the Stream.t type.
-  ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: { doCheck = false; });
+  ocaml_gettext = disableTests osuper.ocaml_gettext;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
@@ -1101,16 +1097,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
   });
 
-  parmap = osuper.parmap.overrideAttrs (_: {
-    doCheck = false;
-  });
+  parmap = disableTests osuper.parmap;
 
   pg_query = callPackage ./pg_query { };
 
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
-  pp = osuper.pp.overrideAttrs (_: { doCheck = false; });
+  pp = disableTests osuper.pp;
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (_: {
     postPatch = ''
@@ -1187,7 +1181,7 @@ with oself;
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
-  ppx_blob = osuper.ppx_blob.overrideAttrs (_: { doCheck = false; });
+  ppx_blob = disableTests osuper.ppx_blob;
 
   ppx_import = osuper.ppx_import.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1247,10 +1241,8 @@ with oself;
     };
   });
 
-  re = osuper.re.overrideAttrs (_: {
-    # Tests use `String.capitalize` which was removed in 5.00
-    doCheck = false;
-  });
+  # Tests use `String.capitalize` which was removed in 5.00
+  re = disableTests osuper.re;
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };
@@ -1393,8 +1385,8 @@ with oself;
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
   # These require crowbar which is still not compatible with newer cmdliner.
-  pecu = osuper.pecu.overrideAttrs (_: { doCheck = false; });
-  unstrctrd = osuper.unstrctrd.overrideAttrs (_: { doCheck = false; });
+  pecu = disableTests osuper.pecu;
+  unstrctrd = disableTests osuper.unstrctrd;
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1459,7 +1451,7 @@ with oself;
     patches = [ ./camlpstreams.patch ];
   });
 
-  yuscii = osuper.yuscii.overrideAttrs (_: { doCheck = false; });
+  yuscii = disableTests osuper.yuscii;
 
   zarith = osuper.zarith.overrideAttrs (_: {
     propagatedBuildInputs = [ gmp-oc ];
