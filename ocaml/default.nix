@@ -491,6 +491,10 @@ with oself;
     propagatedBuildInputs = [ seq ];
   };
 
+  gen_js_api = osuper.gen_js_api.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   gettext-stub = disableTests osuper.gettext-stub;
 
   git = osuper.git.overrideAttrs (_: {
