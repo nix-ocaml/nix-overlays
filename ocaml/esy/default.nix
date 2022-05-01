@@ -41,6 +41,13 @@ let
         createFindlibDestdir = true;
       });
 
+    fmt = super.fmt.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/dbuenzli/fmt/archive/refs/tags/v0.8.10.tar.gz;
+        sha256 = "0xnnrhp45p5vj1wzjn39w0j29blxrqj2dn42qcxzplp2j9mn76b9";
+      };
+    });
+
     uuidm = super.uuidm.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.7.tbz";
