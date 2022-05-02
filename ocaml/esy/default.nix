@@ -101,12 +101,12 @@ let
   # current version information.
   esyNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy/${esyVersion}";
-    sha256 = "0v43x5s34fsw70zgi9zvfpmjakkbfxpzc6zy0a70bzw293qvy7i0";
+    sha256 = "09b2543pm3bwj0lq7i1xk51rb9h5j9rmv8hl96krwnl2kzxa7ymq";
   };
 
   esySolveCudfNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy-solve-cudf/${esy-solve-cudf.version}";
-    sha256 = "19m793mydd8gcgw1mbn7pd8fw2rhnd00k5wpa4qkx8a3zn6crjjf";
+    sha256 = "001c4m10z4y9bfn5gllqdh7irlj64w7n9d10q43802myl92hpkzs";
   };
 
 in
