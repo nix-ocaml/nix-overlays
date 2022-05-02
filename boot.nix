@@ -1,4 +1,4 @@
-{ system ? null
+{ system ? builtins.currentSystem
 , patches ? [ ]
 , extraOverlays ? [ ]
 , ...
@@ -7,20 +7,16 @@
 # `git ls-remote https://github.com/nixos/nixpkgs-channels nixos-unstable`
 
 let
-  allPatches = [ ./add-janestreet-packages-0_15.patch ] ++ patches;
-  systemArgs = if system == null then { } else { inherit system; };
-  patchChannel = system: channel: patches:
-    if patches == [ ]
-    then channel
-    else
-      (import channel systemArgs).pkgs.applyPatches {
-        name = "nixpkgs-patched";
-        src = channel;
-        patches = patches;
-      };
-  nixpkgs = (import ./sources.nix);
-  channel = patchChannel system nixpkgs allPatches;
-  overlays = [ (import ./default.nix nixpkgs) ] ++ extraOverlays;
+  flake = (import
+    (
+      fetchTarball {
+        url = https://github.com/edolstra/flake-compat/archive/b4a3401.tar.gz;
+        sha256 = "1qc703yg0babixi6wshn5wm2kgl5y1drcswgszh4xxzbrwkk9sv7";
+      }
+    )
+    { src = ./.; }
+  ).defaultNix;
+  makePkgs = flake.makePkgs."${system}";
 in
 
-import channel (args // { inherit overlays; } // systemArgs)
+makePkgs { overlays = [ flake.overlays.default ] ++ extraOverlays; }
