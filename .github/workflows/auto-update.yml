@@ -26,8 +26,6 @@ jobs:
           script: |
             const script = require('./.github/workflows/auto-update.js')
             return await script({github, context, core, require})
-      - name: "format sources.nix"
-        run: nix shell -f ./boot.nix nixpkgs-fmt -c nixpkgs-fmt ./sources.nix
       - name: Commit updated sources
         env:
           GITHUB_JOB: ${{ env.GITHUB_JOB }}
