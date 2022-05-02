@@ -1,5 +1,3 @@
-const source_regex = /name = "nixos-unstable-(small-)?(20[0-9\-]+)";/s;
-
 module.exports = async ({ github, context, core, require }) => {
   const https = require("https");
   const { URL } = require("url");
@@ -119,9 +117,8 @@ module.exports = async ({ github, context, core, require }) => {
   const url = get_revisions()
     .then(get_newest)
     .then(async (revision) => {
-      const source_path = "./sources.nix";
       const flake_path = "./flake.nix";
-      const old_flake = readFileSync(flake_path).toString('utf8');
+      const old_flake = readFileSync(flake_path).toString("utf8");
       const next_flake = old_flake.replace(
         /rev=[a-z0-9]+/,
         `rev=${revision.sha}`
@@ -130,14 +127,6 @@ module.exports = async ({ github, context, core, require }) => {
       writeFileSync(flake_path, next_flake);
 
       const [prev_rev, curr_rev] = await update_flake();
-
-      const flake_lock = JSON.parse(readFileSync("./flake.lock").toString('utf8'));
-      const old_source = readFileSync(source_path).toString();
-      const next_source = old_source.replace(
-        source_regex,
-        `name = "${flake_lock.nodes.nixpkgs.original.ref}-${curr_rev.date}";`
-      );
-      writeFileSync(source_path, next_source);
       const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
@@ -158,8 +147,6 @@ Diff URL: ${url}
       // Otherwise just cancel the workflow. We don't need to do anything
       if (curr_rev.sha.startsWith(prev_rev.sha)) {
         throw new Error("Shas were the same");
-      } else {
-        writeFileSync(source_path, next_source);
       }
 
       return post_text;
