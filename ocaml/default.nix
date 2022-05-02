@@ -1077,6 +1077,12 @@ with oself;
     propagatedBuildInputs = [ camlp-streams bigarray-compat ];
   };
 
+  opam-core = osuper.opam-core.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/core/dune --replace "bigarray" ""
+    '';
+  });
+
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
