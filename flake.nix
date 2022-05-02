@@ -11,17 +11,15 @@
   } // flake-utils.lib.eachDefaultSystem (system:
     let
       patches = [ ./add-janestreet-packages-0_15.patch ];
-      systemArgs = if system == null then { } else { inherit system; };
       patchChannel = system: channel: patches:
         if patches == [ ]
         then channel
         else
-          (import channel systemArgs).pkgs.applyPatches {
+          (import channel { inherit system; }).pkgs.applyPatches {
             name = "nixpkgs-patched";
             src = channel;
             patches = patches;
           };
-      nixpkgs = (import ./sources.nix);
       channel = patchChannel system nixpkgs patches;
     in
 
@@ -30,10 +28,11 @@
       legacyPackages = self.packages."${system}";
       makePkgs = attrs:
         import channel ({
+          inherit system;
           overlays = [ self.overlays.default ];
           config = {
             allowUnfree = true;
           };
-        } // attrs // systemArgs);
+        } // attrs);
     }));
 }
