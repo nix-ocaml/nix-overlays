@@ -1,6 +1,5 @@
-{ ocamlVersion, target ? "native" }:
+{ pkgs }:
 let
-  pkgs = import ./. { };
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
     # camlp4 or not supported in 4.11+
@@ -163,59 +162,40 @@ let
     # incompatible with ppxlib 0.26
     "ppx_deriving_bson"
   ];
+in
 
-  buildCandidates = pkgs:
-    let
-      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+rec {
+  buildCandidates = pkgs: ocamlVersion:
+    let ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
     in
     lib.filterAttrs
       (n: v:
-        let broken =
-          if v ? meta && v.meta ? broken then v.meta.broken else false;
+        let
+          broken = if v ? meta && v.meta ? broken then v.meta.broken else false;
+          # don't build tezos stuff
         in
-        # don't build tezos stuff
-        (! ((builtins.substring 0 5 n) == "tezos")) &&
-        (! (builtins.elem n ignoredPackages)) &&
-        lib.isDerivation v &&
-        (! broken) &&
-        (
-          let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+        (!((builtins.substring 0 5 n) == "tezos"))
+        && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
+        && (
+          let
+            platforms = (if ((v ? meta) && v.meta ? platforms) then
+              v.meta.platforms
+            else
+              lib.platforms.all);
           in
           (builtins.elem stdenv.system platforms)
         ))
       ocamlPackages;
 
-  crossTarget = pkgs:
-    with (buildCandidates pkgs);
-    [
+  crossTarget = pkgs: ocamlVersion:
+    with (buildCandidates pkgs ocamlVersion); {
       # just build a subset of the static overlay, with the most commonly used
       # packages
-      piaf
-      carl
-      (carl.override { static = true; })
-      caqti-driver-postgresql
-      ppx_deriving
-    ];
+      inherit piaf carl caqti-driver-postgresql ppx_deriving;
+      static-carl = (carl.override { static = true; });
+    };
 
-in
-
-with pkgs;
-
-{
-  native =
-    lib.attrValues (buildCandidates pkgs)
-    ++ [
-      # cockroachdb-21_1_x cockroachdb-21_2_x
-      cockroachdb-22_x
-      # mongodb-4_2
-      # nixUnstable
-      esy
-    ]
-    ++ lib.optional stdenv.isLinux [ kubernetes ];
-
-
-  musl = crossTarget pkgs.pkgsCross.musl64;
-
-  arm64 = crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl;
-
-}."${target}"
+  crossTargetList = pkgs: ocamlVersion:
+    let attrs = crossTarget pkgs ocamlVersion; in
+    lib.attrValues attrs;
+}
