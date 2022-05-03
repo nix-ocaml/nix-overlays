@@ -1,6 +1,7 @@
 name: Auto-update
 on:
   workflow_dispatch:
+  push:
   pull_request:
     types:
       - opened
@@ -15,9 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
-        with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: "Update sources"
         uses: actions/github-script@v6
         id: update-sources
@@ -26,7 +24,7 @@ jobs:
           script: |
             const script = require('./.github/workflows/auto-update.js')
             return await script({github, context, core, require})
-      - name: Commit updated sources
+      - name: Commit updated flake
         env:
           GITHUB_JOB: ${{ env.GITHUB_JOB }}
           GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
@@ -34,7 +32,7 @@ jobs:
           git config --global user.name 'UpdateBot'
           git config --global user.email 'ulrikstrid@users.noreply.github.com'
           git checkout -b "auto-update-sources-$GITHUB_RUN_ID"
-          git add sources.nix
+          git add flake.nix flake.lock
           git commit -m "Update sources"
           git push --set-upstream origin "auto-update-sources-$GITHUB_RUN_ID"
       - name: Open pull request
