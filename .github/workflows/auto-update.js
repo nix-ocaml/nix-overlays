@@ -131,16 +131,15 @@ module.exports = async ({ github, context, core, require }) => {
 
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
-      const ocaml_packages_text = ocaml_commits.reduce((prev, commit) => {
-        return `${prev}
-* [${commit.commit.message}](${commit.html_url})`;
-      }, "");
+      const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
+        return `* [<span>${commit.commit.message}</span>](${commit.html_url})`;
+      });
 
       const post_text = `
-Commits touching OCaml packages:
-${ocaml_packages_text}
+#### Commits touching OCaml packages:
+${ocaml_packages_text.join('\n')}
 
-Diff URL: ${url}
+#### Diff URL: ${url}
       `;
 
       // Only write the file if the commit hash has changed
