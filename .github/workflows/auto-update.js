@@ -132,7 +132,7 @@ module.exports = async ({ github, context, core, require }) => {
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
-        return `* [<span>${commit.commit.message}</span>](${commit.html_url})`;
+        return `* [<span>${commit.message}</span>](${html_url})`;
       });
 
       const post_text = `
