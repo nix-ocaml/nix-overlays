@@ -6,9 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }: ({
-    overlays.default = (import ./overlay nixpkgs);
-  } // flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, flake-utils }:
     let
       patches = [ ./add-janestreet-packages-0_15.patch ];
       patchChannel = system: channel: patches:
@@ -20,19 +18,27 @@
             src = channel;
             patches = patches;
           };
-      channel = patchChannel system nixpkgs patches;
     in
 
-    rec {
-      packages = makePkgs { };
-      legacyPackages = self.packages."${system}";
-      makePkgs = attrs:
+    {
+      # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
+      # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
+      # you don't get the patched sources.
+      overlays.default = (import ./overlay nixpkgs);
+      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+        let channel = patchChannel system nixpkgs patches;
+        in
+
         import channel ({
           inherit system;
-          overlays = [ self.overlays.default ];
+          overlays = [ self.overlays.default ] ++ extraOverlays;
           config = {
             allowUnfree = true;
           };
         } // attrs);
-    }));
+    } // flake-utils.lib.eachDefaultSystem (system:
+      rec {
+        packages = self.makePkgs { inherit system; };
+        legacyPackages = self.packages."${system}";
+      });
 }
