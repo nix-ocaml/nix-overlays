@@ -27,7 +27,7 @@ module.exports = async ({ github, context, core, require }) => {
 
       const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
         const message = escapeForGHActions(commit.message);
-        return `* [<span>${message}</span>](${html_url})`;
+        return `* <a href="${html_url}"><pre>${message}</pre></a>`;
       });
 
       const post_text = `
