@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }: (
+  outputs = { self, nixpkgs, flake-utils }:
     let
       patches = [ ./add-janestreet-packages-0_15.patch ];
       patchChannel = system: channel: patches:
@@ -40,6 +40,5 @@
       rec {
         packages = self.makePkgs { inherit system; };
         legacyPackages = self.packages."${system}";
-      })
-  );
+      });
 }
