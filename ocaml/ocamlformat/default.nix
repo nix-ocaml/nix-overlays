@@ -1,6 +1,7 @@
 { lib
 , buildDunePackage
 , base
+, csexp
 , cmdliner
 , dune-build-info
 , either
@@ -20,24 +21,17 @@
 }:
 
 let
-  version = "0.21.0";
-  src = builtins.fetchurl {
-    url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/${version}/ocamlformat-${version}.tbz";
-    sha256 = "0b9kaxq66mwdx6g78xdbw8k2gc4pp23rdaphx76g07sqpkv1f61a";
-  };
 in
 
 buildDunePackage {
   pname = "ocamlformat";
-  inherit src version;
+  version = "0.21.0";
+  src = builtins.fetchurl {
+    url = https://github.com/ocaml-ppx/ocamlformat/archive/a24034a853e4e71264b2ffcda5db4654ffcb2b5c.tar.gz;
+    sha256 = "1wl2fmv4yc1maix387fi73230g6vq96yxv4awikfpld618kb4vxs";
+  };
 
-  minimumOCamlVersion =
-    if lib.versionAtLeast version "0.17.0"
-    then "4.08"
-    else "4.06";
-
-  useDune2 = true;
-
+  minimumOCamlVersion = "4.08";
   strictDeps = true;
 
   nativeBuildInputs = [
@@ -47,6 +41,7 @@ buildDunePackage {
   propagatedBuildInputs = [
     base
     cmdliner
+    csexp
     dune-build-info
     either
     fix
