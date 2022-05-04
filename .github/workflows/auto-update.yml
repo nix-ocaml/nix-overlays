@@ -9,6 +9,7 @@ on:
       - opened
     paths:
       - '.github/workflows/auto-update.js'
+      - 'auto-update/lib.js'
       - '.github/workflows/auto-update.yml'
   schedule:
     - cron: "30 11 */2 * *"
