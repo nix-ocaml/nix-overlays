@@ -1498,6 +1498,12 @@ with oself;
     };
     pname = "memtrace";
     version = "0.1.2-dev";
+
+    patches =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        [ ./memtrace_5_00.patch ]
+      else
+        [ ];
   };
 
   postgres_async = osuper.buildDunePackage {
