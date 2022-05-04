@@ -1,9 +1,6 @@
 name: Auto-update
 on:
   workflow_dispatch:
-  push:
-    branches-ignore:
-      - master
   pull_request:
     types:
       - opened
