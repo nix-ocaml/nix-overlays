@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }: ({
-    overlays.default = (import ./default.nix nixpkgs);
+    overlays.default = (import ./overlay nixpkgs);
   } // flake-utils.lib.eachDefaultSystem (system:
     let
       patches = [ ./add-janestreet-packages-0_15.patch ];
