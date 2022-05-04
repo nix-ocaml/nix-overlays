@@ -387,6 +387,11 @@ with oself;
 
   dune_2 = dune_3;
 
+  dune-configurator = callPackage ./dune/configurator.nix { };
+  dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
+    buildInputs = [ ];
+    propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+  });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
