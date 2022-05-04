@@ -133,7 +133,6 @@ let
     "erm_xml"
     "functory"
     "getopt"
-    "benchmark"
 
     # Broken since OCaml 4.14
     "eliom"

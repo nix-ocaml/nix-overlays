@@ -107,6 +107,18 @@ with oself;
     };
   });
 
+  benchmark = osuper.buildDunePackage {
+    pname = "benchmark";
+    version = "1.6";
+
+    src = fetchFromGitHub {
+      owner = "Chris00";
+      repo = "ocaml-benchmark";
+      rev = "1.6";
+      sha256 = "sha256-10KoyCLzY+uv0lCVrXD6YccLFmoknDa58cF9+aRrGzQ=";
+    };
+  };
+
   bigarray-compat = osuper.bigarray-compat.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/bigarray-compat/releases/download/v1.1.0/bigarray-compat-1.1.0.tbz;
