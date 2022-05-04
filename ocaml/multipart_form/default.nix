@@ -20,10 +20,10 @@
 
 let
   upstream_src = builtins.fetchurl {
-    url = https://github.com/dinosaure/multipart_form/releases/download/v0.3.0/multipart_form-v0.3.0.tbz;
-    sha256 = "05cbs2fqvyg67nmyfi8cp8bzl3yzkzw1w2az8brdkxcw1cq9xkgl";
+    url = https://github.com/dinosaure/multipart_form/releases/download/v0.4.0/multipart_form-0.4.0.tbz;
+    sha256 = "1q1rgwb8rcc7b44rr1c41x193z2rdnrny23m45ap2mvy36d1vy3r";
   };
-  upstream_version = "0.3.0";
+  upstream_version = "0.4.0";
   upstream_propagatedBuildInputs = [
     unstrctrd
     lwt

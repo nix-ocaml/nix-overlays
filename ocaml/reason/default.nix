@@ -25,8 +25,8 @@ buildDunePackage rec {
         }
     else
       builtins.fetchurl {
-        url = "https://github.com/reasonml/reason/releases/download/${version}/reason-${version}.tbz";
-        sha256 = "0yc94m3ddk599crg33yxvkphxpy54kmdsl599c320wvn055p4y4l";
+        url = https://github.com/reasonml/reason/archive/4f6ff7616bfa699059d642a3d16d8905d83555f6.tar.gz;
+        sha256 = "14x34hh0dkjgzv23vn88kay3y2hqjqyw2y4lyiv65qg7kf7z1gq1";
       };
 
   propagatedBuildInputs = [

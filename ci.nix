@@ -5,20 +5,13 @@ let
   ignoredPackages = [
     # camlp4 or not supported in 4.11+
     "bap"
-    "bin_prot_p4"
-    "bolt"
     "camlp4"
     "camomile_0_8_2"
     "cil"
     "dypgen"
     "earlybird"
-    "enumerate"
-    "estring"
-    "faillib"
-    "fieldslib_p4"
     "gtktop"
     "lablgtk_2_14"
-    "lablgtk3-gtkspell3"
     "camlimages_4_2_4"
     "lablgtk-extras"
     "magick"
@@ -26,38 +19,23 @@ let
     "mlgmp"
     "ocaml_cairo"
     "ocaml_cryptgps"
-    "ocaml_data_notation"
     "ocamlnat"
     "ocamlsdl"
     "ocf"
     "omake_rc1"
-    "pa_ounit"
-    "sqlite3EZ"
-    "type_conv_108_08_00"
-    "type_conv_109_60_01"
-    "variantslib_p4"
     "xtmpl"
-    "async_inotify"
-    "async_smtp"
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
-    "comparelib"
     "config-file"
     "erm_xmpp"
     "gmetadom"
     "herelib"
     "higlo"
-    "js_build_tools"
-    "ocaml_optcomp"
     "ocamlscript"
     "ocsigen_deriving"
-    "pa_bench"
     "pipebang"
     "stog"
-    "type_conv"
-    "type_conv_112_01_01"
-    "typerep_p4"
     "ulex"
     "lablgl"
 
@@ -65,9 +43,9 @@ let
     "z3"
     "nonstd"
     "genspio"
-    "lwt-exit"
     "ocaml-r"
 
+    "melange"
     # dune.configurator issue
     "ocamlfuse"
     "google-drive-ocamlfuse"
@@ -109,6 +87,7 @@ let
     "ffmpeg-avcodec"
     "ffmpeg-swscale"
     "ffmpeg-swresample"
+    "dssi"
 
     # doesn't work with my fork of http/af
     "paf"
@@ -119,20 +98,17 @@ let
 
     # broken on macOS?
     "llvm"
-    "hacl-star-raw"
-    "hacl-star"
     "ocaml_libvirt"
-    "cairo2"
-    "lablgtk3"
-    "lablgtk3-gtkspell3"
-    "lablgtk3-sourceview3"
     "labltk"
     "camlimages"
+    "bjack"
+    "async_inotify"
+    "async_smtp"
 
     # broken with ppxlib 0.23
     "elpi"
 
-    # broken on OCaml 4.13
+    # broken since OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
     "ocaml-migrate-parsetree-1-8"
@@ -140,23 +116,20 @@ let
     "wasm"
     "pythonlib"
 
-    # Broken / EOL
-    "morph"
-    "morph_graphql_server"
-
     # Broken on OCaml 5.00
     "fontconfig"
     "cpdf"
-    "merlin"
     "erm_xml"
     "functory"
     "getopt"
 
-    # Incompatible with 4.14
-    "pcap-format"
+    # Broken since OCaml 4.14
     "eliom"
     "ocsigen_server"
     "ocsigen-toolkit"
+    "ocsipersist"
+    "ocsipersist-pgsql"
+    "ocsipersist-sqlite"
     "ogg"
     "theora"
     "flac"
@@ -178,10 +151,18 @@ let
     "metrics-unix"
     "metrics-mirage"
 
+    "dream-serve"
+
     # incompatible with cmdliner 1.1
     "git-unix"
     "git-cohttp"
     "git-cohttp-unix"
+
+    # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
+    "elina"
+
+    # incompatible with ppxlib 0.26
+    "ppx_deriving_bson"
   ];
 
   buildCandidates = pkgs:

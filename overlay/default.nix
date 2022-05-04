@@ -1,15 +1,19 @@
+# `nixpkgs` here are the `nixpkgs` sources, i.e. the flake input
+nixpkgs:
+
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
 self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages = import ../ocaml/overlay-ocaml-packages.nix;
-  staticLightOverlay = overlayOcamlPackages [ (super.callPackage ../static/ocaml.nix { }) ];
-
+  overlayOcamlPackages = extraOverlays: import ./ocaml/overlay-ocaml-packages.nix {
+    inherit nixpkgs extraOverlays;
+  };
+  staticLightOverlay = overlayOcamlPackages [ (super.callPackage ./static/ocaml.nix { }) ];
 in
 
-(overlayOcamlPackages [ (callPackage ../ocaml { }) ] self super) // {
+(overlayOcamlPackages [ (callPackage ./ocaml { }) ] self super) // {
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl
   libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };
@@ -17,15 +21,15 @@ in
   opaline = (super.opaline.override {
     inherit (self) ocamlPackages;
   });
-  esy = callPackage ../ocaml/esy { };
+  esy = callPackage ./ocaml/esy { };
 
   pkgsMusl = super.pkgsMusl.extend staticLightOverlay;
   pkgsStatic = super.pkgsStatic.extend staticLightOverlay;
 
   pkgsCross =
     let
-      static-overlays = callPackage ../static { inherit (self) pkgsStatic; };
-      cross-overlays = callPackage ../cross { };
+      static-overlays = callPackage ./static { inherit (self) pkgsStatic; };
+      cross-overlays = callPackage ./cross { };
     in
     super.pkgsCross // {
       musl64 = super.pkgsCross.musl64.appendOverlays static-overlays;
@@ -73,7 +77,7 @@ in
     inherit overlayOcamlPackages;
   });
 
-  inherit (callPackage ../cockroachdb { })
+  inherit (callPackage ./cockroachdb { })
     cockroachdb-21_1_x
     cockroachdb-21_2_x
     cockroachdb-22_x;

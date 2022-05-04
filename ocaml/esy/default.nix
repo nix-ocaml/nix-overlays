@@ -25,7 +25,12 @@ let
   esyVersion = currentVersion;
 
   esyOcamlPkgs = ocamlPackages.overrideScope' (self: super: rec {
-    # buildDunePackage = (super.buildDunePackage.override { dune_1 = super.dune_one; });
+    alcotest = super.alcotest.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz;
+        sha256 = "1h9yp44snb6sgm5g1x3wg4gwjscic7i56jf0j8jr07355pxwrami";
+      };
+    });
 
     cmdliner =
       super.cmdliner.overrideAttrs (_: {
@@ -35,6 +40,14 @@ let
         };
         createFindlibDestdir = true;
       });
+
+    fmt = super.fmt.overrideAttrs (_: {
+      src = builtins.fetchurl {
+        url = https://github.com/dbuenzli/fmt/archive/refs/tags/v0.8.10.tar.gz;
+        sha256 = "0xnnrhp45p5vj1wzjn39w0j29blxrqj2dn42qcxzplp2j9mn76b9";
+      };
+    });
+
     uuidm = super.uuidm.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.7.tbz";
@@ -101,12 +114,12 @@ let
   # current version information.
   esyNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy/${esyVersion}";
-    sha256 = "0v43x5s34fsw70zgi9zvfpmjakkbfxpzc6zy0a70bzw293qvy7i0";
+    sha256 = "09b2543pm3bwj0lq7i1xk51rb9h5j9rmv8hl96krwnl2kzxa7ymq";
   };
 
   esySolveCudfNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy-solve-cudf/${esy-solve-cudf.version}";
-    sha256 = "19m793mydd8gcgw1mbn7pd8fw2rhnd00k5wpa4qkx8a3zn6crjjf";
+    sha256 = "001c4m10z4y9bfn5gllqdh7irlj64w7n9d10q43802myl92hpkzs";
   };
 
 in

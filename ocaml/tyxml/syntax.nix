@@ -4,6 +4,12 @@ buildDunePackage {
   pname = "tyxml-syntax";
   inherit (tyxml) src version;
 
+  postPatch = ''
+    substituteInPlace syntax/name_convention.ml \
+      --replace "Char.lowercase "  "Char.lowercase_ascii " \
+      --replace "Char.uppercase "  "Char.uppercase_ascii "
+  '';
+
   propagatedBuildInputs = [ ppxlib uutf re ];
 
   checkInputs = [ alcotest ];

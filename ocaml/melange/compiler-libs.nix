@@ -22,13 +22,13 @@ then
       then
         builtins.fetchurl
           {
-            url = https://github.com/melange-re/melange-compiler-libs/archive/83e3017.tar.gz;
-            sha256 = "02h0gzhk6bdxy6iarp8lk6yl80cskxiraqmbplpa5nqn7r9h2d3l";
+            url = https://github.com/melange-re/melange-compiler-libs/archive/refs/tags/4.12.0+mel.tar.gz;
+            sha256 = "1dby5dglwmfgl1wjqh6jqggj18kmln1npm82913i5shpadz88flz";
           }
       else
         builtins.fetchurl {
-          url = https://github.com/melange-re/melange-compiler-libs/archive/39d7060.tar.gz;
-          sha256 = "0cjjrn65xcvj3298hcn4lpf5r5cm4c61sxpzp8xagl534gbwjyhp";
+          url = https://github.com/melange-re/melange-compiler-libs/archive/2fac95b0ea97fb676240662aeeec8c6f6495dd9c.tar.gz;
+          sha256 = "10ija6y9c65h4lzlgnps4514qbbww2r5f566wz83qxwqhaysb3wb";
         };
 
 
