@@ -934,10 +934,14 @@ with oself;
     then null
     else osuper.ocaml-lsp;
 
-  inherit (callPackage ./ocamlformat-rpc { cmdliner = cmdliner_1_0; })
-    ocamlformat-rpc# latest version
+  ocamlformat = callPackage ./ocamlformat { };
+
+  inherit (callPackage ./ocamlformat-rpc { })
+    # latest version
+    ocamlformat-rpc
     ocamlformat-rpc_0_20_0
-    ocamlformat-rpc_0_20_1;
+    ocamlformat-rpc_0_20_1
+    ocamlformat-rpc_0_21_0;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
