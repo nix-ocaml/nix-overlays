@@ -71,11 +71,14 @@ with oself;
   archi-async = callPackage ./archi/async.nix { };
 
   atd = osuper.atd.overrideAttrs (_: {
+    propagatedBuildInputs = [ yojson ];
+  });
+  atdgen = disableTests osuper.atdgen;
+  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/atd/archive/ac9b826354e3b2103b8b95599c26e04b7868d0bf.tar.gz;
-      sha256 = "1108c9dhadp8mh925jrfnr83my0rsnpsxhrl2my3fgzq738lrx2l";
+      url = https://github.com/ahrefs/atd/archive/9b1c2e70a3b7063cba71f3ed793a0fce90cc34bb.tar.gz;
+      sha256 = "07qfvjc0qd27sdvrr197ma0ddgnjdxg68j9n8fr7yd1q5w7pchcr";
     };
-
   });
 
   multiformats = buildDunePackage {
@@ -153,15 +156,6 @@ with oself;
   });
 
   camlp5 = callPackage ./camlp5 { };
-
-  camlp-streams = buildDunePackage {
-    pname = "camlp-streams";
-    version = "5.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/camlp-streams/archive/refs/tags/v5.0.tar.gz;
-      sha256 = "09njlhzg9pqkz5d5cpqqcrbn70zfgpgdrn8131d0fxm8ayxii9ns";
-    };
-  };
 
   camlzip = osuper.camlzip.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -393,29 +387,12 @@ with oself;
 
   dune_2 = dune_3;
 
-  dune_3 = osuper.dune_3.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.1.0/fiber-3.1.0.tbz;
-      sha256 = "10cxa4ljajzlhb8jfc2ax8diyymydv3dfmjqxh86xia5105m4z87";
-    };
-    buildInputs = lib.optional stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-      Foundation
-      CoreServices
-    ]);
-  });
-
   dune-configurator = callPackage ./dune/configurator.nix { };
-  dyn = callPackage ./dune/dyn.nix { };
-  ordering = callPackage ./dune/ordering.nix { };
-  stdune = callPackage ./dune/stdune.nix { };
-  fiber = callPackage ./dune/fiber.nix { };
-  xdg = callPackage ./dune/xdg.nix { };
-  dune-private-libs = callPackage ./dune/private-libs.nix { };
-  dune-rpc = callPackage ./dune/rpc.nix { };
+  dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
+    buildInputs = [ ];
+    propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+  });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
-  dune-action-plugin = callPackage ./dune/action-plugin.nix { };
-  dune-glob = callPackage ./dune/glob.nix { };
-  dune-site = callPackage ./dune/site.nix { };
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -957,10 +934,14 @@ with oself;
     then null
     else osuper.ocaml-lsp;
 
-  inherit (callPackage ./ocamlformat-rpc { cmdliner = cmdliner_1_0; })
-    ocamlformat-rpc# latest version
+  ocamlformat = callPackage ./ocamlformat { };
+
+  inherit (callPackage ./ocamlformat-rpc { })
+    # latest version
+    ocamlformat-rpc
     ocamlformat-rpc_0_20_0
-    ocamlformat-rpc_0_20_1;
+    ocamlformat-rpc_0_20_1
+    ocamlformat-rpc_0_21_0;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
@@ -1424,13 +1405,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
       sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
-    };
-  });
-
-  uuuu = osuper.uuuu.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/uuuu/releases/download/v0.3.0/uuuu-0.3.0.tbz;
-      sha256 = "19n39yc7spgzpk9i70r0nhkwsb0bfbvbgpf8d863p0a3wgryhzkb";
     };
   });
 
