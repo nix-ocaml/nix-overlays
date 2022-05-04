@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - auto-update-sources-*
+      - jst-014
 jobs:
   fmt:
     runs-on: ubuntu-latest
