@@ -2,11 +2,14 @@ name: Auto-update
 on:
   workflow_dispatch:
   push:
+    branches-ignore:
+      - master
   pull_request:
     types:
       - opened
     paths:
       - '.github/workflows/auto-update.js'
+      - 'auto-update/lib.js'
       - '.github/workflows/auto-update.yml'
   schedule:
     - cron: "30 11 */2 * *"
@@ -16,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v17
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: "Update sources"
         uses: actions/github-script@v6
         id: update-sources
