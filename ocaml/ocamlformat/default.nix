@@ -51,7 +51,6 @@ buildDunePackage {
     ocaml-version
     ocp-indent
     odoc-parser
-    # (if version == "0.20.0" then odoc-parser.override { version = "0.9.0"; } else odoc-parser)
     re
     stdio
     uuseg
