@@ -114,6 +114,15 @@ module.exports = async ({ github, context, core, require }) => {
     });
   }
 
+  function escapeForGHActions(s) {
+    // Escape `"` and `$` characters in a string to work around the following
+    // issue:
+    // https://github.com/repo-sync/pull-request/issues/27
+    return s
+      .replace(/\$/g, '\\$')
+      .replace(/"/g, '\\"')
+  }
+
   const url = get_revisions()
     .then(get_newest)
     .then(async (revision) => {
@@ -132,7 +141,8 @@ module.exports = async ({ github, context, core, require }) => {
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
-        return `* [<span>${commit.message}</span>](${html_url})`;
+        const message = escapeForGHActions(commit.message);
+        return `* [<span>${message}</span>](${html_url})`;
       });
 
       const post_text = `
