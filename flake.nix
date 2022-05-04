@@ -24,7 +24,7 @@
       # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
       # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
       # you don't get the patched sources.
-      overlays.default = (import ./default.nix nixpkgs);
+      overlays.default = (import ./overlay nixpkgs);
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
         let channel = patchChannel system nixpkgs patches;
         in
