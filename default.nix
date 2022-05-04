@@ -16,10 +16,9 @@ let
     )
     { src = ./.; }
   ).defaultNix;
-  makePkgs = flake.makePkgs;
+  makePkgs = flake.makePkgs."${system}";
 in
 
 makePkgs {
-  inherit system;
   overlays = [ flake.overlays.default ] ++ extraOverlays;
 }
