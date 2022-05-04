@@ -50,7 +50,7 @@ jobs:
           destination_branch: "master"
           source_branch: auto-update-sources-${{ github.run_id }}
           pr_title: "Update sources"
-          pr_body: ":robot_face: Updating sources to the latest version.\n"
+          pr_body: ":robot_face: Updating sources to the latest version.\n${{steps.update-sources.outputs.result}}"
           pr_reviewer: "anmonteiro,ulrikstrid"
           pr_assignee: "anmonteiro,ulrikstrid"
           github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
