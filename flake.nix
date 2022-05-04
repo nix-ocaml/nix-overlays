@@ -7,6 +7,9 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }: ({
+    # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
+    # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
+    # you don't get the patched sources.
     overlays.default = (import ./default.nix nixpkgs);
   } // flake-utils.lib.eachDefaultSystem (system:
     let
@@ -26,10 +29,10 @@
     rec {
       packages = makePkgs { };
       legacyPackages = self.packages."${system}";
-      makePkgs = attrs:
+      makePkgs = { extraOverlays ? [ ], ... }@attrs:
         import channel ({
           inherit system;
-          overlays = [ self.overlays.default ];
+          overlays = [ self.overlays.default ] ++ extraOverlays;
           config = {
             allowUnfree = true;
           };
