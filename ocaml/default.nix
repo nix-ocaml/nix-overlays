@@ -904,27 +904,13 @@ with oself;
       then
         builtins.fetchGit
           {
-            url = "https://github.com/EduardoRFS/ocaml-lsp.git";
+            url = "https://github.com/anmonteiro/ocaml-lsp.git";
             submodules = true;
-            ref = "500";
-            rev = "24fcebcec9f1e99815b036a6d45c0f912e8e8a19";
+            ref = "master";
+            rev = "614283793339172d2815daf6395b870895f552ba";
           }
       else o.src;
   });
-
-  lsp = osuper.lsp.overrideAttrs (o: {
-    preBuild =
-      if lib.versionOlder "5.00" osuper.ocaml.version then
-        ''
-          rm -r ocaml-lsp-server/vendor/{octavius,cmdliner}
-        '' else o.preBuild;
-  });
-
-  ocaml-lsp =
-    if lib.versionOlder "4.14" osuper.ocaml.version &&
-      ! (lib.versionOlder "5.00" osuper.ocaml.version)
-    then null
-    else osuper.ocaml-lsp;
 
   ocamlformat = callPackage ./ocamlformat { };
 
