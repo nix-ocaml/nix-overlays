@@ -162,11 +162,112 @@ let
     # incompatible with ppxlib 0.26
     "ppx_deriving_bson"
   ];
+  
+  ocaml5Ignores = [
+    "async_js"
+    "batteries"
+    "biocaml"
+    "bls12-381-unix"
+    "camlp5"
+    "camlp5_strict"
+    "carton"
+    "carton-git"
+    "carton-lwt"
+    "cfstream"
+    "csvfields"
+    "dose3"
+    "email_message"
+    "gapi_ocaml"
+    "git"
+    "gsl"
+    "hack_parallel"
+    "imagelib"
+    "inifiles"
+    "inotify"
+    "irmin-git"
+    "js_of_ocaml"
+    "js_of_ocaml-compiler"
+    "js_of_ocaml-lwt"
+    "js_of_ocaml-ppx"
+    "js_of_ocaml-ppx_deriving_json"
+    "js_of_ocaml-tyxml"
+    "lablgtk3"
+    "lablgtk3-gtkspell3"
+    "lablgtk3-sourceview3"
+    "lastfm"
+    "lustre-v6"
+    "mccs"
+    "mirage-block-unix"
+    "multiformats"
+    "noise"
+    "ocaml-migrate-parsetree-2"
+    "ocaml-protoc"
+    "ocaml-recovery-parser"
+    "ocaml-sat-solvers"
+    "ocaml_oasis"
+    "ocamlify"
+    "ocamlmod"
+    "ocamlnet"
+    "ocp-build"
+    "ocplib-json-typed-browser"
+    "owl"
+    "owl-base"
+    "parany"
+    "parmap"
+    "pcap-format"
+    "pgocaml"
+    "pgocaml_ppx"
+    "pgsolver"
+    "phylogenetics"
+    "piqi"
+    "piqi-ocaml"
+    "ppx_css"
+    "ppx_python"
+    "ppx_tools"
+    "pyml"
+    "rdbg"
+    "re2"
+    "re2_stable"
+    "reactivedata"
+    "redis"
+    "redis-lwt"
+    "redis-sync"
+    "rfc7748"
+    "ringo"
+    "ringo-lwt"
+    "rope"
+    "samplerate"
+    "secp256k1"
+    "session-redis-lwt"
+    "sexp"
+    "sha"
+    "shexp"
+    "sosa"
+    "spell"
+    "stdcompat"
+    "stdint"
+    "tar"
+    "tar-unix"
+    "tcslib"
+    "twt"
+    "uecc"
+    "vg"
+    "virtual_dom"
+    "vlq"
+    "wodan-unix"
+    "xenstore-tool"
+    "xml-light"
+    "zmq"
+    "zmq-lwt"
+  ];
 in
 
 rec {
-  buildCandidates = pkgs: ocamlVersion:
-    let ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+  inherit ocaml5Ignores;
+  buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [] }:
+    let
+      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+      ignoredPackages' = ignoredPackages ++ extraIgnores;
     in
     lib.filterAttrs
       (n: v:
@@ -175,7 +276,7 @@ rec {
           # don't build tezos stuff
         in
         (!((builtins.substring 0 5 n) == "tezos"))
-        && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
+        && (!(builtins.elem n ignoredPackages')) && lib.isDerivation v && (!broken)
         && (
           let
             platforms = (if ((v ? meta) && v.meta ? platforms) then
@@ -188,7 +289,7 @@ rec {
       ocamlPackages;
 
   crossTarget = pkgs: ocamlVersion:
-    with (buildCandidates pkgs ocamlVersion); {
+    with (buildCandidates { inherit pkgs ocamlVersion; }); {
       # just build a subset of the static overlay, with the most commonly used
       # packages
       inherit piaf carl caqti-driver-postgresql ppx_deriving;
