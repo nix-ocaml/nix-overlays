@@ -162,7 +162,7 @@ let
     # incompatible with ppxlib 0.26
     "ppx_deriving_bson"
   ];
-  
+
   ocaml5Ignores = [
     "async_js"
     "batteries"
@@ -264,7 +264,7 @@ in
 
 rec {
   inherit ocaml5Ignores;
-  buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [] }:
+  buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
       ignoredPackages' = ignoredPackages ++ extraIgnores;
