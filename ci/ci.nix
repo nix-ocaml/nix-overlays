@@ -16,7 +16,7 @@ in
 with pkgs;
 with filter;
 {
-  native = lib.attrValues (buildCandidates { inherit pkgs ocamlVersion; extraIgnores = (if ocamlVersion == "5_00" then ocaml5Ignores else [ ]); }) ++ [
+  native = lib.attrValues (buildCandidates { inherit pkgs ocamlVersion; extraIgnores = (if ocamlVersion == "5_00" then ocaml5Ignoresm else [ ]); }) ++ [
     # cockroachdb-21_1_x cockroachdb-21_2_x
     cockroachdb-22_x
     # mongodb-4_2
@@ -24,8 +24,8 @@ with filter;
     esy
   ] ++ lib.optional stdenv.isLinux [ kubernetes ];
 
-  musl = crossTargetList pkgs.pkgsCross.musl64;
+  musl = crossTargetList pkgs.pkgsCross.musl64 ocamlVersion;
 
-  arm64 = crossTargetList pkgs.pkgsCross.aarch64-multiplatform-musl;
+  arm64 = crossTargetList pkgs.pkgsCross.aarch64-multiplatform-musl ocamlVersion;
 
 }."${target}"
