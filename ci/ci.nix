@@ -16,7 +16,7 @@ in
 with pkgs;
 with filter;
 {
-  native = lib.attrValues (buildCandidates { inherit pkgs ocamlVersion; extraIgnores = (if ocamlVersion == "5_00" then ocaml5Ignoresm else [ ]); }) ++ [
+  native = lib.attrValues (buildCandidates { inherit pkgs ocamlVersion; extraIgnores = (if ocamlVersion == "5_00" then ocaml5Ignores else [ ]); }) ++ [
     # cockroachdb-21_1_x cockroachdb-21_2_x
     cockroachdb-22_x
     # mongodb-4_2
