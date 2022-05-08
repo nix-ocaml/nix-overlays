@@ -13,7 +13,7 @@ let
   staticLightOverlay = overlayOcamlPackages [ (super.callPackage ../static/ocaml.nix { }) ];
 in
 
-(overlayOcamlPackages [ (callPackage ../ocaml { }) ] self super) // {
+(overlayOcamlPackages [ (callPackage ../ocaml { inherit nixpkgs; }) ] self super) // {
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl
   libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };

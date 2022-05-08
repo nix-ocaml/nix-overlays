@@ -1,4 +1,5 @@
-{ fetchpatch
+{ nixpkgs
+, fetchpatch
 , fetchFromGitHub
 , lib
 , libpq
@@ -1583,5 +1584,11 @@ with oself;
           })
         ]
       else [ ];
+  });
+
+  incr_dom = osuper.incr_dom.overrideAttrs (_: {
+    patches = [
+      "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/incr_dom_jsoo_4_0.patch"
+    ];
   });
 }
