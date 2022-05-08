@@ -144,7 +144,6 @@ let
     "reason-native"
 
     # Incompatible with JSOO 4
-    "incr_dom"
     "bonsai"
 
     # https://github.com/mirage/metrics/issues/57

@@ -1,4 +1,5 @@
-{ fetchpatch
+{ nixpkgs
+, fetchpatch
 , fetchFromGitHub
 , lib
 , libpq
@@ -623,20 +624,6 @@ with oself;
       substituteInPlace ./src/jFile.ml --replace "Pervasives." "Stdlib."
     '';
 
-  });
-
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/4.0.0/js_of_ocaml-4.0.0.tbz;
-      sha256 = "0pj9jjrmi0xxrzmygv4b5whsibw1jxy3wgibmws85x5jwlczh0nz";
-    };
-  });
-
-  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml-ocamlbuild/archive/852302c8f35b946e2ec275c529a79e46d8749be6.tar.gz;
-      sha256 = "11dj6sg77bzmnrja2vjsaarpwzfn1gbqia2l6y4pml5klpp712iv";
-    };
   });
 
   jose = callPackage ./jose { };
@@ -1597,5 +1584,11 @@ with oself;
           })
         ]
       else [ ];
+  });
+
+  incr_dom = osuper.incr_dom.overrideAttrs (_: {
+    patches = [
+      "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/incr_dom_jsoo_4_0.patch"
+    ];
   });
 }
