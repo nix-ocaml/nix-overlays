@@ -1,5 +1,4 @@
 { system ? builtins.currentSystem
-, patches ? [ ]
 , extraOverlays ? [ ]
 , ...
 }@args:
@@ -19,6 +18,5 @@ let
 in
 
 flake.makePkgs {
-  inherit system;
-  overlays = [ flake.overlays.default ] ++ extraOverlays;
+  inherit system extraOverlays;
 }
