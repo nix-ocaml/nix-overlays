@@ -8,8 +8,10 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     let
-      patches = [ ];
-      patchChannel = system: channel: patches:
+      patchChannel = { system, channel }:
+        let
+          patches = [ ];
+        in
         if patches == [ ]
         then channel
         else
@@ -21,28 +23,42 @@
     in
 
     {
-      # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
-      # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
-      # you don't get the patched sources.
-      hydraJobs = {
-        x86_64-linux = (import ./ci/hydra.nix { pkgs = self.packages.x86_64-linux; system = "x86_64-linux"; });
-        aarch64-darwin = (import ./ci/hydra.nix { pkgs = self.packages.aarch64-darwin; system = "aarch64-darwin"; });
-      };
-      overlays.default = (import ./overlay nixpkgs);
-      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let channel = patchChannel system nixpkgs patches;
-        in
+      hydraJobs = builtins.listToAttrs (map
+        (system: {
+          name = system;
+          value = (import ./ci/hydra.nix {
+            inherit system;
+            pkgs = self.packages.${system};
+          });
+        })
+        [ "x86_64-linux" "aarch64-darwin" ]);
 
-        import channel ({
+      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+        let pkgs = import nixpkgs ({
           inherit system;
-          overlays = [ self.overlays.default ] ++ extraOverlays;
-          config = {
-            allowUnfree = true;
-          };
+          overlays = [ self.overlays.${system}.default ];
+          config.allowUnfree = true;
         } // attrs);
+        in
+        pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
-      rec {
+      {
         packages = self.makePkgs { inherit system; };
-        legacyPackages = self.packages."${system}";
+        legacyPackages = self.packages.${system};
+
+        overlays.default = (final: prev:
+          let
+            channel = patchChannel {
+              inherit system;
+              channel = nixpkgs;
+            };
+          in
+
+          import channel {
+            inherit system;
+            overlays = [ (import ./overlay channel) ];
+            config.allowUnfree = true;
+          }
+        );
       });
 }

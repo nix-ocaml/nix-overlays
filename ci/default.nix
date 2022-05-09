@@ -9,7 +9,11 @@ let
     })
     { src = ../.; }).defaultNix;
 
-  pkgs = flake.legacyPackages.${system};
+  pkgs = flake.legacyPackages.${system}.extend (self: super:
+    if ocamlVersion != "5_00" then {
+      ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
+      ocamlPackages_latest = self.ocamlPackages;
+    } else { });
   filter = pkgs.callPackage ./filter.nix { };
   inherit (pkgs) lib stdenv pkgsCross;
 
@@ -25,8 +29,8 @@ in
     cockroachdb-22_x
     # mongodb-4_2
     # nixUnstable
-    esy
-  ]) ++ lib.optional stdenv.isLinux [ pkgs.kubernetes ];
+  ]) ++ lib.optional stdenv.isLinux pkgs.kubernetes
+  ++ lib.optional (ocamlVersion != "5_00") pkgs.esy;
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
