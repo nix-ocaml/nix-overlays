@@ -28,8 +28,8 @@ in
     cockroachdb-22_x
     # mongodb-4_2
     # nixUnstable
-    esy
-  ]) ++ lib.optional stdenv.isLinux [ pkgs.kubernetes ];
+  ]) ++ lib.optional stdenv.isLinux pkgs.kubernetes
+  ++ lib.optional (ocamlVersion != "5_00") pkgs.esy;
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
