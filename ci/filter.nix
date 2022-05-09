@@ -182,6 +182,7 @@ let
     "gsl"
     "hack_parallel"
     "imagelib"
+    "incr_dom"
     "inifiles"
     "inotify"
     "irmin-git"
