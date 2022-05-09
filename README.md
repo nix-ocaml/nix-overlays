@@ -18,7 +18,7 @@ In your `flake.nix`:
   outputs = { self, nixpkgs }:
     let
       pkgs = import nixpkgs {
-        system = "YOUR_SYSTEM_STRING"
+        system = "YOUR_SYSTEM_STRING";
       };
     in
     {
