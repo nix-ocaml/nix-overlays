@@ -9,7 +9,10 @@ let
     })
     { src = ../.; }).defaultNix;
 
-  pkgs = flake.legacyPackages.${system};
+  pkgs = flake.legacyPackages.${system}.extend (self: super: {
+    ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
+    ocamlPackages_latest = self.ocamlPackages;
+  });
   filter = pkgs.callPackage ./filter.nix { };
   inherit (pkgs) lib stdenv pkgsCross;
 
