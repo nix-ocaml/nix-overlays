@@ -7,24 +7,24 @@ self: super:
 
 let
   inherit (super) lib stdenv fetchFromGitHub callPackage;
-  overlayOcamlPackages = extraOverlays: import ../ocaml/overlay-ocaml-packages.nix {
-    inherit nixpkgs extraOverlays;
-  };
-  staticLightOverlay = overlayOcamlPackages [ (super.callPackage ../static/ocaml.nix { }) ];
+  overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
+    inherit nixpkgs;
+  });
+  staticLightExtend = pkgSet: pkgSet.extend (self: super:
+    super.lib.overlayOCamlPackages {
+      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
+      pkgs = super;
+    });
+
 in
 
-(overlayOcamlPackages [ (callPackage ../ocaml { inherit nixpkgs; }) ] self super) // {
-  # Stripped down postgres without the `bin` part, to allow static linking
-  # with musl
-  libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };
-
-  opaline = (super.opaline.override {
-    inherit (self) ocamlPackages;
-  });
-  esy = callPackage ../ocaml/esy { };
-
-  pkgsMusl = super.pkgsMusl.extend staticLightOverlay;
-  pkgsStatic = super.pkgsStatic.extend staticLightOverlay;
+(overlayOCamlPackages {
+  pkgs = super;
+  overlays = [ (callPackage ../ocaml { inherit nixpkgs; }) ];
+}) // {
+  # Cross-compilation / static overlays
+  pkgsMusl = staticLightExtend super.pkgsMusl;
+  pkgsStatic = staticLightExtend super.pkgsStatic;
 
   pkgsCross =
     let
@@ -43,14 +43,23 @@ in
     };
 
 
+  # Other packages
+
+  # Stripped down postgres without the `bin` part, to allow static linking
+  # with musl
+  libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };
+
+  opaline = super.opaline.override { inherit (self) ocamlPackages; };
+  esy = callPackage ../ocaml/esy { };
+
   ocamlformat = super.ocamlformat.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \
-        --replace \
-        "String.capitalize" "String.capitalize_ascii"
+      --replace \
+      "String.capitalize" "String.capitalize_ascii"
     '';
   });
-  # Other packages
+
 
   lib = lib.fix (self: lib //
   (import
@@ -74,7 +83,7 @@ in
 
     filterGitSource = args: self.gitignoreSource (self.filterSource args);
 
-    inherit overlayOcamlPackages;
+    inherit overlayOCamlPackages;
   });
 
   inherit (callPackage ../cockroachdb { })
@@ -85,5 +94,8 @@ in
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
-    { inherit (super) zlib openssl gmp libffi; }
+    {
+      inherit (super) zlib gmp libffi;
+      openssl = super.openssl_3_0;
+    }
 )

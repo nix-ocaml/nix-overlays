@@ -4,26 +4,17 @@ self: super:
 
 let
   inherit (super) stdenv lib;
-  isStatic = stdenv.hostPlatform.isStatic;
-  renameForOCaml = n: p:
-    if isStatic
-    then lib.nameValuePair n p
-    else
-      lib.nameValuePair "${n}-oc" p;
 
 in
 
 {
   inherit (pkgsStatic) libev;
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
-  zlib-oc = super.zlib.override { static = true; splitStaticOutput = false; };
-  openssl-oc = super.openssl.override { static = true; };
-  gmp-oc = super.gmp.override { withStatic = true; };
-  libffi-oc = super.libffi.overrideAttrs (_: { dontDisableStatic = true; });
+  zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
+  openssl-oc = super.openssl-oc.override { static = true; };
+  gmp-oc = super.gmp-oc.override { withStatic = true; };
+  libffi-oc = super.libffi-oc.overrideAttrs (_: { dontDisableStatic = true; });
   libxml2 = super.libxml2.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ self.zlib-oc ];
   });
 }
-# // (
-# lib.mapAttrs' renameForOCaml { inherit (pkgsStatic) zlib openssl; }
-# )

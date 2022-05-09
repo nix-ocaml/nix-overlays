@@ -1410,6 +1410,10 @@ with oself;
   });
 
   # Jane Street packages
+  async_ssl = osuper.async_ssl.overrideAttrs (_: {
+    propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+  });
+
   async_websocket = osuper.buildDunePackage {
     pname = "async_websocket";
     version = "0.14.0";
@@ -1419,7 +1423,6 @@ with oself;
     };
     propagatedBuildInputs = [ ppx_jane cryptokit async core_kernel ];
   };
-
 
   base = osuper.base.overrideAttrs (_: {
     src = builtins.fetchurl {
