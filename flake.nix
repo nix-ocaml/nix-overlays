@@ -23,12 +23,14 @@
     in
 
     {
-      hydraJobs = lib.listToAttrs (lib.map
-        (system:
-          lib.nameValuePair system (import ./ci/hydra.nix {
+      hydraJobs = builtins.listToAttrs (map
+        (system: {
+          name = system;
+          value = (import ./ci/hydra.nix {
             inherit system;
             pkgs = self.packages.${system};
-          }))
+          });
+        })
         [ "x86_64-linux" "aarch64-darwin" ]);
 
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
