@@ -24,6 +24,10 @@
       # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
       # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
       # you don't get the patched sources.
+      hydraJobs = {
+        x86_64-linux = (import ./ci/hydra.nix { pkgs = self.packages.x86_64-linux; system = "x86_64-linux"; });
+        aarch64-darwin = (import ./ci/hydra.nix { pkgs = self.packages.aarch64-darwin; system = "aarch64-darwin"; });
+      };
       overlays.default = (import ./overlay nixpkgs);
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
         let channel = patchChannel system nixpkgs patches;
