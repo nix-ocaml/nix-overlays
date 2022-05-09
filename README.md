@@ -66,3 +66,24 @@ in
 
 pkgs
 ```
+
+
+#### Alternative (advanced)
+
+```nix
+let
+  nixpkgs-sources =
+    builtins.fetchTarball
+      https://github.com/anmonteiro/nix-overlays/archive/master.tar.gz;
+
+  custom-nixpkgs = /path/to/custom/nixpkgs;
+
+  pkgs = import custom-nixpkgs {
+    overlays = [
+      (import "${nixpkgs-sources}/overlay" { nixpkgs = custom-nixpkgs; })
+    ];
+  };
+in
+
+pkgs
+```
