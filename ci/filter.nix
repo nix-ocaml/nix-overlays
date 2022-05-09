@@ -1,7 +1,6 @@
-{ pkgs }:
+{ lib, stdenv }:
 let
-  inherit (pkgs) lib stdenv;
-  ignoredPackages = [
+  baseIgnoredPackages = [
     # camlp4 or not supported in 4.11+
     "bap"
     "camlp4"
@@ -267,7 +266,7 @@ rec {
   buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
-      ignoredPackages' = ignoredPackages ++ extraIgnores;
+      ignoredPackages = baseIgnoredPackages ++ extraIgnores;
     in
     lib.filterAttrs
       (n: v:
@@ -276,7 +275,7 @@ rec {
           # don't build tezos stuff
         in
         (!((builtins.substring 0 5 n) == "tezos"))
-        && (!(builtins.elem n ignoredPackages')) && lib.isDerivation v && (!broken)
+        && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
         && (
           let
             platforms = (if ((v ? meta) && v.meta ? platforms) then
@@ -284,7 +283,7 @@ rec {
             else
               lib.platforms.all);
           in
-          (builtins.elem stdenv.system platforms)
+          builtins.elem stdenv.system platforms
         ))
       ocamlPackages;
 
@@ -293,7 +292,7 @@ rec {
       # just build a subset of the static overlay, with the most commonly used
       # packages
       inherit piaf carl caqti-driver-postgresql ppx_deriving;
-      static-carl = (carl.override { static = true; });
+      static-carl = carl.override { static = true; };
     };
 
   crossTargetList = pkgs: ocamlVersion:
