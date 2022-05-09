@@ -1,6 +1,7 @@
 { ocamlVersion, target ? "native" }:
 let
 
+  system = builtins.currentSystem;
   flake = (import
     (fetchTarball {
       url = "https://github.com/edolstra/flake-compat/archive/b4a3401.tar.gz";
@@ -8,24 +9,27 @@ let
     })
     { src = ../.; }).defaultNix;
 
-  pkgs = flake.legacyPackages."${builtins.currentSystem}";
-
-  filter = import ./filter.nix { inherit pkgs; };
+  pkgs = flake.legacyPackages.${system};
+  filter = pkgs.callPackage ./filter.nix { };
+  inherit (pkgs) lib stdenv pkgsCross;
 
 in
-with pkgs;
-with filter;
+
 {
-  native = lib.attrValues (buildCandidates { inherit pkgs ocamlVersion; extraIgnores = (if ocamlVersion == "5_00" then ocaml5Ignores else [ ]); }) ++ [
+  native = lib.attrValues
+    (filter.buildCandidates {
+      inherit pkgs ocamlVersion;
+      extraIgnores = lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores;
+    }) ++ (with pkgs; [
     # cockroachdb-21_1_x cockroachdb-21_2_x
     cockroachdb-22_x
     # mongodb-4_2
     # nixUnstable
     esy
-  ] ++ lib.optional stdenv.isLinux [ kubernetes ];
+  ]) ++ lib.optional stdenv.isLinux [ pkgs.kubernetes ];
 
-  musl = crossTargetList pkgs.pkgsCross.musl64 ocamlVersion;
+  musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
-  arm64 = crossTargetList pkgs.pkgsCross.aarch64-multiplatform-musl ocamlVersion;
+  arm64 = filter.crossTargetList pkgsCross.aarch64-multiplatform-musl ocamlVersion;
 
 }."${target}"
