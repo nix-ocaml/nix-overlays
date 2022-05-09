@@ -3,9 +3,10 @@
 
 [
   (self: super:
-    super.lib.overlayOcamlPackages [ (super.callPackage ./ocaml.nix { }) ]
-      self
-      super)
+    super.lib.overlayOCamlPackages {
+      pkgs = super;
+      overlays = [ (super.callPackage ./ocaml.nix { }) ];
+    })
 
   (import ./overlays.nix { inherit pkgsStatic; })
 ]

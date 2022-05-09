@@ -1459,6 +1459,10 @@ with oself;
 
   # Jane Street Libraries
 
+  async_ssl = osuper.async_ssl.overrideAttrs (_: {
+    propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+  });
+
   core_unix = osuper.core_unix.overrideAttrs (o: {
     # https://github.com/janestreet/core_unix/issues/2
     patches =

@@ -25,7 +25,7 @@ buildDunePackage {
     sha256 = "05as6h6i1fxjym2sisn5mpmn9dysggivw0yh0isp77p58vgn66vn";
   };
 
-  doCheck = true;
+  doCheck = false;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
 
   propagatedBuildInputs = [

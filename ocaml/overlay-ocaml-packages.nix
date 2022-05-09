@@ -1,9 +1,7 @@
-{ nixpkgs, extraOverlays }:
-
-self: super:
+{ nixpkgs, overlays, pkgs }:
 
 let
-  inherit (super) lib callPackage;
+  inherit (pkgs) lib callPackage ocaml-ng;
   ocamlVersions = [
     "4_06"
     "4_08"
@@ -16,7 +14,7 @@ let
     "5_00"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
-    super.ocaml-ng.ocamlPackages_4_13.overrideScope'
+    ocaml-ng.ocamlPackages_4_13.overrideScope'
       (oself: osuper: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
@@ -26,9 +24,9 @@ let
       });
 
   custom-ocaml-ng =
-    super.ocaml-ng //
-    (if !(super.ocaml-ng ? "ocamlPackages_5_00") then {
-      ocamlPackages_4_14 = super.ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
+    ocaml-ng //
+    (if !(ocaml-ng ? "ocamlPackages_5_00") then {
+      ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           hardeningDisable = [ "strictoverflow" ];
         });
@@ -52,19 +50,19 @@ let
       builtins.foldl'
         (acc: x: acc.overrideScope' x)
         custom-ocaml-ng."ocamlPackages_${version}"
-        extraOverlays;
+        overlays;
   };
   oPs =
     lib.fold lib.mergeAttrs { }
       (builtins.map overlayOcamlPackages ocamlVersions);
 
 in
-{
-  ocaml = self.ocamlPackages.ocaml;
+rec {
+  ocaml = ocamlPackages.ocaml;
   ocamlPackages = oPs.ocamlPackages_4_13;
-  ocamlPackages_latest = self.ocamlPackages;
+  ocamlPackages_latest = ocamlPackages;
 
   ocaml-ng = custom-ocaml-ng // oPs // {
-    ocamlPackages = self.ocamlPackages;
+    inherit ocamlPackages;
   };
 }
