@@ -41,7 +41,7 @@ jobs:
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci.nix \
+              nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
@@ -70,7 +70,7 @@ jobs:
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci.nix \
+              nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
@@ -103,7 +103,7 @@ jobs:
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci.nix \
+              nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target ${{ matrix.target }} \
                 --show-trace --keep-going

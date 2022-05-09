@@ -1,6 +1,5 @@
-{ ocamlVersion, target ? "native" }:
+{ pkgs }:
 let
-  pkgs = import ./. { };
   inherit (pkgs) lib stdenv;
   ignoredPackages = [
     # camlp4 or not supported in 4.11+
@@ -162,58 +161,141 @@ let
     "elina"
   ];
 
-  buildCandidates = pkgs:
+  ocaml5Ignores = [
+    "async_js"
+    "batteries"
+    "biocaml"
+    "bls12-381-unix"
+    "camlp5"
+    "camlp5_strict"
+    "carton"
+    "carton-git"
+    "carton-lwt"
+    "cfstream"
+    "csvfields"
+    "dose3"
+    "email_message"
+    "gapi_ocaml"
+    "git"
+    "gsl"
+    "hack_parallel"
+    "imagelib"
+    "inifiles"
+    "inotify"
+    "irmin-git"
+    "js_of_ocaml"
+    "js_of_ocaml-compiler"
+    "js_of_ocaml-lwt"
+    "js_of_ocaml-ppx"
+    "js_of_ocaml-ppx_deriving_json"
+    "js_of_ocaml-tyxml"
+    "lablgtk3"
+    "lablgtk3-gtkspell3"
+    "lablgtk3-sourceview3"
+    "lastfm"
+    "lustre-v6"
+    "mccs"
+    "mirage-block-unix"
+    "multiformats"
+    "noise"
+    "ocaml-migrate-parsetree-2"
+    "ocaml-protoc"
+    "ocaml-recovery-parser"
+    "ocaml-sat-solvers"
+    "ocaml_oasis"
+    "ocamlify"
+    "ocamlmod"
+    "ocamlnet"
+    "ocp-build"
+    "ocplib-json-typed-browser"
+    "owl"
+    "owl-base"
+    "parany"
+    "parmap"
+    "pcap-format"
+    "pgocaml"
+    "pgocaml_ppx"
+    "pgsolver"
+    "phylogenetics"
+    "piqi"
+    "piqi-ocaml"
+    "ppx_css"
+    "ppx_python"
+    "ppx_tools"
+    "pyml"
+    "rdbg"
+    "re2"
+    "re2_stable"
+    "reactivedata"
+    "redis"
+    "redis-lwt"
+    "redis-sync"
+    "rfc7748"
+    "ringo"
+    "ringo-lwt"
+    "rope"
+    "samplerate"
+    "secp256k1"
+    "session-redis-lwt"
+    "sexp"
+    "sha"
+    "shexp"
+    "sosa"
+    "spell"
+    "spelll"
+    "stdcompat"
+    "stdint"
+    "tar-unix"
+    "tar"
+    "tcslib"
+    "twt"
+    "uecc"
+    "vg"
+    "virtual_dom"
+    "vlq"
+    "wodan-unix"
+    "xenstore-tool"
+    "xml-light"
+    "zmq"
+    "zmq-lwt"
+  ];
+in
+
+rec {
+  inherit ocaml5Ignores;
+  buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+      ignoredPackages' = ignoredPackages ++ extraIgnores;
     in
     lib.filterAttrs
       (n: v:
-        let broken =
-          if v ? meta && v.meta ? broken then v.meta.broken else false;
+        let
+          broken = if v ? meta && v.meta ? broken then v.meta.broken else false;
+          # don't build tezos stuff
         in
-        # don't build tezos stuff
-        (! ((builtins.substring 0 5 n) == "tezos")) &&
-        (! (builtins.elem n ignoredPackages)) &&
-        lib.isDerivation v &&
-        (! broken) &&
-        (
-          let platforms = (if ((v ? meta) && v.meta ? platforms) then v.meta.platforms else lib.platforms.all);
+        (!((builtins.substring 0 5 n) == "tezos"))
+        && (!(builtins.elem n ignoredPackages')) && lib.isDerivation v && (!broken)
+        && (
+          let
+            platforms = (if ((v ? meta) && v.meta ? platforms) then
+              v.meta.platforms
+            else
+              lib.platforms.all);
           in
           (builtins.elem stdenv.system platforms)
         ))
       ocamlPackages;
 
-  crossTarget = pkgs:
-    with (buildCandidates pkgs);
-    [
+  crossTarget = pkgs: ocamlVersion:
+    with (buildCandidates { inherit pkgs ocamlVersion; }); {
       # just build a subset of the static overlay, with the most commonly used
       # packages
-      piaf
-      carl
-      (carl.override { static = true; })
-      caqti-driver-postgresql
-      ppx_deriving
-    ];
+      inherit piaf carl caqti-driver-postgresql ppx_deriving;
+      static-carl = (carl.override { static = true; });
+    };
 
-in
-
-with pkgs;
-
-{
-  native =
-    lib.attrValues (buildCandidates pkgs)
-    ++ [
-      # cockroachdb-21_1_x cockroachdb-21_2_x
-      cockroachdb-22_x
-      # mongodb-4_2
-      # nixUnstable
-      esy
-    ]
-    ++ lib.optional stdenv.isLinux [ kubernetes ];
-
-
-  musl = crossTarget pkgs.pkgsCross.musl64;
-
-  arm64 = crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl;
-
-}."${target}"
+  crossTargetList = pkgs: ocamlVersion:
+    let attrs = crossTarget pkgs ocamlVersion; in
+    lib.attrValues attrs;
+}
