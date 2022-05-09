@@ -17,9 +17,7 @@ In your `flake.nix`:
 
   outputs = { self, nixpkgs }:
     let
-      pkgs = import nixpkgs {
-        system = "YOUR_SYSTEM_STRING";
-      };
+      pkgs = nixpkg.packages.${"YOUR_SYSTEM_STRING"};
     in
     {
       ...
@@ -43,6 +41,7 @@ In your `flake.nix`:
     let
       system = "YOUR_SYSTEM_STRING";
       pkgs = import nixpkgs {
+        inherit system;
         overlays = [
           ocaml-overlay.overlays.${system}.default
         ];
