@@ -8,8 +8,10 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     let
-      patches = [ ./add-janestreet-packages-0_15.patch ];
-      patchChannel = system: channel: patches:
+      patchChannel = { system, channel }:
+        let
+          patches = [ ./add-janestreet-packages-0_15.patch ];
+        in
         if patches == [ ]
         then channel
         else
@@ -21,24 +23,32 @@
     in
 
     {
-      # NOTE(anmonteiro): One downside of using _just_ the overlay, e.g.
-      # `import nixpkgs { overlays = this-flake.overlay.default; }` is that
-      # you don't get the patched sources.
-      overlays.default = (import ./overlay nixpkgs);
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let channel = patchChannel system nixpkgs patches;
-        in
-
-        import channel ({
+        let pkgs = import nixpkgs ({
           inherit system;
-          overlays = [ self.overlays.default ] ++ extraOverlays;
-          config = {
-            allowUnfree = true;
-          };
+          overlays = [ self.overlays.${system}.default ];
+          config.allowUnfree = true;
         } // attrs);
+        in
+        pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
-      rec {
+      {
         packages = self.makePkgs { inherit system; };
-        legacyPackages = self.packages."${system}";
+        legacyPackages = self.packages.${system};
+
+        overlays.default = (final: prev:
+          let
+            channel = patchChannel {
+              inherit system;
+              channel = nixpkgs;
+            };
+          in
+
+          import channel {
+            inherit system;
+            overlays = [ (import ./overlay channel) ];
+            config.allowUnfree = true;
+          }
+        );
       });
 }
