@@ -50,6 +50,7 @@ in
         "String.capitalize" "String.capitalize_ascii"
     '';
   });
+
   # Other packages
 
   lib = lib.fix (self: lib //
@@ -85,5 +86,8 @@ in
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
-    { inherit (super) zlib openssl gmp libffi; }
+    {
+      inherit (self) zlib gmp libffi;
+      openssl = self.openssl_3_0;
+    }
 )
