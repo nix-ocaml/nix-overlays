@@ -113,6 +113,7 @@ let
     "ocaml-migrate-parsetree"
     "wasm"
     "pythonlib"
+    "camlp5"
 
     # Broken on OCaml 5.00
     "fontconfig"

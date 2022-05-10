@@ -1,6 +1,6 @@
 { pkgs, system }:
 let
-  filter = import ./filter.nix { inherit pkgs; };
+  filter = pkgs.callPackage ./filter.nix { };
 in
 
 with filter;
