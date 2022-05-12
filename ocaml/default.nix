@@ -1474,6 +1474,8 @@ with oself;
         [ ./core_unix.patch ] else [ ];
 
     postPatch = ''
+      ${o.postPatch}
+
       ${if stdenv.isDarwin then ''
         substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
         "int ret = clock_getcpuclockid(pid, &clock);" \
