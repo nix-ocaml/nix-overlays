@@ -3,7 +3,7 @@
 buildDunePackage {
   pname = "lwt_domain";
   version = "0.2.0-dev";
-  inherit (osuper.lwt) src;
+  inherit (lwt) src;
   propagatedBuildInputs = [ domainslib lwt ];
 
   meta = {
