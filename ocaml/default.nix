@@ -709,11 +709,11 @@ with oself;
     };
   });
 
-  lwt_react = callPackage ./lwt/react.nix { };
   lwt_domain =
     if lib.versionAtLeast ocaml.version "5.00" then
       callPackage ./lwt/domain.nix { }
     else null;
+  lwt_react = callPackage ./lwt/react.nix { };
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     prePatch = ''
