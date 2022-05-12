@@ -710,6 +710,7 @@ with oself;
   });
 
   lwt_react = callPackage ./lwt/react.nix { };
+  lwt_domain = callPackage ./lwt/domain.nix { };
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     prePatch = ''
@@ -1470,8 +1471,6 @@ with oself;
         [ ./core_unix.patch ] else [ ];
 
     postPatch = ''
-      ${o.postPatch}
-
       ${if stdenv.isDarwin then ''
         substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
         "int ret = clock_getcpuclockid(pid, &clock);" \
