@@ -248,6 +248,7 @@ let
     "tar-unix"
     "tar"
     "tcslib"
+    "telegraml"
     "twt"
     "uecc"
     "vg"
