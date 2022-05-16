@@ -30,7 +30,6 @@ In your `flake.nix`:
 
 ```nix
 {
-  # Simply use this repo as the `nixpkgs` URL
   inputs.nixpkgs = "github:nixOS/nixpkgs";
 
   inputs.ocaml-overlay = "github:anmonteiro/nix-overlays";
