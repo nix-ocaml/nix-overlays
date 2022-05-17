@@ -1,0 +1,14 @@
+{
+  "42": {
+    "title": "Pull request title",
+    "head": {
+      "repo": {
+        "owner": {
+          "login": "anmonteiro"
+        },
+        "name": "nix-overlays"
+      },
+      "ref": "pr-branch"
+    }
+  }
+}

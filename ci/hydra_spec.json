@@ -1,0 +1,29 @@
+{
+  "enabled": 1,
+  "hidden": false,
+  "description": "nix-overlays tests",
+  "nixexprinput": "configs",
+  "nixexprpath": "ci/hydra_jobs.nix",
+  "checkinterval": 600,
+  "schedulingshares": 100,
+  "enableemail": false,
+  "emailoverride": "",
+  "keepnr": 10,
+  "inputs": {
+    "nixpkgs": {
+      "type": "git",
+      "value": "https://github.com/nixos/nixpkgs nixos-unstable",
+      "emailresponsible": false
+    },
+    "configs": {
+      "type": "git",
+      "value": "https://github.com/anmonteiro/nix-overlays ulrikstrid-hydra-declarative-conf",
+      "emailresponsible": false
+    },
+    "pulls": {
+      "type": "githubpulls",
+      "value": "anmonteiro nix-overlays",
+      "emailresponsible": false
+    }
+  }
+}
