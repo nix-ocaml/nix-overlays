@@ -382,6 +382,14 @@ with oself;
 
   dune_2 = dune_3;
 
+  dune_3 = osuper.dune_3.overrideAttrs (_: {
+    version = "3.2.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.2.0/chrome-trace-3.2.0.tbz;
+      sha256 = "1g6m3a5b1nhvrxw5agzmng7ayy1rwbib56x8dyr1xvbrmvkbq7xx";
+    };
+  });
+
   dune-configurator = callPackage ./dune/configurator.nix { };
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
