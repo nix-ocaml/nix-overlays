@@ -2,8 +2,19 @@
 { pulls ? ./simple-pr-dummy.json }:
 
 let
-  pkgs = import <nixpkgs>{};
-in with import ./hydra_lib.nix;
+  pkgs = import <nixpkgs> {};
+  makeSpec = contents: builtins.derivation {
+    name = "spec.json";
+    system = "x86_64-linux";
+    preferLocalBuild = true;
+    allowSubstitutes = false;
+    builder = "/bin/sh";
+    args = [ (builtins.toFile "builder.sh" ''
+      echo "$contents" > $out
+    '') ];
+    contents = builtins.toJSON contents;
+  };
+in
 with pkgs.lib;
 let
   defaults = {
