@@ -1,5 +1,5 @@
 {
-  "nix-overlays": {
+  "nix-overlays-master": {
     "checkinterval": 600,
     "description": "nix-overlays",
     "emailoverride": "",
