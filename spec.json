@@ -1,5 +1,5 @@
 {
-  "nix-overlays-master": {
+  "nix-overlays": {
     "checkinterval": 600,
     "description": "nix-overlays",
     "emailoverride": "",
@@ -8,6 +8,7 @@
     "flake": "git+https://github.com/anmonteiro/nix-overlays.git",
     "hidden": false,
     "keepnr": 2,
-    "schedulingshares": 100
+    "schedulingshares": 100,
+    "type": 1
   }
 }
