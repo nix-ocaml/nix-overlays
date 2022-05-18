@@ -5,31 +5,9 @@
     "emailoverride": "",
     "enabled": 1,
     "enableemail": false,
-    "flake": "git+https://github.com/anmonteiro/nix-overlays",
+    "flake": "git+https://github.com/anmonteiro/nix-overlays.git",
     "hidden": false,
     "keepnr": 2,
     "schedulingshares": 100
-  },
-  "nix-overlays-276": {
-    "checkinterval": 600,
-    "description": "PR 276: Jst 014",
-    "emailoverride": "",
-    "enabled": 1,
-    "enableemail": false,
-    "flake": "git+https://github.com/anmonteiro/nix-overlays/jst-014",
-    "hidden": false,
-    "keepnr": 1,
-    "schedulingshares": 20
-  },
-  "nix-overlays-298": {
-    "checkinterval": 600,
-    "description": "PR 298: Update sources",
-    "emailoverride": "",
-    "enabled": 1,
-    "enableemail": false,
-    "flake": "git+https://github.com/anmonteiro/nix-overlays/auto-update-sources-2338325370",
-    "hidden": false,
-    "keepnr": 1,
-    "schedulingshares": 20
   }
 }
