@@ -1,29 +1,35 @@
 {
-  "enabled": 1,
-  "hidden": false,
-  "description": "nix-overlays tests",
-  "nixexprinput": "src",
-  "nixexprpath": "ci/hydra_jobs.nix",
-  "checkinterval": 300,
-  "schedulingshares": 100,
-  "enableemail": false,
-  "emailoverride": "",
-  "keepnr": 10,
-  "inputs": {
-    "nixpkgs": {
-      "type": "git",
-      "value": "https://github.com/nixos/nixpkgs nixos-unstable",
-      "emailresponsible": false
-    },
-    "src": {
-      "type": "git",
-      "value": "https://github.com/anmonteiro/nix-overlays ulrikstrid-hydra-declarative-conf",
-      "emailresponsible": false
-    },
-    "pulls": {
-      "type": "githubpulls",
-      "value": "anmonteiro nix-overlays",
-      "emailresponsible": false
-    }
+  "nix-overlays": {
+    "checkinterval": 600,
+    "description": "nix-overlays",
+    "emailoverride": "",
+    "enabled": 1,
+    "enableemail": false,
+    "flake": "github:anmonteiro/nix-overlays",
+    "hidden": false,
+    "keepnr": 2,
+    "schedulingshares": 100
+  },
+  "nix-overlays-276": {
+    "checkinterval": 600,
+    "description": "PR 276: Jst 014",
+    "emailoverride": "",
+    "enabled": 1,
+    "enableemail": false,
+    "flake": "github:anmonteiro/nix-overlays/jst-014",
+    "hidden": false,
+    "keepnr": 1,
+    "schedulingshares": 20
+  },
+  "nix-overlays-298": {
+    "checkinterval": 600,
+    "description": "PR 298: Update sources",
+    "emailoverride": "",
+    "enabled": 1,
+    "enableemail": false,
+    "flake": "github:anmonteiro/nix-overlays/auto-update-sources-2338325370",
+    "hidden": false,
+    "keepnr": 1,
+    "schedulingshares": 20
   }
 }
