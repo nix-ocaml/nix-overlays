@@ -4,7 +4,7 @@
 let
   pkgs = import <nixpkgs> {};
   makeSpec = contents: builtins.derivation {
-    name = "hydra_spec.json";
+    name = "spec.json";
     system = "x86_64-linux";
     preferLocalBuild = true;
     allowSubstitutes = false;
