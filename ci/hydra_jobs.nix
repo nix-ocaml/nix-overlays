@@ -10,6 +10,8 @@ let
     allowSubstitutes = false;
     builder = "/bin/sh";
     args = [ (builtins.toFile "builder.sh" ''
+      echo "$contents"
+      echo "$out"
       echo "$contents" > $out
     '') ];
     contents = builtins.toJSON contents;
