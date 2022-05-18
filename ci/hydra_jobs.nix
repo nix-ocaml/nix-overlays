@@ -2,20 +2,23 @@
 { pulls ? ./simple-pr-dummy.json }:
 
 let
-  pkgs = import <nixpkgs> {};
-  makeSpec = contents: builtins.derivation {
-    name = "spec.json";
-    system = "x86_64-linux";
-    preferLocalBuild = true;
-    allowSubstitutes = false;
-    builder = "/bin/sh";
-    args = [ (builtins.toFile "builder.sh" ''
-      echo "$contents"
-      echo "$out"
-      echo "$contents" > $out
-    '') ];
-    contents = builtins.toJSON contents;
-  };
+  pkgs = import <nixpkgs> { };
+  makeSpec = contents:
+    builtins.derivation {
+      name = "spec.json";
+      system = "x86_64-linux";
+      preferLocalBuild = true;
+      allowSubstitutes = false;
+      builder = "/bin/sh";
+      args = [
+        (builtins.toFile "builder.sh" ''
+          echo "$contents"
+          echo "$out"
+          echo "$contents" > $out
+        '')
+      ];
+      contents = builtins.toJSON contents;
+    };
 in
 with pkgs.lib;
 let
@@ -32,7 +35,7 @@ let
   primary_jobsets = {
     nix-overlays = defaults // {
       keepnr = 2;
-    schedulingshares = 100;
+      schedulingshares = 100;
       description = "nix-overlays";
       flake = "github:anmonteiro/nix-overlays";
     };
@@ -47,6 +50,5 @@ let
   };
   pull_requests = listToAttrs (mapAttrsToList makePr pr_data);
   jobsetsAttrs = pull_requests // primary_jobsets;
-in {
-  jobsets = makeSpec jobsetsAttrs;
-}
+in
+{ jobsets = makeSpec jobsetsAttrs; }
