@@ -20,14 +20,16 @@ let
   defaults = {
     enabled = 1;
     hidden = false;
-    keepnr = 10;
-    schedulingshares = 100;
+    keepnr = 1;
+    schedulingshares = 20;
     checkinterval = 600;
     enableemail = false;
     emailoverride = "";
   };
   primary_jobsets = {
     nix-overlays = defaults // {
+      keepnr = 2;
+    schedulingshares = 100;
       description = "nix-overlays";
       flake = "github:anmonteiro/nix-overlays";
     };

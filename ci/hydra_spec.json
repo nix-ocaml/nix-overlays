@@ -2,9 +2,9 @@
   "enabled": 1,
   "hidden": false,
   "description": "nix-overlays tests",
-  "nixexprinput": "configs",
+  "nixexprinput": "src",
   "nixexprpath": "ci/hydra_jobs.nix",
-  "checkinterval": 600,
+  "checkinterval": 300,
   "schedulingshares": 100,
   "enableemail": false,
   "emailoverride": "",
@@ -15,7 +15,7 @@
       "value": "https://github.com/nixos/nixpkgs nixos-unstable",
       "emailresponsible": false
     },
-    "configs": {
+    "src": {
       "type": "git",
       "value": "https://github.com/anmonteiro/nix-overlays ulrikstrid-hydra-declarative-conf",
       "emailresponsible": false
