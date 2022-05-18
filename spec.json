@@ -5,7 +5,7 @@
     "emailoverride": "",
     "enabled": 1,
     "enableemail": false,
-    "flake": "github:anmonteiro/nix-overlays",
+    "flake": "git+https://github.com/anmonteiro/nix-overlays",
     "hidden": false,
     "keepnr": 2,
     "schedulingshares": 100
@@ -16,7 +16,7 @@
     "emailoverride": "",
     "enabled": 1,
     "enableemail": false,
-    "flake": "github:anmonteiro/nix-overlays/jst-014",
+    "flake": "git+https://github.com/anmonteiro/nix-overlays/jst-014",
     "hidden": false,
     "keepnr": 1,
     "schedulingshares": 20
@@ -27,7 +27,7 @@
     "emailoverride": "",
     "enabled": 1,
     "enableemail": false,
-    "flake": "github:anmonteiro/nix-overlays/auto-update-sources-2338325370",
+    "flake": "git+https://github.com/anmonteiro/nix-overlays/auto-update-sources-2338325370",
     "hidden": false,
     "keepnr": 1,
     "schedulingshares": 20
