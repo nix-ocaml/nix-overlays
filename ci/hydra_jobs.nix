@@ -27,6 +27,7 @@ let
     checkinterval = 600;
     enableemail = false;
     emailoverride = "";
+    type = 1;
   };
   primary_jobsets = {
     nix-overlays = defaults // {
