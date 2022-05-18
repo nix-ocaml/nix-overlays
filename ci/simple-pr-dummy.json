@@ -1,6 +1,6 @@
 {
-  "42": {
-    "title": "Pull request title",
+  "276": {
+    "title": "Jst 014",
     "head": {
       "repo": {
         "owner": {
@@ -8,7 +8,7 @@
         },
         "name": "nix-overlays"
       },
-      "ref": "pr-branch"
+      "ref": "jst-014"
     }
   }
 }
