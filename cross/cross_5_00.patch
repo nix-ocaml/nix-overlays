@@ -1,8 +1,18 @@
 diff --git a/Makefile b/Makefile
-index 928248cbd..2cc9d399f 100644
+index ec0fb0b2a..46ab1a74a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -563,8 +563,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+@@ -818,7 +818,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
+ ## Runtime libraries and programs
+ 
+ runtime/ocamlrun$(EXE): runtime/prims.$(O) runtime/libcamlrun.$(A)
+-	$(MKEXE) -o $@ $^ $(BYTECCLIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
+ 
+ runtime/ocamlruns$(EXE): runtime/prims.$(O) runtime/libcamlrun_non_shared.$(A)
+ 	$(call MKEXE_VIA_CC,$@,$^ $(BYTECCLIBS))
+@@ -1607,8 +1608,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
  endif
  	$(INSTALL_DATA) \
  	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
@@ -11,7 +21,7 @@ index 928248cbd..2cc9d399f 100644
  	   file_formats/*.cmx \
  	   lambda/*.cmx \
  	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
-@@ -578,7 +576,6 @@ endif
+@@ -1622,7 +1621,6 @@ endif
  	$(INSTALL_DATA) \
  	   $(BYTESTART:.cmo=.cmx) $(BYTESTART:.cmo=.$(O)) \
  	   $(OPTSTART:.cmo=.cmx) $(OPTSTART:.cmo=.$(O)) \
@@ -19,26 +29,11 @@ index 928248cbd..2cc9d399f 100644
  	   "$(INSTALL_COMPLIBDIR)"
  ifeq "$(INSTALL_OCAMLNAT)" "true"
  	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"
-diff --git a/runtime/Makefile b/runtime/Makefile
-index 7bb6f001e..708ad0830 100644
---- a/runtime/Makefile
-+++ b/runtime/Makefile
-@@ -322,7 +322,9 @@ build_config.h: $(ROOTDIR)/Makefile.config sak$(EXE)
- # Libraries and programs
- 
- ocamlrun$(EXE): prims.$(O) libcamlrun.$(A)
--	$(MKEXE) -o $@ $^ $(LIBS)
-+	cp $(OCAMLRUN) $@
-+	chmod 755 $@
-+	# $(MKEXE) -o $@ $^ $(LIBS)
- 
- ocamlruns$(EXE): prims.$(O) libcamlrun_non_shared.$(A)
- 	$(call MKEXE_USING_COMPILER,$@,$^ $(LIBS))
 diff --git a/tools/Makefile b/tools/Makefile
-index eff3f9d37..c4d9d9331 100644
+index fffcfe6cb..75b2a1376 100644
 --- a/tools/Makefile
 +++ b/tools/Makefile
-@@ -317,7 +317,7 @@ caml_tex := caml-tex$(EXE)
+@@ -323,7 +323,7 @@ caml_tex := caml-tex$(EXE)
  # configuration.
  $(caml_tex): INCLUDES += $(addprefix -I $(ROOTDIR)/otherlibs/,str unix)
  $(caml_tex): $(caml_tex_files)
