@@ -17,7 +17,7 @@
     },
     "src": {
       "type": "git",
-      "value": "https://github.com/anmonteiro/nix-overlays ulrikstrid-hydra-declarative-conf",
+      "value": "https://github.com/anmonteiro/nix-overlays",
       "emailresponsible": false
     },
     "pulls": {
