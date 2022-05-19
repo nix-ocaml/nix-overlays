@@ -406,8 +406,6 @@ with oself;
     patches = [ ];
   });
 
-  easy-format = callPackage ./easy-format { };
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -684,9 +682,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
+
+    postPatch = ''
+      substituteInPlace src/unix/dune --replace "bigarray" ""
+    '';
+
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/34f98c6.tar.gz;
-      sha256 = "0hp4kzj2h4ayspjkwhx2f8aiscbb9r6lcm2kx88yfw0nd4dm3qfj";
+      url = https://github.com/ocsigen/lwt/archive/654952b62.tar.gz;
+      sha256 = "16z8c2x0asj24rjrgv2wa4bywxq9f3zlh0ha8flfaw18p95sgw2r";
     };
   });
 
