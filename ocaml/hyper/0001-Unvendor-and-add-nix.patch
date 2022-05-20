@@ -1,0 +1,334 @@
+From ba2c920814805b4c357ad769c24cbadb293cbb2f Mon Sep 17 00:00:00 2001
+From: Ulrik Strid <ulrik.strid@outlook.com>
+Date: Fri, 20 May 2022 10:51:56 +0200
+Subject: [PATCH] Unvendor and add nix
+
+---
+ flake.lock        | 83 +++++++++++++++++++++++++++++++++++++++++++++++
+ flake.nix         | 54 ++++++++++++++++++++++++++++++
+ nix/default.nix   | 31 ++++++++++++++++++
+ src/dune          |  6 ++--
+ src/http/dune     | 12 +++----
+ src/http/http1.ml |  7 ++--
+ src/http/http2.ml | 12 +++----
+ 7 files changed, 186 insertions(+), 19 deletions(-)
+ create mode 100644 flake.lock
+ create mode 100644 flake.nix
+ create mode 100644 nix/default.nix
+
+diff --git a/flake.lock b/flake.lock
+new file mode 100644
+index 0000000..1f0da95
+--- /dev/null
++++ b/flake.lock
+@@ -0,0 +1,83 @@
++{
++  "nodes": {
++    "flake-utils": {
++      "locked": {
++        "lastModified": 1652776076,
++        "narHash": "sha256-gzTw/v1vj4dOVbpBSJX4J0DwUR6LIyXo7/SuuTJp1kM=",
++        "owner": "numtide",
++        "repo": "flake-utils",
++        "rev": "04c1b180862888302ddfb2e3ad9eaa63afc60cf8",
++        "type": "github"
++      },
++      "original": {
++        "owner": "numtide",
++        "repo": "flake-utils",
++        "type": "github"
++      }
++    },
++    "nix-filter": {
++      "locked": {
++        "lastModified": 1649838635,
++        "narHash": "sha256-P1h48+l9vUvMz4JwHBgkTXiX6mE8oYR75vBVUbe6Cuc=",
++        "owner": "numtide",
++        "repo": "nix-filter",
++        "rev": "40a58baa248a8b335e2d66ca258a74248af9d834",
++        "type": "github"
++      },
++      "original": {
++        "owner": "numtide",
++        "repo": "nix-filter",
++        "type": "github"
++      }
++    },
++    "nixpkgs": {
++      "locked": {
++        "lastModified": 1652885393,
++        "narHash": "sha256-YIgvvlk4iQ1Hi7KD9o5gsojc+ApB+jiH1d5stK8uXiw=",
++        "owner": "nixos",
++        "repo": "nixpkgs",
++        "rev": "48037fd90426e44e4bf03e6479e88a11453b9b66",
++        "type": "github"
++      },
++      "original": {
++        "owner": "nixos",
++        "ref": "nixos-unstable",
++        "repo": "nixpkgs",
++        "type": "github"
++      }
++    },
++    "ocaml-overlay": {
++      "inputs": {
++        "flake-utils": [
++          "flake-utils"
++        ],
++        "nixpkgs": [
++          "nixpkgs"
++        ]
++      },
++      "locked": {
++        "lastModified": 1653027407,
++        "narHash": "sha256-XCYCfmUbP5QIU0xl+WAgkhzD88BRMygbpmhfSWSbXEI=",
++        "owner": "anmonteiro",
++        "repo": "nix-overlays",
++        "rev": "a42be0599f9d36b500e296c2b94eb1db57f9a9da",
++        "type": "github"
++      },
++      "original": {
++        "owner": "anmonteiro",
++        "repo": "nix-overlays",
++        "type": "github"
++      }
++    },
++    "root": {
++      "inputs": {
++        "flake-utils": "flake-utils",
++        "nix-filter": "nix-filter",
++        "nixpkgs": "nixpkgs",
++        "ocaml-overlay": "ocaml-overlay"
++      }
++    }
++  },
++  "root": "root",
++  "version": 7
++}
+diff --git a/flake.nix b/flake.nix
+new file mode 100644
+index 0000000..2f8b5a9
+--- /dev/null
++++ b/flake.nix
+@@ -0,0 +1,54 @@
++{
++  inputs = {
++    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
++    flake-utils.url = "github:numtide/flake-utils";
++    nix-filter.url = "github:numtide/nix-filter";
++
++    ocaml-overlay.url = "github:anmonteiro/nix-overlays";
++    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
++    ocaml-overlay.inputs.flake-utils.follows = "flake-utils";
++  };
++
++  outputs = { self, nixpkgs, flake-utils, nix-filter, ocaml-overlay }:
++    let
++      supported_ocaml_versions = [ "ocamlPackages_4_13" "ocamlPackages_5_00" ];
++      out = system:
++        let
++          pkgs = import nixpkgs {
++            inherit system;
++            overlays = [ ocaml-overlay.overlays."${system}".default ];
++          };
++          ocamlPackages_dev = pkgs.ocaml-ng.ocamlPackages;
++          hyper = (pkgs.callPackage ./nix {
++            inherit nix-filter;
++            doCheck = true;
++            ocamlPackages = ocamlPackages_dev;
++          });
++        in {
++          devShells = {
++            default = (pkgs.mkShell {
++              inputsFrom = [ hyper ];
++              buildInputs = with pkgs;
++                with ocamlPackages_dev; [
++                  ocaml-lsp
++                  ocamlformat
++                  odoc
++                  ocaml
++                  nixfmt
++                ];
++            });
++          };
++
++          formatter = pkgs.nixfmt;
++
++          packages = { default = hyper; };
++        };
++    in with flake-utils.lib;
++    eachSystem [
++      system.x86_64-linux
++      system.aarch64-linux
++      system.x86_64-darwin
++      system.aarch64-darwin
++    ] out;
++
++}
+diff --git a/nix/default.nix b/nix/default.nix
+new file mode 100644
+index 0000000..e97dc1d
+--- /dev/null
++++ b/nix/default.nix
+@@ -0,0 +1,31 @@
++{ pkgs, stdenv, lib, nix-filter, ocamlPackages, doCheck }:
++
++with ocamlPackages;
++buildDunePackage rec {
++  pname = "hyper";
++  version = "1.0.0-alpha.1";
++
++  # Using nix-filter means we only rebuild when we have to
++  src = with nix-filter.lib;
++    filter {
++      root = ../.;
++      include = [
++        "dune-project"
++        "hyper.opam"
++        "README.md"
++        (inDirectory "example")
++        (inDirectory "src")
++        (inDirectory "test")
++      ];
++    };
++
++  checkInputs = [ alcotest alcotest-lwt dream ];
++
++  propagatedBuildInputs = [ dream-httpaf dream-pure mirage-crypto-rng uri ] ++ checkInputs;
++
++  inherit doCheck;
++
++  meta = {
++    description = "Web client with HTTP/1, HTTP/2, TLS, and WebSocket support";
++  };
++}
+diff --git a/src/dune b/src/dune
+index 0711727..807e179 100644
+--- a/src/dune
++++ b/src/dune
+@@ -4,14 +4,14 @@
+  (modules hyper)
+  (libraries
+   dream-pure
+-  dream-httpaf.h2-lwt-unix
+-  dream-httpaf.httpaf-lwt-unix
++  h2-lwt-unix
++  httpaf-lwt-unix
+   hyper.http
+   hyper.logic
+   lwt
+   lwt.unix
+   lwt_ssl
+   ssl
+-  dream-httpaf.websocketaf-lwt-unix
++  websocketaf-lwt-unix
+  )
+  (preprocess (pps lwt_ppx)))
+diff --git a/src/http/dune b/src/http/dune
+index f8ae2fb..ce3f765 100644
+--- a/src/http/dune
++++ b/src/http/dune
+@@ -4,12 +4,12 @@
+  (libraries
+   dream-httpaf
+   dream-pure
+-  dream-httpaf.h2
+-  dream-httpaf.h2-lwt-unix
+-  dream-httpaf.httpaf
+-  dream-httpaf.httpaf-lwt-unix
+-  dream-httpaf.websocketaf
+-  dream-httpaf.websocketaf-lwt-unix
++  h2
++  h2-lwt-unix
++  httpaf
++  httpaf-lwt-unix
++  websocketaf
++  websocketaf-lwt-unix
+   mirage-crypto-rng
+   mirage-crypto-rng.lwt
+   uri
+diff --git a/src/http/http1.ml b/src/http/http1.ml
+index e2dae53..804c747 100644
+--- a/src/http/http1.ml
++++ b/src/http/http1.ml
+@@ -115,6 +115,7 @@ let general send_request client connection (request : Message.request) =
+   let httpaf_request_body_writer =
+     send_request
+       client
++      ?flush_headers_immediately:(Some true)
+       httpaf_request
+       ~error_handler
+       ~response_handler
+@@ -161,10 +162,8 @@ let general send_request client connection (request : Message.request) =
+ 
+   response_promise
+ 
+-
+-
+ let http client =
+-  general Httpaf_lwt_unix.Client.request client client.connection
++  general Httpaf_lwt_unix.Client.request client client.connection 
+ 
+ let https client =
+-  general Httpaf_lwt_unix.Client.SSL.request client client.connection
++  general Httpaf_lwt_unix.Client.SSL.request client client.connection 
+diff --git a/src/http/http2.ml b/src/http/http2.ml
+index 77a997f..419fc30 100644
+--- a/src/http/http2.ml
++++ b/src/http/http2.ml
+@@ -69,7 +69,7 @@ let https (connection : H2_lwt_unix.Client.SSL.t) (request : Message.request) =
+         exn the_exn
+       | None ->
+         exn_handler := exn;
+-        H2.Body.schedule_read
++        H2.Body.Reader.schedule_read
+           h2_response_body
+           ~on_eof:(fun () ->
+             exn_handler := ignore;
+@@ -79,7 +79,7 @@ let https (connection : H2_lwt_unix.Client.SSL.t) (request : Message.request) =
+             data buffer off len true false)
+ 
+     and close _code =
+-      H2.Body.close_reader h2_response_body
++      H2.Body.Reader.close h2_response_body
+ 
+     and abort exn =
+       H2.Client_connection.report_exn connection.connection exn;
+@@ -111,7 +111,7 @@ let https (connection : H2_lwt_unix.Client.SSL.t) (request : Message.request) =
+       (Message.server_stream request) ~data ~flush ~ping ~pong ~close ~exn
+ 
+   and data buffer offset length _binary _fin =
+-    H2.Body.write_bigstring
++    H2.Body.Writer.write_bigstring
+       h2_request_body_writer
+       ~off:offset
+       ~len:length
+@@ -119,14 +119,14 @@ let https (connection : H2_lwt_unix.Client.SSL.t) (request : Message.request) =
+     bytes_since_flush := !bytes_since_flush + length;
+     if !bytes_since_flush >= 4096 then begin
+       bytes_since_flush := 0;
+-      H2.Body.flush h2_request_body_writer send
++      H2.Body.Writer.flush h2_request_body_writer send
+     end
+     else
+       send ()
+ 
+   and flush () =
+     bytes_since_flush := 0;
+-    H2.Body.flush h2_request_body_writer send
++    H2.Body.Writer.flush h2_request_body_writer send
+ 
+   and ping _buffer _offset _length =
+     send ()
+@@ -135,7 +135,7 @@ let https (connection : H2_lwt_unix.Client.SSL.t) (request : Message.request) =
+     send ()
+ 
+   and close _code =
+-    H2.Body.close_writer h2_request_body_writer
++    H2.Body.Writer.close h2_request_body_writer
+ 
+   and exn exn =
+     H2.Client_connection.report_exn connection.connection exn;
+-- 
+2.36.0
+
