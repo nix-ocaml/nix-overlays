@@ -7,8 +7,8 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "hyper";
-    rev = "588919c57d00ce06ff04865f57dbf9a3e6c3b801";
-    sha256 = "sha256-NLlLt5g30o0bKDnJHHZ0RINhQrgcwBqUAtn3t+Q9b5A=";
+    rev = "1.0.0-alpha1";
+    sha256 = "sha256-pMalTnRtB1b1pKiNVpytRobNZ79YGzZYRCb64qY0fg4=";
   };
 
   patches = [
