@@ -32,6 +32,11 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
+
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v17
       - uses: cachix/cachix-action@v10
@@ -61,6 +66,11 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
+
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v17
       - uses: cachix/cachix-action@v10
@@ -94,6 +104,11 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
+
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v17
       - uses: cachix/cachix-action@v10
