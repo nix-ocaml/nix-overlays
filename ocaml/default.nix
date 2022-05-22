@@ -552,6 +552,8 @@ with oself;
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  hyper = callPackage ./hyper { };
+
   index = disableTests osuper.index;
   integers = osuper.integers.overrideAttrs (_: {
     postPatch = ''

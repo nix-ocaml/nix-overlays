@@ -36,14 +36,6 @@ buildDunePackage rec {
     lwt_ppx
     lwt_ssl
     ssl
-    angstrom
-    base64
-    bigstringaf
-    digestif
-    faraday
-    faraday-lwt-unix
-    psq
-    result
 
     ppx_expect
 
