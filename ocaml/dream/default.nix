@@ -36,6 +36,7 @@
 , tyxml
 , tyxml-jsx
 , tyxml-ppx
+, ocaml
 }:
 
 buildDunePackage rec {
@@ -85,10 +86,14 @@ buildDunePackage rec {
     tyxml-ppx
   ];
 
-  # Expect tests fail formatting on the 0.15 JST package line
-  doCheck = false;
+  doCheck = !(lib.versionAtLeast ocaml.version "5.00");
 
   patches = [ ./upload.patch ];
+
+  # Fix failing expect tests from formatting on the 0.15 JST package line
+  prePatch = ''
+    substituteInPlace test/expect/pure/stream/stream.ml --replace "(Failure " "Failure("
+  '';
 
   preBuild = ''
     rm -rf src/vendor
