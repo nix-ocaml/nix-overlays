@@ -257,10 +257,15 @@ let
     "zmq-lwt"
     "zmq"
   ];
+
+  aarch64DarwinIgnores = [
+    "landmarks"
+    "landmarks-ppx"
+  ];
 in
 
 rec {
-  inherit ocaml5Ignores;
+  inherit ocaml5Ignores aarch64DarwinIgnores;
   buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
