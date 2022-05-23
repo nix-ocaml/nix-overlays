@@ -155,6 +155,11 @@ let
     "ppx_deriving_bson"
   ];
 
+  ocaml412Ignores = [
+    "typedppxlib"
+    "ppx_debug"
+  ];
+
   ocaml5Ignores = [
     "async_js"
     "batteries"
@@ -199,7 +204,6 @@ let
     "multiformats"
     "noise"
     "ocaml_oasis"
-    "ocaml-migrate-parsetree-2"
     "ocaml-protoc"
     "ocaml-recovery-parser"
     "ocaml-sat-solvers"
@@ -268,7 +272,7 @@ let
 in
 
 rec {
-  inherit ocaml5Ignores aarch64DarwinIgnores;
+  inherit ocaml5Ignores ocaml412Ignores aarch64DarwinIgnores;
   buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
