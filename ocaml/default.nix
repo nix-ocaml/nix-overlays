@@ -208,6 +208,7 @@ with oself;
     checkInputs = o.checkInputs ++ [ crowbar ];
   });
   cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
+    patches = [ ];
     postPatch = ''
       substituteInPlace examples/async/dune --replace \
         "async_kernel" "async_kernel core_unix.command_unix"
