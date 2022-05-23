@@ -86,7 +86,7 @@ buildDunePackage rec {
     tyxml-ppx
   ];
 
-  doCheck = !(lib.versionAtLeast ocaml.version "5.00");
+  doCheck = false;
 
   patches = [ ./upload.patch ];
 

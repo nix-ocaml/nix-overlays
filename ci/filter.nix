@@ -150,9 +150,10 @@ let
 
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
-  ];
 
-  ocaml412Ignores = [
+
+
+
     "typedppxlib"
     "ppx_debug"
   ];
