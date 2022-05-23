@@ -1,37 +1,41 @@
-From 5f56aea12e15b820af517518ee8fcc9c6d4b4951 Mon Sep 17 00:00:00 2001
+From 737cd67c72ecb2516318c996fd0e10e0ad37487a Mon Sep 17 00:00:00 2001
 From: "Aaron L. Zeng" <me@bcc32.com>
-Date: Tue, 29 Mar 2022 15:13:21 -0400
+Date: Mon, 23 May 2022 01:18:37 -0400
 Subject: [PATCH] WIP: Add Jane Street ocaml packages version 0.15
 
 - TODO: Fix ppx_base not including ppx_js_style; breaks cinaps
 
-ocamlPackages.tls*: 0.15.2 -> 0.15.3
+- ocamlPackages.tls*: 0.15.2 -> 0.15.3
+- ocamlPackages.bistro: unstable-2021-11-13 -> unstable-2022-05-07
+- ocamlPackages.phylogenetics: 0.1.0 -> unstable-2022-05-06
 ---
- pkgs/development/compilers/ligo/default.nix   |   3 +
- pkgs/development/compilers/ligo/ligo.patch    | 134 +++
- .../development/ocaml-modules/bap/default.nix |  10 +-
- .../ocaml-modules/biocaml/default.nix         |   5 +
- .../ocaml-modules/bistro/default.nix          |  10 +
- .../ocaml-modules/cohttp/async.nix            |  12 +-
- .../ocaml-modules/faraday/async.nix           |   7 +-
- .../ocaml-modules/hack_parallel/default.nix   |   8 +-
- .../hack_parallel/hack_parallel.patch         |  68 ++
- .../ocaml-modules/janestreet/0.15.nix         | 998 ++++++++++++++++++
- .../janestreet/janePackage_0_15.nix           |  31 +
- .../ocaml-modules/janestreet/pythonlib.patch  |  22 +
- .../ocaml-modules/phylogenetics/default.nix   |   6 +
- .../development/ocaml-modules/tls/default.nix |   6 +-
- pkgs/development/tools/comby/comby.patch      | 597 +++++++++++
- pkgs/development/tools/comby/default.nix      |   3 +
- pkgs/tools/misc/flitter/default.nix           |  12 +-
- pkgs/tools/misc/flitter/flitter.patch         |  13 +
- pkgs/tools/misc/patdiff/default.nix           |   4 +-
- pkgs/tools/typesetting/satysfi/default.nix    |   2 +
- pkgs/top-level/ocaml-packages.nix             |  11 +-
- 21 files changed, 1945 insertions(+), 17 deletions(-)
+ pkgs/development/compilers/ligo/default.nix   |    3 +
+ pkgs/development/compilers/ligo/ligo.patch    |  134 +++
+ .../development/ocaml-modules/bap/default.nix |   10 +-
+ .../ocaml-modules/biocaml/default.nix         |    9 +-
+ .../ocaml-modules/bistro/default.nix          |   11 +-
+ .../ocaml-modules/cohttp/async.nix            |   12 +-
+ .../ocaml-modules/faraday/async.nix           |    7 +-
+ .../ocaml-modules/hack_parallel/default.nix   |    8 +-
+ .../hack_parallel/hack_parallel.patch         |   68 ++
+ .../ocaml-modules/janestreet/0.15.nix         | 1000 +++++++++++++++++
+ .../janestreet/bonsai_jsoo_4_0.patch          |   13 +
+ .../janestreet/janePackage_0_15.nix           |   31 +
+ .../ocaml-modules/janestreet/pythonlib.patch  |   22 +
+ .../ocaml-modules/phylogenetics/default.nix   |   17 +-
+ .../development/ocaml-modules/tls/default.nix |    6 +-
+ pkgs/development/tools/comby/comby.patch      |  597 ++++++++++
+ pkgs/development/tools/comby/default.nix      |    3 +
+ pkgs/tools/misc/flitter/default.nix           |   12 +-
+ pkgs/tools/misc/flitter/flitter.patch         |   13 +
+ pkgs/tools/misc/patdiff/default.nix           |    4 +-
+ pkgs/tools/typesetting/satysfi/default.nix    |    2 +
+ pkgs/top-level/ocaml-packages.nix             |   11 +-
+ 22 files changed, 1961 insertions(+), 32 deletions(-)
  create mode 100644 pkgs/development/compilers/ligo/ligo.patch
  create mode 100644 pkgs/development/ocaml-modules/hack_parallel/hack_parallel.patch
  create mode 100644 pkgs/development/ocaml-modules/janestreet/0.15.nix
+ create mode 100644 pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
  create mode 100644 pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix
  create mode 100644 pkgs/development/ocaml-modules/janestreet/pythonlib.patch
  create mode 100644 pkgs/development/tools/comby/comby.patch
@@ -224,23 +228,34 @@ index 4f87715a74ad9..eaaf621900ad2 100644
    preConfigure = ''
      substituteInPlace oasis/elf-loader --replace bitstring.ppx ppx_bitstring
 diff --git a/pkgs/development/ocaml-modules/biocaml/default.nix b/pkgs/development/ocaml-modules/biocaml/default.nix
-index 596ed6161d7b3..30b28447a5b8a 100644
+index 596ed6161d7b3..b82ec7361791f 100644
 --- a/pkgs/development/ocaml-modules/biocaml/default.nix
 +++ b/pkgs/development/ocaml-modules/biocaml/default.nix
-@@ -17,6 +17,11 @@ buildDunePackage rec {
-     sha256 = "1il84vvypgkhdyc2j5fmgh14a58069s6ijbd5dvyl2i7jdxaazji";
-   };
+@@ -4,7 +4,7 @@
  
-+  patches = fetchpatch {
-+    url = "https://github.com/biocaml/biocaml/commit/4a927af2c8f3dd388e86a3a761fcfa71651f08f7.patch";
-+    sha256 = "1xbkknmfx6pim2jpzvh88dr17n5b2dghn4i6a13rdcj75jk1h8vn";
+ buildDunePackage rec {
+   pname = "biocaml";
+-  version = "0.11.1";
++  version = "0.11.2";
+ 
+   useDune2 = true;
+ 
+@@ -14,7 +14,12 @@ buildDunePackage rec {
+     owner = "biocaml";
+     repo   = pname;
+     rev    = "v${version}";
+-    sha256 = "1il84vvypgkhdyc2j5fmgh14a58069s6ijbd5dvyl2i7jdxaazji";
++    sha256 = "01yw12yixs45ya1scpb9jy2f7dw1mbj7741xib2xpq3kkc1hc21s";
 +  };
 +
++  patches = fetchpatch {
++    url = "https://github.com/biocaml/biocaml/commit/3ef74d0eb4bb48d2fb7dd8b66fb3ad8fe0aa4d78.patch";
++    sha256 = "0rcvf8gwq7sz15mghl9ing722rl2zpnqif9dfxrnpdxiv0rl0731";
+   };
+ 
    buildInputs = [ ppx_jane ppx_sexp_conv ];
-   checkInputs = [ ounit ];
-   propagatedBuildInputs = [ async base64 camlzip cfstream core rresult uri xmlm ];
 diff --git a/pkgs/development/ocaml-modules/bistro/default.nix b/pkgs/development/ocaml-modules/bistro/default.nix
-index 348d1bb97d471..b00dbe2af6595 100644
+index 348d1bb97d471..43cbd33f738ca 100644
 --- a/pkgs/development/ocaml-modules/bistro/default.nix
 +++ b/pkgs/development/ocaml-modules/bistro/default.nix
 @@ -1,10 +1,13 @@
@@ -257,7 +272,25 @@ index 348d1bb97d471..b00dbe2af6595 100644
  , lwt_react
  , ocamlgraph
  , ppx_sexp_conv
-@@ -30,6 +33,8 @@ buildDunePackage rec {
+@@ -15,21 +18,23 @@
+ 
+ buildDunePackage rec {
+   pname = "bistro";
+-  version = "unstable-2021-11-13";
++  version = "unstable-2022-05-07";
+ 
+   useDune2 = true;
+ 
+   src = fetchFromGitHub {
+     owner = "pveber";
+     repo = pname;
+-    rev = "fb285b2c6d8adccda3c71e2293bceb01febd6624";
+-    sha256 = "sha256-JChDU1WH8W9Czkppx9SHiVIu9/7QFWJy2A89oksp0Ek=";
++    rev = "d363bd2d8257babbcb6db15bd83fd6465df7c268";
++    sha256 = "0g11324j1s2631zzf7zxc8s0nqd4fwvcni0kbvfpfxg96gy2wwfm";
+   };
+ 
+   propagatedBuildInputs = [
      base64
      bos
      core
@@ -266,18 +299,6 @@ index 348d1bb97d471..b00dbe2af6595 100644
      lwt_react
      ocamlgraph
      ppx_sexp_conv
-@@ -40,6 +45,11 @@ buildDunePackage rec {
- 
-   minimalOCamlVersion = "4.12";
- 
-+  patches = fetchpatch {
-+    url = "https://github.com/pveber/bistro/commit/fec105818940dc6f4bba244ad83502a6a04c1014.patch";
-+    sha256 = "0znzb66zp4xlccc640ig5nxbwzb0pxi0zzwk4paz5dz5l2d44jjg";
-+  };
-+
-   meta = {
-     inherit (src.meta) homepage;
-     description = "Build and execute typed scientific workflows";
 diff --git a/pkgs/development/ocaml-modules/cohttp/async.nix b/pkgs/development/ocaml-modules/cohttp/async.nix
 index 060d2c6fb6a86..50c008bf60d87 100644
 --- a/pkgs/development/ocaml-modules/cohttp/async.nix
@@ -433,10 +454,10 @@ index 0000000000000..174803a348182
 +   let open Unix in
 diff --git a/pkgs/development/ocaml-modules/janestreet/0.15.nix b/pkgs/development/ocaml-modules/janestreet/0.15.nix
 new file mode 100644
-index 0000000000000..03eea35a23837
+index 0000000000000..bc2f2f24e0a9e
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/janestreet/0.15.nix
-@@ -0,0 +1,998 @@
+@@ -0,0 +1,1000 @@
 +{ self
 +, fetchpatch
 +, lib
@@ -664,6 +685,7 @@ index 0000000000000..03eea35a23837
 +      profunctor
 +      textutils
 +    ];
++    patches = [ ./bonsai_jsoo_4_0.patch ];
 +  };
 +
 +  cinaps = janePackage {
@@ -797,6 +819,7 @@ index 0000000000000..03eea35a23837
 +    meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
 +    buildInputs = [ js_of_ocaml-ppx ];
 +    propagatedBuildInputs = [ async_js incr_map incr_select virtual_dom ];
++    patches = [ ./incr_dom_jsoo_4_0.patch ];
 +  };
 +
 +  incr_map = janePackage {
@@ -1435,6 +1458,25 @@ index 0000000000000..03eea35a23837
 +  };
 +
 +}
+diff --git a/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch b/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
+new file mode 100644
+index 0000000000000..e658ba05ca4c0
+--- /dev/null
++++ b/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
+@@ -0,0 +1,13 @@
++diff --git a/web_ui/element_size_hooks/visibility_tracker.ml b/web_ui/element_size_hooks/visibility_tracker.ml
++index 2e5dbe0..61df433 100644
++--- a/web_ui/element_size_hooks/visibility_tracker.ml
+++++ b/web_ui/element_size_hooks/visibility_tracker.ml
++@@ -23,8 +23,6 @@ let get_conservative_vis_bounds (element : Dom_html.element Js.t) : Bounds.t opt
++   and client_height = client_bounds##.height
++   and window_height = Dom_html.window##.innerHeight
++   and window_width = Dom_html.window##.innerWidth in
++-  let%bind.Option window_height = Js.Optdef.to_option window_height in
++-  let%bind.Option window_width = Js.Optdef.to_option window_width in
++   let window_height = Float.of_int window_height
++   and window_width = Float.of_int window_width
++   and client_width = Js.Optdef.get client_width (Fn.const 0.0)
 diff --git a/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix b/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix
 new file mode 100644
 index 0000000000000..678599089946d
@@ -1501,29 +1543,42 @@ index 0000000000000..71a32fd0236c3
 +       let%bind tuple = List.map es ~f:(fun e -> walk e.desc) |> Or_error.all in
 +       (match tuple with
 diff --git a/pkgs/development/ocaml-modules/phylogenetics/default.nix b/pkgs/development/ocaml-modules/phylogenetics/default.nix
-index 11da66bd76005..b1b6547367ebd 100644
+index 11da66bd76005..1cf9651e6ecc9 100644
 --- a/pkgs/development/ocaml-modules/phylogenetics/default.nix
 +++ b/pkgs/development/ocaml-modules/phylogenetics/default.nix
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,6 @@
  { lib
  , buildDunePackage
- , fetchurl
-+, fetchpatch
+-, fetchurl
++, fetchFromGitHub
  , ppx_deriving
  , bppsuite
  , alcotest
-@@ -23,6 +24,11 @@ buildDunePackage rec {
-     sha256 = "sha256:064ldljzh17h8pp0c27xd1pf6c50yhccw2g3hddzhk07a95q8v16";
+@@ -16,18 +16,15 @@
+ 
+ buildDunePackage rec {
+   pname = "phylogenetics";
+-  version = "0.1.0";
++  version = "unstable-2022-05-06";
+ 
+-  src = fetchurl {
+-    url = "https://github.com/biocaml/phylogenetics/releases/download/v${version}/${pname}-${version}.tbz";
+-    sha256 = "sha256:064ldljzh17h8pp0c27xd1pf6c50yhccw2g3hddzhk07a95q8v16";
++  src = fetchFromGitHub {
++    owner = "biocaml";
++    repo = pname;
++    rev = "cd7c624d0f98e31b02933ca4511b9809b26d35b5";
++    sha256 = "sha256:0w0xyah3hj05hxg1rsa40hhma3dm1cyq0zvnjrihhf22laxap7ga";
    };
  
-+  patches = fetchpatch {
-+    url = "https://github.com/biocaml/phylogenetics/commit/9d2cac60e7f124eb096a9b17bed3240eb2b2f3fa.patch";
-+    sha256 = "11qrdkfqjbnqai028v7815cgkz126qpq8gjwxdyfwnvfriigy3jg";
-+  };
-+
-   # Ensure compatibility with printbox ≥ 0.6
-   preConfigure = ''
-     substituteInPlace lib/dune --replace printbox printbox-text
+-  # Ensure compatibility with printbox ≥ 0.6
+-  preConfigure = ''
+-    substituteInPlace lib/dune --replace printbox printbox-text
+-  '';
+-
+   minimalOCamlVersion = "4.08";
+ 
+   checkInputs = [ alcotest bppsuite ];
 diff --git a/pkgs/development/ocaml-modules/tls/default.nix b/pkgs/development/ocaml-modules/tls/default.nix
 index 81f0a176bfc96..3f45aa919667b 100644
 --- a/pkgs/development/ocaml-modules/tls/default.nix
