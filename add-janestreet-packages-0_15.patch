@@ -1,4 +1,4 @@
-From 44f30633d5dd20d302b26a6bc9bc976ac8743685 Mon Sep 17 00:00:00 2001
+From 5f56aea12e15b820af517518ee8fcc9c6d4b4951 Mon Sep 17 00:00:00 2001
 From: "Aaron L. Zeng" <me@bcc32.com>
 Date: Tue, 29 Mar 2022 15:13:21 -0400
 Subject: [PATCH] WIP: Add Jane Street ocaml packages version 0.15
@@ -199,7 +199,7 @@ index 0000000000000..1a076cf18ceed
 +   let start_column = l#start#offset `Byte in
 +   let stop = l#stop#line in
 diff --git a/pkgs/development/ocaml-modules/bap/default.nix b/pkgs/development/ocaml-modules/bap/default.nix
-index 2bf671c6a09ea..fe7f080057567 100644
+index 4f87715a74ad9..eaaf621900ad2 100644
 --- a/pkgs/development/ocaml-modules/bap/default.nix
 +++ b/pkgs/development/ocaml-modules/bap/default.nix
 @@ -1,4 +1,4 @@
@@ -278,6 +278,40 @@ index 348d1bb97d471..b00dbe2af6595 100644
    meta = {
      inherit (src.meta) homepage;
      description = "Build and execute typed scientific workflows";
+diff --git a/pkgs/development/ocaml-modules/cohttp/async.nix b/pkgs/development/ocaml-modules/cohttp/async.nix
+index 060d2c6fb6a86..50c008bf60d87 100644
+--- a/pkgs/development/ocaml-modules/cohttp/async.nix
++++ b/pkgs/development/ocaml-modules/cohttp/async.nix
+@@ -1,4 +1,6 @@
+ { lib
++, fetchpatch
++, fetchurl
+ , buildDunePackage
+ , ppx_sexp_conv
+ , base
+@@ -47,13 +49,21 @@ buildDunePackage {
+     ipaddr
+   ];
+ 
+-  doCheck = true;
++  # Examples don't compile with core 0.15.  See https://github.com/mirage/ocaml-cohttp/pull/864.
++  doCheck = false;
+   checkInputs = [
+     ounit
+     mirage-crypto
+     core
+   ];
+ 
++  # Compatibility with core 0.15.  No longer needed after updating cohttp to 5.0.0.
++  patches = fetchpatch {
++    url = "https://github.com/mirage/ocaml-cohttp/commit/5a7124478ed31c6b1fa6a9a50602c2ec839083b5.patch";
++    sha256 = "0i99rl8604xqwb6d0yzk9ws4dflbn0j4hv2nba2qscbqrrn22rw3";
++  };
++  patchFlags = "-p1 -F3";
++
+   meta = cohttp.meta // {
+     description = "CoHTTP implementation for the Async concurrency library";
+   };
 diff --git a/pkgs/development/ocaml-modules/faraday/async.nix b/pkgs/development/ocaml-modules/faraday/async.nix
 index 666eb684925ce..05b085f92aca6 100644
 --- a/pkgs/development/ocaml-modules/faraday/async.nix
@@ -1467,7 +1501,7 @@ index 0000000000000..71a32fd0236c3
 +       let%bind tuple = List.map es ~f:(fun e -> walk e.desc) |> Or_error.all in
 +       (match tuple with
 diff --git a/pkgs/development/ocaml-modules/phylogenetics/default.nix b/pkgs/development/ocaml-modules/phylogenetics/default.nix
-index 366ad9cc24acf..dd03db9dffed4 100644
+index 11da66bd76005..b1b6547367ebd 100644
 --- a/pkgs/development/ocaml-modules/phylogenetics/default.nix
 +++ b/pkgs/development/ocaml-modules/phylogenetics/default.nix
 @@ -1,6 +1,7 @@
@@ -2214,10 +2248,10 @@ index 89d2724eaad61..d270c46d1ae7f 100644
  
      buildInputs = [ camlpdf otfm yojson-with-position ] ++ (with ocamlPackages; [
 diff --git a/pkgs/top-level/ocaml-packages.nix b/pkgs/top-level/ocaml-packages.nix
-index 9998cc59c4082..31cb122967bd2 100644
+index a1effc538b60d..3ac1db93d22bf 100644
 --- a/pkgs/top-level/ocaml-packages.nix
 +++ b/pkgs/top-level/ocaml-packages.nix
-@@ -1504,14 +1504,21 @@ let
+@@ -1468,14 +1468,21 @@ let
      # Jane Street
  
      janePackage =
