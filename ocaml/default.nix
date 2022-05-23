@@ -1240,7 +1240,14 @@ with oself;
   reason = callPackage ./reason { };
   rtop = callPackage ./reason/rtop.nix { };
 
-  reason-native = osuper.reason-native // { qcheck-rely = null; };
+  reason-native = osuper.reason-native.overrideScope' (rself: rsuper: {
+    rely = rsuper.rely.overrideAttrs (_: {
+      postPatch = ''
+        substituteInPlace "src/rely/TestSuiteRunner.re" --replace "Pervasives." "Stdlib."
+      '';
+    });
+    qcheck-rely = null;
+  });
 
   react = osuper.react.overrideAttrs (_: {
     src = builtins.fetchurl {
