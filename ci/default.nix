@@ -23,7 +23,10 @@ in
   native = lib.attrValues
     (filter.buildCandidates {
       inherit pkgs ocamlVersion;
-      extraIgnores = lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores;
+      extraIgnores =
+        lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores
+          ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores
+      ;
     }) ++ (with pkgs; [
     # cockroachdb-21_1_x cockroachdb-21_2_x
     cockroachdb-22_x
