@@ -199,7 +199,6 @@ let
     "multiformats"
     "noise"
     "ocaml_oasis"
-    "ocaml-migrate-parsetree-2"
     "ocaml-protoc"
     "ocaml-recovery-parser"
     "ocaml-sat-solvers"

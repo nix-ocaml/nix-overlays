@@ -968,6 +968,17 @@ with oself;
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
 
+  ocaml-migrate-parsetree-2 = osuper.ocaml-migrate-parsetree-2.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/config/gen.ml --replace \
+        '| (4, 14) -> "414"'  '| (4, 14) -> "414" | (5, 0) -> "500"'
+    '';
+  });
+
+  ocaml-migrate-types = callPackage ./ocaml-migrate-types { };
+  typedppxlib = callPackage ./typedppxlib { };
+  ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
+
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
     version = "0.2.3";
 
