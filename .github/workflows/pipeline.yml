@@ -52,6 +52,32 @@ jobs:
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
+  top-level-packages-linux:
+    strategy:
+      fail-fast: false
+    name: Native (Top-level) packages (Linux)
+    runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v17
+      - uses: cachix/cachix-action@v10
+        with:
+          name: anmonteiro
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - name: Build nix packages
+        run: |
+          nix shell --print-build-logs -f ./ nix-build-uncached -c \
+              nix-build-uncached ./ci \
+                --arg ocamlVersion null \
+                --argstr target top-level-packages \
+                --show-trace --keep-going
+
   native-macos:
     strategy:
       fail-fast: false
@@ -70,7 +96,6 @@ jobs:
         uses: styfle/cancel-workflow-action@0.9.1
         with:
           github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
-
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v17
       - uses: cachix/cachix-action@v10
@@ -85,6 +110,32 @@ jobs:
                 --argstr target native \
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
+
+  top-level-packages-macos:
+    strategy:
+      fail-fast: false
+    name: Native (Top-level) packages (macOS)
+    runs-on: macos-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          github_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v17
+      - uses: cachix/cachix-action@v10
+        with:
+          name: anmonteiro
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - name: Build nix packages
+        run: |
+          nix shell --print-build-logs -f ./ nix-build-uncached -c \
+              nix-build-uncached ./ci \
+                --arg ocamlVersion null \
+                --argstr target top-level-packages \
+                --show-trace --keep-going
 
   cross-compilers:
     needs: [native-linux]
