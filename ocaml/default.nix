@@ -158,6 +158,15 @@ with oself;
     '';
   });
 
+  camlimages = osuper.camlimages.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ findlib ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace core/images.ml --replace "String.lowercase" "String.lowercase_ascii"
+        substituteInPlace core/units.ml --replace "String.lowercase" "String.lowercase_ascii"
+      '' else "";
+  });
+
   camlp5 = callPackage ./camlp5 { };
 
   camlzip = osuper.camlzip.overrideAttrs (o: {
@@ -399,8 +408,8 @@ with oself;
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/dune-release/releases/download/1.6.1/dune-release-1.6.1.tbz;
-      sha256 = "0qxprr21b3qp6rqcd3zmilfypssw227s1c48lpakrkh69g5jxxia";
+      url = https://github.com/ocamllabs/dune-release/archive/62af577.tar.gz;
+      sha256 = "0f126biy9pv178wfvz8kqn423pf2l8fm3fsd6vzp1xg2002i45dw";
     };
     doCheck = false;
     patches = [ ];
