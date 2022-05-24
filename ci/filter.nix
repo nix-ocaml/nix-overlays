@@ -145,9 +145,6 @@ let
     "typedppxlib"
     "ppx_debug"
 
-    # incompatible with ppxlib 0.26
-    "ppx_deriving_bson"
-
     "gd4o"
   ];
 
@@ -191,6 +188,7 @@ let
     "lablgtk3"
     "lastfm"
     "lustre-v6"
+    "memtrace_viewer"
     "mccs"
     "mirage-block-unix"
     "multiformats"
