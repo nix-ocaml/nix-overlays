@@ -1540,6 +1540,33 @@ with oself;
         [ ];
   };
 
+  memtrace_viewer = janePackage {
+    pname = "memtrace_viewer";
+    version = "0.15.0";
+    hash = "1kl2kdajdqcsg4hp4vhgsklzdz7p4j3jcwfrdziwyg4h9vcacrby";
+    nativeBuildInputs = [
+      ocaml-embed-file
+      js_of_ocaml
+    ];
+    propagatedBuildInputs = [
+      ppx_pattern_bind
+      async_js
+      async_kernel
+      async_rpc_kernel
+      bonsai
+      core_kernel
+      ppx_jane
+      async_rpc_websocket
+      virtual_dom
+      js_of_ocaml-ppx
+      memtrace
+      ocaml-embed-file
+    ];
+    meta = {
+      description = "Memtrace Viewer";
+    };
+  };
+
   postgres_async = osuper.buildDunePackage {
     pname = "postgres_async";
     version = "0.15.0";
