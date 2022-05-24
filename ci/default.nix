@@ -10,7 +10,7 @@ let
     { src = ../.; }).defaultNix;
 
   pkgs = flake.legacyPackages.${system}.extend (self: super:
-    if ocamlVersion != "5_00" then {
+    if ocamlVersion != null && ocamlVersion != "5_00" then {
       ocamlPackages = self.ocaml-ng."ocamlPackages_${ocamlVersion}";
       ocamlPackages_latest = self.ocamlPackages;
     } else { });
