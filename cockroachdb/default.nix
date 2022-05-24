@@ -1,16 +1,6 @@
-{ callPackage, go_1_16, go_1_17, buildGo116Module, buildGo117Module }:
+{ callPackage, go_1_17, buildGo117Module }:
 
 {
-  cockroachdb-21_1_x = callPackage ./generic.nix (rec {
-    go = go_1_16;
-    buildGoModule = buildGo116Module;
-    version = "21.1.13";
-    src = builtins.fetchurl {
-      url = "https://binaries.cockroachdb.com/cockroach-v${version}.src.tgz";
-      sha256 = "1npqh75w1x2jjmy512jxqlr4caam96lw74gfs8kdq0iaw6hkh3y2";
-    };
-  });
-
   cockroachdb-21_2_x = callPackage ./generic.nix (rec {
     go = go_1_17;
     buildGoModule = buildGo117Module;
