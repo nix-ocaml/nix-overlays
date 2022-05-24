@@ -193,6 +193,7 @@ let
     "lablgtk3"
     "lastfm"
     "lustre-v6"
+    "memtrace_viewer"
     "mccs"
     "mirage-block-unix"
     "multiformats"
