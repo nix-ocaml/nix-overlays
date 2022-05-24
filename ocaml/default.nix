@@ -170,6 +170,11 @@ with oself;
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.00" then ''
+        substituteInPlace core/images.ml --replace "String.lowercase" "String.lowercase_ascii"
+        substituteInPlace core/units.ml --replace "String.lowercase" "String.lowercase_ascii"
+      '' else "";
   });
 
   camlp5 = callPackage ./camlp5 { };
