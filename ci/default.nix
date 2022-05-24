@@ -22,7 +22,7 @@ in
 {
   top-level-packages = (with pkgs; [
     cockroachdb-22_x
-    mongodb-4_2
+    # mongodb-4_2
     esy
   ] ++ lib.optional stdenv.isLinux pkgs.kubernetes);
 
