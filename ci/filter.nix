@@ -273,7 +273,7 @@ in
 
 rec {
   inherit ocaml5Ignores ocaml412Ignores aarch64DarwinIgnores;
-  buildCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
+  ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
       ignoredPackages = baseIgnoredPackages ++ extraIgnores;
@@ -298,7 +298,7 @@ rec {
       ocamlPackages;
 
   crossTarget = pkgs: ocamlVersion:
-    with (buildCandidates { inherit pkgs ocamlVersion; }); {
+    with (ocamlCandidates { inherit pkgs ocamlVersion; }); {
       # just build a subset of the static overlay, with the most commonly used
       # packages
       inherit piaf carl caqti-driver-postgresql ppx_deriving;

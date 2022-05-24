@@ -20,19 +20,19 @@ let
 in
 
 {
+  top-level-packages = (with pkgs; [
+    cockroachdb-22_x
+    mongodb-4_2
+    esy
+  ] ++ lib.optional stdenv.isLinux pkgs.kubernetes);
+
   native = lib.attrValues
-    (filter.buildCandidates {
+    (filter.ocamlCandidates {
       inherit pkgs ocamlVersion;
       extraIgnores =
         lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores
-          ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores;
-    }) ++ (with pkgs; [
-    # cockroachdb-21_1_x cockroachdb-21_2_x
-    cockroachdb-22_x
-    # mongodb-4_2
-    # nixUnstable
-  ]) ++ lib.optional stdenv.isLinux pkgs.kubernetes
-  ++ lib.optional (ocamlVersion != "5_00") pkgs.esy;
+        ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores;
+    });
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
