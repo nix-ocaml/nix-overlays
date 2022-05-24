@@ -40,7 +40,6 @@ let
     # too long to build or broken
     "z3"
     "nonstd"
-    "genspio"
     "ocaml-r"
 
     "melange"
@@ -67,8 +66,7 @@ let
     "irmin-mirage-graphql"
     "irmin-unix"
 
-    # broken on 4.12
-    "accessor_async"
+    # broken since 4.12
     "ocaml_extlib-1-7-7"
 
     # unavailable on macOS
@@ -98,7 +96,6 @@ let
     "llvm"
     "ocaml_libvirt"
     "labltk"
-    "camlimages"
     "bjack"
     "async_inotify"
     "async_smtp"
@@ -131,12 +128,6 @@ let
     # incompatible with newer menhir
     "odate"
 
-    # incompatible with newer yojson
-    "reason-native"
-
-    # Incompatible with JSOO 4
-    "bonsai"
-
     # https://github.com/mirage/metrics/issues/57
     "metrics-unix"
     "metrics-mirage"
@@ -165,6 +156,7 @@ let
   ocaml5Ignores = [
     "async_js"
     "batteries"
+    "bonsai"
     "biocaml"
     "bls12-381-unix"
     "camlp5_strict"
