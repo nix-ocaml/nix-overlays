@@ -1116,15 +1116,6 @@ with oself;
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
-    postPatch =
-      if lib.versionOlder "4.14" osuper.ocaml.version
-      then ''
-        substituteInPlace "src/custom/ppx_cstubs_custom.cppo.ml" --replace \
-        "(str, _sg, _sn, newenv)" \
-        "(str, _sg, _sn, _shp, newenv)"
-      ''
-      else "";
-
     buildInputs = o.buildInputs ++ [ osuper.findlib ];
   });
 
