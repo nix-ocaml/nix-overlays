@@ -47,7 +47,11 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl
-  libpq = super.postgresql.override { enableSystemd = false; gssSupport = false; };
+  libpq = super.postgresql.override {
+    enableSystemd = false;
+    gssSupport = false;
+    openssl = self.openssl-oc;
+  };
 
   opaline = super.opaline.override { inherit (self) ocamlPackages; };
   esy = callPackage ../ocaml/esy { };
