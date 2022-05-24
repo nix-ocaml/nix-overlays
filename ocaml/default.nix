@@ -549,8 +549,6 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
-  hacl_x25519 = disableTests osuper.hacl_x25519;
-
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     postPatch = ''
