@@ -153,6 +153,8 @@ let
 
     # incompatible with ppxlib 0.26
     "ppx_deriving_bson"
+
+    "gd4o"
   ];
 
   ocaml412Ignores = [
