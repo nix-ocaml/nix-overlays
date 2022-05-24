@@ -1018,7 +1018,6 @@ with oself;
     createFindlibDestdir = true;
   };
 
-  oauth = callPackage ./oidc/oauth.nix { };
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
