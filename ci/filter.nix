@@ -151,11 +151,13 @@ let
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
 
-
-
-
     "typedppxlib"
     "ppx_debug"
+
+    # incompatible with ppxlib 0.26
+    "ppx_deriving_bson"
+
+    "gd4o"
   ];
 
   ocaml5Ignores = [

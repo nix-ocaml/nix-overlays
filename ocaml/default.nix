@@ -528,8 +528,6 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
-  hacl_x25519 = osuper.hacl_x25519.overrideAttrs (_: { doCheck = false; });
-
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     postPatch = ''
@@ -1104,15 +1102,6 @@ with oself;
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
-    postPatch =
-      if lib.versionOlder "4.14" osuper.ocaml.version
-      then ''
-        substituteInPlace "src/custom/ppx_cstubs_custom.cppo.ml" --replace \
-        "(str, _sg, _sn, newenv)" \
-        "(str, _sg, _sn, _shp, newenv)"
-      ''
-      else "";
-
     buildInputs = o.buildInputs ++ [ osuper.findlib ];
   });
 
