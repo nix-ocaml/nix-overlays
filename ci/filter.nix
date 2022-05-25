@@ -148,6 +148,7 @@ let
     "ppx_debug"
     "accessor_core"
     "accessor_async"
+    "ppx_deriving_bson"
   ];
 
   ocaml5Ignores = [
