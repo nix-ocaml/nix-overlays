@@ -142,10 +142,11 @@ let
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
 
+    "gd4o"
+
     "typedppxlib"
     "ppx_debug"
-
-    "gd4o"
+    "accessor_core"
   ];
 
   ocaml5Ignores = [
