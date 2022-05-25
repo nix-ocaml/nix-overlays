@@ -34,11 +34,13 @@
         [ "x86_64-linux" "aarch64-darwin" ]);
 
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        import nixpkgs ({
+        let pkgs = import nixpkgs ({
           inherit system;
-          overlays = [ self.overlays.${system}.default ] ++ extraOverlays;
+          overlays = [ self.overlays.${system}.default ];
           config.allowUnfree = true;
         } // attrs);
+        in
+        pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         packages = self.makePkgs { inherit system; };
