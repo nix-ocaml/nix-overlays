@@ -34,11 +34,17 @@
         [ "x86_64-linux" "aarch64-darwin" ]);
 
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        import nixpkgs ({
+        let pkgs = import nixpkgs ({
           inherit system;
-          overlays = [ self.overlays.${system}.default ] ++ extraOverlays;
+          overlays = [ self.overlays.${system}.default ];
           config.allowUnfree = true;
         } // attrs);
+        in
+          /*
+            You might read https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and want to change this
+            but because of how we're doing overlays we will be overriding any extraOverlays if we don't use `appendOverlays`
+          */
+        pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         packages = self.makePkgs { inherit system; };
