@@ -147,6 +147,7 @@ let
     "typedppxlib"
     "ppx_debug"
     "accessor_core"
+    "accessor_async"
   ];
 
   ocaml5Ignores = [
