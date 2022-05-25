@@ -40,6 +40,8 @@
           config.allowUnfree = true;
         } // attrs);
         in
+        # You might read https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and want to change this
+        # but because of how we're doing overlays we will be overriding any extraOverlays if we don't use `appendOverlays`
         pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
