@@ -1305,8 +1305,6 @@ with oself;
     propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
-  stringext = disableTests osuper.stringext;
-
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
   syndic = buildDunePackage rec {
