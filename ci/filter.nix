@@ -42,6 +42,7 @@ let
     "nonstd"
     "ocaml-r"
 
+    "melange-compiler-libs"
     "melange"
     # dune.configurator issue
     "ocamlfuse"
