@@ -32,8 +32,7 @@ in
       lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores
         ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores;
   }))
-  ++ lib.optional ((ocamlVersion == "4_12") || (ocamlVersion == "4_14"))
-    pkgs.ocamlPackages.melange;
+  ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
