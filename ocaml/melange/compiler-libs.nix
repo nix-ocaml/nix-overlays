@@ -5,8 +5,8 @@ buildDunePackage {
   version = "0.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange-compiler-libs/archive/2fac95b0ea97fb676240662aeeec8c6f6495dd9c.tar.gz;
-    sha256 = "10ija6y9c65h4lzlgnps4514qbbww2r5f566wz83qxwqhaysb3wb";
+    url = https://github.com/melange-re/melange-compiler-libs/archive/b6db8fa122cd21b17d23e7bc801366d91b40a03f.tar.gz;
+    sha256 = "1rmal026xjjlkczg6rmqz3avz1dagwiwv12b2mmrwawz3kx70piv";
   };
 
   propagatedBuildInputs = [ menhir menhirLib ];
