@@ -3,44 +3,24 @@
 , buildDunePackage
 , cppo
 , cmdliner
-, dune-action-plugin
 , melange-compiler-libs
 , reason
 , lib
 , ocaml
 }:
 
-let
-  is_412 =
-    lib.versionOlder "4.12" ocaml.version &&
-    !(lib.versionOlder "4.13" ocaml.version);
-
-  melange412Deps = [
-    dune-action-plugin
-  ];
-in
-
 buildDunePackage {
   pname = "melange";
   version = "0.0.0";
 
-  src =
-    if is_412 then
-      builtins.fetchurl
-        {
-          url = https://github.com/melange-re/melange/archive/434941c.tar.gz;
-          sha256 = "16grqf0r1l8yxdxyp6halbfl1h039911743wbbwgly8wa2di06m4";
-        } else
-      builtins.fetchurl {
-        url = https://github.com/melange-re/melange/archive/f59cc50.tar.gz;
-        sha256 = "1kinsiap725h5gwj663zp52jj95m297bqhhr0r937shj08jyim6c";
-      };
+  src = builtins.fetchurl {
+    url = https://github.com/melange-re/melange/archive/f59cc50.tar.gz;
+    sha256 = "1kinsiap725h5gwj663zp52jj95m297bqhhr0r937shj08jyim6c";
+  };
 
   nativeBuildInputs = [ cppo ];
 
-  propagatedBuildInputs =
-    [ cmdliner melange-compiler-libs reason ]
-    ++ lib.optionals is_412 melange412Deps;
+  propagatedBuildInputs = [ cmdliner melange-compiler-libs reason ];
 
   installPhase = ''
     runHook preInstall
