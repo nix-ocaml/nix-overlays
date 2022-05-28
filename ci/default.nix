@@ -30,7 +30,8 @@ in
     (filter.ocamlCandidates {
       inherit pkgs ocamlVersion;
       extraIgnores = lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores;
-    });
+    })
+  ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
