@@ -14,8 +14,8 @@ buildDunePackage {
   version = "0.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/6e82568.tar.gz;
-    sha256 = "0xfpqg3adwnnzc70gwcip36c1icshvjhmax6k16g3rr2hw6h2zp9";
+    url = https://github.com/melange-re/melange/archive/0ad11f3.tar.gz;
+    sha256 = "1mmcrv4n4dh82gqchyzh07dhyywy36z6gswjg851s3n223qhq7j1";
   };
 
   nativeBuildInputs = [ cppo ];
@@ -37,7 +37,7 @@ buildDunePackage {
     mv runtime/* .
     mv stdlib-412/stdlib_modules/* .
     mv stdlib-412/* .
-    rm -rf others runtime stdlib-412
+    rm -rf others runtime stdlib-412 stdlib_modules
 
     runHook postInstall
   '';
