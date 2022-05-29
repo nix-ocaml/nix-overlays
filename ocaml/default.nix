@@ -1296,14 +1296,6 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
-  tar = osuper.tar.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.0.0/tar-mirage-v2.0.0.tbz;
-      sha256 = "0aaazix3d6a3jjskzyilg2jwlfp54dw5mfxzkvc65xswaqgly80b";
-    };
-    buildInputs = [ ];
-  });
-
   toml = osuper.toml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
