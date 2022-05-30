@@ -8,5 +8,7 @@ buildDunePackage rec {
     sha256 = "0dnakz18lcgfd4pfjqjg6w5nh2qby45z0xp7d7qqgzlgj991b20d";
   };
 
+  patches = [ ./landmarks-m1.patch ];
+
   propagatedBuildInputs = [ ppxlib ];
 }
