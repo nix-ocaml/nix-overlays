@@ -259,8 +259,6 @@ let
   ];
 
   aarch64DarwinIgnores = [
-    "landmarks"
-    "landmarks-ppx"
   ];
 in
 
