@@ -1,0 +1,48 @@
+From 91f75a5ddc38e40bcd8f1dd10b68e88a5c169e0d Mon Sep 17 00:00:00 2001
+From: Renato Alencar <renatoalencar.73@gmail.com>
+Date: Fri, 27 May 2022 15:41:42 -0300
+Subject: [PATCH] Fix caml_highres_clock for aarch64
+
+---
+ landmarks.opam          | 2 +-
+ landmarks.opam.template | 2 +-
+ src/clock.c             | 6 +++++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/landmarks.opam b/landmarks.opam
+index 8d90c8f..5f47737 100755
+--- a/landmarks.opam
++++ b/landmarks.opam
+@@ -33,4 +33,4 @@ build: [
+   ]
+ ]
+ dev-repo: "git+https://github.com/LexiFi/landmarks.git"
+-available: arch = "x86_64" | arch = "x86_32"
++available: arch = "x86_64" | arch = "x86_32" | arch = "aarch64"
+diff --git a/landmarks.opam.template b/landmarks.opam.template
+index dec14ac..de36389 100755
+--- a/landmarks.opam.template
++++ b/landmarks.opam.template
+@@ -1 +1 @@
+-available: arch = "x86_64" | arch = "x86_32"
++available: arch = "x86_64" | arch = "x86_32" | arch = "aarch64"
+diff --git a/src/clock.c b/src/clock.c
+index 5f79b31..412f336 100755
+--- a/src/clock.c
++++ b/src/clock.c
+@@ -15,10 +15,14 @@ CAMLprim value caml_highres_clock(value unit)
+     int64_t v;
+     v = __rdtsc();
+     return caml_copy_int64(v);
+-#elif defined(__GNUC__)
++#elif defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+     uint32_t hi = 0, lo = 0;
+     __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
+     return caml_copy_int64( ((int64_t)lo)|( ((int64_t)hi)<<32 ));
++#elif defined(__aarch64__)
++    uint64_t v;
++    asm volatile ("mrs %0, cntvct_el0" : "=r"(v));
++    return caml_copy_int64(v);
+ #else
+     return 0;
+ #endif
