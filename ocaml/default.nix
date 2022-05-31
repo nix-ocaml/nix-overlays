@@ -924,15 +924,17 @@ with oself;
   ocaml_gettext = disableTests osuper.ocaml_gettext;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
-    src = if lib.versionAtLeast ocaml.version "5.00" then
-      fetchFromGitHub {
-        owner = "ulrikstrid";
-        repo = "ocaml-lsp";
-        fetchSubmodules = true;
-        rev = "191f65ab82efc56c370e9e3122123590b96071fd";
-        sha256 = "sha256-FqQzh+SvRmZ6xTdcyr0iF3EE+8o+I9LSUJ5FgI5UyoU=";
-      }
-    else o.src;
+    src =
+      if lib.versionAtLeast ocaml.version "5.00" then
+        fetchFromGitHub
+          {
+            owner = "ulrikstrid";
+            repo = "ocaml-lsp";
+            fetchSubmodules = true;
+            rev = "191f65ab82efc56c370e9e3122123590b96071fd";
+            sha256 = "sha256-FqQzh+SvRmZ6xTdcyr0iF3EE+8o+I9LSUJ5FgI5UyoU=";
+          }
+      else o.src;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
