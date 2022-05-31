@@ -7,11 +7,12 @@
 , dune-site
 , h2-lwt-unix
 , httpaf-lwt-unix
-, multipart_form
 , ipaddr
 , logs
 , lwt_ssl
 , magic-mime
+, multipart_form
+, sendfile
 , uri
 }:
 
@@ -21,8 +22,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "ea37764";
-    sha256 = "05as6h6i1fxjym2sisn5mpmn9dysggivw0yh0isp77p58vgn66vn";
+    rev = "d923546befb1c56251505149ac4244afd8b82312";
+    sha256 = "sha256-2HVfe61Xg/0wGem8b4uSxJZuNiike4YgcohSgvGIc+0=";
   };
 
   doCheck = false;
@@ -38,6 +39,7 @@ buildDunePackage {
     multipart_form
     httpaf-lwt-unix
     h2-lwt-unix
+    sendfile
   ];
 
   meta = {
