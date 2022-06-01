@@ -149,6 +149,7 @@ let
   ocaml412Ignores = [
     "typedppxlib"
     "ppx_debug"
+    "cooltt"
   ];
 
   ocaml5Ignores = [
