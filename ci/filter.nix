@@ -150,6 +150,7 @@ let
     "accessor_core"
     "accessor_async"
     "ppx_deriving_bson"
+    "cooltt"
   ];
 
   ocaml5Ignores = [

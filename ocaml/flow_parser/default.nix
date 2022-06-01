@@ -1,4 +1,4 @@
-{ buildDunePackage, ppx_deriving, ppx_gen_rec, sedlex_2, wtf8 }:
+{ buildDunePackage, ppx_deriving, ppx_gen_rec, sedlex, wtf8 }:
 
 buildDunePackage {
   pname = "flow_parser";
@@ -12,7 +12,7 @@ buildDunePackage {
   propagatedBuildInputs = [
     ppx_deriving
     ppx_gen_rec
-    sedlex_2
+    sedlex
     wtf8
   ];
 }
