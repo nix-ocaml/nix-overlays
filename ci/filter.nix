@@ -149,6 +149,7 @@ let
   ocaml412Ignores = [
     "typedppxlib"
     "ppx_debug"
+    "cooltt-unstable-2022-04-28"
   ];
 
   ocaml5Ignores = [
