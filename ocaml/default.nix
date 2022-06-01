@@ -1266,6 +1266,8 @@ with oself;
     };
   });
 
+  # For ppx_css
+  sedlex_2 = sedlex;
   sedlex = osuper.sedlex.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/sedlex/archive/refs/tags/v2.6.tar.gz;
