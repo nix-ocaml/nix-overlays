@@ -22,10 +22,14 @@ let
       # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
       # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
     });
-
 in
 (oself: osuper:
-  lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper // {
+  lib.mapAttrs
+    (_: p:
+      if p ? overrideAttrs then
+        fixOCamlPackage p
+      else p)
+    osuper // {
     ocaml = fixOCaml osuper.ocaml;
 
     zarith = osuper.zarith.overrideDerivation (o: {

@@ -274,6 +274,9 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  # Not available for 4.12 and breaking the static build
+  cooltt = null;
+
   cstruct-sexp = osuper.cstruct-sexp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib_test/dune --replace "bigarray" ""
