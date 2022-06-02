@@ -1,0 +1,10 @@
+diff --git a/lib/dune b/lib/dune
+index 087f7b9..ab6ac1c 100644
+--- a/lib/dune
++++ b/lib/dune
+@@ -34,4 +34,5 @@
+  (public_name yojson)
+  (modules yojson)
+  (synopsis "JSON parsing and printing")
++ (libraries camlp-streams)
+  (flags (-safe-string)))
