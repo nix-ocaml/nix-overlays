@@ -1467,12 +1467,21 @@ with oself;
     };
   });
 
-  yojson = osuper.yojson.overrideAttrs (o: {
+  yojson_2 = osuper.yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/yojson/releases/download/2.0.0/yojson-2.0.0.tbz;
       sha256 = "06nb41a2j82w2hc7ibz0llwz2b6slaf3j257nizqy6lmgwzqcpdb";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
+  });
+
+  yojson = osuper.yojson.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/yojson/archive/0fc0bb781d70a3a754bbbd2a2ed4508b07092278.tar.gz;
+      sha256 = "1qimfilgawr8r55hc33cs1l5hi0iqd62z4mvh1qhxhxby4w1wviw";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+    patches = [ ./camlpstreams.patch ];
   });
 
   yuscii = disableTests osuper.yuscii;
