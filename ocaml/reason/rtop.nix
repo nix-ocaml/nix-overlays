@@ -5,4 +5,6 @@ buildDunePackage {
   pname = "rtop";
   buildInputs = [ cppo ];
   propagatedBuildInputs = [ utop reason ];
+
+  meta.mainProgram = "rtop";
 }

@@ -418,8 +418,39 @@ with oself;
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+    inherit (dyn) preBuild;
   });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
+  dyn = osuper.dyn.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    preBuild = ''
+      rm -r vendor/csexp vendor/pp
+    '';
+  });
+  dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-glob = osuper.dune-glob.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-site = osuper.dune-site.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  fiber = osuper.fiber.overrideAttrs (o: {
+    propagatedBuildInputs = [ pp ];
+    inherit (dyn) preBuild;
+  });
+  stdune = osuper.stdune.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1639,6 +1670,27 @@ with oself;
       sha256 = "179f1iz504l008b3p3d9q2nj44wv7y31pc997x32m6aq1j2lfip3";
     };
   });
+
+  ppx_yojson_conv_lib = janePackage {
+    pname = "ppx_yojson_conv_lib";
+    version = "0.15.0";
+    hash = "sha256-Hpg4AKAe7Q5P5UkBpH+5l1nZbIVA2Dr1Q30D4zkrjGo=";
+    propagatedBuildInputs = [ yojson ];
+    meta = {
+      description = "Yojson Deriver PPX";
+    };
+  };
+
+  ppx_yojson_conv = janePackage {
+    pname = "ppx_yojson_conv";
+    version = "0.15.0";
+    hash = "sha256-FGtReLkdI9EnD6sPsMQSv5ipfDyY6z5fIkjqH+tie48=";
+    propagatedBuildInputs = [ ppxlib ppx_yojson_conv_lib ppx_js_style ];
+    meta = {
+      description = "Yojson Deriver PPX";
+    };
+  };
+
 
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
     patches =
