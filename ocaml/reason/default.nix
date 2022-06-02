@@ -37,4 +37,6 @@ buildDunePackage rec {
   patches = [
     ./patches/0001-rename-labels.patch
   ];
+
+  meta.mainProgram = "refmt";
 }

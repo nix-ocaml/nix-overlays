@@ -399,8 +399,39 @@ with oself;
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+    inherit (dyn) preBuild;
   });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
+  dyn = osuper.dyn.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    preBuild = ''
+      rm -r vendor/csexp vendor/pp
+    '';
+  });
+  dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-glob = osuper.dune-glob.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-site = osuper.dune-site.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
+  fiber = osuper.fiber.overrideAttrs (o: {
+    propagatedBuildInputs = [ pp ];
+    inherit (dyn) preBuild;
+  });
+  stdune = osuper.stdune.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
