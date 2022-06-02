@@ -424,6 +424,10 @@ with oself;
       rm -r vendor/csexp vendor/pp
     '';
   });
+  dune-glob = osuper.dune-glob.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    inherit (dyn) preBuild;
+  });
   dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
