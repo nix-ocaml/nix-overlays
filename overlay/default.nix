@@ -97,6 +97,13 @@ in
     cockroachdb-21_2_x
     cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
+
+  pnpm = self.writeScriptBin "pnpm" ''
+    #!${self.runtimeShell}
+    ${self.nodejs_latest}/bin/node \
+      ${self.nodePackages_latest.pnpm}/lib/node_modules/pnpm/bin/pnpm.cjs \
+      "$@"
+  '';
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
