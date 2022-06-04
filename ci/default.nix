@@ -30,7 +30,8 @@ in
     inherit pkgs ocamlVersion;
     extraIgnores =
       lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores
-        ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores;
+        ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores
+        ++ lib.optionals (system == "x86_64-darwin") filter.x86_64DarwinIgnores;
   }))
   ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 

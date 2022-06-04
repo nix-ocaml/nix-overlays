@@ -264,10 +264,16 @@ let
     "tsdl-mixer"
     "tsdl-ttf"
   ];
+
+  x86_64DarwinIgnores = [
+    "tsdl-image"
+    "tsdl-mixer"
+    "tsdl-ttf"
+  ];
 in
 
 rec {
-  inherit ocaml5Ignores ocaml412Ignores aarch64DarwinIgnores;
+  inherit ocaml5Ignores ocaml412Ignores aarch64DarwinIgnores x86_64DarwinIgnores;
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
