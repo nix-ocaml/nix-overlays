@@ -260,6 +260,9 @@ let
   ];
 
   aarch64DarwinIgnores = [
+    "tsdl-image"
+    "tsdl-mixer"
+    "tsdl-ttf"
   ];
 in
 
