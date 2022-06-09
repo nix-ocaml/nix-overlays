@@ -142,6 +142,7 @@ let
 
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
+    "apron"
 
     "gd4o"
 
