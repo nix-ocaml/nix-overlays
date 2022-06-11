@@ -110,9 +110,10 @@ function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = []) {
 
 function escapeForGHActions(s) {
   // Escape `"` and `$` characters in a string to work around the following
+  // `` ` `` and `'` seems to be problematic as well
   // issue:
   // https://github.com/repo-sync/pull-request/issues/27
-  return s.replace(/\$/g, '\\$').replace(/"/g, '\\"')
+  return s.replace(/\$/g, '\\$').replace(/"/g, '\\"').replace(/`/g, '\\`').replace(/\'/g, '\\\'');
 }
 
 module.exports = {
