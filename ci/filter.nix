@@ -100,6 +100,7 @@ let
     "bjack"
     "async_inotify"
     "async_smtp"
+    "pgsolver"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -221,7 +222,6 @@ let
     "pcap-format"
     "pgocaml_ppx"
     "pgocaml"
-    "pgsolver"
     "phylogenetics"
     "piqi-ocaml"
     "piqi"
