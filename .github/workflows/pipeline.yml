@@ -103,11 +103,10 @@ jobs:
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target native \
-                --show-trace --keep-going
+            nix-build ./ci \
+              --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
+              --argstr target native \
+              --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   top-level-packages-macos:
