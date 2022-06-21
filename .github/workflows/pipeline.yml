@@ -107,7 +107,7 @@ jobs:
               nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
-                --show-trace --keep-going --print-build-logs
+                --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   top-level-packages-macos:
