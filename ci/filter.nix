@@ -152,6 +152,7 @@ let
     "tsdl-ttf"
     "ocaml-sat-solvers"
     "pg-solver"
+    "cpdf"
 
   ];
 
