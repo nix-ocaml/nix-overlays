@@ -23,6 +23,8 @@
     in
 
     {
+      lib = nixpkgs.lib;
+
       hydraJobs = builtins.listToAttrs (map
         (system: {
           name = system;
