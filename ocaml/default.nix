@@ -641,6 +641,7 @@ with oself;
       sha256 = "0jfb7aw1fv2y5skcv0gc74j37fy2k22j87fqs6fjhpw0dw2si0lr";
     };
 
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
     # MDX has some broken python transitive deps
     doCheck = false;
   });

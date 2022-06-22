@@ -129,6 +129,10 @@ let
     "pg-solver"
     "cpdf"
 
+    # Broken by python transitive dependencies?
+    "lablgtk3-gtkspell3"
+    "mdx"
+
   ];
 
   ocaml412Ignores = [
@@ -271,6 +275,7 @@ let
     "alsa"
     "ladspa"
     "mm"
+    "pulseaudio"
   ];
 
 in
