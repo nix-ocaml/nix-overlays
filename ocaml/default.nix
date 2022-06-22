@@ -408,10 +408,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (_: {
-    version = "3.2.0";
+    version = "3.3.1";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.2.0/chrome-trace-3.2.0.tbz;
-      sha256 = "1g6m3a5b1nhvrxw5agzmng7ayy1rwbib56x8dyr1xvbrmvkbq7xx";
+      url = https://github.com/ocaml/dune/releases/download/3.3.1/dune-3.3.1.tbz;
+      sha256 = "1q82ap6xq93cn5pkwjjbzk9c9r7kcghlk7dryasvl4py3d4q0344";
     };
   });
 
@@ -471,6 +471,17 @@ with oself;
     };
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
+
+  findlib = osuper.findlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.5.tar.gz;
+      sha256 = "1dydivj0fs1snxss47fi84kgk1bf2cfbwgwv7j4lrzlr0xqli3xa";
+    };
+    patches = [
+      "${nixpkgs}/pkgs/development/tools/ocaml/findlib/ldconf.patch"
+      ./findlib_install_topfind.patch
+    ];
+  });
 
   fix = osuper.fix.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -701,6 +712,13 @@ with oself;
       '' else "";
   });
 
+  lambda-term = osuper.lambda-term.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/lambda-term/archive/d68d2fd21554b16b6968b943566a21f62614f072.tar.gz;
+      sha256 = "1iiaywjk1s9kv4344b60gy495kkp9i5v3lsf5zk03awxnq08habv";
+    };
+  });
+
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
@@ -746,8 +764,8 @@ with oself;
     '';
 
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/654952b62.tar.gz;
-      sha256 = "16z8c2x0asj24rjrgv2wa4bywxq9f3zlh0ha8flfaw18p95sgw2r";
+      url = https://github.com/ocsigen/lwt/archive/449f1809.tar.gz;
+      sha256 = "1hyz276ls5wzkj0jh34jfilr0a2ndyjrw2d8i518z91bsm1pd2cl";
     };
   });
 
