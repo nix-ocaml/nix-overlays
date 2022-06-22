@@ -137,6 +137,7 @@ let
     "duppy"
     "taglib"
     "getopt"
+    "soundtouch"
   ];
 
   ocaml412Ignores = [

@@ -1348,6 +1348,7 @@ with oself;
     preConfigure = ''
       echo '(using menhir 2.1)' >> ./dune-project
     '';
+    patches = [ ];
   });
 
   tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
