@@ -5,15 +5,15 @@ buildDunePackage {
   version = "1.2.3";
 
   src = builtins.fetchurl {
-    url = https://github.com/teamwalnut/graphql-ppx/archive/refs/tags/v1.2.3.tar.gz;
-    sha256 = "0jwaf4rac2c9n4k01hf3krjklflhld0z0wynh32666yav10h4zdb";
+    url = https://github.com/teamwalnut/graphql-ppx/archive/4a1fbfebf9.tar.gz;
+    sha256 = "0d1kadwgdsdfma12f6rfssy8qqk8nkcx7650wvr53y8ck0yr3kqs";
   };
 
   nativeBuildInputs = [ cppo ];
   propagatedBuildInputs = [ yojson ppxlib reason ];
 
   postInstall = ''
-    mkdir $out/lib_bucklescript
-    cp -r ./package.json ./bsconfig.json ./bucklescript $out/lib_bucklescript
+    mkdir -p $out/lib-runtime
+    cp -r ./package.json ./bsconfig.json ./rescript-runtime $out/lib-runtime
   '';
 }
