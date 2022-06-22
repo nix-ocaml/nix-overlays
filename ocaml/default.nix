@@ -1153,7 +1153,7 @@ with oself;
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ osuper.findlib ];
+    buildInputs = o.buildInputs ++ [ findlib ];
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
