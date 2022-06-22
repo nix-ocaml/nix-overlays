@@ -100,6 +100,7 @@ let
     "bjack"
     "async_inotify"
     "async_smtp"
+    "pgsolver"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -142,8 +143,16 @@ let
 
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
+    "apron"
 
     "gd4o"
+
+    "tsdl-image"
+    "tsdl-mixer"
+    "tsdl-ttf"
+    "ocaml-sat-solvers"
+    "pg-solver"
+    "cpdf"
 
     "typedppxlib"
     "ppx_debug"
@@ -214,7 +223,6 @@ let
     "pcap-format"
     "pgocaml_ppx"
     "pgocaml"
-    "pgsolver"
     "phylogenetics"
     "piqi-ocaml"
     "piqi"
@@ -259,13 +267,10 @@ let
     "zmq-lwt"
     "zmq"
   ];
-
-  aarch64DarwinIgnores = [
-  ];
 in
 
 rec {
-  inherit ocaml5Ignores aarch64DarwinIgnores;
+  inherit ocaml5Ignores;
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
