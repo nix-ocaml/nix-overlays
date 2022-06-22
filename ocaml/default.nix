@@ -637,13 +637,12 @@ with oself;
 
   iter = osuper.iter.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/iter/archive/8be24288.tar.gz;
-      sha256 = "0hkgia50lqwh13b5f0515z2w17q8pqd3nrnza76ns9h34qag55l9";
+      url = https://github.com/c-cube/iter/archive/a3b34263.tar.gz;
+      sha256 = "0jfb7aw1fv2y5skcv0gc74j37fy2k22j87fqs6fjhpw0dw2si0lr";
     };
-    postPatch = ''
-      substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+
+    # MDX has some broken python transitive deps
+    doCheck = false;
   });
 
   itv-tree = buildDunePackage {
@@ -1224,6 +1223,7 @@ with oself;
 
   ppx_tools = callPackage ./ppx_tools { };
 
+  printbox = disableTests osuper.printbox;
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/printbox/archive/refs/tags/v0.6.tar.gz;
@@ -1466,6 +1466,8 @@ with oself;
       sha256 = "1qx89nzwv9qx6zw9xbrzlsvpmxwb30iji41kdw10x40ylwfnra4x";
     };
   });
+
+  yaml = disableTests osuper.yaml;
 
   yojson_2 = osuper.yojson.overrideAttrs (o: {
     src = builtins.fetchurl {

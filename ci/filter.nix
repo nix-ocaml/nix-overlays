@@ -70,37 +70,12 @@ let
     # broken since 4.12
     "ocaml_extlib-1-7-7"
 
-    # unavailable on macOS
-    "ocaml-freestanding"
-    "mirage-xen"
-    "mirage-bootvar-xen"
-    "mirage-net-xen"
-    "netchannel"
-    "ffmpeg"
-    "ffmpeg-av"
-    "ffmpeg-avdevice"
-    "ffmpeg-avfilter"
-    "ffmpeg-avutil"
-    "ffmpeg-avcodec"
-    "ffmpeg-swscale"
-    "ffmpeg-swresample"
-    "dssi"
-
     # doesn't work with my fork of http/af
     "paf"
     "paf-le"
     "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
-
-    # broken on macOS?
-    "llvm"
-    "ocaml_libvirt"
-    "labltk"
-    "bjack"
-    "async_inotify"
-    "async_smtp"
-    "pgsolver"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -267,6 +242,37 @@ let
     "zmq-lwt"
     "zmq"
   ];
+
+  darwinIgnores = [
+    "ocaml-freestanding"
+    "mirage-xen"
+    "mirage-bootvar-xen"
+    "mirage-net-xen"
+    "netchannel"
+    "ffmpeg"
+    "ffmpeg-av"
+    "ffmpeg-avdevice"
+    "ffmpeg-avfilter"
+    "ffmpeg-avutil"
+    "ffmpeg-avcodec"
+    "ffmpeg-swscale"
+    "ffmpeg-swresample"
+    "dssi"
+
+    # broken on macOS?
+    "llvm"
+    "ocaml_libvirt"
+    "labltk"
+    "bjack"
+    "async_inotify"
+    "async_smtp"
+    "pgsolver"
+
+    "alsa"
+    "ladspa"
+    "mm"
+  ];
+
 in
 
 rec {
@@ -274,7 +280,10 @@ rec {
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
-      ignoredPackages = baseIgnoredPackages ++ extraIgnores;
+      ignoredPackages =
+        baseIgnoredPackages ++
+        lib.optionals stdenv.isDarwin darwinIgnores ++
+        extraIgnores;
     in
     lib.filterAttrs
       (n: v:
