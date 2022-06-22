@@ -287,7 +287,7 @@ let
 in
 
 rec {
-  inherit ocaml5Ignores ocaml412Ignores;
+  inherit ocaml5Ignores ocaml412Ignores darwinIgnores;
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
