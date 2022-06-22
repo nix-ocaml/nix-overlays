@@ -815,14 +815,6 @@ with oself;
   melange = callPackage ./melange { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
-  # This overrides Menhir too.
-  menhirLib = osuper.menhirLib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://gitlab.inria.fr/fpottier/menhir/-/archive/e5c3087028286016ed72880fe5e702077b28441a.tar.gz;
-      sha256 = "0pis7mghrnl5ahqv3gm0ybjb1032ifixsnfz5skg6n8jl4pggi2w";
-    };
-  });
-
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
 
@@ -1003,13 +995,6 @@ with oself;
     };
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
-
-  ocaml-migrate-parsetree-2 = osuper.ocaml-migrate-parsetree-2.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/config/gen.ml --replace \
-        '| (4, 14) -> "414"'  '| (4, 14) -> "414" | (5, 0) -> "500"'
-    '';
-  });
 
   ocaml-migrate-types = callPackage ./ocaml-migrate-types { };
   typedppxlib = callPackage ./typedppxlib { };
@@ -1682,16 +1667,6 @@ with oself;
       sha256 = "179f1iz504l008b3p3d9q2nj44wv7y31pc997x32m6aq1j2lfip3";
     };
   });
-
-  ppx_yojson_conv_lib = janePackage {
-    pname = "ppx_yojson_conv_lib";
-    version = "0.15.0";
-    hash = "sha256-Hpg4AKAe7Q5P5UkBpH+5l1nZbIVA2Dr1Q30D4zkrjGo=";
-    propagatedBuildInputs = [ yojson ];
-    meta = {
-      description = "Yojson Deriver PPX";
-    };
-  };
 
   ppx_yojson_conv = janePackage {
     pname = "ppx_yojson_conv";
