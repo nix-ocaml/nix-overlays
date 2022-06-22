@@ -133,6 +133,11 @@ let
     "lablgtk3-gtkspell3"
     "mdx"
 
+    "ocaml-freestanding"
+    "mirage-xen"
+    "mirage-bootvar-xen"
+    "mirage-net-xen"
+    "netchannel"
 
     "duppy"
     "taglib"
@@ -254,11 +259,6 @@ let
   ];
 
   darwinIgnores = [
-    "ocaml-freestanding"
-    "mirage-xen"
-    "mirage-bootvar-xen"
-    "mirage-net-xen"
-    "netchannel"
     "ffmpeg"
     "ffmpeg-av"
     "ffmpeg-avdevice"
