@@ -1,7 +1,7 @@
 { pkgs, system }:
 let
   filter = pkgs.callPackage ./filter.nix { };
-  extraIgnores = if system == "aarch64-darwin" then filter.aarch64DarwinIgnores else [ ];
+  extraIgnores = [ ];
 in
 
 with filter;
