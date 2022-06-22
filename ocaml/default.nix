@@ -24,10 +24,11 @@ let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
   pkg-config-script =
-    let pkg-config-pkg =
-      if stdenv.cc.targetPrefix == ""
-      then "${pkg-config}/bin/pkg-config"
-      else "${stdenv.cc.targetPrefix}pkg-config";
+    let
+      pkg-config-pkg =
+        if stdenv.cc.targetPrefix == ""
+        then "${pkg-config}/bin/pkg-config"
+        else "${stdenv.cc.targetPrefix}pkg-config";
     in
     writeScriptBin "pkg-config" ''
       #!${stdenv.shell}

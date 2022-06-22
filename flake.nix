@@ -36,11 +36,12 @@
         [ "x86_64-linux" "aarch64-darwin" ]);
 
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let pkgs = import nixpkgs ({
-          inherit system;
-          overlays = [ self.overlays.${system}.default ];
-          config.allowUnfree = true;
-        } // attrs);
+        let
+          pkgs = import nixpkgs ({
+            inherit system;
+            overlays = [ self.overlays.${system}.default ];
+            config.allowUnfree = true;
+          } // attrs);
         in
           /*
             You might read https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and want to change this

@@ -11,15 +11,16 @@
 { lib, buildPackages, writeText, writeScriptBin, stdenv, bash }:
 let
   __mergeInputs = acc: names: attrs:
-    let ret =
-      lib.foldl' (acc: x: acc // { "${x.name}" = x; })
-        { }
-        (builtins.concatMap
-          (name:
-            builtins.filter
-              lib.isDerivation
-              (lib.concatLists (lib.catAttrs name attrs)))
-          names);
+    let
+      ret =
+        lib.foldl' (acc: x: acc // { "${x.name}" = x; })
+          { }
+          (builtins.concatMap
+            (name:
+              builtins.filter
+                lib.isDerivation
+                (lib.concatLists (lib.catAttrs name attrs)))
+            names);
     in
     if ret == { } then acc
     else
