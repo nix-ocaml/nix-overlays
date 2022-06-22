@@ -133,6 +133,10 @@ let
     "lablgtk3-gtkspell3"
     "mdx"
 
+
+    "duppy"
+    "taglib"
+    "getopt"
   ];
 
   ocaml412Ignores = [
