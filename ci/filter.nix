@@ -245,6 +245,7 @@ let
     "xml-light"
     "zmq-lwt"
     "zmq"
+    "labltk"
   ];
 
   darwinIgnores = [
