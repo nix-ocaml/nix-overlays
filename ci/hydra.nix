@@ -1,7 +1,8 @@
 { pkgs, system }:
 let
   filter = pkgs.callPackage ./filter.nix { };
-  extraIgnores = if builtins.hasSuffix "darwin" system then filter.darwinIgnores else [ ];
+  # TODO: Fix this check if/when we get a x86_64-darwin builder
+  extraIgnores = if system == "aarch64-darwin" then filter.darwinIgnores else [ ];
 in
 
 with filter;
