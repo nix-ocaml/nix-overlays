@@ -1,8 +1,8 @@
 { pkgs, system }:
 let
   filter = pkgs.callPackage ./filter.nix { };
-  # TODO: Fix this check if/when we get a x86_64-darwin builder
-  extraIgnores = if system == "aarch64-darwin" then filter.darwinIgnores else [ ];
+  isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
+  extraIgnores = if isDarwin then filter.darwinIgnores else [ ];
 in
 
 with filter;
