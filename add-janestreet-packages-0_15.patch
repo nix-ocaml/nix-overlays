@@ -1,88 +1,5 @@
-From e9a407161256e3a958ef78345bf749ed228b6d5d Mon Sep 17 00:00:00 2001
-From: "Aaron L. Zeng" <me@bcc32.com>
-Date: Sat, 28 May 2022 00:48:07 -0400
-Subject: [PATCH 1/2] comby: 1.7.0 -> 1.7.1
-
----
- pkgs/development/tools/comby/default.nix | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/pkgs/development/tools/comby/default.nix b/pkgs/development/tools/comby/default.nix
-index 9b77740979e5f..cd3251841ad14 100644
---- a/pkgs/development/tools/comby/default.nix
-+++ b/pkgs/development/tools/comby/default.nix
-@@ -14,7 +14,7 @@ let
-   mkCombyPackage = { pname, extraBuildInputs ? [ ], extraNativeInputs ? [ ], preBuild ? "" }:
-     ocamlPackages.buildDunePackage rec {
-       inherit pname preBuild;
--      version = "1.7.0";
-+      version = "1.7.1";
-       useDune2 = true;
-       minimumOcamlVersion = "4.08.1";
-       doCheck = true;
-@@ -23,7 +23,7 @@ let
-         owner = "comby-tools";
-         repo = "comby";
-         rev = version;
--        sha256 = "sha256-Y2RcYvJOSqppmxxG8IZ5GlFkXCOIQU+1jJZ6j+PBHC4";
-+        sha256 = "0k60hj8wcrvrk0isr210vnalylkd63ria1kgz5n49inl7w1hfwpv";
-       };
- 
-       nativeBuildInputs = [
-@@ -82,6 +82,7 @@ mkCombyPackage {
-     ocamlPackages.parany
-     ocamlPackages.conduit-lwt-unix
-     ocamlPackages.lwt_react
-+    ocamlPackages.tar-unix
-     ocamlPackages.tls
-     combyKernel
-     combySemantic
-
-From f02c708e414723b428ce8221a5bc6084c6c49f5a Mon Sep 17 00:00:00 2001
-From: "Aaron L. Zeng" <me@bcc32.com>
-Date: Mon, 23 May 2022 01:18:37 -0400
-Subject: [PATCH 2/2] WIP: Add Jane Street ocaml packages version 0.15
-
-- TODO: Fix ppx_base not including ppx_js_style; breaks cinaps
-
-- ocamlPackages.tls*: 0.15.2 -> 0.15.3
-- ocamlPackages.bistro: unstable-2021-11-13 -> unstable-2022-05-07
-- ocamlPackages.phylogenetics: 0.1.0 -> unstable-2022-05-06
----
- pkgs/development/compilers/ligo/default.nix   |    3 +
- pkgs/development/compilers/ligo/ligo.patch    |  134 +++
- .../development/ocaml-modules/bap/default.nix |   10 +-
- .../ocaml-modules/biocaml/default.nix         |    9 +-
- .../ocaml-modules/bistro/default.nix          |   11 +-
- .../ocaml-modules/cohttp/async.nix            |   12 +-
- .../ocaml-modules/faraday/async.nix           |    7 +-
- .../ocaml-modules/hack_parallel/default.nix   |    8 +-
- .../hack_parallel/hack_parallel.patch         |   68 ++
- .../ocaml-modules/janestreet/0.15.nix         | 1000 ++++++++++++++++
- .../janestreet/bonsai_jsoo_4_0.patch          |   13 +
- .../janestreet/janePackage_0_15.nix           |   31 +
- .../ocaml-modules/janestreet/pythonlib.patch  |   22 +
- .../ocaml-modules/phylogenetics/default.nix   |   17 +-
- .../development/ocaml-modules/tls/default.nix |    6 +-
- pkgs/development/tools/comby/comby.patch      | 1025 +++++++++++++++++
- pkgs/development/tools/comby/default.nix      |    3 +
- pkgs/tools/misc/flitter/default.nix           |   12 +-
- pkgs/tools/misc/flitter/flitter.patch         |   13 +
- pkgs/tools/misc/patdiff/default.nix           |    4 +-
- pkgs/tools/typesetting/satysfi/default.nix    |    2 +
- pkgs/top-level/ocaml-packages.nix             |   11 +-
- 22 files changed, 2389 insertions(+), 32 deletions(-)
- create mode 100644 pkgs/development/compilers/ligo/ligo.patch
- create mode 100644 pkgs/development/ocaml-modules/hack_parallel/hack_parallel.patch
- create mode 100644 pkgs/development/ocaml-modules/janestreet/0.15.nix
- create mode 100644 pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
- create mode 100644 pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix
- create mode 100644 pkgs/development/ocaml-modules/janestreet/pythonlib.patch
- create mode 100644 pkgs/development/tools/comby/comby.patch
- create mode 100644 pkgs/tools/misc/flitter/flitter.patch
-
 diff --git a/pkgs/development/compilers/ligo/default.nix b/pkgs/development/compilers/ligo/default.nix
-index 36ec5bba2e20b..ab61043048af5 100644
+index 36ec5bba2e2..ab61043048a 100644
 --- a/pkgs/development/compilers/ligo/default.nix
 +++ b/pkgs/development/compilers/ligo/default.nix
 @@ -46,6 +46,7 @@ coq.ocamlPackages.buildDunePackage rec {
@@ -104,7 +21,7 @@ index 36ec5bba2e20b..ab61043048af5 100644
      downloadPage = "https://ligolang.org/docs/intro/installation";
 diff --git a/pkgs/development/compilers/ligo/ligo.patch b/pkgs/development/compilers/ligo/ligo.patch
 new file mode 100644
-index 0000000000000..1a076cf18ceed
+index 00000000000..1a076cf18ce
 --- /dev/null
 +++ b/pkgs/development/compilers/ligo/ligo.patch
 @@ -0,0 +1,134 @@
@@ -243,7 +160,7 @@ index 0000000000000..1a076cf18ceed
 +   let start_column = l#start#offset `Byte in
 +   let stop = l#stop#line in
 diff --git a/pkgs/development/ocaml-modules/bap/default.nix b/pkgs/development/ocaml-modules/bap/default.nix
-index 4f87715a74ad9..eaaf621900ad2 100644
+index 4f87715a74a..eaaf621900a 100644
 --- a/pkgs/development/ocaml-modules/bap/default.nix
 +++ b/pkgs/development/ocaml-modules/bap/default.nix
 @@ -1,4 +1,4 @@
@@ -268,7 +185,7 @@ index 4f87715a74ad9..eaaf621900ad2 100644
    preConfigure = ''
      substituteInPlace oasis/elf-loader --replace bitstring.ppx ppx_bitstring
 diff --git a/pkgs/development/ocaml-modules/biocaml/default.nix b/pkgs/development/ocaml-modules/biocaml/default.nix
-index 596ed6161d7b3..b82ec7361791f 100644
+index 596ed6161d7..b82ec736179 100644
 --- a/pkgs/development/ocaml-modules/biocaml/default.nix
 +++ b/pkgs/development/ocaml-modules/biocaml/default.nix
 @@ -4,7 +4,7 @@
@@ -295,7 +212,7 @@ index 596ed6161d7b3..b82ec7361791f 100644
  
    buildInputs = [ ppx_jane ppx_sexp_conv ];
 diff --git a/pkgs/development/ocaml-modules/bistro/default.nix b/pkgs/development/ocaml-modules/bistro/default.nix
-index 348d1bb97d471..43cbd33f738ca 100644
+index 348d1bb97d4..43cbd33f738 100644
 --- a/pkgs/development/ocaml-modules/bistro/default.nix
 +++ b/pkgs/development/ocaml-modules/bistro/default.nix
 @@ -1,10 +1,13 @@
@@ -340,7 +257,7 @@ index 348d1bb97d471..43cbd33f738ca 100644
      ocamlgraph
      ppx_sexp_conv
 diff --git a/pkgs/development/ocaml-modules/cohttp/async.nix b/pkgs/development/ocaml-modules/cohttp/async.nix
-index 060d2c6fb6a86..50c008bf60d87 100644
+index 060d2c6fb6a..50c008bf60d 100644
 --- a/pkgs/development/ocaml-modules/cohttp/async.nix
 +++ b/pkgs/development/ocaml-modules/cohttp/async.nix
 @@ -1,4 +1,6 @@
@@ -374,7 +291,7 @@ index 060d2c6fb6a86..50c008bf60d87 100644
      description = "CoHTTP implementation for the Async concurrency library";
    };
 diff --git a/pkgs/development/ocaml-modules/faraday/async.nix b/pkgs/development/ocaml-modules/faraday/async.nix
-index 666eb684925ce..05b085f92aca6 100644
+index 666eb684925..05b085f92ac 100644
 --- a/pkgs/development/ocaml-modules/faraday/async.nix
 +++ b/pkgs/development/ocaml-modules/faraday/async.nix
 @@ -1,9 +1,14 @@
@@ -394,7 +311,7 @@ index 666eb684925ce..05b085f92aca6 100644
  
    propagatedBuildInputs = [ faraday core async ];
 diff --git a/pkgs/development/ocaml-modules/hack_parallel/default.nix b/pkgs/development/ocaml-modules/hack_parallel/default.nix
-index 122ee2149f3ab..8d1414731f135 100644
+index 122ee2149f3..8d1414731f1 100644
 --- a/pkgs/development/ocaml-modules/hack_parallel/default.nix
 +++ b/pkgs/development/ocaml-modules/hack_parallel/default.nix
 @@ -1,5 +1,5 @@
@@ -420,7 +337,7 @@ index 122ee2149f3ab..8d1414731f135 100644
      description =
 diff --git a/pkgs/development/ocaml-modules/hack_parallel/hack_parallel.patch b/pkgs/development/ocaml-modules/hack_parallel/hack_parallel.patch
 new file mode 100644
-index 0000000000000..174803a348182
+index 00000000000..174803a3481
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/hack_parallel/hack_parallel.patch
 @@ -0,0 +1,68 @@
@@ -494,7 +411,7 @@ index 0000000000000..174803a348182
 +   let open Unix in
 diff --git a/pkgs/development/ocaml-modules/janestreet/0.15.nix b/pkgs/development/ocaml-modules/janestreet/0.15.nix
 new file mode 100644
-index 0000000000000..bc2f2f24e0a9e
+index 00000000000..bc2f2f24e0a
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/janestreet/0.15.nix
 @@ -0,0 +1,1000 @@
@@ -1500,7 +1417,7 @@ index 0000000000000..bc2f2f24e0a9e
 +}
 diff --git a/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch b/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
 new file mode 100644
-index 0000000000000..e658ba05ca4c0
+index 00000000000..e658ba05ca4
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/janestreet/bonsai_jsoo_4_0.patch
 @@ -0,0 +1,13 @@
@@ -1519,7 +1436,7 @@ index 0000000000000..e658ba05ca4c0
 +   and client_width = Js.Optdef.get client_width (Fn.const 0.0)
 diff --git a/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix b/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix
 new file mode 100644
-index 0000000000000..678599089946d
+index 00000000000..67859908994
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix
 @@ -0,0 +1,31 @@
@@ -1556,7 +1473,7 @@ index 0000000000000..678599089946d
 +})
 diff --git a/pkgs/development/ocaml-modules/janestreet/pythonlib.patch b/pkgs/development/ocaml-modules/janestreet/pythonlib.patch
 new file mode 100644
-index 0000000000000..71a32fd0236c3
+index 00000000000..71a32fd0236
 --- /dev/null
 +++ b/pkgs/development/ocaml-modules/janestreet/pythonlib.patch
 @@ -0,0 +1,22 @@
@@ -1583,7 +1500,7 @@ index 0000000000000..71a32fd0236c3
 +       let%bind tuple = List.map es ~f:(fun e -> walk e.desc) |> Or_error.all in
 +       (match tuple with
 diff --git a/pkgs/development/ocaml-modules/phylogenetics/default.nix b/pkgs/development/ocaml-modules/phylogenetics/default.nix
-index 11da66bd76005..1cf9651e6ecc9 100644
+index 11da66bd760..1cf9651e6ec 100644
 --- a/pkgs/development/ocaml-modules/phylogenetics/default.nix
 +++ b/pkgs/development/ocaml-modules/phylogenetics/default.nix
 @@ -1,6 +1,6 @@
@@ -1620,7 +1537,7 @@ index 11da66bd76005..1cf9651e6ecc9 100644
  
    checkInputs = [ alcotest bppsuite ];
 diff --git a/pkgs/development/ocaml-modules/tls/default.nix b/pkgs/development/ocaml-modules/tls/default.nix
-index 81f0a176bfc96..3f45aa919667b 100644
+index 81f0a176bfc..3f45aa91966 100644
 --- a/pkgs/development/ocaml-modules/tls/default.nix
 +++ b/pkgs/development/ocaml-modules/tls/default.nix
 @@ -6,11 +6,11 @@
@@ -1640,7 +1557,7 @@ index 81f0a176bfc96..3f45aa919667b 100644
    minimumOCamlVersion = "4.08";
 diff --git a/pkgs/development/tools/comby/comby.patch b/pkgs/development/tools/comby/comby.patch
 new file mode 100644
-index 0000000000000..ec1f5141985af
+index 00000000000..ec1f5141985
 --- /dev/null
 +++ b/pkgs/development/tools/comby/comby.patch
 @@ -0,0 +1,1025 @@
@@ -2670,7 +2587,7 @@ index 0000000000000..ec1f5141985af
 ++  (source_tree example)
 ++  (source_tree example/src/.ignore-me)))
 diff --git a/pkgs/development/tools/comby/default.nix b/pkgs/development/tools/comby/default.nix
-index cd3251841ad14..34eb2696040dc 100644
+index cd3251841ad..34eb2696040 100644
 --- a/pkgs/development/tools/comby/default.nix
 +++ b/pkgs/development/tools/comby/default.nix
 @@ -26,6 +26,8 @@ let
@@ -2691,7 +2608,7 @@ index cd3251841ad14..34eb2696040dc 100644
          ocamlPackages.mparser
          ocamlPackages.mparser-pcre
 diff --git a/pkgs/tools/misc/flitter/default.nix b/pkgs/tools/misc/flitter/default.nix
-index 49903559c136a..a46b3b72abed5 100644
+index 49903559c13..a46b3b72abe 100644
 --- a/pkgs/tools/misc/flitter/default.nix
 +++ b/pkgs/tools/misc/flitter/default.nix
 @@ -20,11 +20,17 @@ ocamlPackages.buildDunePackage rec {
@@ -2725,7 +2642,7 @@ index 49903559c136a..a46b3b72abed5 100644
      color
 diff --git a/pkgs/tools/misc/flitter/flitter.patch b/pkgs/tools/misc/flitter/flitter.patch
 new file mode 100644
-index 0000000000000..f59b8a22eb676
+index 00000000000..f59b8a22eb6
 --- /dev/null
 +++ b/pkgs/tools/misc/flitter/flitter.patch
 @@ -0,0 +1,13 @@
@@ -2743,7 +2660,7 @@ index 0000000000000..f59b8a22eb676
 +   )
 + 
 diff --git a/pkgs/tools/misc/patdiff/default.nix b/pkgs/tools/misc/patdiff/default.nix
-index dcd06ce1d2b70..2e84d0015d3ae 100644
+index dcd06ce1d2b..2e84d0015d3 100644
 --- a/pkgs/tools/misc/patdiff/default.nix
 +++ b/pkgs/tools/misc/patdiff/default.nix
 @@ -4,8 +4,8 @@ with ocamlPackages;
@@ -2758,7 +2675,7 @@ index dcd06ce1d2b70..2e84d0015d3ae 100644
      description = "File Diff using the Patience Diff algorithm";
    };
 diff --git a/pkgs/tools/typesetting/satysfi/default.nix b/pkgs/tools/typesetting/satysfi/default.nix
-index 89d2724eaad61..d270c46d1ae7f 100644
+index 89d2724eaad..d270c46d1ae 100644
 --- a/pkgs/tools/typesetting/satysfi/default.nix
 +++ b/pkgs/tools/typesetting/satysfi/default.nix
 @@ -50,6 +50,8 @@ in
@@ -2771,10 +2688,10 @@ index 89d2724eaad61..d270c46d1ae7f 100644
  
      buildInputs = [ camlpdf otfm yojson-with-position ] ++ (with ocamlPackages; [
 diff --git a/pkgs/top-level/ocaml-packages.nix b/pkgs/top-level/ocaml-packages.nix
-index 905294b8f8b53..fe460f4a73d36 100644
+index 5083f1733cd..34e8e4a4b9b 100644
 --- a/pkgs/top-level/ocaml-packages.nix
 +++ b/pkgs/top-level/ocaml-packages.nix
-@@ -1476,14 +1476,21 @@ let
+@@ -1535,14 +1535,21 @@ let
      # Jane Street
  
      janePackage =
