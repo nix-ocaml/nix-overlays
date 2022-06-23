@@ -264,6 +264,13 @@ let
     "zmq-lwt"
     "zmq"
     "labltk"
+
+    "ocamlformat"
+    "ocamlformat-rpc_0_20_0"
+    "ocamlformat-rpc_0_20_1"
+    "ocamlformat-rpc_0_21_0"
+    "ocamlformat-rpc"
+
   ];
 
   darwinIgnores = [
