@@ -147,6 +147,9 @@ let
     # Incompatible with ppxlib >= 0.27
     "brisk-reconciler"
     "flex"
+    "rebez"
+    "reenv"
+    "reperf"
   ];
 
   ocaml412Ignores = [
@@ -183,6 +186,7 @@ let
     "incr_dom"
     "inifiles"
     "inotify"
+    "async_inotify"
     "irmin-git"
     "js_of_ocaml-compiler"
     "js_of_ocaml-lwt"
@@ -278,7 +282,6 @@ let
     "ocaml_libvirt"
     "labltk"
     "bjack"
-    "async_inotify"
     "async_smtp"
     "pgsolver"
 
