@@ -276,6 +276,8 @@ let
     "ffmpeg-swscale"
     "ffmpeg-swresample"
     "dssi"
+    "inotify"
+    "async_inotify"
 
     # broken on macOS?
     "llvm"
