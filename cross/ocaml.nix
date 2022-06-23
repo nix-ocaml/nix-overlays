@@ -11,15 +11,16 @@
 { lib, buildPackages, writeText, writeScriptBin, stdenv, bash }:
 let
   __mergeInputs = acc: names: attrs:
-    let ret =
-      lib.foldl' (acc: x: acc // { "${x.name}" = x; })
-        { }
-        (builtins.concatMap
-          (name:
-            builtins.filter
-              lib.isDerivation
-              (lib.concatLists (lib.catAttrs name attrs)))
-          names);
+    let
+      ret =
+        lib.foldl' (acc: x: acc // { "${x.name}" = x; })
+          { }
+          (builtins.concatMap
+            (name:
+              builtins.filter
+                lib.isDerivation
+                (lib.concatLists (lib.catAttrs name attrs)))
+            names);
     in
     if ret == { } then acc
     else
@@ -32,9 +33,13 @@ let
 
   getNativeOCamlPackages = osuper:
     let
-      version = lib.stringAsChars
-        (x: if x == "." then "_" else x)
-        (builtins.substring 0 4 osuper.ocaml.version);
+      version =
+        if lib.hasPrefix "5." osuper.ocaml.version
+        then "5_00"
+        else
+          lib.stringAsChars
+            (x: if x == "." then "_" else x)
+            (builtins.substring 0 4 osuper.ocaml.version);
 
     in
     buildPackages.ocaml-ng."ocamlPackages_${version}";
@@ -182,8 +187,8 @@ in
         for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done
         eval "${camlBin} $NEW_ARGS"
       '';
-      ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${natocaml}/bin/ocamlc.opt -I ${natocaml}/lib/ocaml -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
-      ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${natocaml}/bin/ocamlopt.opt -I ${natocaml}/lib/ocaml -nostdlib ";
+      ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${natocaml}/bin/ocamlc.opt -I ${natocaml}/lib/ocaml -I ${natocaml}/lib/ocaml/stublibs -I +unix -nostdlib ";
+      ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${natocaml}/bin/ocamlopt.opt -I ${natocaml}/lib/ocaml -I +unix -nostdlib ";
 
       ocamlcTargetWrapper = genWrapper "ocamlcTarget.wrapper" "$BUILD_ROOT/ocamlc.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
       ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";

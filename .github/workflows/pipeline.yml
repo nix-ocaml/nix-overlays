@@ -1,10 +1,11 @@
 name: Pipeline
 on:
   pull_request:
+    branches:
+    - master
   push:
     branches:
       - master
-      - auto-update-sources-*
 jobs:
   fmt:
     runs-on: ubuntu-latest

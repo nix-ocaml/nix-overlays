@@ -70,37 +70,12 @@ let
     # broken since 4.12
     "ocaml_extlib-1-7-7"
 
-    # unavailable on macOS
-    "ocaml-freestanding"
-    "mirage-xen"
-    "mirage-bootvar-xen"
-    "mirage-net-xen"
-    "netchannel"
-    "ffmpeg"
-    "ffmpeg-av"
-    "ffmpeg-avdevice"
-    "ffmpeg-avfilter"
-    "ffmpeg-avutil"
-    "ffmpeg-avcodec"
-    "ffmpeg-swscale"
-    "ffmpeg-swresample"
-    "dssi"
-
     # doesn't work with my fork of http/af
     "paf"
     "paf-le"
     "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
-
-    # broken on macOS?
-    "llvm"
-    "ocaml_libvirt"
-    "labltk"
-    "bjack"
-    "async_inotify"
-    "async_smtp"
-    "pgsolver"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -154,6 +129,33 @@ let
     "pg-solver"
     "cpdf"
 
+    # Broken by python transitive dependencies?
+    "lablgtk3-gtkspell3"
+    "mdx"
+
+    "ocaml-freestanding"
+    "mirage-xen"
+    "mirage-bootvar-xen"
+    "mirage-net-xen"
+    "netchannel"
+
+    "duppy"
+    "taglib"
+    "getopt"
+    "soundtouch"
+
+    # Incompatible with ppxlib >= 0.27
+    "brisk-reconciler"
+    "flex"
+    "rebez"
+    "reenv"
+    "reperf"
+
+    "inotify"
+    "async_inotify"
+    "async_smtp"
+    "pgsolver"
+    "tcslib"
   ];
 
   ocaml412Ignores = [
@@ -189,7 +191,6 @@ let
     "imagelib"
     "incr_dom"
     "inifiles"
-    "inotify"
     "irmin-git"
     "js_of_ocaml-compiler"
     "js_of_ocaml-lwt"
@@ -254,7 +255,6 @@ let
     "stdint"
     "tar-unix"
     "tar"
-    "tcslib"
     "telegraml"
     "twt"
     "uecc"
@@ -266,15 +266,52 @@ let
     "xml-light"
     "zmq-lwt"
     "zmq"
+    "labltk"
+
+    "ocamlformat"
+    "ocamlformat-rpc_0_20_0"
+    "ocamlformat-rpc_0_20_1"
+    "ocamlformat-rpc_0_21_0"
+    "ocamlformat-rpc"
+
   ];
+
+  darwinIgnores = [
+    "ffmpeg"
+    "ffmpeg-av"
+    "ffmpeg-avdevice"
+    "ffmpeg-avfilter"
+    "ffmpeg-avutil"
+    "ffmpeg-avcodec"
+    "ffmpeg-swscale"
+    "ffmpeg-swresample"
+    "dssi"
+
+    # broken on macOS?
+    "llvm"
+    "ocaml_libvirt"
+    "labltk"
+    "bjack"
+
+    "alsa"
+    "ladspa"
+    "mm"
+    "pulseaudio"
+
+    "gstreamer"
+  ];
+
 in
 
 rec {
-  inherit ocaml5Ignores ocaml412Ignores;
+  inherit ocaml5Ignores ocaml412Ignores darwinIgnores;
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
-      ignoredPackages = baseIgnoredPackages ++ extraIgnores;
+      ignoredPackages =
+        baseIgnoredPackages ++
+        lib.optionals stdenv.isDarwin darwinIgnores ++
+        extraIgnores;
     in
     lib.filterAttrs
       (n: v:

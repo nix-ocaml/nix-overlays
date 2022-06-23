@@ -16,8 +16,8 @@ buildDunePackage rec {
   version = "3.8.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/reasonml/reason/archive/a93c4c3.tar.gz;
-    sha256 = "09bs2vkq4rkxv4z564vr4d3d6hd23b118ma72gkmrbc7ldxhj972";
+    url = https://github.com/reasonml/reason/archive/3f43382.tar.gz;
+    sha256 = "1zz5xwh7bw2fv6cmxnknd5i6zfcqflfvqy9zcc43giz6ygcl498x";
   };
 
 

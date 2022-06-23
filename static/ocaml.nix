@@ -24,17 +24,17 @@ let
     });
 in
 (oself: osuper:
-  lib.mapAttrs
-    (_: p:
-      if p ? overrideAttrs then
-        fixOCamlPackage p
-      else p)
-    osuper // {
-    ocaml = fixOCaml osuper.ocaml;
+lib.mapAttrs
+  (_: p:
+    if p ? overrideAttrs then
+      fixOCamlPackage p
+    else p)
+  osuper // {
+  ocaml = fixOCaml osuper.ocaml;
 
-    zarith = osuper.zarith.overrideDerivation (o: {
-      configureFlags = o.configureFlags ++ [
-        "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
-      ];
-    });
-  })
+  zarith = osuper.zarith.overrideDerivation (o: {
+    configureFlags = o.configureFlags ++ [
+      "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
+    ];
+  });
+})
