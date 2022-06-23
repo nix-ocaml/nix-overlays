@@ -33,9 +33,13 @@ let
 
   getNativeOCamlPackages = osuper:
     let
-      version = lib.stringAsChars
-        (x: if x == "." then "_" else x)
-        (builtins.substring 0 4 osuper.ocaml.version);
+      version =
+        if lib.hasPrefix "5." osuper.ocaml.version
+        then "5_00"
+        else
+          lib.stringAsChars
+            (x: if x == "." then "_" else x)
+            (builtins.substring 0 4 osuper.ocaml.version);
 
     in
     buildPackages.ocaml-ng."ocamlPackages_${version}";
