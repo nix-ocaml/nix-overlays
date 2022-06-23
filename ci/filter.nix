@@ -155,6 +155,7 @@ let
     "async_inotify"
     "async_smtp"
     "pgsolver"
+    "tcslib"
   ];
 
   ocaml412Ignores = [
@@ -297,7 +298,6 @@ let
     "mm"
     "pulseaudio"
 
-    "tcslib"
     "gstreamer"
   ];
 
