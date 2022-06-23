@@ -143,6 +143,10 @@ let
     "taglib"
     "getopt"
     "soundtouch"
+
+    # Incompatible with ppxlib >= 0.27
+    "brisk-reconciler"
+    "flex"
   ];
 
   ocaml412Ignores = [

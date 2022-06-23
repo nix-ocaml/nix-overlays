@@ -1680,7 +1680,7 @@ with oself;
     };
   });
 
-  ppx_yojson_conv = janePackage {
+  ppx_yojson_conv = (janePackage {
     pname = "ppx_yojson_conv";
     version = "0.15.0";
     hash = "sha256-FGtReLkdI9EnD6sPsMQSv5ipfDyY6z5fIkjqH+tie48=";
@@ -1688,8 +1688,12 @@ with oself;
     meta = {
       description = "Yojson Deriver PPX";
     };
-  };
-
+  }).overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_yojson_conv/archive/ea556c6.tar.gz;
+      sha256 = "0r4sd781ff1bjpw9hwim4i4q3sp30w3x4gz854mz596w5d1cl1xk";
+    };
+  });
 
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
     patches =
