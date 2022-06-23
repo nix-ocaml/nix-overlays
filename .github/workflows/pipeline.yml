@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - master
-      # - auto-update-sources-*
 jobs:
   fmt:
     runs-on: ubuntu-latest
@@ -46,8 +45,8 @@ jobs:
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
-          # nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build ./ci \
+          nix shell --print-build-logs -f ./ nix-build-uncached -c \
+              nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
@@ -73,8 +72,8 @@ jobs:
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
-          # nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build ./ci \
+          nix shell --print-build-logs -f ./ nix-build-uncached -c \
+              nix-build-uncached ./ci \
                 --arg ocamlVersion null \
                 --argstr target top-level-packages \
                 --show-trace --keep-going
@@ -105,8 +104,8 @@ jobs:
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
-          # nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build ./ci \
+          nix shell --print-build-logs -f ./ nix-build-uncached -c \
+              nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
                 --show-trace --keep-going
