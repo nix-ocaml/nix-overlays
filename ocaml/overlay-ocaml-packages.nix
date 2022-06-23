@@ -34,12 +34,12 @@ let
 
       ocamlPackages_5_00 = newOCamlScope {
         major_version = "5";
-        minor_version = "00";
+        minor_version = "0";
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/c77dcd47cc729ca6f1ec358c9f07f34fe948ee86.tar.gz;
-          sha256 = "1949s06qwdfaya43vc3ws154f3hp0qx8fx2qf2s88v4w6h04gzrw";
+          url = https://github.com/ocaml/ocaml/archive/29f77d0.tar.gz;
+          sha256 = "1rgkq71ncs2lv75vq4im79k32w24ya7jn1r0flma8k3caw87d2qv";
         };
       };
 

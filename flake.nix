@@ -2,7 +2,7 @@
   description = "ocaml-packages-overlay";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=98e0b747df49e3edd1aa2c4e7fcc98361a17b09f";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=170a413797473733c5be0dd08cdbbab0e39b8aae";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -36,11 +36,12 @@
         [ "x86_64-linux" "aarch64-darwin" ]);
 
       makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let pkgs = import nixpkgs ({
-          inherit system;
-          overlays = [ self.overlays.${system}.default ];
-          config.allowUnfree = true;
-        } // attrs);
+        let
+          pkgs = import nixpkgs ({
+            inherit system;
+            overlays = [ self.overlays.${system}.default ];
+            config.allowUnfree = true;
+          } // attrs);
         in
           /*
             You might read https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and want to change this

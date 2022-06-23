@@ -22,7 +22,6 @@ buildDunePackage {
   src =
     if (lib.versionOlder "5.00" ocaml.version)
     then
-
       builtins.fetchurl
         {
           url = https://github.com/ocaml/merlin/archive/fce8fb220c6677a4e1f1677efa2e5b5b13f12254.tar.gz;
