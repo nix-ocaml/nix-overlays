@@ -150,6 +150,11 @@ let
     "rebez"
     "reenv"
     "reperf"
+
+    "inotify"
+    "async_inotify"
+    "async_smtp"
+    "pgsolver"
   ];
 
   ocaml412Ignores = [
@@ -185,8 +190,6 @@ let
     "imagelib"
     "incr_dom"
     "inifiles"
-    "inotify"
-    "async_inotify"
     "irmin-git"
     "js_of_ocaml-compiler"
     "js_of_ocaml-lwt"
@@ -251,7 +254,6 @@ let
     "stdint"
     "tar-unix"
     "tar"
-    "tcslib"
     "telegraml"
     "twt"
     "uecc"
@@ -283,21 +285,20 @@ let
     "ffmpeg-swscale"
     "ffmpeg-swresample"
     "dssi"
-    "inotify"
-    "async_inotify"
 
     # broken on macOS?
     "llvm"
     "ocaml_libvirt"
     "labltk"
     "bjack"
-    "async_smtp"
-    "pgsolver"
 
     "alsa"
     "ladspa"
     "mm"
     "pulseaudio"
+
+    "tcslib"
+    "gstreamer"
   ];
 
 in
