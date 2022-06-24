@@ -347,6 +347,20 @@ with oself;
 
   decimal = callPackage ./decimal { };
 
+  decoders = buildDunePackage {
+    pname = "decoders";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/mattjbray/ocaml-decoders/archive/00d930.tar.gz;
+      sha256 = "0ihl5gxv798bpsf861j0ckd7qq4x0i708ydi3i34q3z28lsrfg85";
+    };
+  };
+  decoders-yojson = buildDunePackage {
+    pname = "decoders-yojson";
+    inherit (oself.decoders) src version;
+    propagatedBuildInputs = [ decoders yojson ];
+  };
+
   decompress = disableTests osuper.decompress;
 
   dns = osuper.dns.overrideAttrs (_: {
