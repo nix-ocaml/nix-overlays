@@ -154,13 +154,12 @@ with oself;
     };
   });
 
-  bos = osuper.bos.overrideAttrs
-    (_: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
-        sha256 = "18h2zipv6zqvrax2aia6hljnsgqni971119izskrajwkha3myj6d";
-      };
-    });
+  bos = osuper.bos.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
+      sha256 = "18h2zipv6zqvrax2aia6hljnsgqni971119izskrajwkha3myj6d";
+    };
+  });
 
   bz2 = osuper.bz2.overrideAttrs (_: {
     postPatch = ''
