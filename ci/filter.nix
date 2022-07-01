@@ -267,6 +267,7 @@ let
     "zmq-lwt"
     "zmq"
     "labltk"
+    "mldoc"
 
     "ocamlformat"
     "ocamlformat-rpc_0_20_0"

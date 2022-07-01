@@ -154,13 +154,12 @@ with oself;
     };
   });
 
-  bos = osuper.bos.overrideAttrs
-    (_: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
-        sha256 = "18h2zipv6zqvrax2aia6hljnsgqni971119izskrajwkha3myj6d";
-      };
-    });
+  bos = osuper.bos.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
+      sha256 = "18h2zipv6zqvrax2aia6hljnsgqni971119izskrajwkha3myj6d";
+    };
+  });
 
   bz2 = osuper.bz2.overrideAttrs (_: {
     postPatch = ''
@@ -515,6 +514,9 @@ with oself;
       url = https://github.com/dbuenzli/fmt/archive/e76a883424a450ea10824b69a476f8987fab24c7.tar.gz;
       sha256 = "0ynxq5bv4sjrza4rv52hcvxya31n9n5vvnskk26r1pamxbpagw57";
     };
+
+    # reverts https://github.com/NixOS/nixpkgs/pull/178306
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
