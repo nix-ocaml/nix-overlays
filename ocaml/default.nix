@@ -706,10 +706,9 @@ with oself;
   });
 
   ke = osuper.ke.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ke/archive/56a8c86.tar.gz;
-      sha256 = "1n8yfjpmhga4mqh17r8z2qs9kw13bsl3022lplijw9ys0cwicii0";
-    };
+    postPatch = ''
+      substituteInPlace ./lib/dune --replace "bigarray-compat" ""
+    '';
   });
 
   lablgtk = osuper.lablgtk.overrideAttrs (_: {
