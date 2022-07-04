@@ -779,8 +779,8 @@ with oself;
     '';
 
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/449f1809.tar.gz;
-      sha256 = "1hyz276ls5wzkj0jh34jfilr0a2ndyjrw2d8i518z91bsm1pd2cl";
+      url = https://github.com/ocsigen/lwt/archive/refs/tags/5.6.1.tar.gz;
+      sha256 = "1837iagnba58018ag82c9lwaby01c031547n08jjyj8q5q6lfjgb";
     };
   });
 
@@ -848,7 +848,11 @@ with oself;
   melange = callPackage ./melange { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
-  dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
+  merlin-lib =
+    if lib.versionAtLeast ocaml.version "4.14" then
+      callPackage ./merlin/lib.nix { }
+    else null;
+  dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { yojson = yojson_2; };
   merlin = callPackage ./merlin { };
 
   metrics = osuper.metrics.overrideAttrs (_: {
@@ -1115,13 +1119,12 @@ with oself;
 
   omd = buildDunePackage {
     pname = "omd";
-    version = "next";
+    version = "1.3.2";
 
     src = builtins.fetchurl {
-      url = https://github.com/EduardoRFS/omd/archive/7b866aacbc119e2be5.tar.gz;
-      sha256 = "070jm2vfrcjpshabhii87ws0nm1alirkkqj0x41rpimn4zdid00p";
+      url = https://github.com/ocaml/omd/archive/1.3.2.tar.gz;
+      sha256 = "0cnr2k1dzb1fi14x4y4ha4a13xac6ciqhm37z8f3rsvn2v7c1j22";
     };
-    propagatedBuildInputs = [ camlp-streams bigarray-compat ];
   };
 
   opam-core = osuper.opam-core.overrideAttrs (_: {

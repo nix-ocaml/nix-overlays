@@ -7,6 +7,7 @@
 , yojson
 , csexp
 , result
+, merlin-lib
 }:
 
 buildDunePackage {
