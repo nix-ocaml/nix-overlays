@@ -102,13 +102,6 @@ with oself;
     };
   };
 
-  batteries = osuper.batteries.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-batteries-team/batteries-included/archive/67859ac54d2feb7f65ad6abe48b1ff08ece3afd1.tar.gz;
-      sha256 = "0krsgisyal809nx1xpnbfpd1h3x95s1x3s4vsdpymv4hrxrqxks5";
-    };
-  });
-
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -510,11 +503,6 @@ with oself;
   flow_parser = callPackage ./flow_parser { };
 
   fmt = osuper.fmt.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/fmt/archive/e76a883424a450ea10824b69a476f8987fab24c7.tar.gz;
-      sha256 = "0ynxq5bv4sjrza4rv52hcvxya31n9n5vvnskk26r1pamxbpagw57";
-    };
-
     # reverts https://github.com/NixOS/nixpkgs/pull/178306
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
   });
@@ -642,12 +630,6 @@ with oself;
     postPatch = ''
       substituteInPlace ./src/signed.ml --replace "Pervasives" "Stdlib"
       substituteInPlace ./src/unsigned.ml --replace "Pervasives" "Stdlib"
-    '';
-  });
-
-  io-page-unix = osuper.io-page-unix.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./lib/dune --replace "bigarray" ""
     '';
   });
 
