@@ -72,9 +72,6 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
-  atd = osuper.atd.overrideAttrs (_: {
-    propagatedBuildInputs = [ yojson ];
-  });
   atdgen = disableTests osuper.atdgen;
   atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
