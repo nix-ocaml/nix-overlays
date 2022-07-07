@@ -500,6 +500,10 @@ with oself;
   flow_parser = callPackage ./flow_parser { };
 
   fmt = osuper.fmt.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/fmt/releases/fmt-0.9.0.tbz;
+      sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
+    };
     # reverts https://github.com/NixOS/nixpkgs/pull/178306
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
   });
@@ -612,12 +616,8 @@ with oself;
   httpaf-async = callPackage ./httpaf/async.nix { };
 
   hxd = osuper.hxd.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dinosaure/hxd/releases/download/v0.3.2/hxd-0.3.2.tbz;
-      sha256 = "17zcmdyz8jmi0m8ixsq39jy0d60v62dys8nw5nrpk3jkp2mr00m0";
-    };
-    doCheck = false;
     buildInputs = o.buildInputs ++ [ dune-configurator ];
+    doCheck = false;
   });
 
   hyper = callPackage ./hyper { };
@@ -1455,15 +1455,6 @@ with oself;
     '';
 
   });
-
-  xmlm = osuper.xmlm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/xmlm/archive/refs/tags/v1.4.0.tar.gz;
-      sha256 = "1qx89nzwv9qx6zw9xbrzlsvpmxwb30iji41kdw10x40ylwfnra4x";
-    };
-  });
-
-  yaml = disableTests osuper.yaml;
 
   yojson_2 = osuper.yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
