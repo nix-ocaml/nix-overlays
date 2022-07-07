@@ -617,6 +617,7 @@ with oself;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
+    doCheck = false;
   });
 
   hyper = callPackage ./hyper { };
