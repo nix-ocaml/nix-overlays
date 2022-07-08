@@ -90,7 +90,7 @@ jobs:
           - { ocaml-version: 4_13, continue-on-error: false }
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: false }
-    name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
+    name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }}, ${{ matrix.index }})
     runs-on: macos-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
