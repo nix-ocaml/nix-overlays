@@ -199,37 +199,14 @@ with oself;
     };
   });
 
-  cohttp = osuper.cohttp.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.0.0/cohttp-5.0.0.tbz;
-      sha256 = "01asr99hdfw1qkg8wvnslzb1gxfvjs2n421s3gb5b0w1djwg8vzx";
-    };
-    checkInputs = o.checkInputs ++ [ crowbar ];
-  });
   cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
     patches = [ ];
-    postPatch = ''
-      substituteInPlace examples/async/dune --replace \
-        "async_kernel" "async_kernel core_unix.command_unix"
-      substituteInPlace examples/async/hello_world.ml --replace \
-        "Command.run" "Command_unix.run"
-      substituteInPlace examples/async/receive_post.ml --replace \
-        "Command.run" "Command_unix.run"
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ core_unix ];
   });
 
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
       sha256 = "0069qqswd1ik5ay3d5q1v1pz0ql31kblfsnv0ax0z8jwvacp3ack";
-    };
-  });
-
-  conduit = osuper.conduit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-conduit/releases/download/v5.1.0/conduit-5.1.0.tbz;
-      sha256 = "1kci4cm9m9g50cp0g210cj3dqciq16ahbc49k7hfkfwwhwz8q775";
     };
   });
 
@@ -351,22 +328,6 @@ with oself;
   };
 
   decompress = disableTests osuper.decompress;
-
-  dns = osuper.dns.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-dns/releases/download/v6.1.4/dns-6.1.4.tbz;
-      sha256 = "0xlhfz7qnkpsqcn3fs3y426iwgzy08swbddlwzinvklhad263vww";
-    };
-  });
-  dns-client = osuper.dns-client.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ca-certs ca-certs-nss tls tls-mirage happy-eyeballs tcpip ];
-  });
-  dns-mirage = osuper.dns-mirage.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ tcpip ];
-  });
-  dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ tls-mirage ];
-  });
 
   dolog = buildDunePackage {
     pname = "dolog";
