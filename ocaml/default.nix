@@ -686,6 +686,11 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lockfree =
+    if lib.versionAtLeast ocaml.version "5.00" then
+      callPackage ./lockfree { }
+    else null;
+
   lru = osuper.lru.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/lru.ml \
