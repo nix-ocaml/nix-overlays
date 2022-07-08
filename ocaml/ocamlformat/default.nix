@@ -27,8 +27,8 @@ buildDunePackage {
   pname = "ocamlformat";
   version = "0.22.4";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.22.4/ocamlformat-0.22.4.tbz;
-    sha256 = "0q60r7bdl6x9ksbfz8yggxripa4inf0dr9w1ipkc4z5ch4mxwm7b";
+    url = https://github.com/ocaml-ppx/ocamlformat/archive/1cb060b.tar.gz;
+    sha256 = "181k9dwsn26g7akmfwnyj9x0bz5dwdqj9lbllni5dg13cdl0y8pr";
   };
 
   minimumOCamlVersion = "4.08";
