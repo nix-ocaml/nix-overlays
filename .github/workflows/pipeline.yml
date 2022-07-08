@@ -84,6 +84,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        index: ['0', '1', '2', '3']
         setup:
           - { ocaml-version: 4_12, continue-on-error: true }
           - { ocaml-version: 4_13, continue-on-error: false }
@@ -110,6 +111,7 @@ jobs:
               nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
+                --arg index ${{ matrix.index }} \
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
