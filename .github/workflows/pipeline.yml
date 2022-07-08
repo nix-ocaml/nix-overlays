@@ -22,12 +22,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        index: ['0', '1', '2', '3']
         setup:
           - { ocaml-version: 4_12, continue-on-error: true }
           - { ocaml-version: 4_13, continue-on-error: false }
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_00, continue-on-error: false }
-    name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
+    name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }}, ${{ matrix.index }})
     runs-on: ubuntu-latest
     env:
       NIXPKGS_ALLOW_UNFREE: 1
@@ -49,6 +50,7 @@ jobs:
               nix-build-uncached ./ci \
                 --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
                 --argstr target native \
+                --arg index ${{ matrix.index }} \
                 --show-trace --keep-going
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
