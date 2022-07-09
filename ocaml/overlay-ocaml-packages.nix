@@ -46,10 +46,7 @@ let
     } else { });
 
   overlaySinglePackageSet = pkgSet:
-    builtins.foldl'
-      (acc: x: acc.overrideScope' x)
-      pkgSet
-      overlays;
+    builtins.foldl' (acc: x: acc.overrideScope' x) pkgSet overlays;
 
   overlayOCamlPackages = version:
     lib.nameValuePair
@@ -58,13 +55,11 @@ let
 
   oPs = lib.listToAttrs (builtins.map overlayOCamlPackages ocamlVersions);
 
-in
-rec {
-  ocaml = ocamlPackages.ocaml;
-  ocamlPackages = overlaySinglePackageSet super.ocamlPackages;
-  ocamlPackages_latest = overlaySinglePackageSet super.ocamlPackages_latest;
-
-  ocaml-ng = custom-ocaml-ng // oPs // {
-    inherit ocamlPackages;
+  base-ocaml-ng = custom-ocaml-ng // {
+    ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
+    ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
   };
+in
+{
+  ocaml-ng = base-ocaml-ng // oPs;
 }
