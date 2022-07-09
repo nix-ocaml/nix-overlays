@@ -15,8 +15,8 @@ stdenv.mkDerivation
 
   prefixKey = "-prefix ";
   postPatch = ''
-    cp -r ./ocaml_stuff/4.14.0 ./ocaml_stuff/5.00.0
-    cp ./ocaml_src/lib/versdep/4.14.0.ml ./ocaml_src/lib/versdep/5.00.0.ml
+    cp -r ./ocaml_stuff/4.14.0 ./ocaml_stuff/5.0.0
+    cp ./ocaml_src/lib/versdep/4.14.0.ml ./ocaml_src/lib/versdep/5.0.0.ml
     substituteInPlace odyl/odyl.ml --replace "Printexc.catch" ""
     substituteInPlace ocaml_src/odyl/odyl.ml --replace "Printexc.catch" ""
     patchShebangs ./etc/META.pl
