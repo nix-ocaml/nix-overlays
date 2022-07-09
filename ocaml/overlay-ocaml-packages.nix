@@ -62,4 +62,6 @@ let
 in
 {
   ocaml-ng = base-ocaml-ng // oPs;
+  inherit (base-ocaml-ng) ocamlPackages ocamlPackages_latest;
+  ocaml = base-ocaml-ng.ocamlPackages.ocaml;
 }
