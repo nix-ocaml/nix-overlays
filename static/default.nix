@@ -6,6 +6,7 @@
     super.lib.overlayOCamlPackages {
       inherit super;
       overlays = [ (super.callPackage ./ocaml.nix { }) ];
+      updateOCamlPackages = true;
     })
 
   (import ./overlays.nix { inherit pkgsStatic; })

@@ -1,4 +1,4 @@
-{ nixpkgs, overlays, super }:
+{ nixpkgs, overlays, super, updateOCamlPackages ? false }:
 
 let
   inherit (super) lib callPackage ocaml-ng;
@@ -60,8 +60,10 @@ let
     ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
   };
 in
-rec {
+{
   ocaml-ng = base-ocaml-ng // oPs;
+} // (if updateOCamlPackages then rec {
   ocamlPackages = overlaySinglePackageSet super.ocamlPackages;
   ocaml = ocamlPackages.ocaml;
-}
+
+} else { })

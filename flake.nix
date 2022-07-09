@@ -50,7 +50,9 @@
         pkgs.appendOverlays extraOverlays;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
-        packages = self.makePkgs { inherit system; };
+        packages = (self.makePkgs { inherit system; }).extend (self: super: {
+          ocamlPackages = super.ocaml-ng.ocamlPackages_5_00;
+        });
         legacyPackages = self.packages.${system};
 
         overlays.default = (final: prev:
