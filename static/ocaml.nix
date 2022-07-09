@@ -37,4 +37,4 @@ lib.mapAttrs
       "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
     ];
   });
-}
+})
