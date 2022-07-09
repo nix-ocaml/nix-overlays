@@ -121,7 +121,7 @@ with oself;
 
   bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.00" then ''
+      if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace src/dune --replace " bigarray" ""
       '' else "";
   });
@@ -161,7 +161,7 @@ with oself;
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.00" then ''
+      if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace core/images.ml --replace "String.lowercase" "String.lowercase_ascii"
         substituteInPlace core/units.ml --replace "String.lowercase" "String.lowercase_ascii"
       '' else "";
@@ -180,7 +180,7 @@ with oself;
   camomile = osuper.camomile.overrideAttrs (_: {
     patches = [ ./camomile.patch ];
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.00" then ''
+      if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace Camomile/dune --replace " bigarray" ""
         substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
       '' else "";
@@ -305,7 +305,7 @@ with oself;
 
     patches = [ ];
 
-    doCheck = lib.versionAtLeast ocaml.version "5.00";
+    doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
   dataloader = callPackage ./dataloader { };
@@ -339,7 +339,7 @@ with oself;
   };
 
   domainslib =
-    if lib.versionAtLeast ocaml.version "5.00" then
+    if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./domainslib { }
     else null;
 
@@ -662,7 +662,7 @@ with oself;
 
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.00" then ''
+      if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace src/dune --replace " bigarray" ""
       '' else "";
   });
@@ -687,7 +687,7 @@ with oself;
   };
 
   lockfree =
-    if lib.versionAtLeast ocaml.version "5.00" then
+    if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./lockfree { }
     else null;
 
@@ -737,7 +737,7 @@ with oself;
   });
 
   lwt_domain =
-    if lib.versionAtLeast ocaml.version "5.00" then
+    if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./lwt/domain.nix { }
     else null;
   lwt_react = callPackage ./lwt/react.nix { };
@@ -848,7 +848,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
 
     # https://github.com/mirage/mrmime/issues/91
-    doCheck = !lib.versionAtLeast ocaml.version "5.00";
+    doCheck = !lib.versionAtLeast ocaml.version "5.0";
   });
 
   mtime = (osuper.mtime.override { jsooSupport = false; }).overrideAttrs (o: {
@@ -929,12 +929,12 @@ with oself;
     };
   });
 
-  # Tests don't work on 5.00 because of the Stream.t type.
+  # Tests don't work on 5.0 because of the Stream.t type.
   ocaml_gettext = disableTests osuper.ocaml_gettext;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         fetchFromGitHub
           {
             owner = "ulrikstrid";
@@ -1241,7 +1241,7 @@ with oself;
     };
   });
 
-  # Tests use `String.capitalize` which was removed in 5.00
+  # Tests use `String.capitalize` which was removed in 5.0
   re = disableTests osuper.re;
 
   redemon = callPackage ./redemon { };
@@ -1498,7 +1498,7 @@ with oself;
     };
     # https://github.com/janestreet/core_unix/issues/2
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [ ./core_unix.patch ] else [ ];
 
     postPatch = ''
@@ -1521,7 +1521,7 @@ with oself;
     version = "0.1.2-dev";
 
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [ ./memtrace_5_00.patch ]
       else
         [ ];
@@ -1567,7 +1567,7 @@ with oself;
 
   sexplib0 = osuper.sexplib0.overrideAttrs (o: {
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [
           (fetchpatch {
             url = https://github.com/janestreet/sexplib0/commit/5efaf01fa9b226f84490e3d480a9bebf0a1106bf.patch;
@@ -1578,7 +1578,7 @@ with oself;
   });
   sexplib = osuper.sexplib.overrideAttrs (_: {
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [
           (fetchpatch {
             url = https://github.com/janestreet/sexplib/commit/aac0c11905c5cfcc07941677167c63c20f9ceba8.patch;
@@ -1592,7 +1592,7 @@ with oself;
 
   base = osuper.base.overrideAttrs (_: {
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [
           (fetchpatch {
             url = https://github.com/janestreet/base/commit/705fb94f84dfb05fd97747ee0c255cce890afcf1.patch;
@@ -1603,7 +1603,7 @@ with oself;
 
   core = osuper.core.overrideAttrs (o: {
     src =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         builtins.fetchurl
           {
             url = https://github.com/janestreet/core/archive/7b556f1a7d25254f06b7aaf3c2534633be5a0a9e.tar.gz;
@@ -1621,7 +1621,7 @@ with oself;
 
   ppx_expect = osuper.ppx_expect.overrideAttrs (_: {
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [
           (fetchpatch {
             url = https://github.com/janestreet/ppx_expect/commit/8dd65c4ce6a8a81ebb99046ea5cc867aea187a8a.patch;
@@ -1655,7 +1655,7 @@ with oself;
 
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
     patches =
-      if lib.versionAtLeast ocaml.version "5.00" then
+      if lib.versionAtLeast ocaml.version "5.0" then
         [
           (fetchpatch {
             url = https://github.com/anmonteiro/sexp_pretty/commit/4667849007831027c5887edcfae4182d7a6d32d9.patch;

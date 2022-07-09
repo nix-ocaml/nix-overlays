@@ -13,10 +13,7 @@
           bash;
       });
     in
-    (lib.overlayOCamlPackages {
-      inherit overlays;
-      pkgs = super;
-    }))
+    (lib.overlayOCamlPackages { inherit super overlays; }))
   (self: super: {
     opaline = buildPackages.opaline;
   })

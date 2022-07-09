@@ -19,7 +19,7 @@ buildDunePackage {
   pname = "merlin-lib";
   version = version;
   src =
-    if (lib.versionOlder "5.00" ocaml.version)
+    if (lib.versionOlder "5.0" ocaml.version)
     then
       builtins.fetchurl
         {

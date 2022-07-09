@@ -1,7 +1,7 @@
-{ nixpkgs, overlays, pkgs }:
+{ nixpkgs, overlays, super }:
 
 let
-  inherit (pkgs) lib callPackage ocaml-ng;
+  inherit (super) lib callPackage ocaml-ng;
   ocamlVersions = [
     "4_06"
     "4_08"
@@ -45,22 +45,24 @@ let
 
     } else { });
 
-  overlayOcamlPackages = version: {
-    "ocamlPackages_${version}" =
-      builtins.foldl'
-        (acc: x: acc.overrideScope' x)
-        custom-ocaml-ng."ocamlPackages_${version}"
-        overlays;
-  };
-  oPs =
-    lib.fold lib.mergeAttrs { }
-      (builtins.map overlayOcamlPackages ocamlVersions);
+  overlaySinglePackageSet = pkgSet:
+    builtins.foldl'
+      (acc: x: acc.overrideScope' x)
+      pkgSet
+      overlays;
+
+  overlayOCamlPackages = version:
+    lib.nameValuePair
+      "ocamlPackages_${version}"
+      (overlaySinglePackageSet custom-ocaml-ng."ocamlPackages_${version}");
+
+  oPs = lib.listToAttrs (builtins.map overlayOCamlPackages ocamlVersions);
 
 in
 rec {
   ocaml = ocamlPackages.ocaml;
-  ocamlPackages = oPs.ocamlPackages_4_13;
-  ocamlPackages_latest = ocamlPackages;
+  ocamlPackages = overlaySinglePackageSet super.ocamlPackages;
+  ocamlPackages_latest = overlaySinglePackageSet super.ocamlPackages_latest;
 
   ocaml-ng = custom-ocaml-ng // oPs // {
     inherit ocamlPackages;

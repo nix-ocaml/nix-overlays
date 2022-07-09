@@ -4,7 +4,7 @@
 [
   (self: super:
     super.lib.overlayOCamlPackages {
-      pkgs = super;
+      inherit super;
       overlays = [ (super.callPackage ./ocaml.nix { }) ];
     })
 
