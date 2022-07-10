@@ -55,17 +55,16 @@ let
 
   oPs = lib.listToAttrs (builtins.map overlayOCamlPackages ocamlVersions);
 
-  base-ocaml-ng = custom-ocaml-ng // {
-    ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-    ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
-  };
 in
 
 rec {
-  ocaml-ng = base-ocaml-ng // oPs;
+  ocaml-ng = custom-ocaml-ng // oPs // {
+    ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
+    ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
+  };
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
-    else base-ocaml-ng.ocamlPackages_4_14;
+    else ocaml-ng.ocamlPackages_4_14;
   ocaml = ocamlPackages.ocaml;
 }
