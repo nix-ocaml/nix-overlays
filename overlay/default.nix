@@ -14,6 +14,7 @@ let
     super.lib.overlayOCamlPackages {
       inherit super;
       overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
+      updateOCamlPackages = true;
     });
 
 in
