@@ -60,10 +60,12 @@ let
     ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
   };
 in
-{
-  ocaml-ng = base-ocaml-ng // oPs;
-} // (if updateOCamlPackages then rec {
-  ocamlPackages = overlaySinglePackageSet super.ocamlPackages;
-  ocaml = ocamlPackages.ocaml;
 
-} else { })
+rec {
+  ocaml-ng = base-ocaml-ng // oPs;
+  ocamlPackages =
+    if updateOCamlPackages then
+      overlaySinglePackageSet super.ocamlPackages
+    else base-ocaml-ng.ocamlPackages_4_14;
+  ocaml = ocamlPackages.ocaml;
+}
