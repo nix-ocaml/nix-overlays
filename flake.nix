@@ -10,7 +10,7 @@
     let
       patchChannel = { system, channel }:
         let
-          patches = [ ./add-janestreet-packages-0_15.patch ];
+          patches = [ ];
         in
         if patches == [ ]
         then channel
