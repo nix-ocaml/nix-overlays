@@ -1617,6 +1617,8 @@ with oself;
       url = https://github.com/janestreet/jst-config/archive/refs/tags/v0.15.1.tar.gz;
       sha256 = "06xlyg0cyvv742haypdjbl82b5h5mla9hhcg3q67csq1nfxyalvh";
     };
+
+    patches = [ ];
   });
 
   ppx_expect = osuper.ppx_expect.overrideAttrs (_: {

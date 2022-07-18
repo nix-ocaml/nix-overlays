@@ -2,7 +2,7 @@
   description = "ocaml-packages-overlay";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=57bfdfae1747fa296400ab0558eb9f8ab5916118";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=06c6b26d37ebdec6fd1c294832565ea672d83dd0";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -10,7 +10,7 @@
     let
       patchChannel = { system, channel }:
         let
-          patches = [ ./add-janestreet-packages-0_15.patch ];
+          patches = [ ];
         in
         if patches == [ ]
         then channel
