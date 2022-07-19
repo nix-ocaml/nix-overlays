@@ -483,10 +483,6 @@ with oself;
     };
   });
 
-  gapi_ocaml = osuper.gapi_ocaml.overrideAttrs (_: {
-    patches = [ ./gapi.patch ];
-  });
-
   gen = buildDunePackage {
     pname = "gen";
     version = "v1.0";
