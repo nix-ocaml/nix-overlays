@@ -183,7 +183,7 @@ let
     "erm_xml"
     "fontconfig"
     "functory"
-    "gapi_ocaml"
+    "gapi-ocaml"
     "getopt"
     "git"
     "gsl"
