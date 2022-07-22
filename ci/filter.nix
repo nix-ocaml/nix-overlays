@@ -275,6 +275,7 @@ let
     "ocamlformat-rpc_0_21_0"
     "ocamlformat-rpc"
 
+    "metapp"
   ];
 
   darwinIgnores = [
