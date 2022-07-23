@@ -796,6 +796,16 @@ with oself;
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { yojson = yojson_2; };
   merlin = callPackage ./merlin { };
 
+  metapp = buildDunePackage {
+    pname = "metapp";
+    version = "0.4.4";
+    src = builtins.fetchurl {
+      url = https://github.com/thierry-martinez/metapp/releases/download/v0.4.4/metapp.0.4.4.tar.gz;
+      sha256 = "0iy2ab5j9v87anj8d3dimy2vzxghryv7cb81yavrwazmjb3j5vmx";
+    };
+    propagatedBuildInputs = [ ppxlib stdcompat ];
+  };
+
   metrics = osuper.metrics.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/metrics/releases/download/v0.4.0/metrics-0.4.0.tbz;
