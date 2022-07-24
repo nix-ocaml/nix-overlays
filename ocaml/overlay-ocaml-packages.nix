@@ -35,14 +35,13 @@ let
       ocamlPackages_5_00 = newOCamlScope {
         major_version = "5";
         minor_version = "0";
-        patch_version = "0+trunk";
+        patch_version = "0+alpha1";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/29f77d0.tar.gz;
-          sha256 = "1rgkq71ncs2lv75vq4im79k32w24ya7jn1r0flma8k3caw87d2qv";
+          url = https://github.com/ocaml/ocaml/archive/cc7865a.tar.gz;
+          sha256 = "0x7xkajlid54f446ksmqil81iwwjd5gw04fvii371blp3n2s60a5";
         };
       };
-
     } else { });
 
   overlaySinglePackageSet = pkgSet:
@@ -60,11 +59,16 @@ in
 rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-    ocamlPackages_latest = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages_latest;
+    ocamlPackages_latest = oPs.ocamlPackages_5_00;
   };
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
     else ocaml-ng.ocamlPackages_4_14;
+  ocamlPackages_latest =
+    if updateOCamlPackages then
+      overlaySinglePackageSet super.ocamlPackage_latest
+    else
+      ocaml-ng.ocamlPackages_latest;
   ocaml = ocamlPackages.ocaml;
 }
