@@ -191,18 +191,6 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
 
-  containers = osuper.containers.overrideAttrs (o: {
-    version = "3.7.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-containers/archive/v3.7.tar.gz";
-      sha256 = "0pn5yl1b6ij1j63qh8y6qazk5qyh1q40zchrwsrsva3yb73s74z9";
-    };
-  });
-
-  cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
-    patches = [ ];
-  });
-
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
