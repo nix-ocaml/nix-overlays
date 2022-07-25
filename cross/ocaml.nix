@@ -194,6 +194,8 @@ in
       ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
 
       fixOCaml = ocaml: ocaml.overrideAttrs (o:
+        let isOCaml5 = lib.versionOlder "5.0" ocaml.version;
+        in
         {
           nativeBuildInputs = [ buildPackages.stdenv.cc ];
           preConfigure = ''
@@ -260,7 +262,7 @@ in
             make_host compilerlibs/ocamltoplevel.cma otherlibraries \
                       ocamldebugger
             make_host ocamllex.opt ocamltoolsopt \
-                      ocamltoolsopt.opt
+                      ocamltoolsopt.opt ${if isOCaml5 then "othertools" else ""}
 
             rm $(find . | grep -E '\.cm.?.$')
             make_target -C stdlib all allopt
@@ -271,12 +273,13 @@ in
                         compilerlibs/ocamlcommon.cmxa \
                         compilerlibs/ocamlbytecomp.cmxa \
                         compilerlibs/ocamloptcomp.cmxa
+            ${if isOCaml5 then "make_target othertools" else ""}
 
             runHook postBuild
           '';
           installTargets = o.installTargets ++ [ "installoptopt" ];
           patches = [
-            (if lib.versionOlder "5.0" ocaml.version
+            (if isOCaml5
             then ./cross_5_00.patch
             else if lib.versionOlder "4.14" ocaml.version
             then ./cross_4_14.patch

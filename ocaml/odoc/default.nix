@@ -24,13 +24,13 @@
 
 buildDunePackage {
   pname = "odoc";
-  version = "2.1.0";
+  version = "2.1.1";
 
   minimumOCamlVersion = "4.03";
 
   src = builtins.fetchurl {
-    url = "https://github.com/ocaml/odoc/archive/4daddaa4bc97d553c9183362872149c7d7c12d0f.tar.gz";
-    sha256 = "0a664ka5ddzzhf69myd4hbb4pyhsb7h5pjkyha7vgm9v1haixrvz";
+    url = https://github.com/ocaml/odoc/releases/download/2.1.1/odoc-2.1.1.tbz;
+    sha256 = "1zc7z627hlzsawhy2kxv11j1yvfzbnwlnp2jjlmkmz6hik9dnx7m";
   };
 
   useDune2 = true;
