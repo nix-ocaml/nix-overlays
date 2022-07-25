@@ -176,7 +176,6 @@ in
 
   (oself: osuper:
     let
-      isOCaml5 = lib.versionOlder "5.0" ocaml.version;
       crossName = lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
@@ -195,6 +194,8 @@ in
       ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
 
       fixOCaml = ocaml: ocaml.overrideAttrs (o:
+        let isOCaml5 = lib.versionOlder "5.0" ocaml.version;
+        in
         {
           nativeBuildInputs = [ buildPackages.stdenv.cc ];
           preConfigure = ''
