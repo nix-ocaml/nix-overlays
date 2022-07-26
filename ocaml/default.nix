@@ -795,11 +795,6 @@ with oself;
   };
 
   metrics = osuper.metrics.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/metrics/releases/download/v0.4.0/metrics-0.4.0.tbz;
-      sha256 = "1bw9wdzmw6xxhaww95xayias1mmypqcmkdf32cbkg42h9dd7bf4i";
-    };
-
     postPatch = ''
       substituteInPlace src/unix/dune --replace "mtime.clock.os" ""
     '';
@@ -1055,16 +1050,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
 
   });
-
-  omd = buildDunePackage {
-    pname = "omd";
-    version = "1.3.2";
-
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/omd/archive/1.3.2.tar.gz;
-      sha256 = "0cnr2k1dzb1fi14x4y4ha4a13xac6ciqhm37z8f3rsvn2v7c1j22";
-    };
-  };
 
   opam-core = osuper.opam-core.overrideAttrs (_: {
     postPatch = ''
