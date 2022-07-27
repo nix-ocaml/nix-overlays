@@ -25,10 +25,10 @@ in
 
 buildDunePackage {
   pname = "ocamlformat";
-  version = "0.22.4";
+  version = "0.24.1";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-ppx/ocamlformat/archive/1cb060b.tar.gz;
-    sha256 = "181k9dwsn26g7akmfwnyj9x0bz5dwdqj9lbllni5dg13cdl0y8pr";
+    url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.24.1/ocamlformat-0.24.1.tbz;
+    sha256 = "1kj1ykax4150i1z801bxjnllkhb6lyj728vvad8fm04gh7ljad02";
   };
 
   minimumOCamlVersion = "4.08";

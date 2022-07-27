@@ -1043,13 +1043,6 @@ with oself;
   });
 
   odoc = callPackage ./odoc { };
-  odoc-parser = osuper.odoc-parser.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace "src/dune" --replace "(libraries " "(libraries camlp-streams "
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-
-  });
 
   opam-core = osuper.opam-core.overrideAttrs (_: {
     postPatch = ''
