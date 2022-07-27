@@ -940,8 +940,6 @@ with oself;
   inherit (callPackage ./ocamlformat-rpc { })
     # latest version
     ocamlformat-rpc
-    ocamlformat-rpc_0_20_0
-    ocamlformat-rpc_0_20_1
     ocamlformat-rpc_0_21_0;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
