@@ -158,12 +158,6 @@ let
     "tcslib"
   ];
 
-  ocaml412Ignores = [
-    "typedppxlib"
-    "ppx_debug"
-    "cooltt"
-  ];
-
   ocaml5Ignores = [
     "async_js"
     "batteries"
@@ -309,7 +303,7 @@ let
 in
 
 rec {
-  inherit ocaml5Ignores ocaml412Ignores darwinIgnores;
+  inherit ocaml5Ignores darwinIgnores;
   ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";

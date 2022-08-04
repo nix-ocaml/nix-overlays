@@ -27,9 +27,7 @@ in
 
   native = (lib.attrValues (filter.ocamlCandidates {
     inherit pkgs ocamlVersion;
-    extraIgnores =
-      lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores
-        ++ lib.optionals (ocamlVersion == "4_12") filter.ocaml412Ignores;
+    extraIgnores = lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores;
   }))
   ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 
