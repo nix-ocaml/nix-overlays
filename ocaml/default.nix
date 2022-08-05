@@ -16,6 +16,11 @@
 , cairo
 , gtk2
 , zlib-oc
+, git
+, mercurial
+, bzip2
+, gnutar
+, coreutils
 }:
 
 oself: osuper:
@@ -23,6 +28,7 @@ oself: osuper:
 let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
+  git-pkg = git;
   pkg-config-script =
     let
       pkg-config-pkg =
@@ -407,11 +413,16 @@ with oself;
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/dune-release/archive/62af577.tar.gz;
-      sha256 = "0f126biy9pv178wfvz8kqn423pf2l8fm3fsd6vzp1xg2002i45dw";
+      url = https://github.com/ocamllabs/dune-release/archive/ab37686.tar.gz;
+      sha256 = "11m2zxra43ag2xsmc6mnaq36hnq3g2kql15d6dik4hw0jq7f2dz8";
     };
     doCheck = false;
     patches = [ ];
+    preFixup = ''
+      wrapProgram $out/bin/dune-release \
+        --prefix PATH : "${lib.makeBinPath [ findlib git mercurial bzip2 gnutar coreutils ]}"
+    '';
+
   });
 
   ezgzip = buildDunePackage rec {

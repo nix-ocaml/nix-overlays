@@ -295,9 +295,6 @@ let
     "pulseaudio"
 
     "gstreamer"
-
-    # Opam can't build because gringo can't build..
-    "dune-release"
   ];
 
 in
