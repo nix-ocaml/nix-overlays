@@ -2,7 +2,7 @@
   description = "ocaml-packages-overlay";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=b7ec30b4335d1cc0df7edcbfd3ccc441b8799554";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=0e27b0d8c3e0e5046b87369c18246ab1132a3568";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
