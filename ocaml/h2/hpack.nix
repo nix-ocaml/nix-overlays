@@ -4,8 +4,8 @@ buildDunePackage {
   pname = "hpack";
   version = "0.8.0-dev";
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/ocaml-h2/archive/f89da4a.tar.gz;
-    sha256 = "1rs3025ljckmf80v2cwkwfl3594wn08l6q11n3yqd0m8hvdwh123";
+    url = https://github.com/anmonteiro/ocaml-h2/archive/aff47b8dd.tar.gz;
+    sha256 = "0nl9y8qbznfbxb4g0vxm94ysrb6a02ffdpf6gli2x26wr5w9s6as";
   };
   propagatedBuildInputs = [ angstrom faraday ];
 }
