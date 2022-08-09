@@ -16,11 +16,6 @@
 , cairo
 , gtk2
 , zlib-oc
-, git
-, mercurial
-, bzip2
-, gnutar
-, coreutils
 }:
 
 oself: osuper:
@@ -28,7 +23,6 @@ oself: osuper:
 let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
-  git-pkg = git;
   pkg-config-script =
     let
       pkg-config-pkg =
@@ -418,11 +412,6 @@ with oself;
     };
     doCheck = false;
     patches = [ ];
-    preFixup = ''
-      wrapProgram $out/bin/dune-release \
-        --prefix PATH : "${lib.makeBinPath [ findlib git mercurial bzip2 gnutar coreutils ]}"
-    '';
-
   });
 
   ezgzip = buildDunePackage rec {
