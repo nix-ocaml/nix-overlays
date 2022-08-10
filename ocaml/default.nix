@@ -414,6 +414,10 @@ with oself;
     patches = [ ];
   });
 
+  eio = callPackage ./eio { };
+  eio_luv = callPackage ./eio/luv.nix { };
+  eio_main = callPackage ./eio/main.nix { };
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -696,6 +700,12 @@ with oself;
     postPatch = ''
       substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
     '';
+  };
+
+  luv_unix = buildDunePackage {
+    pname = "luv_unix";
+    inherit (luv) version src;
+    propagatedBuildInputs = [ luv ];
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
