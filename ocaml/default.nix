@@ -414,9 +414,17 @@ with oself;
     patches = [ ];
   });
 
-  eio = callPackage ./eio { };
-  eio_luv = callPackage ./eio/luv.nix { };
-  eio_main = callPackage ./eio/main.nix { };
+  eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio { }
+    else null;
+  eio_luv =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio/luv.nix { }
+    else null;
+  eio_main =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio/main.nix { } else null;
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
