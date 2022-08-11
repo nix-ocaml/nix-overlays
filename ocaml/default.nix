@@ -414,6 +414,18 @@ with oself;
     patches = [ ];
   });
 
+  eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio { }
+    else null;
+  eio_luv =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio/luv.nix { }
+    else null;
+  eio_main =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio/main.nix { } else null;
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -696,6 +708,12 @@ with oself;
     postPatch = ''
       substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
     '';
+  };
+
+  luv_unix = buildDunePackage {
+    pname = "luv_unix";
+    inherit (luv) version src;
+    propagatedBuildInputs = [ luv ];
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
