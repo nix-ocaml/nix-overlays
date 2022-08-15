@@ -1281,8 +1281,8 @@ with oself;
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/3799dca.tar.gz;
-      sha256 = "1pqhd0naw753f3bwiqk68wdbaba0kc1myw206gw8b91zjgy0f7qw";
+      url = https://github.com/savonet/ocaml-ssl/releases/download/0.5.12/ssl-0.5.12.tbz;
+      sha256 = "17p7x6sl6vxassh08gs8jrgwmaxsvlrmapkqvf16sl9n0v34s376";
     };
 
     buildInputs = o.buildInputs ++ [ dune-configurator ];
