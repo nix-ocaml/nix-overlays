@@ -426,6 +426,19 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio/main.nix { } else null;
 
+  eio-ssl =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      buildDunePackage
+        {
+          pname = "eio-ssl";
+          version = "n/a";
+          src = builtins.fetchurl {
+            url = https://github.com/anmonteiro/eio-ssl/archive/8440ca260.tar.gz;
+            sha256 = "0sbv8qqlfgw489plf20d5yxl25zaarwxslrl0nq1ilnaiga19gzz";
+          };
+          propagatedBuildInputs = [ ssl eio_main ];
+        } else null;
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
