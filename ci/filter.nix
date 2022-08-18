@@ -270,6 +270,14 @@ let
     "ocamlformat-rpc"
 
     "metapp"
+
+    "domainslib"
+    "eio"
+    "eio_luv"
+    "eio_main"
+    "eio-ssl"
+    "lockfree"
+    "lwt_domain"
   ];
 
   darwinIgnores = [

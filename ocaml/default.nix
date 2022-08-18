@@ -326,11 +326,7 @@ with oself;
     };
   };
 
-  domainslib =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./domainslib { }
-    else null;
-
+  domainslib = callPackage ./domainslib { };
 
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
@@ -414,30 +410,19 @@ with oself;
     patches = [ ];
   });
 
-  eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio { }
-    else null;
-  eio_luv =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/luv.nix { }
-    else null;
-  eio_main =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/main.nix { } else null;
+  eio = callPackage ./eio { };
+  eio_luv = callPackage ./eio/luv.nix { };
+  eio_main = callPackage ./eio/main.nix { };
 
-  eio-ssl =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      buildDunePackage
-        {
-          pname = "eio-ssl";
-          version = "n/a";
-          src = builtins.fetchurl {
-            url = https://github.com/anmonteiro/eio-ssl/archive/8440ca260.tar.gz;
-            sha256 = "0sbv8qqlfgw489plf20d5yxl25zaarwxslrl0nq1ilnaiga19gzz";
-          };
-          propagatedBuildInputs = [ ssl eio_main ];
-        } else null;
+  eio-ssl = buildDunePackage {
+    pname = "eio-ssl";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/eio-ssl/archive/8440ca260.tar.gz;
+      sha256 = "0sbv8qqlfgw489plf20d5yxl25zaarwxslrl0nq1ilnaiga19gzz";
+    };
+    propagatedBuildInputs = [ ssl eio_main ];
+  };
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -695,10 +680,7 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
-  lockfree =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./lockfree { }
-    else null;
+  lockfree = callPackage ./lockfree { };
 
   lru = osuper.lru.overrideAttrs (_: {
     postPatch = ''
@@ -751,17 +733,15 @@ with oself;
     };
   });
 
-  lwt_domain =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./lwt/domain.nix { }
-    else null;
-  lwt_react = callPackage ./lwt/react.nix { };
+  lwt_domain = callPackage ./lwt/domain.nix { };
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     prePatch = ''
       substituteInPlace src/core/lwt_log_core.ml --replace "String.lowercase" "String.lowercase_ascii"
     '';
   });
+
+  lwt_react = callPackage ./lwt/react.nix { };
 
   markup = osuper.markup.overrideAttrs (o: {
     prePatch = ''
