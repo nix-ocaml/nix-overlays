@@ -206,6 +206,7 @@ let
     "ocaml-protoc"
     "ocaml-recovery-parser"
     "ocaml-sat-solvers"
+    "ocaml-vdom"
     "ocamlify"
     "ocamlmod"
     "ocamlnet"
