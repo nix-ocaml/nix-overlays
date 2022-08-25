@@ -225,6 +225,7 @@ let
     "ppx_css"
     "ppx_python"
     "ppx_tools"
+    "promise_jsoo"
     "pyml"
     "rdbg"
     "re2_stable"
