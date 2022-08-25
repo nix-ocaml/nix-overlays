@@ -4,8 +4,8 @@ module.exports = async ({ github, context, core, require }) => {
     get_revisions,
     get_newest,
     get_ocaml_commits,
-    escapeForGHActions
-  } = require('./auto-update/lib.js');
+    escapeForGHActions,
+  } = require("./auto-update/lib.js");
   const { readFileSync, writeFileSync } = require("fs");
 
   const url = get_revisions()
@@ -32,7 +32,7 @@ module.exports = async ({ github, context, core, require }) => {
 
       const post_text = `
 #### Commits touching OCaml packages:
-${ocaml_packages_text.join('\n')}
+${ocaml_packages_text.join("\n")}
 
 #### Diff URL: ${url}
       `;
