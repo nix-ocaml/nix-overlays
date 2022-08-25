@@ -4,8 +4,8 @@ module.exports = async ({ github, context, core, require }) => {
     get_revisions,
     get_newest,
     get_ocaml_commits,
-    escapeForGHActions
-  } = require('./auto-update/lib.js');
+    escapeForGHActions,
+  } = require("./auto-update/lib.js");
   const { readFileSync, writeFileSync } = require("fs");
 
   const url = get_revisions()
@@ -25,18 +25,14 @@ module.exports = async ({ github, context, core, require }) => {
 
       const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
-      const ocaml_packages_text = ocaml_commits.commits.map(({ commit, html_url }) => {
+      const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
         const message = escapeForGHActions(commit.message);
         return `* <a href="${html_url}"><pre>${message}</pre></a>`;
       });
 
       const post_text = `
 #### Commits touching OCaml packages:
-${ocaml_packages_text.join('\n')}
-
-#### OCaml-related files touched:
-
-${ocaml_commits.files.join('\n')}
+${ocaml_packages_text.join("\n")}
 
 #### Diff URL: ${url}
       `;
