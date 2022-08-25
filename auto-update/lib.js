@@ -94,16 +94,27 @@ const get_newest = (revisions) => {
   });
 };
 
-function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = []) {
+function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = {
+  commits : [],
+  files : []
+}) {
   return http_request(`https://api.github.com/repos/NixOS/nixpkgs/compare/${
                           sha1}...${sha2}?per_page=100&page=${page}`)
-      .then(({commits = []}) => {
-        const all_commits = prev_commits.concat(commits);
+      .then(({commits = [], files = []}) => {
+        const all_commits = prev_commits.commits.concat(commits);
+        const all_files = prev_commits.files.concat(
+            files.filter(x => x.filename.includes('ocaml'))
+                .map(x => x.filename));
         if (commits.length < 100) {
-          return all_commits.filter((c) =>
-                                        c.commit.message.startsWith("ocaml"));
+          const shas = new Set(all_files);
+          return {
+            files : all_files,
+            commits :
+                all_commits.filter((c) => c.commit.message.includes("ocaml"))
+          };
         } else {
-          return get_ocaml_commits(sha1, sha2, page + 1, all_commits);
+          return get_ocaml_commits(sha1, sha2, page + 1,
+                                   {commits : all_commits, files : all_files});
         }
       });
 }
@@ -113,7 +124,10 @@ function escapeForGHActions(s) {
   // `` ` `` and `'` seems to be problematic as well
   // issue:
   // https://github.com/repo-sync/pull-request/issues/27
-  return s.replace(/\$/g, '\\$').replace(/"/g, '\\"').replace(/`/g, '\\`').replace(/\'/g, '\\\'');
+  return s.replace(/\$/g, '\\$')
+      .replace(/"/g, '\\"')
+      .replace(/`/g, '\\`')
+      .replace(/\'/g, '\\\'');
 }
 
 module.exports = {
