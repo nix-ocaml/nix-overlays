@@ -109,8 +109,8 @@ function get_ocaml_commits(sha1, sha2, page = 1, prev_commits = {
           const shas = new Set(all_files);
           return {
             files : all_files,
-            commits :
-                all_commits.filter((c) => c.commit.message.includes("ocaml"))
+            commits : all_commits.filter(
+                (c) => c.commit.message.toLowerCase.includes("ocaml"))
           };
         } else {
           return get_ocaml_commits(sha1, sha2, page + 1,
