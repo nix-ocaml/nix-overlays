@@ -124,11 +124,9 @@ function get_ocaml_commits(sha1, sha2) {
           const commit_sha = x.blob_url.split("/")[6];
           return commits.find(c => c.sha === commit_sha);
         });
-      return {
-        commits: commits.filter((c) =>
+      return commits.filter((c) =>
           c.commit.message.toLowerCase().includes("ocaml")
-        ).concat(file_commits),
-      };
+        ).concat(file_commits);
     }
   );
 }
