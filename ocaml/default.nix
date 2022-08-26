@@ -1077,6 +1077,16 @@ with oself;
     '';
   });
 
+  oseq = buildDunePackage {
+    pname = "oseq";
+    version = "0.4";
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/oseq/archive/refs/tags/v0.4.tar.gz;
+      sha256 = "0bbn1swp92zh49pszxm34rnx0bfq1zwdjz50yy05nnchr5lva0jf";
+    };
+    propagatedBuildInputs = [ seq ];
+  };
+
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
@@ -1370,6 +1380,14 @@ with oself;
       echo "(lang dune 3.0)" > dune-project
     '';
   });
+
+  timedesc = callPackage ./timere/timedesc.nix { };
+  timedesc-json = callPackage ./timere/timedesc-json.nix { };
+  timedesc-sexp = callPackage ./timere/timedesc-sexp.nix { };
+  timedesc-tzdb = callPackage ./timere/timedesc-tzdb.nix { };
+  timedesc-tzlocal = callPackage ./timere/timedesc-tzlocal.nix { };
+  timere = callPackage ./timere/default.nix { };
+  timere-parse = callPackage ./timere/parse.nix { };
 
   tyxml = osuper.tyxml.overrideAttrs (_: {
     src = builtins.fetchurl {
