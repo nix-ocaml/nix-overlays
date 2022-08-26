@@ -767,12 +767,6 @@ with oself;
     '';
   });
 
-  markup = osuper.markup.overrideAttrs (o: {
-    prePatch = ''
-      substituteInPlace src/common.ml --replace " = lowercase" " = lowercase_ascii"
-    '';
-  });
-
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/realworldocaml/mdx/archive/493ed9184cad24ba203c8fe72c12b95a7658eb9a.tar.gz;
@@ -1145,6 +1139,10 @@ with oself;
 
   postgresql =
     (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
+      src = builtins.fetchurl {
+        url = https://github.com/mmottl/postgresql-ocaml/archive/7c0c90119.tar.gz;
+        sha256 = "18vmsh43pibay7vp3yyy37vnmypgcz64i8sg1m4a6gy1ivwa0wgy";
+      };
       postPatch = ''
         substituteInPlace src/dune --replace " bigarray" ""
       '';
