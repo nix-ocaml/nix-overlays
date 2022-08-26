@@ -13,10 +13,10 @@
 
 buildDunePackage {
   pname = "eio";
-  version = "0.4";
+  version = "0.5";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/eio/archive/e4413913.tar.gz;
-    sha256 = "1vviih4wcg0phsd88l13r7ys9jginpzqy7fg0154vjqxwqi3hzl6";
+    url = https://github.com/ocaml-multicore/eio/releases/download/v0.5/eio-0.5.tbz;
+    sha256 = "1l2ga5jqrkvpix8fallsjpg5z9rjz4vj2a0lh1jl5kqdvyl59cnf";
   };
 
   propagatedBuildInputs = [
