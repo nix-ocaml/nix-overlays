@@ -574,6 +574,10 @@ with oself;
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
+  h2-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./h2/eio.nix { }
+    else null;
   hpack = callPackage ./h2/hpack.nix { };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
@@ -588,6 +592,10 @@ with oself;
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
+  httpaf-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./httpaf/eio.nix { }
+    else null;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
