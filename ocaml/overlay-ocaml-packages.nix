@@ -38,8 +38,8 @@ let
         patch_version = "0+alpha1";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/b82821134.tar.gz;
-          sha256 = "1zc0mn06pb9fn2amqq6bzwyy57z0ckxzaq25j1grczba48bg6lfn";
+          url = https://github.com/ocaml/ocaml/archive/bc6cfe8caac.tar.gz;
+          sha256 = "0bdvrspz3x6a7b79plcmjrh2wip6zj8c6bcqxm3a2f6slngwkk30";
         };
       };
     } else { });
