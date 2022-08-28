@@ -48,8 +48,7 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  # postgresql == postgresql_14 seems broken on M1
-  libpq = (super.postgresql_13.override {
+  libpq = (super.postgresql.override {
     enableSystemd = false;
     gssSupport = false;
     openssl = self.openssl-oc;
