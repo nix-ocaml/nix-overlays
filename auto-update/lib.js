@@ -98,13 +98,14 @@ function get_commits(
   sha1,
   sha2,
   page = 1,
-  prev_commits = { commits: [], files: [] }
+  prev_commits = { commits: {}, files: [] }
 ) {
   return http_request(
     `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
   ).then((res) => {
+    res.commits.forEach(commit => prev_commits.commits[commit.sha] = commit);
     const next_commits = {
-      commits: prev_commits.commits.concat(res.commits),
+      commits: prev_commits.commits,
       files: prev_commits.files.concat(res.files).filter(x => x != null),
     };
     if (res.commits.length < 100) {
@@ -117,14 +118,15 @@ function get_commits(
 
 function get_ocaml_commits(sha1, sha2) {
   return get_commits(sha1, sha2).then(
-    ({ commits = [], files = [] }) => {
+    ({ commits = {}, files = [] }) => {
       const file_commits = files
         .filter((x) => x.filename.toLowerCase().includes("ocaml"))
         .map((x) => {
           const commit_sha = x.blob_url.split("/")[6];
-          return commits.find(c => c.sha === commit_sha);
-        });
-      return commits.filter((c) =>
+          return commits[commit_sha];
+        })
+        .filter(x => x != null);
+      return Object.values(commits).filter((c) =>
           c.commit.message.toLowerCase().includes("ocaml")
         ).concat(file_commits);
     }
