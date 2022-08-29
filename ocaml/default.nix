@@ -433,8 +433,8 @@ with oself;
           pname = "eio-ssl";
           version = "n/a";
           src = builtins.fetchurl {
-            url = https://github.com/anmonteiro/eio-ssl/archive/ea282fe.tar.gz;
-            sha256 = "0c8vzpic8mny9hqds0afz13f0vv9x749y5m13gfiy8bkd4l1i0dg";
+            url = https://github.com/anmonteiro/eio-ssl/archive/8679ca18.tar.gz;
+            sha256 = "0mgmh374a8f5xlqq70vhi2hzllwkhckx0vwh526r3sh6kqwspdj7";
           };
           propagatedBuildInputs = [ ssl eio_main ];
         } else null;
