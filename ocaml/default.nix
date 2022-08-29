@@ -72,14 +72,6 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
-  atdgen = disableTests osuper.atdgen;
-  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ahrefs/atd/archive/9b1c2e70a3b7063cba71f3ed793a0fce90cc34bb.tar.gz;
-      sha256 = "07qfvjc0qd27sdvrr197ma0ddgnjdxg68j9n8fr7yd1q5w7pchcr";
-    };
-  });
-
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
@@ -822,7 +814,7 @@ with oself;
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
     else null;
-  dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { yojson = yojson_2; };
+  dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
 
   metapp = buildDunePackage {
@@ -1192,8 +1184,8 @@ with oself;
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/c048f5d.tar.gz;
-      sha256 = "1c6fvcj2s0jjar9g3f96v7l32n05qg1mdfhj6sixvq535lm5gw0a";
+      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/69671f7.tar.gz;
+      sha256 = "1i5g5ssazjb08f26r44vwjlnhca22zvy5awpxfz8g77an0vpp3p4";
     };
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
@@ -1455,23 +1447,6 @@ with oself;
         --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
     '';
 
-  });
-
-  yojson_2 = osuper.yojson.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/yojson/releases/download/2.0.0/yojson-2.0.0.tbz;
-      sha256 = "06nb41a2j82w2hc7ibz0llwz2b6slaf3j257nizqy6lmgwzqcpdb";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
-  });
-
-  yojson = osuper.yojson.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/yojson/archive/0fc0bb781d70a3a754bbbd2a2ed4508b07092278.tar.gz;
-      sha256 = "1qimfilgawr8r55hc33cs1l5hi0iqd62z4mvh1qhxhxby4w1wviw";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-    patches = [ ./camlpstreams.patch ];
   });
 
   yuscii = disableTests osuper.yuscii;
