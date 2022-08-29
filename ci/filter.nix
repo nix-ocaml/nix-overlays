@@ -297,6 +297,8 @@ let
     "pulseaudio"
 
     "gstreamer"
+    "uring"
+    "eio_linux"
   ];
 
 in

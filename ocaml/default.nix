@@ -418,6 +418,10 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio { }
     else null;
+  eio_linux =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio/linux.nix { }
+    else null;
   eio_luv =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio/luv.nix { }
@@ -1410,6 +1414,8 @@ with oself;
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
   unstrctrd = disableTests osuper.unstrctrd;
+
+  uring = callPackage ./uring { };
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {
