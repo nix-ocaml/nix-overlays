@@ -12,6 +12,7 @@ let
     "4_13"
     "4_14"
     "5_00"
+    "trunk"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
     ocaml-ng.ocamlPackages_4_13.overrideScope'
@@ -40,6 +41,17 @@ let
         src = builtins.fetchurl {
           url = https://github.com/ocaml/ocaml/archive/bc6cfe8caac.tar.gz;
           sha256 = "0bdvrspz3x6a7b79plcmjrh2wip6zj8c6bcqxm3a2f6slngwkk30";
+        };
+      };
+
+      ocamlPackages_trunk = newOCamlScope {
+        major_version = "5";
+        minor_version = "1";
+        patch_version = "0+trunk";
+        hardeningDisable = [ "strictoverflow" ];
+        src = builtins.fetchurl {
+          url = https://github.com/ocaml/ocaml/archive/ef07bd8.tar.gz;
+          sha256 = "1av7r1yakjpr0h46drfxxgyv4nx2js4h5481h0r6s3gafkmf7c85";
         };
       };
     } else { });

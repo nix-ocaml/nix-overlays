@@ -8,6 +8,7 @@
 , csexp
 , result
 , merlin-lib
+, camlp-streams
 }:
 
 buildDunePackage {
@@ -38,5 +39,5 @@ buildDunePackage {
       '| `OCaml_4_14_0 ] = %s' '| `OCaml_4_14_0 | `OCaml_5_0_0 ] = %s'
   '';
 
-  buildInputs = [ dot-merlin-reader yojson csexp result ];
+  buildInputs = [ dot-merlin-reader yojson csexp result camlp-streams ];
 }
