@@ -50,10 +50,6 @@ jobs:
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - uses: cachix/cachix-action@v10
-        with:
-          name: anmonteiro
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
@@ -89,10 +85,6 @@ jobs:
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - uses: cachix/cachix-action@v10
-        with:
-          name: anmonteiro
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
@@ -131,10 +123,6 @@ jobs:
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - uses: cachix/cachix-action@v10
-        with:
-          name: anmonteiro
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
@@ -170,10 +158,6 @@ jobs:
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - uses: cachix/cachix-action@v10
-        with:
-          name: anmonteiro
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
@@ -218,10 +202,6 @@ jobs:
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - uses: cachix/cachix-action@v10
-        with:
-          name: anmonteiro
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: Build nix packages
         run: |
           nix shell --print-build-logs -f ./ nix-build-uncached -c \
