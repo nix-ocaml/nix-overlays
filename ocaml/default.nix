@@ -656,6 +656,14 @@ with oself;
 
   jose = callPackage ./jose { };
 
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/archive/22f219a55.tar.gz;
+      sha256 = "1x7bzkl7nws32xcrp526j5mfsm5s9ivr8wl1kw5xwphv8p8c636m";
+    };
+  });
+
   kafka = osuper.kafka.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib/ocaml_kafka.c --replace "= alloc_small" "= caml_alloc_small"
@@ -1257,6 +1265,13 @@ with oself;
       sha256 = "04rqmigdbgah4yvdjpk3ai9j7d3zhp2hz2qd482p1q2k3bbn52kh";
     };
   });
+
+  reactivedata = osuper.reactivedata.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "src/reactiveData.ml" --replace "Pervasives." "Stdlib."
+    '';
+  });
+
 
   # Tests use `String.capitalize` which was removed in 5.0
   re = disableTests osuper.re;
