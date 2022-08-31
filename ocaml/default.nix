@@ -351,14 +351,6 @@ with oself;
 
   dune_2 = dune_3;
 
-  dune_3 = osuper.dune_3.overrideAttrs (_: {
-    version = "3.3.1";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.3.1/dune-3.3.1.tbz;
-      sha256 = "1q82ap6xq93cn5pkwjjbzk9c9r7kcghlk7dryasvl4py3d4q0344";
-    };
-  });
-
   dune-configurator = callPackage ./dune/configurator.nix { };
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
@@ -972,11 +964,11 @@ with oself;
       if lib.versionAtLeast ocaml.version "5.0" then
         fetchFromGitHub
           {
-            owner = "ulrikstrid";
+            owner = "ocaml";
             repo = "ocaml-lsp";
             fetchSubmodules = true;
-            rev = "191f65ab82efc56c370e9e3122123590b96071fd";
-            sha256 = "sha256-FqQzh+SvRmZ6xTdcyr0iF3EE+8o+I9LSUJ5FgI5UyoU=";
+            rev = "63c12eb178471c7bd660460f489922377a3701d0";
+            sha256 = "sha256-9WOieVlaojMuJTZLo0cCY5Qm1M0JX2asnlmwO6JbhJs=";
           }
       else o.src;
   });
