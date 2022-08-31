@@ -17,7 +17,7 @@
     },
     "src": {
       "type": "git",
-      "value": "https://github.com/anmonteiro/nix-overlays",
+      "value": "https://github.com/nix-ocaml/nix-overlays",
       "emailresponsible": false
     },
     "pulls": {

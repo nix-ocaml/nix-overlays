@@ -1,6 +1,5 @@
 # OCaml-focused custom nix-overlays
 
-
 This repo contains a set of custom overlays and upgrades over the upstream
 nixpkgs set of (mostly) OCaml packages, and a few other curated derivations.
 
@@ -13,7 +12,7 @@ In your `flake.nix`:
 ```nix
 {
   # Use this repo as the `nixpkgs` URL
-  inputs.nixpkgs = "github:anmonteiro/nix-overlays";
+  inputs.nixpkgs = "github:nix-ocaml/nix-overlays";
 
 
   outputs = { self, nixpkgs }:
@@ -28,12 +27,11 @@ In your `flake.nix`:
 
 #### Alternative (advanced)
 
-
 ```nix
 {
   inputs.nixpkgs = "github:nixOS/nixpkgs";
 
-  inputs.ocaml-overlay = "github:anmonteiro/nix-overlays";
+  inputs.ocaml-overlay = "github:nix-ocaml/nix-overlays";
   inputs.ocaml-overlay.nixpkgs.follows = "nixpkgs";
 
 
@@ -59,13 +57,12 @@ In your `flake.nix`:
 let
   nixpkgs-sources =
     builtins.fetchTarball
-      https://github.com/anmonteiro/nix-overlays/archive/master.tar.gz;
+      https://github.com/nix-ocaml/nix-overlays/archive/master.tar.gz;
   pkgs = import nixpkgs-sources { };
 in
 
 pkgs
 ```
-
 
 #### Alternative (advanced)
 
@@ -73,7 +70,7 @@ pkgs
 let
   nixpkgs-sources =
     builtins.fetchTarball
-      https://github.com/anmonteiro/nix-overlays/archive/master.tar.gz;
+      https://github.com/nix-ocaml/nix-overlays/archive/master.tar.gz;
 
   custom-nixpkgs = /path/to/custom/nixpkgs;
 

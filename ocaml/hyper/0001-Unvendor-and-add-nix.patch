@@ -117,7 +117,7 @@ index 0000000..2f8b5a9
 +    flake-utils.url = "github:numtide/flake-utils";
 +    nix-filter.url = "github:numtide/nix-filter";
 +
-+    ocaml-overlay.url = "github:anmonteiro/nix-overlays";
++    ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
 +    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
 +    ocaml-overlay.inputs.flake-utils.follows = "flake-utils";
 +  };

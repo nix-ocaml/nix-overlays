@@ -37,7 +37,7 @@ let
       keepnr = 2;
       schedulingshares = 100;
       description = "nix-overlays";
-      flake = "github:anmonteiro/nix-overlays";
+      flake = "github:nix-ocaml/nix-overlays";
     };
   };
   pr_data = builtins.fromJSON (builtins.readFile pulls);
@@ -45,7 +45,7 @@ let
     name = "nix-overlays-${num}";
     value = defaults // {
       description = "PR ${num}: ${info.title}";
-      flake = "github:anmonteiro/nix-overlays/${info.head.ref}";
+      flake = "github:nix-ocaml/nix-overlays/${info.head.ref}";
     };
   };
   pull_requests = listToAttrs (mapAttrsToList makePr pr_data);
