@@ -1035,6 +1035,12 @@ with oself;
     preConfigure = "";
   });
 
+  ocp-indent = osuper.ocp-indent.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "libraries bytes" "libraries "
+    '';
+  });
+
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ocp-index/archive/a6b3a022522359a38618777c685363a750cb82d4.tar.gz;
