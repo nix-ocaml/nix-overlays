@@ -257,6 +257,9 @@ with oself;
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
+    postPatch = ''
+      substituteInPlace META --replace "bytes integers" "integers"
+    '';
   });
 
   cudf = buildDunePackage {
@@ -743,6 +746,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
 
     postPatch = ''
+      substituteInPlace src/core/dune --replace "(libraries bytes)" ""
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
 
@@ -1040,8 +1044,8 @@ with oself;
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
-      sha256 = "1rgncdbbwa5j0wx0p8n44y29mpx98v6fmy8s0djri12frlm0k5dl";
+      url = https://github.com/ocamlpro/ocplib-endian/archive/4a9fd796.tar.gz;
+      sha256 = "1ic1dwzp7bi7kdkbbzd7h38dvzhw83xzja7mzam6nsvnax4xp0sa";
     };
     propagatedBuildInputs = [ bigarray-compat ];
   });
