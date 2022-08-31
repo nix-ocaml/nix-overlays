@@ -241,7 +241,6 @@ let
     "spell"
     "spelll"
     "stdcompat"
-    "stdint"
     "tar-unix"
     "tar"
     "telegraml"
