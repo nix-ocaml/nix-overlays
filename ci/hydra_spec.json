@@ -22,7 +22,7 @@
     },
     "pulls": {
       "type": "githubpulls",
-      "value": "anmonteiro nix-overlays",
+      "value": "nix-ocaml nix-overlays",
       "emailresponsible": false
     }
   }
