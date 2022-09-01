@@ -5,8 +5,8 @@ buildDunePackage {
   pname = "oidc";
   version = "0.2.0-dev";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/ocaml-oidc/archive/e0cab24c70651b69c0b9533ca4604f7b0edcc539.tar.gz;
-    sha256 = "sha256:0pgc119imh1imwfn7nskw52irgi4n2hp07q96qkr04q7ykd712mg";
+    url = https://github.com/ulrikstrid/ocaml-oidc/archive/4bb30333412593b899dfdc9e740465b06efb317e.tar.gz;
+    sha256 = "sha256:18qqclswh45l4ls8a42y85k7ry8zbpmac61gsfd443iqdfzi0cpk";
   };
 
   propagatedBuildInputs = [ jose uri yojson logs ];
