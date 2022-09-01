@@ -1328,6 +1328,13 @@ with oself;
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
 
+  sha = osuper.sha.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/djs55/ocaml-sha/releases/download/1.15.2/sha-1.15.2.tbz;
+      sha256 = "1dzzhchknnbrpp5s81iqbvmqp4s0l75yrq8snj70ch3wkarmgg9z";
+    };
+  });
+
   sodium = buildDunePackage {
     pname = "sodium";
     version = "0.8+ahrefs";

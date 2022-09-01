@@ -235,7 +235,6 @@ let
     "secp256k1"
     "session-redis-lwt"
     "sexp"
-    "sha"
     "shexp"
     "sosa"
     "spell"
