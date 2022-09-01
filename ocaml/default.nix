@@ -91,6 +91,19 @@ with oself;
     };
   };
 
+  base64 = osuper.base64.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.0" then
+        fetchFromGitHub
+          {
+            owner = "kit-ty-kate";
+            repo = "ocaml-base64";
+            rev = "749313a98dd2a7c0082aeffeeff038e800a573dc";
+            sha256 = "sha256-mbd/wTJi40/WsyyezQAX0iwA1qKwPpP9XR/F7925ASM=";
+          }
+      else o.src;
+  });
+
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -114,7 +127,7 @@ with oself;
   bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace src/dune --replace " bigarray" ""
+        substituteInPlace src/dune --replace " bigarray" "" --replace " bytes" ""
       '' else "";
   });
 
@@ -257,6 +270,9 @@ with oself;
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
+    postPatch = ''
+      substituteInPlace META --replace "bytes integers" "integers"
+    '';
   });
 
   cudf = buildDunePackage {
@@ -350,14 +366,6 @@ with oself;
     else osuper.dune_1;
 
   dune_2 = dune_3;
-
-  dune_3 = osuper.dune_3.overrideAttrs (_: {
-    version = "3.3.1";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.3.1/dune-3.3.1.tbz;
-      sha256 = "1q82ap6xq93cn5pkwjjbzk9c9r7kcghlk7dryasvl4py3d4q0344";
-    };
-  });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
@@ -750,6 +758,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
 
     postPatch = ''
+      substituteInPlace src/core/dune --replace "(libraries bytes)" ""
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
 
@@ -965,11 +974,11 @@ with oself;
       if lib.versionAtLeast ocaml.version "5.0" then
         fetchFromGitHub
           {
-            owner = "ulrikstrid";
+            owner = "ocaml";
             repo = "ocaml-lsp";
             fetchSubmodules = true;
-            rev = "191f65ab82efc56c370e9e3122123590b96071fd";
-            sha256 = "sha256-FqQzh+SvRmZ6xTdcyr0iF3EE+8o+I9LSUJ5FgI5UyoU=";
+            rev = "63c12eb178471c7bd660460f489922377a3701d0";
+            sha256 = "sha256-9WOieVlaojMuJTZLo0cCY5Qm1M0JX2asnlmwO6JbhJs=";
           }
       else o.src;
   });
@@ -1032,6 +1041,12 @@ with oself;
     preConfigure = "";
   });
 
+  ocp-indent = osuper.ocp-indent.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "libraries bytes" "libraries "
+    '';
+  });
+
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ocp-index/archive/a6b3a022522359a38618777c685363a750cb82d4.tar.gz;
@@ -1041,8 +1056,8 @@ with oself;
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamlpro/ocplib-endian/archive/7179dd6e66.tar.gz;
-      sha256 = "1rgncdbbwa5j0wx0p8n44y29mpx98v6fmy8s0djri12frlm0k5dl";
+      url = https://github.com/ocamlpro/ocplib-endian/archive/4a9fd796.tar.gz;
+      sha256 = "1ic1dwzp7bi7kdkbbzd7h38dvzhw83xzja7mzam6nsvnax4xp0sa";
     };
     propagatedBuildInputs = [ bigarray-compat ];
   });
@@ -1115,6 +1130,9 @@ with oself;
       sha256 = "04src5dc95bchimvnlbxih78pn95336b6rimbknqx8ch1qggp406";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
+    postPatch = ''
+      substituteInPlace src/lib/ounit2/advanced/dune --replace " bytes " " "
+    '';
   });
 
   parmap = disableTests osuper.parmap;
@@ -1519,6 +1537,12 @@ with oself;
 
   async_ssl = osuper.async_ssl.overrideAttrs (_: {
     propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+  });
+
+  cohttp = osuper.cohttp.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./cohttp/src/dune --replace "bytes" ""
+    '';
   });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
