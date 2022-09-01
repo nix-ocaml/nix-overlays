@@ -474,8 +474,7 @@ with oself;
       url = https://erratique.ch/software/fmt/releases/fmt-0.9.0.tbz;
       sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
     };
-    # reverts https://github.com/NixOS/nixpkgs/pull/178306
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+    propagatedBuildInputs = [ cmdliner ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
