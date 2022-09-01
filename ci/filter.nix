@@ -216,6 +216,7 @@ let
     "phylogenetics"
     "piqi-ocaml"
     "piqi"
+    "plotkicadsch"
     "ppx_css"
     "ppx_python"
     "ppx_tools"
