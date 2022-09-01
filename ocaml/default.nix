@@ -707,6 +707,13 @@ with oself;
     };
   });
 
+  jsonm = osuper.jsonm.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/jsonm/archive/7220492e3909002935aa2851edab4ee4eadb324c.tar.gz;
+      sha256 = "1fykr7ivn9jmf75f06dpnrvb7v44143wr0n0f6nxj45bxf0mchbd";
+    };
+  });
+
   kafka = osuper.kafka.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib/ocaml_kafka.c --replace "= alloc_small" "= caml_alloc_small"
