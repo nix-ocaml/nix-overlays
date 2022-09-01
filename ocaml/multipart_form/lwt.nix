@@ -18,10 +18,6 @@ buildDunePackage {
   pname = "multipart_form-lwt";
   inherit (multipart_form) src version;
 
-  postPatch = ''
-    substituteInPlace lib_lwt/dune --replace " bigarray " " "
-  '';
-
   doCheck = false;
 
   propagatedBuildInputs = [

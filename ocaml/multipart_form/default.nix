@@ -1,4 +1,5 @@
 { upstream ? false
+, lib
 , buildDunePackage
 , unstrctrd
 , lwt
@@ -20,32 +21,16 @@
 
 let
   upstream_src = builtins.fetchurl {
-    url = https://github.com/dinosaure/multipart_form/releases/download/v0.4.0/multipart_form-0.4.0.tbz;
-    sha256 = "1q1rgwb8rcc7b44rr1c41x193z2rdnrny23m45ap2mvy36d1vy3r";
+    url = https://github.com/dinosaure/multipart_form/releases/download/v0.4.1/multipart_form-0.4.1.tbz;
+    sha256 = "1ns0ans9kd983pcp6rsqrv3aahglm6j7gff0q9rk5if4zvk8w9in";
   };
-  upstream_version = "0.4.0";
-  upstream_propagatedBuildInputs = [
-    unstrctrd
-    lwt
-    prettym
-    logs
-    ke
-    bigstringaf
-  ];
+  upstream_version = "0.4.1";
 
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/multipart_form/archive/f4ed204.tar.gz;
-    sha256 = "18pk9j9w2b7idjppskagn740yjs6c7ly415x884ipnzmm8vpmkz0";
+    url = https://github.com/anmonteiro/multipart_form/archive/958ada0c.tar.gz;
+    sha256 = "162m0g6ka21bjbd2j6d69y1hkran5vkssl4ipzqd1lblkrq7mial";
   };
   version = "0.1.0-dev";
-  propagatedBuildInputs = [
-    bigstringaf
-    faraday
-    ke
-    logs
-    prettym
-    unstrctrd
-  ];
 
 in
 
@@ -56,7 +41,7 @@ buildDunePackage {
 
   src = if upstream then upstream_src else src;
 
-  propagatedBuildInputs = ([
+  propagatedBuildInputs = [
     base64
     pecu
     rosetta
@@ -64,11 +49,12 @@ buildDunePackage {
     uutf
     fmt
     angstrom
-  ] ++ (if upstream then upstream_propagatedBuildInputs else propagatedBuildInputs));
-
-  postPatch = ''
-    substituteInPlace ./lib_lwt/dune --replace " bigarray " " "
-  '';
+    bigstringaf
+    ke
+    logs
+    prettym
+    unstrctrd
+  ] ++ lib.optional (!upstream) [ faraday ];
 
   doCheck = true;
   checkInputs = [ alcotest rosetta ];
