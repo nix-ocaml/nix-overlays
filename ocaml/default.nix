@@ -351,6 +351,9 @@ with oself;
   dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dnssec ];
   });
+  dns-cli = osuper.dns-cli.overrideAttrs (o: {
+    propagatedBuildInputs = o.buildInputs ++ [ dnssec ];
+  });
   dnssec = buildDunePackage {
     pname = "dnssec";
     inherit (dns) version src;
