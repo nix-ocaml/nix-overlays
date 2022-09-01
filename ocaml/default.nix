@@ -777,12 +777,6 @@ with oself;
       callPackage ./eio/lwt_eio.nix { }
     else null;
 
-  lwt_log = osuper.lwt_log.overrideAttrs (_: {
-    prePatch = ''
-      substituteInPlace src/core/lwt_log_core.ml --replace "String.lowercase" "String.lowercase_ascii"
-    '';
-  });
-
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/realworldocaml/mdx/archive/493ed9184cad24ba203c8fe72c12b95a7658eb9a.tar.gz;
