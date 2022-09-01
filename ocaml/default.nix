@@ -348,6 +348,24 @@ with oself;
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ base64 ];
   });
+  dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dnssec ];
+  });
+  dnssec = buildDunePackage {
+    pname = "dnssec";
+    inherit (dns) version src;
+    propagatedBuildInputs = [
+      cstruct
+      dns
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      domain-name
+      base64
+      logs
+    ];
+  };
+
 
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
