@@ -340,6 +340,15 @@ with oself;
     else null;
 
 
+  dns = osuper.dns.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-dns/releases/download/v6.3.0/dns-6.3.0.tbz;
+      sha256 = "0lbk61ca8yxhf6dl8v1i5rlw6hwqmwvn9hn57sw8h43xfdx26h6w";
+    };
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ base64 ];
+  });
+
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream = callPackage ./dream { };
@@ -568,7 +577,13 @@ with oself;
     '';
   });
 
-  happy-eyeballs = callPackage ./happy-eyeballs { };
+  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
+      sha256 = "17mnid1gvq1ml1zmqzn0m6jmrqw4kqdrjqrdsrphl5kxxyhs03m6";
+    };
+  });
+  # callPackage ./happy-eyeballs { };
   happy-eyeballs-lwt = callPackage ./happy-eyeballs/lwt.nix { };
   happy-eyeballs-mirage = callPackage ./happy-eyeballs/mirage.nix { };
 
@@ -868,18 +883,15 @@ with oself;
 
   mimic = osuper.mimic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/dinosaure/mimic/archive/d548777d2f33b88ea04b2d0550df020578419b4e.tar.gz;
-      sha256 = "17mk21f76yl0yiskybnvd4zwr073m1rh2l5hswj34dyvcfzz153y";
+      url = https://github.com/dinosaure/mimic/releases/download/0.0.5/mimic-0.0.5.tbz;
+      sha256 = "1b9x2rwc0ag32lfkqqygq42rbdngfjgdgyya7a3p50absnv678fy";
     };
-
-    postPatch = ''
-      substituteInPlace lib/implicit.ml --replace "Obj.extension_id" "Obj.Extension_constructor.id"
-      substituteInPlace lib/implicit.ml --replace "Stdlib.Obj.((extension_id (extension_constructor t" "Stdlib.Obj.Extension_constructor.((id (of_val t"
-      substituteInPlace test/dune --replace "bigarray" ""
-
-
-    '';
   });
+  mimic-happy-eyeballs = buildDunePackage {
+    pname = "mimic-happy-eyeballs";
+    inherit (mimic) version src;
+    propagatedBuildInputs = [ mimic happy-eyeballs-mirage ];
+  };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
@@ -1491,7 +1503,6 @@ with oself;
       substituteInPlace src/wodan-unix/dune \
         --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
     '';
-
   });
 
   yuscii = disableTests osuper.yuscii;

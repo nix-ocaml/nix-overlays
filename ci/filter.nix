@@ -156,6 +156,7 @@ let
     "async_smtp"
     "pgsolver"
     "tcslib"
+    "plotkicadsch"
   ];
 
   ocaml5Ignores = [
@@ -216,7 +217,6 @@ let
     "phylogenetics"
     "piqi-ocaml"
     "piqi"
-    "plotkicadsch"
     "ppx_css"
     "ppx_python"
     "ppx_tools"
