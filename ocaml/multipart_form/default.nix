@@ -54,7 +54,8 @@ buildDunePackage {
     logs
     prettym
     unstrctrd
-  ] ++ lib.optional (!upstream) [ faraday ];
+    faraday
+  ];
 
   doCheck = true;
   checkInputs = [ alcotest rosetta ];
