@@ -91,6 +91,19 @@ with oself;
     };
   };
 
+  base64 = osuper.base64.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.0" then
+        fetchFromGitHub
+          {
+            owner = "kit-ty-kate";
+            repo = "ocaml-base64";
+            rev = "749313a98dd2a7c0082aeffeeff038e800a573dc";
+            sha256 = "sha256-mbd/wTJi40/WsyyezQAX0iwA1qKwPpP9XR/F7925ASM=";
+          }
+      else o.src;
+  });
+
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -114,7 +127,7 @@ with oself;
   bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace src/dune --replace " bigarray" ""
+        substituteInPlace src/dune --replace " bigarray" "" --replace " bytes" ""
       '' else "";
   });
 
@@ -1528,6 +1541,12 @@ with oself;
 
   async_ssl = osuper.async_ssl.overrideAttrs (_: {
     propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+  });
+
+  cohttp = osuper.cohttp.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./cohttp/src/dune --replace "bytes" ""
+    '';
   });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
