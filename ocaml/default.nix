@@ -340,6 +340,36 @@ with oself;
     else null;
 
 
+  dns = osuper.dns.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-dns/releases/download/v6.3.0/dns-6.3.0.tbz;
+      sha256 = "0lbk61ca8yxhf6dl8v1i5rlw6hwqmwvn9hn57sw8h43xfdx26h6w";
+    };
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ base64 ];
+  });
+  dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dnssec ];
+  });
+  dns-cli = osuper.dns-cli.overrideAttrs (o: {
+    propagatedBuildInputs = o.buildInputs ++ [ dnssec ];
+  });
+  dnssec = buildDunePackage {
+    pname = "dnssec";
+    inherit (dns) version src;
+    propagatedBuildInputs = [
+      cstruct
+      dns
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      domain-name
+      base64
+      logs
+    ];
+  };
+
+
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream = callPackage ./dream { };
@@ -482,8 +512,7 @@ with oself;
       url = https://erratique.ch/software/fmt/releases/fmt-0.9.0.tbz;
       sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
     };
-    # reverts https://github.com/NixOS/nixpkgs/pull/178306
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+    propagatedBuildInputs = [ cmdliner ];
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
@@ -569,7 +598,13 @@ with oself;
     '';
   });
 
-  happy-eyeballs = callPackage ./happy-eyeballs { };
+  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
+      sha256 = "17mnid1gvq1ml1zmqzn0m6jmrqw4kqdrjqrdsrphl5kxxyhs03m6";
+    };
+  });
+  # callPackage ./happy-eyeballs { };
   happy-eyeballs-lwt = callPackage ./happy-eyeballs/lwt.nix { };
   happy-eyeballs-mirage = callPackage ./happy-eyeballs/mirage.nix { };
 
@@ -787,12 +822,6 @@ with oself;
       callPackage ./eio/lwt_eio.nix { }
     else null;
 
-  lwt_log = osuper.lwt_log.overrideAttrs (_: {
-    prePatch = ''
-      substituteInPlace src/core/lwt_log_core.ml --replace "String.lowercase" "String.lowercase_ascii"
-    '';
-  });
-
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/realworldocaml/mdx/archive/493ed9184cad24ba203c8fe72c12b95a7658eb9a.tar.gz;
@@ -875,18 +904,15 @@ with oself;
 
   mimic = osuper.mimic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/dinosaure/mimic/archive/d548777d2f33b88ea04b2d0550df020578419b4e.tar.gz;
-      sha256 = "17mk21f76yl0yiskybnvd4zwr073m1rh2l5hswj34dyvcfzz153y";
+      url = https://github.com/dinosaure/mimic/releases/download/0.0.5/mimic-0.0.5.tbz;
+      sha256 = "1b9x2rwc0ag32lfkqqygq42rbdngfjgdgyya7a3p50absnv678fy";
     };
-
-    postPatch = ''
-      substituteInPlace lib/implicit.ml --replace "Obj.extension_id" "Obj.Extension_constructor.id"
-      substituteInPlace lib/implicit.ml --replace "Stdlib.Obj.((extension_id (extension_constructor t" "Stdlib.Obj.Extension_constructor.((id (of_val t"
-      substituteInPlace test/dune --replace "bigarray" ""
-
-
-    '';
   });
+  mimic-happy-eyeballs = buildDunePackage {
+    pname = "mimic-happy-eyeballs";
+    inherit (mimic) version src;
+    propagatedBuildInputs = [ mimic happy-eyeballs-mirage ];
+  };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
@@ -1335,6 +1361,13 @@ with oself;
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
 
+  sha = osuper.sha.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/djs55/ocaml-sha/releases/download/1.15.2/sha-1.15.2.tbz;
+      sha256 = "1dzzhchknnbrpp5s81iqbvmqp4s0l75yrq8snj70ch3wkarmgg9z";
+    };
+  });
+
   sodium = buildDunePackage {
     pname = "sodium";
     version = "0.8+ahrefs";
@@ -1491,7 +1524,6 @@ with oself;
       substituteInPlace src/wodan-unix/dune \
         --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
     '';
-
   });
 
   yuscii = disableTests osuper.yuscii;

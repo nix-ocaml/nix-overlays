@@ -1,36 +1,30 @@
 diff --git a/src/hack_forked/utils/collections/dune b/src/hack_forked/utils/collections/dune
-index 92e8bd109..5ab96d338 100644
+index a759d8fec..9ce966b6b 100644
 --- a/src/hack_forked/utils/collections/dune
 +++ b/src/hack_forked/utils/collections/dune
-@@ -1,5 +1,6 @@
+@@ -1,4 +1,5 @@
  (library
-   (name collections)
-+  (public_name flow_parser.collections)
-   (wrapped false)
-   (libraries
-     base))
+  (name collections)
++ (public_name flow_parser.collections)
+  (wrapped false)
+  (libraries base))
 diff --git a/src/parser/dune b/src/parser/dune
-index 1ee1cc43d..b4fcc5fd3 100644
+index fc0928bea..a5279b7a0 100644
 --- a/src/parser/dune
 +++ b/src/parser/dune
-@@ -1,6 +1,7 @@
+@@ -1,5 +1,6 @@
  (library
   (name flow_parser)
-- (wrapped false) 
 + (public_name flow_parser)
-+ (wrapped false)
+  (wrapped false)
   (modules
    (:standard \ flow_parser_js flow_parser_dot_js))
-  (libraries base sedlex wtf8 flow_sedlexing collections)
 diff --git a/src/third-party/sedlex/dune b/src/third-party/sedlex/dune
-index 49bc8ffbd..078e2a8d5 100644
+index 00afcea04..609fa50f0 100644
 --- a/src/third-party/sedlex/dune
 +++ b/src/third-party/sedlex/dune
-@@ -1,4 +1,5 @@
+@@ -1,3 +1,4 @@
  (library
 + (public_name flow_parser.flow_sedlexing)
   (name flow_sedlexing)
-  (wrapped false)
--)
-\ No newline at end of file
-+)
+  (wrapped false))

@@ -156,6 +156,7 @@ let
     "async_smtp"
     "pgsolver"
     "tcslib"
+    "plotkicadsch"
   ];
 
   ocaml5Ignores = [
@@ -235,7 +236,6 @@ let
     "secp256k1"
     "session-redis-lwt"
     "sexp"
-    "sha"
     "shexp"
     "sosa"
     "spell"

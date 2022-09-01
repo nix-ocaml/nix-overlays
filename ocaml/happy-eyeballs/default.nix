@@ -11,7 +11,7 @@ buildDunePackage {
   version = "0.1.3";
 
   src = builtins.fetchurl {
-    url = https://github.com/roburio/happy-eyeballs/releases/download/v0.1.3/happy-eyeballs-0.1.3.tbz;
+    url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
     sha256 = "0ns1bxcmx0rkq4am6vl2aargdzkfhria8sfmgnh8dgzvvj93cc1c";
   };
 
