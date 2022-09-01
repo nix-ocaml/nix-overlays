@@ -1137,6 +1137,9 @@ with oself;
       sha256 = "04src5dc95bchimvnlbxih78pn95336b6rimbknqx8ch1qggp406";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
+    postPatch = ''
+      substituteInPlace src/lib/ounit2/advanced/dune --replace " bytes " " "
+    '';
   });
 
   parmap = disableTests osuper.parmap;
