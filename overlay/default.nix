@@ -48,7 +48,7 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql.override {
+  libpq = (super.postgresql_13.override {
     enableSystemd = false;
     gssSupport = false;
     openssl = self.openssl-oc;
