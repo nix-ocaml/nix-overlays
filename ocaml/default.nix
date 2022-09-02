@@ -1500,7 +1500,7 @@ with oself;
       sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
     };
     postPatch = ''
-      substituteInPlace src/dune --replace "bytes" ""
+      substituteInPlace pkg/META --replace "bytes" ""
     '';
   });
 
