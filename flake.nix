@@ -1,6 +1,11 @@
 {
   description = "ocaml-packages-overlay";
 
+  nixConfig = {
+    extra-substituters = "https://anmonteiro.nix-cache.workers.dev";
+    extra-trusted-public-keys = "ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=";
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?rev=37d145eafc8023e0b46c94a50fa3f5a9f2ec4b48";
     flake-utils.url = "github:numtide/flake-utils";
@@ -30,7 +35,7 @@
           name = system;
           value = (import ./ci/hydra.nix {
             inherit system;
-            pkgs = self.packages.${system};
+            pkgs = self.legacyPackages.${system};
           });
         })
         [ "x86_64-linux" "aarch64-darwin" ]);
@@ -39,7 +44,7 @@
         let
           pkgs = import nixpkgs ({
             inherit system;
-            overlays = [ self.overlays.${system}.default ];
+            overlays = [ self.overlays.${system} ];
             config.allowUnfree = true;
           } // attrs);
         in
@@ -48,12 +53,13 @@
             but because of how we're doing overlays we will be overriding any extraOverlays if we don't use `appendOverlays`
           */
         pkgs.appendOverlays extraOverlays;
+
+      overlays.default = import ./overlay nixpkgs;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
-        packages = self.makePkgs { inherit system; };
-        legacyPackages = self.packages.${system};
+        legacyPackages = self.makePkgs { inherit system; };
 
-        overlays.default = (final: prev:
+        overlays = (final: prev:
           let
             channel = patchChannel {
               inherit system;

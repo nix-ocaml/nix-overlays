@@ -7,7 +7,7 @@ on:
     branches:
       - master
 jobs:
-  fmt:
+  nix-fmt-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,6 +17,9 @@ jobs:
       - name: fmt
         run: |
           find . -iname '*.nix' | xargs nix shell -f ./ nixpkgs-fmt -c nixpkgs-fmt --check
+      - name: check
+        run: |
+          nix flake check
 
   native-linux:
     strategy:

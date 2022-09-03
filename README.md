@@ -12,12 +12,12 @@ In your `flake.nix`:
 ```nix
 {
   # Use this repo as the `nixpkgs` URL
-  inputs.nixpkgs = "github:nix-ocaml/nix-overlays";
+  inputs.nixpkgs.url = "github:nix-ocaml/nix-overlays";
 
 
   outputs = { self, nixpkgs }:
     let
-      pkgs = nixpkg.packages.${"YOUR_SYSTEM_STRING"};
+      pkgs = nixpkg.legacyPackages.${"YOUR_SYSTEM_STRING"};
     in
     {
       ...
@@ -29,9 +29,9 @@ In your `flake.nix`:
 
 ```nix
 {
-  inputs.nixpkgs = "github:nixOS/nixpkgs";
+  inputs.nixpkgs.url = "github:nixOS/nixpkgs";
 
-  inputs.ocaml-overlay = "github:nix-ocaml/nix-overlays";
+  inputs.ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
   inputs.ocaml-overlay.nixpkgs.follows = "nixpkgs";
 
 
@@ -41,7 +41,7 @@ In your `flake.nix`:
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          ocaml-overlay.overlays.${system}.default
+          ocaml-overlay.overlays.default
         ];
       };
     in
