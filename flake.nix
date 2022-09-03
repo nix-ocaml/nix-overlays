@@ -53,6 +53,8 @@
             but because of how we're doing overlays we will be overriding any extraOverlays if we don't use `appendOverlays`
           */
         pkgs.appendOverlays extraOverlays;
+
+      overlays.default = import ./overlay nixpkgs;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
