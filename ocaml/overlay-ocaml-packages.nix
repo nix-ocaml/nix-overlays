@@ -1,7 +1,7 @@
-{ nixpkgs, overlays, super, updateOCamlPackages ? false }:
+{ nixpkgs, overlays, prev, updateOCamlPackages ? false }:
 
 let
-  inherit (super) lib callPackage ocaml-ng;
+  inherit (prev) lib callPackage ocaml-ng;
   ocamlVersions = [
     "4_06"
     "4_08"
@@ -16,7 +16,7 @@ let
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
     ocaml-ng.ocamlPackages_4_13.overrideScope'
-      (oself: osuper: {
+      (oself: oprev: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
             inherit major_version minor_version patch_version;
@@ -27,8 +27,8 @@ let
   custom-ocaml-ng =
     ocaml-ng //
     (if !(ocaml-ng ? "ocamlPackages_5_00") then {
-      ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
-        ocaml = osuper.ocaml.overrideAttrs (_: {
+      ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: oprev: {
+        ocaml = oprev.ocaml.overrideAttrs (_: {
           hardeningDisable = [ "strictoverflow" ];
         });
       });
@@ -75,11 +75,11 @@ rec {
   };
   ocamlPackages =
     if updateOCamlPackages then
-      overlaySinglePackageSet super.ocamlPackages
+      overlaySinglePackageSet prev.ocamlPackages
     else ocaml-ng.ocamlPackages_4_14;
   ocamlPackages_latest =
     if updateOCamlPackages then
-      overlaySinglePackageSet super.ocamlPackage_latest
+      overlaySinglePackageSet prev.ocamlPackage_latest
     else
       ocaml-ng.ocamlPackages_latest;
   ocaml = ocamlPackages.ocaml;
