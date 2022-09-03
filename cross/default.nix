@@ -1,12 +1,12 @@
 { buildPackages }:
 
 [
-  (final: prev:
+  (self: super:
     let
-      inherit (prev) lib;
+      inherit (super) lib;
       overlays = (import ./ocaml.nix {
         inherit buildPackages;
-        inherit (prev) lib
+        inherit (super) lib
           writeText
           writeScriptBin
           stdenv
@@ -14,10 +14,10 @@
       });
     in
     lib.overlayOCamlPackages {
-      inherit prev overlays;
+      inherit super overlays;
       updateOCamlPackages = true;
     })
-  (final: prev: {
+  (self: super: {
     opaline = buildPackages.opaline;
   })
 ]
