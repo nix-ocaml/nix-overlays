@@ -1222,17 +1222,19 @@ with oself;
     ];
   });
 
-  postgresql =
-    (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mmottl/postgresql-ocaml/archive/7c0c90119.tar.gz;
-        sha256 = "18vmsh43pibay7vp3yyy37vnmypgcz64i8sg1m4a6gy1ivwa0wgy";
-      };
-      postPatch = ''
-        substituteInPlace src/dune --replace " bigarray" ""
-      '';
-      nativeBuildInputs = o.nativeBuildInputs ++ [ libpq ];
-    });
+  postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
+      sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
+    };
+
+    patches = [ ./postgresql_static.patch ];
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+    buildInputs = o.buildInputs ++ [ openssl-oc.dev pkg-config ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
+  });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     buildInputs = [ ];
