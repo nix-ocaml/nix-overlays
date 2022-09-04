@@ -1081,10 +1081,11 @@ with oself;
     preConfigure = "";
   });
 
-  ocp-indent = osuper.ocp-indent.overrideAttrs (_: {
+  ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "libraries bytes" "libraries "
     '';
+    buildInputs = o.buildInputs ++ [ findlib ];
   });
 
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
@@ -1135,6 +1136,12 @@ with oself;
   });
 
   odoc = callPackage ./odoc { };
+
+  omd = osuper.omd.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "bytes" ""
+    '';
+  });
 
   opam-core = osuper.opam-core.overrideAttrs (_: {
     postPatch = ''
