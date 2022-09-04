@@ -1228,11 +1228,10 @@ with oself;
       sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
     };
 
-    patches = [ ./postgresql_static.patch ];
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    buildInputs = o.buildInputs ++ [ openssl-oc.dev pkg-config ];
+    patches = [ ./postgresql_static.patch ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
   });
 
