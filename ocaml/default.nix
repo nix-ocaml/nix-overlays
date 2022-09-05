@@ -1231,7 +1231,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    patches = [ ./postgresql_static.patch ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
   });
 
