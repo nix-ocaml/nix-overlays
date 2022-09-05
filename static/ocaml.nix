@@ -24,22 +24,22 @@ let
     });
 in
 (oself: osuper:
-  lib.mapAttrs
-    (_: p:
-      if p ? overrideAttrs then
-        fixOCamlPackage p
-      else p)
-    osuper // {
-    ocaml = fixOCaml osuper.ocaml;
+lib.mapAttrs
+  (_: p:
+    if p ? overrideAttrs then
+      fixOCamlPackage p
+    else p)
+  osuper // {
+  ocaml = fixOCaml osuper.ocaml;
 
-    postgresql = osuper.postgresql.overrideAttrs (o: {
-      patches = [ ./postgresql_static.patch ];
-      buildInputs = o.buildInputs ++ [ openssl-oc.dev ];
-    });
+  postgresql = osuper.postgresql.overrideAttrs (o: {
+    patches = [ ./postgresql_static.patch ];
+    buildInputs = o.buildInputs ++ [ openssl-oc.dev ];
+  });
 
-    zarith = osuper.zarith.overrideDerivation (o: {
-      configureFlags = o.configureFlags ++ [
-        "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
-      ];
-    });
-  })
+  zarith = osuper.zarith.overrideDerivation (o: {
+    configureFlags = o.configureFlags ++ [
+      "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
+    ];
+  });
+})
