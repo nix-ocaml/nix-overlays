@@ -1081,10 +1081,11 @@ with oself;
     preConfigure = "";
   });
 
-  ocp-indent = osuper.ocp-indent.overrideAttrs (_: {
+  ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "libraries bytes" "libraries "
     '';
+    buildInputs = o.buildInputs ++ [ findlib ];
   });
 
   ocp-index = osuper.ocp-index.overrideAttrs (_: {
@@ -1135,6 +1136,12 @@ with oself;
   });
 
   odoc = callPackage ./odoc { };
+
+  omd = osuper.omd.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "bytes" ""
+    '';
+  });
 
   opam-core = osuper.opam-core.overrideAttrs (_: {
     postPatch = ''
@@ -1215,17 +1222,17 @@ with oself;
     ];
   });
 
-  postgresql =
-    (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-      src = builtins.fetchurl {
-        url = https://github.com/mmottl/postgresql-ocaml/archive/7c0c90119.tar.gz;
-        sha256 = "18vmsh43pibay7vp3yyy37vnmypgcz64i8sg1m4a6gy1ivwa0wgy";
-      };
-      postPatch = ''
-        substituteInPlace src/dune --replace " bigarray" ""
-      '';
-      nativeBuildInputs = o.nativeBuildInputs ++ [ libpq ];
-    });
+  postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
+      sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
+    };
+
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
+  });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     buildInputs = [ ];

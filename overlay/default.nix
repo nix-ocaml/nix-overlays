@@ -48,12 +48,48 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql_13.override {
+  libpq = (super.postgresql_14.override {
+    systemd = null;
+    libkrb5 = null;
     enableSystemd = false;
     gssSupport = false;
     openssl = self.openssl-oc;
   }).overrideAttrs (o: {
     doCheck = false;
+    configureFlags = [
+      "--without-ldap"
+      "--without-readline"
+      "--with-openssl"
+      "--with-libxml"
+      "--sysconfdir=/etc"
+      "--libdir=$(out)/lib"
+      "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
+      "--enable-debug"
+      "--with-icu"
+      "--with-lz4"
+      (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
+    ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
+
+    # Use a single output derivation. The upstream PostgreSQL derivation
+    # produces multiple outputs (including "out" and "lib"), and then puts some
+    # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
+    # pkg-config `--libs` flags to be invalid (since it only knows about one
+    # such lib path, not both)
+    outputs = [ "out" ];
+    postInstall = ''
+      # Prevent a retained dependency on gcc-wrapper.
+      substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace ${stdenv.cc}/bin/ld ld
+      if [ -z "''${dontDisableStatic:-}" ]; then
+        # Remove static libraries in case dynamic are available.
+        for i in $out/lib/*.a; do
+          name="$(basename "$i")"
+          ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
+          if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
+            rm "$i"
+          fi
+        done
+      fi
+    '';
   });
 
   opaline = super.opaline.override { inherit (self) ocamlPackages; };

@@ -1,0 +1,49 @@
+diff --git a/src/config/discover.ml b/src/config/discover.ml
+index f7f6241..0cbb8b4 100644
+--- a/src/config/discover.ml
++++ b/src/config/discover.ml
+@@ -67,19 +67,37 @@ let from_pgconfig () =
+     ; libs = [pgsql_libdir; "-lpq"]
+     })
+ 
++let cmd_lines cmd =
++  let cin = Unix.open_process_in cmd in
++  try
++    let rec loop () =
++      match input_line cin with
++      | exception End_of_file -> []
++      | line -> line :: loop ()
++    in
++    let lines = loop () in
++    match Unix.close_process_in cin with
++    | WEXITED 0 -> lines, true
++    | WEXITED _ | WSIGNALED _ | WSTOPPED _ -> lines, false
++  with
++  | End_of_file -> [], false
++
+ let () =
+   C.main ~name:"postgresql" (fun c ->
++      let default = { C.Pkg_config.cflags = []; libs = [] } in
+       let conf =
+         match C.Pkg_config.get c with
+-        | Some pc ->
++        | Some _pc ->
+          begin match
+-           C.Pkg_config.query pc ~package:"libpq"
+-         with
+-         | Some conf ->
++           cmd_lines "pkg-config --cflags --static libpq",
++           cmd_lines "pkg-config --libs --static libpq" with
++         | ([cflags], true), ([libs], true) ->
++           Format.eprintf "yeah %s %s@." cflags libs;
+            let major, minor = major_minor_from_pgconfig () in
+-           { conf with
+-             C.Pkg_config.cflags = major :: minor :: conf.cflags }
+-         | None -> { C.Pkg_config.cflags = []; libs = [] }
++           { C.Pkg_config.cflags = major :: minor :: String.split_on_char ' ' cflags
++           ; libs = String.split_on_char ' ' libs }
++         | _, _ -> default
++         | exception exn -> raise exn
+          end
+         | None -> from_pgconfig ()
+       in

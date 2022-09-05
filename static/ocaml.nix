@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, openssl-oc }:
 let
   removeUnknownConfigureFlags = f: with lib;
     remove "--disable-shared"
@@ -31,6 +31,11 @@ lib.mapAttrs
     else p)
   osuper // {
   ocaml = fixOCaml osuper.ocaml;
+
+  postgresql = osuper.postgresql.overrideAttrs (o: {
+    patches = [ ./postgresql_static.patch ];
+    buildInputs = o.buildInputs ++ [ openssl-oc.dev ];
+  });
 
   zarith = osuper.zarith.overrideDerivation (o: {
     configureFlags = o.configureFlags ++ [
