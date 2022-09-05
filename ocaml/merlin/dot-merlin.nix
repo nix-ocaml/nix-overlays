@@ -1,5 +1,6 @@
 { lib
 , ocaml
+, findlib
 , buildDunePackage
 , yojson
 , csexp
@@ -43,5 +44,5 @@ buildDunePackage {
         sha256 = "109ai1ggnkrwbzsl1wdalikvs1zx940m6n65jllxj68in6bvidz1";
       };
 
-  propagatedBuildInputs = [ yojson csexp result merlin-lib ];
+  propagatedBuildInputs = [ yojson csexp result merlin-lib findlib ];
 }

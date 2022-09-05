@@ -742,11 +742,12 @@ with oself;
       '' else "";
   });
 
-  lambda-term = osuper.lambda-term.overrideAttrs (_: {
+  lambda-term = osuper.lambda-term.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/lambda-term/archive/d68d2fd21554b16b6968b943566a21f62614f072.tar.gz;
-      sha256 = "1iiaywjk1s9kv4344b60gy495kkp9i5v3lsf5zk03awxnq08habv";
+      url = https://github.com/ocaml-community/lambda-term/releases/download/3.3.1/lambda-term-3.3.1.tbz;
+      sha256 = "0g6vjl9qlggiskx2n78vhjgcha4h9vxmbyxighayjsnmjvhcnxsv";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
   lmdb = buildDunePackage {
@@ -1501,6 +1502,14 @@ with oself;
 
   uring = callPackage ./uring { };
 
+  utop = osuper.utop.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/archive/bbd9a6ed45.tar.gz;
+      sha256 = "00k4bi48hr1q5ida8ca48dpxj7qlax89446ir6qshwy51yjv00sx";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
+  });
+
   uuidm = osuper.uuidm.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
@@ -1547,6 +1556,14 @@ with oself;
 
   zarith = osuper.zarith.overrideAttrs (_: {
     propagatedBuildInputs = [ gmp-oc ];
+  });
+
+  zed = osuper.zed.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/zed/releases/download/3.2.0/zed-3.2.0.tbz;
+      sha256 = "0gji5rp44mqsld117n8g93cqg8302py1piqshmvg63268fylj8rl";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
   bin_prot = osuper.bin_prot.overrideAttrs (_: {
