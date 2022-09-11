@@ -282,6 +282,10 @@ with oself;
     '';
   });
 
+  ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   cudf = buildDunePackage {
     pname = "cudf";
     version = "0.5.97+500";
