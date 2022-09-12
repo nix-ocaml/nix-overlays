@@ -264,6 +264,7 @@ let
     "ocamlformat-rpc"
 
     "metapp"
+    "lambdapi"
   ];
 
   darwinIgnores = [
