@@ -1184,7 +1184,10 @@ with oself;
 
   pg_query = callPackage ./pg_query { };
 
-  piaf = callPackage ./piaf { };
+  piaf =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./piaf { }
+    else null;
   piaf-lwt = callPackage ./piaf/lwt.nix { };
   carl = callPackage ./piaf/carl.nix { };
 
