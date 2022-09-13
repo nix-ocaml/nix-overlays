@@ -157,6 +157,8 @@ let
     "pgsolver"
     "tcslib"
     "plotkicadsch"
+
+    "oidc-client"
   ];
 
   ocaml5Ignores = [
