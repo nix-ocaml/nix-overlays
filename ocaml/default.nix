@@ -282,6 +282,10 @@ with oself;
     '';
   });
 
+  ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   cudf = buildDunePackage {
     pname = "cudf";
     version = "0.5.97+500";
@@ -650,7 +654,6 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
-  index = disableTests osuper.index;
   integers = osuper.integers.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/signed.ml --replace "Pervasives" "Stdlib"
@@ -967,19 +970,6 @@ with oself;
       sha256 = "0fxv8qff9fsribymjgka7rq050i9yisph74nx642i5z7ng8ahlxq";
     };
   });
-
-  notty = buildDunePackage {
-    pname = "notty";
-    version = "0.2.3+dev";
-    src = builtins.fetchurl {
-      url = https://github.com/pqwy/notty/archive/e4deddd2c72549947af4c7c6b0eae0d5eb0d74c2.tar.gz;
-      sha256 = "0nr4kv3rylzx5blzhymlnd02fsmaysk45d7c882mbzr9g0blk3nb";
-    };
-
-    nativeBuildInputs = [ cppo ];
-    propagatedBuildInputs = [ uucp uuseg uutf lwt ];
-    strictDeps = true;
-  };
 
   npy = osuper.npy.overrideAttrs (_: {
     postPatch = ''
@@ -1402,11 +1392,6 @@ with oself;
   };
 
   ssl = osuper.ssl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/releases/download/0.5.12/ssl-0.5.12.tbz;
-      sha256 = "17p7x6sl6vxassh08gs8jrgwmaxsvlrmapkqvf16sl9n0v34s376";
-    };
-
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl-oc.dev ];
   });
