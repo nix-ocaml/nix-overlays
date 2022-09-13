@@ -1185,6 +1185,7 @@ with oself;
   pg_query = callPackage ./pg_query { };
 
   piaf = callPackage ./piaf { };
+  piaf-lwt = callPackage ./piaf/lwt.nix { };
   carl = callPackage ./piaf/carl.nix { };
 
   pp = disableTests osuper.pp;

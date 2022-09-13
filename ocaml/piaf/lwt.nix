@@ -1,39 +1,40 @@
 { stdenv
 , lib
+, fetchFromGitHub
+, alcotest
+, alcotest-lwt
 , buildDunePackage
-, eio
-, eio_main
-, eio-ssl
-, h2-eio
-, httpaf-eio
+, dune-site
+, h2-lwt-unix
+, httpaf-lwt-unix
 , ipaddr
+, logs
+, lwt_ssl
 , magic-mime
 , multipart_form
 , sendfile
 , uri
+, piaf
 }:
 
 buildDunePackage {
-  pname = "piaf";
-  version = "0.0.1-dev";
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/piaf/archive/98a02d5.tar.gz;
-    sha256 = "0spskc76j5vrp8l6lray7l0npg50yvhxp3p6yajm73wl56an1axk";
-  };
+  pname = "piaf-lwt";
+  inherit (piaf) src version;
 
   doCheck = false;
+  checkInputs = [ alcotest alcotest-lwt dune-site ];
 
   propagatedBuildInputs = [
-    eio
-    eio_main
-    eio-ssl
-    httpaf-eio
-    h2-eio
+    logs
+    lwt_ssl
+    uri
     ipaddr
     magic-mime
+
     multipart_form
+    httpaf-lwt-unix
+    h2-lwt-unix
     sendfile
-    uri
   ];
 
   meta = {
