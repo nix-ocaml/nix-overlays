@@ -124,7 +124,7 @@ in
       });
 
       carl =
-        if lib.versionAtLeast ocaml.version "5.0"
+        if lib.versionAtLeast osuper.ocaml.version "5.0"
         then
           osuper.carl.overrideAttrs
             (o: {
