@@ -123,9 +123,14 @@ in
         '';
       });
 
-      carl = osuper.carl.overrideAttrs (o: {
-        OCAMLFIND_TOOLCHAIN = "${crossName}";
-      });
+      carl =
+        if lib.versionAtLeast ocaml.version "5.0"
+        then
+          osuper.carl.overrideAttrs
+            (o: {
+              OCAMLFIND_TOOLCHAIN = "${crossName}";
+            })
+        else null;
 
       menhir = osuper.menhir.overrideAttrs (o: {
         postInstall = ''
