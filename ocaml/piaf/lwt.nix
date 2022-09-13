@@ -14,12 +14,15 @@
 , multipart_form
 , sendfile
 , uri
-, piaf
 }:
 
 buildDunePackage {
   pname = "piaf-lwt";
-  inherit (piaf) src version;
+  version = "n/a";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/piaf/archive/58be914.tar.gz;
+    sha256 = "0rrwsp1xlq6z1gfywd90mz7lqrgkdhzxmihdkwv1cihb94vsr541";
+  };
 
   doCheck = false;
   checkInputs = [ alcotest alcotest-lwt dune-site ];
