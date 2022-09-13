@@ -328,12 +328,12 @@ rec {
       ocamlPackages;
 
   crossTarget = pkgs: ocamlVersion:
-    with (ocamlCandidates { inherit pkgs ocamlVersion; }); {
+    with (ocamlCandidates { inherit pkgs ocamlVersion; }); ({
       # just build a subset of the static overlay, with the most commonly used
       # packages
-      inherit piaf carl caqti-driver-postgresql ppx_deriving;
+      inherit piaf-lwt carl caqti-driver-postgresql ppx_deriving;
       static-carl = carl.override { static = true; };
-    };
+    } // (if ocamlVersion == "5_00" then { inherit piaf; } else { }));
 
   crossTargetList = pkgs: ocamlVersion:
     let attrs = crossTarget pkgs ocamlVersion; in
