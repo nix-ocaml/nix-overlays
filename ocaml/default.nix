@@ -905,18 +905,23 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     buildInputs = [ dune-configurator ];
   });
-  mirage-crypto-rng-eio = buildDunePackage {
-    pname = "mirage-crypto-rng-eio";
-    inherit (mirage-crypto) src version;
-    propagatedBuildInputs = [
-      eio
-      cstruct
-      logs
-      mirage-crypto-rng
-      mtime
-      duration
-    ];
-  };
+  mirage-crypto-rng-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then
+      buildDunePackage
+        {
+          pname = "mirage-crypto-rng-eio";
+          inherit (mirage-crypto) src version;
+          propagatedBuildInputs = [
+            eio
+            cstruct
+            logs
+            mirage-crypto-rng
+            mtime
+            duration
+          ];
+        }
+    else null;
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = builtins.fetchurl {
