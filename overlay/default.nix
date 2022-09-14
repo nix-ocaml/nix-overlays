@@ -145,7 +145,10 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libffi;
+      inherit (super) zlib gmp;
+      libffi = super.libffi.overrideAttrs (_: {
+        doCheck = false;
+      });
       openssl = super.openssl_3_0;
     }
 )

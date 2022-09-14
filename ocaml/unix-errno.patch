@@ -1,0 +1,162 @@
+diff --git a/lib_gen/dune b/lib_gen/dune
+index cf2ad1b..c04935b 100644
+--- a/lib_gen/dune
++++ b/lib_gen/dune
+@@ -1,68 +1,72 @@
+ (library
+-  (name errno_bindings)
+-  (public_name unix-errno.errno_bindings)
+-  (modules unix_errno_bindings)
+-  (wrapped false)
+-  (libraries ctypes)
+-  )
++ (name errno_bindings)
++ (public_name unix-errno.errno_bindings)
++ (modules unix_errno_bindings)
++ (wrapped false)
++ (libraries ctypes ctypes.stubs))
+ 
+ (executables
+-  (names unix_errno_stubgen_c unix_errno_stubgen_ml)
+-  (modules unix_errno_stubgen_c unix_errno_stubgen_ml)
+-  (libraries ctypes.stubs errno_bindings)
+-  )
++ (names unix_errno_stubgen_c unix_errno_stubgen_ml)
++ (modules unix_errno_stubgen_c unix_errno_stubgen_ml)
++ (libraries ctypes ctypes.stubs errno_bindings))
+ 
+ (rule
+-  (targets unix_errno_stubs.c)
+-  (deps unix_errno_stubgen_c.exe)
+-  (action (run %{deps})))
++ (targets unix_errno_stubs.c)
++ (deps unix_errno_stubgen_c.exe)
++ (action
++  (run %{deps})))
+ 
+ (rule
+-  (targets unix_errno_generated.ml)
+-  (deps unix_errno_stubgen_ml.exe)
+-  (action (with-stdout-to %{targets} (run %{deps}))))
++ (targets unix_errno_generated.ml)
++ (deps unix_errno_stubgen_ml.exe)
++ (action
++  (with-stdout-to
++   %{targets}
++   (run %{deps}))))
+ 
+ (library
+-  (name errno_types)
+-  (public_name unix-errno.errno_types)
+-  (modules unix_errno_types unix_errno_generated)
+-  (wrapped false)
+-  (libraries ctypes integers)
+-  )
++ (name errno_types)
++ (public_name unix-errno.errno_types)
++ (modules unix_errno_types unix_errno_generated)
++ (wrapped false)
++ (libraries ctypes ctypes.stubs integers))
+ 
+ ; Generate library errno_types_detected using ctypes_stubs
+ ; See https://github.com/cedlemo/ctypes-stubs-generation-notes for more info
+ 
+ (executable
+-  (name unix_errno_typegen)
+-  (modules unix_errno_typegen)
+-  (libraries ctypes.stubs errno_types)
+-  )
++ (name unix_errno_typegen)
++ (modules unix_errno_typegen)
++ (libraries ctypes ctypes.stubs errno_types))
+ 
+ (rule
+-  (targets unix_errno_types_detect.c)
+-  (deps unix_errno_typegen.exe)
+-  (action (with-stdout-to %{targets} (run %{deps} -c)))
+-  )
++ (targets unix_errno_types_detect.c)
++ (deps unix_errno_typegen.exe)
++ (action
++  (with-stdout-to
++   %{targets}
++   (run %{deps} -c))))
+ 
+ (rule
+-  (targets unix_errno_types_detect.exe)
+-  (deps unix_errno_types_detect.c)
+-  (action (bash
+-    "%{cc} %{deps} -I `dirname %{lib:ctypes:ctypes_cstubs_internals.h}` -I %{ocaml_where} -o %{targets}"))
+-  )
++ (targets unix_errno_types_detect.exe)
++ (deps unix_errno_types_detect.c)
++ (action
++  (bash
++   "%{cc} %{deps} -I `dirname %{lib:ctypes:ctypes_cstubs_internals.h}` -I %{ocaml_where} -o %{targets}")))
+ 
+ (rule
+-  (targets unix_errno_types_detected.ml)
+-  (deps unix_errno_types_detect.exe)
+-  (action (with-stdout-to %{targets} (run %{deps} -ml)))
+-  )
++ (targets unix_errno_types_detected.ml)
++ (deps unix_errno_types_detect.exe)
++ (action
++  (with-stdout-to
++   %{targets}
++   (run %{deps} -ml))))
+ 
+ (library
+-  (name errno_types_detected)
+-  (public_name unix-errno.errno_types_detected)
+-  (modules unix_errno_types_detected)
+-  (flags (:standard -w -9-27))
+-  (libraries ctypes integers)
+-  (wrapped false)
+-  )
++ (name errno_types_detected)
++ (public_name unix-errno.errno_types_detected)
++ (modules unix_errno_types_detected)
++ (flags
++  (:standard -w -9-27))
++ (libraries ctypes ctypes.stubs integers)
++ (wrapped false))
+diff --git a/unix/dune b/unix/dune
+index b6769b4..91390b1 100644
+--- a/unix/dune
++++ b/unix/dune
+@@ -1,16 +1,20 @@
+-(rule (action (copy ../lib_gen/unix_errno_stubs.c unix_errno_stubs.c)))
++(rule
++ (action
++  (copy ../lib_gen/unix_errno_stubs.c unix_errno_stubs.c)))
+ 
+ (library
+-  (name unix_errno)
+-  (public_name unix-errno.unix)
+-  (wrapped false)
+-  (foreign_stubs (language c) (names unix_errno_util unix_errno_stubs))
+-  (libraries
+-    ctypes.stubs
+-    errno
+-    integers
+-    unix
+-    errno_bindings
+-    errno_types
+-    errno_types_detected)
+-  )
++ (name unix_errno)
++ (public_name unix-errno.unix)
++ (wrapped false)
++ (foreign_stubs
++  (language c)
++  (names unix_errno_util unix_errno_stubs))
++ (libraries
++  ctypes
++  ctypes.stubs
++  errno
++  integers
++  unix
++  errno_bindings
++  errno_types
++  errno_types_detected))

@@ -149,6 +149,21 @@ with oself;
     };
   });
 
+  bls12-381 = osuper.bls12-381.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/dannywillems/ocaml-bls12-381/archive/refs/tags/5.0.0.tar.gz;
+      sha256 = "0d7zpbr0drvf5c5x3rkwdp8bx0rnkc63v6pzkdgb0xma6f5gp53k";
+    };
+    propagatedBuildInputs = [ ff-sig hex integers zarith ];
+    doCheck = false;
+  });
+
+  bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace ./src/legacy/dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   bos = osuper.bos.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
@@ -275,12 +290,32 @@ with oself;
     '';
   });
 
-  ctypes = osuper.ctypes.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
+  ctypes = buildDunePackage rec {
+    pname = "ctypes";
+    version = "0.20.1";
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/ocaml-ctypes/archive/64b6494d0.tar.gz;
+      sha256 = "1xw13y93ncsfw5sz2y3vvbijl378xszavq1j08lznawy4rqf76bw";
+    };
+
+    nativeBuildInputs = [ pkg-config pkg-config-script ];
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
+
     postPatch = ''
-      substituteInPlace META --replace "bytes integers" "integers"
+      substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
     '';
-  });
+    postInstall = ''
+      echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
+    '';
+  };
+
+  ctypes-foreign = buildDunePackage {
+    pname = "ctypes-foreign";
+    inherit (ctypes) src version;
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ ctypes ];
+  };
 
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
     doCheck = false;
@@ -609,6 +644,13 @@ with oself;
     '';
   });
 
+  hacl-star = osuper.hacl-star.overrideAttrs (_: {
+    postPatch = ''
+      ls -lah .
+      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
@@ -771,6 +813,13 @@ with oself;
     buildInputs = [ lmdb-pkg dune-configurator ];
     propagatedBuildInputs = [ bigstringaf ];
   };
+
+  lilv = osuper.lilv.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+  });
 
   lockfree =
     if lib.versionAtLeast ocaml.version "5.0" then
@@ -1184,8 +1233,15 @@ with oself;
 
   pg_query = callPackage ./pg_query { };
 
-  piaf = callPackage ./piaf { };
-  carl = callPackage ./piaf/carl.nix { };
+  piaf =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./piaf { }
+    else null;
+  piaf-lwt = callPackage ./piaf/lwt.nix { };
+  carl =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./piaf/carl.nix { }
+    else null;
 
   pp = disableTests osuper.pp;
 
@@ -1388,6 +1444,13 @@ with oself;
       sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
     };
     patches = [ ./sodium-cc-patch.patch ];
+    postPatch = ''
+      substituteInPlace lib_gen/dune --replace "ctypes)" "ctypes ctypes.stubs)"
+      substituteInPlace lib_gen/dune --replace "ctypes s" "ctypes ctypes.stubs s"
+      substituteInPlace lib_gen/dune --replace \
+        "ocamlfind query ctypes ctypes.stubs" \
+        "ocamlfind query ctypes"
+    '';
     propagatedBuildInputs = [ ctypes libsodium ];
   };
 
@@ -1490,6 +1553,11 @@ with oself;
 
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
+
+  unix-errno = osuper.unix-errno.overrideAttrs (_: {
+    patches = [ ./unix-errno.patch ];
+  });
+
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = callPackage ./uring { };
@@ -1601,7 +1669,10 @@ with oself;
   # Jane Street Libraries
 
   async_ssl = osuper.async_ssl.overrideAttrs (_: {
-    propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+    propagatedBuildInputs = [ async ctypes openssl-oc.dev ctypes-foreign ];
+    postPatch = ''
+      substituteInPlace "bindings/dune" --replace "ctypes.foreign" "ctypes-foreign"
+    '';
   });
 
   cohttp = osuper.cohttp.overrideAttrs (_: {

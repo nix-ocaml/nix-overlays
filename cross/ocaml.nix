@@ -123,9 +123,14 @@ in
         '';
       });
 
-      carl = osuper.carl.overrideAttrs (o: {
-        OCAMLFIND_TOOLCHAIN = "${crossName}";
-      });
+      carl =
+        if lib.versionAtLeast osuper.ocaml.version "5.0"
+        then
+          osuper.carl.overrideAttrs
+            (o: {
+              OCAMLFIND_TOOLCHAIN = "${crossName}";
+            })
+        else null;
 
       menhir = osuper.menhir.overrideAttrs (o: {
         postInstall = ''
@@ -373,6 +378,12 @@ in
         postInstall = ''
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
+        '';
+      });
+
+      ctypes = (fixOCamlPackage osuper.ctypes).overrideAttrs (o: {
+        postInstall = ''
+          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/5.0.0+alpha1/aarch64-sysroot/lib/ctypes/META
         '';
       });
 

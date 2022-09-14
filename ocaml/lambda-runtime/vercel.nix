@@ -1,6 +1,6 @@
 { buildDunePackage
 , lambda-runtime
-, piaf
+, piaf-lwt
 , yojson
 , ppx_deriving_yojson
 , lwt
@@ -13,7 +13,7 @@ buildDunePackage {
   inherit (lambda-runtime) version src;
   propagatedBuildInputs = [
     lambda-runtime
-    piaf
+    piaf-lwt
     yojson
     ppx_deriving_yojson
     lwt
