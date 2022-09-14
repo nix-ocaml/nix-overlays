@@ -158,6 +158,12 @@ with oself;
     doCheck = false;
   });
 
+  bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace ./src/legacy/dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   bos = osuper.bos.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
@@ -638,6 +644,13 @@ with oself;
     '';
   });
 
+  hacl-star = osuper.hacl-star.overrideAttrs (_: {
+    postPatch = ''
+      ls -lah .
+      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
@@ -800,6 +813,13 @@ with oself;
     buildInputs = [ lmdb-pkg dune-configurator ];
     propagatedBuildInputs = [ bigstringaf ];
   };
+
+  lilv = osuper.lilv.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+  });
 
   lockfree =
     if lib.versionAtLeast ocaml.version "5.0" then
@@ -1424,6 +1444,13 @@ with oself;
       sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
     };
     patches = [ ./sodium-cc-patch.patch ];
+    postPatch = ''
+      substituteInPlace lib_gen/dune --replace "ctypes)" "ctypes ctypes.stubs)"
+      substituteInPlace lib_gen/dune --replace "ctypes s" "ctypes ctypes.stubs s"
+      substituteInPlace lib_gen/dune --replace \
+        "ocamlfind query ctypes ctypes.stubs" \
+        "ocamlfind query ctypes"
+    '';
     propagatedBuildInputs = [ ctypes libsodium ];
   };
 
@@ -1526,6 +1553,11 @@ with oself;
 
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
+
+  unix-errno = osuper.unix-errno.overrideAttrs (_: {
+    patches = [ ./unix-errno.patch ];
+  });
+
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = callPackage ./uring { };
