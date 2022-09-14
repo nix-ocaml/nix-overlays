@@ -275,12 +275,18 @@ with oself;
     '';
   });
 
-  ctypes = osuper.ctypes.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ libffi-oc ];
-    postPatch = ''
-      substituteInPlace META --replace "bytes integers" "integers"
-    '';
-  });
+  ctypes = buildDunePackage {
+    pname = "ctypes";
+    version = "0.20.1";
+    src = builtins.fetchurl {
+      url = https://github.com/ocamllabs/ocaml-ctypes/archive/64b6494d0.tar.gz;
+      sha256 = "1xw13y93ncsfw5sz2y3vvbijl378xszavq1j08lznawy4rqf76bw";
+    };
+
+    nativeBuildInputs = [ pkg-config pkg-config-script ];
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
+  };
 
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
     doCheck = false;

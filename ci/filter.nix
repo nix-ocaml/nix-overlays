@@ -300,9 +300,26 @@ in
 
 rec {
   inherit ocaml5Ignores darwinIgnores;
-  ocamlCandidates = { pkgs, ocamlVersion, extraIgnores ? [ ] }:
+  ocamlCandidates =
+    { pkgs
+    , ocamlVersion
+    , disable_eio_linux ? false
+    , extraIgnores ? [ ]
+    }:
     let
-      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+      ocamlPackages =
+        let
+          opkgs = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
+        in
+        # Not sure how to cross-compile eio_linux yet
+        if disable_eio_linux
+        then
+          (opkgs.overrideScope' (oself: osuper: {
+            eio_linux = null;
+            # eio_main = osuper.eio_main.override { eio_linux = null; };
+          }))
+        else opkgs;
+
       ignoredPackages =
         baseIgnoredPackages ++
         lib.optionals stdenv.isDarwin darwinIgnores ++
@@ -310,25 +327,28 @@ rec {
     in
     lib.filterAttrs
       (n: v:
+      let
+        broken = if v ? meta && v.meta ? broken then v.meta.broken else false;
+        # don't build tezos stuff
+      in
+      (!((builtins.substring 0 5 n) == "tezos"))
+      && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
+      && (
         let
-          broken = if v ? meta && v.meta ? broken then v.meta.broken else false;
-          # don't build tezos stuff
+          platforms = (if ((v ? meta) && v.meta ? platforms) then
+            v.meta.platforms
+          else
+            lib.platforms.all);
         in
-        (!((builtins.substring 0 5 n) == "tezos"))
-        && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
-        && (
-          let
-            platforms = (if ((v ? meta) && v.meta ? platforms) then
-              v.meta.platforms
-            else
-              lib.platforms.all);
-          in
-          builtins.elem stdenv.system platforms
-        ))
+        builtins.elem stdenv.system platforms
+      ))
       ocamlPackages;
 
   crossTarget = pkgs: ocamlVersion:
-    with (ocamlCandidates { inherit pkgs ocamlVersion; }); ({
+    with (ocamlCandidates {
+      inherit pkgs ocamlVersion;
+      disable_eio_linux = true;
+    }); ({
       # just build a subset of the static overlay, with the most commonly used
       # packages
       inherit piaf-lwt caqti-driver-postgresql ppx_deriving;
