@@ -897,8 +897,37 @@ with oself;
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-crypto/releases/download/v0.10.7/mirage-crypto-0.10.7.tbz;
+      sha256 = "1756i2wnx0sga86nhnqhw02dv9yjrnql6svv9il5np131iv8m09y";
+    };
+
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     buildInputs = [ dune-configurator ];
+  });
+  mirage-crypto-rng-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then
+      buildDunePackage
+        {
+          pname = "mirage-crypto-rng-eio";
+          inherit (mirage-crypto) src version;
+          propagatedBuildInputs = [
+            eio
+            cstruct
+            logs
+            mirage-crypto-rng
+            mtime
+            duration
+          ];
+        }
+    else null;
+
+  mirage-unix = osuper.mirage-unix.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-unix/releases/download/v5.0.0/mirage-unix-5.0.0.tbz;
+      sha256 = "16qyzj22gl6cd5v1mbsnv76qmf6bjhxghpbxswhbnygpzrlpl3c1";
+    };
   });
 
   mustache = osuper.mustache.overrideAttrs (o: {
