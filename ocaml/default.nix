@@ -149,6 +149,15 @@ with oself;
     };
   });
 
+  bls12-381 = osuper.bls12-381.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/dannywillems/ocaml-bls12-381/archive/refs/tags/5.0.0.tar.gz;
+      sha256 = "0d7zpbr0drvf5c5x3rkwdp8bx0rnkc63v6pzkdgb0xma6f5gp53k";
+    };
+    propagatedBuildInputs = [ ff-sig hex integers zarith ];
+    doCheck = false;
+  });
+
   bos = osuper.bos.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;

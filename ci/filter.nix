@@ -159,6 +159,9 @@ let
     "plotkicadsch"
 
     "oidc-client"
+    "bls12-381-gen"
+    "bls12-381-legacy"
+
   ];
 
   ocaml5Ignores = [
