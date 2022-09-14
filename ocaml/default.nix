@@ -275,7 +275,7 @@ with oself;
     '';
   });
 
-  ctypes = buildDunePackage {
+  ctypes = buildDunePackage rec {
     pname = "ctypes";
     version = "0.20.1";
     src = builtins.fetchurl {
@@ -290,7 +290,11 @@ with oself;
     postPatch = ''
       substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
     '';
+    postInstall = ''
+      echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
+    '';
   };
+
   ctypes-foreign = buildDunePackage {
     pname = "ctypes-foreign";
     inherit (ctypes) src version;
