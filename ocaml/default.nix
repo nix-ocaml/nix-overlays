@@ -158,6 +158,12 @@ with oself;
     doCheck = false;
   });
 
+  bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace ./src/legacy/dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   bos = osuper.bos.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;

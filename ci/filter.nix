@@ -160,8 +160,7 @@ let
 
     "oidc-client"
     "bls12-381-gen"
-    "bls12-381-legacy"
-
+    "bls12-381-unix"
   ];
 
   ocaml5Ignores = [
