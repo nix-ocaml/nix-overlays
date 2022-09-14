@@ -638,6 +638,13 @@ with oself;
     '';
   });
 
+  hacl-star = osuper.hacl-star.overrideAttrs (_: {
+    postPatch = ''
+      ls -lah .
+      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
