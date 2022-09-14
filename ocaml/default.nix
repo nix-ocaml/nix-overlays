@@ -801,6 +801,13 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
+  lilv = osuper.lilv.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+  });
+
   lockfree =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./lockfree { }
