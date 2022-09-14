@@ -1,0 +1,22 @@
+diff --git a/opium/src/status.mli b/opium/src/status.mli
+index 2eceffc..cfcec8c 100644
+--- a/opium/src/status.mli
++++ b/opium/src/status.mli
+@@ -72,6 +72,9 @@ type client_error =
+   | `Upgrade_required
+   | `I_m_a_teapot
+   | `Enhance_your_calm
++  | `Precondition_required
++  | `Too_many_requests
++  | `Request_header_fields_too_large
+   ]
+ 
+ (** The 5xx (Server Error) class of status code indicates that the server is aware that it
+@@ -84,6 +87,7 @@ type server_error =
+   | `Service_unavailable
+   | `Gateway_timeout
+   | `Http_version_not_supported
++  | `Network_authentication_required
+   ]
+ 
+ (** The status codes defined in the HTTP 1.1 RFCs *)
