@@ -39,8 +39,8 @@ let
         patch_version = "0+alpha1";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/bc6cfe8caac.tar.gz;
-          sha256 = "0bdvrspz3x6a7b79plcmjrh2wip6zj8c6bcqxm3a2f6slngwkk30";
+          url = https://github.com/ocaml/ocaml/archive/4e8c5e578.tar.gz;
+          sha256 = "0vbjhqdx3b24ph7hpyk4y55m98lpwfnqcagnpk10cmyc948giph3";
         };
       };
 
@@ -50,9 +50,14 @@ let
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/ef07bd8.tar.gz;
-          sha256 = "1av7r1yakjpr0h46drfxxgyv4nx2js4h5481h0r6s3gafkmf7c85";
+          url = https://github.com/ocaml/ocaml/archive/c53e1140.tar.gz;
+          sha256 = "05cih8iq92f2s397859vck19hiraj7fgcc7m14drf2p2ry3c87ib";
         };
+        buildPhase = ''
+          make -j8 world
+          # make bootstrap
+          make -j8 world.opt
+        '';
       };
     } else { });
 
