@@ -290,6 +290,9 @@ let
     "ladspa"
     "mm"
     "pulseaudio"
+    "eigen"
+    "owl-base"
+    "owl"
 
     "gstreamer"
     "uring"
