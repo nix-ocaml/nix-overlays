@@ -286,6 +286,16 @@ with oself;
     nativeBuildInputs = [ pkg-config pkg-config-script ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
+
+    postPatch = ''
+      substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
+    '';
+  };
+  ctypes-foreign = buildDunePackage {
+    pname = "ctypes-foreign";
+    inherit (ctypes) src version;
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ ctypes ];
   };
 
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
@@ -1614,7 +1624,10 @@ with oself;
   # Jane Street Libraries
 
   async_ssl = osuper.async_ssl.overrideAttrs (_: {
-    propagatedBuildInputs = [ async ctypes openssl-oc.dev ];
+    propagatedBuildInputs = [ async ctypes openssl-oc.dev ctypes-foreign ];
+    postPatch = ''
+      substituteInPlace "bindings/dune" --replace "ctypes.foreign" "ctypes-foreign"
+    '';
   });
 
   cohttp = osuper.cohttp.overrideAttrs (_: {
