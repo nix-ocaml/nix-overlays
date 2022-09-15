@@ -1644,11 +1644,11 @@ with oself;
       url = https://erratique.ch/software/uunf/releases/uunf-15.0.0.tbz;
       sha256 = "1s5svvdqfbzw16rf1h0zm9n92xfdr0qciprd7lcjza8z1hy6pyh7";
     };
-    buildPhase = ''
-      # big enough stack size
-      export OCAMLRUNPARAM="l=1100000"
-      ${topkg.buildPhase}
-    '';
+    # buildPhase = ''
+    # # big enough stack size
+    # export OCAMLRUNPARAM="l=1100000"
+    # ${topkg.buildPhase}
+    # '';
   });
 
   uuseg = osuper.uuseg.overrideAttrs (_: {
@@ -1885,6 +1885,7 @@ with oself;
   ppx_enumerate = addBase osuper.ppx_enumerate;
   ppx_fixed_literal = addBase osuper.ppx_fixed_literal;
   ppx_here = addBase osuper.ppx_here;
+  ppx_js_style = addBase osuper.ppx_js_style;
   ppx_module_timer = addStdio osuper.ppx_module_timer;
   ppx_optcomp = addStdio osuper.ppx_optcomp;
   ppx_optional = addBase osuper.ppx_optional;
