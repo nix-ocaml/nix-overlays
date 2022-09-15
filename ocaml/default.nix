@@ -1642,6 +1642,11 @@ with oself;
       url = https://erratique.ch/software/uunf/releases/uunf-15.0.0.tbz;
       sha256 = "1s5svvdqfbzw16rf1h0zm9n92xfdr0qciprd7lcjza8z1hy6pyh7";
     };
+    buildPhase = ''
+      # big enough stack size
+      export OCAMLRUNPARAM="l=1100000"
+      ${topkg.buildPhase}
+    '';
   });
 
   uuseg = osuper.uuseg.overrideAttrs (_: {
