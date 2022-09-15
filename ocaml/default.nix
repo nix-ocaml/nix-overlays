@@ -148,10 +148,12 @@ with oself;
   });
 
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
-    # https://github.com/aantron/bisect_ppx/pull/400
+    buildInputs = [ ];
+    propagatedBuildInputs = [ ppxlib cmdliner ];
+    # https://github.com/patricoferris/bisect_ppx/tree/500+ppxlib.0.27
     src = builtins.fetchurl {
-      url = https://github.com/aantron/bisect_ppx/archive/be22c980dd58a2b277ea4710074afbd0bdddbf77.tar.gz;
-      sha256 = "162bjhhlkp1afji6mpzpq08ap5gkyy8xi1749jl3vdrz21vy180y";
+      url = https://github.com/patricoferris/bisect_ppx/archive/1901191ed.tar.gz;
+      sha256 = "0hxhbqxg6a58qma7dxc5i22sgl82m5v40yx3pq0hqmsxv4fdr693";
     };
   });
 
@@ -1306,8 +1308,8 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/archive/0dcf7955e9c89b2a1f3e25de64e7904d8a1b5169.tar.gz;
-      sha256 = "11v8zhsgm9dnq2f3v4jvkcj2fkx563dhphiz3fjxz3sl283ls879";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.27.0/ppxlib-0.27.0.tbz;
+      sha256 = "0qlcnb2aas6h69zgjbygjhmw9gvna4iwa3hfh9rnmzbg3l99cjvn";
     };
     propagatedBuildInputs = [
       ocaml-compiler-libs
