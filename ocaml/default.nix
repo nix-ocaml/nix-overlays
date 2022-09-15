@@ -36,6 +36,12 @@ let
     '';
 
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
+  addBase = p: p.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.base ];
+  });
+  addStdio = p: p.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.stdio ];
+  });
 in
 
 with oself;
@@ -142,10 +148,12 @@ with oself;
   });
 
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
-    # https://github.com/aantron/bisect_ppx/pull/400
+    buildInputs = [ ];
+    propagatedBuildInputs = [ ppxlib cmdliner ];
+    # https://github.com/patricoferris/bisect_ppx/tree/500+ppxlib.0.27
     src = builtins.fetchurl {
-      url = https://github.com/aantron/bisect_ppx/archive/be22c980dd58a2b277ea4710074afbd0bdddbf77.tar.gz;
-      sha256 = "162bjhhlkp1afji6mpzpq08ap5gkyy8xi1749jl3vdrz21vy180y";
+      url = https://github.com/patricoferris/bisect_ppx/archive/1901191ed.tar.gz;
+      sha256 = "0hxhbqxg6a58qma7dxc5i22sgl82m5v40yx3pq0hqmsxv4fdr693";
     };
   });
 
@@ -264,6 +272,12 @@ with oself;
   carton = disableTests osuper.carton;
 
   cmdliner = cmdliner_1_1;
+
+  cohttp = osuper.cohttp.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./cohttp/src/dune --replace "bytes" ""
+    '';
+  });
 
   conan = callPackage ./conan { };
   conan-lwt = callPackage ./conan/lwt.nix { };
@@ -1300,7 +1314,7 @@ with oself;
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
-      stdio
+      sexplib0
       stdlib-shims
     ];
   });
@@ -1318,6 +1332,10 @@ with oself;
   });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppx_deriving/archive/b4896214b0.tar.gz;
+      sha256 = "0ppp0vki2qpcdnv79gklkmkkrzwmra5wba1sbms1m8ndji9p1bhh";
+    };
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -1325,8 +1343,6 @@ with oself;
       ppx_derivers
       result
     ];
-    # Tests use `Pervasives`.
-    doCheck = false;
   });
 
   ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (_: {
@@ -1609,16 +1625,39 @@ with oself;
     '';
   });
 
+  uucd = osuper.uucd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uucd/releases/uucd-15.0.0.tbz;
+      sha256 = "1g26237yqmxr7sd1n9fg65qm5mxz66ybk7hr336zfyyzl25h6jqf";
+    };
+
+  });
+
   uucp = osuper.uucp.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uucp/releases/uucp-15.0.0.tbz;
+      sha256 = "0c2k9gkg442l7hnc8rn1vqzn6qh68w9fx7h3nj03n2x90ps98ixc";
+    };
     buildInputs = o.buildInputs ++ [ uucd ];
   });
 
   uunf = osuper.uunf.overrideAttrs (_: {
-    buildPhase = ''
-      # big enough stack size
-      export OCAMLRUNPARAM="l=1100000"
-      ${topkg.buildPhase}
-    '';
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uunf/releases/uunf-15.0.0.tbz;
+      sha256 = "1s5svvdqfbzw16rf1h0zm9n92xfdr0qciprd7lcjza8z1hy6pyh7";
+    };
+    # buildPhase = ''
+    # # big enough stack size
+    # export OCAMLRUNPARAM="l=1100000"
+    # ${topkg.buildPhase}
+    # '';
+  });
+
+  uuseg = osuper.uuseg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uuseg/releases/uuseg-15.0.0.tbz;
+      sha256 = "1qz130wlmnvb6j7kpvgjlqmdm2jqid4wb1dmrsls4hdm4rp7gk5b";
+    };
   });
 
   uutf = osuper.uutf.overrideAttrs (o: {
@@ -1704,11 +1743,14 @@ with oself;
     '';
   });
 
-  cohttp = osuper.cohttp.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./cohttp/src/dune --replace "bytes" ""
-    '';
-  });
+  async_udp = osuper.janePackage {
+    pname = "async_udp";
+    version = "0.15.0";
+    minimumOCamlVersion = "4.08";
+    hash = "CJLKkjB9l7ERaJInhrTKrdK0eaeA0U3GxOZ+idqD5pY=";
+    meta.description = "A grab-bag of performance-oriented, UDP-oriented network tools.";
+    propagatedBuildInputs = [ async ppx_jane ];
+  };
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1840,7 +1882,19 @@ with oself;
     patches = [ ];
   });
 
-  ppx_expect = osuper.ppx_expect.overrideAttrs (_: {
+  ppx_disable_unused_warnings = addBase osuper.ppx_disable_unused_warnings;
+  ppx_cold = addBase osuper.ppx_cold;
+  ppx_enumerate = addBase osuper.ppx_enumerate;
+  ppx_fixed_literal = addBase osuper.ppx_fixed_literal;
+  ppx_here = addBase osuper.ppx_here;
+  ppx_js_style = addBase osuper.ppx_js_style;
+  ppx_module_timer = addStdio osuper.ppx_module_timer;
+  ppx_optcomp = addStdio osuper.ppx_optcomp;
+  ppx_optional = addBase osuper.ppx_optional;
+  ppx_stable = addBase osuper.ppx_stable;
+
+  ppx_expect = osuper.ppx_expect.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
     patches =
       if lib.versionAtLeast ocaml.version "5.0" then
         [
