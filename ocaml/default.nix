@@ -937,13 +937,6 @@ with oself;
         }
     else null;
 
-  mirage-unix = osuper.mirage-unix.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-unix/releases/download/v5.0.0/mirage-unix-5.0.0.tbz;
-      sha256 = "16qyzj22gl6cd5v1mbsnv76qmf6bjhxghpbxswhbnygpzrlpl3c1";
-    };
-  });
-
   mustache = osuper.mustache.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/rgrinberg/ocaml-mustache/archive/d0c45499f9a5ee91c38cf605ae20ecee47142fd8.tar.gz;
