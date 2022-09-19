@@ -9,8 +9,6 @@
 , mirage-console-unix
 , mirage-clock-unix
 , mirage-logs
-, mirage-types
-, mirage-types-lwt
 , mirage-runtime
 , re
 , uutf
@@ -21,8 +19,8 @@ buildDunePackage {
   pname = "conan";
   version = "0.0.1";
   src = builtins.fetchurl {
-    url = https://github.com/mirage/conan/releases/download/v0.0.1/conan-cli-v0.0.1.tbz;
-    sha256 = "1xrg238bzqj0gk2i49va9nqzq7yl917awpi41nwkc1lq7k98alb2";
+    url = https://github.com/mirage/conan/releases/download/v0.0.2/conan-cli-0.0.2.tbz;
+    sha256 = "11d35nrapldwbr1qmxj50y560jhp3qyyh9iaxkcqhq0r4im4r5r7";
   };
 
   doCheck = false;
@@ -38,8 +36,6 @@ buildDunePackage {
     mirage-console-unix
     mirage-clock-unix
     mirage-logs
-    mirage-types
-    mirage-types-lwt
     mirage-runtime
   ];
 }
