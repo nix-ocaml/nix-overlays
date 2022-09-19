@@ -30,6 +30,15 @@ let
         url = https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz;
         sha256 = "1h9yp44snb6sgm5g1x3wg4gwjscic7i56jf0j8jr07355pxwrami";
       };
+      propagatedBuildInputs = with self; [
+        astring
+        cmdliner
+        fmt
+        uuidm
+        re
+        stdlib-shims
+        uutf
+      ];
     });
 
     cmdliner =
