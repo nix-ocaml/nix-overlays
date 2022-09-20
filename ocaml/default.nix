@@ -656,9 +656,6 @@ with oself;
       sha256 = "17mnid1gvq1ml1zmqzn0m6jmrqw4kqdrjqrdsrphl5kxxyhs03m6";
     };
   });
-  # callPackage ./happy-eyeballs { };
-  happy-eyeballs-lwt = callPackage ./happy-eyeballs/lwt.nix { };
-  happy-eyeballs-mirage = callPackage ./happy-eyeballs/mirage.nix { };
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -1603,38 +1600,10 @@ with oself;
     '';
   });
 
-  uucd = osuper.uucd.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uucd/releases/uucd-15.0.0.tbz;
-      sha256 = "1g26237yqmxr7sd1n9fg65qm5mxz66ybk7hr336zfyyzl25h6jqf";
-    };
-
-  });
-
-  uucp = osuper.uucp.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uucp/releases/uucp-15.0.0.tbz;
-      sha256 = "0c2k9gkg442l7hnc8rn1vqzn6qh68w9fx7h3nj03n2x90ps98ixc";
-    };
-    buildInputs = o.buildInputs ++ [ uucd ];
-  });
-
   uunf = osuper.uunf.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://erratique.ch/software/uunf/releases/uunf-15.0.0.tbz;
       sha256 = "1s5svvdqfbzw16rf1h0zm9n92xfdr0qciprd7lcjza8z1hy6pyh7";
-    };
-    # buildPhase = ''
-    # # big enough stack size
-    # export OCAMLRUNPARAM="l=1100000"
-    # ${topkg.buildPhase}
-    # '';
-  });
-
-  uuseg = osuper.uuseg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uuseg/releases/uuseg-15.0.0.tbz;
-      sha256 = "1qz130wlmnvb6j7kpvgjlqmdm2jqid4wb1dmrsls4hdm4rp7gk5b";
     };
   });
 
