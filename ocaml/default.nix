@@ -47,9 +47,6 @@ in
 with oself;
 
 {
-  # A snapshot test is failing because of the cmdliner upgrade.
-  alcotest = disableTests osuper.alcotest;
-
   ansiterminal = disableTests osuper.ansiterminal;
 
   apron = osuper.apron.overrideAttrs (_: {
@@ -271,8 +268,6 @@ with oself;
 
   carton = disableTests osuper.carton;
 
-  cmdliner = cmdliner_1_1;
-
   cohttp = osuper.cohttp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
@@ -358,8 +353,6 @@ with oself;
       rev = "0cbe3ea7e990a7d233360e6a74b1cb5e712501ad";
       sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
     };
-
-    patches = [ ];
 
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
@@ -501,7 +494,6 @@ with oself;
       sha256 = "11m2zxra43ag2xsmc6mnaq36hnq3g2kql15d6dik4hw0jq7f2dz8";
     };
     doCheck = false;
-    patches = [ ];
   });
 
   eio =
@@ -580,13 +572,6 @@ with oself;
     postPatch = ''
       substituteInPlace "src/lib/fileutils/dune" --replace "(libraries " "(libraries camlp-streams "
     '';
-  });
-
-  functoria = osuper.functoria.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/functoria/releases/download/v3.1.2/functoria-3.1.2.tbz;
-      sha256 = "1yh0gkf6f2g960mcnrpilhj3xrszr98hy4zkav078f6amxcmwyl4";
-    };
   });
 
   gen = buildDunePackage {
@@ -1160,7 +1145,7 @@ with oself;
     };
   };
 
-  ocp-build = (osuper.ocp-build.override { cmdliner = cmdliner_1_0; }).overrideDerivation (o: {
+  ocp-build = osuper.ocp-build.overrideDerivation (o: {
     preConfigure = "";
   });
 
