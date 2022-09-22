@@ -223,6 +223,16 @@ with oself;
     };
   });
 
+  caqti-eio = buildDunePackage {
+    pname = "caqti-eio";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
+      sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
+    };
+    propagatedBuildInputs = [ eio eio_main caqti ];
+  };
+
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
@@ -1284,6 +1294,7 @@ with oself;
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
+  ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
