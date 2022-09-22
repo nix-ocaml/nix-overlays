@@ -409,37 +409,6 @@ with oself;
       callPackage ./domainslib { }
     else null;
 
-
-  dns = osuper.dns.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-dns/releases/download/v6.3.0/dns-6.3.0.tbz;
-      sha256 = "0lbk61ca8yxhf6dl8v1i5rlw6hwqmwvn9hn57sw8h43xfdx26h6w";
-    };
-
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ base64 ];
-  });
-  dns-resolver = osuper.dns-resolver.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dnssec ];
-  });
-  dns-cli = osuper.dns-cli.overrideAttrs (o: {
-    propagatedBuildInputs = o.buildInputs ++ [ dnssec ];
-  });
-  dnssec = buildDunePackage {
-    pname = "dnssec";
-    inherit (dns) version src;
-    propagatedBuildInputs = [
-      cstruct
-      dns
-      mirage-crypto
-      mirage-crypto-pk
-      mirage-crypto-ec
-      domain-name
-      base64
-      logs
-    ];
-  };
-
-
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream = callPackage ./dream { };
