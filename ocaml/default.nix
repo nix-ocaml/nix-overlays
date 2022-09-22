@@ -74,6 +74,7 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
+  archi-eio = callPackage ./archi/eio.nix { };
 
   multiformats = buildDunePackage {
     pname = "multiformats";
