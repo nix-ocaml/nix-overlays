@@ -74,7 +74,10 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
-  archi-eio = callPackage ./archi/eio.nix { };
+  archi-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./archi/eio.nix { }
+    else null;
 
   multiformats = buildDunePackage {
     pname = "multiformats";
