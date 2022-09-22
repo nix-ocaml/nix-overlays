@@ -74,6 +74,10 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
+  archi-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./archi/eio.nix { }
+    else null;
 
   multiformats = buildDunePackage {
     pname = "multiformats";
@@ -214,10 +218,23 @@ with oself;
 
   caqti = osuper.caqti.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.9.0/caqti-v1.9.0.tbz;
-      sha256 = "1icj262f3l186j9bra0cwlpnlzzpfln7y1kl67r58fmgiy281xg1";
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.9.1/caqti-v1.9.1.tbz;
+      sha256 = "17k81yjk67pzgmhv1n1nsm5b3bg9ys3k9wpvxc28gp3i2cj6001x";
     };
   });
+
+  caqti-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      buildDunePackage
+        {
+          pname = "caqti-eio";
+          version = "n/a";
+          src = builtins.fetchurl {
+            url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
+            sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
+          };
+          propagatedBuildInputs = [ eio eio_main caqti ];
+        } else null;
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
@@ -1261,6 +1278,18 @@ with oself;
     then callPackage ./piaf/carl.nix { }
     else null;
 
+  postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
+      sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
+    };
+
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
+  });
+
   pp = disableTests osuper.pp;
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (_: {
@@ -1280,6 +1309,10 @@ with oself;
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
+  ppx_rapper_eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then callPackage ./ppx_rapper/eio.nix { }
+    else null;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1292,18 +1325,6 @@ with oself;
       sexplib0
       stdlib-shims
     ];
-  });
-
-  postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
-      sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
-    };
-
-    postPatch = ''
-      substituteInPlace src/dune --replace " bigarray" ""
-    '';
-    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
   });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
