@@ -223,15 +223,18 @@ with oself;
     };
   });
 
-  caqti-eio = buildDunePackage {
-    pname = "caqti-eio";
-    version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
-      sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
-    };
-    propagatedBuildInputs = [ eio eio_main caqti ];
-  };
+  caqti-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      buildDunePackage
+        {
+          pname = "caqti-eio";
+          version = "n/a";
+          src = builtins.fetchurl {
+            url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
+            sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
+          };
+          propagatedBuildInputs = [ eio eio_main caqti ];
+        } else null;
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
