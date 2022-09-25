@@ -200,8 +200,8 @@ with oself;
 
   camlzip = osuper.camlzip.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/xavierleroy/camlzip/archive/refs/tags/rel111.tar.gz;
-      sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
+      url = https://github.com/xavierleroy/camlzip/archive/3b0e0a5f7.tar.gz;
+      sha256 = "00vkm3ix6fhdh0yx6zmvnnksgn0mpj5a0kz5ll9kdpdk6ysxvapz";
     };
     propagatedBuildInputs = [ zlib-oc ];
   });
