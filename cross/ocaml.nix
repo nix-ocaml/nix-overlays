@@ -324,7 +324,7 @@ in
 
           native_findlib_conf =
             writeText "${b.name}-findlib.conf" ''
-              path="${natfindlib}/lib/ocaml/${natocaml.version}/site-lib:${natPath}"
+              path="${natocaml}/lib/ocaml:${natfindlib}/lib/ocaml/${natocaml.version}/site-lib:${natPath}"
               ldconf="ignore"
               stdlib = "${natocaml}/lib/ocaml"
               ocamlc = "${natocaml}/bin/ocamlc"
@@ -339,7 +339,7 @@ in
           aarch64_findlib_conf =
             let inherit (oself) ocaml findlib; in
             writeText "${b.name}-${crossName}.conf" ''
-              path(${crossName}) = "${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
+              path(${crossName}) = "${ocaml}/lib/ocaml:${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
               ldconf(${crossName})="ignore"
               stdlib(${crossName}) = "${ocaml}/lib/ocaml"
               ocamlc(${crossName}) = "${ocaml}/bin/ocamlc"

@@ -200,8 +200,8 @@ with oself;
 
   camlzip = osuper.camlzip.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/xavierleroy/camlzip/archive/refs/tags/rel111.tar.gz;
-      sha256 = "0dzdspqp9nzx8wyhclbm68dykvfj6b97c8r7b47dq4qw7vgcbfzz";
+      url = https://github.com/xavierleroy/camlzip/archive/3b0e0a5f7.tar.gz;
+      sha256 = "00vkm3ix6fhdh0yx6zmvnnksgn0mpj5a0kz5ll9kdpdk6ysxvapz";
     };
     propagatedBuildInputs = [ zlib-oc ];
   });
@@ -523,8 +523,8 @@ with oself;
 
   findlib = osuper.findlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.5.tar.gz;
-      sha256 = "1dydivj0fs1snxss47fi84kgk1bf2cfbwgwv7j4lrzlr0xqli3xa";
+      url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.6.tar.gz;
+      sha256 = "063i6s3cqmrwhd8ncgvkl856vqsa6ckcvlmif59ifczsqy21iwfa";
     };
     patches = [
       "${nixpkgs}/pkgs/development/tools/ocaml/findlib/ldconf.patch"
@@ -1581,10 +1581,6 @@ with oself;
   });
 
   uuidm = osuper.uuidm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/uuidm/archive/da1de441840fd457b21166448f9503fcf6dc6518.tar.gz;
-      sha256 = "0vpdma904jmw42g0lav153yqzpzwlkwx8v0c8w39al8d2r4nfdb1";
-    };
     postPatch = ''
       substituteInPlace pkg/META --replace "bytes" ""
     '';
