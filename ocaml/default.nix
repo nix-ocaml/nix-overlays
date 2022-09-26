@@ -500,16 +500,8 @@ with oself;
 
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
-      buildDunePackage
-        {
-          pname = "eio-ssl";
-          version = "n/a";
-          src = builtins.fetchurl {
-            url = https://github.com/anmonteiro/eio-ssl/archive/72a170b.tar.gz;
-            sha256 = "14r5lkmaqh198pl8r7bxmd3affw3229dcl3mrfdwd5awbr3arilx";
-          };
-          propagatedBuildInputs = [ ssl eio_main ];
-        } else null;
+      callPackage ./eio-ssl { }
+    else null;
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
