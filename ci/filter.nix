@@ -355,9 +355,10 @@ rec {
     }); ({
       # just build a subset of the static overlay, with the most commonly used
       # packages
-      inherit piaf-lwt caqti-driver-postgresql ppx_deriving;
-    } // {
-      inherit piaf carl;
+      inherit
+        piaf-lwt
+        piaf carl
+        caqti-driver-postgresql ppx_deriving;
       static-carl = carl.override { static = true; };
     });
 
