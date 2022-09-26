@@ -1631,6 +1631,9 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
+  zmq = oself.callPackage ./zmq { };
+  zmq-lwt = oself.callPackage ./zmq/lwt.nix { };
+
   bin_prot = osuper.bin_prot.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
