@@ -1632,7 +1632,7 @@ with oself;
   });
 
   zmq = oself.callPackage ./zmq { };
-  zmq-lwt  = oself.callPackage ./zmq/lwt.nix { };
+  zmq-lwt = oself.callPackage ./zmq/lwt.nix { };
 
   bin_prot = osuper.bin_prot.overrideAttrs (_: {
     postPatch = ''
