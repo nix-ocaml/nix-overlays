@@ -359,7 +359,7 @@ rec {
     } // {
       inherit piaf carl;
       static-carl = carl.override { static = true; };
-    } else { });
+    });
 
   crossTargetList = pkgs: ocamlVersion:
     let attrs = crossTarget pkgs ocamlVersion; in
