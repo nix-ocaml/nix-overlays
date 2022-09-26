@@ -5,8 +5,8 @@ buildDunePackage {
   version = "0.3.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/gluten/archive/7f63e7c.tar.gz;
-    sha256 = "0m62r4bywhw0c9d92cdiw0bf71miq0avah27bi07cxw5pfkahc1h";
+    url = https://github.com/anmonteiro/gluten/archive/31e5abf.tar.gz;
+    sha256 = "0v169af5kkbcczbgh801wp0rnh9h3czprhf4l0cdipnqmcrkamv6";
   };
   propagatedBuildInputs = [ bigstringaf faraday ke ];
 }
