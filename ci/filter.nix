@@ -311,18 +311,7 @@ rec {
     , extraIgnores ? [ ]
     }:
     let
-      ocamlPackages =
-        let
-          opkgs = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
-        in
-        # Not sure how to cross-compile eio_linux yet
-        if disable_eio_linux
-        then
-          (opkgs.overrideScope' (oself: osuper: {
-            eio_linux = null;
-            # eio_main = osuper.eio_main.override { eio_linux = null; };
-          }))
-        else opkgs;
+      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
 
       ignoredPackages =
         baseIgnoredPackages ++
@@ -351,7 +340,6 @@ rec {
   crossTarget = pkgs: ocamlVersion:
     with (ocamlCandidates {
       inherit pkgs ocamlVersion;
-      disable_eio_linux = true;
     }); ({
       # just build a subset of the static overlay, with the most commonly used
       # packages
