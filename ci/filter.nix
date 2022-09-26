@@ -356,10 +356,10 @@ rec {
       # just build a subset of the static overlay, with the most commonly used
       # packages
       inherit piaf-lwt caqti-driver-postgresql ppx_deriving;
-    } // (if ocamlVersion == "5_00" then {
+    } // {
       inherit piaf carl;
       static-carl = carl.override { static = true; };
-    } else { }));
+    } else { });
 
   crossTargetList = pkgs: ocamlVersion:
     let attrs = crossTarget pkgs ocamlVersion; in

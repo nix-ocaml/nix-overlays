@@ -9,6 +9,11 @@ buildDunePackage {
     sha256 = "0pwf26ddys1qy3gqwsqsji8bmg959azab2lysyz2d5hmnh21jcks";
   };
 
+  postPatch = ''
+    patchShebangs vendor/liburing/configure
+    substituteInPlace lib/uring/dune --replace \
+      '(run ./configure)' '(bash "./configure")'
+  '';
   buildInputs = [ dune-configurator ];
   propagatedBuildInputs = [ cstruct fmt optint ];
 }
