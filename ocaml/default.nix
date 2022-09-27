@@ -1664,6 +1664,10 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+  websocketaf-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./websocketaf/eio.nix { }
+    else null;
 
   wodan-unix = osuper.wodan-unix.overrideAttrs (_: {
     prePatch = ''

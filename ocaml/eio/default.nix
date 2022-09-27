@@ -15,8 +15,8 @@ buildDunePackage {
   pname = "eio";
   version = "0.5";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/eio/archive/c3431a07.tar.gz;
-    sha256 = "12nniw0zsbwx7fyq5hb4ba6llwwc5jvi3i51ilaqb68mgjm093az";
+    url = https://github.com/ocaml-multicore/eio/archive/51ad9c3.tar.gz;
+    sha256 = "0h8rpk451y915sggsibhns54p2z6gp1yd23b7c9bcaqb01qmzd60";
   };
 
   propagatedBuildInputs = [
