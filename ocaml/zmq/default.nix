@@ -24,5 +24,5 @@ buildDunePackage {
     ounit2
   ];
 
-  doCheck = true;
+  doCheck = false;
 }
