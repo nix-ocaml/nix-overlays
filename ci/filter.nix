@@ -203,6 +203,7 @@ let
     "ocp-build"
     "owl-base"
     "owl"
+    "parmap"
     "pgocaml"
     "pgocaml_ppx"
     "phylogenetics"
