@@ -217,6 +217,7 @@ let
     "ringo-lwt"
     "ringo"
     "session-redis-lwt"
+    "sexp"
     "stdcompat"
     "telegraml"
     "twt"
