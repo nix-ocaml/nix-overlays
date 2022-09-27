@@ -1162,6 +1162,8 @@ with oself;
   pg_query = callPackage ./pg_query { };
 
   piaf-lwt = callPackage ./piaf/lwt.nix { };
+  # Overridden for 5.0 in `./ocaml5.nix`;
+  piaf = piaf-lwt;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1842,4 +1844,8 @@ with oself;
       "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/incr_dom_jsoo_4_0.patch"
     ];
   });
-} // (import ./ocaml5.nix oself)
+} // (
+  if lib.versionAtLeast osuper.ocaml.version "5.0"
+  then (import ./ocaml5.nix oself)
+  else { }
+)
