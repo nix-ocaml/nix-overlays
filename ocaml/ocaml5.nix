@@ -3,7 +3,6 @@ oself:
 with oself;
 
 {
-
   archi-eio = callPackage ./archi/eio.nix { };
 
   caqti-eio = buildDunePackage {
