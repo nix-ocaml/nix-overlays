@@ -1420,6 +1420,29 @@ with oself;
 
   reenv = callPackage ./reenv { };
 
+  aches = buildDunePackage {
+    pname = "aches";
+    version = "1.0.0";
+    inherit (ringo) src;
+    propagatedBuildInputs = [ ringo ];
+  };
+  aches-lwt = buildDunePackage {
+    pname = "aches-lwt";
+    version = "1.0.0";
+    inherit (ringo) src;
+    propagatedBuildInputs = [ aches lwt ];
+  };
+  ringo_old = osuper.ringo;
+  ringo-lwt = osuper.ringo-lwt.override { ringo = ringo_old; };
+
+  ringo = osuper.ringo.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://gitlab.com/nomadic-labs/ringo/-/archive/v1.0.0/ringo-v1.0.0.tar.gz;
+      sha256 = "1wjzzxk1xldxn2pawhbjkmmgpzmsynqx5q03y0c8ll92vg8a7bp1";
+    };
+    checkInputs = [ lwt ];
+  });
+
   rock = callPackage ./opium/rock.nix { };
   opium = callPackage ./opium { };
 

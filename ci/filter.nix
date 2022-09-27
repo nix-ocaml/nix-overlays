@@ -216,7 +216,7 @@ let
     "redis"
     "rfc7748"
     "ringo-lwt"
-    "ringo"
+    "ringo_old"
     "session-redis-lwt"
     "sexp"
     "stdcompat"
