@@ -1159,6 +1159,9 @@ with oself;
 
   parmap = disableTests osuper.parmap;
 
+  # These require crowbar which is still not compatible with newer cmdliner.
+  pecu = disableTests osuper.pecu;
+
   pg_query = callPackage ./pg_query { };
 
   piaf-lwt = callPackage ./piaf/lwt.nix { };
@@ -1513,6 +1516,13 @@ with oself;
   timere = callPackage ./timere/default.nix { };
   timere-parse = callPackage ./timere/parse.nix { };
 
+  tls = osuper.tls.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.15.4/tls-0.15.4.tbz;
+      sha256 = "10n3s7qa6yzchhn16zzb2cyqsj6b8l6dx8yhs7pnjq3gn1b1v3az";
+    };
+  });
+
   tyxml = osuper.tyxml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/tyxml/archive/c28e871df6db66a261ba541aa15caad314c78ddc.tar.gz;
@@ -1522,9 +1532,6 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
-
-  # These require crowbar which is still not compatible with newer cmdliner.
-  pecu = disableTests osuper.pecu;
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
     patches = [ ./unix-errno.patch ];

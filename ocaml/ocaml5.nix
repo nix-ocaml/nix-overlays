@@ -53,5 +53,11 @@ with oself;
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
 
+  tls-eio = buildDunePackage {
+    pname = "tls-eio";
+    inherit (tls) version src;
+    propagatedBuildInputs = [ tls mirage-crypto-rng mirage-crypto-rng-eio x509 eio ];
+  };
+
   websocketaf-eio = callPackage ./websocketaf/eio.nix { };
 }
