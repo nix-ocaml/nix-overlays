@@ -845,6 +845,13 @@ with oself;
     };
   });
 
+  lwt_ssl = osuper.lwt_ssl.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/anmonteiro/lwt_ssl/archive/e68d8aab.tar.gz;
+      sha256 = "07b81nnni0isviqkyv3a4lvjfpgscnil3dk5xhfm5rlhqdqg5r1n";
+    };
+  });
+
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://gitlab.com/nomadic-labs/lwt-watcher/-/archive/70f826c503cc094ed2de3aa81fa385ea9fddb903.tar.gz;
