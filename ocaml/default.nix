@@ -1644,13 +1644,6 @@ with oself;
     '';
   });
 
-  uunf = osuper.uunf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uunf/releases/uunf-15.0.0.tbz;
-      sha256 = "1s5svvdqfbzw16rf1h0zm9n92xfdr0qciprd7lcjza8z1hy6pyh7";
-    };
-  });
-
   uutf = osuper.uutf.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;

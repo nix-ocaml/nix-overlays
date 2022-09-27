@@ -65,18 +65,8 @@ let
 
     });
 
-    uunf = super.uunf.overrideAttrs (_: {
-      buildInputs = with self; [ topkg uutf ];
-      buildPhase = ''
-        ${self.topkg.run} build --with-cmdliner false
-      '';
-    });
-    uuseg = super.uuseg.overrideAttrs (_: {
-      buildInputs = with self; [ topkg uutf ];
-      buildPhase = ''
-        ${self.topkg.run} build --with-cmdliner false
-      '';
-    });
+    uunf = super.uunf.override { cmdlinerSupport = false; };
+    uuseg = super.uuseg.override { cmdlinerSupport = false; };
 
     menhirLib = super.menhirLib.overrideAttrs (_: {
       version = "20211012";
