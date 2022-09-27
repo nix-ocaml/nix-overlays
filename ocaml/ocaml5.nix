@@ -16,17 +16,12 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
-  # TODO UPDATE SOURCE
-  domainslib =
-    callPackage ./domainslib { };
-
+  domainslib = callPackage ./domainslib { };
+  lockfree = callPackage ./lockfree { };
 
   eio = callPackage ./eio { };
-
   eio_linux = callPackage ./eio/linux.nix { };
-
   eio_luv = callPackage ./eio/luv.nix { };
-
   eio_main = callPackage ./eio/main.nix { };
 
   eio-ssl = callPackage ./eio-ssl { };
@@ -36,9 +31,6 @@ with oself;
   h2-eio = callPackage ./h2/eio.nix { };
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
-
-  #TODO UPDATE SOURCE
-  lockfree = callPackage ./lockfree { };
 
   lwt_domain = callPackage ./lwt/domain.nix { };
 
@@ -58,8 +50,9 @@ with oself;
   };
 
   piaf = callPackage ./piaf { };
-
   carl = callPackage ./piaf/carl.nix { };
+
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
+
   websocketaf-eio = callPackage ./websocketaf/eio.nix { };
 }
