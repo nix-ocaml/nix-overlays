@@ -258,6 +258,7 @@ let
     "owl-base"
     "owl"
 
+    "gstreamer"
     "uring"
     "eio_linux"
   ];
