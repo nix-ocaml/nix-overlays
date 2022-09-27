@@ -138,6 +138,10 @@ with oself;
       '' else "";
   });
 
+  bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   biniou = osuper.biniou.overrideAttrs (o: {
     patches = [
       (fetchpatch {
@@ -245,10 +249,6 @@ with oself;
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
       sha256 = "0069qqswd1ik5ay3d5q1v1pz0ql31kblfsnv0ax0z8jwvacp3ack";
     };
-  });
-
-  bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
 
   calendar = callPackage ./calendar { };
@@ -563,6 +563,9 @@ with oself;
     };
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ seq ];
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bytes seq" "seq"
+    '';
   };
 
   gen_js_api = disableTests osuper.gen_js_api;
@@ -1232,6 +1235,14 @@ with oself;
     '';
   });
 
+  parany = osuper.parany.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/UnixJunkie/parany/archive/refs/tags/v12.2.0.tar.gz;
+      sha256 = "1k1xrx7zdgw72ahksdabd7wilds8hjngbc95q4l5wp05gqml6i4k";
+    };
+    propagatedBuildInputs = [ cpu ];
+  });
+
   parmap = disableTests osuper.parmap;
 
   pg_query = callPackage ./pg_query { };
@@ -1412,6 +1423,13 @@ with oself;
   rock = callPackage ./opium/rock.nix { };
   opium = callPackage ./opium { };
 
+  rope = osuper.rope.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "src/dune" --replace "bytes" ""
+      substituteInPlace "src/rope.ml" --replace "Pervasives" "Stdlib"
+    '';
+  });
+
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/anuragsoni/routes/releases/download/1.0.0/routes-1.0.0.tbz;
@@ -1462,6 +1480,20 @@ with oself;
     '';
     propagatedBuildInputs = [ ctypes libsodium ];
   };
+
+  sosa = osuper.sosa.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/lib/functors.ml --replace "Pervasives" "Stdlib"
+      substituteInPlace src/lib/list_of.ml --replace "Pervasives" "Stdlib"
+      substituteInPlace src/lib/of_mutable.ml --replace "Pervasives" "Stdlib"
+    '';
+  });
+
+  spelll = osuper.spelll.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/Spelll.ml --replace "Pervasives" "Stdlib"
+    '';
+  });
 
   ssl = osuper.ssl.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1601,6 +1633,14 @@ with oself;
       url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
       sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
     };
+  });
+
+  vlq = osuper.vlq.overrideAttrs (_: {
+    propagatedBuildInputs = [ camlp-streams ];
+    postPatch = ''
+      substituteInPlace "src/dune" --replace \
+        '(public_name vlq))' '(libraries camlp-streams)(public_name vlq))'
+    '';
   });
 
   websocketaf = callPackage ./websocketaf { };
