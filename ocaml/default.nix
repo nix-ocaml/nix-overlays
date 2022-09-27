@@ -74,10 +74,6 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
-  archi-eio =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then callPackage ./archi/eio.nix { }
-    else null;
 
   multiformats = buildDunePackage {
     pname = "multiformats";
@@ -226,19 +222,6 @@ with oself;
       sha256 = "17k81yjk67pzgmhv1n1nsm5b3bg9ys3k9wpvxc28gp3i2cj6001x";
     };
   });
-
-  caqti-eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      buildDunePackage
-        {
-          pname = "caqti-eio";
-          version = "n/a";
-          src = builtins.fetchurl {
-            url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
-            sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
-          };
-          propagatedBuildInputs = [ eio eio_main caqti ];
-        } else null;
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
@@ -404,11 +387,6 @@ with oself;
     };
   };
 
-  domainslib =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./domainslib { }
-    else null;
-
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream = callPackage ./dream { };
@@ -481,27 +459,6 @@ with oself;
     };
     doCheck = false;
   });
-
-  eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio { }
-    else null;
-  eio_linux =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/linux.nix { }
-    else null;
-  eio_luv =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/luv.nix { }
-    else null;
-  eio_main =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/main.nix { } else null;
-
-  eio-ssl =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio-ssl { }
-    else null;
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -598,10 +555,6 @@ with oself;
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
   gluten-mirage = callPackage ./gluten/mirage.nix { };
   gluten-async = callPackage ./gluten/async.nix { };
-  gluten-eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./gluten/eio.nix { }
-    else null;
 
   graphql_parser = callPackage ./graphql/parser.nix { };
   graphql = callPackage ./graphql { };
@@ -643,10 +596,6 @@ with oself;
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
-  h2-eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./h2/eio.nix { }
-    else null;
   hpack = callPackage ./h2/hpack.nix { };
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
@@ -661,10 +610,6 @@ with oself;
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
-  httpaf-eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./httpaf/eio.nix { }
-    else null;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -798,11 +743,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
-  lockfree =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./lockfree { }
-    else null;
-
   lru = osuper.lru.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/lru.ml \
@@ -862,16 +802,7 @@ with oself;
     };
   });
 
-  lwt_domain =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./lwt/domain.nix { }
-    else null;
   lwt_react = callPackage ./lwt/react.nix { };
-
-  lwt_eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./eio/lwt_eio.nix { }
-    else null;
 
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -889,23 +820,6 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     buildInputs = [ dune-configurator ];
   });
-  mirage-crypto-rng-eio =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then
-      buildDunePackage
-        {
-          pname = "mirage-crypto-rng-eio";
-          inherit (mirage-crypto) src version;
-          propagatedBuildInputs = [
-            eio
-            cstruct
-            logs
-            mirage-crypto-rng
-            mtime
-            duration
-          ];
-        }
-    else null;
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1247,15 +1161,7 @@ with oself;
 
   pg_query = callPackage ./pg_query { };
 
-  piaf =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then callPackage ./piaf { }
-    else null;
   piaf-lwt = callPackage ./piaf/lwt.nix { };
-  carl =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then callPackage ./piaf/carl.nix { }
-    else null;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1288,10 +1194,6 @@ with oself;
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
-  ppx_rapper_eio =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then callPackage ./ppx_rapper/eio.nix { }
-    else null;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1664,10 +1566,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-  websocketaf-eio =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      callPackage ./websocketaf/eio.nix { }
-    else null;
 
   wodan-unix = osuper.wodan-unix.overrideAttrs (_: {
     prePatch = ''
@@ -1944,4 +1842,4 @@ with oself;
       "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/incr_dom_jsoo_4_0.patch"
     ];
   });
-}
+} // (import ./ocaml5.nix oself)
