@@ -20,8 +20,8 @@ buildDunePackage {
   pname = "piaf-lwt";
   version = "n/a";
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/piaf/archive/83ca1ec.tar.gz;
-    sha256 = "1fa0qdfp35hkq2hnc5jxm6xklbvvxg731nkx977b3nj19pcakyz1";
+    url = https://github.com/anmonteiro/piaf/archive/125f06da.tar.gz;
+    sha256 = "1iv8v18m2jnq6vdrc31acg95w5cld1yj7r2v09y1h9sz8qgzkb2w";
   };
 
   doCheck = false;
