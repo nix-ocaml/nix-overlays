@@ -5,7 +5,7 @@ buildDunePackage {
   pname = "httpaf";
   propagatedBuildInputs = [ angstrom faraday ];
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/httpaf/archive/97692a4.tar.gz;
-    sha256 = "1g5m610ap33c4mcc5gzdf7x99kggjl75fwj3jvh8hr2gcc7fdvll";
+    url = https://github.com/anmonteiro/httpaf/archive/d7e75c6.tar.gz;
+    sha256 = "0ngkwdkc32s913ja18kg4i224dcnxlqvjlgj8lvn5w9bx0s26f49";
   };
 }
