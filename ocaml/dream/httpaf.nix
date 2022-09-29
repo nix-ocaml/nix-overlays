@@ -52,6 +52,18 @@ buildDunePackage rec {
 
   patches = [ ./upload.patch ];
 
+  postPatch = ''
+    substituteInPlace src/http/shared/websocket.ml --replace \
+      'Websocketaf.Server_connection.{frame;' \
+      'Websocketaf.Websocket_connection.{frame;'
+    substituteInPlace src/http/shared/websocket.ml --replace \
+      'Websocketaf.Client_connection.{frame;' \
+      'Websocketaf.Websocket_connection.{frame;'
+    substituteInPlace src/http/shared/websocket.ml --replace \
+      'Websocketaf.Client_connection.input_handlers' \
+      'Websocketaf.Websocket_connection.input_handlers'
+  '';
+
   preBuild = ''
     rm -rf src/vendor
   '';
