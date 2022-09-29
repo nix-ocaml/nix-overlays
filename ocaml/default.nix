@@ -1758,14 +1758,10 @@ with oself;
   });
 
   base = osuper.base.overrideAttrs (_: {
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [
-          (fetchpatch {
-            url = https://github.com/janestreet/base/commit/705fb94f84dfb05fd97747ee0c255cce890afcf1.patch;
-            sha256 = "sha256-ByuGM+e1A7dRWPzMXxoRdBGMegkycIFK2jpguWu9wIY=";
-          })
-        ] else [ ];
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/base/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "050syrp6v00gn50d6xvwv6a36zsk4zmahymgllxpw9paf4qk0pkm";
+    };
   });
 
   core = osuper.core.overrideAttrs (o: {
