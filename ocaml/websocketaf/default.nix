@@ -4,8 +4,8 @@ buildDunePackage {
   pname = "websocketaf";
   version = "dev";
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/websocketaf/archive/2d4aa8d.tar.gz;
-    sha256 = "0sk83pwf271g1w5ivnn0z2kaq744w02gka41s5ggazxnfzd1qh2w";
+    url = https://github.com/anmonteiro/websocketaf/archive/a750056.tar.gz;
+    sha256 = "1j807pf3qb4d6nwvx7pl0l2zszswm7zsn9vhyxwnnqrssfn1nci7";
   };
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
 }
