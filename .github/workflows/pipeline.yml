@@ -35,7 +35,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
 
@@ -71,7 +71,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
@@ -109,7 +109,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
@@ -144,7 +144,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
@@ -187,7 +187,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
 
