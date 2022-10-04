@@ -1055,13 +1055,6 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
-  ocp-index = osuper.ocp-index.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocp-index/archive/a6b3a022522359a38618777c685363a750cb82d4.tar.gz;
-      sha256 = "1rh1z48qj946zq2vmxrfib0p3br1p5gkpfb48rq5kz3j82sfs2jk";
-    };
-  });
-
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamlpro/ocplib-endian/archive/4a9fd796.tar.gz;
