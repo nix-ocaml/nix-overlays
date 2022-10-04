@@ -1790,15 +1790,10 @@ with oself;
 
   ppx_expect = osuper.ppx_expect.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [
-          (fetchpatch {
-            url = https://github.com/janestreet/ppx_expect/commit/8dd65c4ce6a8a81ebb99046ea5cc867aea187a8a.patch;
-            sha256 = "sha256-NjpLOHUp2qUSIzKJNuuwNcRxR1FU5R/ugrK3m0vOnl0=";
-          })
-        ]
-      else [ ];
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_expect/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "15r0k8pvl7n53n2kzhdyyyh5am7z721gdcn6v8a18l11x63algnx";
+    };
   });
 
   ppx_sexp_conv = osuper.ppx_sexp_conv.overrideAttrs (_: {
@@ -1824,15 +1819,10 @@ with oself;
   });
 
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [
-          (fetchpatch {
-            url = https://github.com/anmonteiro/sexp_pretty/commit/4667849007831027c5887edcfae4182d7a6d32d9.patch;
-            sha256 = "sha256-u4KyDiYBssIqYeyYdidTbFN9tmDeJg8y1eM5tkZKXzo";
-          })
-        ]
-      else [ ];
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/sexp_pretty/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1s77hxxsn3scy5gcyxrbq02f4ckhxhm1r6if5fsglj490qk0q5by";
+    };
   });
 
   incr_dom = osuper.incr_dom.overrideAttrs (_: {
