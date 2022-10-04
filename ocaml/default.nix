@@ -961,8 +961,8 @@ with oself;
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocamlbuild/archive/ecbfefb69659085de7e3e45e0ce1848987b06101.tar.gz;
-      sha256 = "1irh4nph089fk6imlr5yxymz6spmlipqf93wpxx5mf4wbwydwryw";
+      url = https://github.com/ocaml/ocamlbuild/archive/refs/tags/0.14.2.tar.gz;
+      sha256 = "1ccihx2jnk3nsprx2w2kckqqq0bd0skq9i9sm01cg53p0fvdmlk2";
     };
   });
 
