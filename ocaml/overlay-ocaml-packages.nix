@@ -39,8 +39,8 @@ let
         patch_version = "0+alpha1";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/de1e2ef6.tar.gz;
-          sha256 = "0pw4vj06fybi9wq14vxvp1w5b01igg3ry1178axml58g4wmyv3jj";
+          url = https://github.com/ocaml/ocaml/archive/0a073309.tar.gz;
+          sha256 = "1h4dzm0fard6nlqhfh7m1j871ap0la6pa2rhl23pb7mw6vrbmbp0";
         };
       };
 
@@ -50,8 +50,8 @@ let
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/c7048ce.tar.gz;
-          sha256 = "0i1jqfdpydvi34471y5sgrzaa4zs61sill817c0i21jwrdm1sakd";
+          url = https://github.com/ocaml/ocaml/archive/11149ae.tar.gz;
+          sha256 = "0r5w98n1vrlkrj77jdylp004r7nywiy000qa2y26fl4b47cnwm5j";
         };
         buildPhase = ''
           make -j8 world
