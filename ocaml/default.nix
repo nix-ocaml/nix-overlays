@@ -216,13 +216,6 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   });
 
-  caqti = osuper.caqti.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v1.9.1/caqti-v1.9.1.tbz;
-      sha256 = "17k81yjk67pzgmhv1n1nsm5b3bg9ys3k9wpvxc28gp3i2cj6001x";
-    };
-  });
-
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
