@@ -6,6 +6,8 @@
 , melange-compiler-libs
 , reason
 , lib
+, luv
+, base64
 , ocaml
 }:
 
@@ -14,13 +16,13 @@ buildDunePackage {
   version = "0.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/0ad11f3.tar.gz;
-    sha256 = "1mmcrv4n4dh82gqchyzh07dhyywy36z6gswjg851s3n223qhq7j1";
+    url = https://github.com/melange-re/melange/archive/d979086.tar.gz;
+    sha256 = "0pag3513qkpnm4wadd3dqk7xisv5z7s8hc1cx9vyxxjgbxcnr7kc";
   };
 
   nativeBuildInputs = [ cppo ];
 
-  propagatedBuildInputs = [ cmdliner melange-compiler-libs reason ];
+  propagatedBuildInputs = [ cmdliner melange-compiler-libs reason luv base64 ];
 
   installPhase = ''
     runHook preInstall
