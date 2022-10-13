@@ -260,6 +260,22 @@ with oself;
 
   carton = disableTests osuper.carton;
 
+  clz = buildDunePackage {
+    pname = "clz";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/mseri/ocaml-clz/releases/download/0.1.0/clz-0.1.0.tbz;
+      sha256 = "08n6qf5g470qx8xhvaizd061qcb3bndvb3c8b9p8cg98n3jpms4q";
+    };
+    propagatedBuildInputs = [
+      ptime
+      decompress
+      bigstringaf
+      lwt
+      cohttp-lwt
+    ];
+  };
+
   cohttp = osuper.cohttp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
@@ -1721,14 +1737,10 @@ with oself;
   });
 
   core = osuper.core.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        builtins.fetchurl
-          {
-            url = https://github.com/janestreet/core/archive/7b556f1a7d25254f06b7aaf3c2534633be5a0a9e.tar.gz;
-            sha256 = "0qpn9ks3329g1zkqs0z3cal06pi2niqr6v1gm1gp3cr3sprs31gn";
-          }
-      else o.src;
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/core/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "14f9vy2hfcvb5ixwwgnpdr6jdmbx29ig0cakli1gbwlp3pdbsyvg";
+    };
   });
 
   jst-config = osuper.jst-config.overrideAttrs (_: {
