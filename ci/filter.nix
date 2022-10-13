@@ -74,6 +74,7 @@ let
     "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
+    "git-mirage"
 
     # broken with ppxlib 0.23
     "elpi"
