@@ -467,6 +467,8 @@ with oself;
       url = https://github.com/inhabitedtype/faraday/archive/0.8.2.tar.gz;
       sha256 = "1iiml37sgn28mm0szm4ldqq6fkji4l5368l7dvgafgpx745sj3kj";
     };
+  });
+  faraday-async = osuper.faraday-async.overrideAttrs (_: {
     patches = [ ];
   });
 
