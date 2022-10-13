@@ -462,6 +462,14 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
+  faraday = osuper.faraday.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/inhabitedtype/faraday/archive/0.8.2.tar.gz;
+      sha256 = "1iiml37sgn28mm0szm4ldqq6fkji4l5368l7dvgafgpx745sj3kj";
+    };
+    patches = [ ];
+  });
+
   findlib = osuper.findlib.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.6.tar.gz;
