@@ -1721,14 +1721,10 @@ with oself;
   });
 
   core = osuper.core.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        builtins.fetchurl
-          {
-            url = https://github.com/janestreet/core/archive/7b556f1a7d25254f06b7aaf3c2534633be5a0a9e.tar.gz;
-            sha256 = "0qpn9ks3329g1zkqs0z3cal06pi2niqr6v1gm1gp3cr3sprs31gn";
-          }
-      else o.src;
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/core/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "14f9vy2hfcvb5ixwwgnpdr6jdmbx29ig0cakli1gbwlp3pdbsyvg";
+    };
   });
 
   jst-config = osuper.jst-config.overrideAttrs (_: {
