@@ -260,6 +260,22 @@ with oself;
 
   carton = disableTests osuper.carton;
 
+  clz = buildDunePackage {
+    pname = "clz";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/mseri/ocaml-clz/releases/download/0.1.0/clz-0.1.0.tbz;
+      sha256 = "08n6qf5g470qx8xhvaizd061qcb3bndvb3c8b9p8cg98n3jpms4q";
+    };
+    propagatedBuildInputs = [
+      ptime
+      decompress
+      bigstringaf
+      lwt
+      cohttp-lwt
+    ];
+  };
+
   cohttp = osuper.cohttp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
