@@ -41,6 +41,7 @@ let
     "z3"
     "nonstd"
     "ocaml-r"
+    "nocrypto"
 
     "melange-compiler-libs"
     "melange"
@@ -62,10 +63,8 @@ let
     "caqti-driver-mariadb"
 
     # graphql incompatible
-    "irmin-containers"
     "irmin-graphql"
     "irmin-mirage-graphql"
-    "irmin-unix"
 
     # broken since 4.12
     "ocaml_extlib-1-7-7"
@@ -76,6 +75,8 @@ let
     "paf-cohttp"
     "git-paf"
     "irmin-mirage-git"
+    "git-mirage"
+    "irmin-git"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -169,9 +170,6 @@ let
     "bls12-381-unix"
     "camlp5_strict"
     "camlp5"
-    "carton-git"
-    "carton-lwt"
-    "carton"
     "cfstream"
     "cpdf"
     "csvfields"
@@ -187,7 +185,6 @@ let
     "imagelib"
     "incr_dom"
     "inifiles"
-    "irmin-git"
     "lablgtk3-gtkspell3"
     "lablgtk3-sourceview3"
     "lablgtk3"

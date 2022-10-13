@@ -350,6 +350,8 @@ with oself;
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
+  data-encoding = disableTests osuper.data-encoding;
+
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
@@ -368,8 +370,6 @@ with oself;
     inherit (oself.decoders) src version;
     propagatedBuildInputs = [ decoders yojson ];
   };
-
-  decompress = disableTests osuper.decompress;
 
   dolog = buildDunePackage {
     pname = "dolog";
@@ -522,27 +522,6 @@ with oself;
 
   gettext-stub = disableTests osuper.gettext-stub;
 
-  git = osuper.git.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/archive/0de355b.tar.gz;
-      sha256 = "1x5waa8kandjlf798bd635f1bvnhpkq7hcc3awhg053g9phqfcmv";
-    };
-  });
-  git-unix = osuper.git-unix.overrideAttrs (_: {
-    buildInputs = [ ];
-    propagatedBuildInputs = [
-      awa
-      awa-mirage
-      cmdliner
-      mirage-clock
-      mirage-clock-unix
-      tcpip
-      git
-      happy-eyeballs-lwt
-      mirage-unix
-    ];
-  });
-
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -627,6 +606,7 @@ with oself;
   irmin-pack = disableTests osuper.irmin-pack;
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
+  irmin-tezos = disableTests osuper.irmin-tezos;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
 
@@ -913,18 +893,6 @@ with oself;
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
   multipart-form-data = callPackage ./multipart-form-data { };
-
-  nocrypto = buildDunePackage {
-    pname = "nocrypto";
-    version = "0.5.4+dune";
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-nocrypto/archive/b31c381.tar.gz;
-      sha256 = "1ajyiz48zr5wpc48maxfjn4sj9knrmbcdzq0vn407fc3y0wdxf52";
-    };
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ cstruct ppx_deriving ppx_sexp_conv sexplib zarith cstruct-lwt cpuid ];
-
-  };
 
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
