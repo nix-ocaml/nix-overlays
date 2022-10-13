@@ -920,13 +920,6 @@ with oself;
     enableParallelBuilding = true;
   });
 
-  ocamlbuild = osuper.ocamlbuild.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocamlbuild/archive/refs/tags/0.14.2.tar.gz;
-      sha256 = "1ccihx2jnk3nsprx2w2kckqqq0bd0skq9i9sm01cg53p0fvdmlk2";
-    };
-  });
-
   ocaml_extlib-1-7-8 = osuper.ocaml_extlib-1-7-8.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ygrek/ocaml-extlib/archive/9e9270de9d6c33e08a18096f7fb75b4205e6c1ed.tar.gz;

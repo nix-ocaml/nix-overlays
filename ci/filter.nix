@@ -9,7 +9,6 @@ let
     "dypgen"
     "earlybird"
     "gtktop"
-    "lablgtk_2_14"
     "camlimages_4_2_4"
     "lablgtk-extras"
     "magick"
