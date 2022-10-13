@@ -604,6 +604,7 @@ with oself;
   irmin-pack = disableTests osuper.irmin-pack;
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
+  irmin-tezos = disableTests osuper.irmin-tezos;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
 
