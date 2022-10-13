@@ -76,6 +76,7 @@ let
     "git-paf"
     "irmin-mirage-git"
     "git-mirage"
+    "irmin-git"
 
     # broken with ppxlib 0.23
     "elpi"
@@ -184,7 +185,6 @@ let
     "imagelib"
     "incr_dom"
     "inifiles"
-    "irmin-git"
     "lablgtk3-gtkspell3"
     "lablgtk3-sourceview3"
     "lablgtk3"
