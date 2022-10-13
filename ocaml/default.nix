@@ -350,6 +350,8 @@ with oself;
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
+  data-encoding = disableTests osuper.data-encoding;
+
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
 
