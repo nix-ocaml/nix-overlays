@@ -151,10 +151,9 @@ with oself;
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ ppxlib cmdliner ];
-    # https://github.com/patricoferris/bisect_ppx/tree/500+ppxlib.0.27
     src = builtins.fetchurl {
-      url = https://github.com/patricoferris/bisect_ppx/archive/1901191ed.tar.gz;
-      sha256 = "0hxhbqxg6a58qma7dxc5i22sgl82m5v40yx3pq0hqmsxv4fdr693";
+      url = https://github.com/anmonteiro/bisect_ppx/archive/cc442a08.tar.gz;
+      sha256 = "08mx270xp1ypqvy9cfpyyvws538a0l90xasvbx0vs8071vgb2wri";
     };
   });
 
@@ -462,6 +461,16 @@ with oself;
     };
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
+
+  faraday = osuper.faraday.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/inhabitedtype/faraday/archive/0.8.2.tar.gz;
+      sha256 = "1iiml37sgn28mm0szm4ldqq6fkji4l5368l7dvgafgpx745sj3kj";
+    };
+  });
+  faraday-async = osuper.faraday-async.overrideAttrs (_: {
+    patches = [ ];
+  });
 
   findlib = osuper.findlib.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1149,8 +1158,8 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.27.0/ppxlib-0.27.0.tbz;
-      sha256 = "0qlcnb2aas6h69zgjbygjhmw9gvna4iwa3hfh9rnmzbg3l99cjvn";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.28.0/ppxlib-0.28.0.tbz;
+      sha256 = "0xzk1jv4hm37p7l02j157plbibk61ashjj4nr8466841l3wyaynq";
     };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -1176,15 +1185,15 @@ with oself;
 
   ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/hammerlab/ppx_deriving_cmdliner/archive/bc06e6c3ad161df66f46f731f97142ae5358e633.tar.gz;
-      sha256 = "0xzj36vzzch6hc5zh1crjarwbmfycd61vh894v2jyai15zspf780";
+      url = https://github.com/hammerlab/ppx_deriving_cmdliner/archive/1f086651fe7f8dd98e371b09c6fcc4dbc6db1c7c.tar.gz;
+      sha256 = "105y30gn6gp1hcwmx9g8vyki5hy5bi2jgbs0km5z1rq7i3kyb8kk";
     };
   });
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/archive/69671f7.tar.gz;
-      sha256 = "1i5g5ssazjb08f26r44vwjlnhca22zvy5awpxfz8g77an0vpp3p4";
+      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.7.0/ppx_deriving_yojson-3.7.0.tar.gz;
+      sha256 = "1h7vz7lhvsgn6nl68g3dhhghlm884xpa1xawm6wm54pjc57gc6xx";
     };
     propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
@@ -1193,8 +1202,8 @@ with oself;
 
   ppx_import = osuper.ppx_import.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_import/archive/0d066f04788770ff555b855538aed1663830132f.tar.gz;
-      sha256 = "0fk6pn7gsif2a00mbgv4a64jg5azi5gjhp5gsy450jmhjmb5qd63";
+      url = https://github.com/ocaml-ppx/ppx_import/archive/c9df42cfaa35b9c3a5190d0c6afd8ea90a0017b1.tar.gz;
+      sha256 = "00mhgzzkgggl0qyabhcpspsww9jn9adjj1r3w162vm2cysifaz2v";
     };
   });
 
