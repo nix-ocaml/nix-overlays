@@ -894,18 +894,6 @@ with oself;
 
   multipart-form-data = callPackage ./multipart-form-data { };
 
-  nocrypto = buildDunePackage {
-    pname = "nocrypto";
-    version = "0.5.4+dune";
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-nocrypto/archive/b31c381.tar.gz;
-      sha256 = "1ajyiz48zr5wpc48maxfjn4sj9knrmbcdzq0vn407fc3y0wdxf52";
-    };
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ cstruct ppx_deriving ppx_sexp_conv sexplib zarith cstruct-lwt cpuid ];
-
-  };
-
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;

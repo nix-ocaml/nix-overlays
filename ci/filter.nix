@@ -41,6 +41,7 @@ let
     "z3"
     "nonstd"
     "ocaml-r"
+    "nocrypto"
 
     "melange-compiler-libs"
     "melange"
