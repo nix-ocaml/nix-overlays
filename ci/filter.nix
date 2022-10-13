@@ -62,10 +62,8 @@ let
     "caqti-driver-mariadb"
 
     # graphql incompatible
-    "irmin-containers"
     "irmin-graphql"
     "irmin-mirage-graphql"
-    "irmin-unix"
 
     # broken since 4.12
     "ocaml_extlib-1-7-7"
@@ -169,9 +167,6 @@ let
     "bls12-381-unix"
     "camlp5_strict"
     "camlp5"
-    "carton-git"
-    "carton-lwt"
-    "carton"
     "cfstream"
     "cpdf"
     "csvfields"

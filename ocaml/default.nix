@@ -369,8 +369,6 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
-  decompress = disableTests osuper.decompress;
-
   dolog = buildDunePackage {
     pname = "dolog";
     version = "6.0.0";
@@ -521,27 +519,6 @@ with oself;
   gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-stub = disableTests osuper.gettext-stub;
-
-  git = osuper.git.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/archive/0de355b.tar.gz;
-      sha256 = "1x5waa8kandjlf798bd635f1bvnhpkq7hcc3awhg053g9phqfcmv";
-    };
-  });
-  git-unix = osuper.git-unix.overrideAttrs (_: {
-    buildInputs = [ ];
-    propagatedBuildInputs = [
-      awa
-      awa-mirage
-      cmdliner
-      mirage-clock
-      mirage-clock-unix
-      tcpip
-      git
-      happy-eyeballs-lwt
-      mirage-unix
-    ];
-  });
 
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
