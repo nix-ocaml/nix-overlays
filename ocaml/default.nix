@@ -1238,18 +1238,6 @@ with oself;
 
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
-  pure-splitmix = buildDunePackage rec {
-    pname = "pure-splitmix";
-    version = "0.3";
-
-    src = fetchFromGitHub {
-      owner = "Lysxia";
-      repo = pname;
-      rev = version;
-      sha256 = "RUnsAB4hMV87ItCyGhc47bHGY1iOwVv9kco2HxnzqbU=";
-    };
-  };
-
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else
@@ -1290,9 +1278,13 @@ with oself;
     '';
   });
 
-
-  # Tests use `String.capitalize` which was removed in 5.0
-  re = disableTests osuper.re;
+  re = osuper.re.overrideAttrs (_: rec {
+    version = "1.10.4";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/ocaml-re/releases/download/${version}/re-${version}.tbz";
+      sha256 = "sha256-g+s+QwCqmx3HggdJAQ9DYuqDUkdCEwUk14wgzpnKdHw=";
+    };
+  });
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };
