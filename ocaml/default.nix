@@ -1024,10 +1024,6 @@ with oself;
     };
   };
 
-  ocp-build = osuper.ocp-build.overrideDerivation (o: {
-    preConfigure = "";
-  });
-
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "libraries bytes" "libraries "
@@ -1135,6 +1131,14 @@ with oself;
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
 
+  pgocaml = osuper.pgocaml.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace \
+        "(libraries calendar" \
+        "(libraries camlp-streams calendar"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
   pg_query = callPackage ./pg_query { };
 
   piaf-lwt = callPackage ./piaf/lwt.nix { };
@@ -1292,6 +1296,12 @@ with oself;
   redis-sync = callPackage ./redis/sync.nix { };
 
   reenv = callPackage ./reenv { };
+
+  rfc7748 = osuper.rfc7748.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "src/curve.ml" --replace "Pervasives." "Stdlib."
+    '';
+  });
 
   aches = buildDunePackage {
     pname = "aches";
@@ -1623,15 +1633,20 @@ with oself;
   });
 
   bonsai = osuper.bonsai.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/bonsai/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1gvlxwxsc7j8sc3k4x1c07fdhibbhcgmcyb138gl4gq78r0p2jhc";
+    };
+    patches = [ ];
+
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
   });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1lh60kqhpkpw7yaa575qfvr0bnsb0cgcd1pfjl18j7lwjg6sypvc";
+      url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.2.tar.gz;
+      sha256 = "1axj9dxg9yasmvv4qjvd46i3iqvynsrcz9vk9aa6dqsd3kxlvg8y";
     };
-    # https://github.com/janestreet/core_unix/issues/2
     patches =
       if lib.versionAtLeast ocaml.version "5.0" then
         [ ./core_unix.patch ] else [ ];
@@ -1811,10 +1826,19 @@ with oself;
     };
   });
 
+  virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/virtual_dom/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "05ijxyn6l91zw5n482njw4ajv5v91phamf6an32i90a5hwrah7vz";
+    };
+  });
+
   incr_dom = osuper.incr_dom.overrideAttrs (_: {
-    patches = [
-      "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/incr_dom_jsoo_4_0.patch"
-    ];
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/incr_dom/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "038qmrip2l1vaya602cv973qixz5d4dc8qqvgwfbc26b59a68ljn";
+    };
+    patches = [ ];
   });
 } // (
   if lib.versionAtLeast osuper.ocaml.version "5.0"

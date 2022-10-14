@@ -1,14 +1,14 @@
-{ lib, buildDunePackage, uuidm, re }:
+{ lib, buildDunePackage, uuidm, re, stdlib-shims }:
 
 buildDunePackage {
   pname = "redis";
   version = "0.4";
   src = builtins.fetchurl {
-    url = https://github.com/0xffea/ocaml-redis/archive/0.4.tar.gz;
-    sha256 = "1xia2dm0sr3mqlic1hvkglnv03ndbfxv18bhi2mfzpgpjcd9yl9a";
+    url = https://github.com/0xffea/ocaml-redis/archive/refs/tags/v0.6.tar.gz;
+    sha256 = "10sknikzhl80rb9kihiylanxv27995a6sc1xajpcnsifnkk87qj9";
   };
 
-  propagatedBuildInputs = [ uuidm re ];
+  propagatedBuildInputs = [ uuidm re stdlib-shims ];
 
   meta = {
     description = "Redis client";
