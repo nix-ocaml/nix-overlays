@@ -1628,8 +1628,8 @@ with oself;
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/core_unix/archive/65a25ec0.tar.gz;
-      sha256 = "1fr223k0bwpmavqr7glj1ljs3ybgg6j4mvs53d7kcj7kc1ngz0rm";
+      url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1lh60kqhpkpw7yaa575qfvr0bnsb0cgcd1pfjl18j7lwjg6sypvc";
     };
     # https://github.com/janestreet/core_unix/issues/2
     patches =
