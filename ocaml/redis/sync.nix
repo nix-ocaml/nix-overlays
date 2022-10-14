@@ -1,12 +1,10 @@
-{ lib, buildDunePackage, redis, ounit, containers }:
+{ lib, buildDunePackage, redis, ounit, containers, camlp-streams }:
 
 buildDunePackage {
   pname = "redis-sync";
   inherit (redis) src version;
 
-  propagatedBuildInputs = [ redis ];
-
-  checkInputs = [ ounit containers ];
+  propagatedBuildInputs = [ redis camlp-streams ];
 
   meta = {
     description = "Redis client (blocking)";
