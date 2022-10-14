@@ -1278,9 +1278,13 @@ with oself;
     '';
   });
 
-
-  # Tests use `String.capitalize` which was removed in 5.0
-  re = disableTests osuper.re;
+  re = osuper.re.overrideAttrs (_: rec {
+    version = "1.10.4";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/ocaml-re/releases/download/${version}/re-${version}.tbz";
+      sha256 = "sha256-g+s+QwCqmx3HggdJAQ9DYuqDUkdCEwUk14wgzpnKdHw=";
+    };
+  });
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };
