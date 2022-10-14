@@ -213,6 +213,7 @@ with oself;
         substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
       '' else "";
     propagatedBuildInputs = [ camlp-streams ];
+    postInstall = null;
   });
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
@@ -1275,11 +1276,12 @@ with oself;
     qcheck-rely = null;
   });
 
-  react = osuper.react.overrideAttrs (_: {
+  react = osuper.react.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/react/archive/aebf35179964e73a7ef557c6a56175c7abdb9947.tar.gz;
       sha256 = "04rqmigdbgah4yvdjpk3ai9j7d3zhp2hz2qd482p1q2k3bbn52kh";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
   reactivedata = osuper.reactivedata.overrideAttrs (_: {

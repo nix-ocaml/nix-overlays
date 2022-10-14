@@ -302,7 +302,9 @@ rec {
     }); ({
       # just build a subset of the static overlay, with the most commonly used
       # packages
-      inherit piaf-lwt caqti-driver-postgresql ppx_deriving;
+      inherit
+        piaf-lwt caqti-driver-postgresql ppx_deriving
+        base cohttp-lwt-unix tls core core_unix utop irmin;
     } // (if ocamlVersion == "5_00" then {
       inherit piaf carl;
       static-carl = carl.override { static = true; };
