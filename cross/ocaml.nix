@@ -225,11 +225,8 @@ in
       jsonm = fixTopkgInstall osuper.jsonm natocamlPackages.jsonm;
       fmt = fixTopkgInstall osuper.fmt natocamlPackages.fmt;
       uutf = fixTopkgInstall osuper.uutf natocamlPackages.uutf;
-      logs = (fixTopkgInstall osuper.logs natocamlPackages.logs).overrideAttrs (_: {
-        postConfigure = ''
-          unset OCAMLPATH
-        '';
-      });
+      uunf = fixTopkgInstall osuper.uunf natocamlPackages.uunf;
+      logs = fixTopkgInstall osuper.logs natocamlPackages.logs;
       fpath = fixTopkgInstall osuper.fpath natocamlPackages.fpath;
       bos = fixTopkgInstall osuper.bos natocamlPackages.bos;
       ptime = fixTopkgInstall osuper.ptime natocamlPackages.ptime;
@@ -441,7 +438,14 @@ in
       });
 
       topkg = natocamlPackages.topkg.overrideAttrs (o:
-        let run = "${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml";
+        let
+          run = ''
+            if [ -z "''${selfBuild:-}" ]; then
+              unset OCAMLPATH
+            fi
+
+            ${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml \
+          '';
         in
         {
           selfBuild = true;
@@ -450,16 +454,7 @@ in
             inherit run;
           };
 
-          buildPhase = ''
-            runHook preBuild
-
-            if [ -z "''${selfBuild:-}" ]; then
-              unset OCAMLPATH
-            fi
-
-            ${run} build
-            runHook postBuild
-          '';
+          buildPhase = "${run} build";
 
           installPhase = ''
             if [ -z "''${selfBuild:-}" ]; then
