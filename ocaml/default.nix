@@ -276,7 +276,7 @@ with oself;
     ];
   };
 
-  cohttp = osuper.cohttp.overrideAttrs (_: {
+  cohttp = osuper.cohttp.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
     '';
@@ -772,7 +772,6 @@ with oself;
 
   lwt = osuper.lwt.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
 
     postPatch = ''
@@ -818,6 +817,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     buildInputs = [ dune-configurator ];
   });
+  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1557,12 +1557,11 @@ with oself;
 
   yuscii = disableTests osuper.yuscii;
 
-  zarith = osuper.zarith.overrideAttrs (_: {
+  zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/Zarith/archive/64ba1c7.tar.gz;
       sha256 = "1a247jcb7s7zg8w6ipk30j4nz7kd57l5aaxygl6n74myb9qjr6b4";
     };
-    propagatedBuildInputs = [ gmp-oc ];
   });
 
   zed = osuper.zed.overrideAttrs (o: {
