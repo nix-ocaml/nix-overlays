@@ -1569,24 +1569,6 @@ with oself;
   zmq = oself.callPackage ./zmq { };
   zmq-lwt = oself.callPackage ./zmq/lwt.nix { };
 
-  bin_prot = osuper.bin_prot.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/dune --replace " bigarray" ""
-    '';
-  });
-
-  bonsai = osuper.bonsai.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
-  });
-  patdiff = janePackage {
-    pname = "patdiff";
-    hash = "0623a7n5r659rkxbp96g361mvxkcgc6x9lcbkm3glnppplk5kxr9";
-    propagatedBuildInputs = [ core_unix patience_diff ocaml_pcre ];
-    meta = {
-      description = "File Diff using the Patience Diff algorithm";
-    };
-  };
-
   secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://gitlab.com/nomadic-labs/ocaml-secp256k1-internal/-/archive/0.3/ocaml-secp256k1-internal-0.3.tar.bz2;
@@ -1611,6 +1593,13 @@ with oself;
 
   # Jane Street Libraries
 
+  async_js = osuper.async_js.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/async_js/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "0lpakc704yrd6lcblzq3nxklmazxggcp82rr9cw7zd7d05q9nxf6";
+    };
+  });
+
   async_ssl = osuper.async_ssl.overrideAttrs (_: {
     propagatedBuildInputs = [ async ctypes openssl-oc.dev ctypes-foreign ];
     postPatch = ''
@@ -1626,6 +1615,16 @@ with oself;
     meta.description = "A grab-bag of performance-oriented, UDP-oriented network tools.";
     propagatedBuildInputs = [ async ppx_jane ];
   };
+
+  bin_prot = osuper.bin_prot.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bigarray" ""
+    '';
+  });
+
+  bonsai = osuper.bonsai.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
+  });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1691,6 +1690,15 @@ with oself;
     };
   };
 
+  patdiff = janePackage {
+    pname = "patdiff";
+    hash = "0623a7n5r659rkxbp96g361mvxkcgc6x9lcbkm3glnppplk5kxr9";
+    propagatedBuildInputs = [ core_unix patience_diff ocaml_pcre ];
+    meta = {
+      description = "File Diff using the Patience Diff algorithm";
+    };
+  };
+
   postgres_async = osuper.buildDunePackage {
     pname = "postgres_async";
     version = "0.15.0";
@@ -1749,6 +1757,12 @@ with oself;
     patches = [ ];
   });
 
+  ppx_css = osuper.ppx_css.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/ppx_css/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "0k1j6h2pm46fpjikladzdpzafk66nnd4snnj8m9w5k6gwfrs88rg";
+    };
+  });
   ppx_disable_unused_warnings = addBase osuper.ppx_disable_unused_warnings;
   ppx_cold = addBase osuper.ppx_cold;
   ppx_enumerate = addBase osuper.ppx_enumerate;
