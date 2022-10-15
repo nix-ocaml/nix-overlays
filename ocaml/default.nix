@@ -1352,8 +1352,8 @@ with oself;
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/anuragsoni/routes/releases/download/1.0.0/routes-1.0.0.tbz;
-      sha256 = "1s24lbfkbyj5a873viy811vs8hrfxvsz7dqm6vz4bmf06i440aar";
+      url = https://github.com/anuragsoni/routes/releases/download/2.0.0/routes-2.0.0.tbz;
+      sha256 = "126nn0gbh12i7yf0qn01ryfp2qw0aj1xfk1vq42fa01biilrsqiv";
     };
   });
 
@@ -1435,8 +1435,8 @@ with oself;
   stdint = osuper.stdint.overrideAttrs (_: {
     patches = [ ];
     src = builtins.fetchurl {
-      url = https://github.com/andrenth/ocaml-stdint/archive/322a8a4a8c69e4a0b75763460b915200356e3af3.tar.gz;
-      sha256 = "0ljm6f3vpcvssh9svd696l1b5s42z4a7gcrdqc6yvdakycmwbyqi";
+      url = https://github.com/andrenth/ocaml-stdint/releases/download/0.7.1/stdint-0.7.1.tbz;
+      sha256 = "1d4n6gbrkx6s6np8ix4qf6zzi8kbwmhjsyajpf1zs3jhkdjwm1rk";
     };
   });
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
