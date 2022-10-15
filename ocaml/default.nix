@@ -1,4 +1,6 @@
 { nixpkgs
+, autoconf
+, automake
 , fetchpatch
 , fetchFromGitHub
 , lib
@@ -422,6 +424,18 @@ with oself;
     else osuper.dune_1;
 
   dune_2 = dune_3;
+
+  dune_3 = osuper.dune_3.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/archive/bc0a0c3.tar.gz;
+      sha256 = "19szlkw4vaj44acckya9b8r6i5gdbgp2479x9nnn3w54fkafprpc";
+    };
+    postPatch = ''
+      substituteInPlace src/dune_rules/artifact_substitution.ml --replace \
+      "let sign_hook = sign_hook_of_context context in" \
+      "let sign_hook = None in"
+    '';
+  });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
@@ -1410,6 +1424,14 @@ with oself;
     propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
+  stdcompat = osuper.stdcompat.overrideAttrs (o: {
+    nativeBuildInputs = [ ocaml findlib autoconf automake ];
+    src = builtins.fetchurl {
+      url = https://github.com/thierry-martinez/stdcompat/releases/download/v19/stdcompat-19.tar.gz;
+      sha256 = "0m8a6mbv3n5aaf69fdnq5gpdr6yq7z08afjv7s9dw877i5vhd90c";
+    };
+  });
+
   stdint = osuper.stdint.overrideAttrs (_: {
     patches = [ ];
     src = builtins.fetchurl {
@@ -1760,6 +1782,13 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/janestreet/core/archive/refs/tags/v0.15.1.tar.gz;
       sha256 = "14f9vy2hfcvb5ixwwgnpdr6jdmbx29ig0cakli1gbwlp3pdbsyvg";
+    };
+  });
+
+  csvfields = osuper.csvfields.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/csvfields/archive/991e144.tar.gz;
+      sha256 = "044wj0ng0ah8hndlkgwf4n2ynip5fnbn2w0xh0ddc7nfkxmv3ih6";
     };
   });
 
