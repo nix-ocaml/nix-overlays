@@ -435,12 +435,6 @@ with oself;
       "let sign_hook = sign_hook_of_context context in" \
       "let sign_hook = None in"
     '';
-
-    buildInputs = [
-      darwin.apple_sdk.frameworks.Foundation
-      darwin.sigtool
-      darwin.signingUtils
-    ];
   });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
