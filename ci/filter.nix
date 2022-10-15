@@ -169,7 +169,6 @@ let
     "camlp5"
     "cfstream"
     "cpdf"
-    "csvfields"
     "dose3"
     "erm_xml"
     "fontconfig"
@@ -184,7 +183,6 @@ let
     "lablgtk3-sourceview3"
     "lablgtk3"
     "lastfm"
-    "memtrace_viewer"
     "ocaml_oasis"
     "ocaml-protoc"
     "ocaml-recovery-parser"
@@ -203,8 +201,6 @@ let
     "pyml"
     "ringo-lwt"
     "ringo_old"
-    "sexp"
-    "stdcompat"
     "telegraml"
     "twt"
     "uecc"
@@ -213,7 +209,6 @@ let
     "xml-light"
     "labltk"
 
-    "metapp"
     "lambdapi"
   ];
 
