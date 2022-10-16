@@ -13,11 +13,11 @@
 
 buildDunePackage rec {
   pname = "reason";
-  version = "3.8.1";
+  version = "3.8.2";
 
   src = builtins.fetchurl {
-    url = https://github.com/reasonml/reason/archive/3f909247.tar.gz;
-    sha256 = "1d7mzyr186gd8zaa9n2bqjvfhfimifrvksiiq45dz1n8ak9zpgzy";
+    url = https://github.com/reasonml/reason/releases/download/3.8.2/reason-3.8.2.tbz;
+    sha256 = "1wifxg0ina3lvy72wxc9hhr49n4fzc8j4wgjmn1fz38bn9fw9p3s";
   };
 
 
