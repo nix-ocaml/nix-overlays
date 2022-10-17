@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: fmt
@@ -40,7 +40,7 @@ jobs:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
 
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
@@ -75,7 +75,7 @@ jobs:
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
@@ -113,7 +113,7 @@ jobs:
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
@@ -148,7 +148,7 @@ jobs:
         with:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
@@ -192,7 +192,7 @@ jobs:
           access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
 
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
+      - uses: cachix/install-nix-action@v18
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
