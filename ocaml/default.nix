@@ -1662,7 +1662,7 @@ with oself;
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.2.tar.gz;
-      sha256 = "1axj9dxg9yasmvv4qjvd46i3iqvynsrcz9vk9aa6dqsd3kxlvg8y";
+      sha256 = "0yznym5rr4f2z4swsjjlj84aql1yrkij7zdkh6h0z5h38sahwva8";
     };
     patches =
       if lib.versionAtLeast ocaml.version "5.0" then
