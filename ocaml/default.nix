@@ -433,10 +433,11 @@ with oself;
       sha256 = "1s3m0128hc054zm1m72aqw83in4ldyl6y1np6ajbfcs7nlcssjvl";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
-    postFixup = ''
-      wrapProgram $out/bin/dune \
-        --suffix PATH : "${darwin.sigtool}/bin"
-    '';
+    postFixup =
+      if stdenv.isDarwin then ''
+        wrapProgram $out/bin/dune \
+          --suffix PATH : "${darwin.sigtool}/bin"
+      '' else "";
   });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
