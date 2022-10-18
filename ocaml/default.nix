@@ -11,6 +11,7 @@
 , gmp-oc
 , openssl-oc
 , pkg-config
+, python3
 , lmdb
 , curl
 , writeScriptBin
@@ -446,7 +447,7 @@ with oself;
     '';
   });
   dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp dune-rpc ];
     inherit (dyn) preBuild;
   });
   dune-glob = osuper.dune-glob.overrideAttrs (o: {
@@ -1659,14 +1660,34 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
   });
 
+  pyml = buildDunePackage {
+    pname = "pyml";
+    version = "20220905";
+    src = builtins.fetchurl {
+      url = https://github.com/thierry-martinez/pyml/releases/download/20220905/pyml.20220905.tar.gz;
+      sha256 = "1r81iy2fdsi1cmh7s31aac9ih3mn5d2vxwgdg9wxkidrc33a8i5x";
+    };
+
+    propagatedBuildInputs = [
+      python3
+      stdcompat
+    ];
+
+  };
+
+  pythonlib = osuper.pythonlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/janestreet/pythonlib/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1nc44r4f7ryzj22gww1bb5clilkc4haxnynqpkbqph7y58l9w3yv";
+    };
+    meta.broken = false;
+    patches = [ ];
+  });
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.2.tar.gz;
       sha256 = "0yznym5rr4f2z4swsjjlj84aql1yrkij7zdkh6h0z5h38sahwva8";
     };
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [ ./core_unix.patch ] else [ ];
 
     postPatch = ''
       ${o.postPatch}
@@ -1681,17 +1702,11 @@ with oself;
 
   memtrace = osuper.buildDunePackage {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/memtrace/releases/download/v0.2.2/memtrace-0.2.2.tbz;
-      sha256 = "13y4qh9vyz1qkg8v8gicaxcnsm992gx4zyky1ays0ddj0rh6c04m";
+      url = https://github.com/janestreet/memtrace/archive/refs/tags/v0.2.3.tar.gz;
+      sha256 = "087m1ng2ih2v9v0qh1aknkpispd030nrd5ngcqqbnpdyg2g3fizs";
     };
     pname = "memtrace";
     version = "0.1.2-dev";
-
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [ ./memtrace_5_00.patch ]
-      else
-        [ ];
   };
 
   memtrace_viewer = janePackage {
@@ -1782,8 +1797,8 @@ with oself;
 
   csvfields = osuper.csvfields.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/csvfields/archive/991e144.tar.gz;
-      sha256 = "044wj0ng0ah8hndlkgwf4n2ynip5fnbn2w0xh0ddc7nfkxmv3ih6";
+      url = https://github.com/janestreet/csvfields/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1iwgs3810k1gikrqk71y4xfnf5lhl8l0mxj6vqcbq33dmy2mq28p";
     };
   });
 
@@ -1838,8 +1853,8 @@ with oself;
     };
   }).overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_yojson_conv/archive/ea556c6.tar.gz;
-      sha256 = "0r4sd781ff1bjpw9hwim4i4q3sp30w3x4gz854mz596w5d1cl1xk";
+      url = https://github.com/janestreet/ppx_yojson_conv/archive/refs/tags/v0.15.1.tar.gz;
+      sha256 = "1kagc5zk3kbnhvwz4bli9v75wwx3mrj7id1bd2r28ninf45d515f";
     };
   });
 
@@ -1864,6 +1879,115 @@ with oself;
     };
     patches = [ ];
   });
+
+  incr_dom_interactive = janePackage {
+    pname = "incr_dom_interactive";
+    version = "0.15.0";
+    hash = "sha256-G+bgJKDHf78B2m/ZXVVeKf2pk+nk4U14ihmSxv8mbXc=";
+    meta.description = "A monad for composing chains of interactive UI elements";
+    propagatedBuildInputs = [
+      async_js
+      async_kernel
+      incr_dom
+      incr_map
+      incr_select
+      incremental
+      ppx_jane
+      splay_tree
+      virtual_dom
+      js_of_ocaml
+      js_of_ocaml-ppx
+    ];
+  };
+
+  incr_dom_partial_render = janePackage {
+    pname = "incr_dom_partial_render";
+    version = "0.15.1";
+    hash = "sha256-ZKY/b6MCPk4y1sDCRcGK/J6hh/NZmI+lMYMri5Na+i4=";
+    meta.description = "A library for simplifying rendering of large amounts of data";
+    propagatedBuildInputs = [
+      incr_dom
+      ppx_jane
+      splay_tree
+      virtual_dom
+      js_of_ocaml
+      js_of_ocaml-ppx
+    ];
+  };
+
+  incr_dom_sexp_form = janePackage {
+    pname = "incr_dom_sexp_form";
+    version = "0.15.1";
+    hash = "sha256-AC/Lws3dax01+0mu+kmmYKYMtQ7zDKwCemYQv3yRjs8=";
+    meta.description = "A library for simplifying rendering of large amounts of data";
+    propagatedBuildInputs = [
+      incr_dom
+      incr_dom_interactive
+      incr_map
+      incr_select
+      incremental
+      ppx_jane
+      splay_tree
+      virtual_dom
+      js_of_ocaml
+      js_of_ocaml-ppx
+    ];
+  };
+
+  mlt_parser = janePackage {
+    pname = "mlt_parser";
+    version = "0.15.0";
+    hash = "sha256-ozJMpvfAfLB4zJNy4N6b7raDDz0aKH5KPZQdYB82H0s=";
+    meta.description = "Parsing of top-expect files";
+    propagatedBuildInputs = [
+      core
+      ppx_here
+      ppx_jane
+      ppxlib
+    ];
+  };
+
+  ppx_jsonaf_conv = janePackage {
+    pname = "ppx_jsonaf_conv";
+    version = "0.15.1";
+    hash = "sha256-YzPAB4m+YRLUwooE4q+XJuqIsYJVOSKn9nQyXfHR+XI=";
+    meta.description = "[@@deriving] plugin to generate Jsonaf conversion functions";
+    propagatedBuildInputs = [
+      base
+      jsonaf
+      ppx_jane
+      ppxlib
+    ];
+  };
+
+  toplevel_backend = janePackage {
+    pname = "toplevel_backend";
+    version = "0.15.1";
+    hash = "sha256-vYM3l+ZLIXV5AYl3zvovjhnzvJciZL/2Fyn8ETH++aI=";
+    meta.description = "Shared backend for setting up toplevels";
+    propagatedBuildInputs = [
+      findlib
+      core
+      ppx_here
+      ppx_jane
+    ];
+  };
+
+  toplevel_expect_test = janePackage {
+    pname = "toplevel_expect_test";
+    version = "0.15.1";
+    hash = "sha256-Dhw8J4n2BPE1ZYHL1c7rAk0i2SNeap/BqZUaulQ1jGs=";
+    meta.description = "Expectation tests for the OCaml toplevel";
+    propagatedBuildInputs = [
+      core
+      core_unix
+      mlt_parser
+      toplevel_backend
+      ppx_expect
+      ppx_jane
+      ppx_inline_test
+    ];
+  };
 } // (
   if lib.versionAtLeast osuper.ocaml.version "5.0"
   then (import ./ocaml5.nix oself)
