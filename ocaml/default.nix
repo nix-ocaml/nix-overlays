@@ -6,6 +6,7 @@
 , lib
 , libpq
 , libffi-oc
+, makeWrapper
 , darwin
 , stdenv
 , gmp-oc
@@ -426,11 +427,16 @@ with oself;
 
   dune_2 = dune_3;
 
-  dune_3 = osuper.dune_3.overrideAttrs (_: {
+  dune_3 = osuper.dune_3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/4838ed09.tar.gz;
-      sha256 = "0jsga7hbmhalp33zcni4kqdsd25gsqsz8ndz94yqc4mrqx71mcdi";
+      url = https://github.com/anmonteiro/dune/archive/b8f38d240.tar.gz;
+      sha256 = "1s3m0128hc054zm1m72aqw83in4ldyl6y1np6ajbfcs7nlcssjvl";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+    postFixup = ''
+      wrapProgram $out/bin/dune \
+        --suffix PATH : "${darwin.sigtool}/bin"
+    '';
   });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
