@@ -427,14 +427,9 @@ with oself;
 
   dune_3 = osuper.dune_3.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/archive/bc0a0c3.tar.gz;
-      sha256 = "19szlkw4vaj44acckya9b8r6i5gdbgp2479x9nnn3w54fkafprpc";
+      url = https://github.com/ocaml/dune/archive/4838ed09.tar.gz;
+      sha256 = "0jsga7hbmhalp33zcni4kqdsd25gsqsz8ndz94yqc4mrqx71mcdi";
     };
-    postPatch = ''
-      substituteInPlace src/dune_rules/artifact_substitution.ml --replace \
-      "let sign_hook = sign_hook_of_context context in" \
-      "let sign_hook = None in"
-    '';
   });
 
   dune-configurator = callPackage ./dune/configurator.nix { };
