@@ -240,6 +240,7 @@ let
     "gstreamer"
     "uring"
     "eio_linux"
+    "class_group_vdf"
   ];
 
 in
