@@ -201,6 +201,7 @@ let
     "pyml"
     "ringo-lwt"
     "ringo_old"
+    "semver"
     "telegraml"
     "twt"
     "uecc"
