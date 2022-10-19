@@ -263,7 +263,13 @@ with oself;
     };
   });
 
-  carton = disableTests osuper.carton;
+  carton = osuper.carton.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.6.0/git-carton-v0.6.0.tbz;
+      sha256 = "0mbz90lrsvqw17dx5mw33qcki8z76ya2j75zkqr3il6bmrgbh29l";
+    };
+    doCheck = false;
+  });
 
   clz = buildDunePackage {
     pname = "clz";
@@ -429,10 +435,16 @@ with oself;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/dune/archive/b8f38d240.tar.gz;
-      sha256 = "1s3m0128hc054zm1m72aqw83in4ldyl6y1np6ajbfcs7nlcssjvl";
+      url = https://github.com/ocaml/dune/releases/download/3.5.0/dune-3.5.0.tbz;
+      sha256 = "041n16sn41wwj6fgi7l10hvbl5x5swygqv33d4csx7rm0iklrgbp";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+
+    postPatch = ''
+      substituteInPlace "src/dune_rules/artifact_substitution.ml" --replace \
+        '"-";' '"-"; "-f"; '
+    '';
+
     postFixup =
       if stdenv.isDarwin then ''
         wrapProgram $out/bin/dune \
