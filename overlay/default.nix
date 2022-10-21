@@ -95,6 +95,17 @@ in
   opaline = super.opaline.override { inherit (self) ocamlPackages; };
   esy = callPackage ../ocaml/esy { };
 
+  h2spec = self.buildGoModule {
+    pname = "h2spec";
+    version = "dev";
+
+    src = builtins.fetchurl {
+      url = https://github.com/summerwind/h2spec/archive/af83a65f0b.tar.gz;
+      sha256 = "0306n89d5klx13dp870fbxy1righmb7bh3022nb3898k0bs5dx7a";
+    };
+    vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
+  };
+
   ocamlformat = super.ocamlformat.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \
