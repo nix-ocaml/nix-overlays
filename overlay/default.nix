@@ -95,7 +95,7 @@ in
   opaline = super.opaline.override { inherit (self) ocamlPackages; };
   esy = callPackage ../ocaml/esy { };
 
-  h2spec = with pkgs; buildGoModule rec {
+  h2spec = self.buildGoModule {
     pname = "h2spec";
     version = "dev";
 
