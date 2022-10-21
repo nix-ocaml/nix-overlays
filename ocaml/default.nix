@@ -1458,6 +1458,28 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
+  tar = osuper.tar.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.2.0/tar-2.2.0.tbz;
+      sha256 = "0qvxdn3crim72g44b6ay6wqrfgpliwp7pi5p2p1rabhs96q4g1n2";
+    };
+    version = "2.2.0";
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ decompress ];
+  });
+  tar-mirage = buildDunePackage {
+    pname = "tar-mirage";
+    inherit (tar) version src;
+    propagatedBuildInputs = [
+      cstruct
+      lwt
+      mirage-block
+      mirage-clock
+      mirage-kv
+      ptime
+      tar
+    ];
+  };
+
   toml = osuper.toml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
