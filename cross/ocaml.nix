@@ -35,7 +35,7 @@ let
     let
       version =
         if lib.hasPrefix "5." osuper.ocaml.version
-        then "5_00"
+        then "5_0"
         else
           lib.stringAsChars
             (x: if x == "." then "_" else x)

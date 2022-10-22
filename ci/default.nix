@@ -10,7 +10,7 @@ let
     { src = ../.; }).defaultNix;
 
   pkgs = flake.legacyPackages.${system}.extend (final: prev:
-    if ocamlVersion != null && ocamlVersion != "5_00" then {
+    if ocamlVersion != null && ocamlVersion != "5_0" then {
       ocamlPackages = final.ocaml-ng."ocamlPackages_${ocamlVersion}";
     } else { });
   filter = pkgs.callPackage ./filter.nix { };
@@ -27,7 +27,7 @@ in
 
   native = (lib.attrValues (filter.ocamlCandidates {
     inherit pkgs ocamlVersion;
-    extraIgnores = lib.optionals (ocamlVersion == "5_00") filter.ocaml5Ignores;
+    extraIgnores = lib.optionals (ocamlVersion == "5_0") filter.ocaml5Ignores;
   }))
   ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 

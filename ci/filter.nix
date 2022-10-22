@@ -290,7 +290,7 @@ rec {
       inherit
         piaf-lwt caqti-driver-postgresql ppx_deriving
         base cohttp-lwt-unix tls core core_unix utop irmin;
-    } // (if ocamlVersion == "5_00" then {
+    } // (if ocamlVersion == "5_0" then {
       inherit piaf carl;
       static-carl = carl.override { static = true; };
     } else { }));
