@@ -170,6 +170,15 @@ with oself;
     };
   });
 
+  bjack = osuper.bjack.overrideAttrs (o: {
+    propagatedBuildInputs =
+      o.propagatedBuildInputs
+      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+        Accelerate
+        CoreAudio
+      ]);
+  });
+
   bls12-381 = osuper.bls12-381.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/dannywillems/ocaml-bls12-381/archive/refs/tags/5.0.0.tar.gz;
@@ -625,6 +634,15 @@ with oself;
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
     '';
+  });
+
+  gstreamer = osuper.gstreamer.overrideAttrs (o: {
+    propagatedBuildInputs =
+      o.propagatedBuildInputs
+      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+        AppKit
+        Foundation
+      ]);
   });
 
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
