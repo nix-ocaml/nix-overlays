@@ -352,9 +352,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
     '';
-    postInstall = ''
-      echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
-    '';
   };
 
   ctypes-foreign = buildDunePackage {
