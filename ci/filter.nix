@@ -121,9 +121,6 @@ let
 
     "gd4o"
 
-    "tsdl-image"
-    "tsdl-mixer"
-    "tsdl-ttf"
     "ocaml-sat-solvers"
     "pg-solver"
     "cpdf"
