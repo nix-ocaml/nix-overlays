@@ -111,6 +111,14 @@ with oself;
       else o.src;
   });
 
+  batteries = osuper.batteries.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-batteries-team/batteries-included/archive/892b781966.tar.gz;
+      sha256 = "073gmp7m61isq759ikl8yzk8mcfb5jc41fgl76m6gxyy88zh8d4y";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
+
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -218,6 +226,16 @@ with oself;
       '' else "";
     propagatedBuildInputs = [ camlp-streams ];
     postInstall = null;
+  });
+
+  cfstream = osuper.cfstream.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace lib/dune --replace \
+        "libraries core_kernel" "libraries camlp-streams core_kernel"
+      substituteInPlace app/cfstream_test.ml --replace \
+        "Pervasives." "Stdlib."
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
@@ -508,6 +526,10 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
+  facile = osuper.facile.overrideAttrs (_: {
+    postPatch = "echo '(lang dune 2.0)' > dune-project";
+  });
+
   faraday = osuper.faraday.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/inhabitedtype/faraday/archive/0.8.2.tar.gz;
@@ -737,6 +759,17 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   });
 
+  lablgtk3 = osuper.lablgtk3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/garrigue/lablgtk/releases/download/3.1.3/lablgtk3-3.1.3.tbz;
+      sha256 = "1ii1018hli5r1f2jsw8xviyg8n5jnimsiv8mapw6w5nf2pxffskq";
+    };
+    postPatch = ''
+      substituteInPlace dune-project --replace '(version 3.1.2)' ""
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+  });
+
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
@@ -833,8 +866,8 @@ with oself;
 
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/archive/493ed9184cad24ba203c8fe72c12b95a7658eb9a.tar.gz;
-      sha256 = "0yh77i0cz9y12cn1xflmrafyhgnw5cc10pd2qh7l956pf8xpkhj3";
+      url = https://github.com/realworldocaml/mdx/archive/b8b779c0.tar.gz;
+      sha256 = "045mqx45r71f7zmgdl7ri0g3f6p4hzjs5l3garvwxg6921702j6n";
     };
   });
 
@@ -962,6 +995,10 @@ with oself;
     '';
   });
 
+  nonstd = osuper.nonstd.overrideAttrs (_: {
+    postPatch = "echo '(lang dune 2.0)' > dune-project";
+  });
+
   num = osuper.num.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/num/archive/703e1f88.tar.gz;
@@ -1034,14 +1071,18 @@ with oself;
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
-    version = "0.2.3";
+    version = "0.2.4";
 
     src = fetchFromGitHub {
       owner = "serokell";
       repo = o.pname;
       rev = version;
-      sha256 = "w4NzCbaDxoM9CnoZHe8kS+dnd8n+pfWhPxQ1dDSQNHU=";
+      sha256 = "sha256-gOKvjmlcHDOgsTllj2sPL/qNtW/rlNlEVIrosahNsAQ=";
     };
+    postPatch = ''
+      substituteInPlace "menhir-recover/emitter.ml" --replace \
+        "String.capitalize" "String.capitalize_ascii"
+    '';
   });
 
   ocplib_stuff = buildDunePackage {
@@ -1610,6 +1651,15 @@ with oself;
     '';
   });
 
+  xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
+    propagatedBuildInputs = [ camlp-streams ];
+    postPatch = ''
+      cat cli/dune
+      substituteInPlace "cli/dune" --replace \
+      "libraries lwt" "libraries camlp-streams lwt"
+    '';
+  });
+
   yuscii = disableTests osuper.yuscii;
 
   zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
@@ -1708,11 +1758,12 @@ with oself;
 
   };
 
-  pythonlib = osuper.pythonlib.overrideAttrs (_: {
+  pythonlib = osuper.pythonlib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/pythonlib/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1nc44r4f7ryzj22gww1bb5clilkc4haxnynqpkbqph7y58l9w3yv";
+      sha256 = "0h0475xfd66hn3spmnsn0fizixr48l0vgh4dinabbbxcia7vja7d";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_optcomp ];
     meta.broken = false;
     patches = [ ];
   });

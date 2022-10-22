@@ -11,16 +11,12 @@ let
     "gtktop"
     "camlimages_4_2_4"
     "lablgtk-extras"
-    "magick"
     "mezzo"
-    "mlgmp"
     "ocaml_cairo"
     "ocaml_cryptgps"
     "ocamlnat"
     "ocamlsdl"
-    "ocf"
     "omake_rc1"
-    "xtmpl"
     "lwt_camlp4"
     "js_of_ocaml-camlp4"
     "macaque"
@@ -28,8 +24,6 @@ let
     "erm_xmpp"
     "gmetadom"
     "herelib"
-    "higlo"
-    "ocamlscript"
     "ocsigen_deriving"
     "pipebang"
     "stog"
@@ -38,23 +32,21 @@ let
 
     # too long to build or broken
     "z3"
-    "nonstd"
     "ocaml-r"
-    "nocrypto"
 
+    # Only available for 4.14
     "melange-compiler-libs"
     "melange"
+
     # dune.configurator issue
     "ocamlfuse"
     "google-drive-ocamlfuse"
 
     # jbuild files
-    "facile"
     "ocsigen-start"
     "torch"
 
     # linking issues?
-    "owee"
     "spacetime_lib"
     "prof_spacetime"
     "mariadb"
@@ -72,12 +64,12 @@ let
     "paf-le"
     "paf-cohttp"
     "git-paf"
+    "git-unix"
+    "git-cohttp"
+    "git-cohttp-unix"
     "irmin-mirage-git"
     "git-mirage"
     "irmin-git"
-
-    # broken with ppxlib 0.23
-    "elpi"
 
     # broken since OCaml 4.13
     "hol_light"
@@ -85,7 +77,6 @@ let
     "ocaml-migrate-parsetree-1-8"
     "ocaml-migrate-parsetree"
     "wasm"
-    "pythonlib"
 
     # Broken since OCaml 4.14
     "eliom"
@@ -101,51 +92,24 @@ let
     "opus"
     "vorbis"
 
-    # incompatible with newer menhir
-    "odate"
-
     # https://github.com/mirage/metrics/issues/57
     "metrics-unix"
-    "metrics-mirage"
 
     "dream-serve"
 
-    # incompatible with cmdliner 1.1
-    "git-unix"
-    "git-cohttp"
-    "git-cohttp-unix"
-
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
     "elina"
-    "apron"
 
     "gd4o"
 
     "ocaml-sat-solvers"
-    "pg-solver"
     "cpdf"
 
-    # Broken by python transitive dependencies?
-    "lablgtk3-gtkspell3"
-    "mdx"
-
     "ocaml-freestanding"
-    "mirage-xen"
-    "mirage-bootvar-xen"
-    "mirage-net-xen"
-    "netchannel"
 
-    "duppy"
     "taglib"
     "getopt"
     "soundtouch"
-
-    # Incompatible with ppxlib >= 0.27
-    "brisk-reconciler"
-    "flex"
-    "rebez"
-    "reenv"
-    "reperf"
 
     "inotify"
     "async_inotify"
@@ -153,17 +117,11 @@ let
     "pgsolver"
     "tcslib"
     "plotkicadsch"
-
-    "oidc-client"
-    "bls12-381-unix"
   ];
 
   ocaml5Ignores = [
-    "batteries"
-    "biocaml"
     "camlp5_strict"
     "camlp5"
-    "cfstream"
     "cpdf"
     "dose3"
     "erm_xml"
@@ -175,13 +133,9 @@ let
     "hack_parallel"
     "imagelib"
     "inifiles"
-    "lablgtk3-gtkspell3"
-    "lablgtk3-sourceview3"
-    "lablgtk3"
     "lastfm"
     "ocaml_oasis"
     "ocaml-protoc"
-    "ocaml-recovery-parser"
     "ocaml-sat-solvers"
     "ocamlify"
     "ocamlmod"
@@ -193,19 +147,14 @@ let
     "phylogenetics"
     "piqi"
     "piqi-ocaml"
-    "ppx_python"
-    "pyml"
     "ringo-lwt"
     "ringo_old"
     "semver"
-    "telegraml"
     "twt"
     "uecc"
     "wodan-unix"
-    "xenstore-tool"
     "xml-light"
     "labltk"
-
     "lambdapi"
   ];
 
