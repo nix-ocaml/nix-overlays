@@ -54,7 +54,6 @@ let
     "torch"
 
     # linking issues?
-    "tsdl"
     "owee"
     "spacetime_lib"
     "prof_spacetime"
@@ -122,9 +121,6 @@ let
 
     "gd4o"
 
-    "tsdl-image"
-    "tsdl-mixer"
-    "tsdl-ttf"
     "ocaml-sat-solvers"
     "pg-solver"
     "cpdf"
