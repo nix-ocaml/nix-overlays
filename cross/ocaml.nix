@@ -422,7 +422,11 @@ in
         '';
       });
 
-      ctypes = fixOCamlPackage osuper.ctypes;
+      ctypes = (fixOCamlPackage osuper.ctypes).overrideAttrs (o: {
+        postInstall = ''
+          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/aarch64-sysroot/lib/ctypes/META
+        '';
+      });
 
       cppo = natocamlPackages.cppo;
       dune_2 = natocamlPackages.dune;
