@@ -117,10 +117,7 @@ with oself;
       sha256 = "073gmp7m61isq759ikl8yzk8mcfb5jc41fgl76m6gxyy88zh8d4y";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-
-    postPatch = ''
-      echo '##V>=5.0##val unsafe_escape : t -> t'
-    '';
+    doCheck = false;
   });
 
   benchmark = osuper.buildDunePackage {
