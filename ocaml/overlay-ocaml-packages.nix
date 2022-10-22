@@ -11,7 +11,6 @@ let
     "4_12"
     "4_13"
     "4_14"
-    "5_00"
     "5_0"
     "trunk"
   ];
@@ -27,14 +26,13 @@ let
 
   custom-ocaml-ng =
     ocaml-ng //
-    (if !(ocaml-ng ? "ocamlPackages_5_00") then {
+    (if !(ocaml-ng ? "ocamlPackages_trunk") then {
       ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           hardeningDisable = [ "strictoverflow" ];
         });
       });
 
-      ocamlPackages_5_00 = lib.warn "use `ocamlPackages_5_0` instead" ocaml-ng.ocamlPackages_5_0;
       ocamlPackages_5_0 = ocaml-ng.ocamlPackages_5_0.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           src = builtins.fetchurl {
@@ -77,6 +75,7 @@ rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
     ocamlPackages_latest = oPs.ocamlPackages_5_0;
+    ocamlPackages_5_00 = lib.warn "use `ocamlPackages_5_0` instead" oPs.ocamlPackages_5_0;
   };
   ocamlPackages =
     if updateOCamlPackages then
