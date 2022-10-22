@@ -54,7 +54,6 @@ let
     "torch"
 
     # linking issues?
-    "tsdl"
     "owee"
     "spacetime_lib"
     "prof_spacetime"

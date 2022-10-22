@@ -1967,6 +1967,15 @@ with oself;
     ];
   };
 
+  tsdl = osuper.tsdl.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/tsdl/archive/refs/tags/v0.9.9.tar.gz;
+      sha256 = "120vinx1r3gghq3m6g7ybnr2n7cq8hrqpd7ay2hjc0kb6vk13x00";
+    };
+    patches = [ ./tsdl.patch ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+  });
+
   mlt_parser = janePackage {
     pname = "mlt_parser";
     version = "0.15.0";

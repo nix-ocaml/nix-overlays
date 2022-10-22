@@ -1,0 +1,21 @@
+diff --git a/_tags b/_tags
+index 949e27f..26a1c04 100644
+--- a/_tags
++++ b/_tags
+@@ -7,13 +7,13 @@ true: bin_annot, safe_string, thread
+ <support/consts.{ml,native,byte}> : custom, link_consts_stub
+ 
+ <src> : include
+-<src/tsdl.{ml,mli}> : package(ctypes), thread
++<src/tsdl.{ml,mli}> : package(ctypes), package(ctypes-foreign), thread
+ <src/tsdl.ml> : sdl_consts
+ <src/tsdl.{cma,cmxa,cmxs}> : custom, thread, \
+- package(ctypes), package(ctypes.foreign), use_sdl2
++ package(ctypes), package(ctypes-foreign), use_sdl2
+ 
+ <src/libtsdl.*> : use_sdl2
+ <src/tsdl_top.*> : package(compiler-libs.toplevel)
+ 
+ <test> : include
+-<test/**> : package(ctypes), package(ctypes.foreign), use_sdl2
++<test/**> : package(ctypes), package(ctypes-foreign), use_sdl2
