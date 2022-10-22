@@ -35,6 +35,14 @@ let
       });
 
       ocamlPackages_5_00 = lib.warn "use `ocamlPackages_5_0` instead" ocaml-ng.ocamlPackages_5_0;
+      ocamlPackages_5_0 = ocaml-ng.ocamlPackages_5_0.overrideScope' (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = builtins.fetchurl {
+            url = https://github.com/ocaml/ocaml/archive/8bfc42697.tar.gz;
+            sha256 = "0b5q8ppmcklvf8dgybcf84h3sn4vr88hirsm6lkrvdp3pvs76sws";
+          };
+        });
+      });
 
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
