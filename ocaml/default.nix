@@ -1652,9 +1652,8 @@ with oself;
   xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
-      cat cli/dune
       substituteInPlace "cli/dune" --replace \
-      "libraries lwt" "libraries camlp-streams lwt"
+        "libraries lwt" "libraries camlp-streams lwt"
     '';
   });
 
