@@ -17,7 +17,4 @@
       inherit super overlays;
       updateOCamlPackages = true;
     })
-  (self: super: {
-    opaline = buildPackages.opaline;
-  })
 ]
