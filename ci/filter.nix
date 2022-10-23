@@ -173,17 +173,14 @@ let
     "llvm"
     "ocaml_libvirt"
     "labltk"
-    "bjack"
 
     "alsa"
-    "ladspa"
     "mm"
-    "pulseaudio"
     "eigen"
     "owl-base"
     "owl"
+    "pulseaudio"
 
-    "gstreamer"
     "uring"
     "eio_linux"
     "class_group_vdf"
