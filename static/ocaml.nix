@@ -15,7 +15,9 @@ let
       doCheck = false;
     });
 in
-(oself: osuper:
+
+oself: osuper:
+
 lib.mapAttrs
   (_: p:
     if p ? overrideAttrs then
@@ -33,4 +35,4 @@ lib.mapAttrs
       "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
     ];
   });
-})
+}

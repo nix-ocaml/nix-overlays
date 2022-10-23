@@ -1,10 +1,11 @@
 { buildPackages }:
 
-(self: super:
+self: super:
+
 super.lib.overlayOCamlPackages {
   inherit super;
-  overlays = (super.callPackage ./ocaml.nix {
+  overlays = super.callPackage ./ocaml.nix {
     inherit buildPackages;
-  });
+  };
   updateOCamlPackages = true;
-})
+}

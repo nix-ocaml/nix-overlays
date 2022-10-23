@@ -31,7 +31,7 @@ let
     in
     lib.attrValues acc;
 
-  getNativeOCamlPackages = lib.trace "std: ${stdenv.system}" (osuper:
+  getNativeOCamlPackages = osuper:
     let
       version =
         lib.stringAsChars
@@ -40,7 +40,7 @@ let
             (if lib.hasPrefix "5." osuper.ocaml.version then 3 else 4)
             osuper.ocaml.version);
     in
-    buildPackages.ocaml-ng."ocamlPackages_${version}");
+    buildPackages.ocaml-ng."ocamlPackages_${version}";
 in
 [
   # This currently needs to be split into 2 functions, to a) avoid infinite
@@ -56,7 +56,7 @@ in
   (oself: osuper:
     let
       crossName = lib.head (lib.splitString "-" stdenv.system);
-      natocamlPackages = lib.trace "cross: ${stdenv.system}" getNativeOCamlPackages osuper;
+      natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
       natdune = natocamlPackages.dune;
