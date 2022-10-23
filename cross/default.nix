@@ -3,14 +3,13 @@
 [
   (self: super:
     let
-      inherit (super) lib;
-      overlays = (import ./ocaml.nix {
+      inherit (super) lib callPackage;
+      overlays = (callPackage ./ocaml.nix {
         inherit buildPackages;
         inherit (super) lib
           writeText
           writeScriptBin
-          stdenv
-          bash;
+          stdenv;
       });
     in
     lib.overlayOCamlPackages {

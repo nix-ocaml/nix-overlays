@@ -8,7 +8,7 @@
 # build time (e.g. OMP / ppxlib, etc that are possible to allow in the other
 # overlays).
 
-{ lib, buildPackages, writeText, writeScriptBin, stdenv, bash }:
+{ lib, buildPackages, writeText, writeScriptBin, stdenv }:
 let
   __mergeInputs = acc: names: attrs:
     let
@@ -31,40 +31,36 @@ let
     in
     lib.attrValues acc;
 
-  getNativeOCamlPackages = osuper:
+  getNativeOCamlPackages = lib.trace "std: ${stdenv.system}" (osuper:
     let
       version =
-        if lib.hasPrefix "5." osuper.ocaml.version
-        then "5_0"
-        else
-          lib.stringAsChars
-            (x: if x == "." then "_" else x)
-            (builtins.substring 0 4 osuper.ocaml.version);
-
+        lib.stringAsChars
+          (x: if x == "." then "_" else x)
+          (builtins.substring 0
+            (if lib.hasPrefix "5." osuper.ocaml.version then 3 else 4)
+            osuper.ocaml.version);
     in
-    buildPackages.ocaml-ng."ocamlPackages_${version}";
+    buildPackages.ocaml-ng."ocamlPackages_${version}");
 in
 [
+  # This currently needs to be split into 2 functions, to a) avoid infinite
+  # recursion, and b) to avoid repeating the call to `fixOCamlPackage` in case
+  # a derivation requires more than the `OCAMLFIND_CONF` env variable override.
+  #
+  # The 2 overlays have the following responsibilities:
+  # 1. We set up the build toolchain with packages from `buildPackages`. These
+  #    run on the build machine and should therefore be the same architecture.
+  # 2. The 2nd overlay overrides package derivations (that are compiled for the
+  #    host architecture)
+
   (oself: osuper:
     let
-      crossName = stdenv.hostPlatform.parsed.cpu.name;
-      natocamlPackages = getNativeOCamlPackages osuper;
+      crossName = lib.head (lib.splitString "-" stdenv.system);
+      natocamlPackages = lib.trace "cross: ${stdenv.system}" getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
-      natdune = natocamlPackages.dune;
       natfindlib = natocamlPackages.findlib;
-      fixTopkgInstall = p: natPackage: p.overrideAttrs (o: {
-        installPhase = ''
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+      natdune = natocamlPackages.dune;
 
-          ${o.installPhase}
-          runHook postInstall
-        '';
-      });
-
-    in
-    {
       makeFindlibConf = b:
         let
           inputs = mergeInputs [
@@ -103,7 +99,9 @@ in
             '';
 
           aarch64_findlib_conf =
-            let inherit (oself) ocaml findlib; in
+            let
+              inherit (oself) ocaml findlib;
+            in
             writeText "${b.name or b.pname}-${crossName}.conf" ''
               path(${crossName}) = "${ocaml}/lib/ocaml:${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
               ldconf(${crossName})="ignore"
@@ -133,43 +131,125 @@ in
         in
         "${findlib_conf}/findlib.conf";
 
-      buildDunePackage = args:
-        (osuper.buildDunePackage (
-          {
-
-            OCAMLFIND_CONF = oself.makeFindlibConf args;
-            buildPhase = ''
-              runHook preBuild
-              dune build -p ${args.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
-              runHook postBuild
-            '';
-
-            installPhase =
-              let
-                natPackage =
-                  natocamlPackages."${args.pname}" or
-                    # Some legacy packages are called `ocaml_X`, e.g. extlib and
-                    # sqlite3
-                    natocamlPackages."ocaml_${args.pname}";
-              in
-              ''
-                runHook preInstall
-                ${oself.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
-
-                rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-                ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-                runHook postInstall
-              '';
-
-          } // args
-        )).overrideAttrs (o: {
-          nativeBuildInputs =
-            [ natocaml natdune natfindlib buildPackages.stdenv.cc ] ++
-            # XXX(anmonteiro): apparently important that this comes after
-            (o.nativeBuildInputs or [ ]);
-
+      fixOCamlPackage = b:
+        b.overrideAttrs (o: {
+          OCAMLFIND_CONF = makeFindlibConf b;
         });
+    in
 
+    (lib.mapAttrs
+      (_: p: if p ? overrideAttrs then fixOCamlPackage p else p)
+      osuper) // {
+      ocaml = import ./ocaml-compiler.nix {
+        inherit
+          lib buildPackages writeScriptBin
+          natocamlPackages osuper;
+      };
+
+      findlib = osuper.findlib.overrideAttrs (o: {
+        postInstall = ''
+          rm -rf $out/bin/ocamlfind
+          cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
+        '';
+      });
+
+      cppo = natocamlPackages.cppo;
+      dune_2 = natocamlPackages.dune;
+      dune_3 = natocamlPackages.dune;
+      dune = natocamlPackages.dune;
+
+      ocamlbuild = natocamlPackages.ocamlbuild.overrideAttrs (o: {
+        propagatedBuildInputs = [ buildPackages.stdenv.cc ];
+      });
+
+      opaline = natocamlPackages.opaline;
+
+      buildDunePackage = args: (osuper.buildDunePackage ({
+        buildPhase = ''
+          runHook preBuild
+          dune build -p ${args.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
+          runHook postBuild
+        '';
+
+        installPhase =
+          let
+            natPackage =
+              natocamlPackages."${args.pname}" or
+                # Some legacy packages are called `ocaml_X`, e.g. extlib and
+                # sqlite3
+                natocamlPackages."ocaml_${args.pname}";
+          in
+          ''
+            runHook preInstall
+            ${oself.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
+
+            rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+            ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+            runHook postInstall
+          '';
+      } // args
+      )).overrideAttrs (o: {
+        nativeBuildInputs =
+          [ natocaml natdune natfindlib buildPackages.stdenv.cc ] ++
+          # XXX(anmonteiro): apparently important that this comes after
+          (o.nativeBuildInputs or [ ]);
+      });
+
+      topkg = natocamlPackages.topkg.overrideAttrs (o:
+        let
+          run = ''
+            if [ -z "''${selfBuild:-}" ]; then
+            unset OCAMLPATH
+            fi
+
+            ${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml \
+          '';
+        in
+        {
+          selfBuild = true;
+
+          passthru = {
+            inherit run;
+          };
+
+          buildPhase = "${run} build";
+
+          installPhase = ''
+            if [ -z "''${selfBuild:-}" ]; then
+            OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
+            fi
+            ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
+          '';
+
+          setupHook = writeText "setupHook.sh" ''
+            addToolchainVariable () {
+            if [ -z "''${selfBuild:-}" ]; then
+            export TOPKG_CONF_TOOLCHAIN="${crossName}"
+            fi
+            }
+
+            addEnvHooks "$targetOffset" addToolchainVariable
+          '';
+        });
+    })
+
+  (oself: osuper:
+    let
+      crossName = lib.head (lib.splitString "-" stdenv.system);
+      natocamlPackages = getNativeOCamlPackages osuper;
+
+      fixTopkgInstall = p: natPackage: p.overrideAttrs (o: {
+        installPhase = ''
+          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
+          ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+
+          ${o.installPhase}
+          runHook postInstall
+        '';
+      });
+    in
+    {
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
         postInstall = ''
@@ -181,8 +261,14 @@ in
         '';
       });
 
+      ctypes = osuper.ctypes.overrideAttrs (o: {
+        postInstall = ''
+          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/aarch64-sysroot/lib/ctypes/META
+        '';
+      });
+
       cmdliner = osuper.cmdliner.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ [ oself.findlib ];
+        nativeBuildInputs = o.nativeBuildInputs ++ [ osuper.findlib ];
 
         installPhase = ''
           rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
@@ -221,19 +307,6 @@ in
             })
         else null;
 
-      astring = fixTopkgInstall osuper.astring natocamlPackages.astring;
-      jsonm = fixTopkgInstall osuper.jsonm natocamlPackages.jsonm;
-      fmt = fixTopkgInstall osuper.fmt natocamlPackages.fmt;
-      uutf = fixTopkgInstall osuper.uutf natocamlPackages.uutf;
-      uunf = fixTopkgInstall osuper.uunf natocamlPackages.uunf;
-      logs = fixTopkgInstall osuper.logs natocamlPackages.logs;
-      fpath = fixTopkgInstall osuper.fpath natocamlPackages.fpath;
-      bos = fixTopkgInstall osuper.bos natocamlPackages.bos;
-      ptime = fixTopkgInstall osuper.ptime natocamlPackages.ptime;
-      rresult = fixTopkgInstall osuper.rresult natocamlPackages.rresult;
-      mtime = fixTopkgInstall osuper.mtime natocamlPackages.mtime;
-      xmlm = fixTopkgInstall osuper.xmlm natocamlPackages.xmlm;
-
       menhir = osuper.menhir.overrideAttrs (o: {
         postInstall = ''
           cp -r ${natocamlPackages.menhir}/bin/* $out/bin
@@ -249,7 +322,7 @@ in
         '';
       });
 
-      ocaml-migrate-parsetree = oself.ocaml-migrate-parsetree-2;
+      ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2;
 
       seq = osuper.seq.overrideAttrs (_: {
         installPhase = ''
@@ -263,7 +336,7 @@ in
       });
 
       uchar = osuper.uchar.overrideAttrs (_: {
-        installPhase = oself.topkg.installPhase;
+        installPhase = osuper.topkg.installPhase;
       });
 
       zarith = osuper.zarith.overrideAttrs (o: {
@@ -285,195 +358,19 @@ in
           ln -sfn ${natocamlPackages.zarith}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
         '';
       });
-
-    })
-
-  (oself: osuper:
-    let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
-      natocamlPackages = getNativeOCamlPackages osuper;
-      natocaml = natocamlPackages.ocaml;
-      natfindlib = natocamlPackages.findlib;
-      genWrapper = name: camlBin: writeScriptBin name ''
-        #!${stdenv.shell}
-        NEW_ARGS=""
-
-        for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done
-        eval "${camlBin} $NEW_ARGS"
-      '';
-      ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${natocaml}/bin/ocamlc.opt -I ${natocaml}/lib/ocaml -I ${natocaml}/lib/ocaml/stublibs -I +unix -nostdlib ";
-      ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${natocaml}/bin/ocamlopt.opt -I ${natocaml}/lib/ocaml -I +unix -nostdlib ";
-
-      ocamlcTargetWrapper = genWrapper "ocamlcTarget.wrapper" "$BUILD_ROOT/ocamlc.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
-      ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
-
-      fixOCaml = ocaml: ocaml.overrideAttrs (o:
-        let isOCaml5 = lib.versionOlder "5.0" ocaml.version;
-        in
-        {
-          nativeBuildInputs = [ buildPackages.stdenv.cc ];
-          preConfigure = ''
-            configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
-          '';
-          configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
-          postConfigure = ''
-            echo 'SAK_CC=${buildPackages.stdenv.cc}/bin/gcc' >> Makefile.config
-            echo 'SAK_CFLAGS=$(OC_CFLAGS) $(OC_CPPFLAGS)' >> Makefile.config
-            echo 'SAK_LINK=$(SAK_CC) $(SAK_CFLAGS) $(OUTPUTEXE)$(1) $(2)' >> Makefile.config
-          '';
-
-          buildPhase = ''
-            runHook preBuild
-
-            OCAML_HOST=${natocaml}
-            OCAMLRUN="$OCAML_HOST/bin/ocamlrun"
-            OCAMLYACC="$OCAML_HOST/bin/ocamlyacc"
-            CAMLDEP="$OCAML_HOST/bin/ocamlc"
-            DYNAMIC_LIBS="-I $OCAML_HOST/lib/ocaml/stublibs"
-            HOST_STATIC_LIBS="-I $OCAML_HOST/lib/ocaml"
-            TARGET_STATIC_LIBS="-I $PWD/stdlib -I $PWD/otherlibs/unix"
-
-            HOST_MAKEFILE_CONFIG="$OCAML_HOST/lib/ocaml/Makefile.config"
-            get_host_variable () {
-              cat $HOST_MAKEFILE_CONFIG | grep "$1=" | awk -F '=' '{print $2}'
-            }
-
-            NATDYNLINK=$(get_host_variable "NATDYNLINK")
-            NATDYNLINKOPTS=$(get_host_variable "NATDYNLINKOPTS")
-
-
-            make_caml () {
-              make ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} ''${enableParallelBuilding:+-l $NIX_BUILD_CORES} \
-                   CAMLDEP="$CAMLDEP -depend" \
-                   OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
-                   CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
-                   NEW_OCAMLRUN="$OCAMLRUN" \
-                   CAMLC="$CAMLC" OCAMLC="$CAMLC" \
-                   CAMLOPT="$CAMLOPT" OCAMLOPT="$CAMLOPT" \
-                   $@
-            }
-
-            make_host () {
-              CAMLC="${ocamlcHostWrapper}/bin/ocamlcHost.wrapper"
-              CAMLOPT="${ocamloptHostWrapper}/bin/ocamloptHost.wrapper"
-
-              make_caml \
-                NATDYNLINK="$NATDYNLINK" NATDYNLINKOPTS="$NATDYNLINKOPTS" \
-                "$@"
-            }
-
-            make_target () {
-              CAMLC="${ocamlcTargetWrapper}/bin/ocamlcTarget.wrapper"
-              CAMLOPT="${ocamloptTargetWrapper}/bin/ocamloptTarget.wrapper"
-
-              make_caml BUILD_ROOT="$PWD" TARGET_OCAMLC="$TARGET_OCAMLC" TARGET_OCAMLOPT="$TARGET_OCAMLOPT" "$@"
-            }
-
-            make_host runtime coreall
-            make_host opt-core
-            make_host ocamlc.opt
-            make_host ocamlopt.opt
-            make_host compilerlibs/ocamltoplevel.cma otherlibraries \
-                      ocamldebugger
-            make_host ocamllex.opt ocamltoolsopt \
-                      ocamltoolsopt.opt ${if isOCaml5 then "othertools" else ""}
-
-            rm $(find . | grep -E '\.cm.?.$')
-            make_target -C stdlib all allopt
-            make_target ocaml ocamlc
-            make_target ocamlopt otherlibraries \
-                        otherlibrariesopt ocamltoolsopt \
-                        driver/main.cmx driver/optmain.cmx \
-                        compilerlibs/ocamlcommon.cmxa \
-                        compilerlibs/ocamlbytecomp.cmxa \
-                        compilerlibs/ocamloptcomp.cmxa
-            ${if isOCaml5 then "make_target othertools" else ""}
-
-            runHook postBuild
-          '';
-          installTargets = o.installTargets ++ [ "installoptopt" ];
-          patches = [
-            (if isOCaml5
-            then ./cross_5_00.patch
-            else if lib.versionOlder "4.14" ocaml.version
-            then ./cross_4_14.patch
-            else if lib.versionOlder "4.13" ocaml.version
-            then ./cross_4_13.patch
-            else if lib.versionOlder "4.12" ocaml.version
-            then ./cross_4_12.patch
-            else if lib.versionOlder "4.11" ocaml.version
-            then ./cross_4_11.patch
-            else throw "OCaml ${ocaml.version} not supported for cross-compilation")
-          ];
-        });
-      fixOCamlPackage = b:
-        b.overrideAttrs (o: {
-          OCAMLFIND_CONF = oself.makeFindlibConf b;
-        });
-
-    in
-    (lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper) // {
-      ocaml = fixOCaml osuper.ocaml;
-
-      findlib = osuper.findlib.overrideAttrs (o: {
-        postInstall = ''
-          rm -rf $out/bin/ocamlfind
-          cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
-        '';
-      });
-
-      ctypes = (fixOCamlPackage osuper.ctypes).overrideAttrs (o: {
-        postInstall = ''
-          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/aarch64-sysroot/lib/ctypes/META
-        '';
-      });
-
-      cppo = natocamlPackages.cppo;
-      dune_2 = natocamlPackages.dune;
-      dune_3 = natocamlPackages.dune;
-      dune = natocamlPackages.dune;
-
-      ocamlbuild = natocamlPackages.ocamlbuild.overrideAttrs (o: {
-        propagatedBuildInputs = [ buildPackages.stdenv.cc ];
-      });
-
-      opaline = natocamlPackages.opaline;
-
-      topkg = natocamlPackages.topkg.overrideAttrs (o:
-        let
-          run = ''
-            if [ -z "''${selfBuild:-}" ]; then
-              unset OCAMLPATH
-            fi
-
-            ${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml \
-          '';
-        in
-        {
-          selfBuild = true;
-
-          passthru = {
-            inherit run;
-          };
-
-          buildPhase = "${run} build";
-
-          installPhase = ''
-            if [ -z "''${selfBuild:-}" ]; then
-              OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-            fi
-            ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
-          '';
-
-          setupHook = writeText "setupHook.sh" ''
-            addToolchainVariable () {
-              if [ -z "''${selfBuild:-}" ]; then
-                export TOPKG_CONF_TOOLCHAIN="${crossName}"
-              fi
-            }
-
-            addEnvHooks "$targetOffset" addToolchainVariable
-          '';
-        });
-    })
+    } // (lib.genAttrs [
+      "astring"
+      "jsonm"
+      "fmt"
+      "uutf"
+      "uunf"
+      "logs"
+      "fpath"
+      "bos"
+      "ptime"
+      "rresult"
+      "mtime"
+      "xmlm"
+    ]
+      (name: fixTopkgInstall osuper.${name} natocamlPackages.${name})))
 ]

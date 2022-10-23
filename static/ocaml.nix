@@ -1,8 +1,5 @@
-{ lib, openssl-oc }:
+{ lib }:
 let
-  removeUnknownConfigureFlags = f: with lib;
-    remove "--disable-shared"
-      (remove "--enable-static" (if isList f then f else [ f ]));
   fixOCaml = ocaml:
     (ocaml.override { useX11 = false; }).overrideAttrs (o: {
       dontUpdateAutotoolsGnuConfigScripts = true;
@@ -14,13 +11,8 @@ let
 
   fixOCamlPackage = b:
     b.overrideAttrs (o: {
-      configureFlags = removeUnknownConfigureFlags (o.configureFlags or [ ]);
-      configurePlatforms = [ ];
       # Static doesn't propagate `checkInputs` so we don't run the tests here
       doCheck = false;
-      # Shouldn't need this after https://github.com/NixOS/nixpkgs/pull/145448
-      # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ (o.buildInputs or [ ]);
-      # buildInputs = (o.buildInputs or [ ]) ++ (o.nativeBuildInputs or [ ]);
     });
 in
 (oself: osuper:
@@ -34,7 +26,6 @@ lib.mapAttrs
 
   postgresql = osuper.postgresql.overrideAttrs (o: {
     patches = [ ./postgresql_static.patch ];
-    buildInputs = o.buildInputs ++ [ openssl-oc.dev ];
   });
 
   zarith = osuper.zarith.overrideDerivation (o: {

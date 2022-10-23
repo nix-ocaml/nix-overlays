@@ -5,6 +5,7 @@
 , fetchFromGitHub
 , lib
 , libpq
+, libev-oc
 , libffi-oc
 , makeWrapper
 , darwin
@@ -709,13 +710,31 @@ with oself;
 
   iter = osuper.iter.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/iter/archive/a3b34263.tar.gz;
-      sha256 = "0jfb7aw1fv2y5skcv0gc74j37fy2k22j87fqs6fjhpw0dw2si0lr";
+      url = https://github.com/c-cube/iter/archive/refs/tags/v1.6.tar.gz;
+      sha256 = "0blvp84nhws2amyhh9pkm4qnzm3rw5ya73fh88312v5w0gh5i1xk";
     };
 
+    postPatch = ''
+      substituteInPlace src/dune --replace "(libraries bytes)" ""
+    '';
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
     # MDX has some broken python transitive deps
     doCheck = false;
+  });
+  qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/core/dune --replace "unix bytes" "unix"
+    '';
+  });
+  qcheck-ounit = osuper.qcheck-ounit.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/ounit/dune --replace "unix bytes" "unix"
+    '';
+  });
+  qtest = osuper.qtest.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "bytes" ""
+    '';
   });
 
   itv-tree = buildDunePackage {
@@ -854,7 +873,7 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat libev-oc ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
 
     postPatch = ''

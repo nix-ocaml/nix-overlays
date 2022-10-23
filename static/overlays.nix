@@ -1,5 +1,3 @@
-{ pkgsStatic }:
-
 self: super:
 
 let
@@ -8,8 +6,8 @@ let
 in
 
 {
-  inherit (pkgsStatic) libev;
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
+  libev-oc = super.libev-oc.override { static = true; };
   zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
   openssl-oc = super.openssl-oc.override { static = true; };
   gmp-oc = super.gmp-oc.override { withStatic = true; };

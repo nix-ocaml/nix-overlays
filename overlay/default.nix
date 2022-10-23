@@ -34,7 +34,7 @@ in
 
   pkgsCross =
     let
-      static-overlays = callPackage ../static { inherit (self) pkgsStatic; };
+      static-overlays = import ../static;
       cross-overlays = callPackage ../cross { };
     in
     super.pkgsCross // {
@@ -75,6 +75,7 @@ in
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
     ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
 
+    propagatedBuildInputs = [ self.openssl-oc.dev ];
     # Use a single output derivation. The upstream PostgreSQL derivation
     # produces multiple outputs (including "out" and "lib"), and then puts some
     # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
@@ -119,31 +120,7 @@ in
     '';
   });
 
-
-  lib = lib.fix (self: lib //
-  (import
-    (builtins.fetchTarball {
-      url = https://github.com/hercules-ci/gitignore.nix/archive/5b9e0ff9d3b551234b4f3eb3983744fa354b17f1.tar.gz;
-      sha256 = "01l4phiqgw9xgaxr6jr456qmww6kzghqrnbc7aiiww3h6db5vw53";
-    })
-    { inherit lib; }) // {
-    filterSource = { src, dirs ? [ ], files ? [ ] }: (self.cleanSourceWith {
-      inherit src;
-      # Good examples: https://github.com/NixOS/nixpkgs/blob/master/lib/sources.nix
-      filter = name: type:
-        let
-          path = toString name;
-          baseName = baseNameOf path;
-          relPath = self.removePrefix (toString src + "/") path;
-        in
-        self.any (dir: dir == relPath || (self.hasPrefix "${dir}/" relPath)) dirs ||
-        (type == "regular" && (self.any (file: file == baseName) files));
-    });
-
-    filterGitSource = args: self.gitignoreSource (self.filterSource args);
-
-    inherit overlayOCamlPackages;
-  });
+  lib = lib // { inherit overlayOCamlPackages; };
 
   inherit (callPackage ../cockroachdb { })
     cockroachdb-21_1_x
@@ -161,7 +138,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp;
+      inherit (super) zlib gmp libev;
       libffi = super.libffi.overrideAttrs (_: {
         doCheck = false;
       });

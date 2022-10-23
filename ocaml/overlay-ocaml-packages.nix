@@ -75,7 +75,7 @@ rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
     ocamlPackages_latest = oPs.ocamlPackages_5_0;
-    ocamlPackages_5_00 = lib.warn "use `ocamlPackages_5_0` instead" oPs.ocamlPackages_5_0;
+    ocamlPackages_5_00 = lib.warn "`ocamlPackages_5_00` is deprecated: use `ocamlPackages_5_0` instead" oPs.ocamlPackages_5_0;
   };
   ocamlPackages =
     if updateOCamlPackages then
