@@ -19,7 +19,7 @@ in
 osuper.ocaml.overrideAttrs (o:
 let isOCaml5 = lib.versionOlder "5.0" o.version;
 in {
-  nativeBuildInputs = [ buildPackages.stdenv.cc ];
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
   preConfigure = ''
     configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
   '';

@@ -1,6 +1,7 @@
 { nixpkgs
 , autoconf
 , automake
+, buildPackages
 , fetchpatch
 , fetchFromGitHub
 , lib
@@ -1108,6 +1109,17 @@ with oself;
   ocaml-migrate-types = callPackage ./ocaml-migrate-types { };
   typedppxlib = callPackage ./typedppxlib { };
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
+
+  ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+
+    # OCamlbuild needs to find the native toolchain when cross compiling (to
+    # link myocamlbuild programs)
+    postFixup = ''
+      wrapProgram $out/bin/ocamlbuild \
+        --suffix PATH : "${ buildPackages.stdenv.cc }/bin"
+    '';
+  });
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
     version = "0.2.4";

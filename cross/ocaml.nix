@@ -8,7 +8,7 @@
 # build time (e.g. OMP / ppxlib, etc that are possible to allow in the other
 # overlays).
 
-{ lib, buildPackages, writeText, writeScriptBin, stdenv }:
+{ lib, buildPackages, writeText, writeScriptBin, makeWrapper, stdenv }:
 let
   __mergeInputs = acc: names: attrs:
     let
@@ -157,11 +157,7 @@ in
       dune_2 = natocamlPackages.dune;
       dune_3 = natocamlPackages.dune;
       dune = natocamlPackages.dune;
-
-      ocamlbuild = natocamlPackages.ocamlbuild.overrideAttrs (o: {
-        propagatedBuildInputs = [ buildPackages.stdenv.cc ];
-      });
-
+      ocamlbuild = natocamlPackages.ocamlbuild;
       opaline = natocamlPackages.opaline;
 
       buildDunePackage = args: (osuper.buildDunePackage ({
@@ -291,7 +287,7 @@ in
           chmod a+x ./build.sh
         '';
         installPhase = ''
-          ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ ${o.pname}.install
+          ${oself.opaline}/bin/opaline -prefix $out -libdir $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ ${o.pname}.install
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
           mkdir -p $OCAMLFIND_DESTDIR
           mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
