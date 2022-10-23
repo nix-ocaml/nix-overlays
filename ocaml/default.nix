@@ -881,11 +881,6 @@ with oself;
       substituteInPlace src/core/dune --replace "(libraries bytes)" ""
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
-
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/refs/tags/5.6.1.tar.gz;
-      sha256 = "1837iagnba58018ag82c9lwaby01c031547n08jjyj8q5q6lfjgb";
-    };
   });
 
   lwt_ssl = osuper.lwt_ssl.overrideAttrs (_: {
@@ -1122,14 +1117,6 @@ with oself;
   });
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
-    version = "0.2.4";
-
-    src = fetchFromGitHub {
-      owner = "serokell";
-      repo = o.pname;
-      rev = version;
-      sha256 = "sha256-gOKvjmlcHDOgsTllj2sPL/qNtW/rlNlEVIrosahNsAQ=";
-    };
     postPatch = ''
       substituteInPlace "menhir-recover/emitter.ml" --replace \
         "String.capitalize" "String.capitalize_ascii"
@@ -1392,10 +1379,6 @@ with oself;
   });
 
   react = osuper.react.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/react/archive/aebf35179964e73a7ef557c6a56175c7abdb9947.tar.gz;
-      sha256 = "04rqmigdbgah4yvdjpk3ai9j7d3zhp2hz2qd482p1q2k3bbn52kh";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
