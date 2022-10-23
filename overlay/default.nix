@@ -21,7 +21,12 @@ in
 
 (overlayOCamlPackages {
   inherit super;
-  overlays = [ (callPackage ../ocaml { inherit nixpkgs; }) ];
+  overlays = [
+    (callPackage ../ocaml {
+      inherit nixpkgs;
+      super-opaline = super.opaline;
+    })
+  ];
 }) // {
   # Cross-compilation / static overlays
   pkgsMusl = staticLightExtend super.pkgsMusl;
@@ -92,7 +97,7 @@ in
     '';
   });
 
-  opaline = super.opaline.override { inherit (self) ocamlPackages; };
+  opaline = null;
   esy = callPackage ../ocaml/esy { };
 
   h2spec = self.buildGoModule {

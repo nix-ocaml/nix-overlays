@@ -154,7 +154,7 @@ in
               in
               ''
                 runHook preInstall
-                ${buildPackages.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
+                ${oself.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
 
                 rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
                 ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
@@ -437,6 +437,8 @@ in
         propagatedBuildInputs = [ buildPackages.stdenv.cc ];
       });
 
+      opaline = natocamlPackages.opaline;
+
       topkg = natocamlPackages.topkg.overrideAttrs (o:
         let
           run = ''
@@ -460,7 +462,7 @@ in
             if [ -z "''${selfBuild:-}" ]; then
               OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
             fi
-            ${buildPackages.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
+            ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
           '';
 
           setupHook = writeText "setupHook.sh" ''

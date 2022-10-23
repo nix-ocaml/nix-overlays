@@ -9,6 +9,7 @@
 , makeWrapper
 , darwin
 , stdenv
+, super-opaline
 , gmp-oc
 , openssl-oc
 , pkg-config
@@ -1173,6 +1174,8 @@ with oself;
       substituteInPlace src/core/dune --replace "bigarray" ""
     '';
   });
+
+  opaline = super-opaline.override { ocamlPackages = oself; };
 
   oseq = buildDunePackage {
     pname = "oseq";
