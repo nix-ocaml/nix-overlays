@@ -35,17 +35,17 @@ in
   pkgsCross =
     let
       static-overlays = import ../static;
-      cross-overlays = callPackage ../cross { };
+      cross-overlay = callPackage ../cross { };
     in
     super.pkgsCross // {
       musl64 = super.pkgsCross.musl64.appendOverlays static-overlays;
 
       aarch64-multiplatform =
-        super.pkgsCross.aarch64-multiplatform.appendOverlays cross-overlays;
+        super.pkgsCross.aarch64-multiplatform.extend cross-overlay;
 
       aarch64-multiplatform-musl =
         (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
-          (cross-overlays ++ static-overlays));
+          ([ cross-overlay ] ++ static-overlays));
     };
 
 
