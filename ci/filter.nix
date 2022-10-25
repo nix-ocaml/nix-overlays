@@ -23,9 +23,7 @@ let
     "config-file"
     "erm_xmpp"
     "gmetadom"
-    "herelib"
     "ocsigen_deriving"
-    "pipebang"
     "stog"
     "ulex"
     "lablgl"
@@ -48,7 +46,6 @@ let
 
     # linking issues?
     "spacetime_lib"
-    "prof_spacetime"
     "mariadb"
     "caqti-driver-mariadb"
 
