@@ -1774,6 +1774,8 @@ with oself;
     '';
   });
 
+  binaryen = oself.callPackage ./binaryen { };
+
   bonsai = osuper.bonsai.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/bonsai/archive/refs/tags/v0.15.1.tar.gz;
