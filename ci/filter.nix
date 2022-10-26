@@ -35,6 +35,7 @@ let
     # Only available for 4.14
     "melange-compiler-libs"
     "melange"
+    "mel"
 
     # dune.configurator issue
     "ocamlfuse"

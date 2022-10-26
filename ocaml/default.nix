@@ -845,12 +845,10 @@ with oself;
   });
 
   lru = osuper.lru.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/lru.ml \
-        --replace \
-        "include H let hash _ x = hash x" \
-        "include H let hash _ x = hash x;; let seeded_hash = hash"
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/pqwy/lru/releases/download/v0.3.1/lru-0.3.1.tbz;
+      sha256 = "1z9nnba2b4q0q0syyqk4790hzxs71la8h2wwhr7j8nvxgb927gkc";
+    };
   });
 
   lutils = buildDunePackage {
@@ -942,6 +940,7 @@ with oself;
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
   melange = callPackage ./melange { };
+  mel = callPackage ./melange/mel.nix { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   merlin-lib =
@@ -1350,6 +1349,13 @@ with oself;
     doCheck = false;
   });
 
+  psq = osuper.psq.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/pqwy/psq/releases/download/v0.2.1/psq-0.2.1.tbz;
+      sha256 = "0i6k5i3dha3b4syz4jpd5fi6dkalas8bhcpfk4blprxb7r9my022";
+    };
+  });
+
   ptime = (osuper.ptime.override { jsooSupport = false; });
 
   reanalyze =
@@ -1622,8 +1628,8 @@ with oself;
 
   tls = osuper.tls.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.15.4/tls-0.15.4.tbz;
-      sha256 = "10n3s7qa6yzchhn16zzb2cyqsj6b8l6dx8yhs7pnjq3gn1b1v3az";
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.15.5/tls-0.15.5.tbz;
+      sha256 = "0ln4rj6qc94v2bp3s7166z804rbd3l6k7kijb1m60c1f9ifyxzyj";
     };
   });
 
