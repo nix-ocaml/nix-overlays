@@ -1,46 +1,21 @@
-{ stdenv
-, opaline
-, buildDunePackage
-, cppo
-, cmdliner
-, melange-compiler-libs
-, reason
-, lib
-, luv
-, base64
-, ocaml
-}:
+{ buildDunePackage, cppo, cmdliner, melange-compiler-libs, reason, base64 }:
 
 buildDunePackage rec {
   pname = "melange";
-  version = "0.0.0";
+  version = "0.2.0-dev";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/066c5ebc2.tar.gz;
-    sha256 = "0kglmvkb2hmg5s30nzh611p20qgsj03v3clc5f36r4kr2w33m05c";
+    url = https://github.com/melange-re/melange/archive/0aa8e5a.tar.gz;
+    sha256 = "1ln7d8lbq0ybnk44ims0kqdrvglm8m6qck211zr2cy2xv4hshl8s";
   };
 
   nativeBuildInputs = [ cppo ];
 
-  propagatedBuildInputs = [
-    cmdliner
-    melange-compiler-libs
-    reason
-    luv
-    base64
-  ];
+  propagatedBuildInputs = [ cmdliner melange-compiler-libs reason base64 ];
 
   installPhase = ''
     runHook preInstall
-    dune install --prefix $out --libdir $out/lib ${pname}
-
-    cp package.json bsconfig.json $out
-
-    mv $out/lib/melange/js $out/lib/js
-    mv $out/lib/melange/es6 $out/lib/es6
-    mv $out/lib/melange/melange/* $out/lib/melange
-    rm -rf $out/lib/melange/melange
-
+    dune install --prefix $out ${pname}
     runHook postInstall
   '';
 }

@@ -940,6 +940,7 @@ with oself;
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
   melange = callPackage ./melange { };
+  mel = callPackage ./melange/mel.nix { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   merlin-lib =
