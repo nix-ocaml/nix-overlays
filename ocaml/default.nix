@@ -23,6 +23,7 @@
 , cairo
 , gtk2
 , zlib-oc
+, callPackage
 }:
 
 oself: osuper:
@@ -1718,8 +1719,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
-  zmq = oself.callPackage ./zmq { };
-  zmq-lwt = oself.callPackage ./zmq/lwt.nix { };
+  zmq = callPackage ./zmq { };
+  zmq-lwt = callPackage ./zmq/lwt.nix { };
 
   secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
     src = builtins.fetchurl {
