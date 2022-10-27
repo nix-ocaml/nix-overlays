@@ -15,5 +15,5 @@ buildDunePackage rec {
   propagatedBuildInputs = [ zeromq stdint ];
 
   checkInputs = [ ounit2 ];
-  doCheck = true;
+  doCheck = false;
 }
