@@ -1,28 +1,19 @@
 { lib, fetchFromGitHub, zeromq, buildDunePackage, dune-configurator, ounit2, stdint }:
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "zmq";
-  version = "5.1.5";
+  version = "5.2.0";
 
   src = fetchFromGitHub {
     owner = "issuu";
     repo = "ocaml-zmq";
-    rev = "5.1.5";
-    sha256 = "sha256-rW6WoOv6GaRAzY0XXZ/XhospLl1oYAxzzTyIUhrk1Bg=";
+    rev = version;
+    sha256 = "sha256-eKCkqmMFZvpE6z4RYz04PMDxgi3EXgDIyyeLEM48D0E=";
   };
 
-  nativeBuildInputs = [
-    dune-configurator
-  ];
+  nativeBuildInputs = [ dune-configurator ];
+  propagatedBuildInputs = [ zeromq stdint ];
 
-  propagatedBuildInputs = [
-    zeromq
-    stdint
-  ];
-
-  checkInputs = [
-    ounit2
-  ];
-
+  checkInputs = [ ounit2 ];
   doCheck = false;
 }
