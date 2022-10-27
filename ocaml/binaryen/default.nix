@@ -11,11 +11,12 @@ buildDunePackage rec {
     sha256 = "sha256-JqD9RNQ0+Kmv45RF6yqRUKeJvoT3bTIUud5iKlA/ogc=";
   };
 
-  postPatch = ''substituteInPlace src/dune --replace "(libraries libbinaryen.c)" ""'';
+  postPatch = ''substituteInPlace src/dune --replace "(libraries libbinaryen.c)" "(c_library_flags -lbinaryen)"'';
 
-  nativeBuildInputs = [ dune-configurator js_of_ocaml ];
+  # Only needed for tests
+  # nativeBuildInputs = [ dune-configurator js_of_ocaml ];
 
   propagatedBuildInputs = [ pkgs.binaryen ];
 
-  doCheck = true;
+  doCheck = false;
 }
