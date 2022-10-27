@@ -1718,8 +1718,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
-  zmq = oself.callPackage ./zmq { };
-  zmq-lwt = oself.callPackage ./zmq/lwt.nix { };
+  zmq = callPackage ./zmq { };
+  zmq-lwt = callPackage ./zmq/lwt.nix { };
 
   secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1774,7 +1774,7 @@ with oself;
     '';
   });
 
-  binaryen = oself.callPackage ./binaryen { };
+  binaryen = callPackage ./binaryen { };
 
   bonsai = osuper.bonsai.overrideAttrs (o: {
     src = builtins.fetchurl {

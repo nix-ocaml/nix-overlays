@@ -8,7 +8,5 @@ buildDunePackage {
   propagatedBuildInputs = [ lwt zmq ];
 
   checkInputs = [ ounit2 ];
-
-  # Tests seem flakey
-  doCheck = false;
+  doCheck = true;
 }
