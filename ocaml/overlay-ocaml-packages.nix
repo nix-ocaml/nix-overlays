@@ -36,8 +36,8 @@ let
       ocamlPackages_5_0 = ocaml-ng.ocamlPackages_5_0.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           src = builtins.fetchurl {
-            url = https://github.com/ocaml/ocaml/archive/8bfc42697.tar.gz;
-            sha256 = "0b5q8ppmcklvf8dgybcf84h3sn4vr88hirsm6lkrvdp3pvs76sws";
+            url = https://github.com/ocaml/ocaml/archive/a7fbbfa48.tar.gz;
+            sha256 = "0c23b5kw6p2xwg0fcv8ydqg3n6waq02bd032bin39a97p427m038";
           };
         });
       });
@@ -48,8 +48,8 @@ let
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/6a7c70f.tar.gz;
-          sha256 = "1fhs1d3hmpj2n8r5r53k15iniph5sc31d35pcq97gjpv4vvsm4la";
+          url = https://github.com/ocaml/ocaml/archive/cc3d9cb9.tar.gz;
+          sha256 = "01fa93wn528x765xnvl215gwzjfvlqmrywkz1aan9ravac71yjvl";
         };
         buildPhase = ''
           make -j8 world
