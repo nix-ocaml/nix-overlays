@@ -182,14 +182,7 @@ with oself;
       ]);
   });
 
-  bls12-381 = osuper.bls12-381.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/dannywillems/ocaml-bls12-381/archive/refs/tags/5.0.0.tar.gz;
-      sha256 = "0d7zpbr0drvf5c5x3rkwdp8bx0rnkc63v6pzkdgb0xma6f5gp53k";
-    };
-    propagatedBuildInputs = [ ff-sig hex integers zarith ];
-    doCheck = false;
-  });
+  bls12-381 = disableTests osuper.bls12-381;
 
   bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
     postPatch = ''
@@ -543,12 +536,6 @@ with oself;
     postPatch = "echo '(lang dune 2.0)' > dune-project";
   });
 
-  faraday = osuper.faraday.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/inhabitedtype/faraday/archive/0.8.2.tar.gz;
-      sha256 = "1iiml37sgn28mm0szm4ldqq6fkji4l5368l7dvgafgpx745sj3kj";
-    };
-  });
   faraday-async = osuper.faraday-async.overrideAttrs (_: {
     patches = [ ];
   });
@@ -2087,19 +2074,6 @@ with oself;
     propagatedBuildInputs = [
       core
       ppx_here
-      ppx_jane
-      ppxlib
-    ];
-  };
-
-  ppx_jsonaf_conv = janePackage {
-    pname = "ppx_jsonaf_conv";
-    version = "0.15.1";
-    hash = "sha256-YzPAB4m+YRLUwooE4q+XJuqIsYJVOSKn9nQyXfHR+XI=";
-    meta.description = "[@@deriving] plugin to generate Jsonaf conversion functions";
-    propagatedBuildInputs = [
-      base
-      jsonaf
       ppx_jane
       ppxlib
     ];
