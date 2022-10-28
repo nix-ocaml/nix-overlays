@@ -573,10 +573,11 @@ with oself;
   });
 
   fileutils = osuper.fileutils.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/gildor478/ocaml-fileutils/releases/download/v0.6.4/fileutils-0.6.4.tbz;
+      sha256 = "0ps41axgp8b83mgplhfllb2ndlqhkfg6mr5lqbdfpdindaybcyvs";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-    postPatch = ''
-      substituteInPlace "src/lib/fileutils/dune" --replace "(libraries " "(libraries camlp-streams "
-    '';
   });
 
   gen = buildDunePackage {
@@ -1530,8 +1531,8 @@ with oself;
 
   tar = osuper.tar.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.2.0/tar-2.2.0.tbz;
-      sha256 = "0qvxdn3crim72g44b6ay6wqrfgpliwp7pi5p2p1rabhs96q4g1n2";
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.2.1/tar-2.2.1.tbz;
+      sha256 = "0anm3zj4bbcw7qjr2ad9r3vc3mb5vy5jay5r79w56l3vp03j1kj3";
     };
     version = "2.2.0";
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ decompress ];
