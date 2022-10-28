@@ -577,7 +577,7 @@ with oself;
       url = https://github.com/gildor478/ocaml-fileutils/releases/download/v0.6.4/fileutils-0.6.4.tbz;
       sha256 = "0ps41axgp8b83mgplhfllb2ndlqhkfg6mr5lqbdfpdindaybcyvs";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
   });
 
   gen = buildDunePackage {
