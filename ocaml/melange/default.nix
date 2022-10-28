@@ -5,8 +5,8 @@ buildDunePackage rec {
   version = "0.2.0-dev";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/0aa8e5a.tar.gz;
-    sha256 = "1ln7d8lbq0ybnk44ims0kqdrvglm8m6qck211zr2cy2xv4hshl8s";
+    url = https://github.com/melange-re/melange/archive/b481d7b.tar.gz;
+    sha256 = "1l0a94gg1d3cxn43vi2pxn3q08j73cxxwbqxi4q8q71gjq09kpg8";
   };
 
   nativeBuildInputs = [ cppo ];
