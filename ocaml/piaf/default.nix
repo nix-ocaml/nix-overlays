@@ -12,6 +12,7 @@
 , sendfile
 , uri
 , piaf-lwt
+, websocketaf
 }:
 
 buildDunePackage {
@@ -31,6 +32,7 @@ buildDunePackage {
     multipart_form
     sendfile
     uri
+    websocketaf
   ];
 
   meta = {
