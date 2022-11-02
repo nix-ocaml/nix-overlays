@@ -493,6 +493,29 @@ with oself;
     propagatedBuildInputs = [ angstrom emile mrmime colombe ];
   };
 
+  http = buildDunePackage {
+    pname = "http";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_alpha0/cohttp-eio-6.0.0.alpha0.tbz;
+      sha256 = "0vmm618kb0dfd3d73x00n0dfrz2a9cmg1j8yfdja171hxbasrm1f";
+    };
+    doCheck = false;
+  };
+
+  cohttp = osuper.cohttp.overrideAttrs (o: {
+    inherit (http) src version;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ http ];
+    doCheck = false;
+  });
+  cohttp-eio = buildDunePackage {
+    pname = "cohttp-eio";
+    inherit (http) src version;
+    doCheck = false;
+    propagatedBuildInputs = [ cohttp eio_main ];
+  };
+
+
   conan = callPackage ./conan { };
   conan-lwt = callPackage ./conan/lwt.nix { };
   conan-unix = callPackage ./conan/unix.nix { };
