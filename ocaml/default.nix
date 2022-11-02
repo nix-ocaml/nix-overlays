@@ -758,6 +758,12 @@ with oself;
       sha256 = "1x7bzkl7nws32xcrp526j5mfsm5s9ivr8wl1kw5xwphv8p8c636m";
     };
   });
+  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml-ocamlbuild/releases/download/5.0/js_of_ocaml-ocamlbuild-5.0.tbz;
+      sha256 = "0yy0l6qfn76ak2hy6h7jw3drszpi3wn8lymp7qmcnyz23jzvqnda";
+    };
+  });
 
   jsonm = osuper.jsonm.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -885,6 +891,12 @@ with oself;
 
   lwt_react = callPackage ./lwt/react.nix { };
 
+  magic-mime = osuper.magic-mime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-magic-mime/releases/download/v1.3.0/magic-mime-1.3.0.tbz;
+      sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
+    };
+  });
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/realworldocaml/mdx/archive/b8b779c0.tar.gz;
