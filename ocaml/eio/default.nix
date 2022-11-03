@@ -7,7 +7,6 @@
 , fmt
 , hmap
 , astring
-  # crowbar
 , mtime
 }:
 
@@ -15,8 +14,8 @@ buildDunePackage {
   pname = "eio";
   version = "0.6";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/eio/releases/download/v0.6/eio-0.6.tbz;
-    sha256 = "0f7gndh96s2r9r5jdpj67xmmwkd9dkpbxz8zm08psgfxaaiyxlza";
+    url = https://github.com/ocaml-multicore/eio/archive/5c1eae4.tar.gz;
+    sha256 = "1r0x6xvimik827r04pqf9f02zf345pc9w5wjs0bpcq6rdrhsp69k";
   };
 
   propagatedBuildInputs = [
