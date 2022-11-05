@@ -1499,6 +1499,17 @@ with oself;
     '';
   });
 
+
+  sourcemaps = buildDunePackage {
+    pname = "sourcemaps";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/flow/ocaml-sourcemaps/archive/2bc7e6e.tar.gz;
+      sha256 = "12ijyczailjd854x1796bwib52f7d87hsh8qkkgp4b9kcn6cbpdv";
+    };
+    propagatedBuildInputs = [ vlq ];
+  };
+
   spelll = osuper.spelll.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/Spelll.ml --replace "Pervasives" "Stdlib"
