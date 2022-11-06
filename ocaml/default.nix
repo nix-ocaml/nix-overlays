@@ -784,26 +784,6 @@ with oself;
     '';
   });
 
-  lablgtk = osuper.lablgtk.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/garrigue/lablgtk/archive/78fcdd2.tar.gz;
-      sha256 = "0b7pz1391m9x03r9f9yixzj09slnk02nixddpzb40vgpq3zizarr";
-    };
-    patches = [ ./lablgtk.patch ];
-    propagatedBuildInputs = [ camlp-streams ];
-  });
-
-  lablgtk3 = osuper.lablgtk3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/garrigue/lablgtk/releases/download/3.1.3/lablgtk3-3.1.3.tbz;
-      sha256 = "1ii1018hli5r1f2jsw8xviyg8n5jnimsiv8mapw6w5nf2pxffskq";
-    };
-    postPatch = ''
-      substituteInPlace dune-project --replace '(version 3.1.2)' ""
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
@@ -1053,9 +1033,6 @@ with oself;
     };
   });
 
-  # Tests don't work on 5.0 because of the Stream.t type.
-  ocaml_gettext = disableTests osuper.ocaml_gettext;
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.0" then
@@ -1217,11 +1194,6 @@ with oself;
   });
 
   ounit2 = osuper.ounit2.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/gildor478/ounit/releases/download/v2.2.6/ounit-2.2.6.tbz;
-      sha256 = "04src5dc95bchimvnlbxih78pn95336b6rimbknqx8ch1qggp406";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
     postPatch = ''
       substituteInPlace src/lib/ounit2/advanced/dune --replace " bytes " " "
     '';
@@ -1533,13 +1505,6 @@ with oself;
     };
   });
 
-  stdint = osuper.stdint.overrideAttrs (_: {
-    patches = [ ];
-    src = builtins.fetchurl {
-      url = https://github.com/andrenth/ocaml-stdint/releases/download/0.7.1/stdint-0.7.1.tbz;
-      sha256 = "1d4n6gbrkx6s6np8ix4qf6zzi8kbwmhjsyajpf1zs3jhkdjwm1rk";
-    };
-  });
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
   syndic = buildDunePackage rec {
@@ -1894,17 +1859,6 @@ with oself;
     propagatedBuildInputs = [ ppx_jane core core_kernel async ];
   };
 
-  sexplib0 = osuper.sexplib0.overrideAttrs (o: {
-    patches =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        [
-          (fetchpatch {
-            url = https://github.com/janestreet/sexplib0/commit/5efaf01fa9b226f84490e3d480a9bebf0a1106bf.patch;
-            sha256 = "sha256-s0Sw1sI3ei4d+kvNElvD6s3ammdJiqgJsizfF5QDf5A=";
-          })
-        ]
-      else [ ];
-  });
   sexplib = osuper.sexplib.overrideAttrs (_: {
     patches =
       if lib.versionAtLeast ocaml.version "5.0" then
