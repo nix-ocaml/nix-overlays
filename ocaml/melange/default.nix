@@ -1,17 +1,17 @@
-{ buildDunePackage, cppo, cmdliner, melange-compiler-libs, reason, base64 }:
+{ buildDunePackage, cppo, cmdliner, melange-compiler-libs, base64 }:
 
 buildDunePackage rec {
   pname = "melange";
-  version = "0.2.0-dev";
+  version = "0.3.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/b481d7b.tar.gz;
-    sha256 = "1l0a94gg1d3cxn43vi2pxn3q08j73cxxwbqxi4q8q71gjq09kpg8";
+    url = https://github.com/melange-re/melange/releases/download/0.3.0/melange-0.3.0.tbz;
+    sha256 = "1s52vvrnzknd5azv8kx6wpydhhxjhz7x9jyvivskwhhagvnddw6x";
   };
 
   nativeBuildInputs = [ cppo ];
 
-  propagatedBuildInputs = [ cmdliner melange-compiler-libs reason base64 ];
+  propagatedBuildInputs = [ cmdliner melange-compiler-libs base64 ];
 
   installPhase = ''
     runHook preInstall
