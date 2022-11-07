@@ -1551,6 +1551,13 @@ with oself;
     patches = [ ];
   });
 
+  topkg = osuper.topkg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/topkg/releases/topkg-1.0.6.tbz;
+      sha256 = "11ycfk0prqvifm9jca2308gw8a6cjb1hqlgfslbji2cqpan09kpq";
+    };
+  });
+
   tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ ocp-ocamlres ];
   });
