@@ -1880,12 +1880,6 @@ with oself;
     '';
   });
 
-  base = osuper.base.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/base/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "050syrp6v00gn50d6xvwv6a36zsk4zmahymgllxpw9paf4qk0pkm";
-    };
-  });
 
   core = osuper.core.overrideAttrs (o: {
     src = builtins.fetchurl {
