@@ -1936,21 +1936,6 @@ with oself;
     };
   });
 
-  ppx_yojson_conv = (janePackage {
-    pname = "ppx_yojson_conv";
-    version = "0.15.0";
-    hash = "sha256-FGtReLkdI9EnD6sPsMQSv5ipfDyY6z5fIkjqH+tie48=";
-    propagatedBuildInputs = [ ppxlib ppx_yojson_conv_lib ppx_js_style ];
-    meta = {
-      description = "Yojson Deriver PPX";
-    };
-  }).overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_yojson_conv/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1kagc5zk3kbnhvwz4bli9v75wwx3mrj7id1bd2r28ninf45d515f";
-    };
-  });
-
   sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/sexp_pretty/archive/refs/tags/v0.15.1.tar.gz;
