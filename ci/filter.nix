@@ -115,6 +115,10 @@ let
     "pgsolver"
     "tcslib"
     "plotkicadsch"
+
+    # Fatal error: exception Dynlink.Error
+    # (Dynlink.Library's_module_initializers_failed "Not_found")
+    "metapp"
   ];
 
   ocaml5Ignores = [
