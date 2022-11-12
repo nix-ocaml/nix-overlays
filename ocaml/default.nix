@@ -1279,6 +1279,15 @@ with oself;
 
   ppx_tools = callPackage ./ppx_tools { };
 
+  ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    propagatedBuildInputs = [
+      ocaml-compiler-libs
+      ppx_derivers
+      sexplib0
+      stdlib-shims
+    ];
+  });
+
   printbox = disableTests osuper.printbox;
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
     src = builtins.fetchurl {
