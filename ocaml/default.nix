@@ -167,10 +167,6 @@ with oself;
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ ppxlib cmdliner ];
-    src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/bisect_ppx/archive/cc442a08.tar.gz;
-      sha256 = "08mx270xp1ypqvy9cfpyyvws538a0l90xasvbx0vs8071vgb2wri";
-    };
   });
 
   bjack = osuper.bjack.overrideAttrs (o: {
@@ -1258,19 +1254,6 @@ with oself;
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
-  ppxlib = osuper.ppxlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.28.0/ppxlib-0.28.0.tbz;
-      sha256 = "0xzk1jv4hm37p7l02j157plbibk61ashjj4nr8466841l3wyaynq";
-    };
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ppx_derivers
-      sexplib0
-      stdlib-shims
-    ];
-  });
-
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving/archive/b4896214b0.tar.gz;
@@ -1283,21 +1266,6 @@ with oself;
       ppx_derivers
       result
     ];
-  });
-
-  ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/hammerlab/ppx_deriving_cmdliner/archive/1f086651fe7f8dd98e371b09c6fcc4dbc6db1c7c.tar.gz;
-      sha256 = "105y30gn6gp1hcwmx9g8vyki5hy5bi2jgbs0km5z1rq7i3kyb8kk";
-    };
-  });
-
-  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.7.0/ppx_deriving_yojson-3.7.0.tar.gz;
-      sha256 = "1h7vz7lhvsgn6nl68g3dhhghlm884xpa1xawm6wm54pjc57gc6xx";
-    };
-    propagatedBuildInputs = [ ppxlib ppx_deriving yojson ];
   });
 
   ppx_blob = disableTests osuper.ppx_blob;
@@ -1419,13 +1387,7 @@ with oself;
     };
   });
 
-  # For ppx_css
-  sedlex_2 = sedlex;
   sedlex = osuper.sedlex.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/sedlex/archive/refs/tags/v2.6.tar.gz;
-      sha256 = "12n9ji158qcvmmh6334bvvmnraddcnp6kg6r41sn6gc55s85mxcv";
-    };
     preBuild = ''
       substituteInPlace src/lib/dune --replace "(libraries " "(libraries camlp-streams "
     '';
@@ -1926,13 +1888,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/janestreet/ppx_expect/archive/refs/tags/v0.15.1.tar.gz;
       sha256 = "15r0k8pvl7n53n2kzhdyyyh5am7z721gdcn6v8a18l11x63algnx";
-    };
-  });
-
-  ppx_sexp_conv = osuper.ppx_sexp_conv.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/ppx_sexp_conv/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "179f1iz504l008b3p3d9q2nj44wv7y31pc997x32m6aq1j2lfip3";
     };
   });
 
