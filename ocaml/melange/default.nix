@@ -18,4 +18,6 @@ buildDunePackage rec {
     dune install --prefix $out ${pname}
     runHook postInstall
   '';
+
+  meta.mainProgram = "melc";
 }
