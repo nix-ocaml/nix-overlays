@@ -1082,28 +1082,6 @@ with oself;
     '';
   });
 
-  ocaml-canvas = buildDunePackage {
-    pname = "ocaml-canvas";
-    version = "n/a";
-    hardeningDisable = [ "strictoverflow" ];
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ocaml-canvas/archive/2789f8497.tar.gz;
-      sha256 = "1q52fp26qnj7ihbbw1zjlql9szz6lkc2b5k4i02w1rfnf24qn5xk";
-    };
-
-    buildInputs = lib.optionals (! stdenv.isDarwin) [
-      freetype
-      libfontconfig
-      xkbcommon
-      libxcb
-      libxcb-shm
-      libxcb-image
-      libxcb-xkb
-      libxcb-keysyms
-    ];
-    propagatedBuildInputs = [ dune-configurator react ];
-  };
-
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
     postPatch = ''
       substituteInPlace "menhir-recover/emitter.ml" --replace \
