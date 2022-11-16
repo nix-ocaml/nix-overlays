@@ -754,12 +754,6 @@ with oself;
       sha256 = "1x7bzkl7nws32xcrp526j5mfsm5s9ivr8wl1kw5xwphv8p8c636m";
     };
   });
-  js_of_ocaml-ocamlbuild = osuper.js_of_ocaml-ocamlbuild.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml-ocamlbuild/releases/download/5.0/js_of_ocaml-ocamlbuild-5.0.tbz;
-      sha256 = "0yy0l6qfn76ak2hy6h7jw3drszpi3wn8lymp7qmcnyz23jzvqnda";
-    };
-  });
 
   jsonm = osuper.jsonm.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1087,6 +1081,28 @@ with oself;
         --suffix PATH : "${ buildPackages.stdenv.cc }/bin"
     '';
   });
+
+  ocaml-canvas = buildDunePackage {
+    pname = "ocaml-canvas";
+    version = "n/a";
+    hardeningDisable = [ "strictoverflow" ];
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocaml-canvas/archive/2789f8497.tar.gz;
+      sha256 = "1q52fp26qnj7ihbbw1zjlql9szz6lkc2b5k4i02w1rfnf24qn5xk";
+    };
+
+    buildInputs = lib.optionals (! stdenv.isDarwin) [
+      freetype
+      libfontconfig
+      xkbcommon
+      libxcb
+      libxcb-shm
+      libxcb-image
+      libxcb-xkb
+      libxcb-keysyms
+    ];
+    propagatedBuildInputs = [ dune-configurator react ];
+  };
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
     postPatch = ''
