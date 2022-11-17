@@ -377,7 +377,7 @@ with oself;
       sha256 = "0yiisyl5a6la9mlhplfyjxl21ccwv6axjbb1v76xm69324z2xf9g";
     };
 
-    propagatedBuildInputs = [ ocaml_extlib ];
+    propagatedBuildInputs = [ extlib ];
 
     postPatch = ''
       substituteInPlace ./cudf.ml --replace "Pervasives." "Stdlib."
@@ -454,10 +454,6 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.6.0/dune-3.6.0.tbz;
-      sha256 = "0y7j5gfwzxpfnwplmlgfa7ghgcgixhva1yvayc6fc10nab4wd808";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     postPatch = ''
@@ -692,6 +688,16 @@ with oself;
   irmin-tezos = disableTests osuper.irmin-tezos;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
+
+  iso639 = buildDunePackage {
+    pname = "iso639";
+    version = "0.0.5";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-iso639/releases/download/v0.0.5/iso639-v0.0.5.tbz;
+      sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
+    };
+    nativeBuildInputs = [ wget ];
+  };
 
   iter = osuper.iter.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1014,13 +1020,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
-
-  ocaml_extlib-1-7-8 = osuper.ocaml_extlib-1-7-8.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ygrek/ocaml-extlib/archive/9e9270de9d6c33e08a18096f7fb75b4205e6c1ed.tar.gz;
-      sha256 = "006zc8jc1zx20iis06z3gppmikc6pfarx5ikdhihggk7k1wam6c1";
-    };
   });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
