@@ -23,6 +23,7 @@
 , cairo
 , gtk2
 , zlib-oc
+, wget
 }:
 
 oself: osuper:
