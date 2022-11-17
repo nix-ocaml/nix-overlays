@@ -96,7 +96,7 @@ let
       cmdliner
       cudf
       mccs
-      ocaml_extlib
+      extlib
     ];
     src = fetchFromGitHub {
       owner = "andreypopp";

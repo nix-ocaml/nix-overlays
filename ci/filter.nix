@@ -54,9 +54,6 @@ let
     "irmin-graphql"
     "irmin-mirage-graphql"
 
-    # broken since 4.12
-    "ocaml_extlib-1-7-7"
-
     # doesn't work with my fork of http/af
     "paf"
     "paf-le"
