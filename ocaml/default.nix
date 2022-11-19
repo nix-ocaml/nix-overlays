@@ -23,7 +23,7 @@
 , cairo
 , gtk2
 , zlib-oc
-, wget
+, unzip
 }:
 
 oself: osuper:
@@ -328,6 +328,45 @@ with oself;
   conan-unix = callPackage ./conan/unix.nix { };
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
+
+  confero =
+    let
+      allkeys_txt = builtins.fetchurl {
+        url = https://www.unicode.org/Public/UCA/15.0.0/allkeys.txt;
+        sha256 = "0xvmfw9sgcmaqs33w31vcmgqabkb2ls146pb9hvidbfl4isj49qq";
+      };
+      collationTest = builtins.fetchurl {
+        url = https://www.unicode.org/Public/UCA/15.0.0/CollationTest.zip;
+        sha256 = "013w1s3nwalyid9n092my9ri1j0kzc35bphzbrdcaz6l22ph81f3";
+      };
+    in
+    buildDunePackage {
+      pname = "confero";
+      version = "0.1.1";
+      src = builtins.fetchurl {
+        url = https://github.com/paurkedal/confero/archive/5414479.tar.gz;
+        sha256 = "1f5vxd4bw05r9vaqdm3zdjl4irz11zqz04wgyvjzxn7kvd7cdn12";
+      };
+
+      nativeBuildInputs = [ unzip ];
+      postPatch = ''
+        cp ${allkeys_txt} ./lib/ducet/allkeys.txt
+        cp ${collationTest} ./test/CollationTest.zip
+      '';
+
+      doCheck = true;
+
+      propagatedBuildInputs = [
+        angstrom
+        angstrom-unix
+        cmdliner
+        fmt
+        iso639
+        uucp
+        uunf
+        uutf
+      ];
+    };
 
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
@@ -706,7 +745,6 @@ with oself;
       url = https://github.com/paurkedal/ocaml-iso639/releases/download/v0.0.5/iso639-v0.0.5.tbz;
       sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
     };
-    nativeBuildInputs = [ wget ];
   };
 
   iter = osuper.iter.overrideAttrs (o: {
@@ -1515,13 +1553,10 @@ with oself;
 
   toml = osuper.toml.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-toml/to.ml/archive/41172b739dff43424a12f7c1f0f64939e3660648.tar.gz;
-      sha256 = "0ck5bqyly3hxdb0kqgkjjl531893r7m4bhk6i93bv1wq2y58igzq";
+      url = https://github.com/ocaml-toml/to.ml/archive/7.1.0.tar.gz;
+      sha256 = "1vsjlwsq3q7wf0mcvxszxdl212zwqynr9kjpsxnx894yxlb9qkhx";
     };
 
-    preConfigure = ''
-      echo '(using menhir 2.1)' >> ./dune-project
-    '';
     patches = [ ];
   });
 
