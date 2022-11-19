@@ -136,6 +136,15 @@ with oself;
     };
   };
 
+  bencode = buildDunePackage {
+    pname = "bencode";
+    version = "2.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/rgrinberg/bencode/archive/2.0.tar.gz";
+      sha256 = "233eae0817126e9c4a781bf1329d834672b77954e6b983a4d0a298d1e2ff0756";
+    };
+  };
+
   bigarray-compat = osuper.bigarray-compat.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/bigarray-compat/releases/download/v1.1.0/bigarray-compat-1.1.0.tbz;
