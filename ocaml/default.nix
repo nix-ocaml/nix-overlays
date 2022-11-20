@@ -277,8 +277,6 @@ with oself;
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
 
-  camlidl = callPackage ./camlidl { };
-
   cpdf = osuper.cpdf.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/johnwhitington/cpdf-source/archive/a0e93444b.tar.gz;
@@ -748,18 +746,11 @@ with oself;
   };
 
   iter = osuper.iter.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/iter/archive/refs/tags/v1.6.tar.gz;
-      sha256 = "0blvp84nhws2amyhh9pkm4qnzm3rw5ya73fh88312v5w0gh5i1xk";
-    };
-
     postPatch = ''
       substituteInPlace src/dune --replace "(libraries bytes)" ""
     '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
-    # MDX has some broken python transitive deps
-    doCheck = false;
   });
+
   qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/core/dune --replace "unix bytes" "unix"
@@ -987,18 +978,6 @@ with oself;
   metrics = osuper.metrics.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/unix/dune --replace "mtime.clock.os" ""
-    '';
-  });
-
-  mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/nberth/mlgmpidl/archive/refs/tags/1.2.14.tar.gz;
-      sha256 = "0y5qb73nbiz81bg599by695f5kvm0ax199jax7xygbx48s9pm2fr";
-    };
-    postPatch = ''
-      substituteInPlace Makefile --replace " bigarray" ""
-      substituteInPlace Makefile --replace "$(OCAMLOPT) -p " "$(OCAMLOPT) "
-      substituteInPlace gmp_caml.c --replace "alloc_custom" "caml_alloc_custom"
     '';
   });
 
