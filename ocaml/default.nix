@@ -342,8 +342,8 @@ with oself;
       pname = "confero";
       version = "0.1.1";
       src = builtins.fetchurl {
-        url = https://github.com/paurkedal/confero/archive/5414479.tar.gz;
-        sha256 = "1f5vxd4bw05r9vaqdm3zdjl4irz11zqz04wgyvjzxn7kvd7cdn12";
+        url = https://github.com/paurkedal/confero/archive/252cf3e.tar.gz;
+        sha256 = "0lj3vrjf4s2gkf2jyd6iz1bsx5vb6cp472496r3lrj07zdz5wgn7";
       };
 
       nativeBuildInputs = [ unzip ];
@@ -976,9 +976,10 @@ with oself;
   };
 
   metrics = osuper.metrics.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/unix/dune --replace "mtime.clock.os" ""
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/metrics/archive/995eb18d.tar.gz;
+      sha256 = "1isjkygn17g8x0563kmfq62xql1wi7cxdy1qiiymnxy6ffn3sc4j";
+    };
   });
 
   mongo = callPackage ./mongo { };
