@@ -6,6 +6,11 @@ on:
   push:
     branches:
       - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   nix-fmt-check:
     runs-on: ubuntu-latest
@@ -34,11 +39,6 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
-
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
@@ -70,10 +70,6 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
@@ -108,10 +104,6 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
@@ -143,10 +135,6 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
@@ -186,11 +174,6 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ secrets.GH_PAT_ANMONTEIRO }}
-
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
