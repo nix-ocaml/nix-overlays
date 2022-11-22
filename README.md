@@ -1,4 +1,4 @@
-# OCaml-focused custom nix-overlays
+# OCaml-focused custom [Nix Overlays](https://nixos.wiki/wiki/Overlays)
 
 This repo contains a set of custom overlays and upgrades over the upstream
 nixpkgs set of (mostly) OCaml packages, and a few other curated derivations.
