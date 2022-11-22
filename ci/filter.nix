@@ -87,9 +87,6 @@ let
     "opus"
     "vorbis"
 
-    # https://github.com/mirage/metrics/issues/57
-    "metrics-unix"
-
     "dream-serve"
 
     # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
