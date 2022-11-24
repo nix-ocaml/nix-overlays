@@ -11,13 +11,16 @@
 , multipart_form
 , sendfile
 , uri
-, piaf-lwt
 , websocketaf
 }:
 
 buildDunePackage {
   pname = "piaf";
-  inherit (piaf-lwt) src version;
+  version = "n/a";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/piaf/archive/8c2329e.tar.gz;
+    sha256 = "0ymavp7ij488n25q6m1714ncpgrg9w4b7crhs1bs6gnq4wbbz3qc";
+  };
 
   doCheck = false;
 

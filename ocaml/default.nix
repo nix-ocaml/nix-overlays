@@ -1277,10 +1277,6 @@ with oself;
   });
   pg_query = callPackage ./pg_query { };
 
-  piaf-lwt = callPackage ./piaf/lwt.nix { };
-  # Overridden for 5.0 in `./ocaml5.nix`;
-  piaf = piaf-lwt;
-
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
