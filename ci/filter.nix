@@ -113,6 +113,12 @@ let
     # Fatal error: exception Dynlink.Error
     # (Dynlink.Library's_module_initializers_failed "Not_found")
     "metapp"
+
+
+    # Not compatible with EIO yet
+    "lambda-runtime"
+    "vercel"
+    "oidc-client"
   ];
 
   ocaml5Ignores = [
