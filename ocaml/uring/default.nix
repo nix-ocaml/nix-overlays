@@ -5,8 +5,8 @@ buildDunePackage {
   version = "0.4";
 
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/ocaml-uring/archive/385bf2e1.tar.gz;
-    sha256 = "0bw4c5j9sy0biah447cdj2gbmn84dch9k7a95vwh8kyidnvwrwzh";
+    url = https://github.com/ocaml-multicore/ocaml-uring/archive/b95047500.tar.gz;
+    sha256 = "1wacdsrlsh072m7cabbgrmiwbiyyx7alss8x305l5l5fqmfaz7ra";
   };
 
   postPatch = ''
