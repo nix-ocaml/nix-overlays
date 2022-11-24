@@ -24,6 +24,11 @@
 , gtk2
 , zlib-oc
 , unzip
+, freetype
+, fontconfig
+, libxkbcommon
+, libxcb
+, xorg
 }:
 
 oself: osuper:
@@ -1108,6 +1113,33 @@ with oself;
         --suffix PATH : "${ buildPackages.stdenv.cc }/bin"
     '';
   });
+
+  ocaml-canvas = buildDunePackage {
+    pname = "ocaml-canvas";
+    version = "n/a";
+    hardeningDisable = [ "strictoverflow" ];
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocaml-canvas/archive/962dedd98.tar.gz;
+      sha256 = "0f8rwj664jcv1l31yxiqfb0cnhcz0v6q18n9lf60g231sl9bvcaz";
+    };
+
+    buildInputs = lib.optionals (! stdenv.isDarwin) [
+      freetype
+      fontconfig
+      libxkbcommon
+      libxcb
+      xorg.xcbutilkeysyms
+      xorg.xcbutilimage
+    ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+      AppKit
+      Foundation
+      Carbon
+      Cocoa
+      CoreGraphics
+    ]);
+
+    propagatedBuildInputs = [ dune-configurator react ];
+  };
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
     postPatch = ''
