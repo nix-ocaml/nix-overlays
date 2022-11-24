@@ -155,7 +155,6 @@ with oself;
       url = https://github.com/mirage/bigarray-compat/releases/download/v1.1.0/bigarray-compat-1.1.0.tbz;
       sha256 = "1m8q6ywik6h0wrdgv8ah2s617y37n1gdj4qvc86yi12winj6ji23";
     };
-
   });
 
   bigstring = osuper.bigstring.overrideAttrs (_: {
@@ -475,6 +474,16 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/UnixJunkie/dolog/archive/refs/tags/v6.0.0.tar.gz;
       sha256 = "0idxs1lnpsh49hvxnrkb3ijybd83phzbxfcichchw511k9ismlia";
+    };
+  };
+
+  domain_shims = buildDunePackage {
+    pname = "domain_shims";
+    version = "0.1.0";
+
+    src = builtins.fetchurl {
+      url = https://gitlab.com/gasche/domain-shims/-/archive/0.1.0/domain-shims-0.1.0.tar.gz;
+      sha256 = "0cad63qyfzn0nhf8b80yaw974q4zy1jahwd44rmaawpsj4ap2rq8";
     };
   };
 
@@ -818,12 +827,6 @@ with oself;
     '';
   });
 
-  ke = osuper.ke.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace ./lib/dune --replace "bigarray-compat" ""
-    '';
-  });
-
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
@@ -886,11 +889,15 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ bigarray-compat libev-oc ];
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/lwt/archive/3d6f0fac.tar.gz;
+      sha256 = "1gakp1yy4ngzpssbmmv1ldhmlsp4hlg0wp6zbl7md5s9mvmx5a33";
+    };
+
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
+    propagatedBuildInputs = [ libev-oc ocplib-endian ];
 
     postPatch = ''
-      substituteInPlace src/core/dune --replace "(libraries bytes)" ""
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
   });
@@ -1166,10 +1173,9 @@ with oself;
 
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocamlpro/ocplib-endian/archive/4a9fd796.tar.gz;
-      sha256 = "1ic1dwzp7bi7kdkbbzd7h38dvzhw83xzja7mzam6nsvnax4xp0sa";
+      url = https://github.com/ocamlpro/ocplib-endian/archive/fda4d5525.tar.gz;
+      sha256 = "14g214dn6w0gqr9rw2v17ljhcli94fwn81j8z624xqh8kx2050v2";
     };
-    propagatedBuildInputs = [ bigarray-compat ];
   });
 
   ocplib-json-typed = osuper.ocplib-json-typed.overrideAttrs (o: {
@@ -1270,10 +1276,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
   pg_query = callPackage ./pg_query { };
-
-  piaf-lwt = callPackage ./piaf/lwt.nix { };
-  # Overridden for 5.0 in `./ocaml5.nix`;
-  piaf = piaf-lwt;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = builtins.fetchurl {

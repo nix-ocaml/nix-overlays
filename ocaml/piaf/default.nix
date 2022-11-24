@@ -9,15 +9,17 @@
 , ipaddr
 , magic-mime
 , multipart_form
-, sendfile
 , uri
-, piaf-lwt
 , websocketaf
 }:
 
 buildDunePackage {
   pname = "piaf";
-  inherit (piaf-lwt) src version;
+  version = "n/a";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/piaf/archive/2671740.tar.gz;
+    sha256 = "0r2y4vlf2c85zp8d718k36794j9l2v4h8xic47m509v7s2y28cgi";
+  };
 
   doCheck = false;
 
@@ -30,7 +32,6 @@ buildDunePackage {
     ipaddr
     magic-mime
     multipart_form
-    sendfile
     uri
     websocketaf
   ];

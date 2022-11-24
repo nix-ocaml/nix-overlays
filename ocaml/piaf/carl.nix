@@ -18,7 +18,7 @@ stdenv.mkDerivation {
 
   # remove the piaf directories. we're depending on piaf as a lib
   postPatch = ''
-    rm -rf vendor lib lib_test multipart multipart_test stream
+    rm -rf vendor lib lib_test multipart multipart_test stream sendfile
   '';
   buildPhase = ''
     dune build bin/carl.exe --display=short --profile=${if static then "static" else "release"}

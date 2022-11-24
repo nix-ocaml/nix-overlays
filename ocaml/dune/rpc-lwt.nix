@@ -11,4 +11,10 @@ buildDunePackage {
     rm -rf vendor/csexp
     rm -rf vendor/pp
   '';
+
+  postPatch = ''
+    substituteInPlace "otherlibs/dune-rpc-lwt/src/dune_rpc_lwt.ml" --replace \
+      "Lwt_result.catch (Lwt_io.with_file ~mode:Input s Lwt_io.read)" \
+      "Lwt_result.catch (fun () -> (Lwt_io.with_file ~mode:Input s Lwt_io.read))"
+  '';
 }
