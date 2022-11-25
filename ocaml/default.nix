@@ -168,6 +168,8 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
 
+  binaryen = callPackage ./binaryen { };
+
   biniou = osuper.biniou.overrideAttrs (o: {
     patches = [
       (fetchpatch {
@@ -1754,8 +1756,6 @@ with oself;
     '';
   });
 
-  binaryen = callPackage ./binaryen { };
-
   bonsai = osuper.bonsai.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/bonsai/archive/refs/tags/v0.15.1.tar.gz;
@@ -1764,6 +1764,10 @@ with oself;
     patches = [ ];
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
+  });
+
+  ppx_expect = osuper.ppx_expect.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
   pyml = buildDunePackage {
@@ -1790,6 +1794,7 @@ with oself;
     meta.broken = false;
     patches = [ ];
   });
+
   core_unix = osuper.core_unix.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.2.tar.gz;
