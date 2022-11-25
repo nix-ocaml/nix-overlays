@@ -995,6 +995,9 @@ with oself;
       sha256 = "1isjkygn17g8x0563kmfq62xql1wi7cxdy1qiiymnxy6ffn3sc4j";
     };
   });
+  metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
+    postPatch = null;
+  });
 
   mongo = callPackage ./mongo { };
   mongo-lwt = callPackage ./mongo/lwt.nix { };
