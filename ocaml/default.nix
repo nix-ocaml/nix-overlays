@@ -824,9 +824,20 @@ with oself;
   });
 
   kafka = osuper.kafka.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./lib/ocaml_kafka.c --replace "= alloc_small" "= caml_alloc_small"
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/didier-wenzek/ocaml-kafka/archive/2f607bcf.tar.gz;
+      sha256 = "168wyh65nmwnhp4w8x5891rw5brcmhiqq9inaq0l73cfc3vax7bb";
+    };
+    hardeningDisable = [ "strictoverflow" ];
+  });
+  kafka_async = buildDunePackage {
+    pname = "kafka_async";
+    inherit (kafka) src version;
+    propagatedBuildInputs = [ async kafka ];
+    hardeningDisable = [ "strictoverflow" ];
+  };
+  kafka_lwt = osuper.kafka_lwt.overrideAttrs (_: {
+    hardeningDisable = [ "strictoverflow" ];
   });
 
   lacaml = osuper.lacaml.overrideAttrs (_: {
