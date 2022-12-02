@@ -267,8 +267,6 @@ with oself;
     };
   });
 
-  calendar = callPackage ./calendar { };
-
   cairo2 = osuper.cairo2.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
@@ -731,13 +729,6 @@ with oself;
   });
 
   hyper = callPackage ./hyper { };
-
-  integers = osuper.integers.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/signed.ml --replace "Pervasives" "Stdlib"
-      substituteInPlace ./src/unsigned.ml --replace "Pervasives" "Stdlib"
-    '';
-  });
 
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
