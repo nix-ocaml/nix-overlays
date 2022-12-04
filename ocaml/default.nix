@@ -502,9 +502,6 @@ with oself;
     '';
   });
 
-  # Make `dune` effectively be Dune v2.  This works because Dune 2 is
-  # backwards compatible.
-
   dune_1 = dune;
 
   dune =
@@ -1026,6 +1023,13 @@ with oself;
     doCheck = !lib.versionAtLeast ocaml.version "5.0";
   });
 
+  mtime_2 = osuper.mtime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dbuenzli/mtime/archive/refs/tags/v2.0.0.tar.gz;
+      sha256 = "1md8g2sm7ajlb94rgn0p5z73ik3h7mvr2jfhgmbyslsq1syhbn05";
+    };
+  });
+
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
@@ -1346,6 +1350,13 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/pqwy/psq/releases/download/v0.2.1/psq-0.2.1.tbz;
       sha256 = "0i6k5i3dha3b4syz4jpd5fi6dkalas8bhcpfk4blprxb7r9my022";
+    };
+  });
+
+  ptime = osuper.ptime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/ptime/releases/ptime-1.1.0.tbz;
+      sha256 = "1c9y07vnvllfprf0z1vqf6fr73qxw7hj6h1k5ig109zvaiab3xfb";
     };
   });
 
