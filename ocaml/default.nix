@@ -630,21 +630,11 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
   });
 
-  gen = buildDunePackage {
-    pname = "gen";
-    version = "v1.0";
-    src = fetchFromGitHub {
-      owner = "c-cube";
-      repo = "gen";
-      rev = "v1.0";
-      sha256 = "1z5nw5wljvcqp8q07h336bbvf9paynia0jsdh4486hlkbmr1ask1";
-    };
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ seq ];
+  gen = osuper.gen.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bytes seq" "seq"
     '';
-  };
+  });
 
   gen_js_api = disableTests osuper.gen_js_api;
 
