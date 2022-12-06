@@ -122,8 +122,6 @@ let
   ];
 
   ocaml5Ignores = [
-    "camlp5_strict"
-    "camlp5"
     "cpdf"
     "dose3"
     "erm_xml"
