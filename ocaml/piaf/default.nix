@@ -11,6 +11,7 @@
 , multipart_form
 , uri
 , websocketaf
+, alcotest
 }:
 
 buildDunePackage {
@@ -22,6 +23,7 @@ buildDunePackage {
   };
 
   doCheck = true;
+  checkInputs = [ alcotest ];
 
   propagatedBuildInputs = [
     eio
