@@ -17,11 +17,11 @@ buildDunePackage {
   pname = "piaf";
   version = "n/a";
   src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/piaf/archive/2671740.tar.gz;
-    sha256 = "0r2y4vlf2c85zp8d718k36794j9l2v4h8xic47m509v7s2y28cgi";
+    url = https://github.com/anmonteiro/piaf/archive/c4f110ea66.tar.gz;
+    sha256 = "1gv33l1rb3jvdp7lx25qs07w67gi2n7k8226dmqdn1s7b97dj56s";
   };
 
-  doCheck = false;
+  doCheck = true;
 
   propagatedBuildInputs = [
     eio
