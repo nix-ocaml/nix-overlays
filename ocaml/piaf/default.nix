@@ -12,6 +12,7 @@
 , uri
 , websocketaf
 , alcotest
+, dune-site
 }:
 
 buildDunePackage {
@@ -23,7 +24,7 @@ buildDunePackage {
   };
 
   doCheck = true;
-  checkInputs = [ alcotest ];
+  checkInputs = [ alcotest dune-site ];
 
   propagatedBuildInputs = [
     eio
