@@ -787,13 +787,6 @@ with oself;
   jose = callPackage ./jose { };
 
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/archive/22f219a55.tar.gz;
-      sha256 = "1x7bzkl7nws32xcrp526j5mfsm5s9ivr8wl1kw5xwphv8p8c636m";
-    };
-  });
-
   jsonm = osuper.jsonm.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/jsonm/archive/7220492e3909002935aa2851edab4ee4eadb324c.tar.gz;
@@ -1805,11 +1798,6 @@ with oself;
   });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/core_unix/archive/refs/tags/v0.15.2.tar.gz;
-      sha256 = "0yznym5rr4f2z4swsjjlj84aql1yrkij7zdkh6h0z5h38sahwva8";
-    };
-
     postPatch = ''
       ${o.postPatch}
 
@@ -1877,13 +1865,6 @@ with oself;
     propagatedBuildInputs = [ ppx_jane core core_kernel async ];
   };
 
-  csvfields = osuper.csvfields.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/csvfields/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1iwgs3810k1gikrqk71y4xfnf5lhl8l0mxj6vqcbq33dmy2mq28p";
-    };
-  });
-
   jst-config = osuper.jst-config.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/jst-config/archive/refs/tags/v0.15.1.tar.gz;
@@ -1909,13 +1890,6 @@ with oself;
   ppx_optcomp = addStdio osuper.ppx_optcomp;
   ppx_optional = addBase osuper.ppx_optional;
   ppx_stable = addBase osuper.ppx_stable;
-
-  sexp_pretty = osuper.sexp_pretty.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/sexp_pretty/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1s77hxxsn3scy5gcyxrbq02f4ckhxhm1r6if5fsglj490qk0q5by";
-    };
-  });
 
   virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
     src = builtins.fetchurl {
