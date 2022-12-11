@@ -295,13 +295,7 @@ with oself;
     };
   });
 
-  carton = osuper.carton.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.6.0/git-carton-v0.6.0.tbz;
-      sha256 = "0mbz90lrsvqw17dx5mw33qcki8z76ya2j75zkqr3il6bmrgbh29l";
-    };
-    doCheck = false;
-  });
+  carton = disableTests osuper.carton;
 
   clz = buildDunePackage {
     pname = "clz";
