@@ -1422,14 +1422,6 @@ with oself;
     };
   });
 
-  sedlex = osuper.sedlex.overrideAttrs (o: {
-    preBuild = ''
-      substituteInPlace src/lib/dune --replace "(libraries " "(libraries camlp-streams "
-    '';
-
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   sendfile = callPackage ./sendfile { };
 
   session = callPackage ./session { };
