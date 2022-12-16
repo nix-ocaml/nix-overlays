@@ -1486,14 +1486,6 @@ with oself;
     propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
-  stdcompat = osuper.stdcompat.overrideAttrs (o: {
-    nativeBuildInputs = [ ocaml findlib autoconf automake ];
-    src = builtins.fetchurl {
-      url = https://github.com/thierry-martinez/stdcompat/releases/download/v19/stdcompat-19.tar.gz;
-      sha256 = "0m8a6mbv3n5aaf69fdnq5gpdr6yq7z08afjv7s9dw877i5vhd90c";
-    };
-  });
-
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
   syndic = buildDunePackage rec {
@@ -1758,20 +1750,12 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
-  pyml = buildDunePackage {
-    pname = "pyml";
-    version = "20220905";
-    src = builtins.fetchurl {
-      url = https://github.com/thierry-martinez/pyml/releases/download/20220905/pyml.20220905.tar.gz;
-      sha256 = "1r81iy2fdsi1cmh7s31aac9ih3mn5d2vxwgdg9wxkidrc33a8i5x";
-    };
-
+  pyml = osuper.pyml.overrideAttrs (_: {
     propagatedBuildInputs = [
       python3
       stdcompat
     ];
-
-  };
+  });
 
   pythonlib = osuper.pythonlib.overrideAttrs (o: {
     src = builtins.fetchurl {
