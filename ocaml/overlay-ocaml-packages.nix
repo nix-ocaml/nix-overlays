@@ -35,9 +35,11 @@ let
 
       ocamlPackages_5_0 = ocaml-ng.ocamlPackages_5_0.overrideScope' (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
-          src = builtins.fetchurl {
-            url = https://github.com/ocaml/ocaml/archive/refs/tags/5.0.0-beta2.tar.gz;
-            sha256 = "1spramdvdizqxzz19aw67gwrx43w36s1vkmsi7246mdygql2sd7m";
+          version = "5.0.0";
+
+          src = builtins.fetchTarball {
+            url = https://caml.inria.fr/pub/distrib/ocaml-5.0/ocaml-5.0.0.tar.xz;
+            sha256 = "1p0p8wldrnbr61wfy3x4122017g4k5gjvfwlg3mvlqn8r2fxn2m5";
           };
         });
       });
