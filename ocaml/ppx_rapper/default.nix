@@ -5,8 +5,8 @@ buildDunePackage rec {
   version = "3.0.0";
 
   src = builtins.fetchurl {
-    url = https://github.com/roddyyaga/ppx_rapper/archive/6fb81693.tar.gz;
-    sha256 = "10mmj8rnvpraqnfmqxl7pbrrqff1rxq2zrbvxxn8g46yxdlcjbkn";
+    url = https://github.com/roddyyaga/ppx_rapper/archive/8e1dfc4.tar.gz;
+    sha256 = "17y7i5i1sxhq9wpj2y3zd803sn23kx023nik6jskq0385xzwpvj7";
   };
 
   propagatedBuildInputs = [ caqti pg_query ];
