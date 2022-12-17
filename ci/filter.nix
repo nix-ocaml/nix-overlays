@@ -184,6 +184,10 @@ let
     "uring"
     "eio_linux"
     "class_group_vdf"
+
+    "pyml"
+    "ppx_python"
+    "pythonlib"
   ];
 
 in
