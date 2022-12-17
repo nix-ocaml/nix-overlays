@@ -92,7 +92,39 @@ buildDunePackage rec {
 
   # Fix failing expect tests from formatting on the 0.15 JST package line
   prePatch = ''
-    substituteInPlace test/expect/pure/stream/stream.ml --replace "(Failure " "Failure("
+    substituteInPlace test/expect/pure/stream/stream.ml --replace \
+      "(Failure " \
+      "Failure("
+
+    substituteInPlace src/sql/dune --replace \
+      "caqti-lwt" "caqti-lwt caqti-lwt.unix"
+
+    substituteInPlace src/sql/sql.ml --replace \
+      "Caqti_request.exec" \
+      "Caqti_request.Infix.(->.) Caqti_type.unit"
+
+    substituteInPlace src/sql/sql.ml --replace \
+      "Caqti_lwt.connect_pool" \
+      "Caqti_lwt_unix.connect_pool"
+
+    substituteInPlace src/sql/session.ml --replace \
+      "R.exec T.(tup4 string string float string)" \
+      "R.Infix.(->.) T.(tup4 string string float string) T.unit"
+
+    substituteInPlace src/sql/session.ml --replace \
+      "R.find_opt" "R.Infix.(->?)"
+
+    substituteInPlace src/sql/session.ml --replace \
+      "R.exec T.(tup2 float string)" \
+      "R.Infix.(->.) T.(tup2 float string) T.unit"
+
+    substituteInPlace src/sql/session.ml --replace \
+      "R.exec T.(tup2 string string)" \
+      "R.Infix.(->.) T.(tup2 string string) T.unit"
+
+    substituteInPlace src/sql/session.ml --replace \
+      "R.exec T.string" \
+      "R.Infix.(->.) T.string T.unit"
   '';
 
   preBuild = ''
