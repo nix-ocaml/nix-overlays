@@ -1750,13 +1750,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
-  pyml = osuper.pyml.overrideAttrs (_: {
-    propagatedBuildInputs = [
-      python3
-      stdcompat
-    ];
-  });
-
   pythonlib = osuper.pythonlib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/pythonlib/archive/refs/tags/v0.15.1.tar.gz;
