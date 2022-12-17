@@ -187,6 +187,7 @@ let
 
     "pyml"
     "ppx_python"
+    "pythonlib"
   ];
 
 in
