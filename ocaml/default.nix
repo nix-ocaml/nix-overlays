@@ -120,15 +120,6 @@ with oself;
       else o.src;
   });
 
-  batteries = osuper.batteries.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-batteries-team/batteries-included/archive/892b781966.tar.gz;
-      sha256 = "073gmp7m61isq759ikl8yzk8mcfb5jc41fgl76m6gxyy88zh8d4y";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-    doCheck = false;
-  });
-
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -1445,13 +1436,6 @@ with oself;
 
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
-
-  sha = osuper.sha.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/djs55/ocaml-sha/releases/download/1.15.2/sha-1.15.2.tbz;
-      sha256 = "1dzzhchknnbrpp5s81iqbvmqp4s0l75yrq8snj70ch3wkarmgg9z";
-    };
-  });
 
   sodium = buildDunePackage {
     pname = "sodium";
