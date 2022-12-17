@@ -306,6 +306,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr ];
   });
 
+  caqti-async = osuper.caqti-async.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ conduit-async ];
+  });
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
