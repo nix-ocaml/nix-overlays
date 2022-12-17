@@ -6,12 +6,8 @@ with oself;
   archi-eio = callPackage ./archi/eio.nix { };
 
   caqti-eio = buildDunePackage {
+    inherit (caqti) version src;
     pname = "caqti-eio";
-    version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/caqti-eio/archive/c709dad.tar.gz;
-      sha256 = "0mmjms378akcs7lifpz3s82hw7g6sdxbsyqlb0yrry7as29rccsz";
-    };
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 

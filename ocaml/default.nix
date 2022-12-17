@@ -297,6 +297,15 @@ with oself;
 
   carton = disableTests osuper.carton;
 
+  caqti = osuper.caqti.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-caqti/archive/eca8ecb.tar.gz;
+      sha256 = "07d65n34539zldy50byg9r3sznchq1gl19f65x8c29m519a9gm80";
+    };
+
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr ];
+  });
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
@@ -715,8 +724,9 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
-  irmin-fs = disableTests osuper.irmin-fs;
+  irmin = osuper.irmin.override { mtime = mtime_1; };
   irmin-chunk = disableTests osuper.irmin-chunk;
+  irmin-fs = disableTests osuper.irmin-fs;
   irmin-pack = disableTests osuper.irmin-pack;
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
@@ -755,6 +765,8 @@ with oself;
     '';
   });
 
+  index = osuper.index.override { mtime = mtime_1; };
+
   itv-tree = buildDunePackage {
     pname = "itv-tree";
     version = "2.1";
@@ -780,12 +792,25 @@ with oself;
 
   jose = callPackage ./jose { };
 
-
   jsonm = osuper.jsonm.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/jsonm/archive/7220492e3909002935aa2851edab4ee4eadb324c.tar.gz;
       sha256 = "1fykr7ivn9jmf75f06dpnrvb7v44143wr0n0f6nxj45bxf0mchbd";
     };
+  });
+
+  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.0" then
+        fetchFromGitHub
+          {
+            owner = "ocaml";
+            repo = "ocaml-lsp";
+            fetchSubmodules = true;
+            rev = "63c12eb178471c7bd660460f489922377a3701d0";
+            sha256 = "sha256-9WOieVlaojMuJTZLo0cCY5Qm1M0JX2asnlmwO6JbhJs=";
+          }
+      else o.src;
   });
 
   kafka = osuper.kafka.overrideAttrs (_: {
@@ -1002,7 +1027,9 @@ with oself;
     doCheck = !lib.versionAtLeast ocaml.version "5.0";
   });
 
-  mtime_2 = osuper.mtime.overrideAttrs (_: {
+  mtime_1 = osuper.mtime;
+
+  mtime = osuper.mtime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/dbuenzli/mtime/archive/refs/tags/v2.0.0.tar.gz;
       sha256 = "1md8g2sm7ajlb94rgn0p5z73ik3h7mvr2jfhgmbyslsq1syhbn05";
@@ -1042,20 +1069,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
-
-  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        fetchFromGitHub
-          {
-            owner = "ocaml";
-            repo = "ocaml-lsp";
-            fetchSubmodules = true;
-            rev = "63c12eb178471c7bd660460f489922377a3701d0";
-            sha256 = "sha256-9WOieVlaojMuJTZLo0cCY5Qm1M0JX2asnlmwO6JbhJs=";
-          }
-      else o.src;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
@@ -1324,6 +1337,8 @@ with oself;
     preBuild = "rm -rf ./dune";
     doCheck = false;
   });
+
+  progress = osuper.progress.override { mtime = mtime_1; };
 
   psq = osuper.psq.overrideAttrs (_: {
     src = builtins.fetchurl {
