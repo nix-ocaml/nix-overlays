@@ -1152,6 +1152,13 @@ with oself;
       url = https://github.com/OCamlPro/ocplib_stuff/archive/refs/tags/v0.3.0.tar.gz;
       sha256 = "0r5xh2aj1mbmj6ncxzkjzadgz42gw4x0qxxqdcm2m6531pcyfpq5";
     };
+
+    # `String.sub Sys.ocaml_version 0 6` doesn't work on OCaml 5.0
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.0" then ''
+        substituteInPlace ./src/ocplib_stuff/dune \
+          --replace "failwith \"Wrong ocaml version\"" "\"5.0.0\""
+      '' else "";
   };
 
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
