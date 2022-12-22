@@ -1758,16 +1758,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
-  pythonlib = osuper.pythonlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/pythonlib/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "0h0475xfd66hn3spmnsn0fizixr48l0vgh4dinabbbxcia7vja7d";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_optcomp ];
-    meta.broken = false;
-    patches = [ ];
-  });
-
   core_unix = osuper.core_unix.overrideAttrs (o: {
     postPatch = ''
       ${o.postPatch}
