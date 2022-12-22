@@ -60,8 +60,6 @@ in
 with oself;
 
 {
-  ansiterminal = disableTests osuper.ansiterminal;
-
   apron = osuper.apron.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
