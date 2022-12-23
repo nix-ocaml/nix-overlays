@@ -60,8 +60,6 @@ in
 with oself;
 
 {
-  ansiterminal = disableTests osuper.ansiterminal;
-
   apron = osuper.apron.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
@@ -1152,6 +1150,13 @@ with oself;
       url = https://github.com/OCamlPro/ocplib_stuff/archive/refs/tags/v0.3.0.tar.gz;
       sha256 = "0r5xh2aj1mbmj6ncxzkjzadgz42gw4x0qxxqdcm2m6531pcyfpq5";
     };
+
+    # `String.sub Sys.ocaml_version 0 6` doesn't work on OCaml 5.0
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.0" then ''
+        substituteInPlace ./src/ocplib_stuff/dune \
+          --replace "failwith \"Wrong ocaml version\"" "\"5.0.0\""
+      '' else "";
   };
 
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
@@ -1751,16 +1756,6 @@ with oself;
 
   ppx_expect = osuper.ppx_expect.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
-  });
-
-  pythonlib = osuper.pythonlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/janestreet/pythonlib/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "0h0475xfd66hn3spmnsn0fizixr48l0vgh4dinabbbxcia7vja7d";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_optcomp ];
-    meta.broken = false;
-    patches = [ ];
   });
 
   core_unix = osuper.core_unix.overrideAttrs (o: {
