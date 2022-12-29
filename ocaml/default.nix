@@ -1032,8 +1032,6 @@ with oself;
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
-  multipart-form-data = callPackage ./multipart-form-data { };
-
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
@@ -1420,8 +1418,15 @@ with oself;
     checkInputs = [ lwt ];
   });
 
-  rock = callPackage ./opium/rock.nix { };
-  opium = callPackage ./opium { };
+  rock = osuper.rock.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ulrikstrid/opium/archive/830f02fb5462619314153cbe7cedf25e49468648.tar.gz;
+      sha256 = "1d8s87ifdq8xnp27dahhy61xflgk4m1pz24qlw81dl2f6r443pcs";
+    };
+  });
+  opium = osuper.opium.overrideAttrs (_: {
+    patches = [ ./opium-status.patch ];
+  });
 
   rope = osuper.rope.overrideAttrs (_: {
     postPatch = ''
