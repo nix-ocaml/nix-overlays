@@ -1032,8 +1032,6 @@ with oself;
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
-  multipart-form-data = callPackage ./multipart-form-data { };
-
   mmap = osuper.mmap.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
