@@ -11,9 +11,6 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
-  domainslib = callPackage ./domainslib { };
-  lockfree = callPackage ./lockfree { };
-
   eio = callPackage ./eio { };
   eio_linux = callPackage ./eio/linux.nix { };
   eio_luv = callPackage ./eio/luv.nix { };
