@@ -23,8 +23,7 @@ jobs:
         run: |
           find . -iname '*.nix' | xargs nix shell -f ./ nixpkgs-fmt -c nixpkgs-fmt --check
       - name: check
-        run: |
-          nix flake check
+        run: nix flake check
 
   native-linux:
     strategy:

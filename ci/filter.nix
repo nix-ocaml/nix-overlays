@@ -131,7 +131,6 @@ let
     "getopt"
     "gsl"
     "hack_parallel"
-    "imagelib"
     "inifiles"
     "lastfm"
     "ocaml_oasis"
@@ -190,15 +189,23 @@ let
     "pythonlib" # TODO: maybe this works now?
   ];
 
+  lowerThanOCaml5Ignores = [
+    "lockfree"
+    "domainslib"
+    "dscheck"
+  ];
+
 in
 
 rec {
-  inherit ocaml5Ignores darwinIgnores;
+  inherit ocaml5Ignores darwinIgnores lowerThanOCaml5Ignores;
   ocamlCandidates =
     { pkgs
     , ocamlVersion
     , disable_eio_linux ? false
-    , extraIgnores ? [ ]
+    , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
+      then [ ]
+      else lowerThanOCaml5Ignores
     }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";

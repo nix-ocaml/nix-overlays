@@ -1001,12 +1001,6 @@ with oself;
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
 
-  mimic = osuper.mimic.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dinosaure/mimic/releases/download/0.0.5/mimic-0.0.5.tbz;
-      sha256 = "1b9x2rwc0ag32lfkqqygq42rbdngfjgdgyya7a3p50absnv678fy";
-    };
-  });
   mimic-happy-eyeballs = buildDunePackage {
     pname = "mimic-happy-eyeballs";
     inherit (mimic) version src;
@@ -1209,16 +1203,6 @@ with oself;
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
-  oseq = buildDunePackage {
-    pname = "oseq";
-    version = "0.4";
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/oseq/archive/refs/tags/v0.4.tar.gz;
-      sha256 = "0bbn1swp92zh49pszxm34rnx0bfq1zwdjz50yy05nnchr5lva0jf";
-    };
-    propagatedBuildInputs = [ seq ];
-  };
-
   otfm = osuper.otfm.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
@@ -1235,14 +1219,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/lib/ounit2/advanced/dune --replace " bytes " " "
     '';
-  });
-
-  parany = osuper.parany.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/UnixJunkie/parany/archive/refs/tags/v12.2.0.tar.gz;
-      sha256 = "1k1xrx7zdgw72ahksdabd7wilds8hjngbc95q4l5wp05gqml6i4k";
-    };
-    propagatedBuildInputs = [ cpu ];
   });
 
   parmap = disableTests osuper.parmap;
@@ -1314,8 +1290,6 @@ with oself;
       sha256 = "00mhgzzkgggl0qyabhcpspsww9jn9adjj1r3w162vm2cysifaz2v";
     };
   });
-
-  ppx_tools = callPackage ./ppx_tools { };
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     propagatedBuildInputs = [
