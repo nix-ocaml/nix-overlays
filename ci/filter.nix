@@ -151,7 +151,6 @@ let
     "semver"
     "twt"
     "uecc"
-    "wodan-unix"
     "xml-light"
     "labltk"
     "lambdapi"
@@ -204,7 +203,7 @@ rec {
     , ocamlVersion
     , disable_eio_linux ? false
     , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
-      then [ ]
+      then ocaml5Ignores
       else lowerThanOCaml5Ignores
     }:
     let
