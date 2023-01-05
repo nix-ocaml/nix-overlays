@@ -151,7 +151,6 @@ let
     "semver"
     "twt"
     "uecc"
-    "wodan-unix"
     "xml-light"
     "labltk"
     "lambdapi"

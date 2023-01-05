@@ -618,14 +618,6 @@ with oself;
     propagatedBuildInputs = [ cmdliner ];
   });
 
-  fileutils = osuper.fileutils.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/gildor478/ocaml-fileutils/releases/download/v0.6.4/fileutils-0.6.4.tbz;
-      sha256 = "0ps41axgp8b83mgplhfllb2ndlqhkfg6mr5lqbdfpdindaybcyvs";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ seq ];
-  });
-
   gen = osuper.gen.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bytes seq" "seq"
@@ -1634,13 +1626,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-
-  wodan-unix = osuper.wodan-unix.overrideAttrs (_: {
-    prePatch = ''
-      substituteInPlace src/wodan-unix/dune \
-        --replace "nocrypto.lwt" "nocrypto nocrypto.lwt nocrypto.unix"
-    '';
-  });
 
   xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams ];
