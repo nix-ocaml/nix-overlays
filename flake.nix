@@ -60,7 +60,7 @@
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
-        # packages = { };
+        packages = { };
 
         overlays = (final: prev:
           let
