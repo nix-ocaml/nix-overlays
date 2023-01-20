@@ -46,7 +46,7 @@ jobs:
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@45efa14433eddeb1d2b656e9e15566ddff68585f
+      - uses: nix-ocaml/nix-s3-action@4d7f884e4c478f3c8a99fd9576e53b674afa186d
         with:
           endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
@@ -77,7 +77,7 @@ jobs:
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@45efa14433eddeb1d2b656e9e15566ddff68585f
+      - uses: nix-ocaml/nix-s3-action@4d7f884e4c478f3c8a99fd9576e53b674afa186d
         with:
           endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
@@ -111,7 +111,7 @@ jobs:
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@45efa14433eddeb1d2b656e9e15566ddff68585f
+      - uses: nix-ocaml/nix-s3-action@4d7f884e4c478f3c8a99fd9576e53b674afa186d
         with:
           endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
@@ -142,7 +142,7 @@ jobs:
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@45efa14433eddeb1d2b656e9e15566ddff68585f
+      - uses: nix-ocaml/nix-s3-action@4d7f884e4c478f3c8a99fd9576e53b674afa186d
         with:
           endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
@@ -181,7 +181,7 @@ jobs:
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@45efa14433eddeb1d2b656e9e15566ddff68585f
+      - uses: nix-ocaml/nix-s3-action@4d7f884e4c478f3c8a99fd9576e53b674afa186d
         with:
           endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
