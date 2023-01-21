@@ -152,25 +152,14 @@ let
     "twt"
     "uecc"
     "xml-light"
-    "labltk"
     "lambdapi"
   ];
 
   darwinIgnores = [
-    "ffmpeg"
-    "ffmpeg-av"
-    "ffmpeg-avdevice"
-    "ffmpeg-avfilter"
-    "ffmpeg-avutil"
-    "ffmpeg-avcodec"
-    "ffmpeg-swscale"
-    "ffmpeg-swresample"
     "dssi"
 
     # broken on macOS?
     "llvm"
-    "ocaml_libvirt"
-    "labltk"
 
     "alsa"
     "mm"

@@ -164,15 +164,6 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
-  bjack = osuper.bjack.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Accelerate
-        CoreAudio
-      ]);
-  });
-
   bls12-381 = disableTests osuper.bls12-381;
 
   bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
@@ -643,15 +634,6 @@ with oself;
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
     '';
-  });
-
-  gstreamer = osuper.gstreamer.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        AppKit
-        Foundation
-      ]);
   });
 
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
@@ -1467,14 +1449,6 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
-  tar = osuper.tar.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.2.1/tar-2.2.1.tbz;
-      sha256 = "0anm3zj4bbcw7qjr2ad9r3vc3mb5vy5jay5r79w56l3vp03j1kj3";
-    };
-    version = "2.2.0";
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ decompress ];
-  });
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;
