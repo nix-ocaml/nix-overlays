@@ -159,16 +159,6 @@ with oself;
 
   binaryen = callPackage ./binaryen { };
 
-  biniou = osuper.biniou.overrideAttrs (o: {
-    patches = [
-      (fetchpatch {
-        url = https://raw.githubusercontent.com/ocaml-bench/sandmark/2c5102156afd81cb4c0c91ab77375d5fc5d332bf/dependencies/packages/biniou/biniou.1.2.1/files/biniou-use-camlp-streams.patch;
-        sha256 = "sha256-xwB+zpV1xZQyQgyF+NS+B/doxTZyE7vitXb+iN3sBbg=";
-      })
-    ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ ppxlib cmdliner ];
@@ -1498,15 +1488,6 @@ with oself;
       tar
     ];
   };
-
-  toml = osuper.toml.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-toml/to.ml/archive/7.1.0.tar.gz;
-      sha256 = "1vsjlwsq3q7wf0mcvxszxdl212zwqynr9kjpsxnx894yxlb9qkhx";
-    };
-
-    patches = [ ];
-  });
 
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
