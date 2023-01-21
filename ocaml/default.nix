@@ -643,13 +643,6 @@ with oself;
     '';
   });
 
-  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
-      sha256 = "17mnid1gvq1ml1zmqzn0m6jmrqw4kqdrjqrdsrphl5kxxyhs03m6";
-    };
-  });
-
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
