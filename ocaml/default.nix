@@ -159,28 +159,9 @@ with oself;
 
   binaryen = callPackage ./binaryen { };
 
-  biniou = osuper.biniou.overrideAttrs (o: {
-    patches = [
-      (fetchpatch {
-        url = https://raw.githubusercontent.com/ocaml-bench/sandmark/2c5102156afd81cb4c0c91ab77375d5fc5d332bf/dependencies/packages/biniou/biniou.1.2.1/files/biniou-use-camlp-streams.patch;
-        sha256 = "sha256-xwB+zpV1xZQyQgyF+NS+B/doxTZyE7vitXb+iN3sBbg=";
-      })
-    ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ ppxlib cmdliner ];
-  });
-
-  bjack = osuper.bjack.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Accelerate
-        CoreAudio
-      ]);
   });
 
   bls12-381 = disableTests osuper.bls12-381;
@@ -655,27 +636,11 @@ with oself;
     '';
   });
 
-  gstreamer = osuper.gstreamer.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        AppKit
-        Foundation
-      ]);
-  });
-
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
       ls -lah .
       substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
     '';
-  });
-
-  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.3.0/happy-eyeballs-0.3.0.tbz;
-      sha256 = "17mnid1gvq1ml1zmqzn0m6jmrqw4kqdrjqrdsrphl5kxxyhs03m6";
-    };
   });
 
   h2 = callPackage ./h2 { };
@@ -1477,14 +1442,6 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
-  tar = osuper.tar.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.2.1/tar-2.2.1.tbz;
-      sha256 = "0anm3zj4bbcw7qjr2ad9r3vc3mb5vy5jay5r79w56l3vp03j1kj3";
-    };
-    version = "2.2.0";
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ decompress ];
-  });
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;
@@ -1498,15 +1455,6 @@ with oself;
       tar
     ];
   };
-
-  toml = osuper.toml.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-toml/to.ml/archive/7.1.0.tar.gz;
-      sha256 = "1vsjlwsq3q7wf0mcvxszxdl212zwqynr9kjpsxnx894yxlb9qkhx";
-    };
-
-    patches = [ ];
-  });
 
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
