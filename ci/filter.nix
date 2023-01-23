@@ -135,6 +135,7 @@ let
     "lastfm"
     "ocaml_oasis"
     "ocaml-protoc"
+    "ocaml-recovery-parser"
     "ocaml-sat-solvers"
     "ocamlify"
     "ocamlmod"
