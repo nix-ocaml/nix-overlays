@@ -1346,7 +1346,7 @@ with oself;
       url = https://gitlab.com/nomadic-labs/ringo/-/archive/v1.0.0/ringo-v1.0.0.tar.gz;
       sha256 = "1wjzzxk1xldxn2pawhbjkmmgpzmsynqx5q03y0c8ll92vg8a7bp1";
     };
-    checkInputs = [ lwt ];
+    nativeCheckInputs = [ lwt ];
   });
 
   rock = osuper.rock.overrideAttrs (_: {

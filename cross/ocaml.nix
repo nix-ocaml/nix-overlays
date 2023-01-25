@@ -66,7 +66,6 @@ in
           inputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
-            "checkInputs"
           ]
             b;
           natInputs = mergeInputs [
