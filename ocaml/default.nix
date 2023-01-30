@@ -998,9 +998,11 @@ with oself;
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
   mmap = osuper.mmap.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mmap/archive/41596aa.tar.gz;
-      sha256 = "0fxv8qff9fsribymjgka7rq050i9yisph74nx642i5z7ng8ahlxq";
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "mmap";
+      rev = "41596aa";
+      sha256 = "sha256-3sx0Wy8XMiW3gpnEo6s2ENP/X1dSSC6NE9SrJex84Kk=";
     };
   });
 
@@ -1043,18 +1045,22 @@ with oself;
   ez_subst = buildDunePackage {
     pname = "ez_subst";
     version = "0.2.1";
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ez_subst/archive/refs/tags/v0.2.1.tar.gz;
-      sha256 = "12qyg70xr06asqy5n6zd7l4mp78vhn82vmx0x8mimyy74sxnpq16";
+    src = fetchFromGitHub {
+      owner = "OCamlPro";
+      repo = "ez_subst";
+      rev = "v0.2.1";
+      sha256 = "sha256-d0+H9dxLioa9QHnf2mF+MBk563qxc7YBhpmV1A0uv0s=";
     };
   };
 
   ez_cmdliner = buildDunePackage {
     pname = "ez_cmdliner";
     version = "0.4.3";
-    src = builtins.fetchurl {
-      url = https://github.com/OCamlPro/ez_cmdliner/archive/refs/tags/v0.4.3.tar.gz;
-      sha256 = "1blgxcffbamj9q3bm313355fbfbbyh3w2p857cxj58fc2zmnzxdd";
+    src = fetchFromGitHub {
+      owner = "OcamlPro";
+      repo = "ez_cmdliner";
+      rev = "v0.4.3";
+      sha256 = "sha256-l1JQrMxZsk+CuTDNmoKvzDO/8kGJOY3C8WGetprgR1M=";
     };
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
@@ -1154,9 +1160,11 @@ with oself;
   oidc-client = callPackage ./oidc/client.nix { };
 
   ocsigen-toolkit = osuper.ocsigen-toolkit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/ocsigen-toolkit/archive/499e8260df6487ebdacb9fcccb2f9dec36df8063.tar.gz;
-      sha256 = "10zlgp7wmrwwzq6298y7q4hlsmpq587vlcppj81hly3as1jq16ni";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "ocsigen-toolkit";
+      rev = "499e8260df6487ebdacb9fcccb2f9dec36df8063";
+      sha256 = "sha256-h1+D0HiCdEOBez+9EyqkF63TRW7pWkoUJYkugBTywI4=";
     };
   });
 
