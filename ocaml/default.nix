@@ -870,9 +870,11 @@ with oself;
   });
 
   lwt_ssl = osuper.lwt_ssl.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/anmonteiro/lwt_ssl/archive/e68d8aab.tar.gz;
-      sha256 = "07b81nnni0isviqkyv3a4lvjfpgscnil3dk5xhfm5rlhqdqg5r1n";
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "lwt_ssl";
+      rev = "e68d8aab";
+      sha256 = "sha256-6qmls7Fh3PenXBxwFuCaNR4tuR/vV3r1LjAwQfrgDzc=";
     };
   });
 
