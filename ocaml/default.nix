@@ -452,9 +452,11 @@ with oself;
   decoders = buildDunePackage {
     pname = "decoders";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/mattjbray/ocaml-decoders/archive/00d930.tar.gz;
-      sha256 = "1060888gpxchz66kyj91sypxw1czsxppxkwr0w84wl3va4nilaaw";
+    src = fetchFromGitHub {
+      owner = "mattjbray";
+      repo = "ocaml-decoders";
+      rev = "00d930";
+      sha256 = "sha256-LK2CZHvs9itx51EVi/MonrvnGOlPtLDXdMhAFX9O8Uc=";
     };
   };
   decoders-yojson = buildDunePackage {
@@ -466,9 +468,11 @@ with oself;
   dolog = buildDunePackage {
     pname = "dolog";
     version = "6.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/UnixJunkie/dolog/archive/refs/tags/v6.0.0.tar.gz;
-      sha256 = "0idxs1lnpsh49hvxnrkb3ijybd83phzbxfcichchw511k9ismlia";
+    src = fetchFromGitHub {
+      owner = "UnixJunkie";
+      repo = "dolog";
+      rev = "v6.0.0";
+      sha256 = "sha256-g68260mcb4G4wX8y4T0MTaXsYnM9wn2d0V1VCdSFZjY=";
     };
   };
 
@@ -560,9 +564,11 @@ with oself;
   });
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/dune-release/archive/ab37686.tar.gz;
-      sha256 = "0daj5gfq1mxyqmvjhxhmygr67fyl5y4agig97vyjrfnsj0508v25";
+    src = fetchFromGitHub {
+      owner = "ocamllabs";
+      repo = "dune-release";
+      rev = "ab37686";
+      sha256 = "sha256-x94XNMdHbSrubcmYLMXor7OLY/c2LyRiq/Ot/IHYjxM=";
     };
     doCheck = false;
   });
