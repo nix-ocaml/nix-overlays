@@ -4,7 +4,7 @@ buildDunePackage {
   pname = "bson";
   src = builtins.fetchurl {
     url = https://github.com/anmonteiro/ocaml-mongodb/archive/9062e42.tar.gz;
-    sha256 = "1yggvmv6a9njyx7na3967fkab0icl7iwnq6b7yhli4sndbgid1y2";
+    sha256 = "1zvj30kqrksqjyc1a014np0z0fiaflq8g4d62ds0ydjrd6s25zv0";
   };
   version = "0.0.1-dev";
 

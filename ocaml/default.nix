@@ -91,7 +91,7 @@ with oself;
     version = "dev";
     src = builtins.fetchurl {
       url = https://github.com/crackcomm/ocaml-multiformats/archive/380208ded45bc33cfadc5de6709846b3a8b84615.tar.gz;
-      sha256 = "00qx8n16rxwjs1fs8z86f7byzradf38n2msxdj8p83n87vpcmm7f";
+      sha256 = "15a41ba03b2akpc41vmdi2sbvrfm2r6p6d66qzc9km57nzsn473p";
     };
     propagatedBuildInputs = [ ppx_jane ppx_deriving core_kernel stdint digestif ];
   };
@@ -135,7 +135,7 @@ with oself;
     version = "2.0";
     src = builtins.fetchurl {
       url = "https://github.com/rgrinberg/bencode/archive/2.0.tar.gz";
-      sha256 = "233eae0817126e9c4a781bf1329d834672b77954e6b983a4d0a298d1e2ff0756";
+      sha256 = "0n1hr50fc44d9z146qyh3z3czc73sv4raslfa91wzz1pa4gdfjmn";
     };
   };
 
@@ -261,7 +261,7 @@ with oself;
   camlpdf = osuper.camlpdf.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/johnwhitington/camlpdf/archive/563afd602.tar.gz;
-      sha256 = "0i52hr1zbdzpcn6hfylg748csaxcnaqi43amk315raxhsxirfc9k";
+      sha256 = "0qjpl2q4nmkrr5zyi2sxz7r311xchrwqxjmar4x7h3p0a76qdd6j";
     };
   });
 
@@ -324,7 +324,7 @@ with oself;
       version = "0.1.1";
       src = builtins.fetchurl {
         url = https://github.com/paurkedal/confero/archive/252cf3e.tar.gz;
-        sha256 = "0lj3vrjf4s2gkf2jyd6iz1bsx5vb6cp472496r3lrj07zdz5wgn7";
+        sha256 = "0dhy5qkm3ih7kbwf6gz7fy7irnx3sir2ilihajwb3wyw741x5xdl";
       };
 
       nativeBuildInputs = [ unzip ];
@@ -436,7 +436,7 @@ with oself;
     version = "n/a";
     src = builtins.fetchurl {
       url = https://github.com/mattjbray/ocaml-decoders/archive/00d930.tar.gz;
-      sha256 = "0ihl5gxv798bpsf861j0ckd7qq4x0i708ydi3i34q3z28lsrfg85";
+      sha256 = "1060888gpxchz66kyj91sypxw1czsxppxkwr0w84wl3va4nilaaw";
     };
   };
   decoders-yojson = buildDunePackage {
@@ -726,7 +726,7 @@ with oself;
     version = "2.1";
     src = builtins.fetchurl {
       url = https://github.com/anmonteiro/interval-tree/archive/2fb2f2b.tar.gz;
-      sha256 = "1gfb4dicqfs5cgyp03w39fm4x8yymxzajdzx1iybxg0c2ivax47c";
+      sha256 = "1gm4vqpxmx3hwvhz9x44vp2d70v8g6s1g9is3ffj9wcayrjz5drv";
     };
 
     postPatch = ''
@@ -770,7 +770,7 @@ with oself;
   kafka = osuper.kafka.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/didier-wenzek/ocaml-kafka/archive/2f607bcf.tar.gz;
-      sha256 = "168wyh65nmwnhp4w8x5891rw5brcmhiqq9inaq0l73cfc3vax7bb";
+      sha256 = "1lk9m2kydhh6plyi1pdzqsmk09k5crfsvjj8d9mnl4xih32cbykj";
     };
     hardeningDisable = [ "strictoverflow" ];
   });
@@ -1027,7 +1027,7 @@ with oself;
     version = "0.2.1";
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ez_subst/archive/refs/tags/v0.2.1.tar.gz;
-      sha256 = "1mvrzd81paqcwqdm691n7izmaiw9s54as4a2h1wz4yvmai3sqmjx";
+      sha256 = "12qyg70xr06asqy5n6zd7l4mp78vhn82vmx0x8mimyy74sxnpq16";
     };
   };
 
@@ -1036,7 +1036,7 @@ with oself;
     version = "0.4.3";
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ez_cmdliner/archive/refs/tags/v0.4.3.tar.gz;
-      sha256 = "07cnd1yw0pfzhjj6kdy040my3lmmma0r8v66wf4r3wibpw4a1am4";
+      sha256 = "1blgxcffbamj9q3bm313355fbfbbyh3w2p857cxj58fc2zmnzxdd";
     };
     propagatedBuildInputs = [ cmdliner ez_subst ocplib_stuff ];
   };
@@ -1095,7 +1095,7 @@ with oself;
     version = "0.3.0";
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ocplib_stuff/archive/refs/tags/v0.3.0.tar.gz;
-      sha256 = "0r5xh2aj1mbmj6ncxzkjzadgz42gw4x0qxxqdcm2m6531pcyfpq5";
+      sha256 = "0bcsf1xjxk3bddc91br0bixwym81m44gg6ixqx0zsdsj9bgzkvxm";
     };
 
     # `String.sub Sys.ocaml_version 0 6` doesn't work on OCaml 5.0
@@ -1242,7 +1242,7 @@ with oself;
   ppx_import = osuper.ppx_import.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_import/archive/c9df42cfaa35b9c3a5190d0c6afd8ea90a0017b1.tar.gz;
-      sha256 = "00mhgzzkgggl0qyabhcpspsww9jn9adjj1r3w162vm2cysifaz2v";
+      sha256 = "1gvqql54hksj4i8b27z1vyg1b91l1ffadh8xxnd5rp90srsc70jh";
     };
   });
 
@@ -1259,7 +1259,7 @@ with oself;
   printbox-text = osuper.printbox-text.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/printbox/archive/refs/tags/v0.6.tar.gz;
-      sha256 = "1hr6g23b8z0p9kk1g996bzbrrziqk9b2c1za5xyzcq5g3xxqipij";
+      sha256 = "035p1lyp01hijzj3w59913cdqv9rg193r7lcb1f9va1f26g15psf";
     };
     preBuild = "rm -rf ./dune";
     doCheck = false;
@@ -1350,7 +1350,7 @@ with oself;
   rock = osuper.rock.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ulrikstrid/opium/archive/830f02fb5462619314153cbe7cedf25e49468648.tar.gz;
-      sha256 = "1d8s87ifdq8xnp27dahhy61xflgk4m1pz24qlw81dl2f6r443pcs";
+      sha256 = "0s6ghsg1b3xg92i9915xjzs27m1fhm03qjpcxh2mcrah73952swz";
     };
   });
   opium = osuper.opium.overrideAttrs (_: {
@@ -1408,7 +1408,7 @@ with oself;
     version = "n/a";
     src = builtins.fetchurl {
       url = https://github.com/flow/ocaml-sourcemaps/archive/2bc7e6e.tar.gz;
-      sha256 = "12ijyczailjd854x1796bwib52f7d87hsh8qkkgp4b9kcn6cbpdv";
+      sha256 = "12bjq9w8b2wni73b3976rivqv58acq1ya4c8p5b7x8gsc5bjzz24";
     };
     propagatedBuildInputs = [ vlq ];
   };
@@ -1628,7 +1628,7 @@ with oself;
   async_js = osuper.async_js.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/async_js/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "0lpakc704yrd6lcblzq3nxklmazxggcp82rr9cw7zd7d05q9nxf6";
+      sha256 = "19520g367d0snq5p4fyzrwghybdqapp4s4g6zpa0ml7ydfxfpx52";
     };
   });
 
@@ -1657,7 +1657,7 @@ with oself;
   bonsai = osuper.bonsai.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/bonsai/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "1gvlxwxsc7j8sc3k4x1c07fdhibbhcgmcyb138gl4gq78r0p2jhc";
+      sha256 = "17wk6b9s8s5vc4qc749lbn0mv96982j9lbzrjpxsll3bz5dd20w6";
     };
     patches = [ ];
 
@@ -1683,7 +1683,7 @@ with oself;
   memtrace = osuper.buildDunePackage {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/memtrace/archive/refs/tags/v0.2.3.tar.gz;
-      sha256 = "087m1ng2ih2v9v0qh1aknkpispd030nrd5ngcqqbnpdyg2g3fizs";
+      sha256 = "0cpfjqxfvvylq502fpxwlzlmyldy4lcj6y43jbib230mwl70zwjq";
     };
     pname = "memtrace";
     version = "0.1.2-dev";
@@ -1748,7 +1748,7 @@ with oself;
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/ppx_css/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "0k1j6h2pm46fpjikladzdpzafk66nnd4snnj8m9w5k6gwfrs88rg";
+      sha256 = "1wa7zyy6mw1zw54xnvaijzg0qmaswmcwb9khwqb3n2s1ycy48lm2";
     };
   });
   ppx_disable_unused_warnings = addBase osuper.ppx_disable_unused_warnings;
@@ -1765,14 +1765,14 @@ with oself;
   virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/virtual_dom/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "05ijxyn6l91zw5n482njw4ajv5v91phamf6an32i90a5hwrah7vz";
+      sha256 = "1035s13aclvd49bj5wm18h596bj2dbvi1h9s77z0i0sficrw310g";
     };
   });
 
   incr_dom = osuper.incr_dom.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/janestreet/incr_dom/archive/refs/tags/v0.15.1.tar.gz;
-      sha256 = "038qmrip2l1vaya602cv973qixz5d4dc8qqvgwfbc26b59a68ljn";
+      sha256 = "0pfqbr80zspgfzlbs4d84sl9sl047x1dikhp2wwavc2kwzjdj8il";
     };
     patches = [ ];
   });

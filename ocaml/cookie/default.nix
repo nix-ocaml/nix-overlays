@@ -6,7 +6,7 @@ buildDunePackage {
 
   src = builtins.fetchurl {
     url = https://github.com/ulrikstrid/ocaml-cookie/archive/95592ac37dc9209cf4f07544156aad7c3187dbab.tar.gz;
-    sha256 = "02rmanzjbxps2ax3546pd3jpzx88kcb9zlyyza920fvnavhk3g10";
+    sha256 = "0xy74b7ga3d2ssn05jiw9w8qpvi2kldki1jhjxka1shnfd6yb29a";
   };
 
   propagatedBuildInputs = [ uri ptime astring ];

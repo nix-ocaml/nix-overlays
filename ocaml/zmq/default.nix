@@ -6,7 +6,7 @@ buildDunePackage rec {
 
   src = builtins.fetchurl {
     url = https://github.com/issuu/ocaml-zmq/archive/8a24cd042.tar.gz;
-    sha256 = "1siwlpywq7mxfr1lhhlbqp8dh83cxvw7lkqcydk1hhssjy10aq7l";
+    sha256 = "10pnynkzm3rqsk0dsc37bnffx9w2rhakhjxmn2lb31iq1fl5wdsz";
   };
 
   nativeBuildInputs = [ dune-configurator ];

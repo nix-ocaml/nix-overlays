@@ -5,7 +5,7 @@ buildDunePackage {
   version = "n/a";
   src = builtins.fetchurl {
     url = https://github.com/ocaml-multicore/lwt_eio/archive/557403cebb.tar.gz;
-    sha256 = "0w5id2s5d530glqrmappl8qba6ki80qgwh0ylb09awypqs8i830w";
+    sha256 = "0wbqbjx8l7v49646ckxv52kg5r5nqz712drm53nwcf2hrm75b481";
   };
 
   propagatedBuildInputs = [ lwt eio ];

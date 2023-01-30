@@ -6,7 +6,7 @@ stdenv.mkDerivation
   version = "8.00.04";
   src = builtins.fetchurl {
     url = https://github.com/camlp5/camlp5/archive/refs/tags/rel8.00.04.tar.gz;
-    sha256 = "07bbjlljmj35g8d24s5c4m6rigivdvjbdpy4c6d0qh9d7ifcpnxx";
+    sha256 = "0w31lyzw38sxx10iqcjyka3r8m6w49268dh99dckly3vzh53a27s";
   };
 
   nativeBuildInputs = [ ocaml findlib ];

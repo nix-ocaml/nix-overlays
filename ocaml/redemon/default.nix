@@ -5,7 +5,7 @@ buildDunePackage {
   version = "0.4.0";
   src = builtins.fetchurl {
     url = https://github.com/ulrikstrid/redemon/archive/0.4.0.tar.gz;
-    sha256 = "0v12zm2j8qa0ypkiq9dnll617ylqkv1f2xpdyadz46iv31dzdk3s";
+    sha256 = "0aflayj6fy484m76wa5ldwiaryabdbxskn1m9waql0wny1jwylsg";
   };
 
   propagatedBuildInputs = [ luv cmdliner logs fmt ];

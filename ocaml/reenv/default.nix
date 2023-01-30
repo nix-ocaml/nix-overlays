@@ -13,7 +13,7 @@ buildDunePackage {
   version = "0.4.0-dev";
   src = builtins.fetchurl {
     url = https://github.com/ulrikstrid/reenv/archive/64dbee58dbe01c86e24db3bdcb8961fdc178deb1.tar.gz;
-    sha256 = "1bv8rxnjnydfrvc55xbywsl98hq664khg5agacyk7ba0r1vlblh6";
+    sha256 = "1yj006vp4nsp8nwhi9m2m7clwj7nj39lr7qgp0660s43q58943di";
   };
 
   checkInputs = [ alcotest junit junit_alcotest ];
