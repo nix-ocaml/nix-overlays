@@ -1541,9 +1541,11 @@ with oself;
   });
 
   tyxml = osuper.tyxml.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/tyxml/archive/c28e871df6db66a261ba541aa15caad314c78ddc.tar.gz;
-      sha256 = "10vbg9qdmmb96vrpv65px2ipshckzn12k2z611261ii7ab2y4s2s";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "tyxml";
+      rev = "c28e871df6db66a261ba541aa15caad314c78ddc";
+      sha256 = "sha256-2dgkuDjeZDJcxZHoZK7uAiPCwg29eYZkTjgsD8OeTQA=";
     };
   });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
