@@ -1437,9 +1437,11 @@ with oself;
   });
 
   ssl = osuper.ssl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/savonet/ocaml-ssl/archive/caf30cc.tar.gz;
-      sha256 = "14bz4drfkyq9srsyswf5ka20n0xgr09s0dsnzrqdqv8f0671sibp";
+    src = fetchFromGitHub {
+      owner = "savonet";
+      repo = "ocaml-ssl";
+      rev = "caf30cc";
+      sha256 = "sha256-qc4M+EgzmIQxzcMvLQIiYkPXBOvyLb6pNNGj/0OAbcM=";
     };
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     propagatedBuildInputs = [ openssl-oc.dev ];
