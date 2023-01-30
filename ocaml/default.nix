@@ -848,7 +848,7 @@ with oself;
   lwt = osuper.lwt.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/lwt/archive/3d6f0fac.tar.gz;
-      sha256 = "1gakp1yy4ngzpssbmmv1ldhmlsp4hlg0wp6zbl7md5s9mvmx5a33";
+      sha256 = "0p8i66k8rychvl6m2w4apnh86kg8hi19gm2hyf5m1v62j4kn4c4w";
     };
 
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
