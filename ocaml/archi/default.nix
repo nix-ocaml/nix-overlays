@@ -1,12 +1,16 @@
-{ buildDunePackage, alcotest, hmap }:
+{ fetchFromGitHub, buildDunePackage, alcotest, hmap }:
 
 buildDunePackage {
-  version = "0.1.1-dev";
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/archi/archive/60f07c6.tar.gz;
-    sha256 = "1vd08pq26dxd71f47ly045a6b8gd8hndbgh6fbci1qazsp07rns5";
-  };
   pname = "archi";
+  version = "0.1.1-dev";
+
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "archi";
+    rev = "60f07c6";
+    sha256 = "sha256-0Rvfw60PS413oqWa7ISmHmZU12CtKlf53hZlKjJ+Hgc=";
+  };
+
   checkInputs = [ alcotest ];
   propagatedBuildInputs = [ hmap ];
 }
