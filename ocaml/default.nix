@@ -173,9 +173,11 @@ with oself;
   });
 
   bos = osuper.bos.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/bos/archive/refs/tags/v0.2.1.tar.gz;
-      sha256 = "18h2zipv6zqvrax2aia6hljnsgqni971119izskrajwkha3myj6d";
+    src = fetchFromGitHub {
+      owner = "dbuenzli";
+      repo = "bos";
+      rev = "v0.2.1";
+      sha256 = "sha256-ga7CwQpXntW0wg6tP9/c16wfSGEf07DfZdd7b6cp0r0=";
     };
   });
 
