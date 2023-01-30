@@ -751,9 +751,11 @@ with oself;
   jose = callPackage ./jose { };
 
   jsonm = osuper.jsonm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/jsonm/archive/7220492e3909002935aa2851edab4ee4eadb324c.tar.gz;
-      sha256 = "1fykr7ivn9jmf75f06dpnrvb7v44143wr0n0f6nxj45bxf0mchbd";
+    src = fetchFromGitHub {
+      owner = "dbuenzli";
+      repo = "jsonm";
+      rev = "7220492e3909002935aa2851edab4ee4eadb324c";
+      sha256 = "sha256-V65LHT2qIt6BFXvetNuWvicshYVOJnUy8txFU9U1lzU=";
     };
   });
 
