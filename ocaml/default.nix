@@ -867,9 +867,11 @@ with oself;
   };
 
   lwt = osuper.lwt.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/lwt/archive/3d6f0fac.tar.gz;
-      sha256 = "0p8i66k8rychvl6m2w4apnh86kg8hi19gm2hyf5m1v62j4kn4c4w";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "lwt";
+      rev = "3d6f0fac";
+      sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
 
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
@@ -966,9 +968,11 @@ with oself;
   };
 
   metrics = osuper.metrics.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/metrics/archive/995eb18d.tar.gz;
-      sha256 = "0daibvgbccgfj6fa1sclarhis4nw71md19r3piar91xq3163544f";
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "metrics";
+      rev = "995eb18d";
+      sha256 = "sha256-edG8L9PMjZNJlcwKBdJ54NT6mm3z1j12nAzOC9VUtJI=";
     };
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
