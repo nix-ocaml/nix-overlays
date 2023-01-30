@@ -6,7 +6,7 @@ buildDunePackage {
 
   src = builtins.fetchurl {
     url = https://github.com/teamwalnut/graphql-ppx/archive/1345e061a92394b651b5ac65a035fda4190292e4.tar.gz;
-    sha256 = "0cwzj539v4v2zk1wfm0d2cysymh2wms083d2pvm4j7mjfh1dlpic";
+    sha256 = "0sc9pq34fsgq0l5mzd6zhldbhga0qppmi8jpcl20026hm2zsdpdm";
   };
 
   nativeBuildInputs = [ cppo ];

@@ -20,7 +20,7 @@ buildDunePackage {
   version = "n/a";
   src = builtins.fetchurl {
     url = https://github.com/anmonteiro/piaf/archive/195f456.tar.gz;
-    sha256 = "0mhaf043sdw1v01ys7fh19bsjlqagn2han4w3pnp7bsgkqfhpxc4";
+    sha256 = "16f4jlfb4r0789clc0xzanqgkmzcngyqh8qjycbdmccx3nzy38p0";
   };
 
   doCheck = true;

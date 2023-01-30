@@ -270,7 +270,7 @@ with oself;
   caqti = osuper.caqti.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/paurkedal/ocaml-caqti/archive/eca8ecb.tar.gz;
-      sha256 = "07d65n34539zldy50byg9r3sznchq1gl19f65x8c29m519a9gm80";
+      sha256 = "1vlpjqlxkqh61ryr9mk7k6jq9bvpqmjrprga0m4z6hmfl2mpngx9";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr ];
@@ -544,7 +544,7 @@ with oself;
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamllabs/dune-release/archive/ab37686.tar.gz;
-      sha256 = "11m2zxra43ag2xsmc6mnaq36hnq3g2kql15d6dik4hw0jq7f2dz8";
+      sha256 = "0daj5gfq1mxyqmvjhxhmygr67fyl5y4agig97vyjrfnsj0508v25";
     };
     doCheck = false;
   });
@@ -570,7 +570,7 @@ with oself;
   findlib = osuper.findlib.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.6.tar.gz;
-      sha256 = "063i6s3cqmrwhd8ncgvkl856vqsa6ckcvlmif59ifczsqy21iwfa";
+      sha256 = "028ac30dpx0hx9ydnfid57dh3cri7f06rgl3nycn0l3zf3xjvnk2";
     };
     patches = [
       "${nixpkgs}/pkgs/development/tools/ocaml/findlib/ldconf.patch"
@@ -943,7 +943,7 @@ with oself;
   metrics = osuper.metrics.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/metrics/archive/995eb18d.tar.gz;
-      sha256 = "1isjkygn17g8x0563kmfq62xql1wi7cxdy1qiiymnxy6ffn3sc4j";
+      sha256 = "0daibvgbccgfj6fa1sclarhis4nw71md19r3piar91xq3163544f";
     };
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
@@ -1062,7 +1062,7 @@ with oself;
     hardeningDisable = [ "strictoverflow" ];
     src = builtins.fetchurl {
       url = https://github.com/OCamlPro/ocaml-canvas/archive/962dedd98.tar.gz;
-      sha256 = "0f8rwj664jcv1l31yxiqfb0cnhcz0v6q18n9lf60g231sl9bvcaz";
+      sha256 = "0v60a1w0xfii4gx7yddc8jyzi12wa5gddl6xpwi1m26jxjzd13rm";
     };
 
     buildInputs = lib.optionals (! stdenv.isDarwin) [
@@ -1540,7 +1540,7 @@ with oself;
   utop = osuper.utop.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/utop/archive/bbd9a6ed45.tar.gz;
-      sha256 = "00k4bi48hr1q5ida8ca48dpxj7qlax89446ir6qshwy51yjv00sx";
+      sha256 = "0dx6aqwjasn0nc9c3gdvp7s9h0wkxsmvzs1dmfcgwsrpg958ml9z";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
