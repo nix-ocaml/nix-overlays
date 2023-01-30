@@ -1226,7 +1226,7 @@ with oself;
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ppx_deriving/archive/b4896214b0.tar.gz;
-      sha256 = "0ppp0vki2qpcdnv79gklkmkkrzwmra5wba1sbms1m8ndji9p1bhh";
+      sha256 = "11kq2yc9pyh3yg9c2v9g78i182617yy3kbgwhmgckgx47dhk7a7w";
     };
     buildInputs = [ ];
     propagatedBuildInputs = [
