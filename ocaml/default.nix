@@ -280,9 +280,11 @@ with oself;
   carton = disableTests osuper.carton;
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/archive/eca8ecb.tar.gz;
-      sha256 = "1vlpjqlxkqh61ryr9mk7k6jq9bvpqmjrprga0m4z6hmfl2mpngx9";
+    src = fetchFromGitHub {
+      owner = "paurkedal";
+      repo = "ocaml-caqti";
+      rev = "eca8ecb";
+      sha256 = "sha256-W+lc1vU7QQt97N383KP4RUJ7eIPtS4gPT32IpOVGM3s=";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr ];
@@ -334,9 +336,11 @@ with oself;
     buildDunePackage {
       pname = "confero";
       version = "0.1.1";
-      src = builtins.fetchurl {
-        url = https://github.com/paurkedal/confero/archive/252cf3e.tar.gz;
-        sha256 = "0dhy5qkm3ih7kbwf6gz7fy7irnx3sir2ilihajwb3wyw741x5xdl";
+      src = fetchFromGitHub {
+        owner = "paurkedal";
+        repo = "confero";
+        rev = "252cf3e";
+        sha256 = "sha256-YJyyT4uimLJQH0/bIMe/FCPk0ZYemgHYxV4uaQXVE6w=";
       };
 
       nativeBuildInputs = [ unzip ];
