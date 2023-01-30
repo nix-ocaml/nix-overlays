@@ -629,9 +629,11 @@ with oself;
   });
 
   gsl = osuper.gsl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmottl/gsl-ocaml/archive/76f8d93cc.tar.gz;
-      sha256 = "0s1h7xrlmq8djaxywq48s1jm7x5f6j7mfkljjw8kk52dfjsfwxw0";
+    src = fetchFromGitHub {
+      owner = "mmottl";
+      repo = "gsl-ocaml";
+      rev = "76f8d93cc";
+      sha256 = "sha256-+xAZm1K1iriZn5sxk8CmzzK1Bd7K4kXROqriGHo3rOs=";
     };
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
