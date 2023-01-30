@@ -135,9 +135,11 @@ with oself;
   bencode = buildDunePackage {
     pname = "bencode";
     version = "2.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/rgrinberg/bencode/archive/2.0.tar.gz";
-      sha256 = "0n1hr50fc44d9z146qyh3z3czc73sv4raslfa91wzz1pa4gdfjmn";
+    src = fetchFromGitHub {
+      owner = "rgrinberg";
+      repo = "bencode";
+      rev = "2.0";
+      sha256 = "sha256-sEMS9oBOPeFX1x7cHjbQhCD2QI5yqC+550pPqqMsVws=";
     };
   };
 
