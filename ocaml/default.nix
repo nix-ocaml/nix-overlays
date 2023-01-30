@@ -1414,9 +1414,11 @@ with oself;
   sodium = buildDunePackage {
     pname = "sodium";
     version = "0.8+ahrefs";
-    src = builtins.fetchurl {
-      url = https://github.com/ahrefs/ocaml-sodium/archive/4c92a94a330f969bf4db7fb0ea07602d80c03b14.tar.gz;
-      sha256 = "1dmddcg4v1g99cbgvkhdpz2c3xrdlmn3asvr5mhdjfggk5bbzw5f";
+    src = fetchFromGitHub {
+      owner = "ahrefs";
+      repo = "ocaml-sodium";
+      rev = "4c92a94a330f969bf4db7fb0ea07602d80c03b14";
+      sha256 = "sha256-FRM8F4ID2GOs93Fmt8RLMiz4zbkVTsgqa9Gse6tYvVQ=";
     };
     patches = [ ./sodium-cc-patch.patch ];
     postPatch = ''

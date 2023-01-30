@@ -1,12 +1,14 @@
-{ buildDunePackage, cppo, cmdliner, melange-compiler-libs, base64 }:
+{ fetchFromGitHub, buildDunePackage, cppo, cmdliner, melange-compiler-libs, base64 }:
 
 buildDunePackage rec {
   pname = "melange";
   version = "0.3.0";
 
-  src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange/archive/4675df6.tar.gz;
-    sha256 = "0iv0ycsmcjkid3iqpwbca570a5g3q9jp5nhwdmdadfpavnv4kmrc";
+  src = fetchFromGitHub {
+    owner = "melange-re";
+    repo = "melange";
+    rev = "4675df6";
+    sha256 = "sha256-LhJGVvRfW2oomMvkPIq326rgccXbRCFbk7GsbVdtv4k=";
   };
 
   nativeBuildInputs = [ cppo ];
