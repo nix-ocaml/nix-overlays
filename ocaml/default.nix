@@ -1210,9 +1210,11 @@ with oself;
   pg_query = callPackage ./pg_query { };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmottl/postgresql-ocaml/archive/42c42e9cb.tar.gz;
-      sha256 = "1fq7ihjdpy0m53m5njqbpvg2kwx0ax0yvncrwvm413gk3h7ph9py";
+    src = fetchFromGitHub {
+      owner = "mmottl";
+      repo = "postgresql-ocaml";
+      rev = "42c42e9cb";
+      sha256 = "sha256-6xo0P3kBjnzddOHGP6PZ1ODIkQoZ7pNlTHLrDcd1EYM=";
     };
 
     postPatch = ''
