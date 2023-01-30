@@ -908,9 +908,11 @@ with oself;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mustache = osuper.mustache.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/rgrinberg/ocaml-mustache/archive/d0c45499f9a5ee91c38cf605ae20ecee47142fd8.tar.gz;
-      sha256 = "0dl7islmm9pdwmbkj9dfvbw16kvaxf47w34x38hgqlgvqyfdvcp8";
+    src = fetchFromGitHub {
+      owner = "rgrinberg";
+      repo = "ocaml-mustache";
+      rev = "d0c45499f9a5ee91c38cf605ae20ecee47142fd8";
+      sha256 = lib.fakeHash;
     };
 
     doCheck = false;
@@ -1318,9 +1320,11 @@ with oself;
       osuper.buildDunePackage {
         pname = "reanalyze";
         version = "2.17.0";
-        src = builtins.fetchurl {
-          url = https://github.com/rescript-association/reanalyze/archive/refs/tags/v2.17.0.tar.gz;
-          sha256 = "0mdsawd08qkxw5cy3qfj49zims4cq3sh0kdlm43c7pshm930qbhj";
+        src = fetchFromGitHub {
+          owner = "rescript-association";
+          repo = "reanalyze";
+          rev = "v2.17.0";
+          sha256 = "sha256-BAWWSLn111ihVl1gey+UmMFj1PGDmwkNd5g3kfqcP/Y=";
         };
 
         nativeBuildInputs = [ cppo ];
