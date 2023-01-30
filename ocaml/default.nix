@@ -1597,9 +1597,11 @@ with oself;
   yuscii = disableTests osuper.yuscii;
 
   zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/Zarith/archive/64ba1c7.tar.gz;
-      sha256 = "1a247jcb7s7zg8w6ipk30j4nz7kd57l5aaxygl6n74myb9qjr6b4";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "Zarith";
+      rev = "64ba1c7";
+      sha256 = "sha256-dPe+S68TMGrjSEr+RiawjqAJw2gvwa5BVqFglDgOm1s=";
     };
   });
 
