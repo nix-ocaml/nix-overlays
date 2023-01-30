@@ -1,11 +1,14 @@
-{ buildDunePackage, angstrom, faraday, gluten, httpaf, base64 }:
+{ fetchFromGitHub, buildDunePackage, angstrom, faraday, gluten, httpaf, base64 }:
 
 buildDunePackage {
   pname = "websocketaf";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/websocketaf/archive/5986fbe.tar.gz;
-    sha256 = "1dvsa1i3qwlj0fz8wydj7rad5fc17fl4c8gysr977cajb5w6zdxy";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "websocketaf";
+    rev = "5986fbe";
+    sha256 = "sha256-xvKIRR5rSXRrRUhvNbjEWokCexFbYhHoL5aRsOaCfr0=";
   };
+
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
 }
