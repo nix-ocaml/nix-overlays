@@ -371,9 +371,11 @@ with oself;
   ctypes = buildDunePackage rec {
     pname = "ctypes";
     version = "0.20.1";
-    src = builtins.fetchurl {
-      url = https://github.com/ocamllabs/ocaml-ctypes/archive/64b6494d0.tar.gz;
-      sha256 = "1xw13y93ncsfw5sz2y3vvbijl378xszavq1j08lznawy4rqf76bw";
+    src = fetchFromGitHub {
+      owner = "ocamllabs";
+      repo = "ocaml-ctypes";
+      rev = "64b6494d0";
+      sha256 = "sha256-YMaKJK8gqsUdYglB4xGdMUpTXbgUgZLLvUG/lSvJesE=";
     };
 
     nativeBuildInputs = [ pkg-config pkg-config-script ];
