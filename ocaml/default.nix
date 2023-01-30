@@ -89,9 +89,11 @@ with oself;
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
-    src = builtins.fetchurl {
-      url = https://github.com/crackcomm/ocaml-multiformats/archive/380208ded45bc33cfadc5de6709846b3a8b84615.tar.gz;
-      sha256 = "15a41ba03b2akpc41vmdi2sbvrfm2r6p6d66qzc9km57nzsn473p";
+    src = fetchFromGitHub {
+      owner = "crackcomm";
+      repo = "ocaml-multiformats";
+      rev = "380208ded45bc33cfadc5de6709846b3a8b84615";
+      sha256 = "sha256-OuGBf8LdoiuC9OkTObwP5sgT6LXVtdTCsPbg8T1OHt8=";
     };
     propagatedBuildInputs = [ ppx_jane ppx_deriving core_kernel stdint digestif ];
   };
@@ -256,16 +258,20 @@ with oself;
   };
 
   cpdf = osuper.cpdf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/johnwhitington/cpdf-source/archive/a0e93444b.tar.gz;
-      sha256 = "10bl1x8shssx4fxiimg46js363dnlfms70k8x6jgn4fifa0vilzg";
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "cpdf-source";
+      rev = "a0e93444b";
+      sha256 = "sha256-2MZ49NyvnvrzMiBXPGN4tYHPuTNOQloEPFvAG7TYHBk=";
     };
   });
 
   camlpdf = osuper.camlpdf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/johnwhitington/camlpdf/archive/563afd602.tar.gz;
-      sha256 = "0qjpl2q4nmkrr5zyi2sxz7r311xchrwqxjmar4x7h3p0a76qdd6j";
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "camlpdf";
+      rev = "563afd602";
+      sha256 = "sha256-UY/LlTXiXd4/rHezDFKujJV0FCbdQh5bo73Fubc0DIk=";
     };
   });
 
@@ -558,10 +564,13 @@ with oself;
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
-    src = builtins.fetchurl {
-      url = "https://github.com/hcarty/${pname}/archive/v${version}.tar.gz";
-      sha256 = "0zjss0hljpy3mxpi1ccdvicb4j0qg5dl6549i23smy1x07pr0nmr";
+    src = fetchFromGitHub {
+      owner = "hcarty";
+      repo = pname;
+      rev = "v${version}";
+      sha256 = "sha256-OQ4JT1pYkeJbi8iMGpcFp8j0DawZCguFfWQmJCwgUXQ=";
     };
+
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
