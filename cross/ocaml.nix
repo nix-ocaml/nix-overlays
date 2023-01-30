@@ -151,6 +151,44 @@ in
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
         '';
+
+        setupHook = writeText "setupHook.sh" ''
+          addOCamlPath () {
+              if test -d "''$1/lib/ocaml/${oself.ocaml.version}/site-lib"; then
+                  export OCAMLPATH="''${OCAMLPATH-}''${OCAMLPATH:+:}''$1/lib/ocaml/${oself.ocaml.version}/site-lib/"
+              fi
+              if test -d "''$1/lib/ocaml/${oself.ocaml.version}/site-lib/stublibs"; then
+                  export CAML_LD_LIBRARY_PATH="''${CAML_LD_LIBRARY_PATH-}''${CAML_LD_LIBRARY_PATH:+:}''$1/lib/ocaml/${oself.ocaml.version}/site-lib/stublibs"
+              fi
+          }
+          exportOcamlDestDir () {
+              export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${oself.ocaml.version}/site-lib/"
+          }
+          createOcamlDestDir () {
+              if test -n "''${createFindlibDestdir-}"; then
+                mkdir -p $OCAMLFIND_DESTDIR
+              fi
+          }
+          detectOcamlConflicts () {
+            local conflict
+            conflict="$(ocamlfind list |& grep "has multiple definitions" | grep -vE "bigarray|unix|str|stdlib|compiler-libs|threads|bytes|dynlink|findlib" || true)"
+            if [[ -n "$conflict" ]]; then
+              echo "Conflicting ocaml packages detected";
+              echo "$conflict"
+              exit 1
+            fi
+          }
+          # run for every buildInput
+          addEnvHooks "$targetOffset" addOCamlPath
+          # run before installPhase, even without buildInputs, and not in nix-shell
+          preInstallHooks+=(createOcamlDestDir)
+          # run even in nix-shell, and even without buildInputs
+          addEnvHooks "$hostOffset" exportOcamlDestDir
+          # runs after all calls to addOCamlPath
+          if [[ -z "''${dontDetectOcamlConflicts-}" ]]; then
+            postHooks+=("detectOcamlConflicts")
+          fi
+        '';
       });
 
       cppo = natocamlPackages.cppo;
