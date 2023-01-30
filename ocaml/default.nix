@@ -1551,14 +1551,6 @@ with oself;
     '';
   });
 
-  uutf = osuper.uutf.overrideAttrs (o: {
-    pname = "uutf";
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/uutf/archive/refs/tags/v1.0.3.tar.gz;
-      sha256 = "1520njh9qaqflnj1xaawwhxdmn7r1p3wrh1j7w8y91g5y3zcp95z";
-    };
-  });
-
   vlq = osuper.vlq.overrideAttrs (_: {
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
