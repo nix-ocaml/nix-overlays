@@ -1116,7 +1116,7 @@ with oself;
   ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocamlpro/ocplib-endian/archive/fda4d5525.tar.gz;
-      sha256 = "14g214dn6w0gqr9rw2v17ljhcli94fwn81j8z624xqh8kx2050v2";
+      sha256 = "1xpydbp2qign4w932s8la1mpd53r6hb51iakscd2aackkbxm1zl8";
     };
   });
 
