@@ -812,9 +812,11 @@ with oself;
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
-    src = builtins.fetchurl {
-      url = https://github.com/Drup/ocaml-lmdb/archive/1.0.tar.gz;
-      sha256 = "0nkax7v4yggk21yxgvx3ax8fg74yl1bhj4z09szfblmsxsy5ydd4";
+    src = fetchFromGitHub {
+      owner = "Drup";
+      repo = "ocaml-lmdb";
+      rev = "1.0";
+      sha256 = "sha256-NbiM7xNpuihzqAMiAaYXVeItspWufnr1/e3WZEkMhsA=";
     };
     nativeBuildInputs = [ pkg-config-script pkg-config ];
     buildInputs = [ lmdb-pkg dune-configurator ];
