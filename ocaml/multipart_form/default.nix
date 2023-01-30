@@ -1,5 +1,6 @@
 { upstream ? false
 , lib
+, fetchFromGitHub
 , buildDunePackage
 , unstrctrd
 , lwt
@@ -26,9 +27,11 @@ let
   };
   upstream_version = "0.4.1";
 
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/multipart_form/archive/958ada0c.tar.gz;
-    sha256 = "162m0g6ka21bjbd2j6d69y1hkran5vkssl4ipzqd1lblkrq7mial";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "multipart_form";
+    rev = "958ada0c";
+    sha256 = "sha256-UliFmumgJnzHnrMntXPjcGkta9YtFqMzulNGBU3h6vs=";
   };
   version = "0.1.0-dev";
 
