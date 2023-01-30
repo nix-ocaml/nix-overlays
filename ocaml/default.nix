@@ -677,7 +677,7 @@ with oself;
   irmin = osuper.irmin.override { mtime = mtime_1; };
   irmin-chunk = disableTests osuper.irmin-chunk;
   irmin-fs = disableTests osuper.irmin-fs;
-  irmin-pack = disableTests osuper.irmin-pack;
+  irmin-pack = disableTests (osuper.irmin-pack.override { mtime = mtime_1; });
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
   irmin-tezos = disableTests osuper.irmin-tezos;
