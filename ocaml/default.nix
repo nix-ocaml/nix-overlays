@@ -878,12 +878,6 @@ with oself;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
     };
   });
-  mdx = osuper.mdx.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/archive/b8b779c0.tar.gz;
-      sha256 = "045mqx45r71f7zmgdl7ri0g3f6p4hzjs5l3garvwxg6921702j6n";
-    };
-  });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
     src = builtins.fetchurl {
