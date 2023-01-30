@@ -676,10 +676,14 @@ with oself;
 
   irmin = osuper.irmin.override { mtime = mtime_1; };
   irmin-chunk = disableTests osuper.irmin-chunk;
+  irmin-containers = osuper.irmin-containers.override { mtime = mtime_1; };
   irmin-fs = disableTests osuper.irmin-fs;
-  irmin-pack = disableTests osuper.irmin-pack;
+  irmin-pack = disableTests (osuper.irmin-pack.override { mtime = mtime_1; });
   irmin-git = disableTests osuper.irmin-git;
-  irmin-http = disableTests osuper.irmin-http;
+  irmin-http = osuper.irmin-http.overrideAttrs (_: {
+    dontDetectOcamlConflicts = true;
+    doCheck = false;
+  });
   irmin-tezos = disableTests osuper.irmin-tezos;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
@@ -875,12 +879,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/mirage/ocaml-magic-mime/releases/download/v1.3.0/magic-mime-1.3.0.tbz;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
-    };
-  });
-  mdx = osuper.mdx.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/archive/b8b779c0.tar.gz;
-      sha256 = "045mqx45r71f7zmgdl7ri0g3f6p4hzjs5l3garvwxg6921702j6n";
     };
   });
 
