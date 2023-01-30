@@ -972,9 +972,11 @@ with oself;
   mtime_1 = osuper.mtime;
 
   mtime = osuper.mtime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dbuenzli/mtime/archive/refs/tags/v2.0.0.tar.gz;
-      sha256 = "1md8g2sm7ajlb94rgn0p5z73ik3h7mvr2jfhgmbyslsq1syhbn05";
+    src = fetchFromGitHub {
+      owner = "dbuenzli";
+      repo = "mtime";
+      rev = "v2.0.0";
+      sha256 = "sha256-R1kujDbLJZbyyk91qNYAxpwdfnBUHm80zUeJ6GZeaTk=";
     };
   });
 
@@ -999,9 +1001,11 @@ with oself;
   });
 
   num = osuper.num.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/num/archive/703e1f88.tar.gz;
-      sha256 = "13d0sc87s5nbr6af5nrfwmxz91wkk9rvg5zrh4h7k3ykiz35f34b";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "num";
+      rev = "703e1f88";
+      sha256 = "sha256-Ddo6zmCPF730EV0YliIRnZ80j9YnBOH1yCQTBs7lXDo=";
     };
 
     patches = [ ./num/findlib-install.patch ];
@@ -1224,10 +1228,13 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving/archive/b4896214b0.tar.gz;
-      sha256 = "11kq2yc9pyh3yg9c2v9g78i182617yy3kbgwhmgckgx47dhk7a7w";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving";
+      rev = "b4896214b0";
+      sha256 = "sha256-+HEpLltTLerHvZftOunRQgXkstUKNgJB2nKDBgD7hr8=";
     };
+
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
