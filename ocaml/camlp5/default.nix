@@ -1,12 +1,14 @@
-{ stdenv, ocaml, findlib, camlp-streams, fmt, fix, perl }:
+{ stdenv, fetchFromGitHub, ocaml, findlib, camlp-streams, fmt, fix, perl }:
 
 stdenv.mkDerivation
 {
   pname = "camlp5";
   version = "8.00.04";
-  src = builtins.fetchurl {
-    url = https://github.com/camlp5/camlp5/archive/refs/tags/rel8.00.04.tar.gz;
-    sha256 = "0w31lyzw38sxx10iqcjyka3r8m6w49268dh99dckly3vzh53a27s";
+  src = fetchFromGitHub {
+    owner = "camlp5";
+    repo = "camlp5";
+    rev = "rel8.00.04";
+    sha256 = "sha256-U+EifChwxtAh2wn7MW1KTQex3a+QGQ3KOupHUlkdNVk=";
   };
 
   nativeBuildInputs = [ ocaml findlib ];

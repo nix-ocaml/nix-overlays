@@ -200,9 +200,11 @@ with oself;
   camlp5 = callPackage ./camlp5 { };
 
   camlzip = osuper.camlzip.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/xavierleroy/camlzip/archive/3b0e0a5f7.tar.gz;
-      sha256 = "00vkm3ix6fhdh0yx6zmvnnksgn0mpj5a0kz5ll9kdpdk6ysxvapz";
+    src = fetchFromGitHub {
+      owner = "xavierleroy";
+      repo = "camlzip";
+      rev = "3b0e0a5f7";
+      sha256 = "sha256-DflyuI2gt8HQI8qAgczClVdLy21uXT1A9VMD5cTaDl4=";
     };
     propagatedBuildInputs = [ zlib-oc ];
   });
