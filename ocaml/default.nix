@@ -680,7 +680,10 @@ with oself;
   irmin-fs = disableTests osuper.irmin-fs;
   irmin-pack = disableTests (osuper.irmin-pack.override { mtime = mtime_1; });
   irmin-git = disableTests osuper.irmin-git;
-  irmin-http = disableTests osuper.irmin-http;
+  irmin-http = osuper.irmin-http.overrideAttrs (_: {
+    dontDetectOcamlConflicts = true;
+    doCheck = false;
+  });
   irmin-tezos = disableTests osuper.irmin-tezos;
   # https://github.com/mirage/metrics/issues/57
   irmin-test = null;
