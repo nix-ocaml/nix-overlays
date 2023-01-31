@@ -1,11 +1,13 @@
-{ buildDunePackage, ssl, eio_main }:
+{ fetchFromGitHub, buildDunePackage, ssl, eio_main }:
 
 buildDunePackage {
   pname = "eio-ssl";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/eio-ssl/archive/5316c2a2.tar.gz;
-    sha256 = "0vj63w28c7i15241mzr8ih99l4mr6ankswpiv05z8g3n58670fzx";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "eio-ssl";
+    rev = "5316c2a2";
+    sha256 = "sha256-37Yj88Wx0rTXT5qFmszehw025FiZOlfbwHF64kdUZeo=";
   };
   propagatedBuildInputs = [ ssl eio_main ];
 }
