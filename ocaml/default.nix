@@ -108,16 +108,10 @@ with oself;
   };
 
   base64 = osuper.base64.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        fetchFromGitHub
-          {
-            owner = "kit-ty-kate";
-            repo = "ocaml-base64";
-            rev = "749313a98dd2a7c0082aeffeeff038e800a573dc";
-            sha256 = "sha256-mbd/wTJi40/WsyyezQAX0iwA1qKwPpP9XR/F7925ASM=";
-          }
-      else o.src;
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-base64/releases/download/v3.5.1/base64-3.5.1.tbz;
+      sha256 = "1vb53ijh098d8x0d5a2c7x9ar2j7vll5k2y0mkkylbyikfjxmznq";
+    };
   });
 
   benchmark = osuper.buildDunePackage {
