@@ -100,6 +100,7 @@ function get_commits(
   page = 1,
   prev_commits = { commits: {}, files: [] }
 ) {
+  console.log('trying to get commits');
   return http_request(
     `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
   ).then((res) => {
