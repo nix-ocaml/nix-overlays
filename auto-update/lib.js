@@ -27,7 +27,12 @@ function http_request(uri) {
                res.on("end", () => {
                  const response = Buffer.concat(response_data);
                  const response_string = response.toString();
-                 resolve(JSON.parse(response_string));
+
+                 try {
+                   return resolve(JSON.parse(response_string));
+                 } catch (e) {
+                   return reject(e);
+                 };
                });
              })
         .on("error", reject);
