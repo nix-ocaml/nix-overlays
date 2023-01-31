@@ -1,4 +1,4 @@
-{ fetchFromGitHub, buildDunePackage, uri, ptime, astring }:
+{ fetchFromGitHub, lib, buildDunePackage, uri, ptime, astring }:
 
 buildDunePackage {
   pname = "cookie";
