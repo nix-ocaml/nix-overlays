@@ -8,15 +8,14 @@
 , astring
 , yojson
 , zarith
-, result
 }:
 
 buildDunePackage rec {
   pname = "jose";
-  version = "0.8.1";
+  version = "0.8.2";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/reason-jose/releases/download/v0.8.1/jose-v0.8.1.tbz;
-    sha256 = "1pqd5pz1zj6h2hm3g4zbg3xqlx4vhc9s58w7vdq846a22z9g9vzw";
+    url = "https://github.com/ulrikstrid/reason-jose/releases/download/v${version}/jose-v${version}.tbz";
+    sha256 = "1yhh2qkd3z3kb6c8885aw11dnnwbjn15b8iipcvc1b65fwyzj8q1";
   };
 
   propagatedBuildInputs = [
@@ -29,6 +28,5 @@ buildDunePackage rec {
     astring
     yojson
     zarith
-    result
   ];
 }
