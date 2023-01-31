@@ -113,10 +113,12 @@ function get_commits(
     } else {
       return get_commits(sha1, sha2, page + 1, next_commits);
     }
-  }).catch(e => ({
-    ...prev_commits,
-    error: 'Error occurred, there could be relevant commits missing'
-  }));
+  }).catch(e => {
+    console.log('should have caught error here');
+    return {
+      ...prev_commits,
+      error: 'Error occurred, there could be relevant commits missing'
+    }});
 }
 
 function get_ocaml_commits(sha1, sha2) {
