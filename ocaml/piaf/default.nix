@@ -1,5 +1,6 @@
 { stdenv
 , lib
+, fetchFromGitHub
 , buildDunePackage
 , eio
 , eio_main
@@ -18,9 +19,11 @@
 buildDunePackage {
   pname = "piaf";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/piaf/archive/195f456.tar.gz;
-    sha256 = "16f4jlfb4r0789clc0xzanqgkmzcngyqh8qjycbdmccx3nzy38p0";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "piaf";
+    rev = "195f456";
+    sha256 = "sha256-uR9NcUB0XTk9WCgjN8EDp/bd+jSfuwXKo5xnoR+CZGE=";
   };
 
   doCheck = true;

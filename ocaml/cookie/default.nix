@@ -1,12 +1,14 @@
-{ lib, buildDunePackage, uri, ptime, astring }:
+{ fetchFromGitHub, buildDunePackage, uri, ptime, astring }:
 
 buildDunePackage {
   pname = "cookie";
   version = "0.1.8-dev";
 
-  src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/ocaml-cookie/archive/95592ac37dc9209cf4f07544156aad7c3187dbab.tar.gz;
-    sha256 = "0xy74b7ga3d2ssn05jiw9w8qpvi2kldki1jhjxka1shnfd6yb29a";
+  src = fetchFromGitHub {
+    owner = "ulrikstrid";
+    repo = "ocaml-cookie";
+    rev = "95592ac37dc9209cf4f07544156aad7c3187dbab";
+    sha256 = "sha256-souA7AOa59tu4Tdh7UEZm67YAz+1aR3asRZxk35WcHA=";
   };
 
   propagatedBuildInputs = [ uri ptime astring ];

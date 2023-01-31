@@ -1,11 +1,13 @@
-{ buildDunePackage, ppxlib }:
+{ fetchFromGitHub, lib, buildDunePackage, ppxlib }:
 
 buildDunePackage rec {
   pname = "landmarks";
   version = "1.4";
-  src = builtins.fetchurl {
-    url = "https://github.com/LexiFi/landmarks/archive/v${version}.tar.gz";
-    sha256 = "0wp3p22j7wr2cbm042ba9faf9679013rnmkj3q9xrgjycg0gwjiw";
+  src = fetchFromGitHub {
+    owner = "LexiFi";
+    repo = "landmarks";
+    rev = "v${version}";
+    sha256 = "sha256-2YvSMR5y1uk+OQ/h4IPIYYAGb64FRIM7glSPpa8YAkw=";
   };
 
   patches = [ ./landmarks-m1.patch ];

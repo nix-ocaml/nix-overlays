@@ -1,4 +1,5 @@
 { lib
+, fetchFromGitHub
 , buildDunePackage
 , alcotest
 , junit
@@ -11,9 +12,11 @@
 buildDunePackage {
   pname = "reenv";
   version = "0.4.0-dev";
-  src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/reenv/archive/64dbee58dbe01c86e24db3bdcb8961fdc178deb1.tar.gz;
-    sha256 = "1yj006vp4nsp8nwhi9m2m7clwj7nj39lr7qgp0660s43q58943di";
+  src = fetchFromGitHub {
+    owner = "ulrikstrid";
+    repo = "reenv";
+    rev = "64dbee58dbe01c86e24db3bdcb8961fdc178deb1";
+    sha256 = "sha256-p+RyVAmIEhUlRhLVrWJcrlcJ4fcyVbgo8YxZ0DT2c2w=";
   };
 
   checkInputs = [ alcotest junit junit_alcotest ];
