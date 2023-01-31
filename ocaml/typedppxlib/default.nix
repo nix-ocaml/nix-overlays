@@ -1,11 +1,13 @@
-{ buildDunePackage, ppx_optcomp, ocaml-migrate-types }:
+{ fetchFromGitHub, buildDunePackage, ppx_optcomp, ocaml-migrate-types }:
 
 buildDunePackage {
   pname = "typedppxlib";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = https://github.com/EduardoRFS/typedppxlib/archive/658d0b1.tar.gz;
-    sha256 = "0idkbc8pr4hms29fpq1pa870c4wqs3zjm6gpcsna4qv56v1c756p";
+  src = fetchFromGitHub {
+    owner = "EduardoRFS";
+    repo = "typedppxlib";
+    rev = "658d0b1";
+    sha256 = "sha256-Cocy+xxeRaEztptMkxEUqwFwoMgGjm3Zti6IBXd/V7U=";
   };
   propagatedBuildInputs = [ ppx_optcomp ocaml-migrate-types ];
 }

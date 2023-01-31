@@ -1,11 +1,13 @@
-{ buildDunePackage, lwt, eio }:
+{ fetchFromGitHub, lib, buildDunePackage, lwt, eio }:
 
 buildDunePackage {
   pname = "lwt_eio";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/lwt_eio/archive/557403cebb.tar.gz;
-    sha256 = "0w5id2s5d530glqrmappl8qba6ki80qgwh0ylb09awypqs8i830w";
+  src = fetchFromGitHub {
+    owner = "ocaml-multicore";
+    repo = "lwt_eio";
+    rev = "557403cebb";
+    sha256 = "sha256-1VXvqNLG42QN/3BlVOjvkD+JQYMqO5focQeuNj+zfIk=";
   };
 
   propagatedBuildInputs = [ lwt eio ];

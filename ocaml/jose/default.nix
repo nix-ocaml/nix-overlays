@@ -13,10 +13,10 @@
 
 buildDunePackage rec {
   pname = "jose";
-  version = "0.6.0";
+  version = "0.8.1";
   src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/reason-jose/archive/a8e43812.tar.gz;
-    sha256 = "1f2w2k3x0nls52f6bdlx6ibhkadxy5v0wcbhshnil9nqjqldxafx";
+    url = https://github.com/ulrikstrid/reason-jose/releases/download/v0.8.1/jose-v0.8.1.tbz;
+    sha256 = "1pqd5pz1zj6h2hm3g4zbg3xqlx4vhc9s58w7vdq846a22z9g9vzw";
   };
 
   propagatedBuildInputs = [
