@@ -27,7 +27,12 @@ function http_request(uri) {
                res.on("end", () => {
                  const response = Buffer.concat(response_data);
                  const response_string = response.toString();
-                 resolve(JSON.parse(response_string));
+
+                 try {
+                   return resolve(JSON.parse(response_string));
+                 } catch (e) {
+                   return reject(e);
+                 };
                });
              })
         .on("error", reject);
@@ -113,12 +118,16 @@ function get_commits(
     } else {
       return get_commits(sha1, sha2, page + 1, next_commits);
     }
-  });
+  }).catch(e => {
+    return {
+      ...prev_commits,
+      error: 'Error occurred, there could be relevant commits missing'
+    }});
 }
 
 function get_ocaml_commits(sha1, sha2) {
   return get_commits(sha1, sha2).then(
-    ({ commits = {}, files = [] }) => {
+    ({ commits = {}, files = [], error }) => {
       const file_commits = files
         .filter((x) => x.filename.toLowerCase().includes("ocaml"))
         .map((x) => {
@@ -126,9 +135,12 @@ function get_ocaml_commits(sha1, sha2) {
           return commits[commit_sha];
         })
         .filter(x => x != null);
-      return Object.values(commits).filter((c) =>
-          c.commit.message.toLowerCase().includes("ocaml")
-        ).concat(file_commits);
+      return {
+        commits: Object.values(commits).filter((c) =>
+            c.commit.message.toLowerCase().includes("ocaml")
+          ).concat(file_commits),
+        error: error
+      };
     }
   );
 }

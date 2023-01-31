@@ -23,7 +23,7 @@ module.exports = async ({ github, context, core, require }) => {
       const [prev_rev, curr_rev] = await update_flake();
       const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
-      const ocaml_commits = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
+      const { commits: ocaml_commits, error } = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
         const message = escapeForGHActions(commit.message);
@@ -35,6 +35,12 @@ module.exports = async ({ github, context, core, require }) => {
 ${ocaml_packages_text.join("\n")}
 
 #### Diff URL: ${url}
+
+${error != null ? `#### Error
+
+${error}
+
+` : ''}
       `;
 
       // Only write the file if the commit hash has changed
