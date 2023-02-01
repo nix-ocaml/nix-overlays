@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "ocaml-multicore";
     repo = "ocaml-uring";
-    rev = "b95047500";
-    sha256 = "sha256-jsTE3wbBGoYOrB8bZsWjHuAJfHlm8wZLGtsL7lsyTAU=";
+    rev = "v0.5";
+    sha256 = "sha256-Jc17Myc/oUEYpwUVKlxYSNsAAXn3WuM5AqisFcBG/Xk=";
   };
 
   postPatch = ''
