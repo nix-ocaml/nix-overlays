@@ -1264,12 +1264,8 @@ with oself;
 
   pp = disableTests osuper.pp;
 
-  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ppx/dune --replace " bigarray" ""
-    '';
-    # To avoid bringing in OMP
-    doCheck = false;
+  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
+    nativeCheckInputs = o.nativeCheckInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
