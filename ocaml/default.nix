@@ -926,23 +926,24 @@ with oself;
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
-  mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
-      sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
-    };
-    propagatedBuildInputs = [ fmt optint lwt ptime ];
-  });
+  # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
+  #   mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
+  # sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
+  # };
+  # propagatedBuildInputs = [ fmt optint lwt ptime ];
+  #   });
 
-  mirage-kv-mem = buildDunePackage {
-    pname = "mirage-kv-mem";
-    version = "3.2.1";
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-kv-mem/releases/download/v3.2.1/mirage-kv-mem-3.2.1.tbz;
-      sha256 = "07qr508kb4v9acybncz395p0mnlakib3r8wx5gk7sxdxhmic1z59";
-    };
-    propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
-  };
+  # mirage-kv-mem = buildDunePackage {
+  # pname = "mirage-kv-mem";
+  # version = "3.2.1";
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-kv-mem/releases/download/v3.2.1/mirage-kv-mem-3.2.1.tbz;
+  # sha256 = "07qr508kb4v9acybncz395p0mnlakib3r8wx5gk7sxdxhmic1z59";
+  # };
+  # propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
+  # };
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
