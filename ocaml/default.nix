@@ -892,10 +892,10 @@ with oself;
 
   lwt_ssl = osuper.lwt_ssl.overrideAttrs (_: {
     src = fetchFromGitHub {
-      owner = "anmonteiro";
+      owner = "ocsigen";
       repo = "lwt_ssl";
-      rev = "e68d8aab";
-      sha256 = "sha256-6qmls7Fh3PenXBxwFuCaNR4tuR/vV3r1LjAwQfrgDzc=";
+      rev = "1.2.0";
+      sha256 = "sha256-LkmS+vmnX3Oa9qnVN4cFzRSHP6ep/VgZmeWksmo2tDY=";
     };
   });
 
@@ -925,6 +925,25 @@ with oself;
     buildInputs = [ dune-configurator ];
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+
+  # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
+  #   mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
+  # sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
+  # };
+  # propagatedBuildInputs = [ fmt optint lwt ptime ];
+  #   });
+
+  # mirage-kv-mem = buildDunePackage {
+  # pname = "mirage-kv-mem";
+  # version = "3.2.1";
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-kv-mem/releases/download/v3.2.1/mirage-kv-mem-3.2.1.tbz;
+  # sha256 = "07qr508kb4v9acybncz395p0mnlakib3r8wx5gk7sxdxhmic1z59";
+  # };
+  # propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
+  # };
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -1066,6 +1085,25 @@ with oself;
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
+
+  odep = buildDunePackage {
+    pname = "odep";
+    version = "0.1.0";
+    src = fetchFromGitHub {
+      owner = "sim642";
+      repo = "odep";
+      rev = "0.1.0";
+      sha256 = "sha256-PAnzKWOZ/4jvSWVNlvZIi5MycqjTxsC2hG27PYXAhDY=";
+    };
+    propagatedBuildInputs = [
+      bos
+      opam-state
+      parsexp
+      ppx_deriving
+      sexplib
+      ppx_sexp_conv
+    ];
+  };
 
   ez_subst = buildDunePackage {
     pname = "ez_subst";
