@@ -550,14 +550,10 @@ with oself;
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
     propagatedBuildInputs = [ pp ];
-    preBuild = ''
-      rm -rf vendor/csexp vendor/pp
-    '';
+    preBuild = "rm -rf vendor/csexp vendor/pp";
   });
   dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
-    preBuild = ''
-      rm -rf vendor/csexp vendor/pp
-    '';
+    preBuild = "rm -rf vendor/csexp vendor/pp";
   });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
@@ -567,9 +563,7 @@ with oself;
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
   dyn = osuper.dyn.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
-    preBuild = ''
-      rm -r vendor/csexp vendor/pp
-    '';
+    preBuild = "rm -rf vendor/csexp vendor/pp";
   });
   dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp dune-rpc ];
@@ -1345,7 +1339,8 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
+    nativeBuildInputs = [ libpq ocaml findlib dune pkg-config-script pkg-config ];
+    propagatedBuildInputs = [ libpq ];
   });
 
   pp = disableTests osuper.pp;
