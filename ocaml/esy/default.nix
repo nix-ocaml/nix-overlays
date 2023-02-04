@@ -164,7 +164,8 @@ buildDunePackage {
 
   nativeBuildInputs = [
     makeWrapper
-    dune-configurator
+    menhir
+    reason
   ];
 
   propagatedBuildInputs = [
@@ -175,7 +176,7 @@ buildDunePackage {
   buildInputs = [
     angstrom
     cmdliner
-    reason
+    dune-configurator
     bos
     fmt
     fpath
@@ -183,7 +184,6 @@ buildDunePackage {
     logs
     lwt
     lwt_ppx
-    menhir
     opam-file-format
     ppx_deriving
     ppx_deriving_yojson

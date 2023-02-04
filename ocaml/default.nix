@@ -376,6 +376,12 @@ with oself;
     '';
   });
 
+  csv = osuper.csv.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bytes" ""
+    '';
+  });
+
   ctypes = buildDunePackage rec {
     pname = "ctypes";
     version = "0.20.1";
@@ -728,6 +734,11 @@ with oself;
     '';
   });
 
+  qcheck-alcotest = osuper.qcheck-alcotest.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/alcotest/dune --replace "bytes" ""
+    '';
+  });
   qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/core/dune --replace "unix bytes" "unix"
@@ -1653,6 +1664,10 @@ with oself;
     postPatch = ''
       substituteInPlace pkg/META --replace "bytes" ""
     '';
+  });
+
+  uuuu = osuper.uuuu.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ re ];
   });
 
   vlq = osuper.vlq.overrideAttrs (_: {
