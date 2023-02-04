@@ -1320,7 +1320,7 @@ with oself;
   pp = disableTests osuper.pp;
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    nativeCheckInputs = o.nativeCheckInputs ++ [ ocaml-migrate-parsetree-2 ];
+    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
