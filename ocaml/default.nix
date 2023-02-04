@@ -60,6 +60,12 @@ in
 with oself;
 
 {
+  ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bytes" ""
+    '';
+  });
+
   apron = osuper.apron.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
