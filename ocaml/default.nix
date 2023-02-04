@@ -294,6 +294,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ conduit-async ];
   });
 
+  caqti-dynload = osuper.caqti-dynload.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
+  });
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
@@ -370,6 +374,12 @@ with oself;
   # Not available for 4.12 and breaking the static build
   cooltt = null;
 
+  cry = osuper.cry.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bytes" ""
+    '';
+  });
+
   cstruct-sexp = osuper.cstruct-sexp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib_test/dune --replace "bigarray" ""
@@ -385,6 +395,11 @@ with oself;
   csv = osuper.csv.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bytes" ""
+    '';
+  });
+  csv-lwt = osuper.csv-lwt.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lwt/dune --replace "bytes" ""
     '';
   });
 
@@ -500,6 +515,8 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  dtoa = disableTests osuper.dtoa;
+
   dum = osuper.dum.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
@@ -531,7 +548,17 @@ with oself;
       '' else "";
   });
 
-  dune-configurator = callPackage ./dune/configurator.nix { };
+  dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
+    propagatedBuildInputs = [ pp ];
+    preBuild = ''
+      rm -rf vendor/csexp vendor/pp
+    '';
+  });
+  dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
+    preBuild = ''
+      rm -rf vendor/csexp vendor/pp
+    '';
+  });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
@@ -632,6 +659,12 @@ with oself;
       sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
     };
     propagatedBuildInputs = [ cmdliner ];
+  });
+
+  functoria-runtime = osuper.functoria-runtime.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lib_runtime/functoria/dune --replace "bytes" ""
+    '';
   });
 
   gen = osuper.gen.overrideAttrs (_: {
@@ -736,7 +769,7 @@ with oself;
 
   iter = osuper.iter.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace src/dune --replace "(libraries bytes)" ""
+      substituteInPlace src/dune --replace "bytes" ""
     '';
   });
 
@@ -1253,8 +1286,6 @@ with oself;
       sha256 = "sha256-h1+D0HiCdEOBez+9EyqkF63TRW7pWkoUJYkugBTywI4=";
     };
   });
-
-  odoc = callPackage ./odoc { };
 
   omd = osuper.omd.overrideAttrs (o: {
     postPatch = ''
