@@ -1743,8 +1743,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
-  zmq = callPackage ./zmq { };
-  zmq-lwt = callPackage ./zmq/lwt.nix { };
+  zmq = osuper.zmq.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "issuu";
+      repo = "ocaml-zmq";
+      rev = "8a24cd042";
+      sha256 = "sha256-EZKDSzW08lNgJgtgNOBgQ8ub29pSy2rwcqoMNu+P3kI=";
+    };
+  });
 
   secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
     src = builtins.fetchurl {
