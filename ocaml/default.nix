@@ -870,6 +870,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
+  digestif = osuper.digestif.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
