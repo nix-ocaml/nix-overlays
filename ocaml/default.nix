@@ -964,13 +964,10 @@ with oself;
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-crypto/releases/download/v0.10.7/mirage-crypto-0.10.7.tbz;
-      sha256 = "1756i2wnx0sga86nhnqhw02dv9yjrnql6svv9il5np131iv8m09y";
-    };
-
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
-    buildInputs = [ dune-configurator ];
+  });
+  mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
