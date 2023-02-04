@@ -550,10 +550,13 @@ with oself;
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
     propagatedBuildInputs = [ pp ];
-    preBuild = "rm -rf vendor/csexp vendor/pp";
+    inherit (dyn) preBuild;
   });
   dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
-    preBuild = "rm -rf vendor/csexp vendor/pp";
+    inherit (dyn) preBuild;
+  });
+  ordering = osuper.ordering.overrideAttrs (_: {
+    inherit (dyn) preBuild;
   });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
@@ -589,6 +592,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
   });
+  xdg = osuper.xdg.overrideAttrs (o: {
+    inherit (dyn) preBuild;
+  });
+
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -1340,7 +1347,7 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    nativeBuildInputs = [ libpq ocaml findlib dune pkg-config-script pkg-config ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     propagatedBuildInputs = [ libpq ];
   });
 
