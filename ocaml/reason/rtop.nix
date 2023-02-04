@@ -3,7 +3,7 @@
 buildDunePackage {
   inherit (reason) src version;
   pname = "rtop";
-  buildInputs = [ cppo ];
+  nativeBuildInputs = [ cppo ];
   propagatedBuildInputs = [ utop reason ];
 
   meta.mainProgram = "rtop";

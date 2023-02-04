@@ -23,7 +23,8 @@ buildDunePackage {
 
   doCheck = true;
 
-  propagatedBuildInputs = [ reason cmdliner re ];
+  nativeBuildInputs = [ reason ];
+  propagatedBuildInputs = [ cmdliner re ];
 
   meta = {
     description = "dotenv-cli written in reason";

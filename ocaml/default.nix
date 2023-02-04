@@ -60,6 +60,12 @@ in
 with oself;
 
 {
+  ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/dune --replace " bytes" ""
+    '';
+  });
+
   apron = osuper.apron.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
@@ -248,8 +254,8 @@ with oself;
   cairo2-gtk = buildDunePackage {
     pname = "cairo2-gtk";
     inherit (cairo2) version src;
-    nativeBuildInputs = [ nativeCairo gtk2.dev pkg-config ];
-    buildInputs = [ dune-configurator ];
+    nativeBuildInputs = [ nativeCairo pkg-config ];
+    buildInputs = [ dune-configurator gtk2.dev ];
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
 
@@ -286,6 +292,10 @@ with oself;
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ conduit-async ];
+  });
+
+  caqti-dynload = osuper.caqti-dynload.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
   clz = buildDunePackage {
@@ -364,6 +374,12 @@ with oself;
   # Not available for 4.12 and breaking the static build
   cooltt = null;
 
+  cry = osuper.cry.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bytes" ""
+    '';
+  });
+
   cstruct-sexp = osuper.cstruct-sexp.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib_test/dune --replace "bigarray" ""
@@ -373,6 +389,17 @@ with oself;
   cstruct-unix = osuper.cstruct-unix.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./unix/dune --replace "bigarray" ""
+    '';
+  });
+
+  csv = osuper.csv.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/dune --replace "bytes" ""
+    '';
+  });
+  csv-lwt = osuper.csv-lwt.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lwt/dune --replace "bytes" ""
     '';
   });
 
@@ -488,6 +515,8 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  dtoa = disableTests osuper.dtoa;
+
   dum = osuper.dum.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
@@ -519,7 +548,16 @@ with oself;
       '' else "";
   });
 
-  dune-configurator = callPackage ./dune/configurator.nix { };
+  dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
+    propagatedBuildInputs = [ pp ];
+    inherit (dyn) preBuild;
+  });
+  dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
+    inherit (dyn) preBuild;
+  });
+  ordering = osuper.ordering.overrideAttrs (_: {
+    inherit (dyn) preBuild;
+  });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
@@ -528,9 +566,7 @@ with oself;
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
   dyn = osuper.dyn.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
-    preBuild = ''
-      rm -r vendor/csexp vendor/pp
-    '';
+    preBuild = "rm -rf vendor/csexp vendor/pp";
   });
   dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp dune-rpc ];
@@ -556,6 +592,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
   });
+  xdg = osuper.xdg.overrideAttrs (o: {
+    inherit (dyn) preBuild;
+  });
+
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -620,6 +660,12 @@ with oself;
       sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
     };
     propagatedBuildInputs = [ cmdliner ];
+  });
+
+  functoria-runtime = osuper.functoria-runtime.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./lib_runtime/functoria/dune --replace "bytes" ""
+    '';
   });
 
   gen = osuper.gen.overrideAttrs (_: {
@@ -724,10 +770,15 @@ with oself;
 
   iter = osuper.iter.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace src/dune --replace "(libraries bytes)" ""
+      substituteInPlace src/dune --replace "bytes" ""
     '';
   });
 
+  qcheck-alcotest = osuper.qcheck-alcotest.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./src/alcotest/dune --replace "bytes" ""
+    '';
+  });
   qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/core/dune --replace "unix bytes" "unix"
@@ -826,6 +877,10 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
+  digestif = osuper.digestif.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
@@ -916,13 +971,10 @@ with oself;
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-crypto/releases/download/v0.10.7/mirage-crypto-0.10.7.tbz;
-      sha256 = "1756i2wnx0sga86nhnqhw02dv9yjrnql6svv9il5np131iv8m09y";
-    };
-
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
-    buildInputs = [ dune-configurator ];
+  });
+  mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
@@ -1237,8 +1289,6 @@ with oself;
     };
   });
 
-  odoc = callPackage ./odoc { };
-
   omd = osuper.omd.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
@@ -1297,13 +1347,14 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    nativeBuildInputs = o.nativeBuildInputs ++ [ libpq pkg-config-script pkg-config ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+    propagatedBuildInputs = [ libpq ];
   });
 
   pp = disableTests osuper.pp;
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    nativeCheckInputs = o.nativeCheckInputs ++ [ ocaml-migrate-parsetree-2 ];
+    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
@@ -1655,6 +1706,10 @@ with oself;
     '';
   });
 
+  uuuu = osuper.uuuu.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ re ];
+  });
+
   vlq = osuper.vlq.overrideAttrs (_: {
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
@@ -1696,8 +1751,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
 
-  zmq = callPackage ./zmq { };
-  zmq-lwt = callPackage ./zmq/lwt.nix { };
+  zmq = osuper.zmq.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "issuu";
+      repo = "ocaml-zmq";
+      rev = "8a24cd042";
+      sha256 = "sha256-EZKDSzW08lNgJgtgNOBgQ8ub29pSy2rwcqoMNu+P3kI=";
+    };
+  });
 
   secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
     src = builtins.fetchurl {
