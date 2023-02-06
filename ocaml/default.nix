@@ -1706,10 +1706,6 @@ with oself;
     '';
   });
 
-  uuuu = osuper.uuuu.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ re ];
-  });
-
   vlq = osuper.vlq.overrideAttrs (_: {
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
