@@ -1,5 +1,5 @@
 {
-  description = "ocaml-packages-overlay";
+  description = "A small collection of nix expressions/overlays for ocaml";
 
   nixConfig = {
     extra-substituters = "https://anmonteiro.nix-cache.workers.dev";
@@ -8,72 +8,55 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?rev=75169d683d42ed2f3ccd99c321850f0abda70cb0";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    let
-      patchChannel = { system, channel }:
-        let
-          patches = [ ];
-        in
-        if patches == [ ]
-        then channel
-        else
-          (import channel { inherit system; }).pkgs.applyPatches {
-            name = "nixpkgs-patched";
-            src = channel;
-            patches = patches;
+  outputs =
+    inputs @ { self
+    , nixpkgs
+    , flake-parts
+    , ...
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+      flake = {
+        lib = nixpkgs.lib; # Why are we exposing this?
+
+        templates = {
+          default = {
+            path = ./templates/default;
+            description = "Template showcasing basic usage";
           };
-    in
+          flake-parts = {
+            path = ./templates/flake-parts;
+            description = "Template showcasing usage with flake-parts";
+          };
+        };
 
-    {
-      lib = nixpkgs.lib;
+        overlay = import ./overlay nixpkgs;
+        overlays.default = self.overlay;
 
-      hydraJobs = builtins.listToAttrs (map
-        (system: {
-          name = system;
-          value = (import ./ci/hydra.nix {
-            inherit system;
-            pkgs = self.legacyPackages.${system};
-          });
-        })
-        [ "x86_64-linux" "aarch64-darwin" ]);
-
-      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let
-          pkgs = import nixpkgs ({
-            inherit system;
-            overlays = [ self.overlays.${system} ];
-            config.allowUnfree = true;
-          } // attrs);
-        in
-          /*
-            You might read
-            https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
-            want to change this but because of how we're doing overlays we will
-            be overriding any extraOverlays if we don't use `appendOverlays`
-          */
-        pkgs.appendOverlays extraOverlays;
-
-      overlays.default = import ./overlay nixpkgs;
-    } // flake-utils.lib.eachDefaultSystem (system:
-      {
-        legacyPackages = self.makePkgs { inherit system; };
-
-        overlays = (final: prev:
-          let
-            channel = patchChannel {
+        hydraJobs = builtins.listToAttrs (map
+          (system: {
+            name = system;
+            value = import ./ci/hydra.nix {
               inherit system;
-              channel = nixpkgs;
+              pkgs = self.legacyPackages.${system};
             };
-          in
-
-          import channel {
-            inherit system;
-            overlays = [ (import ./overlay channel) ];
-            config.allowUnfree = true;
-          }
-        );
-      });
+          })
+          [ "x86_64-linux" "aarch64-darwin" ]);
+      };
+      perSystem = { pkgs, ... }: {
+        legacyPackages = pkgs.extend self.overlay;
+        formatter = pkgs.nixpkgs-fmt;
+      };
+    };
 }

@@ -29,10 +29,8 @@
 , libxkbcommon
 , libxcb
 , xorg
-}:
-
-oself: osuper:
-
+,
+}: oself: osuper:
 let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
@@ -49,16 +47,16 @@ let
     '';
 
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
-  addBase = p: p.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.base ];
-  });
-  addStdio = p: p.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.stdio ];
-  });
+  addBase = p:
+    p.overrideAttrs (o: {
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.base ];
+    });
+  addStdio = p:
+    p.overrideAttrs (o: {
+      propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.stdio ];
+    });
 in
-
 with oself;
-
 {
   ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
     postPatch = ''
@@ -84,7 +82,10 @@ with oself;
   });
 
   arp = osuper.arp.overrideAttrs (_: {
-    buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
+    buildInputs =
+      if stdenv.isDarwin
+      then [ ethernet ]
+      else [ ];
     doCheck = ! stdenv.isDarwin;
   });
 
@@ -152,9 +153,11 @@ with oself;
 
   bigstring = osuper.bigstring.overrideAttrs (_: {
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast ocaml.version "5.0"
+      then ''
         substituteInPlace src/dune --replace " bigarray" "" --replace " bytes" ""
-      '' else "";
+      ''
+      else "";
   });
 
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
@@ -195,10 +198,12 @@ with oself;
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast ocaml.version "5.0"
+      then ''
         substituteInPlace core/images.ml --replace "String.lowercase" "String.lowercase_ascii"
         substituteInPlace core/units.ml --replace "String.lowercase" "String.lowercase_ascii"
-      '' else "";
+      ''
+      else "";
   });
 
   camlp5 = callPackage ./camlp5 { };
@@ -216,10 +221,12 @@ with oself;
   camomile = osuper.camomile.overrideAttrs (_: {
     patches = [ ./camomile.patch ];
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast ocaml.version "5.0"
+      then ''
         substituteInPlace Camomile/dune --replace " bigarray" ""
         substituteInPlace Camomile/toolslib/dune --replace " bigarray" ""
-      '' else "";
+      ''
+      else "";
     propagatedBuildInputs = [ camlp-streams ];
     postInstall = null;
   });
@@ -542,10 +549,12 @@ with oself;
     '';
 
     postFixup =
-      if stdenv.isDarwin then ''
+      if stdenv.isDarwin
+      then ''
         wrapProgram $out/bin/dune \
           --suffix PATH : "${darwin.sigtool}/bin"
-      '' else "";
+      ''
+      else "";
   });
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
@@ -595,7 +604,6 @@ with oself;
   xdg = osuper.xdg.overrideAttrs (o: {
     inherit (dyn) preBuild;
   });
-
 
   dune-release = osuper.dune-release.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -815,7 +823,6 @@ with oself;
       substituteInPlace ./src/ptrees/ptset.ml --replace "Pervasives." "Stdlib."
       substituteInPlace ./src/jFile.ml --replace "Pervasives." "Stdlib."
     '';
-
   });
 
   jose = callPackage ./jose { };
@@ -831,7 +838,8 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionAtLeast ocaml.version "5.0" then
+      if lib.versionAtLeast ocaml.version "5.0"
+      then
         fetchFromGitHub
           {
             owner = "ocaml";
@@ -864,9 +872,11 @@ with oself;
 
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast ocaml.version "5.0"
+      then ''
         substituteInPlace src/dune --replace " bigarray" ""
-      '' else "";
+      ''
+      else "";
   });
 
   lambda-term = osuper.lambda-term.overrideAttrs (o: {
@@ -1030,8 +1040,8 @@ with oself;
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   merlin-lib =
-    if lib.versionAtLeast ocaml.version "4.14" then
-      callPackage ./merlin/lib.nix { }
+    if lib.versionAtLeast ocaml.version "4.14"
+    then callPackage ./merlin/lib.nix { }
     else null;
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
@@ -1129,10 +1139,13 @@ with oself;
 
   ocamlformat = callPackage ./ocamlformat { };
 
-  inherit (callPackage ./ocamlformat-rpc { })
+  inherit
+    (callPackage ./ocamlformat-rpc { })
     # latest version
+
     ocamlformat-rpc
-    ocamlformat-rpc_0_21_0;
+    ocamlformat-rpc_0_21_0
+    ;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
@@ -1191,7 +1204,7 @@ with oself;
     # link myocamlbuild programs)
     postFixup = ''
       wrapProgram $out/bin/ocamlbuild \
-        --suffix PATH : "${ buildPackages.stdenv.cc }/bin"
+        --suffix PATH : "${buildPackages.stdenv.cc}/bin"
     '';
   });
 
@@ -1206,20 +1219,22 @@ with oself;
       sha256 = "sha256-PghULCfekMhs88a2F+RJtJFoBJxi80ieDiKzhWukJw4=";
     };
 
-    buildInputs = lib.optionals (! stdenv.isDarwin) [
-      freetype
-      fontconfig
-      libxkbcommon
-      libxcb
-      xorg.xcbutilkeysyms
-      xorg.xcbutilimage
-    ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-      AppKit
-      Foundation
-      Carbon
-      Cocoa
-      CoreGraphics
-    ]);
+    buildInputs =
+      lib.optionals (! stdenv.isDarwin) [
+        freetype
+        fontconfig
+        libxkbcommon
+        libxcb
+        xorg.xcbutilkeysyms
+        xorg.xcbutilimage
+      ]
+      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+        AppKit
+        Foundation
+        Carbon
+        Cocoa
+        CoreGraphics
+      ]);
 
     propagatedBuildInputs = [ dune-configurator react ];
   };
@@ -1243,10 +1258,12 @@ with oself;
 
     # `String.sub Sys.ocaml_version 0 6` doesn't work on OCaml 5.0
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast ocaml.version "5.0"
+      then ''
         substituteInPlace ./src/ocplib_stuff/dune \
           --replace "failwith \"Wrong ocaml version\"" "\"5.0.0\""
-      '' else "";
+      ''
+      else "";
   };
 
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
@@ -1354,7 +1371,7 @@ with oself;
   pp = disableTests osuper.pp;
 
   ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
+    checkInputs = [ ocaml-migrate-parsetree-2 ];
   });
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
@@ -1423,7 +1440,8 @@ with oself;
   });
 
   reanalyze =
-    if lib.versionOlder "4.13" osuper.ocaml.version then null
+    if lib.versionOlder "4.13" osuper.ocaml.version
+    then null
     else
       osuper.buildDunePackage {
         pname = "reanalyze";
@@ -1548,7 +1566,6 @@ with oself;
       substituteInPlace src/lib/of_mutable.ml --replace "Pervasives" "Stdlib"
     '';
   });
-
 
   sourcemaps = buildDunePackage {
     pname = "sourcemaps";
@@ -1831,11 +1848,15 @@ with oself;
     postPatch = ''
       ${o.postPatch}
 
-      ${if stdenv.isDarwin then ''
-        substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
-        "int ret = clock_getcpuclockid(pid, &clock);" \
-        "int ret = -1;"
-      '' else ""}
+      ${
+        if stdenv.isDarwin
+        then ''
+          substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
+          "int ret = clock_getcpuclockid(pid, &clock);" \
+          "int ret = -1;"
+        ''
+        else ""
+      }
     '';
   });
 
@@ -2052,7 +2073,8 @@ with oself;
       ppx_inline_test
     ];
   };
-} // (
+}
+  // (
   if lib.versionAtLeast osuper.ocaml.version "5.0"
   then (import ./ocaml5.nix oself)
   else { }
