@@ -32,16 +32,16 @@ In your `flake.nix`:
   inputs.nixpkgs.url = "github:nixOS/nixpkgs";
 
   inputs.ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
-  inputs.ocaml-overlay.nixpkgs.follows = "nixpkgs";
+  inputs.ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, ocaml-overlay }:
     let
       system = "YOUR_SYSTEM_STRING";
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          ocaml-overlay.overlays.default
+          ocaml-overlay.overlays.${system}
         ];
       };
     in
