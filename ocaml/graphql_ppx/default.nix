@@ -1,12 +1,14 @@
-{ buildDunePackage, cppo, yojson, ppxlib, reason }:
+{ fetchFromGitHub, buildDunePackage, cppo, yojson, ppxlib, reason }:
 
 buildDunePackage {
   pname = "graphql_ppx";
   version = "1.2.3";
 
-  src = builtins.fetchurl {
-    url = https://github.com/teamwalnut/graphql-ppx/archive/1345e061a92394b651b5ac65a035fda4190292e4.tar.gz;
-    sha256 = "0cwzj539v4v2zk1wfm0d2cysymh2wms083d2pvm4j7mjfh1dlpic";
+  src = fetchFromGitHub {
+    owner = "teamwalnut";
+    repo = "graphql-ppx";
+    rev = "1345e061a92394b651b5ac65a035fda4190292e4";
+    sha256 = "sha256-WJXEnM4/T0McoP4/S57WpMd4tjW8V+vShPOL8oCJRko=";
   };
 
   nativeBuildInputs = [ cppo ];

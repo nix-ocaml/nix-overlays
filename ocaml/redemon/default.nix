@@ -1,11 +1,13 @@
-{ lib, buildDunePackage, luv, cmdliner, logs, fmt }:
+{ lib, fetchFromGitHub, buildDunePackage, luv, cmdliner, logs, fmt }:
 
 buildDunePackage {
   pname = "redemon";
   version = "0.4.0";
-  src = builtins.fetchurl {
-    url = https://github.com/ulrikstrid/redemon/archive/0.4.0.tar.gz;
-    sha256 = "0v12zm2j8qa0ypkiq9dnll617ylqkv1f2xpdyadz46iv31dzdk3s";
+  src = fetchFromGitHub {
+    owner = "ulrikstrid";
+    repo = "redemon";
+    rev = "0.4.0";
+    sha256 = "sha256-M3tBxNLjEkZmmVbjqBmMRMK1cmiNTzxYfnPvnk3jfAE=";
   };
 
   propagatedBuildInputs = [ luv cmdliner logs fmt ];

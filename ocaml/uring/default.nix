@@ -1,12 +1,14 @@
-{ buildDunePackage, dune-configurator, cstruct, fmt, optint }:
+{ fetchFromGitHub, buildDunePackage, dune-configurator, cstruct, fmt, optint }:
 
 buildDunePackage {
   pname = "uring";
   version = "0.4";
 
-  src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/ocaml-uring/archive/b95047500.tar.gz;
-    sha256 = "1wacdsrlsh072m7cabbgrmiwbiyyx7alss8x305l5l5fqmfaz7ra";
+  src = fetchFromGitHub {
+    owner = "ocaml-multicore";
+    repo = "ocaml-uring";
+    rev = "v0.5";
+    sha256 = "sha256-Jc17Myc/oUEYpwUVKlxYSNsAAXn3WuM5AqisFcBG/Xk=";
   };
 
   postPatch = ''

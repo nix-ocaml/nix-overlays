@@ -1,4 +1,4 @@
-{ lib, buildDunePackage, dune, dune-rpc, lwt, csexp }:
+{ lib, buildDunePackage, dune, dune-rpc, lwt, csexp, dyn }:
 
 
 buildDunePackage {
@@ -7,10 +7,7 @@ buildDunePackage {
 
   propagatedBuildInputs = [ csexp dune-rpc lwt ];
   dontAddPrefix = true;
-  preBuild = ''
-    rm -rf vendor/csexp
-    rm -rf vendor/pp
-  '';
+  inherit (dyn) preBuild;
 
   postPatch = ''
     substituteInPlace "otherlibs/dune-rpc-lwt/src/dune_rpc_lwt.ml" --replace \

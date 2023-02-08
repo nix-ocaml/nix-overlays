@@ -1,12 +1,15 @@
-{ buildDunePackage, menhir, menhirLib, ocaml, lib }:
+{ fetchFromGitHub, buildDunePackage, menhir, menhirLib, ocaml }:
 
 buildDunePackage {
   pname = "melange-compiler-libs";
   version = "0.0.0";
 
-  src = builtins.fetchurl {
-    url = https://github.com/melange-re/melange-compiler-libs/archive/12e89a7.tar.gz;
-    sha256 = "0aphha021wkqfwswian4iyys5hbbhwq1sqiaz086pl08m4162hic";
+  src = fetchFromGitHub {
+    owner = "melange-re";
+    repo = "melange-compiler-libs";
+    rev = "12e89a7";
+    sha256 = "sha256-OYFYFfgvYAxOYGzh2/aebaGMdgPRfiCz+HWw8aUgi/A=";
   };
-  propagatedBuildInputs = [ menhir menhirLib ];
+  nativeBuildInputs = [ menhir ];
+  propagatedBuildInputs = [ menhirLib ];
 }

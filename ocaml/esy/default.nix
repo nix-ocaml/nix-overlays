@@ -11,7 +11,16 @@
 #    }' \
 #  --pure
 
-{ callPackage, bash, binutils, coreutils, makeWrapper, lib, fetchFromGitHub, fetchFromGitLab, ocamlPackages }:
+{ callPackage
+, bash
+, binutils
+, coreutils
+, makeWrapper
+, lib
+, fetchFromGitHub
+, fetchFromGitLab
+, ocamlPackages
+}:
 
 let
   currentVersion = "0.6.12";
@@ -43,17 +52,21 @@ let
 
     cmdliner =
       super.cmdliner.overrideAttrs (_: {
-        src = builtins.fetchurl {
-          url = https://github.com/esy-ocaml/cmdliner/archive/e9316bc.tar.gz;
-          sha256 = "1g0shk5ahc6byhx79ry6vdyf89a1ncq5bsgykkxa05xabvlr09ji";
+        src = fetchFromGitHub {
+          owner = "esy-ocaml";
+          repo = "cmdliner";
+          rev = "e9316bc";
+          sha256 = "sha256-a9BYX0t70KYqWFzcn7uWyE2osFsH6RKzYgI6NvUTnjY=";
         };
         createFindlibDestdir = true;
       });
 
     fmt = super.fmt.overrideAttrs (_: {
-      src = builtins.fetchurl {
-        url = https://github.com/dbuenzli/fmt/archive/refs/tags/v0.8.10.tar.gz;
-        sha256 = "0xnnrhp45p5vj1wzjn39w0j29blxrqj2dn42qcxzplp2j9mn76b9";
+      src = fetchFromGitHub {
+        owner = "dbuenzli";
+        repo = "fmt";
+        rev = "v0.8.10";
+        sha256 = "sha256-HKNy7fWS7PUhjYpKCEzXx+jAvdeYENPlzW4/FrhtyOU=";
       };
     });
 
@@ -151,7 +164,8 @@ buildDunePackage {
 
   nativeBuildInputs = [
     makeWrapper
-    dune-configurator
+    menhir
+    reason
   ];
 
   propagatedBuildInputs = [
@@ -162,7 +176,7 @@ buildDunePackage {
   buildInputs = [
     angstrom
     cmdliner
-    reason
+    dune-configurator
     bos
     fmt
     fpath
@@ -170,7 +184,6 @@ buildDunePackage {
     logs
     lwt
     lwt_ppx
-    menhir
     opam-file-format
     ppx_deriving
     ppx_deriving_yojson

@@ -76,7 +76,7 @@ let
 
   pkgs = import custom-nixpkgs {
     overlays = [
-      (import "${nixpkgs-sources}/overlay" { nixpkgs = custom-nixpkgs; })
+      (import "${nixpkgs-sources}/overlay" custom-nixpkgs)
     ];
   };
 in

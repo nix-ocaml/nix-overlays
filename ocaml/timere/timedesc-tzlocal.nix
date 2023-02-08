@@ -1,10 +1,12 @@
-{ buildDunePackage }:
+{ buildDunePackage, fetchFromGitHub }:
 
 buildDunePackage {
   pname = "timedesc-tzlocal";
   version = "0.9.0";
-  src = builtins.fetchurl {
-    url = https://github.com/daypack-dev/timere/archive/refs/tags/timedesc-0.9.0.tar.gz;
-    sha256 = "19wj1h9my4i8mhvqfdgaflb0vl5v4larq62ljaf0a33xriqppmbj";
+  src = fetchFromGitHub {
+    owner = "daypack-dev";
+    repo = "timere";
+    rev = "timedesc-0.9.0";
+    sha256 = "sha256-q79D6t+eQwNPSJFbAtQ491+P54TJA32TBu427LGKzgQ=";
   };
 }

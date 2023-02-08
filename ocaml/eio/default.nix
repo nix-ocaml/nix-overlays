@@ -1,4 +1,5 @@
 { buildDunePackage
+, fetchFromGitHub
 , bigstringaf
 , cstruct
 , lwt-dllist
@@ -12,10 +13,12 @@
 
 buildDunePackage {
   pname = "eio";
-  version = "0.6";
-  src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/eio/archive/56ea1cd6.tar.gz;
-    sha256 = "05mxc0x18gphjk8cl0w4b4y90fwqsllw4knn3yz4s74lvly0x0ji";
+  version = "0.8-dev";
+  src = fetchFromGitHub {
+    owner = "ocaml-multicore";
+    repo = "eio";
+    rev = "b83534e400a08a929257114a740979e1e0295566";
+    sha256 = "sha256-msOVVJp7J9oNw78gHv++PggvGFUY2QQ/ESNAxKpEu/4=";
   };
 
   propagatedBuildInputs = [
