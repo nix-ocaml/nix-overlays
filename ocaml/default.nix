@@ -1929,6 +1929,15 @@ with oself;
   ppx_optional = addBase osuper.ppx_optional;
   ppx_stable = addBase osuper.ppx_stable;
 
+  ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
+    patches = [
+      (fetchpatch {
+        url = https://github.com/janestreet/ppx_inline_test/commit/99e6e5819118c3ebf06bccc879a15175b9221148.patch;
+        sha256 = "1wrvjbwa5a5141d0684vlgi8hgb8m7dcwqvnhkyppmpb47g0mcha";
+      })
+    ];
+  });
+
   virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "janestreet";
