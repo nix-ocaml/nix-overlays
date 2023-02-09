@@ -1911,12 +1911,11 @@ with oself;
   });
 
   ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
-    patches = [
-      (fetchpatch {
-        url = https://github.com/janestreet/ppx_bench/commit/ce7bcca13aff40dd667e231fc0892c8753d0fc94.patch;
-        sha256 = "17nkr4yngmk1gi9jv3l065837y26gwqh9yz4wk92zw0p3ln2niv9";
-      })
-    ];
+    postPatch = ''
+      substituteInPlace src/ppx_bench.ml --replace \
+        "File_path.get_default_path loc" \
+        "loc.loc_start.pos_fname"
+    '';
   });
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -1933,12 +1932,11 @@ with oself;
   ppx_here = addBase osuper.ppx_here;
 
   ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
-    patches = [
-      (fetchpatch {
-        url = https://github.com/janestreet/ppx_inline_test/commit/99e6e5819118c3ebf06bccc879a15175b9221148.patch;
-        sha256 = "1wrvjbwa5a5141d0684vlgi8hgb8m7dcwqvnhkyppmpb47g0mcha";
-      })
-    ];
+    postPatch = ''
+      substituteInPlace src/ppx_inline_test.ml --replace \
+        "File_path.get_default_path loc" \
+        "loc.loc_start.pos_fname"
+    '';
   });
 
   ppx_js_style = addBase osuper.ppx_js_style;
