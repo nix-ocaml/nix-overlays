@@ -13,12 +13,12 @@
 
 buildDunePackage {
   pname = "eio";
-  version = "0.8-dev";
+  version = "0.8.1";
   src = fetchFromGitHub {
     owner = "ocaml-multicore";
     repo = "eio";
-    rev = "b83534e400a08a929257114a740979e1e0295566";
-    sha256 = "sha256-msOVVJp7J9oNw78gHv++PggvGFUY2QQ/ESNAxKpEu/4=";
+    rev = "v0.8.1";
+    sha256 = "sha256-nzgp17e2IXh8VA5tnUGvdMRPbmqJXU/aPomItXiJCQs=";
   };
 
   propagatedBuildInputs = [

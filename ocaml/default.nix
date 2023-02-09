@@ -1396,6 +1396,11 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.0/ppxlib-0.29.0.tbz;
+      sha256 = "1fjqjq9w157wkzgappswm8g1adhb8r4qvs9kfmw3kvzhvd6i12wf";
+    };
+
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
