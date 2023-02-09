@@ -1910,6 +1910,14 @@ with oself;
     patches = [ ];
   });
 
+  ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
+    patches = [
+      (fetchpatch {
+        url = https://github.com/janestreet/ppx_bench/commit/ce7bcca13aff40dd667e231fc0892c8753d0fc94.patch;
+        sha256 = "17nkr4yngmk1gi9jv3l065837y26gwqh9yz4wk92zw0p3ln2niv9";
+      })
+    ];
+  });
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -1923,11 +1931,6 @@ with oself;
   ppx_enumerate = addBase osuper.ppx_enumerate;
   ppx_fixed_literal = addBase osuper.ppx_fixed_literal;
   ppx_here = addBase osuper.ppx_here;
-  ppx_js_style = addBase osuper.ppx_js_style;
-  ppx_module_timer = addStdio osuper.ppx_module_timer;
-  ppx_optcomp = addStdio osuper.ppx_optcomp;
-  ppx_optional = addBase osuper.ppx_optional;
-  ppx_stable = addBase osuper.ppx_stable;
 
   ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
     patches = [
@@ -1937,6 +1940,12 @@ with oself;
       })
     ];
   });
+
+  ppx_js_style = addBase osuper.ppx_js_style;
+  ppx_module_timer = addStdio osuper.ppx_module_timer;
+  ppx_optcomp = addStdio osuper.ppx_optcomp;
+  ppx_optional = addBase osuper.ppx_optional;
+  ppx_stable = addBase osuper.ppx_stable;
 
   virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
     src = fetchFromGitHub {
