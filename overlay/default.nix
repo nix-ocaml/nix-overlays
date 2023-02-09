@@ -131,6 +131,23 @@ in
     vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
   };
 
+  h3spec = stdenv.mkDerivation {
+    name = "h3spec";
+    version = "0.1.8";
+    src = builtins.fetchurl {
+      url = https://github.com/kazu-yamamoto/h3spec/releases/download/v0.1.8/h3spec-linux-x86_64;
+      sha256 = "1lawlxpwh6vx31b9ki0v141kwjpf9a6yza94y7n982zfmiz0xigx";
+    };
+    phases = [ "installPhase" "fixupPhase" ];
+    nativeBuildInputs = (if stdenv.isDarwin then [ ] else [ super.autoPatchelfHook ]);
+    buildInputs = [ super.gmp.dev ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/h3spec
+      chmod +x $out/bin/h3spec
+    '';
+  };
+
   ocamlformat = super.ocamlformat.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \

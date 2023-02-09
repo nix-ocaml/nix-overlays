@@ -1396,6 +1396,11 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.0/ppxlib-0.29.0.tbz;
+      sha256 = "1fjqjq9w157wkzgappswm8g1adhb8r4qvs9kfmw3kvzhvd6i12wf";
+    };
+
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -1905,6 +1910,13 @@ with oself;
     patches = [ ];
   });
 
+  ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/ppx_bench.ml --replace \
+        "File_path.get_default_path loc" \
+        "loc.loc_start.pos_fname"
+    '';
+  });
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -1918,6 +1930,15 @@ with oself;
   ppx_enumerate = addBase osuper.ppx_enumerate;
   ppx_fixed_literal = addBase osuper.ppx_fixed_literal;
   ppx_here = addBase osuper.ppx_here;
+
+  ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/ppx_inline_test.ml --replace \
+        "File_path.get_default_path loc" \
+        "loc.loc_start.pos_fname"
+    '';
+  });
+
   ppx_js_style = addBase osuper.ppx_js_style;
   ppx_module_timer = addStdio osuper.ppx_module_timer;
   ppx_optcomp = addStdio osuper.ppx_optcomp;
