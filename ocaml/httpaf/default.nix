@@ -9,6 +9,6 @@ buildDunePackage {
     owner = "anmonteiro";
     repo = "httpaf";
     rev = "7189cd28e21203117f0c8e2347ae9a2fe0e0c157";
-    sha256 = "sha256-uj1wyZWYpQt0TiBFWb2ugV1xEG6OlLLXnO4UcZEkscU=";
+    sha256 = "sha256-iQk+8aETUuJ2SlRwCThTEVKWX0moGDCagkASHfyuExo=";
   };
 }
