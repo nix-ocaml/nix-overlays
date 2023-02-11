@@ -118,6 +118,7 @@ in
   });
 
   opaline = null;
+  ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
   esy = callPackage ../ocaml/esy { };
 
   h2spec = self.buildGoModule {
