@@ -6,7 +6,16 @@ nixpkgs:
 self: super:
 
 let
-  inherit (super) lib stdenv fetchFromGitHub callPackage fetchpatch;
+  inherit (super)
+    lib
+    stdenv
+    fetchFromGitHub
+    callPackage
+    fetchpatch
+    buildGoModule
+    haskell
+    haskellPackages;
+
   overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
     inherit nixpkgs;
   });
@@ -124,15 +133,17 @@ in
     pname = "h2spec";
     version = "dev";
 
-    src = builtins.fetchurl {
-      url = https://github.com/summerwind/h2spec/archive/af83a65f0b.tar.gz;
-      sha256 = "0306n89d5klx13dp870fbxy1righmb7bh3022nb3898k0bs5dx7a";
+    src = fetchFromGitHub {
+      owner = "summerwind";
+      repo = "h2spec";
+      rev = "af83a65f0b";
+      sha256 = "sha256-z06uQiImMD4nPLp4Qxka9JT9NTmY0AurnHQKhB/kM40=";
     };
     vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
   };
 
-  h3spec = super.haskell.lib.compose.justStaticExecutables
-    (super.haskellPackages.callPackage
+  h3spec = haskell.lib.compose.justStaticExecutables
+    (haskellPackages.callPackage
       ({ mkDerivation
        , base
        , bytestring
@@ -144,37 +155,33 @@ in
        , quic
        , tls
        , unliftio
-       }:
-        mkDerivation rec {
-          pname = "h3spec";
-          version = "0.1.8";
-          src = fetchFromGitHub {
-            owner = "kazu-yamamoto";
-            repo = "h3spec";
-            rev = "b44e487b143a45536206773b06eb2c80cbbae28e";
-            sha256 = "sha256-nH4NaxHdnf4kaCCUnJXSkjt5Wkb8qGv3d0+sVjyatXA==";
-          };
+       }: mkDerivation rec {
+        pname = "h3spec";
+        version = "0.1.8";
+        src = fetchFromGitHub {
+          owner = "kazu-yamamoto";
+          repo = "h3spec";
+          rev = "b44e487b143a45536206773b06eb2c80cbbae28e";
+          sha256 = "sha256-nH4NaxHdnf4kaCCUnJXSkjt5Wkb8qGv3d0+sVjyatXA==";
+        };
 
-          isExecutable = true;
-          libraryHaskellDepends = [
-            base
-            bytestring
-            hspec
-            hspec-core
-            http-types
-            http3
-            network
-            quic
-            tls
-            unliftio
-          ];
-          executableHaskellDepends = libraryHaskellDepends;
-          doHaddock = false;
-          # tests depend on a specific version of solc
-          doCheck = false;
-          mainProgram = "h3spec";
-          license = lib.licenses.mit;
-        })
+        isExecutable = true;
+        libraryHaskellDepends = [
+          base
+          bytestring
+          hspec
+          hspec-core
+          http-types
+          http3
+          network
+          quic
+          tls
+          unliftio
+        ];
+        executableHaskellDepends = libraryHaskellDepends;
+        mainProgram = "h3spec";
+        license = lib.licenses.mit;
+      })
       { });
 
   ocamlformat = super.ocamlformat.overrideAttrs (_: {
