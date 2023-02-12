@@ -224,16 +224,6 @@ with oself;
     postInstall = null;
   });
 
-  cfstream = osuper.cfstream.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace lib/dune --replace \
-        "libraries core_kernel" "libraries camlp-streams core_kernel"
-      substituteInPlace app/cfstream_test.ml --replace \
-        "Pervasives." "Stdlib."
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   checkseum = osuper.checkseum.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
