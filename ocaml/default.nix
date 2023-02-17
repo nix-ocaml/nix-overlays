@@ -618,6 +618,13 @@ with oself;
     patches = [ ];
   });
 
+  ffmpeg-avdevice = osuper.ffmpeg-avdevice.overrideAttrs (o: {
+    propagatedBuildInputs =
+      o.propagatedBuildInputs ++
+      lib.optionals stdenv.isDarwin
+        (with darwin.apple_sdk.frameworks; [ AVFoundation ]);
+  });
+
   findlib = osuper.findlib.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml";
