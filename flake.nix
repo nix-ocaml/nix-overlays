@@ -57,6 +57,14 @@
         pkgs.appendOverlays extraOverlays;
 
       overlays.default = import ./overlay nixpkgs;
+
+      templates.opinionated = {
+        description =
+          "Opinionated setup for ocaml development";
+        path = ./templates/opinionated;
+      };
+
+      templates.default = self.templates.opinionated;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
