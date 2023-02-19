@@ -580,10 +580,7 @@ with oself;
   });
   fiber = osuper.fiber.overrideAttrs (o: {
     patches = [
-      (fetchpatch {
-        url = https://github.com/ocaml/dune/commit/ce4a9d7c55204c9e560b4d066bc07e3389056b52.patch;
-        sha256 = "1q7nmwdrpfs9fn29lk9fam8awhp7cx5s0k8dyybin47dn19d4pqa";
-      })
+      ./dune-fiber.patch
     ];
     propagatedBuildInputs = [ pp ];
     inherit (dyn) preBuild;
