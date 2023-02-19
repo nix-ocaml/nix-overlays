@@ -524,6 +524,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.7.0/dune-3.7.0.tbz;
+      sha256 = "1f180mah6fibvy1nx8n45bw28xinzcljl7g7ypnqycc0s34kgmp2";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     postPatch = ''
@@ -575,6 +579,9 @@ with oself;
     inherit (dyn) preBuild;
   });
   fiber = osuper.fiber.overrideAttrs (o: {
+    patches = [
+      ./dune-fiber.patch
+    ];
     propagatedBuildInputs = [ pp ];
     inherit (dyn) preBuild;
   });
