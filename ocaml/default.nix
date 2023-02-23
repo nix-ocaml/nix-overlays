@@ -1017,9 +1017,6 @@ with oself;
     '';
   });
 
-  lambda-runtime = callPackage ./lambda-runtime { };
-  vercel = callPackage ./lambda-runtime/vercel.nix { };
-
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (_: {
     pname = "logs";
   });
