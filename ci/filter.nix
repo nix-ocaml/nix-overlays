@@ -116,8 +116,6 @@ let
 
 
     # Not compatible with EIO yet
-    "lambda-runtime"
-    "vercel"
     "oidc-client"
   ];
 
