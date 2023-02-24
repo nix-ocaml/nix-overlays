@@ -582,11 +582,11 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-dune";
       repo = "fiber";
-      rev = "0b322636da0d0cce5b8dd2179b6197a4d765d09a";
-      sha256 = "sha256-Sg4CnlPUBzwb39+SROQO8qn3krKSW/nRPS+vfWs9CII=";
+      rev = "a7b5456b95a67099c5f8078d7098e565e4d5b9ea";
+      sha256 = "sha256-nnvQU9Kk63BQqQiAhzPVLnjnEpKBSxjcfTn31RfiMoU=";
     };
-    propagatedBuildInputs = [ pp ];
-    inherit (dyn) preBuild;
+    propagatedBuildInputs = [ dyn stdune ];
+    preBuild = "";
   });
   fiber-lwt = buildDunePackage {
     pname = "fiber-lwt";
