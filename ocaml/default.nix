@@ -1145,11 +1145,6 @@ with oself;
   ocamlformat = callPackage ./ocamlformat { };
   ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
 
-  inherit (callPackage ./ocamlformat-rpc { })
-    # latest version
-    ocamlformat-rpc
-    ocamlformat-rpc_0_21_0;
-
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
