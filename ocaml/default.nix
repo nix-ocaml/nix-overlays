@@ -1144,6 +1144,7 @@ with oself;
 
   ocamlformat = callPackage ./ocamlformat { };
   ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
+  ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
