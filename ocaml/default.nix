@@ -579,12 +579,20 @@ with oself;
     inherit (dyn) preBuild;
   });
   fiber = osuper.fiber.overrideAttrs (o: {
-    patches = [
-      ./dune-fiber.patch
-    ];
+    src = fetchFromGitHub {
+      owner = "ocaml-dune";
+      repo = "fiber";
+      rev = "0b322636da0d0cce5b8dd2179b6197a4d765d09a";
+      sha256 = "sha256-Sg4CnlPUBzwb39+SROQO8qn3krKSW/nRPS+vfWs9CII=";
+    };
     propagatedBuildInputs = [ pp ];
     inherit (dyn) preBuild;
   });
+  fiber-lwt = buildDunePackage {
+    pname = "fiber-lwt";
+    inherit (fiber) version src;
+    propagatedBuildInputs = [ pp fiber lwt stdune ];
+  };
   stdune = osuper.stdune.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
@@ -1127,8 +1135,15 @@ with oself;
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
   });
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.0/ocaml-version-3.6.0.tbz;
+      sha256 = "1ynvi59bc6p6va1y0yq84zafyyf8xdd8qpn1gz0ihij46i79qslw";
+    };
+  });
 
   ocamlformat = callPackage ./ocamlformat { };
+  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
 
   inherit (callPackage ./ocamlformat-rpc { })
     # latest version
