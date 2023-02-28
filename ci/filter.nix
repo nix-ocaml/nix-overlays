@@ -150,7 +150,6 @@ let
     "semver"
     "twt"
     "uecc"
-    "xml-light"
     "lambdapi"
   ];
 
