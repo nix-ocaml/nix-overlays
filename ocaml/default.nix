@@ -99,6 +99,12 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
+  awa = osuper.awa.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/awa-ssh/releases/download/v0.1.2/awa-0.1.2.tbz;
+      sha256 = "0zvkmm3k8clgnjxkp1nmjmak6axkyqcbd1zl977jqxp6dfz2mwhx";
+    };
+  });
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
