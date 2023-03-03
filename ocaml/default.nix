@@ -1061,11 +1061,6 @@ with oself;
     inherit (mirage-crypto) src version;
     propagatedBuildInputs = [ mirage-crypto lwt logs mtime duration mirage-crypto-rng ];
   };
-  mirage-crypto-rng-eio = buildDunePackage {
-    pname = "mirage-crypto-rng-eio";
-    inherit (mirage-crypto) src version;
-    propagatedBuildInputs = [ eio mirage-crypto ];
-  };
   mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
