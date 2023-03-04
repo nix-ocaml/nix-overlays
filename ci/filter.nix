@@ -132,16 +132,13 @@ let
     "inifiles"
     "lastfm"
     "ocaml_oasis"
-    "ocaml-protoc"
     "ocaml-recovery-parser"
     "ocaml-sat-solvers"
     "ocamlify"
     "ocamlmod"
     "ocamlnet"
     "ocp-build"
-    "owl-base"
     "owl"
-    "parmap"
     "phylogenetics"
     "piqi"
     "piqi-ocaml"
@@ -149,7 +146,6 @@ let
     "ringo_old"
     "semver"
     "twt"
-    "uecc"
     "lambdapi"
   ];
 
@@ -162,7 +158,6 @@ let
     "alsa"
     "mm"
     "eigen"
-    "owl-base"
     "owl"
     "pulseaudio"
 

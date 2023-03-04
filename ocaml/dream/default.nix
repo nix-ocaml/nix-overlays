@@ -18,7 +18,7 @@
 , magic-mime
 , mirage-clock
 , mirage-crypto
-, mirage-crypto-rng
+, mirage-crypto-rng-lwt
 , multipart_form
 , multipart_form-lwt
 , ptime
@@ -61,7 +61,7 @@ buildDunePackage rec {
     magic-mime
     mirage-clock
     mirage-crypto
-    mirage-crypto-rng
+    mirage-crypto-rng-lwt
     multipart_form
     multipart_form-lwt
     ptime
@@ -125,6 +125,14 @@ buildDunePackage rec {
     substituteInPlace src/sql/session.ml --replace \
       "R.exec T.string" \
       "R.Infix.(->.) T.string T.unit"
+
+    substituteInPlace src/dune --replace \
+      "mirage-crypto-rng.lwt" \
+      "mirage-crypto-rng-lwt"
+
+    substituteInPlace src/dream.ml --replace \
+      "Mirage_crypto_rng_lwt.initialize" \
+      '(fun () -> Mirage_crypto_rng_lwt.initialize (module Mirage_crypto_rng.Fortuna))'
   '';
 
   preBuild = ''

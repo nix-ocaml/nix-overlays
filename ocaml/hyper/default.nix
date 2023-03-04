@@ -1,4 +1,10 @@
-{ fetchFromGitHub, buildDunePackage, dream-httpaf, dream-pure, mirage-crypto-rng, uri }:
+{ fetchFromGitHub
+, buildDunePackage
+, dream-httpaf
+, dream-pure
+, mirage-crypto-rng-lwt
+, uri
+}:
 
 buildDunePackage rec {
   pname = "hyper";
@@ -15,5 +21,21 @@ buildDunePackage rec {
     ./0001-Unvendor-and-add-nix.patch
   ];
 
-  buildInputs = [ dream-httpaf dream-pure mirage-crypto-rng uri ];
+  propagatedBuildInputs = [
+    dream-httpaf
+    dream-pure
+    uri
+    mirage-crypto-rng-lwt
+  ];
+
+  postPatch = ''
+    substituteInPlace src/http/dune --replace \
+      "mirage-crypto-rng.lwt" \
+      "mirage-crypto-rng-lwt"
+
+    substituteInPlace src/http/websocket.ml --replace \
+      "Mirage_crypto_rng_lwt.initialize" \
+      '(fun () -> Mirage_crypto_rng_lwt.initialize (module Mirage_crypto_rng.Fortuna))'
+  '';
+
 }
