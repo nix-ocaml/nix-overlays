@@ -1699,6 +1699,7 @@ with oself;
       hash = "sha256-qG8Wxd/ATwoogeKJDyt5gkGhP5Wvc0j0mMqcoVDkeq4=";
     };
     checkInputs = [ ppx_expect ];
+    doCheck = lib.versionAtLeast osuper.ocaml.version "4.14";
   });
 
   sendfile = callPackage ./sendfile { };
