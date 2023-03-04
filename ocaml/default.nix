@@ -587,8 +587,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "8d88ee8068abb053fe8ed7c9c21b3a1883dbaf47";
-      hash = "sha256-k+2TxwlgPJhQwoTwFjVreipDb2CKmYQ2GaoBud7+uf0=";
+      rev = "436965f550c40fd19fbe29d8a4b19f9b75bf8914";
+      hash = "sha256-pe+AC0SMrCYdqGXaspUjxnQbWu69S7DihwMEYk/p+/Y=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
@@ -962,6 +962,12 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
+  letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mmaker/ocaml-letsencrypt/releases/download/v0.5.0/letsencrypt-0.5.0.tbz;
+      sha256 = "1lzkfhx914cvppcaai7xikhr6nmdwx72pmya70nl4gvj4dkfhsjw";
+    };
+  });
   digestif = osuper.digestif.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
