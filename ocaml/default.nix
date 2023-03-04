@@ -816,6 +816,9 @@ with oself;
   happy-eyeballs-lwt = osuper.happy-eyeballs-lwt.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-lwt ];
   });
+  happy-eyeballs-mirage = osuper.happy-eyeballs-mirage.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
+  });
 
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
