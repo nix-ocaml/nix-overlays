@@ -795,6 +795,16 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
+  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.5.0/happy-eyeballs-0.5.0.tbz;
+      sha256 = "07h6vpbfy7s46nm2fcxby632cy083b2vzz8k2va1gpx3ahb4x02g";
+    };
+  });
+  happy-eyeballs-lwt = osuper.happy-eyeballs-lwt.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-lwt ];
+  });
+
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     postPatch = ''
