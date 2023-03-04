@@ -326,6 +326,18 @@ with oself;
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
 
+  conduit = osuper.conduit.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "ocaml-conduit";
+      rev = "403b4cec528dae71aded311215868a35c11dad7e";
+      hash = "sha256-1dEjC/y1rP8LBGIYSE1HB66Q2fX722sHxJpDwQS+A3Q=";
+    };
+  });
+  conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
+  });
+
   confero =
     let
       allkeys_txt = builtins.fetchurl {
