@@ -1694,17 +1694,6 @@ with oself;
     };
   });
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "sedlex";
-      rev = "v3.1";
-      hash = "sha256-qG8Wxd/ATwoogeKJDyt5gkGhP5Wvc0j0mMqcoVDkeq4=";
-    };
-    checkInputs = [ ppx_expect ];
-    doCheck = lib.versionAtLeast osuper.ocaml.version "4.14";
-  });
-
   sendfile = callPackage ./sendfile { };
 
   session = callPackage ./session { };
@@ -1737,7 +1726,6 @@ with oself;
       substituteInPlace src/lib/of_mutable.ml --replace "Pervasives" "Stdlib"
     '';
   });
-
 
   sourcemaps = buildDunePackage {
     pname = "sourcemaps";
