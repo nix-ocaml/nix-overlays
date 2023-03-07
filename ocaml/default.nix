@@ -260,20 +260,22 @@ with oself;
   };
 
   cpdf = osuper.cpdf.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "johnwhitington";
-      repo = "cpdf-source";
-      rev = "a0e93444b";
-      sha256 = "sha256-2MZ49NyvnvrzMiBXPGN4tYHPuTNOQloEPFvAG7TYHBk=";
-    };
+    cpdf = osuper.cpdf.overrideAttrs (_: {
+      src = fetchFromGitHub {
+        owner = "johnwhitington";
+        repo = "cpdf-source";
+        rev = "d00f857";
+        hash = "sha256-63G6VZwMGqckaiKBFaj7rErKNEMdtKsXCzGn1hwSWI0=";
+      };
+    });
   });
 
   camlpdf = osuper.camlpdf.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "johnwhitington";
       repo = "camlpdf";
-      rev = "563afd602";
-      sha256 = "sha256-UY/LlTXiXd4/rHezDFKujJV0FCbdQh5bo73Fubc0DIk=";
+      rev = "abadaea";
+      hash = "sha256-yagJJy90fOyj2uHc36G1BJrIrt0N7nSYGx4DkTrGkRg=";
     };
   });
 
@@ -712,19 +714,6 @@ with oself;
       o.propagatedBuildInputs ++
       lib.optionals stdenv.isDarwin
         (with darwin.apple_sdk.frameworks; [ AVFoundation ]);
-  });
-
-  findlib = osuper.findlib.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "ocamlfind";
-      rev = "findlib-1.9.6";
-      sha256 = "sha256-lJI5uBlK7fLONblw7ZNZrS439uJ+CfIFc7GO9Ofqo8k=";
-    };
-    patches = [
-      "${nixpkgs}/pkgs/development/tools/ocaml/findlib/ldconf.patch"
-      ./findlib_install_topfind.patch
-    ];
   });
 
   fix = osuper.fix.overrideAttrs (_: {
@@ -1167,7 +1156,7 @@ with oself;
       rev = "v0.4.4";
       sha256 = "sha256-lRE6Zh1oDnPOI8GqWO4g6qiS2j43NOHmckgmJ8uoHfE=";
     };
-    propagatedBuildInputs = [ ppxlib stdcompat ];
+    propagatedBuildInputs = [ ppxlib stdcompat findlib ];
   };
 
   metrics = osuper.metrics.overrideAttrs (_: {
