@@ -144,6 +144,7 @@ let
     "lockfree"
     "domainslib"
     "dscheck"
+    "cpdf"
   ];
 
 in
