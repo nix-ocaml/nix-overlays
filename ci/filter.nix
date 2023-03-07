@@ -8,7 +8,6 @@ let
     "cil"
     "dypgen"
     "earlybird"
-    "gtktop"
     "camlimages_4_2_4"
     "lablgtk-extras"
     "mezzo"
@@ -16,14 +15,11 @@ let
     "ocaml_cryptgps"
     "ocamlnat"
     "ocamlsdl"
-    "omake_rc1"
     "lwt_camlp4"
-    "js_of_ocaml-camlp4"
     "macaque"
     "config-file"
     "erm_xmpp"
     "gmetadom"
-    "ocsigen_deriving"
     "stog"
     "ulex"
     "lablgl"
@@ -75,17 +71,7 @@ let
 
     # Broken since OCaml 4.14
     "eliom"
-    "ocsigen_server"
     "ocsigen-toolkit"
-    "ocsipersist"
-    "ocsipersist-pgsql"
-    "ocsipersist-sqlite"
-    "ogg"
-    "theora"
-    "flac"
-    "speex"
-    "opus"
-    "vorbis"
 
     "dream-serve"
 
@@ -95,7 +81,6 @@ let
     "gd4o"
 
     "ocaml-sat-solvers"
-    "cpdf"
 
     "ocaml-freestanding"
 
@@ -110,30 +95,22 @@ let
     "tcslib"
     "plotkicadsch"
 
-    # Fatal error: exception Dynlink.Error
-    # (Dynlink.Library's_module_initializers_failed "Not_found")
-    "metapp"
-
-
     # Not compatible with EIO yet
     "oidc-client"
   ];
 
   ocaml5Ignores = [
     "cpdf"
-    "dose3"
     "erm_xml"
     "fontconfig"
     "functory"
     "gapi-ocaml"
-    "getopt"
     "gsl"
     "hack_parallel"
     "inifiles"
     "lastfm"
     "ocaml_oasis"
     "ocaml-recovery-parser"
-    "ocaml-sat-solvers"
     "ocamlify"
     "ocamlmod"
     "ocamlnet"
@@ -157,17 +134,10 @@ let
 
     "alsa"
     "mm"
-    "eigen"
     "owl"
-    "pulseaudio"
 
     "uring"
     "eio_linux"
-    "class_group_vdf"
-
-    "pyml"
-    "ppx_python"
-    "pythonlib" # TODO: maybe this works now?
   ];
 
   lowerThanOCaml5Ignores = [
