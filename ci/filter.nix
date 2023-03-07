@@ -8,7 +8,6 @@ let
     "cil"
     "dypgen"
     "earlybird"
-    "camlimages_4_2_4"
     "lablgtk-extras"
     "mezzo"
     "ocaml_cairo"
@@ -75,9 +74,6 @@ let
 
     "dream-serve"
 
-    # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
-    "elina"
-
     "gd4o"
 
     "ocaml-sat-solvers"
@@ -128,6 +124,7 @@ let
 
   darwinIgnores = [
     "dssi"
+    "elina"
 
     # broken on macOS?
     "llvm"

@@ -923,8 +923,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "dbuenzli";
       repo = "jsonm";
-      rev = "7220492e3909002935aa2851edab4ee4eadb324c";
-      sha256 = "sha256-V65LHT2qIt6BFXvetNuWvicshYVOJnUy8txFU9U1lzU=";
+      rev = "v1.0.2";
+      hash = "sha256-txBRq5I3336gQcu2CXAQsqfPtB1qw4P69G5Up60PQdQ=";
     };
   });
 
@@ -1243,8 +1243,8 @@ with oself;
   });
   ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.0/ocaml-version-3.6.0.tbz;
-      sha256 = "1ynvi59bc6p6va1y0yq84zafyyf8xdd8qpn1gz0ihij46i79qslw";
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.1/ocaml-version-3.6.1.tbz;
+      sha256 = "0clxf5nlf6qjqsharrbgavrci33cqd0bbxa4p1y7a9x18xfrm800";
     };
   });
 
