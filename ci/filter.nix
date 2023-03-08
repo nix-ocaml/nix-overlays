@@ -8,22 +8,17 @@ let
     "cil"
     "dypgen"
     "earlybird"
-    "gtktop"
-    "camlimages_4_2_4"
     "lablgtk-extras"
     "mezzo"
     "ocaml_cairo"
     "ocaml_cryptgps"
     "ocamlnat"
     "ocamlsdl"
-    "omake_rc1"
     "lwt_camlp4"
-    "js_of_ocaml-camlp4"
     "macaque"
     "config-file"
     "erm_xmpp"
     "gmetadom"
-    "ocsigen_deriving"
     "stog"
     "ulex"
     "lablgl"
@@ -75,27 +70,13 @@ let
 
     # Broken since OCaml 4.14
     "eliom"
-    "ocsigen_server"
     "ocsigen-toolkit"
-    "ocsipersist"
-    "ocsipersist-pgsql"
-    "ocsipersist-sqlite"
-    "ogg"
-    "theora"
-    "flac"
-    "speex"
-    "opus"
-    "vorbis"
 
     "dream-serve"
-
-    # maybe nix-build-uncached bug? X requires non-existent output 'out' from Y
-    "elina"
 
     "gd4o"
 
     "ocaml-sat-solvers"
-    "cpdf"
 
     "ocaml-freestanding"
 
@@ -110,40 +91,27 @@ let
     "tcslib"
     "plotkicadsch"
 
-    # Fatal error: exception Dynlink.Error
-    # (Dynlink.Library's_module_initializers_failed "Not_found")
-    "metapp"
-
-
     # Not compatible with EIO yet
-    "lambda-runtime"
-    "vercel"
     "oidc-client"
   ];
 
   ocaml5Ignores = [
     "cpdf"
-    "dose3"
     "erm_xml"
     "fontconfig"
     "functory"
     "gapi-ocaml"
-    "getopt"
     "gsl"
     "hack_parallel"
     "inifiles"
     "lastfm"
     "ocaml_oasis"
-    "ocaml-protoc"
     "ocaml-recovery-parser"
-    "ocaml-sat-solvers"
     "ocamlify"
     "ocamlmod"
     "ocamlnet"
     "ocp-build"
-    "owl-base"
     "owl"
-    "parmap"
     "phylogenetics"
     "piqi"
     "piqi-ocaml"
@@ -151,37 +119,29 @@ let
     "ringo_old"
     "semver"
     "twt"
-    "uecc"
-    "xml-light"
     "lambdapi"
   ];
 
   darwinIgnores = [
     "dssi"
+    "elina"
 
     # broken on macOS?
     "llvm"
 
     "alsa"
     "mm"
-    "eigen"
-    "owl-base"
     "owl"
-    "pulseaudio"
 
     "uring"
     "eio_linux"
-    "class_group_vdf"
-
-    "pyml"
-    "ppx_python"
-    "pythonlib" # TODO: maybe this works now?
   ];
 
   lowerThanOCaml5Ignores = [
     "lockfree"
     "domainslib"
     "dscheck"
+    "cpdf"
   ];
 
 in

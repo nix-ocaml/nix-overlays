@@ -24,6 +24,9 @@ with oself;
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
 
+  lambda-runtime = callPackage ./lambda-runtime { };
+  vercel = callPackage ./lambda-runtime/vercel.nix { };
+
   lwt_domain = callPackage ./lwt/domain.nix { };
 
   lwt_eio = callPackage ./eio/lwt_eio.nix { };
@@ -31,14 +34,7 @@ with oself;
   mirage-crypto-rng-eio = buildDunePackage {
     pname = "mirage-crypto-rng-eio";
     inherit (mirage-crypto) src version;
-    propagatedBuildInputs = [
-      eio
-      cstruct
-      logs
-      mirage-crypto-rng
-      mtime
-      duration
-    ];
+    propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
   piaf = callPackage ./piaf { };
