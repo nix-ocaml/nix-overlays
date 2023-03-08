@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "ulrikstrid";
     repo = "ocaml-oidc";
-    rev = "4bb30333412593b899dfdc9e740465b06efb317e";
-    sha256 = "sha256-pU8mt40iElL02a0bDrjc5RL9mpatDL7GlhF464iauX0=";
+    rev = "f70d9798332556e92a9b7eb245707305d437e6ee";
+    hash = "sha256-YyH4AWXbljMK0dt8e+ptk1SD66v6tGXyUaKCc5yeumo=";
   };
 
   propagatedBuildInputs = [ jose uri yojson logs ];
