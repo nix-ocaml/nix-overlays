@@ -7,7 +7,7 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "ulrikstrid";
     repo = "ocaml-oidc";
-    rev = "5859343";
+    rev = "f70d9798332556e92a9b7eb245707305d437e6ee";
     hash = "sha256-YyH4AWXbljMK0dt8e+ptk1SD66v6tGXyUaKCc5yeumo=";
   };
 
