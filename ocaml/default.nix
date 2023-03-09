@@ -322,6 +322,36 @@ with oself;
     '';
   });
 
+  colombe = buildDunePackage {
+    pname = "colombe";
+    version = "0.5.2";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/colombe/releases/download/v0.8.0/colombe-0.8.0.tbz;
+      sha256 = "1wzzwxdixv672py2fs419n92chjyq7703zzrgya6bxvsbffx6flx";
+    };
+    propagatedBuildInputs = [ ipaddr fmt angstrom emile ];
+  };
+  sendmail = buildDunePackage {
+    pname = "sendmail";
+    inherit (colombe) version src;
+    propagatedBuildInputs = [ colombe tls ke rresult base64 ];
+  };
+  sendmail-lwt = buildDunePackage {
+    pname = "sendmail-lwt";
+    inherit (colombe) version src;
+    propagatedBuildInputs = [ sendmail lwt tls-lwt ];
+  };
+
+  received = buildDunePackage {
+    pname = "received";
+    version = "0.5.2";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/colombe/releases/download/received-v0.5.2/colombe-received-v0.5.2.tbz;
+      sha256 = "1gig5kpkp9rfgnvkrgm7n89vdrkjkbbzpd7xcf90dja8mkn7d606";
+    };
+    propagatedBuildInputs = [ angstrom emile mrmime colombe ];
+  };
+
   conan = callPackage ./conan { };
   conan-lwt = callPackage ./conan/lwt.nix { };
   conan-unix = callPackage ./conan/unix.nix { };
