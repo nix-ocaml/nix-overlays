@@ -8,7 +8,7 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "httpaf";
-    rev = "e7936f9";
-    hash = "sha256-PMx+ZvdZ6RCNPz49O4DSiHm5uJjWbed9hFN7ps/xxdA=";
+    rev = "aff2eeaaf4644d97ab94e89a63b709642e952171";
+    hash = "sha256-tBk6OfbnBY+coG/EyuNU0Tgr8rWOtNq3XztfwcopsWk=";
   };
 }
