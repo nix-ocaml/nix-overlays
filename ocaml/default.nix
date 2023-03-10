@@ -99,12 +99,6 @@ with oself;
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
 
-  awa = osuper.awa.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/awa-ssh/releases/download/v0.1.2/awa-0.1.2.tbz;
-      sha256 = "0zvkmm3k8clgnjxkp1nmjmak6axkyqcbd1zl977jqxp6dfz2mwhx";
-    };
-  });
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
@@ -530,51 +524,6 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
-
-  dns = osuper.dns.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-dns/releases/download/v7.0.1/dns-7.0.1.tbz;
-      sha256 = "1xg11msi975jnffqkss2kpmvniz6p9nk09jh1zf86v2vad9vadxw";
-    };
-  });
-  dns-stub = osuper.dns-stub.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
-  });
-  dns-client-mirage = buildDunePackage {
-    pname = "dns-client-mirage";
-    inherit (dns) src version;
-    propagatedBuildInputs = [
-      domain-name
-      ipaddr
-      mirage-random
-      mirage-time
-      tcpip
-      mirage-clock
-      dns-client
-      happy-eyeballs
-      ca-certs-nss
-      tls-mirage
-    ];
-  };
-  dns-client-lwt = buildDunePackage {
-    pname = "dns-client-lwt";
-    inherit (dns) src version;
-    propagatedBuildInputs = [
-      lwt
-      dns
-      dns-client
-      mtime
-      mirage-crypto-rng-lwt
-      ipaddr
-      happy-eyeballs
-      ca-certs-nss
-      tls-lwt
-    ];
-  };
-  dns-cli = osuper.dns-cli.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dns-client-lwt ];
-  });
-
   dolog = buildDunePackage {
     pname = "dolog";
     version = "6.0.0";
@@ -826,19 +775,6 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
-  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/roburio/happy-eyeballs/releases/download/v0.5.0/happy-eyeballs-0.5.0.tbz;
-      sha256 = "07h6vpbfy7s46nm2fcxby632cy083b2vzz8k2va1gpx3ahb4x02g";
-    };
-  });
-  happy-eyeballs-lwt = osuper.happy-eyeballs-lwt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-lwt ];
-  });
-  happy-eyeballs-mirage = osuper.happy-eyeballs-mirage.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
-  });
-
   hidapi = osuper.hidapi.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     postPatch = ''
@@ -1006,12 +942,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
-  letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mmaker/ocaml-letsencrypt/releases/download/v0.5.0/letsencrypt-0.5.0.tbz;
-      sha256 = "1lzkfhx914cvppcaai7xikhr6nmdwx72pmya70nl4gvj4dkfhsjw";
-    };
-  });
   digestif = osuper.digestif.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
@@ -1104,19 +1034,9 @@ with oself;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
     };
   });
-
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-crypto/releases/download/v0.11.0/mirage-crypto-0.11.0.tbz;
-      sha256 = "1r2iw670d9ym01p2rf65zp91b8a2vzzvn4xxfhvrl84wb6wq5503";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
-  mirage-crypto-rng-lwt = buildDunePackage {
-    pname = "mirage-crypto-rng-lwt";
-    inherit (mirage-crypto) src version;
-    propagatedBuildInputs = [ mirage-crypto lwt logs mtime duration mirage-crypto-rng ];
-  };
   mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
@@ -1880,11 +1800,6 @@ with oself;
       ipaddr
     ];
   });
-  tls-lwt = buildDunePackage {
-    pname = "tls-lwt";
-    inherit (tls) src version;
-    propagatedBuildInputs = [ tls lwt mirage-crypto-rng-lwt ];
-  };
 
   tyxml = osuper.tyxml.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -1935,13 +1850,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-
-  x509 = osuper.x509.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-x509/releases/download/v0.16.4/x509-0.16.4.tbz;
-      sha256 = "0nk9m8jnbrdk8winp9854rnccr5sifa80x3pxp4ayh0js22k3s2x";
-    };
-  });
 
   xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams ];
