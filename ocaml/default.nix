@@ -952,6 +952,29 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
+  lev = buildDunePackage {
+    pname = "lev";
+    version = "n/a";
+    src = fetchFromGitHub {
+      "owner" = "rgrinberg";
+      repo = "lev";
+      rev = "2c98545efbc2a485b836294627ad78ca9f562c7d";
+      hash = "sha256-kvQIV/b0rlnCmJtQJeqhEsfEQfWS7XWwKGhMYxKHFL8=";
+    };
+    buildInputs = [ libev-oc ];
+  };
+  lev-fiber = buildDunePackage {
+    pname = "lev-fiber";
+    inherit (lev) version src;
+    propagatedBuildInputs = [ lev dyn fiber stdune ];
+    checkInputs = [ ppx_expect ];
+  };
+  lev-fiber-csexp = buildDunePackage {
+    pname = "lev-fiber";
+    inherit (lev) version src;
+    propagatedBuildInputs = [ lev-fiber csexp ];
+  };
+
   digestif = osuper.digestif.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
