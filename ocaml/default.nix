@@ -965,8 +965,7 @@ with oself;
   };
   lev-fiber =
     if lib.versionOlder "4.13" osuper.ocaml.version then
-      null
-        buildDunePackage
+      buildDunePackage
         {
           pname = "lev-fiber";
           inherit (lev) version src;
@@ -975,8 +974,7 @@ with oself;
         } else null;
   lev-fiber-csexp =
     if lib.versionOlder "4.13" osuper.ocaml.version then
-      null
-        buildDunePackage
+      buildDunePackage
         {
           pname = "lev-fiber";
           inherit (lev) version src;
