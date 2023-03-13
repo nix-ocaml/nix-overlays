@@ -964,7 +964,7 @@ with oself;
     buildInputs = [ libev-oc ];
   };
   lev-fiber =
-    if lib.versionOlder "4.13" osuper.ocaml.version then
+    if lib.versionAtLeast "4.14" osuper.ocaml.version then
       buildDunePackage
         {
           pname = "lev-fiber";
@@ -973,7 +973,7 @@ with oself;
           checkInputs = [ ppx_expect ];
         } else null;
   lev-fiber-csexp =
-    if lib.versionOlder "4.13" osuper.ocaml.version then
+    if lib.versionAtLeast "4.14" osuper.ocaml.version then
       buildDunePackage
         {
           pname = "lev-fiber";
