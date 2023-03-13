@@ -963,17 +963,25 @@ with oself;
     };
     buildInputs = [ libev-oc ];
   };
-  lev-fiber = buildDunePackage {
-    pname = "lev-fiber";
-    inherit (lev) version src;
-    propagatedBuildInputs = [ lev dyn fiber stdune ];
-    checkInputs = [ ppx_expect ];
-  };
-  lev-fiber-csexp = buildDunePackage {
-    pname = "lev-fiber";
-    inherit (lev) version src;
-    propagatedBuildInputs = [ lev-fiber csexp ];
-  };
+  lev-fiber =
+    if lib.versionOlder "4.13" osuper.ocaml.version then
+      null
+        buildDunePackage
+        {
+          pname = "lev-fiber";
+          inherit (lev) version src;
+          propagatedBuildInputs = [ lev dyn fiber stdune ];
+          checkInputs = [ ppx_expect ];
+        } else null;
+  lev-fiber-csexp =
+    if lib.versionOlder "4.13" osuper.ocaml.version then
+      null
+        buildDunePackage
+        {
+          pname = "lev-fiber";
+          inherit (lev) version src;
+          propagatedBuildInputs = [ lev-fiber csexp ];
+        } else null;
 
   digestif = osuper.digestif.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
