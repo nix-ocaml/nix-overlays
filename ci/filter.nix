@@ -61,6 +61,7 @@ let
     "git-mirage"
     "irmin-git"
     "http-mirage-client"
+    "letsencrypt-mirage"
 
     # broken since OCaml 4.13
     "hol_light"
