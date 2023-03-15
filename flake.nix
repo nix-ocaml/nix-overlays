@@ -25,6 +25,7 @@
             src = channel;
             patches = patches;
           };
+      overlay = import ./overlay nixpkgs;
     in
 
     {
@@ -44,7 +45,7 @@
         let
           pkgs = import nixpkgs ({
             inherit system;
-            overlays = [ self.overlays.${system} ];
+            overlays = [ overlay ];
             config.allowUnfree = true;
           } // attrs);
         in
@@ -56,7 +57,7 @@
           */
         pkgs.appendOverlays extraOverlays;
 
-      overlays.default = import ./overlay nixpkgs;
+      overlays.default = overlay;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
