@@ -1,5 +1,6 @@
 { stdenv
 , lib
+, darwin
 , fetchFromGitHub
 , buildDunePackage
 , eio
@@ -40,7 +41,9 @@ buildDunePackage {
     multipart_form
     uri
     websocketaf
-  ];
+  ] ++ lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) (with darwin.apple_sdk_11_0; [
+    Libsystem
+  ]);
 
   meta = {
     description = "An HTTP library with HTTP/2 support written entirely in OCaml";
