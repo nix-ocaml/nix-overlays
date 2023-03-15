@@ -60,16 +60,6 @@ in
 with oself;
 
 {
-  buildDunePackage = args: (osuper.buildDunePackage ({
-    installPhase = ''
-      runHook preInstall
-      dune install --prefix $out --libdir $OCAMLFIND_DESTDIR ${args.pname} --docdir $out/share/doc
-      runHook postInstall
-    '';
-  } // args
-  ));
-
-
   alcotest = osuper.alcotest.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/alcotest/releases/download/1.7.0/alcotest-1.7.0.tbz;
