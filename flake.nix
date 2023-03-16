@@ -7,7 +7,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=1474943fd91fbe5567f7582acf568e0f999f4af1";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=a86610144f60e8a54f12a75f2ca0ad62e2a5b7fa";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -25,6 +25,7 @@
             src = channel;
             patches = patches;
           };
+      overlay = import ./overlay nixpkgs;
     in
 
     {
@@ -44,7 +45,7 @@
         let
           pkgs = import nixpkgs ({
             inherit system;
-            overlays = [ self.overlays.${system} ];
+            overlays = [ overlay ];
             config.allowUnfree = true;
           } // attrs);
         in
@@ -56,7 +57,7 @@
           */
         pkgs.appendOverlays extraOverlays;
 
-      overlays.default = import ./overlay nixpkgs;
+      overlays.default = overlay;
     } // flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
