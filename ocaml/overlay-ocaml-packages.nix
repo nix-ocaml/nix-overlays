@@ -38,9 +38,11 @@ let
         minor_version = "1";
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
-        src = builtins.fetchurl {
-          url = https://github.com/ocaml/ocaml/archive/cc3d9cb9.tar.gz;
-          sha256 = "01fa93wn528x765xnvl215gwzjfvlqmrywkz1aan9ravac71yjvl";
+        src = super.fetchFromGitHub {
+          owner = "ocaml";
+          repo = "ocaml";
+          rev = "25b0c13dd7f612e49a4f3a7782a007dbd4468820";
+          hash = "sha256-o9uURDquoBaorc2Khs3qZ6KVQr1QO7mb+1j4CsZJB4Y=";
         };
         buildPhase = ''
           make -j8 world

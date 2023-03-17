@@ -14,8 +14,8 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "a8f50420a548f8323f8be3d9f66ce71336e314fc";
-    hash = "sha256-TIDcOiRaMjUEXPbVCFny2drPtb2xS28LVO7WF7iMFoI=";
+    rev = "2393b2d61e330f45d383640b1837bb9108567428";
+    hash = "sha256-JwRlTPKOZXrqsVgDItVxQ2dIW3wvOetBu6j049CQoxg=";
   };
 
   nativeBuildInputs = [ cppo ];
