@@ -996,13 +996,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
-  lru = osuper.lru.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/pqwy/lru/releases/download/v0.3.1/lru-0.3.1.tbz;
-      sha256 = "1z9nnba2b4q0q0syyqk4790hzxs71la8h2wwhr7j8nvxgb927gkc";
-    };
-  });
-
   lutils = buildDunePackage {
     pname = "lutils";
     version = "1.51.3";
@@ -1553,13 +1546,6 @@ with oself;
   printbox-text = disableTests osuper.printbox-text;
 
   progress = osuper.progress.override { mtime = mtime_1; };
-
-  psq = osuper.psq.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/pqwy/psq/releases/download/v0.2.1/psq-0.2.1.tbz;
-      sha256 = "0i6k5i3dha3b4syz4jpd5fi6dkalas8bhcpfk4blprxb7r9my022";
-    };
-  });
 
   ptime = osuper.ptime.overrideAttrs (_: {
     src = builtins.fetchurl {
