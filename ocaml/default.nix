@@ -430,17 +430,6 @@ with oself;
     '';
   });
 
-  csv = osuper.csv.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/dune --replace "bytes" ""
-    '';
-  });
-  csv-lwt = osuper.csv-lwt.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./lwt/dune --replace "bytes" ""
-    '';
-  });
-
   ctypes = buildDunePackage rec {
     pname = "ctypes";
     version = "0.20.1";
