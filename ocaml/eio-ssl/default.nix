@@ -3,11 +3,9 @@
 buildDunePackage {
   pname = "eio-ssl";
   version = "n/a";
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "eio-ssl";
-    rev = "5316c2a2";
-    sha256 = "sha256-37Yj88Wx0rTXT5qFmszehw025FiZOlfbwHF64kdUZeo=";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/eio-ssl/releases/download/0.1.1/eio-ssl-0.1.1.tbz;
+    sha256 = "1v24k03ml0hyycxx87z0nyf9qqa447la9kycm7hvhrs68zsn2d6b";
   };
   propagatedBuildInputs = [ ssl eio_main ];
 }

@@ -14,8 +14,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "aws-lambda-ocaml-runtime";
-    rev = "fd4ac1c3d83a36b3dc1d95eba0093f3d81f68dd4";
-    hash = "sha256-oBr0ncC7TrzWhmIGTLbeW5qVbPgy/jDGegHcuMaDAik=";
+    rev = "57267505603cef4395906af40dfc295a3dc1efda";
+    hash = "sha256-Hwe+KSmZIVi3GWXpabEyDb+WdT5Qb7lW9oRxJ6H2BbM=";
   };
 
   propagatedBuildInputs = [
