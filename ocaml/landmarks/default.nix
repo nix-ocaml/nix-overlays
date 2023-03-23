@@ -6,11 +6,9 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "LexiFi";
     repo = "landmarks";
-    rev = "v${version}";
-    sha256 = "sha256-2YvSMR5y1uk+OQ/h4IPIYYAGb64FRIM7glSPpa8YAkw=";
+    rev = "cd772ed6f44b8419b708a6f014a12bf8a416ef84";
+    hash = "sha256-oCxtU5sWEFX9fCdE8WKFvH/0Vp4xE7fMmUtZOjjs4jI=";
   };
-
-  patches = [ ./landmarks-m1.patch ];
 
   propagatedBuildInputs = [ ppxlib ];
 }
