@@ -150,13 +150,6 @@ with oself;
     };
   });
 
-  bigstring = osuper.bigstring.overrideAttrs (_: {
-    postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace src/dune --replace " bigarray" "" --replace " bytes" ""
-      '' else "";
-  });
-
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
@@ -711,12 +704,6 @@ with oself;
     '';
   });
 
-  gen = osuper.gen.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/dune --replace "bytes seq" "seq"
-    '';
-  });
-
   gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-stub = disableTests osuper.gettext-stub;
@@ -763,13 +750,6 @@ with oself;
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
-
-  hidapi = osuper.hidapi.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ dune-configurator ];
-    postPatch = ''
-      substituteInPlace ./src/hidapi_stubs.c --replace "alloc_custom" "caml_alloc_custom"
-    '';
-  });
 
   httpaf = callPackage ./httpaf { };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { };
@@ -1889,18 +1869,6 @@ with oself;
       rev = "8a24cd042";
       sha256 = "sha256-EZKDSzW08lNgJgtgNOBgQ8ub29pSy2rwcqoMNu+P3kI=";
     };
-  });
-
-  secp256k1-internal = osuper.secp256k1-internal.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://gitlab.com/nomadic-labs/ocaml-secp256k1-internal/-/archive/0.3/ocaml-secp256k1-internal-0.3.tar.bz2;
-      sha256 = "0qrscikxq2bp8xb0i4rjfhs6vf9sm2ajynylvmxw2c0gsxz1z76c";
-    };
-    version = "0.3.1";
-    prePatch = ''
-      substituteInPlace src/secp256k1_wrap.c \
-        --replace "alloc_custom" "caml_alloc_custom"
-    '';
   });
 
   lambdasoup = osuper.lambdasoup.overrideAttrs (o: {
