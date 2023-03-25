@@ -137,6 +137,7 @@ let
 
     "uring"
     "eio_linux"
+    "magic-trace"
   ];
 
   lowerThanOCaml5Ignores = [
