@@ -518,13 +518,15 @@ with oself;
     };
   };
 
-  domain_shims = buildDunePackage {
+  domain-shims = buildDunePackage {
     pname = "domain_shims";
     version = "0.1.0";
 
-    src = builtins.fetchurl {
-      url = https://gitlab.com/gasche/domain-shims/-/archive/0.1.0/domain-shims-0.1.0.tar.gz;
-      sha256 = "0cad63qyfzn0nhf8b80yaw974q4zy1jahwd44rmaawpsj4ap2rq8";
+    src = fetchFromGitLab {
+      owner = "gasche";
+      repo = "domain-shims";
+      rev = "0.1.0";
+      hash = "sha256-/5Cw+M0A1rnT7gFqzryd4Z0tylN0kZgSBXtn9jr8u1c=";
     };
   };
 
