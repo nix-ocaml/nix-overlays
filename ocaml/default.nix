@@ -567,8 +567,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "ab74a71dc04380ed592462f982ceb4dd6371203f";
-      hash = "sha256-EidPQXmB/sd4tEpp7H8flgRw8lhm/s0Pg/IalhSgYdg=";
+      rev = "8b7133d10480bf585f17ffaba3b0e482eec21ff0";
+      hash = "sha256-Auo53K6t6oSgr52Mziq4Qlhhn0Dih0Ohq+D2kw1KdUE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 

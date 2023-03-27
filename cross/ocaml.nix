@@ -215,7 +215,9 @@ in
           in
           ''
             runHook preInstall
-            ${oself.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
+            dune install ${args.pname} -x ${crossName} \
+              --prefix $out --libdir $OCAMLFIND_DESTDIR \
+              --docdir $out/share/doc --man $out/share/man
 
             rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
             ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
@@ -297,7 +299,7 @@ in
 
       ctypes = osuper.ctypes.overrideAttrs (o: {
         postInstall = ''
-          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/aarch64-sysroot/lib/ctypes/META
+          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/ctypes/META
         '';
       });
 
