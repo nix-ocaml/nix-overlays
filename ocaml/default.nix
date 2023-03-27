@@ -4,6 +4,7 @@
 , buildPackages
 , fetchpatch
 , fetchFromGitHub
+, fetchFromGitLab
 , lib
 , libpq
 , libev-oc
@@ -1584,9 +1585,11 @@ with oself;
   ringo-lwt = osuper.ringo-lwt.override { ringo = ringo_old; };
 
   ringo = osuper.ringo.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://gitlab.com/nomadic-labs/ringo/-/archive/v1.0.0/ringo-v1.0.0.tar.gz;
-      sha256 = "1wjzzxk1xldxn2pawhbjkmmgpzmsynqx5q03y0c8ll92vg8a7bp1";
+    src = fetchFromGitLab {
+      owner = "nomadic-labs";
+      repo = "ringo";
+      rev = "v1.0.0";
+      hash = "sha256-9HW3M27BxrEPbF8cMHwzP8FmJduUInpQQAE2672LOuU=";
     };
     checkInputs = [ lwt ];
   });
