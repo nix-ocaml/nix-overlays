@@ -2122,7 +2122,9 @@ with oself;
   };
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
-    patches = [ ./tsdl.patch ];
+    postPatch = ''
+      substituteInPlace _tags --replace "ctypes.foreign" "ctypes-foreign"
+    '';
     propagatedBuildInputs =
       o.propagatedBuildInputs
       ++ [ ctypes-foreign ]
