@@ -411,6 +411,9 @@ with oself;
       ];
     };
 
+  angstrom = osuper.angstrom.overrideAttrs (_: {
+    doCheck = false;
+  });
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
@@ -1798,6 +1801,9 @@ with oself;
     postPatch = ''
       substituteInPlace pkg/META --replace "bytes" ""
     '';
+  });
+  uutf = osuper.uutf.overrideAttrs (_: {
+    pname = "uutf";
   });
 
   vlq = osuper.vlq.overrideAttrs (_: {

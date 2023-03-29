@@ -60,6 +60,24 @@ in
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
       natdune = natocamlPackages.dune;
+      findNativePackage = p:
+        if p ? pname then
+          let
+            pname = p.pname or (throw "`p.pname' not found: ${p.name}");
+          in
+            natocamlPackages."${pname}" or
+              # Some legacy packages are called `ocaml_X`, e.g. extlib and
+              # sqlite3
+              natocamlPackages."ocaml_${pname}" or
+                (
+                  let
+                    prefix = "ocaml${osuper.ocaml.version}-";
+                  in
+                  if lib.hasPrefix prefix p.pname
+                  then natocamlPackages."${(lib.removePrefix prefix pname)}"
+                  else throw "Unsupported cross-pkg parsing for `${p.pname}'"
+                )
+        else { };
 
       makeFindlibConf = b:
         let
@@ -71,9 +89,10 @@ in
             b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
+            "buildInputs"
             "nativeBuildInputs"
           ]
-            b;
+            (findNativePackage b);
 
           path =
             builtins.concatStringsSep ":"
@@ -206,27 +225,17 @@ in
         '';
 
         installPhase =
-          let
-            natPackage =
-              natocamlPackages."${args.pname}" or
-                # Some legacy packages are called `ocaml_X`, e.g. extlib and
-                # sqlite3
-                natocamlPackages."ocaml_${args.pname}";
-          in
           ''
             runHook preInstall
             dune install ${args.pname} -x ${crossName} \
               --prefix $out --libdir $OCAMLFIND_DESTDIR \
               --docdir $out/share/doc --man $out/share/man
-
-            rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-            ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
             runHook postInstall
           '';
       } // args
       )).overrideAttrs (o: {
         nativeBuildInputs =
-          [ natocaml natdune natfindlib buildPackages.stdenv.cc ] ++
+          [ natocaml natdune buildPackages.stdenv.cc ] ++
           # XXX(anmonteiro): apparently important that this comes after
           (o.nativeBuildInputs or [ ]);
       });
