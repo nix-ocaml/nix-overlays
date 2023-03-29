@@ -412,18 +412,6 @@ with oself;
     '';
   });
 
-  cstruct-sexp = osuper.cstruct-sexp.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./lib_test/dune --replace "bigarray" ""
-    '';
-  });
-
-  cstruct-unix = osuper.cstruct-unix.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./unix/dune --replace "bigarray" ""
-    '';
-  });
-
   ctypes = buildDunePackage rec {
     pname = "ctypes";
     version = "0.20.1";
