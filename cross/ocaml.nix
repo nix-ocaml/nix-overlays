@@ -71,10 +71,13 @@ in
               natocamlPackages."ocaml_${pname}" or
                 (
                   let
-                    prefix = "ocaml${osuper.ocaml.version}-";
+                    prefix1 = "ocaml${osuper.ocaml.version}-";
+                    prefix2 = "ocaml-";
                   in
-                  if lib.hasPrefix prefix p.pname
-                  then natocamlPackages."${(lib.removePrefix prefix pname)}"
+                  if lib.hasPrefix prefix1 p.pname
+                  then natocamlPackages."${(lib.removePrefix prefix1 pname)}"
+                  else if lib.hasPrefix prefix2 p.pname
+                  then natocamlPackages."${(lib.removePrefix prefix2 pname)}"
                   else throw "Unsupported cross-pkg parsing for `${p.pname}'"
                 )
         else { };
