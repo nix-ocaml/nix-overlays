@@ -1472,8 +1472,8 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.0/ppxlib-0.29.0.tbz;
-      sha256 = "1fjqjq9w157wkzgappswm8g1adhb8r4qvs9kfmw3kvzhvd6i12wf";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
+      sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
     };
 
     propagatedBuildInputs = [
