@@ -1665,6 +1665,14 @@ with oself;
     '';
   });
 
+  srt = osuper.srt.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+    postPatch = ''
+      substituteInPlace "src/dune" "src/stubs/dune" --replace \
+        "ctypes.foreign" "ctypes-foreign"
+    '';
+  });
+
   ssl = osuper.ssl.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "savonet";
