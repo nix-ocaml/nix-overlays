@@ -151,6 +151,10 @@ with oself;
     };
   });
 
+  bigarray-overlap = osuper.bigarray-overlap.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
