@@ -151,6 +151,10 @@ with oself;
     };
   });
 
+  bigarray-overlap = osuper.bigarray-overlap.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+  });
+
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
@@ -1698,6 +1702,7 @@ with oself;
     ];
   };
 
+  tcpip = disableTests osuper.tcpip;
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://erratique.ch/software/topkg/releases/topkg-1.0.6.tbz;
