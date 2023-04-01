@@ -245,13 +245,7 @@ in
 
       topkg = natocamlPackages.topkg.overrideAttrs (o:
         let
-          run = ''
-            if [ -z "''${selfBuild:-}" ]; then
-            unset OCAMLPATH
-            fi
-
-            ${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml \
-          '';
+          run = "${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib pkg/pkg.ml";
         in
         {
           selfBuild = true;
