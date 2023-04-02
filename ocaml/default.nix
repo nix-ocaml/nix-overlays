@@ -411,9 +411,6 @@ with oself;
       ];
     };
 
-  angstrom = osuper.angstrom.overrideAttrs (_: {
-    doCheck = false;
-  });
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
@@ -974,7 +971,11 @@ with oself;
       sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
 
-    propagatedBuildInputs = [ ocplib-endian ];
+    <<<<<<< HEAD
+      propagatedBuildInputs = [ ocplib-endian ];
+    =======
+    propagatedBuildInputs = [ libev-oc ocplib-endian ];
+    >>>>>>> 34f688d (remove pkg-config hack)
     postPatch = ''
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
