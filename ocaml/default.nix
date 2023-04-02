@@ -1177,12 +1177,6 @@ with oself;
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
   });
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.1/ocaml-version-3.6.1.tbz;
-      sha256 = "0clxf5nlf6qjqsharrbgavrci33cqd0bbxa4p1y7a9x18xfrm800";
-    };
-  });
 
   ocamlformat = callPackage ./ocamlformat { };
   ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
