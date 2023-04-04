@@ -8,15 +8,23 @@ let
 in
 
 {
-  libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
   libev-oc = super.libev-oc.override { static = true; };
-  zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
-  openssl-oc = super.openssl-oc.override { static = true; };
-  gmp-oc = super.gmp-oc.override { withStatic = true; };
   libffi-oc = super.libffi-oc.overrideAttrs (_: { dontDisableStatic = true; });
-  libxml2 = super.libxml2.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ self.zlib-oc ];
+  libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
+  libxml2 = super.libxml2.override { zlib = self.zlib-oc; };
+  gmp-oc = super.gmp-oc.override { withStatic = true; };
+  openssl-oc = super.openssl-oc.override { static = true; };
+  pcre-oc = super.pcre-oc.overrideAttrs (_: {
+    dontDisableStatic = true;
   });
+  sqlite-oc = (super.sqlite-oc.override { zlib = self.zlib-oc; }).overrideAttrs (o: {
+    dontDisableStatic = true;
+    configureFlags = lib.trace "${builtins.toJSON o.configureFlags}" (o.configureFlags or [ ]) ++ [
+      "--enable-static"
+    ];
+
+  });
+  zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
 } // super.lib.overlayOCamlPackages {
   inherit super;
   overlays = [ (super.callPackage ./ocaml.nix { }) ];
