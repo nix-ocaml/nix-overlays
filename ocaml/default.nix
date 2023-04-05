@@ -9,6 +9,8 @@
 , libpq
 , libev-oc
 , libffi-oc
+, pcre-oc
+, sqlite-oc
 , makeWrapper
 , darwin
 , stdenv
@@ -201,14 +203,13 @@ with oself;
 
   camlp5 = callPackage ./camlp5 { };
 
-  camlzip = osuper.camlzip.overrideAttrs (o: {
+  camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "xavierleroy";
       repo = "camlzip";
       rev = "3b0e0a5f7";
       sha256 = "sha256-DflyuI2gt8HQI8qAgczClVdLy21uXT1A9VMD5cTaDl4=";
     };
-    propagatedBuildInputs = [ zlib-oc ];
   });
 
   camomile = osuper.camomile.overrideAttrs (_: {
@@ -415,6 +416,8 @@ with oself;
       substituteInPlace ./src/dune --replace "bytes" ""
     '';
   });
+
+  cryptokit = osuper.cryptokit.override { zlib = zlib-oc; };
 
   ctypes = buildDunePackage rec {
     pname = "ctypes";
@@ -739,6 +742,8 @@ with oself;
     '';
   });
 
+  hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
+
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
@@ -980,7 +985,7 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = osuper.lwt.overrideAttrs (o: {
+  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "lwt";
@@ -989,7 +994,7 @@ with oself;
     };
 
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
-    propagatedBuildInputs = [ libev-oc ocplib-endian ];
+    propagatedBuildInputs = [ ocplib-endian ];
 
     postPatch = ''
       substituteInPlace src/unix/dune --replace "bigarray" ""
@@ -1415,6 +1420,8 @@ with oself;
     };
   });
 
+  ocaml_pcre = osuper.ocaml_pcre.override { pcre = pcre-oc; };
+
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
 
@@ -1667,7 +1674,7 @@ with oself;
     '';
   });
 
-  ssl = osuper.ssl.overrideAttrs (o: {
+  ssl = (osuper.ssl.override { openssl = openssl-oc.dev; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
@@ -1675,7 +1682,6 @@ with oself;
       sha256 = "sha256-qc4M+EgzmIQxzcMvLQIiYkPXBOvyLb6pNNGj/0OAbcM=";
     };
     buildInputs = o.buildInputs ++ [ dune-configurator ];
-    propagatedBuildInputs = [ openssl-oc.dev ];
   });
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };

@@ -211,7 +211,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libev;
+      inherit (super) zlib gmp libev sqlite pcre;
       libffi = super.libffi.overrideAttrs (_: {
         doCheck = false;
       });
