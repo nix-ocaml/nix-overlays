@@ -145,6 +145,7 @@ let
     "domainslib"
     "dscheck"
     "cpdf"
+    "algaeff"
   ];
 
 in

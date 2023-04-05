@@ -854,15 +854,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  jsonm = osuper.jsonm.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "jsonm";
-      rev = "v1.0.2";
-      hash = "sha256-txBRq5I3336gQcu2CXAQsqfPtB1qw4P69G5Up60PQdQ=";
-    };
-  });
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.0" then
