@@ -19,10 +19,6 @@ in
   });
   sqlite-oc = (super.sqlite-oc.override { zlib = self.zlib-oc; }).overrideAttrs (o: {
     dontDisableStatic = true;
-    configureFlags = lib.trace "${builtins.toJSON o.configureFlags}" (o.configureFlags or [ ]) ++ [
-      "--enable-static"
-    ];
-
   });
   zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
 } // super.lib.overlayOCamlPackages {
