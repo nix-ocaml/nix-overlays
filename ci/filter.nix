@@ -147,7 +147,9 @@ let
     "cpdf"
     "algaeff"
   ];
-
+  lowerThanOCaml414Ignores = [
+    "cmarkit"
+  ];
 in
 
 rec {
@@ -158,7 +160,8 @@ rec {
     , disable_eio_linux ? false
     , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
       then ocaml5Ignores
-      else lowerThanOCaml5Ignores
+      else if lib.hasPrefix "4_14" ocamlVersion then lowerThanOCaml5Ignores
+      else lowerThanOCaml5Ignores ++ lowerThanOCaml414Ignores
     }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
