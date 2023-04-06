@@ -807,22 +807,6 @@ with oself;
       substituteInPlace src/dune --replace "bytes" ""
     '';
   });
-
-  qcheck-alcotest = osuper.qcheck-alcotest.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/alcotest/dune --replace "bytes" ""
-    '';
-  });
-  qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/core/dune --replace "unix bytes" "unix"
-    '';
-  });
-  qcheck-ounit = osuper.qcheck-ounit.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ounit/dune --replace "unix bytes" "unix"
-    '';
-  });
   qtest = osuper.qtest.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
