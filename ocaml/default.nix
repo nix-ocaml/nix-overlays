@@ -247,6 +247,18 @@ with oself;
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
 
+  cmarkit = stdenv.mkDerivation {
+    name = "cmarkit-ocaml${osuper.ocaml.version}";
+    pname = "cmarkit";
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.1.0.tbz;
+      sha256 = "1rlfcjcvijs1gf2acjav775ar60s427kv1yx8ywrbdq9bhpc5cx4";
+    };
+    buildPhase = "${topkg.buildPhase} --with-cmdliner true";
+    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
+    propagatedBuildInputs = [ cmdliner ];
+  };
+
   cpdf = osuper.cpdf.overrideAttrs (_: {
     cpdf = osuper.cpdf.overrideAttrs (_: {
       src = fetchFromGitHub {
@@ -800,22 +812,6 @@ with oself;
   iter = osuper.iter.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
-    '';
-  });
-
-  qcheck-alcotest = osuper.qcheck-alcotest.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/alcotest/dune --replace "bytes" ""
-    '';
-  });
-  qcheck-core = osuper.qcheck-core.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/core/dune --replace "unix bytes" "unix"
-    '';
-  });
-  qcheck-ounit = osuper.qcheck-ounit.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ounit/dune --replace "unix bytes" "unix"
     '';
   });
   qtest = osuper.qtest.overrideAttrs (_: {
