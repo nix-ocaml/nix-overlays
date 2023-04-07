@@ -26,7 +26,10 @@ in
     extraIgnores =
       if ocamlVersion == "5_0"
       then filter.ocaml5Ignores
-      else filter.lowerThanOCaml5Ignores;
+      else if ocamlVersion == "4_14" then
+        filter.lowerThanOCaml5Ignores
+      else
+        filter.lowerThanOCaml414Ignores;
   }))
   ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
 
