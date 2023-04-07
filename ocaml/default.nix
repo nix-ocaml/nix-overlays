@@ -39,18 +39,6 @@ oself: osuper:
 let
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
-  pkg-config-script =
-    let
-      pkg-config-pkg =
-        if stdenv.cc.targetPrefix == ""
-        then "${pkg-config}/bin/pkg-config"
-        else "${stdenv.cc.targetPrefix}pkg-config";
-    in
-    writeScriptBin "pkg-config" ''
-      #!${stdenv.shell}
-      ${pkg-config-pkg} $@
-    '';
-
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
   addBase = p: p.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.base ];
@@ -154,11 +142,19 @@ with oself;
   });
 
   bigarray-overlap = osuper.bigarray-overlap.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+    postPatch = ''
+      substituteInPlace ./freestanding/Makefile --replace "pkg-config" "\$(PKG_CONFIG)"
+    '';
   });
 
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+    buildInputs = [ dune-configurator ];
+    src = fetchFromGitHub {
+      owner = "inhabitedtype";
+      repo = "bigstringaf";
+      rev = "0.9.1";
+      hash = "sha256-SFp5QBb4GDcTzEzvgkGKCiuUUm1k8jlgjP6ndzcQBP8=";
+    };
   });
 
   binaryen = callPackage ./binaryen { };
@@ -228,7 +224,6 @@ with oself;
       url = https://github.com/mirage/checkseum/releases/download/v0.5.0/checkseum-0.5.0.tbz;
       sha256 = "0bnyzxvagc4cvpz0a434xngk9ra1mjjh67nhyv3qz5ghk5s6a5bv";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script ];
   });
 
   coin = osuper.coin.overrideAttrs (_: {
@@ -441,7 +436,7 @@ with oself;
       sha256 = "sha256-YMaKJK8gqsUdYglB4xGdMUpTXbgUgZLLvUG/lSvJesE=";
     };
 
-    nativeBuildInputs = [ pkg-config pkg-config-script ];
+    nativeBuildInputs = [ pkg-config ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
 
@@ -572,8 +567,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "649031728346482a83441c26c0bbe06ecd89cce2";
-      hash = "sha256-IbvAumstRp7JE+UQDArrwYWyZtbe8q8bZo05eVzA/MU=";
+      rev = "ab74a71dc04380ed592462f982ceb4dd6371203f";
+      hash = "sha256-EidPQXmB/sd4tEpp7H8flgRw8lhm/s0Pg/IalhSgYdg=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
@@ -927,10 +922,6 @@ with oself;
           propagatedBuildInputs = [ lev-fiber csexp ];
         } else null;
 
-  digestif = osuper.digestif.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
-  });
-
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
@@ -940,7 +931,7 @@ with oself;
       rev = "1.0";
       sha256 = "sha256-NbiM7xNpuihzqAMiAaYXVeItspWufnr1/e3WZEkMhsA=";
     };
-    nativeBuildInputs = [ pkg-config-script pkg-config ];
+    nativeBuildInputs = [ pkg-config ];
     buildInputs = [ lmdb-pkg dune-configurator ];
     propagatedBuildInputs = [ bigstringaf ];
   };
@@ -980,9 +971,7 @@ with oself;
       sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
 
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config cppo ];
     propagatedBuildInputs = [ ocplib-endian ];
-
     postPatch = ''
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
@@ -1011,12 +1000,6 @@ with oself;
       url = https://github.com/mirage/ocaml-magic-mime/releases/download/v1.3.0/magic-mime-1.3.0.tbz;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
     };
-  });
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
-  });
-  mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
@@ -1175,7 +1158,11 @@ with oself;
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
+    postPatch = ''
+      substituteInPlace "src/config/discover.ml" --replace \
+        'let cmd = pkg_export ^ " pkg-config ' \
+        'let cmd = let pkg_config = match Sys.getenv "PKG_CONFIG" with | s -> s | exception Not_found -> "pkg-config" in pkg_export ^ " " ^ pkg_config ^ " '
+    '';
   });
 
   odep = buildDunePackage {
@@ -1312,7 +1299,7 @@ with oself;
       sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
     };
 
-    nativeBuildInputs = [ pkg-config-script pkg-config ocaml findlib ];
+    nativeBuildInputs = [ pkg-config ocaml findlib ];
     propagatedBuildInputs = [ curl lwt ];
     createFindlibDestdir = true;
   };
@@ -1433,7 +1420,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config-script pkg-config ];
     propagatedBuildInputs = [ libpq ];
   });
 
