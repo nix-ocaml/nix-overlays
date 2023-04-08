@@ -695,14 +695,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  fmt = osuper.fmt.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/fmt/releases/fmt-0.9.0.tbz;
-      sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
-    };
-    propagatedBuildInputs = [ cmdliner ];
-  });
-
   functoria-runtime = osuper.functoria-runtime.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./lib_runtime/functoria/dune --replace "bytes" ""
@@ -970,8 +962,6 @@ with oself;
       rev = "3d6f0fac";
       sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
-
-    propagatedBuildInputs = [ libev-oc ocplib-endian ];
     postPatch = ''
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';

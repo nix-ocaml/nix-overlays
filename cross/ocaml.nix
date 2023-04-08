@@ -238,9 +238,7 @@ in
       } // args
       )).overrideAttrs (o: {
         nativeBuildInputs =
-          [ natocaml natdune buildPackages.stdenv.cc ] ++
-          # XXX(anmonteiro): apparently important that this comes after
-          (o.nativeBuildInputs or [ ]);
+          (o.nativeBuildInputs or [ ]) ++ [ buildPackages.stdenv.cc ];
       });
 
       topkg = natocamlPackages.topkg.overrideAttrs (o:
@@ -288,7 +286,7 @@ in
       });
 
       cmdliner = osuper.cmdliner.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ [ osuper.findlib ];
+        nativeBuildInputs = o.nativeBuildInputs ++ [ oself.findlib ];
 
         installFlags = [
           "LIBDIR=$(OCAMLFIND_DESTDIR)/${o.pname}"
@@ -344,7 +342,7 @@ in
       });
 
       uchar = osuper.uchar.overrideAttrs (_: {
-        installPhase = osuper.topkg.installPhase;
+        installPhase = oself.topkg.installPhase;
       });
 
       zarith = osuper.zarith.overrideAttrs (o: {
