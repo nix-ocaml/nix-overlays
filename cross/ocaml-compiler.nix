@@ -35,6 +35,7 @@ in {
 
     OCAML_HOST=${natocaml}
     OCAMLRUN="$OCAML_HOST/bin/ocamlrun"
+    OCAMLLEX="$OCAML_HOST/bin/ocamllex"
     OCAMLYACC="$OCAML_HOST/bin/ocamlyacc"
     CAMLDEP="$OCAML_HOST/bin/ocamlc"
     DYNAMIC_LIBS="-I $OCAML_HOST/lib/ocaml/stublibs"
@@ -53,6 +54,7 @@ in {
     make_caml () {
       make ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} ''${enableParallelBuilding:+-l $NIX_BUILD_CORES} \
            CAMLDEP="$CAMLDEP -depend" \
+           OCAMLLEX="$OCAMLLEX" \
            OCAMLYACC="$OCAMLYACC" CAMLYACC="$OCAMLYACC" \
            CAMLRUN="$OCAMLRUN" OCAMLRUN="$OCAMLRUN" \
            NEW_OCAMLRUN="$OCAMLRUN" \
@@ -100,6 +102,7 @@ in {
     runHook postBuild
   '';
   installTargets = o.installTargets ++ [ "installoptopt" ];
+  postInstall = "cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc";
   patches = [
     (if isOCaml5
     then ./cross_5_00.patch

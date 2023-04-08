@@ -60,6 +60,27 @@ in
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
       natdune = natocamlPackages.dune;
+      findNativePackage = p:
+        if p ? pname then
+          let
+            pname = p.pname or (throw "`p.pname' not found: ${p.name}");
+          in
+            natocamlPackages."${pname}" or
+              # Some legacy packages are called `ocaml_X`, e.g. extlib and
+              # sqlite3
+              natocamlPackages."ocaml_${pname}" or
+                (
+                  let
+                    prefix1 = "ocaml${osuper.ocaml.version}-";
+                    prefix2 = "ocaml-";
+                  in
+                  if lib.hasPrefix prefix1 p.pname
+                  then natocamlPackages."${(lib.removePrefix prefix1 pname)}"
+                  else if lib.hasPrefix prefix2 p.pname
+                  then natocamlPackages."${(lib.removePrefix prefix2 pname)}"
+                  else throw "Unsupported cross-pkg parsing for `${p.pname}'"
+                )
+        else { };
 
       makeFindlibConf = b:
         let
@@ -71,9 +92,10 @@ in
             b;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
+            "buildInputs"
             "nativeBuildInputs"
           ]
-            b;
+            (findNativePackage b);
 
           path =
             builtins.concatStringsSep ":"
@@ -162,7 +184,7 @@ in
               fi
           }
           exportOcamlDestDir () {
-              export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${oself.ocaml.version}/site-lib/"
+              export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${oself.ocaml.version}/${crossName}-sysroot/lib/"
           }
           createOcamlDestDir () {
               if test -n "''${createFindlibDestdir-}"; then
@@ -206,38 +228,22 @@ in
         '';
 
         installPhase =
-          let
-            natPackage =
-              natocamlPackages."${args.pname}" or
-                # Some legacy packages are called `ocaml_X`, e.g. extlib and
-                # sqlite3
-                natocamlPackages."ocaml_${args.pname}";
-          in
           ''
             runHook preInstall
-            ${oself.opaline}/bin/opaline -name ${args.pname} -prefix $out -libdir $OCAMLFIND_DESTDIR
-
-            rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-            ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
+            dune install ${args.pname} -x ${crossName} \
+              --prefix $out --libdir $(dirname $OCAMLFIND_DESTDIR) \
+              --docdir $out/share/doc --man $out/share/man
             runHook postInstall
           '';
       } // args
       )).overrideAttrs (o: {
         nativeBuildInputs =
-          [ natocaml natdune natfindlib buildPackages.stdenv.cc ] ++
-          # XXX(anmonteiro): apparently important that this comes after
-          (o.nativeBuildInputs or [ ]);
+          (o.nativeBuildInputs or [ ]) ++ [ buildPackages.stdenv.cc ];
       });
 
       topkg = natocamlPackages.topkg.overrideAttrs (o:
         let
-          run = ''
-            if [ -z "''${selfBuild:-}" ]; then
-            unset OCAMLPATH
-            fi
-
-            ${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib/ pkg/pkg.ml \
-          '';
+          run = "${natocaml}/bin/ocaml -I ${natfindlib}/lib/ocaml/${osuper.ocaml.version}/site-lib pkg/pkg.ml";
         in
         {
           selfBuild = true;
@@ -247,13 +253,6 @@ in
           };
 
           buildPhase = "${run} build";
-
-          installPhase = ''
-            if [ -z "''${selfBuild:-}" ]; then
-            OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-            fi
-            ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR
-          '';
 
           setupHook = writeText "setupHook.sh" ''
             addToolchainVariable () {
@@ -271,47 +270,30 @@ in
     let
       crossName = lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
-
-      fixTopkgInstall = p: natPackage: p.overrideAttrs (o: {
-        installPhase = ''
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-
-          ${o.installPhase}
-          runHook postInstall
-        '';
-      });
     in
     {
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
         postInstall = ''
-          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-          mkdir -p $OCAMLFIND_DESTDIR
-          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
-          rm -rf $OCAMLFIND_DESTDIR/camlzip
           ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
         '';
       });
 
       ctypes = osuper.ctypes.overrideAttrs (o: {
         postInstall = ''
-          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/aarch64-sysroot/lib/ctypes/META
+          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/ctypes/META
         '';
       });
 
       cmdliner = osuper.cmdliner.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ [ osuper.findlib ];
+        nativeBuildInputs = o.nativeBuildInputs ++ [ oself.findlib ];
 
-        installPhase = ''
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natocamlPackages.cmdliner}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-
-          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-          mkdir -p $OCAMLFIND_DESTDIR
-          make install LIBDIR=$OCAMLFIND_DESTDIR/cmdliner
+        installFlags = [
+          "LIBDIR=$(OCAMLFIND_DESTDIR)/${o.pname}"
+          "DOCDIR=$(out)/share/doc/${o.pname}"
+        ];
+        postInstall = ''
+          mv $OCAMLFIND_DESTDIR/${o.pname}/{opam,${o.pname}.opam}
         '';
       });
 
@@ -325,10 +307,7 @@ in
           chmod a+x ./build.sh
         '';
         installPhase = ''
-          ${oself.opaline}/bin/opaline -prefix $out -libdir $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ ${o.pname}.install
-          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-          mkdir -p $OCAMLFIND_DESTDIR
-          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
+          ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR ${o.pname}.install
         '';
       });
 
@@ -349,62 +328,35 @@ in
 
       num = osuper.num.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
-        postInstall = ''
-          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-          mkdir -p $OCAMLFIND_DESTDIR
-          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
-        '';
       });
 
       ocaml-migrate-parsetree = osuper.ocaml-migrate-parsetree-2;
 
-      seq = osuper.seq.overrideAttrs (_: {
+      seq = osuper.seq.overrideAttrs (o: {
+        nativeBuildInputs = [ oself.findlib ];
         installPhase = ''
-          install_dest="$out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/seq/"
+          install_dest="$OCAMLFIND_DESTDIR/seq/"
           mkdir -p $install_dest
           mv META $install_dest
-
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}/site-lib/seq
-          ln -sfn $install_dest/META $out/lib/ocaml/${osuper.ocaml.version}/site-lib/seq
         '';
       });
 
       uchar = osuper.uchar.overrideAttrs (_: {
-        installPhase = osuper.topkg.installPhase;
+        installPhase = oself.topkg.installPhase;
       });
 
       zarith = osuper.zarith.overrideAttrs (o: {
         configurePlatforms = [ ];
         OCAMLFIND_TOOLCHAIN = "${crossName}";
-        configureFlags = o.configureFlags ++ [
-          "-prefixnonocaml ${stdenv.cc.targetPrefix}"
+        configureFlags = [
         ];
+        configurePhase = ''
+          ./configure -prefixnonocaml ${stdenv.cc.targetPrefix} -installdir $OCAMLFIND_DESTDIR
+        '';
         preBuild = ''
           buildFlagsArray+=("host=${stdenv.hostPlatform.config}")
         '';
-        postInstall = ''
-          OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
-          mkdir -p $OCAMLFIND_DESTDIR
-          mv $out/lib/ocaml/${osuper.ocaml.version}/site-lib/* $OCAMLFIND_DESTDIR
-
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natocamlPackages.zarith}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-        '';
+        preInstall = "mkdir -p $OCAMLFIND_DESTDIR";
       });
-    } // (lib.genAttrs [
-      "astring"
-      "jsonm"
-      "fmt"
-      "uutf"
-      "uunf"
-      "logs"
-      "fpath"
-      "bos"
-      "ptime"
-      "rresult"
-      "mtime"
-      "xmlm"
-    ]
-      (name: fixTopkgInstall osuper.${name} natocamlPackages.${name})))
+    })
 ]

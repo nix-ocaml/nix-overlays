@@ -567,8 +567,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "ab74a71dc04380ed592462f982ceb4dd6371203f";
-      hash = "sha256-EidPQXmB/sd4tEpp7H8flgRw8lhm/s0Pg/IalhSgYdg=";
+      rev = "8b7133d10480bf585f17ffaba3b0e482eec21ff0";
+      hash = "sha256-Auo53K6t6oSgr52Mziq4Qlhhn0Dih0Ohq+D2kw1KdUE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
@@ -694,14 +694,6 @@ with oself;
   });
 
   flow_parser = callPackage ./flow_parser { };
-
-  fmt = osuper.fmt.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/fmt/releases/fmt-0.9.0.tbz;
-      sha256 = "0q8j2in2473xh7k4hfgnppv9qy77f2ih89yp6yhpbp92ba021yzi";
-    };
-    propagatedBuildInputs = [ cmdliner ];
-  });
 
   functoria-runtime = osuper.functoria-runtime.overrideAttrs (_: {
     postPatch = ''
@@ -970,8 +962,6 @@ with oself;
       rev = "3d6f0fac";
       sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
-
-    propagatedBuildInputs = [ ocplib-endian ];
     postPatch = ''
       substituteInPlace src/unix/dune --replace "bigarray" ""
     '';
@@ -1138,15 +1128,21 @@ with oself;
     postPatch = "echo '(lang dune 2.0)' > dune-project";
   });
 
-  num = osuper.num.overrideAttrs (o: {
+  num = (osuper.num.override { withStatic = true; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "num";
-      rev = "703e1f88";
-      sha256 = "sha256-Ddo6zmCPF730EV0YliIRnZ80j9YnBOH1yCQTBs7lXDo=";
+      rev = "f06af1fda2e722542cc5f2d2d4d1f4441055a92f";
+      hash = "sha256-WdH2W5K7UykxCnJu+AwBeRsHR+TWpDyJX3sqF7mk+Cw=";
     };
-
-    patches = [ ./num/findlib-install.patch ];
+    buildFlags = [ "opam-modern" ];
+    patches = [ ];
+    installPhase = ''
+      # Not sure if this is entirely correct, but opaline doesn't like `lib_root`
+      substituteInPlace num.install --replace lib_root lib
+      cat num.install
+      OCAMLRUNPARAM=b ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
+    '';
   });
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
@@ -1181,6 +1177,7 @@ with oself;
       ppx_deriving
       sexplib
       ppx_sexp_conv
+      cmdliner
     ];
   };
 
@@ -1469,8 +1466,8 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.0/ppxlib-0.29.0.tbz;
-      sha256 = "1fjqjq9w157wkzgappswm8g1adhb8r4qvs9kfmw3kvzhvd6i12wf";
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
+      sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
     };
 
     propagatedBuildInputs = [
@@ -1798,6 +1795,9 @@ with oself;
     postPatch = ''
       substituteInPlace pkg/META --replace "bytes" ""
     '';
+  });
+  uutf = osuper.uutf.overrideAttrs (_: {
+    pname = "uutf";
   });
 
   vlq = osuper.vlq.overrideAttrs (_: {
