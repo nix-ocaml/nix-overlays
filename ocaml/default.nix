@@ -1138,15 +1138,21 @@ with oself;
     postPatch = "echo '(lang dune 2.0)' > dune-project";
   });
 
-  num = osuper.num.overrideAttrs (o: {
+  num = (osuper.num.override { withStatic = true; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "num";
-      rev = "703e1f88";
-      sha256 = "sha256-Ddo6zmCPF730EV0YliIRnZ80j9YnBOH1yCQTBs7lXDo=";
+      rev = "f06af1fda2e722542cc5f2d2d4d1f4441055a92f";
+      hash = "sha256-WdH2W5K7UykxCnJu+AwBeRsHR+TWpDyJX3sqF7mk+Cw=";
     };
-
-    patches = [ ./num/findlib-install.patch ];
+    buildFlags = [ "opam-modern" ];
+    patches = [ ];
+    installPhase = ''
+      # Not sure if this is entirely correct, but opaline doesn't like `lib_root`
+      substituteInPlace num.install --replace lib_root lib
+      cat num.install
+      OCAMLRUNPARAM=b ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
+    '';
   });
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
