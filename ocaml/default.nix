@@ -967,15 +967,6 @@ with oself;
     '';
   });
 
-  lwt_ssl = osuper.lwt_ssl.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "lwt_ssl";
-      rev = "1.2.0";
-      sha256 = "sha256-LkmS+vmnX3Oa9qnVN4cFzRSHP6ep/VgZmeWksmo2tDY=";
-    };
-  });
-
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://gitlab.com/nomadic-labs/lwt-watcher/-/archive/70f826c503cc094ed2de3aa81fa385ea9fddb903.tar.gz;
