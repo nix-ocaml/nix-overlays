@@ -175,6 +175,14 @@ in
         '';
 
         setupHook = writeText "setupHook.sh" ''
+          addOCamlPath () {
+              if test -d "''$1/lib/ocaml/${oself.ocaml.version}/site-lib"; then
+                  export OCAMLPATH="''${OCAMLPATH-}''${OCAMLPATH:+:}''$1/lib/ocaml/${oself.ocaml.version}/site-lib/"
+              fi
+              if test -d "''$1/lib/ocaml/${oself.ocaml.version}/site-lib/stublibs"; then
+                  export CAML_LD_LIBRARY_PATH="''${CAML_LD_LIBRARY_PATH-}''${CAML_LD_LIBRARY_PATH:+:}''$1/lib/ocaml/${oself.ocaml.version}/site-lib/stublibs"
+              fi
+          }
           exportOcamlDestDir () {
               export OCAMLFIND_DESTDIR="''$out/lib/ocaml/${oself.ocaml.version}/site-lib/"
           }
@@ -193,6 +201,7 @@ in
             fi
           }
           # run for every buildInput
+          addEnvHooks "$targetOffset" addOCamlPath
           # run before installPhase, even without buildInputs, and not in nix-shell
           preInstallHooks+=(createOcamlDestDir)
           # run even in nix-shell, and even without buildInputs
@@ -270,17 +279,6 @@ in
     let
       crossName = lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
-
-      fixTopkgInstall = p: natPackage: p.overrideAttrs (o: {
-        installPhase = ''
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natPackage}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-
-          ${o.installPhase}
-          runHook postInstall
-        '';
-      });
     in
     {
       camlzip = osuper.camlzip.overrideAttrs (_: {
@@ -304,10 +302,6 @@ in
         nativeBuildInputs = o.nativeBuildInputs ++ [ osuper.findlib ];
 
         installPhase = ''
-          rm -rf $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-          mkdir -p $out/lib/ocaml/${osuper.ocaml.version}
-          ln -sfn ${natocamlPackages.cmdliner}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
-
           OCAMLFIND_DESTDIR=$(dirname $OCAMLFIND_DESTDIR)/${crossName}-sysroot/lib/
           mkdir -p $OCAMLFIND_DESTDIR
           make install LIBDIR=$OCAMLFIND_DESTDIR/cmdliner
@@ -391,19 +385,5 @@ in
           ln -sfn ${natocamlPackages.zarith}/lib/ocaml/${osuper.ocaml.version}/site-lib $out/lib/ocaml/${osuper.ocaml.version}/site-lib
         '';
       });
-    } // (lib.genAttrs [
-      "astring"
-      "jsonm"
-      "fmt"
-      "uutf"
-      "uunf"
-      "logs"
-      "fpath"
-      "bos"
-      "ptime"
-      "rresult"
-      "mtime"
-      "xmlm"
-    ]
-      (name: fixTopkgInstall osuper.${name} natocamlPackages.${name})))
+    })
 ]
