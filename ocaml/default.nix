@@ -1177,6 +1177,7 @@ with oself;
       ppx_deriving
       sexplib
       ppx_sexp_conv
+      cmdliner
     ];
   };
 
