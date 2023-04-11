@@ -950,6 +950,12 @@ with oself;
     '';
   };
 
+  luv = osuper.luv.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
+      sha256 = "1brsgdzhqpkfsa9qw3zv70y4z96fqbpcws9c6h2bn5p0qv1dvk3p";
+    };
+  });
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
