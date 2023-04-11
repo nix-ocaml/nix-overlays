@@ -317,6 +317,13 @@ with oself;
     ];
   };
 
+  cmdliner = osuper.cmdliner.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/cmdliner/releases/cmdliner-1.2.0.tbz;
+      sha256 = "0y00vnlk3nim8bh4gvimdpg71gp22z3b35sfyvb4yf98j1c11vdg";
+    };
+  });
+
   cohttp = osuper.cohttp.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
@@ -950,6 +957,12 @@ with oself;
     '';
   };
 
+  luv = osuper.luv.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
+      sha256 = "1brsgdzhqpkfsa9qw3zv70y4z96fqbpcws9c6h2bn5p0qv1dvk3p";
+    };
+  });
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
