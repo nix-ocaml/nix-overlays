@@ -317,6 +317,13 @@ with oself;
     ];
   };
 
+  cmdliner = osuper.cmdliner.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/cmdliner/releases/cmdliner-1.2.0.tbz;
+      sha256 = "0y00vnlk3nim8bh4gvimdpg71gp22z3b35sfyvb4yf98j1c11vdg";
+    };
+  });
+
   cohttp = osuper.cohttp.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
