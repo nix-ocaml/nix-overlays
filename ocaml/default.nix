@@ -6,6 +6,7 @@
 , fetchFromGitHub
 , fetchFromGitLab
 , lib
+, libvirt
 , libpq
 , libev-oc
 , libffi-oc
@@ -1170,6 +1171,10 @@ with oself;
       ppx_sexp_conv
       cmdliner
     ];
+  };
+
+  ocaml_libvirt = osuper.ocaml_libvirt.override {
+    libvirt = disableTests libvirt;
   };
 
   ez_subst = buildDunePackage {
