@@ -953,7 +953,7 @@ with oself;
   luv = osuper.luv.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
-      sha256 = "10ra3dkj3x3icplhzxg1gh1smk12fmnxmqg7yx9wmlbrjl985xzr";
+      sha256 = "1h2n9iij4mh60sy3g437p1xwqyqpyw72fgh4417d8j9ahq46m7vn";
     };
   });
   luv_unix = buildDunePackage {
