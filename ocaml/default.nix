@@ -52,13 +52,6 @@ in
 with oself;
 
 {
-  alcotest = osuper.alcotest.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/alcotest/releases/download/1.7.0/alcotest-1.7.0.tbz;
-      sha256 = "1pq2g5k427sx3mzn75hrxxwj9xxjv9mk1mq7bscqhpml6kdsqaw1";
-    };
-  });
-
   ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bytes" ""
@@ -960,7 +953,7 @@ with oself;
   luv = osuper.luv.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
-      sha256 = "1brsgdzhqpkfsa9qw3zv70y4z96fqbpcws9c6h2bn5p0qv1dvk3p";
+      sha256 = "10ra3dkj3x3icplhzxg1gh1smk12fmnxmqg7yx9wmlbrjl985xzr";
     };
   });
   luv_unix = buildDunePackage {
