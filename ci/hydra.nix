@@ -7,11 +7,15 @@ in
 
 with filter;
 {
+  build_4_13 = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "4_14";
+  };
   build_4_14 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "4_14";
   };
-  build_5_00 = ocamlCandidates {
+  build_5_0 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_0";
     extraIgnores = extraIgnores ++ ocaml5Ignores;

@@ -53,12 +53,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target native \
-                --show-trace --keep-going
+        run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   top-level-packages-linux:
