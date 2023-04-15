@@ -2182,7 +2182,7 @@ with oself;
     ];
   };
 } // (
-  if lib.versionAtLeast osuper.ocaml.version "5.0"
+  if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix oself)
   else { }
 )
