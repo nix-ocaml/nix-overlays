@@ -26,9 +26,7 @@
             patches = patches;
           };
       overlay = import ./overlay nixpkgs;
-    in
-
-    {
+    in nixpkgs.lib.recursiveUpdate {
       lib = nixpkgs.lib;
 
       hydraJobs = builtins.listToAttrs (map
@@ -58,7 +56,7 @@
         pkgs.appendOverlays extraOverlays;
 
       overlays.default = overlay;
-    } // flake-utils.lib.eachDefaultSystem (system:
+    } (flake-utils.lib.eachDefaultSystem (system:
       {
         legacyPackages = self.makePkgs { inherit system; };
 
@@ -76,5 +74,5 @@
             config.allowUnfree = true;
           }
         );
-      });
+      }));
 }
