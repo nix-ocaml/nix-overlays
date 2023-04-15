@@ -122,6 +122,9 @@ let
     "semver"
     "twt"
     "lambdapi"
+
+    # broken on 5.1
+    "labltk"
   ];
 
   darwinIgnores = [
