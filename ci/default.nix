@@ -4,13 +4,13 @@ let
   system = builtins.currentSystem;
   flake = (import
     (fetchTarball {
-      url = "https://github.com/edolstra/flake-compat/archive/b4a3401.tar.gz";
-      sha256 = "1qc703yg0babixi6wshn5wm2kgl5y1drcswgszh4xxzbrwkk9sv7";
+      url = https://github.com/edolstra/flake-compat/archive/35bb57c0.tar.gz;
+      sha256 = "1prd9b1xx8c0sfwnyzkspplh30m613j42l1k789s521f4kv4c2z2";
     })
     { src = ../.; }).defaultNix;
 
   pkgs = flake.legacyPackages.${system}.extend (final: prev:
-    if ocamlVersion != null && ocamlVersion != "5_0" then {
+    if ocamlVersion != null && prev.lib.hasPrefix "5_" ocamlVersion then {
       ocamlPackages = final.ocaml-ng."ocamlPackages_${ocamlVersion}";
     } else { });
   filter = pkgs.callPackage ./filter.nix { };
