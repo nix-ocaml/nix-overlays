@@ -57,7 +57,7 @@
             */
           pkgs.appendOverlays extraOverlays;
 
-        overlays.default = overlay;
+        overlays.default = final: prev: overlay final prev;
       }
       (flake-utils.lib.eachDefaultSystem (system:
         {
