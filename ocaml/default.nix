@@ -1467,9 +1467,12 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
-      sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppxlib";
+      # trunk-support branch
+      rev = "b86fc758cbd96d26242811fd62ce450ff7d2493b";
+      hash = "sha256-JzYnTGCaRJY13j0Kpp9w+zoLFpHcMbzoBEZVNLfFN84=";
     };
 
     propagatedBuildInputs = [
