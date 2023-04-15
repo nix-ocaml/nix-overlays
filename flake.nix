@@ -26,53 +26,56 @@
             patches = patches;
           };
       overlay = import ./overlay nixpkgs;
-    in nixpkgs.lib.recursiveUpdate {
-      lib = nixpkgs.lib;
+    in
+    nixpkgs.lib.recursiveUpdate
+      {
+        lib = nixpkgs.lib;
 
-      hydraJobs = builtins.listToAttrs (map
-        (system: {
-          name = system;
-          value = (import ./ci/hydra.nix {
-            inherit system;
-            pkgs = self.legacyPackages.${system};
-          });
-        })
-        [ "x86_64-linux" "aarch64-darwin" ]);
+        hydraJobs = builtins.listToAttrs (map
+          (system: {
+            name = system;
+            value = (import ./ci/hydra.nix {
+              inherit system;
+              pkgs = self.legacyPackages.${system};
+            });
+          })
+          [ "x86_64-linux" "aarch64-darwin" ]);
 
-      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let
-          pkgs = import nixpkgs ({
-            inherit system;
-            overlays = [ overlay ];
-            config.allowUnfree = true;
-          } // attrs);
-        in
-          /*
+        makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+          let
+            pkgs = import nixpkgs ({
+              inherit system;
+              overlays = [ overlay ];
+              config.allowUnfree = true;
+            } // attrs);
+          in
+            /*
             You might read
             https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
             want to change this but because of how we're doing overlays we will
             be overriding any extraOverlays if we don't use `appendOverlays`
-          */
-        pkgs.appendOverlays extraOverlays;
+            */
+          pkgs.appendOverlays extraOverlays;
 
-      overlays.default = overlay;
-    } (flake-utils.lib.eachDefaultSystem (system:
-      {
-        legacyPackages = self.makePkgs { inherit system; };
+        overlays.default = overlay;
+      }
+      (flake-utils.lib.eachDefaultSystem (system:
+        {
+          legacyPackages = self.makePkgs { inherit system; };
 
-        overlays = (final: prev:
-          let
-            channel = patchChannel {
+          overlays = (final: prev:
+            let
+              channel = patchChannel {
+                inherit system;
+                channel = nixpkgs;
+              };
+            in
+
+            import channel {
               inherit system;
-              channel = nixpkgs;
-            };
-          in
-
-          import channel {
-            inherit system;
-            overlays = [ (import ./overlay channel) ];
-            config.allowUnfree = true;
-          }
-        );
-      }));
+              overlays = [ (import ./overlay channel) ];
+              config.allowUnfree = true;
+            }
+          );
+        }));
 }
