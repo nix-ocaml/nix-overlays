@@ -37,16 +37,21 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
     log "</pre></details>"
     error=1
   else
+    cached=$(echo "$job" | jq -r .isCached)
     drvPath=$(echo "$job" | jq -r .drvPath)
-    if ! nix-store --realize "$drvPath" 2>&1 | tee build-log.txt; then
-      log "### ❌ $attr"
-      log
-      log "<details><summary>Build error:</summary>last 50 lines:<pre>"
-      log "$(tail -n 50 build-log.txt)"
-      log "</pre></details>"
-      error=1
+    if [[ "$cached" == "true" ]]; then
+      log "### ✅ $attr (in cache)"
     else
-      log "### ✅ $attr"
+      if ! nix-store --realize "$drvPath" 2>&1 | tee build-log.txt; then
+        log "### ❌ $attr"
+        log
+        log "<details><summary>Build error:</summary>last 50 lines:<pre>"
+        log "$(tail -n 50 build-log.txt)"
+        log "</pre></details>"
+        error=1
+      else
+        log "### ✅ $attr"
+      fi
     fi
     log
     rm build-log.txt
