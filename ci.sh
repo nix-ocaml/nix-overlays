@@ -39,6 +39,7 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
   else
     cached=$(echo "$job" | jq -r .isCached)
     drvPath=$(echo "$job" | jq -r .drvPath)
+    log "### ✅ $attr (in cache? $cached)"
     if [[ "$cached" == "true" ]]; then
       log "### ✅ $attr (in cache)"
     else
@@ -49,12 +50,12 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
         log "$(tail -n 50 build-log.txt)"
         log "</pre></details>"
         error=1
+        rm build-log.txt
       else
         log "### ✅ $attr"
       fi
     fi
     log
-    rm build-log.txt
   fi
 done
 
