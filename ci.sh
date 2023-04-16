@@ -59,4 +59,4 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
 done
 
 # TODO: improve the reporting
-# exit "$error"
+exit "$error"
