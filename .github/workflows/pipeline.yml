@@ -144,8 +144,8 @@ jobs:
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_0, continue-on-error: false }
         target:
-          - arm64_
-          - musl_
+          - arm64
+          - musl
     name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
@@ -166,5 +166,5 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run : ./ci.sh x86_64-linux ${{matrix.target}}${{matrix.setup.ocaml-version}}
+        run : ./ci.sh x86_64-linux ${{matrix.target}}_${{matrix.setup.ocaml-version}}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
