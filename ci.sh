@@ -27,7 +27,8 @@ error=0
 for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
   job=$(echo "$job" | base64 -d)
   attr=$(echo "$job" | jq -r .attr)
-  echo "### $attr"
+  cached=$(echo "$job" | jq -r .isCached)
+  echo "### $attr (cached? $cached)"
   error=$(echo "$job" | jq -r .error)
   if [[ $error != null ]]; then
     log "### ❌ $attr"
@@ -37,9 +38,7 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
     log "</pre></details>"
     error=1
   else
-    cached=$(echo "$job" | jq -r .isCached)
     drvPath=$(echo "$job" | jq -r .drvPath)
-    log "### ✅ $attr (in cache? $cached)"
     if [[ "$cached" == "true" ]]; then
       log "### ✅ $attr (in cache)"
     else
