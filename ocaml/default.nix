@@ -568,8 +568,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "8b7133d10480bf585f17ffaba3b0e482eec21ff0";
-      hash = "sha256-Auo53K6t6oSgr52Mziq4Qlhhn0Dih0Ohq+D2kw1KdUE=";
+      rev = "b5c814e33d0d370b20c9f6269633625b8244feb2";
+      hash = "sha256-R+ziJ8ecBH/MpopIKuNwM0Jjzslgq0rxysThdC+2LX8=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
@@ -756,6 +756,12 @@ with oself;
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
+
+  headache = osuper.headache.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace dune --replace "bytes" ""
+    '';
+  });
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];

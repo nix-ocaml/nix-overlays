@@ -7,7 +7,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=25e21b34a9d0916a764e0dc3dc853ba953aa5cbb";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=280b1cdc1ea37bb477be1dada5d753f0246759a8";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -27,54 +27,55 @@
           };
       overlay = import ./overlay nixpkgs;
     in
+    nixpkgs.lib.recursiveUpdate
+      {
+        lib = nixpkgs.lib;
 
-    {
-      lib = nixpkgs.lib;
+        hydraJobs = builtins.listToAttrs (map
+          (system: {
+            name = system;
+            value = (import ./ci/hydra.nix {
+              inherit system;
+              pkgs = self.legacyPackages.${system};
+            });
+          })
+          [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]);
 
-      hydraJobs = builtins.listToAttrs (map
-        (system: {
-          name = system;
-          value = (import ./ci/hydra.nix {
-            inherit system;
-            pkgs = self.legacyPackages.${system};
-          });
-        })
-        [ "x86_64-linux" "aarch64-darwin" ]);
-
-      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-        let
-          pkgs = import nixpkgs ({
-            inherit system;
-            overlays = [ overlay ];
-            config.allowUnfree = true;
-          } // attrs);
-        in
-          /*
+        makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+          let
+            pkgs = import nixpkgs ({
+              inherit system;
+              overlays = [ overlay ];
+              config.allowUnfree = true;
+            } // attrs);
+          in
+            /*
             You might read
             https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
             want to change this but because of how we're doing overlays we will
             be overriding any extraOverlays if we don't use `appendOverlays`
-          */
-        pkgs.appendOverlays extraOverlays;
+            */
+          pkgs.appendOverlays extraOverlays;
 
-      overlays.default = overlay;
-    } // flake-utils.lib.eachDefaultSystem (system:
-      {
-        legacyPackages = self.makePkgs { inherit system; };
+        overlays.default = final: prev: overlay final prev;
+      }
+      (flake-utils.lib.eachDefaultSystem (system:
+        {
+          legacyPackages = self.makePkgs { inherit system; };
 
-        overlays = (final: prev:
-          let
-            channel = patchChannel {
+          overlays = (final: prev:
+            let
+              channel = patchChannel {
+                inherit system;
+                channel = nixpkgs;
+              };
+            in
+
+            import channel {
               inherit system;
-              channel = nixpkgs;
-            };
-          in
-
-          import channel {
-            inherit system;
-            overlays = [ (import ./overlay channel) ];
-            config.allowUnfree = true;
-          }
-        );
-      });
+              overlays = [ (import ./overlay channel) ];
+              config.allowUnfree = true;
+            }
+          );
+        }));
 }
