@@ -757,6 +757,12 @@ with oself;
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
 
+  headache = osuper.headache.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace dune --replace "bytes" ""
+    '';
+  });
+
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
