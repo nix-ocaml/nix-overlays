@@ -44,6 +44,7 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
       log "### ✅ $attr (in cache)"
     else
       if ! nix-store --realize "$drvPath" 2>&1 | tee build-log.txt > /dev/null; then
+        >&2 cat build-log.txt
         log "### ❌ $attr"
         log
         log "<details><summary>Build error:</summary>last 50 lines:<pre>"
