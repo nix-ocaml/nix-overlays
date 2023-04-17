@@ -53,12 +53,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target native \
-                --show-trace --keep-going
+        run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   top-level-packages-linux:
@@ -84,12 +79,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --arg ocamlVersion null \
-                --argstr target top-level-packages \
-                --show-trace --keep-going
+        run: ./ci.sh x86_64-linux build_top-level-packages
 
   native-macos:
     strategy:
@@ -118,13 +108,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target native \
-                --show-trace --keep-going
-        continue-on-error: ${{ matrix.setup.continue-on-error }}
+        run: ./ci.sh x86_64-darwin build_${{ matrix.setup.ocaml-version }}
 
   top-level-packages-macos:
     strategy:
@@ -149,12 +133,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --arg ocamlVersion null \
-                --argstr target top-level-packages \
-                --show-trace --keep-going
+        run: ./ci.sh x86_64-darwin build_top-level-packages
 
   cross-compilers:
     needs: [native-linux]
@@ -162,7 +141,6 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_13, continue-on-error: false }
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_0, continue-on-error: false }
         target:
@@ -188,10 +166,5 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          nix shell --print-build-logs -f ./ nix-build-uncached -c \
-              nix-build-uncached ./ci \
-                --argstr ocamlVersion ${{ matrix.setup.ocaml-version }} \
-                --argstr target ${{ matrix.target }} \
-                --show-trace --keep-going
+        run : ./ci.sh x86_64-linux ${{matrix.target}}_${{matrix.setup.ocaml-version}}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
