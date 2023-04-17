@@ -22,6 +22,7 @@ else
   }
 fi
 
+exit_code=0
 error=0
 
 for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
@@ -36,7 +37,7 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
     log "<details><summary>Eval error:</summary><pre>"
     log "$error"
     log "</pre></details>"
-    error=1
+    exit_code=1
   else
     drvPath=$(echo "$job" | jq -r .drvPath)
     if [[ "$cached" == "true" ]]; then
@@ -48,7 +49,7 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
         log "<details><summary>Build error:</summary>last 50 lines:<pre>"
         log "$(tail -n 50 build-log.txt)"
         log "</pre></details>"
-        error=1
+        exit_code=1
         rm build-log.txt
       else
         log "### ✅ $attr"
@@ -59,4 +60,4 @@ for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
 done
 
 # TODO: improve the reporting
-exit $error
+exit "$error"
