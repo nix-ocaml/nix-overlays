@@ -422,6 +422,12 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  containers-data = osuper.containers-data.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
+    '';
+  });
+
   # Not available for 4.12 and breaking the static build
   cooltt = null;
 
@@ -1121,6 +1127,16 @@ with oself;
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
     postPatch = null;
+  });
+
+  minisat = osuper.minisat.overrideAttrs (_: {
+    postPatch = ''
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace src/solver.h \
+        --replace "typedef int  bool;" "#include <stdbool.h>" \
+        --replace "static const bool  true      = 1;" "" \
+        --replace "static const bool  false     = 0;" ""
+    '';
   });
 
   mongo = callPackage ./mongo { };
