@@ -1787,8 +1787,6 @@ with oself;
 
   unstrctrd = disableTests osuper.unstrctrd;
 
-  uring = callPackage ./uring { };
-
   utop = osuper.utop.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml-community";
