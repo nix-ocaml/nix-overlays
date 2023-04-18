@@ -22,6 +22,7 @@ in {
   depsBuildBuild = [ buildPackages.stdenv.cc ];
   preConfigure = ''
     configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
+    installFlagsArray+=("OCAMLRUN=${natocaml}/bin/ocamlrun")
   '';
   configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
   postConfigure = ''
@@ -104,7 +105,9 @@ in {
   installTargets = o.installTargets ++ [ "installoptopt" ];
   postInstall = "cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc";
   patches = [
-    (if isOCaml5
+    (if lib.versionOlder "5.1" o.version
+    then ./cross_5_1.patch
+    else if isOCaml5
     then ./cross_5_00.patch
     else if lib.versionOlder "4.14" o.version
     then ./cross_4_14.patch

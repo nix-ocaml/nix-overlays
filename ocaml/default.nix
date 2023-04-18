@@ -668,6 +668,16 @@ with oself;
     doCheck = false;
   });
 
+  elina = osuper.elina.overrideAttrs (_: {
+    postPatch = ''
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace elina_auxiliary/elina_config.h \
+        --replace "typedef char bool;" "#include <stdbool.h>" \
+        --replace "static const bool false = 0;" "" \
+        --replace "static const bool true  = 1;" ""
+    '';
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
