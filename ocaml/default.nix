@@ -1850,6 +1850,7 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
+    doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace \
