@@ -72,6 +72,12 @@ with oself;
       substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
       substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
       substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
+
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace apron/ap_config.h \
+        --replace "typedef char bool;" "#include <stdbool.h>" \
+        --replace "static const bool false = 0;" "" \
+        --replace "static const bool true  = 1;" ""
     '';
   });
 
