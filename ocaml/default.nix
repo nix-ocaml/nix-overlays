@@ -1430,9 +1430,7 @@ with oself;
 
   pp = disableTests osuper.pp;
 
-  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
-  });
+  ppx_cstruct = disableTests osuper.ppx_cstruct;
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -1940,6 +1938,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
+  core = osuper.core.overrideAttrs (_: {
+    postPatch =
+      if lib.versionOlder "5.1" ocaml.version then ''
+        substituteInPlace core/src/gc_stubs.c \
+          --replace "caml_stat_minor_collections" \
+                    "atomic_load(&caml_minor_collections_count)"
+      '' else null;
+  });
   core_unix = osuper.core_unix.overrideAttrs (o: {
     postPatch = ''
       ${o.postPatch}
@@ -2018,6 +2024,13 @@ with oself;
     patches = [ ];
   });
 
+  ppx_accessor = osuper.ppx_accessor.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/ppx_accessor.ml \
+        --replace "open! Base" "module Typey = Type;; open! Base" \
+        --replace "Type." "Typey."
+    '';
+  });
   ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "janestreet";
