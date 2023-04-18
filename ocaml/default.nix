@@ -554,6 +554,13 @@ with oself;
     };
   });
 
+  duff = osuper.duff.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "lib/duff.ml" --replace \
+        "(Uint32.(to_int (hash land hmask)))" "(let ha = hash in Uint32.(to_int (ha land hmask)))"
+    '';
+  });
+
   dum = osuper.dum.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
@@ -850,6 +857,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "4fbb9beb23a8bf72198a72de48c4d508c2f84164";
+      hash = "sha256-xE1NXzbJ0HJ02CUBbRvco9SVXKo8JKOCNUCXc3Tho3M=";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
+  });
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.0" then
@@ -1001,6 +1017,12 @@ with oself;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
     };
   });
+
+  mdx = osuper.mdx.overrideAttrs (o: {
+    doCheck = false;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+  });
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -1051,6 +1073,15 @@ with oself;
   mel = callPackage ./melange/mel.nix { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
+  menhirLib = osuper.menhirLib.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "menhir";
+      rev = "20230415";
+      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+    };
+  });
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
@@ -1811,11 +1842,9 @@ with oself;
   uring = callPackage ./uring { };
 
   utop = osuper.utop.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "bbd9a6ed45";
-      sha256 = "sha256-HBKEIyY5boYkwlqOkbZPtyPHbVWcdgMcSpr+xsggAuU=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/releases/download/2.12.0/utop-2.12.0.tbz;
+      sha256 = "1sm1i90awwn6bvazx96h77rp0sqf9p2i1s4irmrwbgl3lxcwh6dd";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
