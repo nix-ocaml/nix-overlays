@@ -2013,11 +2013,12 @@ with oself;
   });
 
   ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ppx_bench.ml --replace \
-        "File_path.get_default_path loc" \
-        "loc.loc_start.pos_fname"
-    '';
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "ppx_bench";
+      rev = "v0.15.1";
+      hash = "sha256-2uk3NfpAODScoQtqiU+ZaOE8zOqkayn/jpfn3GQ4vQg=";
+    };
   });
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -2034,11 +2035,12 @@ with oself;
   ppx_here = addBase osuper.ppx_here;
 
   ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ppx_inline_test.ml --replace \
-        "File_path.get_default_path loc" \
-        "loc.loc_start.pos_fname"
-    '';
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "ppx_inline_test";
+      rev = "v0.15.1";
+      hash = "sha256-9Up4/VK4gayuwbPc3r6gVRj78ILO2G3opL5UDOTKOgk=";
+    };
   });
 
   ppx_js_style = addBase osuper.ppx_js_style;
