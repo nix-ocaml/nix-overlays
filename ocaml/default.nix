@@ -1787,6 +1787,14 @@ with oself;
 
   unstrctrd = disableTests osuper.unstrctrd;
 
+  uring = osuper.uring.overrideAttrs (_: {
+    postPatch = ''
+      patchShebangs vendor/liburing/configure
+      substituteInPlace lib/uring/dune --replace \
+        '(run ./configure)' '(bash "./configure")'
+    '';
+  });
+
   utop = osuper.utop.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml-community";
