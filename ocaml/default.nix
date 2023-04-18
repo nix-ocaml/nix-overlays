@@ -1482,8 +1482,8 @@ with oself;
               owner = "ocaml-ppx";
               repo = "ppxlib";
               # trunk-support branch
-              rev = "b86fc758cbd96d26242811fd62ce450ff7d2493b";
-              hash = "sha256-JzYnTGCaRJY13j0Kpp9w+zoLFpHcMbzoBEZVNLfFN84=";
+              rev = "a45cbc65bec13fad862eaeae19fd5d4a3076383d";
+              hash = "sha256-vfWMGPDeCua6tDkUA8vjI1ZREwbI+nA+6ep84sk7RQk=";
             }
         else
           builtins.fetchurl {
