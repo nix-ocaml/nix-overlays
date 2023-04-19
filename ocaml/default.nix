@@ -1248,6 +1248,15 @@ with oself;
     ];
   };
 
+  odoc = osuper.odoc.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "bfb69bab5955fe1eaab0af795bfbbb9792b3131c";
+      hash = "sha256-qC8uKMEHpCbEdsmVZVJOnFBSJ0tsKlYu1uhkQbSVppY=";
+    };
+  });
+
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
   };
