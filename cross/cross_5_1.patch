@@ -1,0 +1,40 @@
+diff --git a/Makefile b/Makefile
+index b73eb129c4..a129f2f8e5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -856,7 +856,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
+ ## Runtime libraries and programs
+ 
+ runtime/ocamlrun$(EXE): runtime/prims.$(O) runtime/libcamlrun.$(A)
+-	$(V_MKEXE)$(MKEXE) -o $@ $^ $(BYTECCLIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
+ 
+ runtime/ocamlruns$(EXE): runtime/prims.$(O) runtime/libcamlrun_non_shared.$(A)
+ 	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^ $(BYTECCLIBS))
+@@ -1458,7 +1459,7 @@ ocamltex_MODULES = tools/ocamltex
+ # configuration.
+ # Note: the following definitions apply to all the prerequisites
+ # of ocamltex.
+-$(ocamltex): CAMLC = $(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) $(STDLIBFLAGS)
++$(ocamltex): CAMLC = $(CAMLC) $(STDLIBFLAGS)
+ $(ocamltex): OC_COMMON_LINKFLAGS += -linkall
+ $(ocamltex): VPATH += $(addprefix otherlibs/,str unix)
+ 
+@@ -1830,8 +1831,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+ endif
+ 	$(INSTALL_DATA) \
+ 	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
+-	   toplevel/*.cmx toplevel/native/*.cmx \
+-	   toplevel/native/tophooks.cmi \
+ 	   file_formats/*.cmx \
+ 	   lambda/*.cmx \
+ 	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
+@@ -1845,7 +1844,6 @@ endif
+ 	$(INSTALL_DATA) \
+ 	   $(ocamlc_MODULES:=.cmx) $(ocamlc_MODULES:=.$(O)) \
+ 	   $(ocamlopt_MODULES:=.cmx) $(ocamlopt_MODULES:=.$(O)) \
+-	   $(ocaml_MODULES:=.$(O)) \
+ 	   "$(INSTALL_COMPLIBDIR)"
+ ifeq "$(INSTALL_OCAMLNAT)" "true"
+ 	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"

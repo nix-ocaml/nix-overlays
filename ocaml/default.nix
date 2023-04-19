@@ -72,6 +72,12 @@ with oself;
       substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
       substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
       substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
+
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace apron/ap_config.h \
+        --replace "typedef char bool;" "#include <stdbool.h>" \
+        --replace "static const bool false = 0;" "" \
+        --replace "static const bool true  = 1;" ""
     '';
   });
 
@@ -416,6 +422,12 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  containers-data = osuper.containers-data.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
+    '';
+  });
+
   # Not available for 4.12 and breaking the static build
   cooltt = null;
 
@@ -548,6 +560,13 @@ with oself;
     };
   });
 
+  duff = osuper.duff.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "lib/duff.ml" --replace \
+        "(Uint32.(to_int (hash land hmask)))" "(let ha = hash in Uint32.(to_int (ha land hmask)))"
+    '';
+  });
+
   dum = osuper.dum.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
@@ -653,6 +672,16 @@ with oself;
       sha256 = "sha256-x94XNMdHbSrubcmYLMXor7OLY/c2LyRiq/Ot/IHYjxM=";
     };
     doCheck = false;
+  });
+
+  elina = osuper.elina.overrideAttrs (_: {
+    postPatch = ''
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace elina_auxiliary/elina_config.h \
+        --replace "typedef char bool;" "#include <stdbool.h>" \
+        --replace "static const bool false = 0;" "" \
+        --replace "static const bool true  = 1;" ""
+    '';
   });
 
   ezgzip = buildDunePackage rec {
@@ -844,6 +873,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "4fbb9beb23a8bf72198a72de48c4d508c2f84164";
+      hash = "sha256-xE1NXzbJ0HJ02CUBbRvco9SVXKo8JKOCNUCXc3Tho3M=";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
+  });
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.0" then
@@ -995,6 +1033,12 @@ with oself;
       sha256 = "176dywi6d1s1jn1g1c8f9bznj1r6ajgqp5g196fgszld52598dfq";
     };
   });
+
+  mdx = osuper.mdx.overrideAttrs (o: {
+    doCheck = false;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+  });
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -1045,6 +1089,15 @@ with oself;
   mel = callPackage ./melange/mel.nix { };
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
+  menhirLib = osuper.menhirLib.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "menhir";
+      rev = "20230415";
+      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+    };
+  });
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
@@ -1074,6 +1127,16 @@ with oself;
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
     postPatch = null;
+  });
+
+  minisat = osuper.minisat.overrideAttrs (_: {
+    postPatch = ''
+      # https://github.com/ocaml/ocaml/pull/11990
+      substituteInPlace src/solver.h \
+        --replace "typedef int  bool;" "#include <stdbool.h>" \
+        --replace "static const bool  true      = 1;" "" \
+        --replace "static const bool  false     = 0;" ""
+    '';
   });
 
   mongo = callPackage ./mongo { };
@@ -1430,9 +1493,7 @@ with oself;
 
   pp = disableTests osuper.pp;
 
-  ppx_cstruct = osuper.ppx_cstruct.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ ocaml-migrate-parsetree-2 ];
-  });
+  ppx_cstruct = disableTests osuper.ppx_cstruct;
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -1472,19 +1533,36 @@ with oself;
     };
   });
 
-  ppxlib = osuper.ppxlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
-      sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
-    };
+  ppxlib =
+    let
+      src =
+        if lib.hasPrefix "5.1" osuper.ocaml.version
+        then
+          fetchFromGitHub
+            {
+              owner = "ocaml-ppx";
+              repo = "ppxlib";
+              # trunk-support branch
+              rev = "a45cbc65bec13fad862eaeae19fd5d4a3076383d";
+              hash = "sha256-vfWMGPDeCua6tDkUA8vjI1ZREwbI+nA+6ep84sk7RQk=";
+            }
+        else
+          builtins.fetchurl {
+            url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
+            sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
 
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ppx_derivers
-      sexplib0
-      stdlib-shims
-    ];
-  });
+          };
+    in
+    osuper.ppxlib.overrideAttrs (_: {
+      inherit src;
+
+      propagatedBuildInputs = [
+        ocaml-compiler-libs
+        ppx_derivers
+        sexplib0
+        stdlib-shims
+      ];
+    });
 
   printbox-text = disableTests osuper.printbox-text;
 
@@ -1788,6 +1866,7 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
+    doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace \
@@ -1796,11 +1875,9 @@ with oself;
   });
 
   utop = osuper.utop.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "bbd9a6ed45";
-      sha256 = "sha256-HBKEIyY5boYkwlqOkbZPtyPHbVWcdgMcSpr+xsggAuU=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/releases/download/2.12.0/utop-2.12.0.tbz;
+      sha256 = "1sm1i90awwn6bvazx96h77rp0sqf9p2i1s4irmrwbgl3lxcwh6dd";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
@@ -1923,6 +2000,14 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
+  core = osuper.core.overrideAttrs (_: {
+    postPatch =
+      if lib.versionOlder "5.1" ocaml.version then ''
+        substituteInPlace core/src/gc_stubs.c \
+          --replace "caml_stat_minor_collections" \
+                    "atomic_load(&caml_minor_collections_count)"
+      '' else null;
+  });
   core_unix = osuper.core_unix.overrideAttrs (o: {
     postPatch = ''
       ${o.postPatch}
@@ -2001,12 +2086,20 @@ with oself;
     patches = [ ];
   });
 
-  ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
+  ppx_accessor = osuper.ppx_accessor.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace src/ppx_bench.ml --replace \
-        "File_path.get_default_path loc" \
-        "loc.loc_start.pos_fname"
+      substituteInPlace src/ppx_accessor.ml \
+        --replace "open! Base" "module Typey = Type;; open! Base" \
+        --replace "Type." "Typey."
     '';
+  });
+  ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "ppx_bench";
+      rev = "v0.15.1";
+      hash = "sha256-2uk3NfpAODScoQtqiU+ZaOE8zOqkayn/jpfn3GQ4vQg=";
+    };
   });
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -2023,11 +2116,12 @@ with oself;
   ppx_here = addBase osuper.ppx_here;
 
   ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ppx_inline_test.ml --replace \
-        "File_path.get_default_path loc" \
-        "loc.loc_start.pos_fname"
-    '';
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "ppx_inline_test";
+      rev = "v0.15.1";
+      hash = "sha256-9Up4/VK4gayuwbPc3r6gVRj78ILO2G3opL5UDOTKOgk=";
+    };
   });
 
   ppx_js_style = addBase osuper.ppx_js_style;
@@ -2035,6 +2129,24 @@ with oself;
   ppx_optcomp = addStdio osuper.ppx_optcomp;
   ppx_optional = addBase osuper.ppx_optional;
   ppx_stable = addBase osuper.ppx_stable;
+
+  ppx_tools = buildDunePackage {
+    pname = "ppx_tools";
+    src = fetchFromGitHub {
+      owner = "alainfrisch";
+      repo = "ppx_tools";
+      rev = "6.6";
+      hash = "sha256-QhuaQ9346a3neoRM4GrOVzjR8fg9ysMZR1VzNgyIQtc=";
+    };
+    meta = with lib; {
+      description = "Tools for authors of ppx rewriters";
+      homepage = "https://www.lexifi.com/ppx_tools";
+      license = licenses.mit;
+      maintainers = with maintainers; [ vbgl ];
+    };
+    version = "6.6";
+    nativeBuildInputs = [ cppo ];
+  };
 
   virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -2167,7 +2279,7 @@ with oself;
     ];
   };
 } // (
-  if lib.versionAtLeast osuper.ocaml.version "5.0"
+  if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix oself)
   else { }
 )

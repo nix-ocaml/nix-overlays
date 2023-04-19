@@ -20,6 +20,11 @@ with filter;
     ocamlVersion = "5_0";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+  build_5_1 = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_1";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_top-level-packages =
     { inherit (pkgs) esy; } //
@@ -43,6 +48,16 @@ with filter;
 
   musl_5_0 = (if system == "x86_64-linux" then
     crossTarget pkgs.pkgsCross.musl64 "5_0"
+  else
+    { }
+  );
+  arm64_5_1 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_1"
+  else
+    { });
+
+  musl_5_1 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.musl64 "5_1"
   else
     { }
   );

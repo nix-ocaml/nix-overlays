@@ -5,6 +5,7 @@ let
       dontUpdateAutotoolsGnuConfigScripts = true;
       dontDisableStatic = true;
       preConfigure = ''
+        ${o.preConfigure or null}
         configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static")
       '';
     });
