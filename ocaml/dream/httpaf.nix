@@ -15,15 +15,7 @@
 , psq
 , result
 , ppx_expect
-  # vendored
-, gluten
-, gluten-lwt-unix
-, httpaf
-, httpaf-lwt-unix
-, h2
-, h2-lwt-unix
-, websocketaf
-, websocketaf-lwt-unix
+, ke
 }:
 
 buildDunePackage rec {
@@ -38,35 +30,12 @@ buildDunePackage rec {
     ssl
 
     ppx_expect
-
-    # vendored
-    gluten
-    gluten-lwt-unix
-    httpaf
-    httpaf-lwt-unix
-    h2
-    h2-lwt-unix
-    websocketaf
-    websocketaf-lwt-unix
+    faraday
+    faraday-lwt-unix
+    digestif
+    ke
+    psq
   ];
-
-  patches = [ ./upload.patch ];
-
-  postPatch = ''
-    substituteInPlace src/http/shared/websocket.ml --replace \
-      'Websocketaf.Server_connection.{frame;' \
-      'Websocketaf.Websocket_connection.{frame;'
-    substituteInPlace src/http/shared/websocket.ml --replace \
-      'Websocketaf.Client_connection.{frame;' \
-      'Websocketaf.Websocket_connection.{frame;'
-    substituteInPlace src/http/shared/websocket.ml --replace \
-      'Websocketaf.Client_connection.input_handlers' \
-      'Websocketaf.Websocket_connection.input_handlers'
-  '';
-
-  preBuild = ''
-    rm -rf src/vendor
-  '';
 
   doCheck = false;
 
