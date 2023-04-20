@@ -285,8 +285,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "paurkedal";
       repo = "ocaml-caqti";
-      rev = "eca8ecb";
-      sha256 = "sha256-W+lc1vU7QQt97N383KP4RUJ7eIPtS4gPT32IpOVGM3s=";
+      rev = "eca34083d2becdfe63cfd3da079ab1b36f5fef87";
+      hash = "sha256-hH97JVj4fHyGK+oMYORTzH2azofTiFYJ3DafZUKLDHA=";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr ];

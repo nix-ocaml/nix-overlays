@@ -5,10 +5,10 @@ buildDunePackage rec {
   version = "3.0.0";
 
   src = fetchFromGitHub {
-    owner = "roddyyaga";
+    owner = "anmonteiro";
     repo = "ppx_rapper";
-    rev = "8e1dfc4";
-    sha256 = "sha256-+ysLBJQp6tDYbyxB+NeVssMFHACvuHg2wOFRq7pXKjE=";
+    rev = "26bae31166e32621285d0c811f46148c0207caff";
+    hash = "sha256-mqBC78zGCzfuehgEW0EmzftjxwXkLmGshMI5NhHMx9w=";
   };
 
   propagatedBuildInputs = [ caqti pg_query ];
