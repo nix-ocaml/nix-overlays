@@ -13,13 +13,9 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "hyper";
-    rev = "1.0.0-alpha1";
-    sha256 = "sha256-pMalTnRtB1b1pKiNVpytRobNZ79YGzZYRCb64qY0fg4=";
+    rev = "ca0a287b9e4e9c7e960daa8d1ecf2d82f073e3bb";
+    hash = "sha256-MwJdT1JzJQuM2yeRSZ6LaYqspZ4Is5K9kNoHHdOdaiw=";
   };
-
-  patches = [
-    ./0001-Unvendor-and-add-nix.patch
-  ];
 
   propagatedBuildInputs = [
     dream-httpaf
@@ -27,15 +23,4 @@ buildDunePackage rec {
     uri
     mirage-crypto-rng-lwt
   ];
-
-  postPatch = ''
-    substituteInPlace src/http/dune --replace \
-      "mirage-crypto-rng.lwt" \
-      "mirage-crypto-rng-lwt"
-
-    substituteInPlace src/http/websocket.ml --replace \
-      "Mirage_crypto_rng_lwt.initialize" \
-      '(fun () -> Mirage_crypto_rng_lwt.initialize (module Mirage_crypto_rng.Fortuna))'
-  '';
-
 }
