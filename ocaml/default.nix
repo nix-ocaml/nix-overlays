@@ -547,7 +547,12 @@ with oself;
 
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
-  dream = callPackage ./dream { };
+  dream =
+    let mf = multipart_form.override { upstream = true; }; in
+    callPackage ./dream {
+      multipart_form = mf;
+      multipart_form-lwt = multipart_form-lwt.override { multipart_form = mf; };
+    };
 
   dream-livereload = callPackage ./dream-livereload { };
 
