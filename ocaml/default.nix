@@ -702,9 +702,23 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
   };
 
-  facile = osuper.facile.overrideAttrs (_: {
+  facile = buildDunePackage rec {
+    pname = "facile";
+    version = "1.1.4";
+
+    src = builtins.fetchurl {
+      url = "https://github.com/Emmanuel-PLF/facile/releases/download/${version}/facile-${version}.tbz";
+      sha256 = "0jqrwmn6fr2vj2rrbllwxq4cmxykv7zh0y4vnngx29f5084a04jp";
+    };
+
+    doCheck = true;
     postPatch = "echo '(lang dune 2.0)' > dune-project";
-  });
+    meta = {
+      homepage = "http://opti.recherche.enac.fr/facile/";
+      license = lib.licenses.lgpl21Plus;
+      description = "A Functional Constraint Library";
+    };
+  };
 
   faraday-async = osuper.faraday-async.overrideAttrs (_: {
     patches = [ ];
@@ -761,9 +775,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "mmottl";
       repo = "gsl-ocaml";
-      rev = "76f8d93cc";
-      sha256 = "sha256-+xAZm1K1iriZn5sxk8CmzzK1Bd7K4kXROqriGHo3rOs=";
+      rev = "38fc895";
+      hash = "sha256-Nm/H9O83Q7JZAua3vhv94MBHkxbawAVg7qFW60fbDGE=";
     };
+    patches = [ ];
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
     '';
@@ -1018,9 +1033,6 @@ with oself;
       rev = "3d6f0fac";
       sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
     };
-    postPatch = ''
-      substituteInPlace src/unix/dune --replace "bigarray" ""
-    '';
   });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
@@ -1196,9 +1208,27 @@ with oself;
     '';
   });
 
-  nonstd = osuper.nonstd.overrideAttrs (_: {
+  nonstd = buildDunePackage rec {
+    pname = "nonstd";
+    version = "0.0.3";
+
+    minimalOCamlVersion = "4.02";
+
+    src = builtins.fetchurl {
+      url = "https://bitbucket.org/smondet/${pname}/get/${pname}.${version}.tar.gz";
+      sha256 = "1gn9pawdqlnnc8qsna17ypik7f686gr86zipiw4srmzb7c293b26";
+    };
+
     postPatch = "echo '(lang dune 2.0)' > dune-project";
-  });
+    doCheck = true;
+
+    meta = with lib; {
+      homepage = "https://bitbucket.org/smondet/nonstd";
+      description = "Non-standard mini-library";
+      license = licenses.isc;
+      maintainers = [ maintainers.alexfmpe ];
+    };
+  };
 
   num = (osuper.num.override { withStatic = true; }).overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -1780,7 +1810,6 @@ with oself;
     ];
   };
 
-  tcpip = disableTests osuper.tcpip;
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://erratique.ch/software/topkg/releases/topkg-1.0.6.tbz;
