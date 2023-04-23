@@ -1,4 +1,5 @@
 { lib
+, fetchFromGitHub
 , buildDunePackage
 , ocaml
 , cppo
@@ -8,18 +9,20 @@
 , fix
 , merlin-extend
 , ppx_derivers
-, result
+, ppxlib
+, dune-build-info
 }:
 
 buildDunePackage rec {
   pname = "reason";
   version = "3.8.2";
 
-  src = builtins.fetchurl {
-    url = https://github.com/reasonml/reason/releases/download/3.8.2/reason-3.8.2.tbz;
-    sha256 = "1wifxg0ina3lvy72wxc9hhr49n4fzc8j4wgjmn1fz38bn9fw9p3s";
+  src = fetchFromGitHub {
+    owner = "reasonml";
+    repo = "reason";
+    rev = "698609f5192dfa1313ae2e37e40b7af2e63b5ffc";
+    hash = "sha256-bcoFy/RzPMq4/kZXftz9q2Sjrhrml9/UirYWxx1PpMY=";
   };
-
 
   propagatedBuildInputs = [
     menhir
@@ -28,7 +31,8 @@ buildDunePackage rec {
     fix
     merlin-extend
     ppx_derivers
-    result
+    ppxlib
+    dune-build-info
   ];
 
   nativeBuildInputs = [ cppo menhir ];
