@@ -1,11 +1,13 @@
-{ buildDunePackage, reason, ppxlib }:
+{ fetchFromGitHub, buildDunePackage, reason, ppxlib }:
 
 buildDunePackage {
   pname = "ppx_jsx_embed";
   version = "0.0.0";
-  src = builtins.fetchurl {
-    url = https://github.com/melange-re/ppx_jsx_embed/archive/888ffc77.tar.gz;
-    sha256 = "122r9y301a32nm33j3qzh6lzglapsc1nkw4a2cwym8i35d2s8v09";
+  src = fetchFromGitHub {
+    owner = "melange-re";
+    repo = "ppx_jsx_embed";
+    rev = "97045c4544f25729bdc05a3cb50743c20210686c";
+    hash = "sha256-7dPvSmpT+hU6+GlZoa/SpHVi7zRHwX/SZR7Jsk2aJ3A=";
   };
   doCheck = true;
   useDune2 = true;
