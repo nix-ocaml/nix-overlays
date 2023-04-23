@@ -7,8 +7,8 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "ppx_rapper";
-    rev = "26bae31166e32621285d0c811f46148c0207caff";
-    hash = "sha256-mqBC78zGCzfuehgEW0EmzftjxwXkLmGshMI5NhHMx9w=";
+    rev = "0d34b1109c40eefb2b7c378d874f8d3489794901";
+    hash = "sha256-u7aMjIBYhfKf09BpVrH/Lco+YI5IWjnlmMKGKk1JR28=";
   };
 
   propagatedBuildInputs = [ caqti pg_query ];
