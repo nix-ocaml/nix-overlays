@@ -15,13 +15,13 @@
 
 buildDunePackage rec {
   pname = "reason";
-  version = "3.8.2";
+  version = "3.9.0-dev+ppxlib";
 
   src = fetchFromGitHub {
     owner = "reasonml";
     repo = "reason";
-    rev = "698609f5192dfa1313ae2e37e40b7af2e63b5ffc";
-    hash = "sha256-bcoFy/RzPMq4/kZXftz9q2Sjrhrml9/UirYWxx1PpMY=";
+    rev = "6401d10f2d1e2c8e1973c0de61d3c27d70b37248";
+    hash = "sha256-QJORWjqGuz6pLhZTFLhWxofDsa4dAquVtwhdbGrv0pE=";
   };
 
   propagatedBuildInputs = [
