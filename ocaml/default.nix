@@ -1796,6 +1796,12 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
+  syslog = osuper.syslog.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "syslog.ml" --replace "%.15s" "%s"
+    '';
+  });
+
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;
