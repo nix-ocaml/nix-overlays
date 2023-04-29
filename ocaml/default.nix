@@ -1255,7 +1255,15 @@ with oself;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
+  ocamlformat-lib =
+    let
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
+      menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
+    in
+    callPackage ./ocamlformat/lib.nix {
+      inherit menhir menhirLib menhirSdk;
+    };
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
@@ -1648,17 +1656,19 @@ with oself;
         nativeBuildInputs = [ cppo ];
       };
 
+  menhirLib_20230415 = oself.menhirLib.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "menhir";
+      rev = "20230415";
+      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+    };
+  });
   reason =
     let
-      src = fetchFromGitLab {
-        domain = "gitlab.inria.fr";
-        owner = "fpottier";
-        repo = "menhir";
-        rev = "20230415";
-        hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
-      };
-      menhirLib = oself.menhirLib.overrideAttrs (_: { inherit src; });
-      menhirSdk = oself.menhirSdk.override { inherit menhirLib; };
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
       menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
     in
     callPackage ./reason {
