@@ -19,8 +19,8 @@ buildDunePackage {
   pname = "conan";
   version = "0.0.1";
   src = builtins.fetchurl {
-    url = https://github.com/mirage/conan/releases/download/v0.0.2/conan-cli-0.0.2.tbz;
-    sha256 = "11d35nrapldwbr1qmxj50y560jhp3qyyh9iaxkcqhq0r4im4r5r7";
+    url = https://github.com/mirage/conan/releases/download/v0.0.3/conan-0.0.3.tbz;
+    sha256 = "0mp3v9x8c8av8ykm94m971hmcz9h1mdg3svh57c0hkixy6axwiv2";
   };
 
   doCheck = false;
