@@ -1384,12 +1384,19 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
-    postPatch = ''
-      substituteInPlace "menhir-recover/emitter.ml" --replace \
-        "String.capitalize" "String.capitalize_ascii"
-    '';
-  });
+  ocaml-recovery-parser =
+    let
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
+    in
+    (osuper.ocaml-recovery-parser.override {
+      inherit menhirLib menhirSdk;
+    }).overrideAttrs (o: rec {
+      postPatch = ''
+        substituteInPlace "menhir-recover/emitter.ml" --replace \
+          "String.capitalize" "String.capitalize_ascii"
+      '';
+    });
 
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
