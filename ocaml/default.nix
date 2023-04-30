@@ -898,11 +898,9 @@ with oself;
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "4fbb9beb23a8bf72198a72de48c4d508c2f84164";
-      hash = "sha256-xE1NXzbJ0HJ02CUBbRvco9SVXKo8JKOCNUCXc3Tho3M=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.2.0/js_of_ocaml-5.2.0.tbz;
+      sha256 = "1dffgy5368v132zljcr9l3bbz9wg8a9v5bbkddqhb9d6zyjb02k5";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
   });
@@ -1024,6 +1022,7 @@ with oself;
       sha256 = "1h2n9iij4mh60sy3g437p1xwqyqpyw72fgh4417d8j9ahq46m7vn";
     };
   });
+
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
@@ -1115,8 +1114,8 @@ with oself;
       domain = "gitlab.inria.fr";
       owner = "fpottier";
       repo = "menhir";
-      rev = "20230415";
-      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+      rev = "20230428";
+      hash = "sha256-8Hl9JNKqwD0502PdV/Y/tOq9p3ZOXCZ2fvLtndG8wm8=";
     };
   });
   merlin-lib =
@@ -1256,8 +1255,26 @@ with oself;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
+  ocamlformat-lib =
+    let
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
+      menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
+    in
+    callPackage ./ocamlformat/lib.nix {
+      inherit menhir menhirLib menhirSdk;
+    };
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
+
+  ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/astrada/ocamlfuse/archive/v2.7.1_cvs8.tar.gz;
+      sha256 = "13sr6mwa6k17naikzg0lvsaj3d2yrj4pfay5qh5243wgs63l4x0q";
+    };
+    meta = {
+      platforms = lib.platforms.all;
+    };
+  });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     postPatch = ''
@@ -1367,12 +1384,19 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: rec {
-    postPatch = ''
-      substituteInPlace "menhir-recover/emitter.ml" --replace \
-        "String.capitalize" "String.capitalize_ascii"
-    '';
-  });
+  ocaml-recovery-parser =
+    let
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
+    in
+    (osuper.ocaml-recovery-parser.override {
+      inherit menhirLib menhirSdk;
+    }).overrideAttrs (o: rec {
+      postPatch = ''
+        substituteInPlace "menhir-recover/emitter.ml" --replace \
+          "String.capitalize" "String.capitalize_ascii"
+      '';
+    });
 
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
@@ -1639,7 +1663,25 @@ with oself;
         nativeBuildInputs = [ cppo ];
       };
 
-  reason = callPackage ./reason { };
+  menhirLib_20230415 = oself.menhirLib.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "menhir";
+      rev = "20230415";
+      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+    };
+  });
+  reason =
+    let
+      menhirLib = menhirLib_20230415;
+      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
+      menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
+    in
+    callPackage ./reason {
+      inherit menhirLib menhirSdk menhir;
+    };
+
   rtop = callPackage ./reason/rtop.nix { };
 
   reason-native = osuper.reason-native.overrideScope' (rself: rsuper: {
@@ -1912,6 +1954,16 @@ with oself;
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
+  uri = osuper.uri.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "ocaml-uri";
+      rev = "cca065b1e6f9c6271eb60d16179806a775b08579";
+      hash = "sha256-y/RfO87ffRZhdFxhfCJRE7Mcs/lq7yOZ6Sv8twcD4Sw=";
+    };
+    doCheck = false;
+  });
+
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
     patches = [ ./unix-errno.patch ];
   });
@@ -1964,6 +2016,13 @@ with oself;
       substituteInPlace "cli/dune" --replace \
         "libraries lwt" "libraries camlp-streams lwt"
     '';
+  });
+
+  yojson = osuper.yojson.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/yojson/releases/download/2.1.0/yojson-2.1.0.tbz;
+      sha256 = "0pdij17lw31qf4rq7cbpf7lym527v856ny98jagjbasqvgr1zjwz";
+    };
   });
 
   yuscii = disableTests osuper.yuscii;

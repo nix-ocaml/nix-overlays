@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange-compiler-libs";
-    rev = "48ff923f2c25136de8ab96678f623f54cdac438c";
-    sha256 = "sha256-jPp5jpjT9oD2YzAzEBSaQUBBf7+zUU/A3KDwNVuV32A=";
+    rev = "575ac4c24b296ea897821f9aaee1146ff258c704";
+    hash = "sha256-icjQmfRUpo2nexX4XseQLPMhyffIxCftd0LHFW+LOwM=";
   };
   nativeBuildInputs = [ menhir ];
   propagatedBuildInputs = [ menhirLib ];
