@@ -1556,6 +1556,7 @@ with oself;
       rev = "42c42e9cb";
       sha256 = "sha256-6xo0P3kBjnzddOHGP6PZ1ODIkQoZ7pNlTHLrDcd1EYM=";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
