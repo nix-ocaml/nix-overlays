@@ -7,7 +7,7 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "ppx_rapper";
-    rev = "0d34b1109c40eefb2b7c378d874f8d3489794901";
+    rev = "d51ad5e45769e4a347806cdba3cf08da8a791248";
     hash = "sha256-u7aMjIBYhfKf09BpVrH/Lco+YI5IWjnlmMKGKk1JR28=";
   };
 

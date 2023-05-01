@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "roddyyaga";
     repo = "pg_query-ocaml";
-    rev = "0.9.7";
-    sha256 = "sha256-Dj25h3UTfm7UPynIIh3IjMDkeFUrYvW5nv7BmpbqkRM=";
+    rev = "9b37b2b2937fe9e1e52f778cd897acef458e8327";
+    hash = "sha256-Fa/EjlI3lUOwv/6lhokrYkn6qI5EkhOGY6iPnno492c=";
   };
   postPatch = ''
     rm -rf bin/
