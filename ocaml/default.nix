@@ -1697,6 +1697,13 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
 
+  reactjs-jsx-ppx = buildDunePackage {
+    pname = "reactjs-jsx-ppx";
+    version = "n/a";
+    inherit (melange) src;
+    propagatedBuildInputs = [ ppxlib ];
+  };
+
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };
   redis-lwt = callPackage ./redis/lwt.nix { };
