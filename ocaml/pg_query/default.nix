@@ -13,6 +13,9 @@ buildDunePackage {
   postPatch = ''
     rm -rf bin/
     substituteInPlace lib/dune --replace "ctypes.foreign" "ctypes-foreign"
+    substituteInPlace lib/libpg_query/Makefile --replace \
+      "AR = ar rs" "AR ?= ar
+    AR := \$(AR) rs"
   '';
 
   useDune2 = true;
