@@ -15,7 +15,6 @@ with oself;
 
   eio = callPackage ./eio { };
   eio_linux = callPackage ./eio/linux.nix { };
-  eio_luv = callPackage ./eio/luv.nix { };
   eio_posix = callPackage ./eio/posix.nix { };
   eio_main = callPackage ./eio/main.nix { };
 
