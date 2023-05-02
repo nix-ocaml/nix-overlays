@@ -1,4 +1,4 @@
-oself:
+{ darwin, oself }:
 
 with oself;
 
@@ -42,7 +42,7 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
-  piaf = callPackage ./piaf { };
+  piaf = callPackage ./piaf { stdenv = darwin.apple_sdk_11_0.stdenv; };
   carl = callPackage ./piaf/carl.nix { };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };

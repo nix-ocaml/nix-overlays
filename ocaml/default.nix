@@ -2460,6 +2460,6 @@ with oself;
   };
 } // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix oself)
+  then (import ./ocaml5.nix { inherit oself darwin; })
   else { }
 )

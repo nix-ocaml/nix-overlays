@@ -3,22 +3,18 @@ nixpkgs:
 
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
-final: prev:
+self: super:
 
 let
-  inherit (prev)
+  inherit (super)
     lib
-    # stdenv
-    darwin
+    stdenv
     fetchFromGitHub
     callPackage
     fetchpatch
     buildGoModule
     haskell
     haskellPackages;
-
-  stdenv = if super.stdenv.isDarwin then darwin.apple_sdk_11_0.stdenv else super.stdenv;
-  super = prev // { inherit stdenv; };
 
   overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
     inherit nixpkgs;
@@ -71,7 +67,7 @@ in
     libkrb5 = null;
     enableSystemd = false;
     gssSupport = false;
-    openssl = final.openssl-oc;
+    openssl = self.openssl-oc;
   }).overrideAttrs (o: {
     doCheck = false;
     configureFlags = [
@@ -88,7 +84,7 @@ in
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
     ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
 
-    propagatedBuildInputs = [ final.openssl-oc.dev ];
+    propagatedBuildInputs = [ self.openssl-oc.dev ];
     # Use a single output derivation. The upstream PostgreSQL derivation
     # produces multiple outputs (including "out" and "lib"), and then puts some
     # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
@@ -131,10 +127,10 @@ in
   });
 
   opaline = null;
-  ott = super.ott.override { opaline = final.ocamlPackages.opaline; };
+  ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
   esy = callPackage ../ocaml/esy { };
 
-  h2spec = final.buildGoModule {
+  h2spec = self.buildGoModule {
     pname = "h2spec";
     version = "dev";
 
@@ -203,11 +199,11 @@ in
     cockroachdb-21_1_x
     cockroachdb-21_2_x
     cockroachdb-22_x;
-  cockroachdb = final.cockroachdb-21_1_x;
+  cockroachdb = self.cockroachdb-21_1_x;
 
   pnpm =
     let
-      inherit (prev)
+      inherit (self)
         writeScriptBin runtimeShell nodejs_latest nodePackages_latest;
     in
     writeScriptBin "pnpm" ''
