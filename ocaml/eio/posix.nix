@@ -3,7 +3,6 @@
 , dune-configurator
 , eio
 , lib
-, stdenv
 , iomux
 , logs
 , fmt
