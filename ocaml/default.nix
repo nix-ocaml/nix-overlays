@@ -1561,7 +1561,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
     '';
-    propagatedBuildInputs = [ libpq ];
   });
 
   pp = disableTests osuper.pp;
