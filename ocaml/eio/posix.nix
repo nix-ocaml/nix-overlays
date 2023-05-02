@@ -15,6 +15,8 @@ buildDunePackage {
 
   buildInputs = [ dune-configurator ];
   propagatedBuildInputs = [ eio logs fmt iomux ] ++
-    lib.optionals (!(lib.versionAtLeast "11.0.0" darwin.apple_sdk.Libsystem.version))
+    lib.optionals
+      (darwin.apple_sdk ? Libsystem
+        && !(lib.versionAtLeast "11.0.0" darwin.apple_sdk.Libsystem.version))
       [ darwin.apple_sdk_11_0.Libsystem ];
 }
