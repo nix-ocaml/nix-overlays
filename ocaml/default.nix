@@ -38,8 +38,6 @@
 oself: osuper:
 
 let
-  # https://github.com/NixOS/nixpkgs/pull/176661
-  callPackage = darwin.apple_sdk_11_0.callPackage;
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
