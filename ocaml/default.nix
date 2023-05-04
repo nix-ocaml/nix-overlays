@@ -166,12 +166,6 @@ with oself;
 
   bls12-381 = disableTests osuper.bls12-381;
 
-  bls12-381-legacy = osuper.bls12-381-legacy.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace ./src/legacy/dune --replace "libraries " "libraries ctypes.stubs "
-    '';
-  });
-
   bos = osuper.bos.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "dbuenzli";
@@ -788,9 +782,21 @@ with oself;
     lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
   });
 
+  hacl-star-raw = osuper.hacl-star-raw.overrideAttrs (_: {
+    preInstall = ''
+      mkdir $out
+      mkdir -p $OCAMLFIND_DESTDIR/stublibs
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      make -C hacl-star-raw install
+      runHook postInstall
+    '';
+  });
+
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
-      ls -lah .
       substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
     '';
   });
@@ -1245,7 +1251,6 @@ with oself;
     installPhase = ''
       # Not sure if this is entirely correct, but opaline doesn't like `lib_root`
       substituteInPlace num.install --replace lib_root lib
-      cat num.install
       OCAMLRUNPARAM=b ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
     '';
   });
@@ -1715,31 +1720,6 @@ with oself;
     postPatch = ''
       substituteInPlace "src/curve.ml" --replace "Pervasives." "Stdlib."
     '';
-  });
-
-  aches = buildDunePackage {
-    pname = "aches";
-    version = "1.0.0";
-    inherit (ringo) src;
-    propagatedBuildInputs = [ ringo ];
-  };
-  aches-lwt = buildDunePackage {
-    pname = "aches-lwt";
-    version = "1.0.0";
-    inherit (ringo) src;
-    propagatedBuildInputs = [ aches lwt ];
-  };
-  ringo_old = osuper.ringo;
-  ringo-lwt = osuper.ringo-lwt.override { ringo = ringo_old; };
-
-  ringo = osuper.ringo.overrideAttrs (_: {
-    src = fetchFromGitLab {
-      owner = "nomadic-labs";
-      repo = "ringo";
-      rev = "v1.0.0";
-      hash = "sha256-9HW3M27BxrEPbF8cMHwzP8FmJduUInpQQAE2672LOuU=";
-    };
-    checkInputs = [ lwt ];
   });
 
   rock = osuper.rock.overrideAttrs (_: {
