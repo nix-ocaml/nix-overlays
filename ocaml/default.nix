@@ -745,6 +745,12 @@ with oself;
 
   gettext-stub = disableTests osuper.gettext-stub;
 
+  github-unix = osuper.github-unix.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./unix/dune --replace "bytes" ""
+    '';
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
