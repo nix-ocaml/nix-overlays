@@ -6,7 +6,7 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "daypack-dev";
     repo = "timere";
-    rev = "timedesc-0.9.0";
-    sha256 = "sha256-q79D6t+eQwNPSJFbAtQ491+P54TJA32TBu427LGKzgQ=";
+    rev = "timedesc-1.2.0";
+    hash = "sha256-KQkA+UhxPALKnrbFxiWKNb+Cc4LiaXkuxKPTZdVrftk=";
   };
 }

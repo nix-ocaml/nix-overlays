@@ -21,4 +21,9 @@ buildDunePackage {
     timedesc-sexp
     diet
   ];
+
+  postPatch = ''
+    substituteInPlace timere/time.ml --replace "OSeq.equal ~eq:" "OSeq.equal "
+
+  '';
 }

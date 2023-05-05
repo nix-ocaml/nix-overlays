@@ -590,11 +590,6 @@ with oself;
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
-    postPatch = ''
-      substituteInPlace "src/dune_rules/artifact_substitution.ml" --replace \
-        '"-";' '"-"; "-f"; '
-    '';
-
     postFixup =
       if stdenv.isDarwin then ''
         wrapProgram $out/bin/dune \
