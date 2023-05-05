@@ -11,6 +11,8 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
+  domain-local-await = callPackage ./domain-local-await { };
+
   eio = callPackage ./eio { };
   eio_linux = callPackage ./eio/linux.nix { };
   eio_luv = callPackage ./eio/luv.nix { };
@@ -23,6 +25,9 @@ with oself;
   h2-eio = callPackage ./h2/eio.nix { };
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
+
+  kcas = callPackage ./kcas { };
+  kcas_data = callPackage ./kcas/data.nix { };
 
   lambda-runtime = callPackage ./lambda-runtime { };
   vercel = callPackage ./lambda-runtime/vercel.nix { };
