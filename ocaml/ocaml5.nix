@@ -8,6 +8,13 @@ with oself;
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
+    postPatch = ''
+      substituteInPlace caqti-eio/lib/dune --replace "logs" "logs eio_main"
+      substituteInPlace \
+        caqti-eio/lib/system.ml caqti-eio/lib/caqti_eio.mli \
+        caqti-eio/lib-unix/caqti_eio_unix.mli \
+        --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
+    '';
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
