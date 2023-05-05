@@ -720,9 +720,12 @@ with oself;
   });
 
   fix = osuper.fix.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://gitlab.inria.fr/fpottier/fix/-/archive/20220121/archive.tar.gz;
-      sha256 = "1bd8xnk3qf7nfsmk3z6hksvcascndbl7pp2a50ndj8hzf7hdnfwm";
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "fix";
+      rev = "20230505";
+      hash = "sha256-Xuw4pEPqAbQjSHrpMCNE7Th0mpbNMSxdEdwvH4hu2SM=";
     };
   });
 
