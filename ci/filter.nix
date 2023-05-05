@@ -98,12 +98,10 @@ let
   ];
 
   ocaml5Ignores = [
-    "cpdf"
     "erm_xml"
     "fontconfig"
     "functory"
     "gapi-ocaml"
-    "gsl"
     "hack_parallel"
     "inifiles"
     "lastfm"
@@ -114,11 +112,8 @@ let
     "ocamlnet"
     "ocp-build"
     "owl"
-    "phylogenetics"
     "piqi"
     "piqi-ocaml"
-    "ringo-lwt"
-    "ringo_old"
     "semver"
     "twt"
     "lambdapi"

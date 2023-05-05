@@ -253,23 +253,26 @@ with oself;
     propagatedBuildInputs = [ cmdliner ];
   };
 
-  cpdf = osuper.cpdf.overrideAttrs (_: {
-    cpdf = osuper.cpdf.overrideAttrs (_: {
-      src = fetchFromGitHub {
-        owner = "johnwhitington";
-        repo = "cpdf-source";
-        rev = "d00f857";
-        hash = "sha256-63G6VZwMGqckaiKBFaj7rErKNEMdtKsXCzGn1hwSWI0=";
-      };
-    });
+  cpdf = osuper.cpdf.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "cpdf-source";
+      rev = "d98556e89b2eb1508fdd85b3814b0dd5cd7889fd";
+      hash = "sha256-nXF2wdevFoMOYxHHabC42zd1TIGBQJ/0nUt3jqcMA6M=";
+    };
+    postPatch = ''
+      substituteInPlace Makefile --replace \
+        "PACKS = camlpdf" "PACKS = camlpdf camlp-streams"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
 
-  camlpdf = osuper.camlpdf.overrideAttrs (_: {
+  camlpdf = osuper.camlpdf.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "johnwhitington";
       repo = "camlpdf";
-      rev = "abadaea";
-      hash = "sha256-yagJJy90fOyj2uHc36G1BJrIrt0N7nSYGx4DkTrGkRg=";
+      rev = "010792c1e22b0bb3030023011549995bd19d4e73";
+      hash = "sha256-eYLFqqeIUyiXNT50jQyFvhgG6a5wyZr2W0BuzpSWNjc=";
     };
   });
 
@@ -1550,6 +1553,51 @@ with oself;
   });
   pg_query = callPackage ./pg_query { };
 
+  binning = buildDunePackage {
+    pname = "binning";
+    version = "0.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/pveber/binning/releases/download/v0.0.0/binning-v0.0.0.tbz;
+      sha256 = "1xvz337wkfrs005hrjm09vzmccxfgk954kliwr8bjwqvvdrb2vvq";
+    };
+  };
+  biotk = buildDunePackage {
+    pname = "biotk";
+    version = "0.2.0";
+    src = builtins.fetchurl {
+      url = https://github.com/pveber/biotk/releases/download/v0.2.0/biotk-0.2.0.tbz;
+      sha256 = "1c5zbjd3dvzk7sn91zh4bq3wp7w01b4kj9m06y9bd6jc7rbdn2qm";
+    };
+    propagatedBuildInputs = [
+      angstrom-unix
+      vg
+      ppx_compare
+      ppx_csv_conv
+      ppx_deriving
+      ppx_expect
+      ppx_fields_conv
+      ppx_inline_test
+      ppx_let
+      ppx_sexp_conv
+      uri
+      tyxml
+      rresult
+      gsl
+      fmt
+      core_unix
+      binning
+    ];
+    nativeBuildInputs = [ crunch.bin ];
+  };
+
+  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/biocaml/phylogenetics/releases/download/v0.2.0/phylogenetics-0.2.0.tbz;
+      sha256 = "0sppv1rvr3xky8na99qxrq1lyhn6v40c70is0vmv6nvjgakmhni4";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson biotk ];
+  });
+
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "mmottl";
@@ -2196,6 +2244,19 @@ with oself;
       hash = "sha256-2uk3NfpAODScoQtqiU+ZaOE8zOqkayn/jpfn3GQ4vQg=";
     };
   });
+
+  ppx_conv_func = janePackage {
+    pname = "ppx_conv_func";
+    hash = "sha256-61jX8yHZYOnMx1Jlqaq9zSOz25HLOa0Wv/iG6Hu82zI=";
+    propagatedBuildInputs = [ base ppxlib ];
+    postPatch = ''
+      ls
+    '';
+    meta = {
+      description = "Part of the Jane Street's PPX rewriters collection.";
+    };
+  };
+
   ppx_css = osuper.ppx_css.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -2204,6 +2265,24 @@ with oself;
       sha256 = "sha256-gQTL211CGR1kyzZvOPydhq2/o6Noqm45bv0Y9LTdgAo=";
     };
   });
+
+  ppx_csv_conv = janePackage {
+    pname = "ppx_csv_conv";
+    hash = "sha256-ctwgUs1buBZiNqac4760LhWd2/PMZRuxx8SE5T7yZ+g=";
+    propagatedBuildInputs = [
+      csvfields
+      ppx_conv_func
+      ppx_fields_conv
+      ppxlib
+      camlzip
+      core_kernel
+    ];
+    meta = {
+      description = "Generate functions to read/write records in csv format";
+    };
+  };
+
+
   ppx_disable_unused_warnings = addBase osuper.ppx_disable_unused_warnings;
   ppx_cold = addBase osuper.ppx_cold;
   ppx_enumerate = addBase osuper.ppx_enumerate;
