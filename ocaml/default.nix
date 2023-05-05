@@ -585,8 +585,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "b5c814e33d0d370b20c9f6269633625b8244feb2";
-      hash = "sha256-R+ziJ8ecBH/MpopIKuNwM0Jjzslgq0rxysThdC+2LX8=";
+      rev = "239e6aca68aaa27bc429425b4aab32f4a9ee9bcd";
+      hash = "sha256-aQbk1YqC62BocL6SNopfJsf8LpxMTvw4KlobPrJJECk=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
@@ -855,6 +855,10 @@ with oself;
   };
 
   iter = osuper.iter.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/iter/releases/download/v1.7/iter-1.7.tbz;
+      sha256 = "1yziyk0plsr98wlr3x7bh2imvy4jmlh2a26aiciy7vxfi6c54z0k";
+    };
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
     '';
@@ -1466,6 +1470,13 @@ with oself;
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
     '';
+  });
+
+  oseq = osuper.oseq.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/oseq/releases/download/v0.5/oseq-0.5.tbz;
+      sha256 = "1fr57rsy3vr6v85dvwbim3niclr1wdgf9gw9azik66wzai022f8y";
+    };
   });
 
   eigen = osuper.eigen.overrideAttrs (_: {
