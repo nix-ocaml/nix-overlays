@@ -17,6 +17,10 @@ buildDunePackage {
     rev = "57267505603cef4395906af40dfc295a3dc1efda";
     hash = "sha256-Hwe+KSmZIVi3GWXpabEyDb+WdT5Qb7lW9oRxJ6H2BbM=";
   };
+  postPatch = ''
+    substituteInPlace lib/context.ml lib/lambda_runtime.mli \
+      --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
+  '';
 
   propagatedBuildInputs = [
     yojson
