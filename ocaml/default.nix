@@ -782,19 +782,6 @@ with oself;
     lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
   });
 
-  hacl-star-raw = osuper.hacl-star-raw.overrideAttrs (_: {
-    preInstall = ''
-      mkdir $out
-      mkdir -p $OCAMLFIND_DESTDIR/stublibs
-    '';
-
-    installPhase = ''
-      runHook preInstall
-      make -C hacl-star-raw install
-      runHook postInstall
-    '';
-  });
-
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
