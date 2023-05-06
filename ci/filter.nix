@@ -100,6 +100,7 @@ let
     "ocaml-probes"
 
     "biotk"
+    "bistro"
     "phylogenetics"
     "cfstream"
     "biocaml"
