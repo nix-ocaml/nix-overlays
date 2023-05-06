@@ -15,7 +15,7 @@
     let
       patchChannel = { system, channel }:
         let
-          patches = [ ];
+          patches = [ ./ocaml/janestreet-0.16.patch ];
         in
         if patches == [ ]
         then channel
@@ -25,7 +25,6 @@
             src = channel;
             patches = patches;
           };
-      overlay = import ./overlay nixpkgs;
     in
     nixpkgs.lib.recursiveUpdate
       {
@@ -34,10 +33,10 @@
         hydraJobs = builtins.listToAttrs (map
           (system: {
             name = system;
-            value = (import ./ci/hydra.nix {
+            value = import ./ci/hydra.nix {
               inherit system;
               pkgs = self.legacyPackages.${system};
-            });
+            };
           })
           [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]);
 
@@ -45,7 +44,7 @@
           let
             pkgs = import nixpkgs ({
               inherit system;
-              overlays = [ overlay ];
+              overlays = [ self.overlays.${system}.default ];
               config.allowUnfree = true;
             } // attrs);
           in
@@ -56,14 +55,12 @@
             be overriding any extraOverlays if we don't use `appendOverlays`
             */
           pkgs.appendOverlays extraOverlays;
-
-        overlays.default = final: prev: overlay final prev;
       }
       (flake-utils.lib.eachDefaultSystem (system:
         {
           legacyPackages = self.makePkgs { inherit system; };
 
-          overlays = (final: prev:
+          overlays.default = (final: prev:
             let
               channel = patchChannel {
                 inherit system;
