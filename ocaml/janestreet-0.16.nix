@@ -1151,7 +1151,7 @@ with self;
     hash = "sha256-q5CLyeu+5qjegLrJkQVMnId3HMvZ8j3c0PqEa2vTBtU=";
     minimalOCamlVersion = "4.14";
     meta.description = "Code style checker for Jane Street Packages";
-    propagatedBuildInputs = [ octavius ppxlib ];
+    propagatedBuildInputs = [ octavius base ppxlib ];
   };
 
   ppx_let = janePackage {
@@ -1307,6 +1307,22 @@ with self;
     hash = "sha256-0yz1cSmgyJ7Ph1jiQjxTQ1fRwN7AQmhLmInbF4NIUew=";
     meta.description = "Generate XML conversion functions from records";
     propagatedBuildInputs = [ base csvfields ppx_conv_func ppx_fields_conv ];
+  };
+
+  ppx_yojson_conv_lib = janePackage {
+    pname = "ppx_yojson_conv_lib";
+    minimalOCamlVersion = "4.14";
+    hash = "sha256-TOf6DKyvc+RsSWsLi//LXW+J0sd5uJtF/HFQllcL7No=";
+    meta.description = "Runtime lib for ppx_yojson_conv";
+    propagatedBuildInputs = [ yojson ];
+  };
+
+  ppx_yojson_conv = janePackage {
+    pname = "ppx_yojson_conv";
+    minimalOCamlVersion = "4.14";
+    hash = "sha256-8KpAwG0DCw9v4RtDcb3Y/BYX+ggqsRlSWAQ0NIFaIhk=";
+    meta.description = "A PPX syntax extension that generates code for converting OCaml types to and from Yojson";
+    propagatedBuildInputs = [ base ppx_js_style ppx_yojson_conv_lib ppxlib ];
   };
 
   profunctor = janePackage {
