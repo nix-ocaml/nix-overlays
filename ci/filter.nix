@@ -105,6 +105,7 @@ let
     "biocaml"
     "kafka_async"
     "pythonlib"
+    "tls-async"
   ];
 
   ocaml5Ignores = [
