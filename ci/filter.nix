@@ -103,6 +103,7 @@ let
     "phylogenetics"
     "cfstream"
     "biocaml"
+    "kafka_async"
   ];
 
   ocaml5Ignores = [
