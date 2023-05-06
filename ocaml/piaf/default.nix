@@ -1,5 +1,6 @@
 { stdenv
 , lib
+, darwin
 , fetchFromGitHub
 , buildDunePackage
 , eio
@@ -22,8 +23,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "b143c2eadca7f4421bf3da20df7bf47aed0bee11";
-    hash = "sha256-Ever8l06+SDzoIKQY2ksq/h9g8H/AaP3WVo+I8QdHT8=";
+    rev = "3b1345ba0a5e98da6e28cfd497679138c70990cb";
+    hash = "sha256-f2hcTOtQoEKzeuw37jbnft/oWoOGwZYbn3HGH9rDilI=";
   };
 
   doCheck = true;
@@ -40,7 +41,10 @@ buildDunePackage {
     multipart_form
     uri
     websocketaf
-  ];
+  ] ++ lib.optionals (stdenv.isDarwin && !stdenv.isAarch64)
+    (with darwin.apple_sdk_11_0; [
+      Libsystem
+    ]);
 
   meta = {
     description = "An HTTP library with HTTP/2 support written entirely in OCaml";

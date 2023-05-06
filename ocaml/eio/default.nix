@@ -1,13 +1,13 @@
 { buildDunePackage
 , fetchFromGitHub
 , bigstringaf
+, domain-local-await
 , cstruct
 , lwt-dllist
 , optint
 , psq
 , fmt
 , hmap
-, astring
 , mtime
 }:
 
@@ -17,19 +17,19 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "ocaml-multicore";
     repo = "eio";
-    rev = "v0.9";
-    hash = "sha256-/pKnGT2mPqe5reVc5/AdbNxFkK8vpSfZ5Kdg37PfU6c=";
+    rev = "b5b5de777f9efcea0e4082c0c856681e53331c83";
+    hash = "sha256-3POYL7/aOHV846cHRUcORNVSUZxtL+daLQH4yQ3+D70=";
   };
 
   propagatedBuildInputs = [
     bigstringaf
     cstruct
-    lwt-dllist
-    optint
-    psq
+    domain-local-await
     fmt
     hmap
-    astring
+    lwt-dllist
     mtime
+    optint
+    psq
   ];
 }

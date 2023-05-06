@@ -1,4 +1,4 @@
-oself:
+{ darwin, oself }:
 
 with oself;
 
@@ -8,6 +8,13 @@ with oself;
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
+    postPatch = ''
+      substituteInPlace caqti-eio/lib/dune --replace "logs" "logs eio_main"
+      substituteInPlace \
+        caqti-eio/lib/system.ml caqti-eio/lib/caqti_eio.mli \
+        caqti-eio/lib-unix/caqti_eio_unix.mli \
+        --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
+    '';
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
@@ -15,7 +22,7 @@ with oself;
 
   eio = callPackage ./eio { };
   eio_linux = callPackage ./eio/linux.nix { };
-  eio_luv = callPackage ./eio/luv.nix { };
+  eio_posix = callPackage ./eio/posix.nix { };
   eio_main = callPackage ./eio/main.nix { };
 
   eio-ssl = callPackage ./eio-ssl { };
@@ -42,7 +49,7 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
-  piaf = callPackage ./piaf { };
+  piaf = callPackage ./piaf { stdenv = darwin.apple_sdk_11_0.stdenv; };
   carl = callPackage ./piaf/carl.nix { };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };

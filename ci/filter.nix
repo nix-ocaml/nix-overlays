@@ -158,7 +158,6 @@ rec {
   ocamlCandidates =
     { pkgs
     , ocamlVersion
-    , disable_eio_linux ? false
     , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
       then ocaml5Ignores
       else if lib.hasPrefix "4_14" ocamlVersion then lowerThanOCaml5Ignores
