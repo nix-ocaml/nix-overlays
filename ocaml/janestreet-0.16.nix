@@ -721,6 +721,7 @@ with self;
     version = "0.2.3";
     meta.description = "Streaming client for Memprof";
     hash = "sha256-dWkTrN8ZgNUz7BW7Aut8mfx8o4n8f6UZaDv/7rbbwNs=";
+    doCheck = ! lib.versionOlder "5.0" ocaml.version;
   };
 
   memtrace_viewer = janePackage {

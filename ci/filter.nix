@@ -106,6 +106,8 @@ let
     "kafka_async"
     "pythonlib"
     "tls-async"
+    "graphql-async"
+    "magic-trace"
   ];
 
   ocaml5Ignores = [
