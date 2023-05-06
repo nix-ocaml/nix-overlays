@@ -98,6 +98,9 @@ let
 
     "netsnmp"
     "ocaml-probes"
+
+    "biotk"
+    "phylogenetics"
   ];
 
   ocaml5Ignores = [

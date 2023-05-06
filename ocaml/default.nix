@@ -1620,6 +1620,7 @@ with oself;
     };
     propagatedBuildInputs = [
       angstrom-unix
+      camlzip
       vg
       ppx_compare
       ppx_csv_conv
