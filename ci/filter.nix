@@ -104,6 +104,7 @@ let
     "cfstream"
     "biocaml"
     "kafka_async"
+    "pythonlib"
   ];
 
   ocaml5Ignores = [
