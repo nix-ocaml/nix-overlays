@@ -18,6 +18,7 @@
 }:
 
 buildDunePackage {
+  stdenv = if stdenv.isDarwin then darwin.apple_sdk_11_0.stdenv else stdenv;
   pname = "piaf";
   version = "n/a";
   src = fetchFromGitHub {
