@@ -101,6 +101,8 @@ let
 
     "biotk"
     "phylogenetics"
+    "cfstream"
+    "biocaml"
   ];
 
   ocaml5Ignores = [
