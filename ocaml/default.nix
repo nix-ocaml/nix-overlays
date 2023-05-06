@@ -356,6 +356,18 @@ with oself;
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
     '';
   });
+  cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace "cohttp-async/src/body_raw.ml" --replace \
+        "Deferred.List.iter" 'Deferred.List.iter ~how:`Sequential'
+
+      substituteInPlace "cohttp-async/bin/cohttp_server_async.ml" --replace \
+        "Deferred.List.map" 'Deferred.List.map ~how:`Sequential'
+
+      substituteInPlace "cohttp-async/src/client.ml" --replace \
+        "Deferred.Queue.map" 'Deferred.Queue.map ~how:`Sequential'
+    '';
+  });
 
   colombe = buildDunePackage {
     pname = "colombe";

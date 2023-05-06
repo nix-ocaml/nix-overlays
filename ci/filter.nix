@@ -95,6 +95,9 @@ let
 
     # Not compatible with EIO yet
     "oidc-client"
+
+    "netsnmp"
+    "ocaml-probes"
   ];
 
   ocaml5Ignores = [
