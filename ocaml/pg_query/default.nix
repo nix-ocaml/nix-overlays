@@ -18,7 +18,5 @@ buildDunePackage {
     AR := \$(AR) rs"
   '';
 
-  useDune2 = true;
-
   propagatedBuildInputs = [ ppx_inline_test ppx_deriving ctypes ctypes-foreign ];
 }

@@ -37,7 +37,6 @@ buildDunePackage rec {
 
   nativeBuildInputs = [ cppo menhir ];
 
-  useDune2 = true;
   patches = [
     ./patches/0001-rename-labels.patch
   ];

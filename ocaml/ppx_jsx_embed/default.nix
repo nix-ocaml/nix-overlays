@@ -10,6 +10,5 @@ buildDunePackage {
     hash = "sha256-7dPvSmpT+hU6+GlZoa/SpHVi7zRHwX/SZR7Jsk2aJ3A=";
   };
   doCheck = true;
-  useDune2 = true;
   propagatedBuildInputs = [ reason ppxlib ];
 }
