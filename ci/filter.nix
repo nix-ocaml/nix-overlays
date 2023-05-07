@@ -95,6 +95,20 @@ let
 
     # Not compatible with EIO yet
     "oidc-client"
+
+    "netsnmp"
+    "ocaml-probes"
+
+    "biotk"
+    "bistro"
+    "phylogenetics"
+    "cfstream"
+    "biocaml"
+    "kafka_async"
+    "pythonlib"
+    "tls-async"
+    "graphql-async"
+    "magic-trace"
   ];
 
   ocaml5Ignores = [

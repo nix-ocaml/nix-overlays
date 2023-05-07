@@ -1,15 +1,20 @@
 { nixpkgs
 , autoconf
 , automake
+, bash
 , buildPackages
 , fetchpatch
 , fetchFromGitHub
 , fetchFromGitLab
+, fzf
+, kerberos
 , lib
 , libvirt
 , libpq
 , libev-oc
 , libffi-oc
+, linuxHeaders
+, net-snmp
 , pcre-oc
 , sqlite-oc
 , makeWrapper
@@ -18,6 +23,7 @@
 , super-opaline
 , gmp-oc
 , openssl-oc
+, pam
 , pkg-config
 , python3
 , lmdb
@@ -33,6 +39,7 @@
 , libxkbcommon
 , libxcb
 , xorg
+, zstd
 }:
 
 oself: osuper:
@@ -47,11 +54,36 @@ let
   addStdio = p: p.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.stdio ];
   });
+
+  # Jane Street
+  janePackage =
+    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix" {
+      defaultVersion = "0.16.0";
+    };
+
+  janeStreet = import ./janestreet-0.16.nix {
+    self = oself;
+    openssl = openssl-oc;
+    postgresql = libpq;
+    inherit
+      bash
+      fetchpatch
+      fzf
+      lib
+      zstd
+      kerberos
+      linuxHeaders
+      pam
+      net-snmp;
+  };
+
 in
 
 with oself;
 
 {
+  inherit janePackage janeStreet;
+
   ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bytes" ""
@@ -322,6 +354,18 @@ with oself;
   cohttp = osuper.cohttp.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace ./cohttp/src/dune --replace "bytes" ""
+    '';
+  });
+  cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace "cohttp-async/src/body_raw.ml" --replace \
+        "Deferred.List.iter" 'Deferred.List.iter ~how:`Sequential'
+
+      substituteInPlace "cohttp-async/bin/cohttp_server_async.ml" --replace \
+        "Deferred.List.map" 'Deferred.List.map ~how:`Sequential'
+
+      substituteInPlace "cohttp-async/src/client.ml" --replace \
+        "Deferred.Queue.map" 'Deferred.Queue.map ~how:`Sequential'
     '';
   });
 
@@ -1576,6 +1620,7 @@ with oself;
     };
     propagatedBuildInputs = [
       angstrom-unix
+      camlzip
       vg
       ppx_compare
       ppx_csv_conv
@@ -2100,216 +2145,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
   });
 
-  # Jane Street Libraries
-
-  async_js = osuper.async_js.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "async_js";
-      rev = "v0.15.1";
-      sha256 = "sha256-rSBB5eoIQPvMsfU4R3jCx4kCTtNu6NRnTBRIBK0jm0s=";
-    };
-  });
-
-  async_ssl = osuper.async_ssl.overrideAttrs (_: {
-    propagatedBuildInputs = [ async ctypes openssl-oc.dev ctypes-foreign ];
-    postPatch = ''
-      substituteInPlace "bindings/dune" --replace "ctypes.foreign" "ctypes-foreign"
-    '';
-  });
-
-  async_udp = osuper.janePackage {
-    pname = "async_udp";
-    version = "0.15.0";
-    minimumOCamlVersion = "4.08";
-    hash = "CJLKkjB9l7ERaJInhrTKrdK0eaeA0U3GxOZ+idqD5pY=";
-    meta.description = "A grab-bag of performance-oriented, UDP-oriented network tools.";
-    propagatedBuildInputs = [ async ppx_jane ];
-  };
-
-  bin_prot = osuper.bin_prot.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/dune --replace " bigarray" ""
-    '';
-  });
-
-  bonsai = osuper.bonsai.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "bonsai";
-      rev = "v0.15.1";
-      sha256 = "sha256-WI33l9lt4k3RT3G2UF4OUDRNh85hJGdSkjN9Z2Ph41U=";
-    };
-    patches = [ ];
-
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ patdiff ];
-  });
-
-  ppx_expect = osuper.ppx_expect.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
-  });
-
-  core = osuper.core.overrideAttrs (_: {
-    postPatch =
-      if lib.versionOlder "5.1" ocaml.version then ''
-        substituteInPlace core/src/gc_stubs.c \
-          --replace "caml_stat_minor_collections" \
-                    "atomic_load(&caml_minor_collections_count)"
-      '' else null;
-  });
-  core_unix = osuper.core_unix.overrideAttrs (o: {
-    postPatch = ''
-      ${o.postPatch}
-
-      ${if stdenv.isDarwin then ''
-        substituteInPlace "core_unix/src/core_unix_time_stubs.c" --replace \
-        "int ret = clock_getcpuclockid(pid, &clock);" \
-        "int ret = -1;"
-      '' else ""}
-    '';
-  });
-
-  memtrace = osuper.buildDunePackage {
-    pname = "memtrace";
-    version = "0.1.2-dev";
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "memtrace";
-      rev = "v0.2.3";
-      sha256 = "sha256-dWkTrN8ZgNUz7BW7Aut8mfx8o4n8f6UZaDv/7rbbwNs=";
-    };
-  };
-
-  memtrace_viewer = janePackage {
-    pname = "memtrace_viewer";
-    version = "0.15.0";
-    hash = "1kl2kdajdqcsg4hp4vhgsklzdz7p4j3jcwfrdziwyg4h9vcacrby";
-    nativeBuildInputs = [
-      ocaml-embed-file
-      js_of_ocaml
-    ];
-    propagatedBuildInputs = [
-      ppx_pattern_bind
-      async_js
-      async_kernel
-      async_rpc_kernel
-      bonsai
-      core_kernel
-      ppx_jane
-      async_rpc_websocket
-      virtual_dom
-      js_of_ocaml-ppx
-      memtrace
-      ocaml-embed-file
-    ];
-    meta = {
-      description = "Memtrace Viewer";
-      mainProgram = "memtrace-viewer";
-    };
-  };
-
-  patdiff = janePackage {
-    pname = "patdiff";
-    hash = "0623a7n5r659rkxbp96g361mvxkcgc6x9lcbkm3glnppplk5kxr9";
-    propagatedBuildInputs = [ core_unix patience_diff ocaml_pcre ];
-    meta = {
-      description = "File Diff using the Patience Diff algorithm";
-    };
-  };
-
-  postgres_async = janePackage {
-    pname = "postgres_async";
-    hash = "sha256-zBLiCoWUZwTdOUUTb0ji+wTxu/PGoi8xC75nYCI10OA=";
-    version = "0.15.0";
-    meta.description = "OCaml/async implementation of the postgres protocol (i.e., does not use C-bindings to libpq)";
-    propagatedBuildInputs = [ ppx_jane core core_kernel async ];
-  };
-
-  jst-config = osuper.jst-config.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "jst-config";
-      rev = "v0.15.1";
-      sha256 = "sha256-wxN3nYjbATsM9peUwJLoYbB+lX9a0X3crF1tyoa55fo=";
-    };
-    patches = [ ];
-  });
-
-  ppx_accessor = osuper.ppx_accessor.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/ppx_accessor.ml \
-        --replace "open! Base" "module Typey = Type;; open! Base" \
-        --replace "Type." "Typey."
-    '';
-  });
-  ppx_bench = osuper.ppx_bench.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "ppx_bench";
-      rev = "v0.15.1";
-      hash = "sha256-2uk3NfpAODScoQtqiU+ZaOE8zOqkayn/jpfn3GQ4vQg=";
-    };
-  });
-
-  ppx_conv_func = janePackage {
-    pname = "ppx_conv_func";
-    hash = "sha256-61jX8yHZYOnMx1Jlqaq9zSOz25HLOa0Wv/iG6Hu82zI=";
-    propagatedBuildInputs = [ base ppxlib ];
-    postPatch = ''
-      ls
-    '';
-    meta = {
-      description = "Part of the Jane Street's PPX rewriters collection.";
-    };
-  };
-
-  ppx_css = osuper.ppx_css.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "ppx_css";
-      rev = "v0.15.1";
-      sha256 = "sha256-gQTL211CGR1kyzZvOPydhq2/o6Noqm45bv0Y9LTdgAo=";
-    };
-  });
-
-  ppx_csv_conv = janePackage {
-    pname = "ppx_csv_conv";
-    hash = "sha256-ctwgUs1buBZiNqac4760LhWd2/PMZRuxx8SE5T7yZ+g=";
-    propagatedBuildInputs = [
-      csvfields
-      ppx_conv_func
-      ppx_fields_conv
-      ppxlib
-      camlzip
-      core_kernel
-    ];
-    meta = {
-      description = "Generate functions to read/write records in csv format";
-    };
-  };
-
-
-  ppx_disable_unused_warnings = addBase osuper.ppx_disable_unused_warnings;
-  ppx_cold = addBase osuper.ppx_cold;
-  ppx_enumerate = addBase osuper.ppx_enumerate;
-  ppx_fixed_literal = addBase osuper.ppx_fixed_literal;
-  ppx_here = addBase osuper.ppx_here;
-
-  ppx_inline_test = osuper.ppx_inline_test.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "ppx_inline_test";
-      rev = "v0.15.1";
-      hash = "sha256-9Up4/VK4gayuwbPc3r6gVRj78ILO2G3opL5UDOTKOgk=";
-    };
-  });
-
-  ppx_js_style = addBase osuper.ppx_js_style;
-  ppx_module_timer = addStdio osuper.ppx_module_timer;
-  ppx_optcomp = addStdio osuper.ppx_optcomp;
-  ppx_optional = addBase osuper.ppx_optional;
-  ppx_stable = addBase osuper.ppx_stable;
-
   ppx_tools = buildDunePackage {
     pname = "ppx_tools";
     src = fetchFromGitHub {
@@ -2328,79 +2163,6 @@ with oself;
     nativeBuildInputs = [ cppo ];
   };
 
-  virtual_dom = osuper.virtual_dom.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "virtual_dom";
-      rev = "v0.15.1";
-      sha256 = "sha256-Uv6ZDxz2/H0nHjiycUKNQwy/zZyHHmwDEHknFHwDuDs=";
-    };
-  });
-
-  incr_dom = osuper.incr_dom.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "janestreet";
-      repo = "incr_dom";
-      rev = "v0.15.1";
-      sha256 = "sha256-4+EwiQCBlI28gt5wTkfEp4vS3AXcwLMutvFAOhSw/p4=";
-    };
-    patches = [ ];
-  });
-
-  incr_dom_interactive = janePackage {
-    pname = "incr_dom_interactive";
-    version = "0.15.0";
-    hash = "sha256-G+bgJKDHf78B2m/ZXVVeKf2pk+nk4U14ihmSxv8mbXc=";
-    meta.description = "A monad for composing chains of interactive UI elements";
-    propagatedBuildInputs = [
-      async_js
-      async_kernel
-      incr_dom
-      incr_map
-      incr_select
-      incremental
-      ppx_jane
-      splay_tree
-      virtual_dom
-      js_of_ocaml
-      js_of_ocaml-ppx
-    ];
-  };
-
-  incr_dom_partial_render = janePackage {
-    pname = "incr_dom_partial_render";
-    version = "0.15.1";
-    hash = "sha256-ZKY/b6MCPk4y1sDCRcGK/J6hh/NZmI+lMYMri5Na+i4=";
-    meta.description = "A library for simplifying rendering of large amounts of data";
-    propagatedBuildInputs = [
-      incr_dom
-      ppx_jane
-      splay_tree
-      virtual_dom
-      js_of_ocaml
-      js_of_ocaml-ppx
-    ];
-  };
-
-  incr_dom_sexp_form = janePackage {
-    pname = "incr_dom_sexp_form";
-    version = "0.15.1";
-    hash = "sha256-AC/Lws3dax01+0mu+kmmYKYMtQ7zDKwCemYQv3yRjs8=";
-    meta.description = "A library for simplifying rendering of large amounts of data";
-    propagatedBuildInputs = [
-      incr_dom
-      incr_dom_interactive
-      incr_map
-      incr_select
-      incremental
-      ppx_jane
-      splay_tree
-      virtual_dom
-      js_of_ocaml
-      js_of_ocaml-ppx
-    ];
-  };
-
   tsdl = osuper.tsdl.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace _tags --replace "ctypes.foreign" "ctypes-foreign"
@@ -2416,49 +2178,7 @@ with oself;
         ForceFeedback
       ]);
   });
-
-  mlt_parser = janePackage {
-    pname = "mlt_parser";
-    version = "0.15.0";
-    hash = "sha256-ozJMpvfAfLB4zJNy4N6b7raDDz0aKH5KPZQdYB82H0s=";
-    meta.description = "Parsing of top-expect files";
-    propagatedBuildInputs = [
-      core
-      ppx_here
-      ppx_jane
-      ppxlib
-    ];
-  };
-
-  toplevel_backend = janePackage {
-    pname = "toplevel_backend";
-    version = "0.15.1";
-    hash = "sha256-vYM3l+ZLIXV5AYl3zvovjhnzvJciZL/2Fyn8ETH++aI=";
-    meta.description = "Shared backend for setting up toplevels";
-    propagatedBuildInputs = [
-      findlib
-      core
-      ppx_here
-      ppx_jane
-    ];
-  };
-
-  toplevel_expect_test = janePackage {
-    pname = "toplevel_expect_test";
-    version = "0.15.1";
-    hash = "sha256-Dhw8J4n2BPE1ZYHL1c7rAk0i2SNeap/BqZUaulQ1jGs=";
-    meta.description = "Expectation tests for the OCaml toplevel";
-    propagatedBuildInputs = [
-      core
-      core_unix
-      mlt_parser
-      toplevel_backend
-      ppx_expect
-      ppx_jane
-      ppx_inline_test
-    ];
-  };
-} // (
+} // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix { inherit oself darwin; })
   else { }

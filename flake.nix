@@ -13,18 +13,6 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     let
-      patchChannel = { system, channel }:
-        let
-          patches = [ ];
-        in
-        if patches == [ ]
-        then channel
-        else
-          (import channel { inherit system; }).pkgs.applyPatches {
-            name = "nixpkgs-patched";
-            src = channel;
-            patches = patches;
-          };
       overlay = import ./overlay nixpkgs;
     in
     nixpkgs.lib.recursiveUpdate
@@ -59,23 +47,7 @@
 
         overlays.default = final: prev: overlay final prev;
       }
-      (flake-utils.lib.eachDefaultSystem (system:
-        {
-          legacyPackages = self.makePkgs { inherit system; };
-
-          overlays = (final: prev:
-            let
-              channel = patchChannel {
-                inherit system;
-                channel = nixpkgs;
-              };
-            in
-
-            import channel {
-              inherit system;
-              overlays = [ (import ./overlay channel) ];
-              config.allowUnfree = true;
-            }
-          );
-        }));
+      (flake-utils.lib.eachDefaultSystem (system: {
+        legacyPackages = self.makePkgs { inherit system; };
+      }));
 }
