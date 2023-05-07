@@ -968,10 +968,10 @@ with oself;
 
   kafka = osuper.kafka.overrideAttrs (_: {
     src = fetchFromGitHub {
-      owner = "didier-wenzek";
+      owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "2f607bcf";
-      sha256 = "sha256-lW2Eu1mneZ+2XyJvbu5mkrgUsQ8a66Gi+/T8wDM0FcM=";
+      rev = "e0f6054c448194535b7e0db2e356355224fbea2e";
+      hash = "sha256-lSErzxunOrJcW+DigklKV/0y13pfU1OZCT2PVdphicw=";
     };
     hardeningDisable = [ "strictoverflow" ];
   });
