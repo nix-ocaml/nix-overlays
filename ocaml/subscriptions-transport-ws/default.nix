@@ -3,7 +3,6 @@
 buildDunePackage {
   pname = "subscriptions-transport-ws";
   version = "0.0.1-dev";
-  useDune2 = true;
 
   src = fetchFromGitHub {
     owner = "anmonteiro";
