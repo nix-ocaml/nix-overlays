@@ -33,6 +33,12 @@ with oself;
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
 
+  kafka-eio = buildDunePackage {
+    pname = "kafka-eio";
+    inherit (kafka) hardeningDisable version src;
+    propagatedBuildInputs = [ eio kafka ];
+  };
+
   kcas = callPackage ./kcas { };
   kcas_data = callPackage ./kcas/data.nix { };
 
