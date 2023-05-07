@@ -136,9 +136,6 @@ let
     "uring"
     "eio_linux"
     "magic-trace"
-
-    "hacl-star"
-    "hacl-star-raw"
   ];
 
   lowerThanOCaml5Ignores = [
