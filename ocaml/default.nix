@@ -1526,7 +1526,7 @@ with oself;
   oseq = osuper.oseq.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/oseq/releases/download/v0.5/oseq-0.5.tbz;
-      sha256 = "1fr57rsy3vr6v85dvwbim3niclr1wdgf9gw9azik66wzai022f8y";
+      sha256 = "1si3ql8fdbxz2q3ycnajrdq2sd6k0clmxjx95cgpl3n58azif75f";
     };
   });
 
