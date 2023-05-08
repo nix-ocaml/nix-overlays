@@ -138,7 +138,7 @@ jobs:
         run: ./ci.sh x86_64-darwin build_top-level-packages
 
   cross-compilers:
-    needs: [native-linux]
+    # needs: [native-linux]
     strategy:
       fail-fast: false
       matrix:
