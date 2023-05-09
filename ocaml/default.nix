@@ -2135,16 +2135,6 @@ with oself;
     };
   });
 
-  lambdasoup = osuper.lambdasoup.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "aantron";
-      repo = "lambdasoup";
-      rev = "1.0.0";
-      hash = "sha256-PZkhN5vkkLu8A3gYrh5O+nq9wFtig0Q4qD8zLGUGTRI=";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
   ppx_tools = buildDunePackage {
     pname = "ppx_tools";
     src = fetchFromGitHub {
