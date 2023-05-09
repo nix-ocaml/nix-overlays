@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "archi";
-    rev = "60f07c6";
-    sha256 = "sha256-0Rvfw60PS413oqWa7ISmHmZU12CtKlf53hZlKjJ+Hgc=";
+    rev = "d60925750d55166c799cb2685e9ed1d1382a2d6a";
+    hash = "sha256-Ce+RXI3bo68031zqD/G5NKYg9feVXWwqmto6xZb6rwM=";
   };
 
   checkInputs = [ alcotest ];
