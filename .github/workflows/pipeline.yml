@@ -57,11 +57,15 @@ jobs:
         run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
-  top-level-packages-linux:
+  top-level-packages:
     strategy:
       fail-fast: false
-    name: Native (Top-level) packages (Linux)
-    runs-on: ubuntu-latest
+      matrix:
+        setup:
+          - { os: ubuntu-latest, target: x86_64-linux }
+          - { os: macos-latest, target: x86_64-darwin }
+    name: Native (Top-level) packages (${{ matrix.setup.os }})
+    runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -80,7 +84,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: ./ci.sh x86_64-linux build_top-level-packages
+        run: ./ci.sh ${{ matrix.setup.target }} build_top-level-packages
 
   native-macos:
     strategy:
@@ -111,31 +115,6 @@ jobs:
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
         run: ./ci.sh x86_64-darwin build_${{ matrix.setup.ocaml-version }}
-
-  top-level-packages-macos:
-    strategy:
-      fail-fast: false
-    name: Native (Top-level) packages (macOS)
-    runs-on: macos-latest
-    env:
-      NIXPKGS_ALLOW_UNFREE: 1
-    steps:
-      - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v20
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            system-features = nixos-test benchmark big-parallel kvm
-            extra-substituters = https://anmonteiro.nix-cache.workers.dev
-            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
-      - uses: nix-ocaml/nix-s3-action@fork
-        with:
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
-          signingKey: ${{ secrets.R2_SIGNING_KEY }}
-          awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
-          awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
-      - name: Build nix packages
-        run: ./ci.sh x86_64-darwin build_top-level-packages
 
   cross-compilers:
     # needs: [native-linux]
