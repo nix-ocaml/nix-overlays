@@ -60,11 +60,11 @@ jobs:
   top-level-packages:
     strategy:
       fail-fast: false
+      matrix:
+        setup:
+          - { os: ubuntu-latest, target: x86_64-linux }
+          - { os: macos-latest, target: x86_64-darwin }
     name: Native (Top-level) packages (${{ matrix.setup.os }})
-    matrix:
-      setup:
-        - { os: ubuntu-latest, target: x86_64-linux }
-        - { os: macos-latest, target: x86_64-darwin }
     runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
