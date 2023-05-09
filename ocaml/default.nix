@@ -970,8 +970,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "e0f6054c448194535b7e0db2e356355224fbea2e";
-      hash = "sha256-lSErzxunOrJcW+DigklKV/0y13pfU1OZCT2PVdphicw=";
+      rev = "a18ceeb0c213d2aa9c39e921fc58812f94741652";
+      hash = "sha256-TtGW2Ouxrwdyg3ytIh/uJFxM+Rkpyfi2tyiqlTBt6as=";
     };
     hardeningDisable = [ "strictoverflow" ];
   });
