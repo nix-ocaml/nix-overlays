@@ -222,7 +222,8 @@ in
           owner = "anmonteiro";
           repo = "relay";
           rev = "aee103c12742828f32538bfa148379874b9d8878";
-          hash = "sha256-QwWGpJ9QVkIXuJhTNcgLNM7AUV7aIlG9bL5jM4WU3Wc=";
+          hash = "sha256-TEx7rP91nGPi1NRj/wmNatwCEBjS7WYn3oJH+hZ3WM8=";
+          sparseCheckout = [ "compiler" ];
         };
         patches = [ ./reason-relay-cargo.patch ];
         dontBuild = true;
