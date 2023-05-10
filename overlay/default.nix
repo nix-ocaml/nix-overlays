@@ -212,6 +212,49 @@ in
         ${nodePackages_latest.pnpm}/lib/node_modules/pnpm/bin/pnpm.cjs \
         "$@"
     '';
+
+  reason-relay =
+    let
+      inherit (super) rustPlatform darwin pkg-config openssl_1_1;
+      reason-relay-src = stdenv.mkDerivation {
+        name = "reason-relay-src";
+        src = fetchFromGitHub {
+          owner = "anmonteiro";
+          repo = "relay";
+          rev = "aee103c12742828f32538bfa148379874b9d8878";
+          hash = "sha256-QwWGpJ9QVkIXuJhTNcgLNM7AUV7aIlG9bL5jM4WU3Wc=";
+        };
+        patches = [ ./reason-relay-cargo.patch ];
+        dontBuild = true;
+        installPhase = ''
+          mkdir $out
+          cp -r ./* $out
+        '';
+      };
+    in
+    rustPlatform.buildRustPackage {
+      pname = "relay";
+      version = "n/a";
+      src = "${reason-relay-src}/compiler";
+      cargoHash = "sha256-vVNCdAlgv4W13TxaBtZhDIGoqANg+WHMwN5p+DTchuI=";
+
+      nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
+      # Needed to get openssl-sys to use pkg-config.
+      # Doesn't seem to like OpenSSL 3
+      OPENSSL_NO_VENDOR = 1;
+
+      buildInputs = lib.optionals stdenv.isLinux [ openssl_1_1 ];
+      propagatedBuildInputs = lib.optionals stdenv.isDarwin [
+        darwin.apple_sdk.frameworks.Security
+      ];
+
+      doCheck = false;
+      meta = with lib; {
+        description = "Reason-Relay compiler";
+        homepage = "https://github.com/anmonteiro/relay";
+        maintainers = [ maintainers.anmonteiro ];
+      };
+    };
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)

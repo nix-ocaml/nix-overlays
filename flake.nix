@@ -22,10 +22,10 @@
         hydraJobs = builtins.listToAttrs (map
           (system: {
             name = system;
-            value = (import ./ci/hydra.nix {
+            value = import ./ci/hydra.nix {
               inherit system;
               pkgs = self.legacyPackages.${system};
-            });
+            };
           })
           [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]);
 

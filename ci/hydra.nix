@@ -1,5 +1,6 @@
 { pkgs, system }:
 let
+  inherit (pkgs) lib stdenv;
   filter = pkgs.callPackage ./filter.nix { };
   isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
   extraIgnores = if isDarwin then filter.darwinIgnores else [ ];
@@ -27,8 +28,8 @@ with filter;
   };
 
   build_top-level-packages =
-    { inherit (pkgs) esy; } //
-    (if pkgs.stdenv.isLinux then { inherit (pkgs) kubernetes; } else { });
+    { inherit (pkgs) esy reason-relay; } //
+    (if stdenv.isLinux then { inherit (pkgs) kubernetes; } else { });
 
   arm64_4_14 = (if system == "x86_64-linux" then
     crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "4_14"
