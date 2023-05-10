@@ -215,7 +215,7 @@ in
 
   reason-relay =
     let
-      inherit (super) rustPlatform darwin;
+      inherit (super) rustPlatform darwin pkg-config openssl_1_1;
       reason-relay-src = stdenv.mkDerivation {
         name = "reason-relay-src";
         src = fetchFromGitHub {
@@ -236,9 +236,17 @@ in
       pname = "relay";
       version = "n/a";
       src = "${reason-relay-src}/compiler";
-
-      propagatedBuildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
       cargoHash = "sha256-vVNCdAlgv4W13TxaBtZhDIGoqANg+WHMwN5p+DTchuI=";
+
+      nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
+      # Needed to get openssl-sys to use pkg-config.
+      # Doesn't seem to like OpenSSL 3
+      OPENSSL_NO_VENDOR = 1;
+
+      buildInputs = lib.optionals stdenv.isLinux [ openssl_1_1 ];
+      propagatedBuildInputs = lib.optionals stdenv.isDarwin [
+        darwin.apple_sdk.frameworks.Security
+      ];
 
       doCheck = false;
       meta = with lib; {
