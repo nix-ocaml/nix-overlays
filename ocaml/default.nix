@@ -2172,4 +2172,4 @@ with oself;
   if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix { inherit oself darwin; })
   else { }
-)
+) // (import ./melange-packages.nix { inherit oself fetchFromGitHub; })
