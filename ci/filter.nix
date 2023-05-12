@@ -1,34 +1,19 @@
 { lib, stdenv }:
 let
   baseIgnoredPackages = [
-    # camlp4 or not supported in 4.11+
+    # not supported in 4.11+
     "bap"
-    "camlp4"
-    "camomile_0_8_2"
-    "cil"
-    "dypgen"
-    "earlybird"
-    "lablgtk-extras"
-    "mezzo"
-    "ocaml_cairo"
-    "ocaml_cryptgps"
-    "ocamlnat"
-    "ocamlsdl"
     "lwt_camlp4"
     "macaque"
     "config-file"
     "erm_xmpp"
-    "gmetadom"
-    "stog"
     "ulex"
     "lablgl"
 
     # too long to build or broken
     "z3"
-    "ocaml-r"
 
     # dune.configurator issue
-    "ocamlfuse"
     "google-drive-ocamlfuse"
 
     # jbuild files
@@ -61,8 +46,6 @@ let
     # broken since OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
-    "ocaml-migrate-parsetree-1-8"
-    "ocaml-migrate-parsetree"
     "wasm"
 
     # Broken since OCaml 4.14
@@ -74,8 +57,6 @@ let
     "gd4o"
 
     "ocaml-sat-solvers"
-
-    "ocaml-freestanding"
 
     "taglib"
     "getopt"
@@ -91,6 +72,7 @@ let
     # Not compatible with EIO yet
     "oidc-client"
 
+    "pam"
     "netsnmp"
     "ocaml-probes"
 
@@ -115,10 +97,7 @@ let
     "inifiles"
     "lastfm"
     "ocaml_oasis"
-    "ocaml-recovery-parser"
     "ocamlify"
-    "ocamlmod"
-    "ocamlnet"
     "ocp-build"
     "owl"
     "piqi"
@@ -146,28 +125,16 @@ let
     "eio_linux"
     "magic-trace"
   ];
-
-  lowerThanOCaml5Ignores = [
-    "lockfree"
-    "domainslib"
-    "dscheck"
-    "cpdf"
-    "algaeff"
-  ];
-  lowerThanOCaml414Ignores = [
-    "cmarkit"
-  ];
 in
 
 rec {
-  inherit ocaml5Ignores darwinIgnores lowerThanOCaml5Ignores lowerThanOCaml414Ignores;
+  inherit ocaml5Ignores darwinIgnores;
   ocamlCandidates =
     { pkgs
     , ocamlVersion
     , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
       then ocaml5Ignores
-      else if lib.hasPrefix "4_14" ocamlVersion then lowerThanOCaml5Ignores
-      else lowerThanOCaml5Ignores ++ lowerThanOCaml414Ignores
+      else [ ]
     }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
@@ -178,22 +145,24 @@ rec {
         extraIgnores;
     in
     lib.filterAttrs
-      (n: v:
-      let
-        broken = if v ? meta && v.meta ? broken then v.meta.broken else false;
-        # don't build tezos stuff
-      in
-      (!((builtins.substring 0 5 n) == "tezos"))
-      && (!(builtins.elem n ignoredPackages)) && lib.isDerivation v && (!broken)
-      && (
+      (n: v':
+      if # don't build tezos stuff
+        (builtins.substring 0 5 n) == "tezos"
+        || (builtins.elem n ignoredPackages)
+      then false
+      else
         let
-          platforms = (if ((v ? meta) && v.meta ? platforms) then
-            v.meta.platforms
-          else
-            lib.platforms.all);
+          eval_result = builtins.tryEval v';
         in
-        builtins.elem stdenv.system platforms
-      ))
+        if !eval_result.success then false
+        else
+          (
+            let
+              v = eval_result.value;
+              broken = (v ? meta && v.meta ? broken && v.meta.broken);
+            in
+            (lib.isDerivation v) && !broken
+          ))
       ocamlPackages;
 
   crossTarget = pkgs: ocamlVersion:
