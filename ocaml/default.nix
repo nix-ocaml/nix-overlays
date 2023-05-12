@@ -1158,6 +1158,7 @@ with oself;
   melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
+    version = "20230428";
     src = fetchFromGitLab {
       domain = "gitlab.inria.fr";
       owner = "fpottier";
@@ -1166,6 +1167,23 @@ with oself;
       hash = "sha256-8Hl9JNKqwD0502PdV/Y/tOq9p3ZOXCZ2fvLtndG8wm8=";
     };
   });
+  menhirLib_20230415 = oself.menhirLib.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      domain = "gitlab.inria.fr";
+      owner = "fpottier";
+      repo = "menhir";
+      rev = "20230415";
+      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+    };
+  });
+  menhirSdk_20230415 = oself.menhirSdk.override {
+    menhirLib = menhirLib_20230415;
+  };
+  menhir_20230415 = oself.menhir.override {
+    menhirLib = menhirLib_20230415;
+    menhirSdk = menhirSdk_20230415;
+  };
+
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
@@ -1302,15 +1320,11 @@ with oself;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib =
-    let
-      menhirLib = menhirLib_20230415;
-      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
-      menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
-    in
-    callPackage ./ocamlformat/lib.nix {
-      inherit menhir menhirLib menhirSdk;
-    };
+  ocamlformat-lib = callPackage ./ocamlformat/lib.nix {
+    menhirLib = menhirLib_20230415;
+    menhirSdk = menhirSdk_20230415;
+    menhir = menhir_20230415;
+  };
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
@@ -1763,24 +1777,11 @@ with oself;
         nativeBuildInputs = [ cppo ];
       };
 
-  menhirLib_20230415 = oself.menhirLib.overrideAttrs (_: {
-    src = fetchFromGitLab {
-      domain = "gitlab.inria.fr";
-      owner = "fpottier";
-      repo = "menhir";
-      rev = "20230415";
-      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
-    };
-  });
-  reason =
-    let
-      menhirLib = menhirLib_20230415;
-      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
-      menhir = oself.menhir.override { inherit menhirLib menhirSdk; };
-    in
-    callPackage ./reason {
-      inherit menhirLib menhirSdk menhir;
-    };
+  reason = callPackage ./reason {
+    menhirLib = menhirLib_20230415;
+    menhirSdk = menhirSdk_20230415;
+    menhir = menhir_20230415;
+  };
 
   rtop = callPackage ./reason/rtop.nix { };
 
@@ -1800,7 +1801,7 @@ with oself;
   reactjs-jsx-ppx = buildDunePackage {
     pname = "reactjs-jsx-ppx";
     version = "n/a";
-    inherit (melange) src;
+    inherit (melange) src patches;
     propagatedBuildInputs = [ ppxlib ];
   };
 

@@ -7,6 +7,11 @@
 , base64
 , makeWrapper
 , ppxlib
+, ounit2
+, reason
+, reactjs-jsx-ppx
+, nodejs_latest
+, tree
 }:
 
 buildDunePackage rec {
@@ -17,10 +22,17 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "e379b5304cf18cfae52fff929c278ff92cb54e9e";
-    hash = "sha256-T3vN2Ewlh4X1T3kKwRW+cZvob+FaE9WUWCEbUcn56KQ=";
+    rev = "9d6ff197433fdb6f187f3f5709de753921d843c6";
+    hash = "sha256-alE+pPKqd2I2axYEq3AFkaZR2O12WxHQ6DbKYWpC1/E=";
   };
 
+  # https://github.com/melange-re/melange/pull/544
+  patches = [ ./new-reactjs-jsx-ppx.patch ];
+
+  doCheck = true;
+
+  nativeCheckInputs = [ nodejs_latest reason tree ];
+  checkInputs = [ ounit2 reactjs-jsx-ppx ];
   nativeBuildInputs = [ cppo ];
   buildInputs = [ makeWrapper ];
   propagatedBuildInputs = [
