@@ -1167,7 +1167,7 @@ with oself;
       hash = "sha256-8Hl9JNKqwD0502PdV/Y/tOq9p3ZOXCZ2fvLtndG8wm8=";
     };
   });
-  menhirLib_20230415 = oself.menhirLib.overrideAttrs (_: {
+  menhirLib_20230415 = osuper.menhirLib.overrideAttrs (_: {
     src = fetchFromGitLab {
       domain = "gitlab.inria.fr";
       owner = "fpottier";
@@ -1176,10 +1176,10 @@ with oself;
       hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
     };
   });
-  menhirSdk_20230415 = oself.menhirSdk.override {
+  menhirSdk_20230415 = osuper.menhirSdk.override {
     menhirLib = menhirLib_20230415;
   };
-  menhir_20230415 = oself.menhir.override {
+  menhir_20230415 = osuper.menhir.override {
     menhirLib = menhirLib_20230415;
     menhirSdk = menhirSdk_20230415;
   };
@@ -1445,19 +1445,15 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser =
-    let
-      menhirLib = menhirLib_20230415;
-      menhirSdk = oself.menhirSdk.override { menhirLib = menhirLib_20230415; };
-    in
-    (osuper.ocaml-recovery-parser.override {
-      inherit menhirLib menhirSdk;
-    }).overrideAttrs (o: rec {
-      postPatch = ''
-        substituteInPlace "menhir-recover/emitter.ml" --replace \
-          "String.capitalize" "String.capitalize_ascii"
-      '';
-    });
+  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override {
+    menhirLib = menhirLib_20230415;
+    menhirSdk = menhirSdk_20230415;
+  }).overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace "menhir-recover/emitter.ml" --replace \
+        "String.capitalize" "String.capitalize_ascii"
+    '';
+  });
 
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
