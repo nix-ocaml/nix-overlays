@@ -72,6 +72,7 @@ let
     # Not compatible with EIO yet
     "oidc-client"
 
+    "pam"
     "netsnmp"
     "ocaml-probes"
 
