@@ -27,11 +27,6 @@ let
     "z3"
     "ocaml-r"
 
-    # Only available for 4.14
-    "melange-compiler-libs"
-    "melange"
-    "mel"
-
     # dune.configurator issue
     "ocamlfuse"
     "google-drive-ocamlfuse"
