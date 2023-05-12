@@ -1800,6 +1800,12 @@ with oself;
     inherit (melange) src patches;
     propagatedBuildInputs = [ ppxlib ];
   };
+  rescript-syntax = buildDunePackage {
+    pname = "rescript-syntax";
+    version = "n/a";
+    inherit (melange) src patches;
+    propagatedBuildInputs = [ ppxlib melange ];
+  };
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };

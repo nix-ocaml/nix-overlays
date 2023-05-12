@@ -15,4 +15,18 @@ with oself;
     nativeBuildInputs = [ reason melange ];
     propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
   };
+
+  melange-relay = buildDunePackage {
+    pname = "melange-relay";
+    version = "n/a";
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "rescript-relay";
+      rev = "669abf4ce74bbe22cbd811c97cc9e86de3dd1850";
+      hash = "sha256-MOFjbzx9M/qNAvWAWA1MHhtI634PjQo/Qg4pgwTtBhU=";
+      sparseCheckout = [ "packages/rescript-relay" ];
+    };
+    nativeBuildInputs = [ rescript-syntax melange reason ];
+    propagatedBuildInputs = [ reason-react reactjs-jsx-ppx melange graphql_parser ];
+  };
 }
