@@ -26,6 +26,7 @@
 , pam
 , pkg-config
 , python3
+, python3Packages
 , lmdb
 , curl
 , writeScriptBin

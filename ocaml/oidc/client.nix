@@ -1,10 +1,10 @@
-{ lib, buildDunePackage, oidc, jose, uri, yojson, logs, piaf-lwt }:
+{ lib, buildDunePackage, oidc, jose, uri, yojson, logs }:
 
 buildDunePackage {
   pname = "oidc-client";
   inherit (oidc) src version;
 
-  propagatedBuildInputs = [ oidc jose uri yojson logs piaf-lwt ];
+  propagatedBuildInputs = [ oidc jose uri yojson logs ];
   postPatch = ''
     substituteInPlace oidc-client/dune --replace "piaf" "piaf-lwt"
     substituteInPlace \
