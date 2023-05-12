@@ -25,7 +25,6 @@ buildDunePackage rec {
   };
 
   propagatedBuildInputs = [
-    menhir
     menhirLib
     menhirSdk
     fix
