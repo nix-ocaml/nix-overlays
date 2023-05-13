@@ -2103,13 +2103,6 @@ with oself;
     '';
   });
 
-  yojson = osuper.yojson.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/yojson/releases/download/2.1.0/yojson-2.1.0.tbz;
-      sha256 = "0pdij17lw31qf4rq7cbpf7lym527v856ny98jagjbasqvgr1zjwz";
-    };
-  });
-
   yuscii = disableTests osuper.yuscii;
 
   zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
