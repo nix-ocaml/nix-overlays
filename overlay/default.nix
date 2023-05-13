@@ -271,7 +271,7 @@ in
         # propagates zstd for `-lzstd`
         propagatedBuildInputs = o.buildInputs;
       });
-      sqlite = super.sqlite-oc.override { zlib = self.zlib-oc; };
+      sqlite = super.sqlite.override { zlib = self.zlib-oc; };
       openssl = super.openssl_3_0;
     }
 )
