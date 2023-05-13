@@ -33,6 +33,7 @@
 , libsodium
 , cairo
 , gtk2
+, rdkafka-oc
 , zlib-oc
 , unzip
 , freetype
@@ -967,7 +968,10 @@ with oself;
       else o.src;
   });
 
-  kafka = osuper.kafka.overrideAttrs (_: {
+  kafka = (osuper.kafka.override {
+    rdkafka = rdkafka-oc;
+    zlib = zlib-oc;
+  }).overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
@@ -976,12 +980,14 @@ with oself;
     };
     hardeningDisable = [ "strictoverflow" ];
   });
+
   kafka_async = buildDunePackage {
     pname = "kafka_async";
     inherit (kafka) src version;
     propagatedBuildInputs = [ async kafka ];
     hardeningDisable = [ "strictoverflow" ];
   };
+
   kafka_lwt = osuper.kafka_lwt.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
   });

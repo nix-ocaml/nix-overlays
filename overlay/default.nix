@@ -260,7 +260,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libev sqlite pcre;
+      inherit (super) zlib gmp libev sqlite pcre rdkafka;
       libffi = super.libffi.overrideAttrs (_: {
         doCheck = false;
       });
