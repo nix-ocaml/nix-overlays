@@ -41,7 +41,7 @@
 , libxkbcommon
 , libxcb
 , xorg
-, zstd
+, zstd-oc
 }:
 
 oself: osuper:
@@ -72,11 +72,11 @@ let
       fetchpatch
       fzf
       lib
-      zstd
       kerberos
       linuxHeaders
       pam
       net-snmp;
+    zstd = zstd-oc;
   };
 
 in
@@ -971,12 +971,12 @@ with oself;
   kafka = (osuper.kafka.override {
     rdkafka = rdkafka-oc;
     zlib = zlib-oc;
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "a18ceeb0c213d2aa9c39e921fc58812f94741652";
-      hash = "sha256-TtGW2Ouxrwdyg3ytIh/uJFxM+Rkpyfi2tyiqlTBt6as=";
+      rev = "47fdd3d2915e204b85969c403cb695936b0b68e3";
+      hash = "sha256-Ez7FTu/KwDJz8hh4mtdFxUT9FvH8dLkE9vprGHD8SOk=";
     };
     hardeningDisable = [ "strictoverflow" ];
   });

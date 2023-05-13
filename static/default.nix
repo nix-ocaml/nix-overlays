@@ -14,13 +14,16 @@ in
   libxml2 = super.libxml2.override { zlib = self.zlib-oc; };
   gmp-oc = super.gmp-oc.override { withStatic = true; };
   openssl-oc = super.openssl-oc.override { static = true; };
+
   pcre-oc = super.pcre-oc.overrideAttrs (_: {
     dontDisableStatic = true;
   });
-  sqlite-oc = (super.sqlite-oc.override { zlib = self.zlib-oc; }).overrideAttrs (o: {
+
+  sqlite-oc = super.sqlite-oc.overrideAttrs (o: {
     dontDisableStatic = true;
   });
   zlib-oc = super.zlib-oc.override { static = true; splitStaticOutput = false; };
+  zstd-oc = (super.zstd-oc.override { static = true; });
 } // super.lib.overlayOCamlPackages {
   inherit super;
   overlays = [ (super.callPackage ./ocaml.nix { }) ];
