@@ -612,13 +612,6 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
-  dtoa = osuper.dtoa.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/flow/ocaml-dtoa/releases/download/v0.3.3/dtoa-0.3.3.tbz;
-      sha256 = "0gpfr6iyiihmkpas542916cnhfdbrigvzwrix8jrxcljks661x6q";
-    };
-  });
-
   duff = osuper.duff.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "lib/duff.ml" --replace \
