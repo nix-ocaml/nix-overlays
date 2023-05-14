@@ -86,6 +86,18 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/atd/releases/download/2.12.0/atdts-2.12.0.tbz;
+      sha256 = "1h2g1aravv24brn9j6h9pydg7hlm5zvg86lm45hcpcfxjay0qlq2";
+    };
+  });
+  atdts = buildDunePackage {
+    pname = "atdts";
+    inherit (atdgen-codec-runtime) version src;
+    propagatedBuildInputs = [ atd cmdliner ];
+  };
+
   ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bytes" ""
@@ -279,8 +291,8 @@ with oself;
     name = "cmarkit-ocaml${osuper.ocaml.version}";
     pname = "cmarkit";
     src = builtins.fetchurl {
-      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.1.0.tbz;
-      sha256 = "1rlfcjcvijs1gf2acjav775ar60s427kv1yx8ywrbdq9bhpc5cx4";
+      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.2.0.tbz;
+      sha256 = "1jg43j4jqjv1clmvdibgphgm39idmbgwzihk9qzvqbb93qc6x97k";
     };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
@@ -634,8 +646,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "239e6aca68aaa27bc429425b4aab32f4a9ee9bcd";
-      hash = "sha256-aQbk1YqC62BocL6SNopfJsf8LpxMTvw4KlobPrJJECk=";
+      rev = "417bce1ce63b605d10d02542a9b7c5be982726d0";
+      hash = "sha256-7w0dbOZB5wcPZdHmjlbfr3xePzkrjaOPdcB3Is9qNwI=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 

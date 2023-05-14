@@ -6,8 +6,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "flow";
-    rev = "v0.204.0";
-    hash = "sha256-263ZbEDGiZI/2dSLxs966+wtSHG2QMnTtzJ7hPQ4Ix8=";
+    rev = "v0.206.0";
+    hash = "sha256-pDh43pOf/PhyxGcYRnQsuq7FBJz2Wru77QBTEYSobno=";
   };
 
   propagatedBuildInputs = [
