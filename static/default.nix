@@ -19,6 +19,16 @@ in
     dontDisableStatic = true;
   });
 
+  rdkafka-oc = super.rdkafka-oc.overrideAttrs (o: {
+    postPatch = ''
+      ${o.postPatch}
+      # https://github.com/confluentinc/librdkafka/pull/4281
+      substituteInPlace mklove/Makefile.base --replace 'ar -r' '$(AR) -r'
+    '';
+    configureFlags = [ "--enable-static" ];
+    STATIC_LIB_libzstd = "${self.zstd-oc.out}/lib/libzstd.a";
+  });
+
   sqlite-oc = super.sqlite-oc.overrideAttrs (o: {
     dontDisableStatic = true;
   });
