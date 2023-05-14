@@ -291,8 +291,8 @@ with oself;
     name = "cmarkit-ocaml${osuper.ocaml.version}";
     pname = "cmarkit";
     src = builtins.fetchurl {
-      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.1.0.tbz;
-      sha256 = "1rlfcjcvijs1gf2acjav775ar60s427kv1yx8ywrbdq9bhpc5cx4";
+      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.2.0.tbz;
+      sha256 = "1jg43j4jqjv1clmvdibgphgm39idmbgwzihk9qzvqbb93qc6x97k";
     };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
     nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
