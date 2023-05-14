@@ -27,6 +27,10 @@ lib.mapAttrs
   osuper // {
   ocaml = fixOCaml osuper.ocaml;
 
+  kafka = osuper.kafka.overrideAttrs (o: {
+    patches = [ ./rdkafka_static.patch ];
+  });
+
   postgresql = osuper.postgresql.overrideAttrs (o: {
     patches = [ ./postgresql_static.patch ];
   });
