@@ -86,6 +86,18 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/atd/releases/download/2.12.0/atdts-2.12.0.tbz;
+      sha256 = "1h2g1aravv24brn9j6h9pydg7hlm5zvg86lm45hcpcfxjay0qlq2";
+    };
+  });
+  atdts = buildDunePackage {
+    pname = "atdts";
+    inherit (atdgen-codec-runtime) version src;
+    propagatedBuildInputs = [ atd cmdliner ];
+  };
+
   ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bytes" ""
