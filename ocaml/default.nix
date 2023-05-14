@@ -987,9 +987,11 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "47fdd3d2915e204b85969c403cb695936b0b68e3";
-      hash = "sha256-Ez7FTu/KwDJz8hh4mtdFxUT9FvH8dLkE9vprGHD8SOk=";
+      rev = "93cf6e5fb4fdfe74dde9ef635586e2bb6490c761";
+      hash = "sha256-zzzkUyLT9+WIBYDqTrF2ozzdXHIp68oYrlXNRXE6ACg=";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ocamlformat ];
+    buildInputs = [ dune-configurator ];
     hardeningDisable = [ "strictoverflow" ];
   });
 
