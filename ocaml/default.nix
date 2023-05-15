@@ -980,8 +980,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "93cf6e5fb4fdfe74dde9ef635586e2bb6490c761";
-      hash = "sha256-zzzkUyLT9+WIBYDqTrF2ozzdXHIp68oYrlXNRXE6ACg=";
+      rev = "7653f0bfcff375795bc35581e0f549289a6b0a9a";
+      hash = "sha256-sQdtginXq+TH1lsn6F0iXhk3PFyqgQ/k/ALASdrawIk=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ocamlformat ];
     buildInputs = [ dune-configurator ];
@@ -2069,6 +2069,11 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/ocaml-uring/releases/download/v0.6/uring-0.6.tbz;
+      sha256 = "1smdqnhqmy330yd10ijpxvqhyqvxq5aw1mhqsdn55mn5k7s46nv6";
+    };
+
     doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
