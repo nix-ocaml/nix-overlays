@@ -915,7 +915,7 @@ with oself;
   iter = osuper.iter.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/iter/releases/download/v1.7/iter-1.7.tbz;
-      sha256 = "1yziyk0plsr98wlr3x7bh2imvy4jmlh2a26aiciy7vxfi6c54z0k";
+      sha256 = "0c5p0khy0bmcv3nv6469xp52qx8jkhgb2wzdpl1ir91iyff15mxy";
     };
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
