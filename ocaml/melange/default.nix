@@ -45,7 +45,8 @@ buildDunePackage rec {
 
   postInstall = ''
     wrapProgram "$out/bin/melc" \
-      --set MELANGELIB "$OCAMLFIND_DESTDIR/melange/melange:$OCAMLFIND_DESTDIR/melange/runtime/melange:$OCAMLFIND_DESTDIR/melange/belt/melange"
+      --set MELANGELIB \
+      "$OCAMLFIND_DESTDIR/melange/melange:$OCAMLFIND_DESTDIR/melange/runtime/melange:$OCAMLFIND_DESTDIR/melange/belt/melange"
   '';
 
   meta.mainProgram = "melc";
