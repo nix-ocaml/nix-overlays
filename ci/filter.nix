@@ -96,6 +96,7 @@ let
     "hack_parallel"
     "inifiles"
     "lastfm"
+    "ocaml_expat"
     "ocaml_oasis"
     "ocamlify"
     "ocp-build"
