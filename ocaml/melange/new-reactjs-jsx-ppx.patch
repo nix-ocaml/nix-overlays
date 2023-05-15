@@ -1,4 +1,4 @@
-From 2a07f632a6b4e789906618afdb7a1a4ec6cb7178 Mon Sep 17 00:00:00 2001
+From 15981e41f6dc76560a944dff2b184ffcca147155 Mon Sep 17 00:00:00 2001
 From: Antonio Nuno Monteiro <anmonteiro@gmail.com>
 Date: Thu, 20 Apr 2023 00:20:26 -0700
 Subject: [PATCH] feat(reactjs-jsx-ppx): react/jsx-runtime transform
@@ -7,9 +7,9 @@ Subject: [PATCH] feat(reactjs-jsx-ppx): react/jsx-runtime transform
  .github/workflows/opam-build.yml              |   1 +
  .../test/re_or_res/reactjs_ppx_custom.js      |  23 +-
  jscomp/test/re_or_res/reactjs_ppx_custom.re   |   5 +-
- reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml         | 285 +++++++++---------
+ reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml         | 319 ++++++++++--------
  test/react.t                                  |   9 +-
- 5 files changed, 168 insertions(+), 155 deletions(-)
+ 5 files changed, 202 insertions(+), 155 deletions(-)
 
 diff --git a/.github/workflows/opam-build.yml b/.github/workflows/opam-build.yml
 index 5dc0eb9889..5c6367dba5 100644
@@ -88,7 +88,7 @@ index 83824a8ddc..4a718fdae9 100644
    [@react.component]
    let header = () => assert(false);
 diff --git a/reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml b/reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml
-index 4690ba9fb1..9f432e00a0 100644
+index 4690ba9fb1..230cecfee6 100644
 --- a/reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml
 +++ b/reactjs-jsx-ppx/reactjs_jsx_ppx_v3.ml
 @@ -33,7 +33,8 @@ let keyType loc =
@@ -110,14 +110,18 @@ index 4690ba9fb1..9f432e00a0 100644
    let rec allButLast_ lst acc =
      match lst with
      | [] -> []
-@@ -96,10 +97,13 @@ let extractChildren ?(removeLastPositionUnit = false) ~loc propsAndChildren =
+@@ -96,10 +97,17 @@ let extractChildren ?(removeLastPositionUnit = false) ~loc propsAndChildren =
    with
    | [], props ->
        (* no children provided? Place a placeholder list *)
 -      ( Exp.construct ~loc { loc; txt = Lident "[]" } None,
 -        if removeLastPositionUnit then allButLast props else props )
 +      (None, if removeLastPositionUnit then allButLast props else props)
-+  | ( [ (_, { pexp_desc = Pexp_construct ({ txt = Lident "[]"; _ }, None) }) ],
++  | ( [
++        ( _,
++          { pexp_desc = Pexp_construct ({ txt = Lident "[]"; loc = _ }, None) }
++        );
++      ],
 +      props ) ->
 +      (None, if removeLastPositionUnit then allButLast props else props)
    | [ (_, childrenExpr) ], props ->
@@ -127,7 +131,7 @@ index 4690ba9fb1..9f432e00a0 100644
    | _ ->
        raise
          (Invalid_argument "JSX: somehow there's more than one `children` label")
-@@ -127,11 +131,13 @@ let hasAttr { attr_name = loc; _ } = loc.txt = "react.component"
+@@ -127,11 +135,13 @@ let hasAttr { attr_name = loc; _ } = loc.txt = "react.component"
  (* Helper method to filter out any attribute that isn't [@react.component] *)
  let otherAttrsPure { attr_name = loc; _ } = loc.txt <> "react.component"
  
@@ -143,7 +147,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let getFnName binding =
    match binding with
    | { pvb_pat = { ppat_desc = Ppat_var { txt } } } -> txt
-@@ -165,7 +171,8 @@ let getPropsNameValue _acc (loc, exp) =
+@@ -165,7 +175,8 @@ let getPropsNameValue _acc (loc, exp) =
            ^ Longident.last_exn txt))
    [@@raises Invalid_argument]
  
@@ -153,7 +157,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let getPropsAttr payload =
    let defaultProps = { propsName = "Props" } in
    match payload with
-@@ -196,7 +203,8 @@ let getPropsAttr payload =
+@@ -196,7 +207,8 @@ let getPropsAttr payload =
  let pluckLabelDefaultLocType (label, default, _, _, loc, type_) =
    (label, default, loc, type_)
  
@@ -163,7 +167,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let filenameFromLoc ~ctxt (pstr_loc : Location.t) =
    let fileName =
      match pstr_loc.loc_start.pos_fname with
-@@ -210,7 +218,8 @@ let filenameFromLoc ~ctxt (pstr_loc : Location.t) =
+@@ -210,7 +222,8 @@ let filenameFromLoc ~ctxt (pstr_loc : Location.t) =
    let fileName = String.capitalize_ascii fileName in
    fileName
  
@@ -173,7 +177,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let makeModuleName fileName nestedModules fnName =
    let fullModuleName =
      match (fileName, nestedModules, fnName) with
-@@ -224,13 +233,12 @@ let makeModuleName fileName nestedModules fnName =
+@@ -224,13 +237,12 @@ let makeModuleName fileName nestedModules fnName =
    let fullModuleName = String.concat "$" fullModuleName in
    fullModuleName
  
@@ -192,7 +196,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let rec recursivelyMakeNamedArgsForExternal list args =
    match list with
    | (label, default, loc, interiorType) :: tl ->
-@@ -262,7 +270,8 @@ let rec recursivelyMakeNamedArgsForExternal list args =
+@@ -262,7 +274,8 @@ let rec recursivelyMakeNamedArgsForExternal list args =
                         ({ txt = Ldot (Lident "*predef*", "option") }, [ type_ ]);
                   },
                 _ )
@@ -202,7 +206,7 @@ index 4690ba9fb1..9f432e00a0 100644
             | label, Some type_, _
               when isOptional label ->
                 type_
-@@ -315,7 +324,8 @@ let makePropsValue fnName loc namedArgListWithKeyAndRef propsType =
+@@ -315,7 +328,8 @@ let makePropsValue fnName loc namedArgListWithKeyAndRef propsType =
    }
    [@@raises Invalid_argument]
  
@@ -212,7 +216,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let makePropsExternal fnName loc namedArgListWithKeyAndRef propsType =
    {
      pstr_loc = loc;
-@@ -334,7 +344,8 @@ let makePropsExternalSig fnName loc namedArgListWithKeyAndRef propsType =
+@@ -334,7 +348,8 @@ let makePropsExternalSig fnName loc namedArgListWithKeyAndRef propsType =
    }
    [@@raises Invalid_argument]
  
@@ -222,7 +226,7 @@ index 4690ba9fb1..9f432e00a0 100644
  let makePropsName ~loc name =
    {
      ppat_desc = Ppat_var { txt = name; loc };
-@@ -350,7 +361,8 @@ let makeObjectField loc (str, attrs, type_) =
+@@ -350,7 +365,8 @@ let makeObjectField loc (str, attrs, type_) =
      pof_attributes = attrs;
    }
  
@@ -232,55 +236,74 @@ index 4690ba9fb1..9f432e00a0 100644
  let makePropsType ~loc namedTypeList =
    Typ.mk ~loc
      (Ptyp_constr
-@@ -365,6 +377,47 @@ let makePropsType ~loc namedTypeList =
+@@ -365,6 +381,66 @@ let makePropsType ~loc namedTypeList =
             };
           ] ))
  
-+let jsxExprAndChildren ?(ident = "React") ~loc ~ctxt mapper ~keyProps children =
-+  let childrenExpr =
-+    Option.map (transformChildrenIfListUpper ~loc ~mapper ~ctxt) children
++let jsxExprAndChildren =
++  let arr ~loc children =
++    Exp.apply
++      (Exp.ident { txt = Longident.Ldot (Lident "React", "array"); loc })
++      [ (nolabel, children) ]
 +  in
-+  match (childrenExpr, keyProps) with
-+  | Some (Exact children), _key :: _ ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        Some children )
-+  | Some (Exact children), [] ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        Some children )
-+  | Some (ListLiteral { pexp_desc = Pexp_array list }), _key :: _ when list = []
-+    ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        children )
-+  | Some (ListLiteral { pexp_desc = Pexp_array list }), [] when list = [] ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        children )
-+  | Some (ListLiteral children), _key :: _ ->
-+      (* this is a hack to support react components that introspect into their
-+         children *)
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxsKeyed") },
-+        Some children )
-+  | Some (ListLiteral children), [] ->
-+      (* this is a hack to support react components that introspect into their
-+         children *)
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxs") },
-+        Some children )
-+  | None, _key :: _ ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        None )
-+  | None, [] ->
-+      ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
-+        (* [|moreCreateElementCallsHere|] *)
-+        None )
++  fun ?(ident = "React") ~loc ~ctxt mapper ~keyProps children ->
++    let childrenExpr =
++      Option.map (transformChildrenIfListUpper ~loc ~mapper ~ctxt) children
++    in
++    match (childrenExpr, keyProps) with
++    | Some (Exact children), (_, key) :: _ ->
++        ( Exp.ident
++            { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
++          Some key,
++          (* [|moreCreateElementCallsHere|] *)
++          Some children )
++    | Some (Exact children), [] ->
++        ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
++          None,
++          (* [|moreCreateElementCallsHere|] *)
++          Some children )
++    | ( Some (ListLiteral ({ pexp_desc = Pexp_array list } as children)),
++        (_, key) :: _ )
++      when list = [] ->
++        ( Exp.ident
++            { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
++          Some key,
++          (* [|moreCreateElementCallsHere|] *)
++          Some (arr ~loc children) )
++    | Some (ListLiteral { pexp_desc = Pexp_array list }), [] when list = [] ->
++        ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
++          None,
++          (* [|moreCreateElementCallsHere|] *)
++          children )
++    | Some (ListLiteral children), (_, key) :: _ ->
++        (* this is a hack to support react components that introspect into their
++           children *)
++        ( Exp.ident
++            { loc = Location.none; txt = Ldot (Lident ident, "jsxsKeyed") },
++          Some key,
++          Some (arr ~loc children) )
++    | Some (ListLiteral children), [] ->
++        (* this is a hack to support react components that introspect into their
++           children *)
++        ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsxs") },
++          None,
++          Some (arr ~loc children) )
++    | None, (_, key) :: _ ->
++        ( Exp.ident
++            { loc = Location.none; txt = Ldot (Lident ident, "jsxKeyed") },
++          Some key,
++          (* [|moreCreateElementCallsHere|] *)
++          None )
++    | None, [] ->
++        ( Exp.ident { loc = Location.none; txt = Ldot (Lident ident, "jsx") },
++          None,
++          (* [|moreCreateElementCallsHere|] *)
++          None )
 +
  (* Builds an AST node for the entire `external` definition of props *)
  let makeExternalDecl fnName loc namedArgListWithKeyAndRef namedTypeList =
    makePropsExternal fnName loc
-@@ -374,37 +427,25 @@ let makeExternalDecl fnName loc namedArgListWithKeyAndRef namedTypeList =
+@@ -374,37 +450,25 @@ let makeExternalDecl fnName loc namedArgListWithKeyAndRef namedTypeList =
  
  (* TODO: some line number might still be wrong *)
  let jsxMapper =
@@ -299,12 +322,12 @@ index 4690ba9fb1..9f432e00a0 100644
 +      List.partition
 +        (fun (arg_label, _) -> "key" = getLabel arg_label)
 +        argsForMake
++    in
++    let jsxExpr, key, childrenProp =
++      jsxExprAndChildren ~loc ~ctxt mapper ~keyProps children
      in
 -    let recursivelyTransformedArgsForMake =
 -      argsForMake
-+    let jsxExpr, childrenProp =
-+      jsxExprAndChildren ~loc ~ctxt mapper ~keyProps children
-+    in
 +    let propsArg =
 +      (match childrenProp with
 +      | Some childrenProp -> (labelled "children", childrenProp) :: otherProps
@@ -330,7 +353,7 @@ index 4690ba9fb1..9f432e00a0 100644
      let isCap str =
        let first = String.sub str 0 1 [@@raises Invalid_argument] in
        let capped = String.uppercase_ascii first in
-@@ -428,83 +469,40 @@ let jsxMapper =
+@@ -428,83 +492,51 @@ let jsxMapper =
                 "JSX name can't be the result of function applications")
      in
      let props =
@@ -354,9 +377,14 @@ index 4690ba9fb1..9f432e00a0 100644
 -            (nolabel, children);
 -          ]
 -    [@@raises Invalid_argument]
++    let key_args =
++      match key with
++      | Some key -> [ (nolabel, mapper#expression ctxt key) ]
++      | None -> []
++    in
 +    Exp.apply ~loc ~attrs jsxExpr
 +      ([ (nolabel, Exp.ident ~loc { txt = ident; loc }); (nolabel, props) ]
-+      @ List.map (fun (_, v) -> (nolabel, v)) keyProps)
++      @ key_args)
    in
  
    let transformLowercaseCall3 ~ctxt mapper loc attrs callArguments id =
@@ -412,7 +440,7 @@ index 4690ba9fb1..9f432e00a0 100644
 -            (nolabel, childrenExpr);
 -          ]
 +    let jsxExpr, args =
-+      let jsxExpr, childrenProp =
++      let jsxExpr, key, childrenProp =
 +        jsxExprAndChildren ~ident:"ReactDOM" ~loc ~ctxt mapper ~keyProps
 +          children
 +      in
@@ -427,7 +455,13 @@ index 4690ba9fb1..9f432e00a0 100644
 +          |> List.map (fun (label, expression) ->
 +                 (label, mapper#expression ctxt expression)))
 +      in
-+      (jsxExpr, [ (nolabel, componentNameExpr); (nolabel, propsCall) ])
++      let key_args =
++        match key with
++        | Some key -> [ (nolabel, mapper#expression ctxt key) ]
++        | None -> []
++      in
++      ( jsxExpr,
++        [ (nolabel, componentNameExpr); (nolabel, propsCall) ] @ key_args )
      in
 -    Exp.apply
 -      ~loc (* throw away the [@JSX] attribute and keep the others, if any *)
@@ -441,7 +475,7 @@ index 4690ba9fb1..9f432e00a0 100644
    in
  
    let rec recursivelyTransformNamedArgsForMake ~ctxt mapper expr list =
-@@ -540,8 +538,8 @@ let jsxMapper =
+@@ -540,8 +572,8 @@ let jsxMapper =
                    Ocaml_common.Location.prerr_warning pattern.ppat_loc
                      (Preprocessor
                         (Printf.sprintf
@@ -452,7 +486,7 @@ index 4690ba9fb1..9f432e00a0 100644
                             `option(%s)=?`?"
                            currentType)))
            | _ -> ()
-@@ -578,8 +576,8 @@ let jsxMapper =
+@@ -578,8 +610,8 @@ let jsxMapper =
          (list, Some txt)
      | Pexp_fun (Nolabel, _, pattern, _expression) ->
          Location.raise_errorf ~loc:pattern.ppat_loc
@@ -463,7 +497,7 @@ index 4690ba9fb1..9f432e00a0 100644
      | _ -> (list, None)
      [@@raises Invalid_argument]
    in
-@@ -740,7 +738,8 @@ let jsxMapper =
+@@ -740,7 +772,8 @@ let jsxMapper =
              in
              let modifiedBindingOld binding =
                let expression = binding.pvb_expr in
@@ -473,7 +507,7 @@ index 4690ba9fb1..9f432e00a0 100644
                let rec spelunkForFunExpression expression =
                  match expression with
                  (* let make = (~prop) => ... *)
-@@ -789,7 +788,8 @@ let jsxMapper =
+@@ -789,7 +822,8 @@ let jsxMapper =
                      unerasableIgnore emptyLoc :: exp.pexp_attributes;
                  }
                in
@@ -483,7 +517,7 @@ index 4690ba9fb1..9f432e00a0 100644
                let rec spelunkForFunExpression expression =
                  match expression with
                  (* let make = (~prop) => ... with no final unit *)
-@@ -844,11 +844,11 @@ let jsxMapper =
+@@ -844,11 +878,11 @@ let jsxMapper =
                        ((fun a -> a), false, unerasableIgnoreExp expression)
                      else
                        Location.raise_errorf ~loc:pattern.ppat_loc
@@ -498,7 +532,7 @@ index 4690ba9fb1..9f432e00a0 100644
                  (* let make = {let foo = bar in (~prop) => ...} *)
                  | { pexp_desc = Pexp_let (recursive, vbs, internalExpression) }
                    ->
-@@ -1185,33 +1185,21 @@ let jsxMapper =
+@@ -1185,33 +1219,21 @@ let jsxMapper =
                (Invalid_argument
                   "JSX: `createElement` should be preceeded by a module name.")
          (* Foo.createElement(~prop1=foo, ~prop2=bar, ~children=[], ()) *)
@@ -542,7 +576,7 @@ index 4690ba9fb1..9f432e00a0 100644
          | { txt = Lapply _ } ->
              (* don't think there's ever a case where this is reached *)
              raise
-@@ -1256,7 +1244,8 @@ let jsxMapper =
+@@ -1256,7 +1278,8 @@ let jsxMapper =
            | _, nonJSXAttributes ->
                transformJsxCall ~ctxt self callExpression callArguments
                  nonJSXAttributes)
@@ -552,7 +586,7 @@ index 4690ba9fb1..9f432e00a0 100644
        | {
            pexp_desc =
              ( Pexp_construct
-@@ -1275,7 +1264,7 @@ let jsxMapper =
+@@ -1275,7 +1298,7 @@ let jsxMapper =
            | _, nonJSXAttributes ->
                let fragment =
                  Exp.ident ~loc
@@ -561,7 +595,7 @@ index 4690ba9fb1..9f432e00a0 100644
                in
                let childrenExpr =
                  transformChildrenIfList ~loc ~ctxt ~mapper:self listItems
-@@ -1294,7 +1283,7 @@ let jsxMapper =
+@@ -1294,7 +1317,7 @@ let jsxMapper =
                  ~attrs:nonJSXAttributes
                  (* ReactDOMRe.createElement *)
                  (Exp.ident ~loc
