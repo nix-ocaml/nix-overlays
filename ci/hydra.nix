@@ -28,7 +28,7 @@ with filter;
   };
 
   build_top-level-packages =
-    { inherit (pkgs) esy reason-relay; } //
+    { inherit (pkgs) esy melange-relay-compiler; } //
     (if stdenv.isLinux then { inherit (pkgs) kubernetes; } else { });
 
   arm64_4_14 = (if system == "x86_64-linux" then
