@@ -287,17 +287,13 @@ with oself;
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
 
-  cmarkit = stdenv.mkDerivation {
-    name = "cmarkit-ocaml${osuper.ocaml.version}";
-    pname = "cmarkit";
+  cmarkit = osuper.cmarkit.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.2.0.tbz;
       sha256 = "1jg43j4jqjv1clmvdibgphgm39idmbgwzihk9qzvqbb93qc6x97k";
     };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
-    nativeBuildInputs = [ ocaml findlib topkg ocamlbuild ];
-    propagatedBuildInputs = [ cmdliner ];
-  };
+  });
 
   cpdf = osuper.cpdf.overrideAttrs (o: {
     src = fetchFromGitHub {
