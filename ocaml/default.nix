@@ -915,7 +915,7 @@ with oself;
   iter = osuper.iter.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/c-cube/iter/releases/download/v1.7/iter-1.7.tbz;
-      sha256 = "1yziyk0plsr98wlr3x7bh2imvy4jmlh2a26aiciy7vxfi6c54z0k";
+      sha256 = "0c5p0khy0bmcv3nv6469xp52qx8jkhgb2wzdpl1ir91iyff15mxy";
     };
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
@@ -980,8 +980,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "93cf6e5fb4fdfe74dde9ef635586e2bb6490c761";
-      hash = "sha256-zzzkUyLT9+WIBYDqTrF2ozzdXHIp68oYrlXNRXE6ACg=";
+      rev = "7653f0bfcff375795bc35581e0f549289a6b0a9a";
+      hash = "sha256-sQdtginXq+TH1lsn6F0iXhk3PFyqgQ/k/ALASdrawIk=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ocamlformat ];
     buildInputs = [ dune-configurator ];
@@ -2069,6 +2069,11 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/ocaml-uring/releases/download/v0.6/uring-0.6.tbz;
+      sha256 = "1smdqnhqmy330yd10ijpxvqhyqvxq5aw1mhqsdn55mn5k7s46nv6";
+    };
+
     doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
