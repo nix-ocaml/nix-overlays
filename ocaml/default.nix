@@ -2066,11 +2066,6 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/ocaml-uring/releases/download/v0.6/uring-0.6.tbz;
-      sha256 = "1smdqnhqmy330yd10ijpxvqhyqvxq5aw1mhqsdn55mn5k7s46nv6";
-    };
-
     doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
