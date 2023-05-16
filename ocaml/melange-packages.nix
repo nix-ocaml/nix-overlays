@@ -3,17 +3,16 @@
 with oself;
 
 {
-  reason-react = buildDunePackage {
-    pname = "reason-react";
+  melange-fetch = buildDunePackage {
+    pname = "melange-fetch";
     version = "n/a";
     src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason-react";
-      rev = "d7011fe34d80f576ac39e706823cc6e35d13fd5f";
-      hash = "sha256-gx3VomuOu1ywMnJNmYVunyvEX+Z903vb0ZJHh7kWpFs=";
+      owner = "reasonml-community";
+      repo = "bs-fetch";
+      rev = "a6b69500fea09824f4b31b0b2ee3340935241881";
+      hash = "sha256-tf0rcQ8cs0bMf29upvD+XcRXSHqdRvkROEHVM6mw1Ts=";
     };
-    nativeBuildInputs = [ reason melange ];
-    propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
+    nativeBuildInputs = [ melange ];
   };
 
   melange-relay = buildDunePackage {
@@ -22,11 +21,24 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "rescript-relay";
-      rev = "669abf4ce74bbe22cbd811c97cc9e86de3dd1850";
-      hash = "sha256-MOFjbzx9M/qNAvWAWA1MHhtI634PjQo/Qg4pgwTtBhU=";
+      rev = "7d4de2abd6061ad2426a48dbabe0123c67e4b09a";
+      hash = "sha256-9He/KIknyesRbo7PW/Rr6+unSJFVwCCGbr5Apupym3w=";
       sparseCheckout = [ "packages/rescript-relay" ];
     };
-    nativeBuildInputs = [ rescript-syntax melange reason ];
-    propagatedBuildInputs = [ reason-react reactjs-jsx-ppx melange graphql_parser ];
+    nativeBuildInputs = [ melange reason ];
+    propagatedBuildInputs = [ reason-react reactjs-jsx-ppx graphql_parser ];
+  };
+
+  reason-react = buildDunePackage {
+    pname = "reason-react";
+    version = "n/a";
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason-react";
+      rev = "b809c27db0e7db615a21623f075791093f53a3ce";
+      hash = "sha256-AWo5JnjKjPR9AnJKdX8leain0z7LlMAC6BHYPn2igA0=";
+    };
+    nativeBuildInputs = [ reason melange ];
+    propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
   };
 }

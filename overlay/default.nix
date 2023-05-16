@@ -213,16 +213,16 @@ in
         "$@"
     '';
 
-  reason-relay =
+  melange-relay-compiler =
     let
       inherit (super) rustPlatform darwin pkg-config openssl_1_1;
-      reason-relay-src = stdenv.mkDerivation {
-        name = "reason-relay-src";
+      melange-relay-compiler-src = stdenv.mkDerivation {
+        name = "melange-relay-compiler-src";
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "a976cf004b850f483c150e6c8a44649ff7e7bf28";
-          hash = "sha256-Ebo9mKXWGIpxbnrAYvPJgBZXP52vNVe+ww/7ZiTH9C0=";
+          rev = "cb2d282032229373f8120a21fe70d301ebaf237a";
+          hash = "sha256-QyS0B9K6awzMkklRVUrrsk0m46nlKWcNjfbVfmYg428=";
           sparseCheckout = [ "compiler" ];
         };
         patches = [ ./reason-relay-cargo.patch ];
@@ -236,7 +236,7 @@ in
     rustPlatform.buildRustPackage {
       pname = "relay";
       version = "n/a";
-      src = "${reason-relay-src}/compiler";
+      src = "${melange-relay-compiler-src}/compiler";
       cargoHash = "sha256-dW2v0abDSgAUmJFj+jBQN3Gq1MyBSe9iV8YQ8CIsqpw=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
@@ -249,9 +249,13 @@ in
         darwin.apple_sdk.frameworks.Security
       ];
 
+      postInstall = ''
+        mv $out/bin/relay $out/bin/melange-relay-compiler
+        ln -sf $out/bin/melange-relay-compiler $out/bin/melrelay
+      '';
       doCheck = false;
       meta = with lib; {
-        description = "Reason-Relay compiler";
+        description = "Melange Relay compiler";
         homepage = "https://github.com/anmonteiro/relay";
         maintainers = [ maintainers.anmonteiro ];
       };

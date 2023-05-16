@@ -1809,6 +1809,7 @@ with oself;
     inherit (melange) src patches;
     propagatedBuildInputs = [ ppxlib ];
   };
+
   rescript-syntax = buildDunePackage {
     pname = "rescript-syntax";
     version = "n/a";

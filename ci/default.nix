@@ -19,7 +19,7 @@ let
 in
 
 {
-  top-level-packages = [ pkgs.esy pkgs.reason-relay ] ++ lib.optional stdenv.isLinux pkgs.kubernetes;
+  top-level-packages = [ pkgs.esy pkgs.melange-relay-compiler ] ++ lib.optional stdenv.isLinux pkgs.kubernetes;
 
   native = (lib.attrValues (filter.ocamlCandidates {
     inherit pkgs ocamlVersion;
