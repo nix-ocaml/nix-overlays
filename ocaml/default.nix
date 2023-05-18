@@ -1164,7 +1164,6 @@ with oself;
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
   melange = callPackage ./melange { };
-  melange-compiler-libs = callPackage ./melange/compiler-libs.nix { };
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
     version = "20230428";
@@ -1570,13 +1569,6 @@ with oself;
   });
   owl = osuper.owl.overrideAttrs (_: {
     inherit (owl-base) version src meta;
-  });
-
-
-  ounit2 = osuper.ounit2.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace src/lib/ounit2/advanced/dune --replace " bytes " " "
-    '';
   });
 
   ocaml-protoc = osuper.ocaml-protoc.overrideAttrs (_: {

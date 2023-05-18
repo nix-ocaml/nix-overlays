@@ -3,9 +3,10 @@
 , dune-build-info
 , cppo
 , cmdliner
-, melange-compiler-libs
 , base64
 , makeWrapper
+, menhir
+, menhirLib
 , ppxlib
 , ounit2
 , reason
@@ -22,8 +23,9 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "9d6ff197433fdb6f187f3f5709de753921d843c6";
-    hash = "sha256-alE+pPKqd2I2axYEq3AFkaZR2O12WxHQ6DbKYWpC1/E=";
+    rev = "3e08a98718e433f5c240f6fd1920ba0de88f56cc";
+    hash = "sha256-TKDIL8kt3LEo5o1cWOXURr4qmWZvYwOVAqhOF3O6YXI=";
+    fetchSubmodules = true;
   };
 
   # https://github.com/melange-re/melange/pull/544
@@ -33,14 +35,14 @@ buildDunePackage rec {
 
   nativeCheckInputs = [ nodejs_latest reason tree ];
   checkInputs = [ ounit2 reactjs-jsx-ppx ];
-  nativeBuildInputs = [ cppo ];
+  nativeBuildInputs = [ cppo menhir ];
   buildInputs = [ makeWrapper ];
   propagatedBuildInputs = [
     cmdliner
-    melange-compiler-libs
     base64
     dune-build-info
     ppxlib
+    menhirLib
   ];
 
   postInstall = ''
