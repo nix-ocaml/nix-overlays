@@ -979,7 +979,7 @@ with oself;
       rev = "7653f0bfcff375795bc35581e0f549289a6b0a9a";
       hash = "sha256-sQdtginXq+TH1lsn6F0iXhk3PFyqgQ/k/ALASdrawIk=";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ocamlformat ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
     hardeningDisable = [ "strictoverflow" ];
   });
