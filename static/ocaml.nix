@@ -28,11 +28,11 @@ lib.mapAttrs
   ocaml = fixOCaml osuper.ocaml;
 
   kafka = osuper.kafka.overrideAttrs (o: {
-    patches = [ ./rdkafka_static.patch ];
+    PKG_CONFIG_ARGN = "--static";
   });
 
   postgresql = osuper.postgresql.overrideAttrs (o: {
-    patches = [ ./postgresql_static.patch ];
+    PKG_CONFIG_ARGN = "--static";
   });
 
   zarith = osuper.zarith.overrideDerivation (o: {

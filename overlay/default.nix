@@ -264,18 +264,8 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libev pcre zstd;
+      inherit (super) zlib gmp libev pcre zstd rdkafka sqlite;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
-      rdkafka = (super.rdkafka.override {
-        zstd = self.zstd-oc;
-        zlib = self.zlib-oc;
-        openssl = self.openssl-oc;
-      }).overrideAttrs (o: {
-        buildInputs = [ ];
-        # propagates zstd for `-lzstd`
-        propagatedBuildInputs = o.buildInputs;
-      });
-      sqlite = super.sqlite.override { zlib = self.zlib-oc; };
       openssl = super.openssl_3_0;
     }
 )
