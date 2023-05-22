@@ -41,7 +41,7 @@ In your `flake.nix`:
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          ocaml-overlay.overlays.${system}
+          ocaml-overlay.overlays.default
         ];
       };
     in
