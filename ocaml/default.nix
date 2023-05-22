@@ -288,10 +288,6 @@ with oself;
   };
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.2.0.tbz;
-      sha256 = "1jg43j4jqjv1clmvdibgphgm39idmbgwzihk9qzvqbb93qc6x97k";
-    };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 

@@ -215,17 +215,17 @@ in
 
   melange-relay-compiler =
     let
-      inherit (super) rustPlatform darwin pkg-config openssl_1_1;
+      inherit (super) rustPlatform darwin pkg-config openssl;
       melange-relay-compiler-src = stdenv.mkDerivation {
         name = "melange-relay-compiler-src";
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "cb2d282032229373f8120a21fe70d301ebaf237a";
-          hash = "sha256-QyS0B9K6awzMkklRVUrrsk0m46nlKWcNjfbVfmYg428=";
+          rev = "4aa0e71928c3836f5be31843c358b64d7330f3cb";
+          hash = "sha256-msbG7pkYShOUdLSbW85pn1EqzrWq70rqRlixMY8SYPE=";
           sparseCheckout = [ "compiler" ];
         };
-        patches = [ ./reason-relay-cargo.patch ];
+        # patches = [ ./reason-relay-cargo.patch ];
         dontBuild = true;
         installPhase = ''
           mkdir $out
@@ -237,14 +237,14 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-dW2v0abDSgAUmJFj+jBQN3Gq1MyBSe9iV8YQ8CIsqpw=";
+      cargoHash = "sha256-Zuw97AwLiU8BelBYpb8HsR1Ucggk8bmUg82PN8H8fWE=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.
       # Doesn't seem to like OpenSSL 3
       OPENSSL_NO_VENDOR = 1;
 
-      buildInputs = lib.optionals stdenv.isLinux [ openssl_1_1 ];
+      buildInputs = lib.optionals stdenv.isLinux [ openssl ];
       propagatedBuildInputs = lib.optionals stdenv.isDarwin [
         darwin.apple_sdk.frameworks.Security
       ];
