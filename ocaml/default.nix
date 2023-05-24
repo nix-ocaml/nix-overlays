@@ -1907,8 +1907,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
-      rev = "caf30cc";
-      sha256 = "sha256-qc4M+EgzmIQxzcMvLQIiYkPXBOvyLb6pNNGj/0OAbcM=";
+      rev = "50b1ced2bc13416a1116850feb97f297e07b5dde";
+      hash = "sha256-PbARYr+r3PL6vvu7GI7nUebvGJez8BswB7FTVoKKkMU=";
     };
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
