@@ -17,8 +17,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "ocaml-multicore";
     repo = "eio";
-    rev = "b5b5de777f9efcea0e4082c0c856681e53331c83";
-    hash = "sha256-3POYL7/aOHV846cHRUcORNVSUZxtL+daLQH4yQ3+D70=";
+    rev = "a40753560607c77ca89b5e0575ccac0e834b6d94";
+    hash = "sha256-0EnL0j+fUOBx/i18iDMFFiBtBC8lxxN17DOHxfDCc68=";
   };
 
   propagatedBuildInputs = [

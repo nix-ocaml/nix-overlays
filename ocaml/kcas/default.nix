@@ -2,10 +2,10 @@
 
 buildDunePackage {
   pname = "kcas";
-  version = "0.3.1";
+  version = "0.5.1";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/kcas/releases/download/0.4.0/kcas-0.4.0.tbz;
-    sha256 = "1s2ivd8mn54nyn4jpjpld95ni436hail90dsvv41yx6zpd1vdyqm";
+    url = https://github.com/ocaml-multicore/kcas/releases/download/0.5.1/kcas-0.5.1.tbz;
+    sha256 = "1rhwhwy76vrv69frqyqya53nn4wf5py3hb0in7fr6x3dzyj7j6vl";
   };
   propagatedBuildInputs = [ domain-local-await ];
 }
