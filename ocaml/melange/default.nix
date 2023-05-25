@@ -35,8 +35,7 @@ buildDunePackage rec {
 
   nativeCheckInputs = [ nodejs_latest reason tree ];
   checkInputs = [ ounit2 reactjs-jsx-ppx ];
-  nativeBuildInputs = [ cppo menhir ];
-  buildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ cppo menhir makeWrapper ];
   propagatedBuildInputs = [
     cmdliner
     base64

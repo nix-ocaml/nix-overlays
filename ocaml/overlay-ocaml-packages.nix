@@ -49,20 +49,15 @@ let
 
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
-        minor_version = "1";
+        minor_version = "2";
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "25b0c13dd7f612e49a4f3a7782a007dbd4468820";
-          hash = "sha256-o9uURDquoBaorc2Khs3qZ6KVQr1QO7mb+1j4CsZJB4Y=";
+          rev = "8e595b2ffb56eacf08e4587d449f81ed544aab1e";
+          hash = "sha256-1EgkG+FEZtK2uzIXLDouzDa+UHeclASt++hdhrOo024=";
         };
-        buildPhase = ''
-          make -j8 world
-          # make bootstrap
-          make -j8 world.opt
-        '';
       };
     } else { });
 
