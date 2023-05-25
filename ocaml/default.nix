@@ -63,21 +63,61 @@ let
       defaultVersion = "0.16.0";
     };
 
-  janeStreet = import ./janestreet-0.16.nix {
-    self = oself;
-    openssl = openssl-oc;
-    postgresql = libpq;
-    inherit
-      bash
-      fetchpatch
-      fzf
-      lib
-      kerberos
-      linuxHeaders
-      pam
-      net-snmp;
-    zstd = zstd-oc;
-  };
+  janeStreet =
+    let
+      jsBase = import ./janestreet-0.16.nix {
+        self = oself;
+        openssl = openssl-oc;
+        postgresql = libpq;
+        inherit
+          bash
+          fetchpatch
+          fzf
+          lib
+          kerberos
+          linuxHeaders
+          pam
+          net-snmp;
+        zstd = zstd-oc;
+      };
+    in
+    jsBase // {
+      core = jsBase.core.overrideAttrs (_: {
+        postPatch =
+          if lib.versionOlder "5.1" osuper.ocaml.version then ''
+            substituteInPlace core/src/gc_stubs.c \
+              --replace "caml_stat_minor_collections" \
+                        "atomic_load(&caml_minor_collections_count)"
+          '' else null;
+      });
+
+      ppx_accessor = jsBase.ppx_accessor.overrideAttrs (_: {
+        postPatch = ''
+          substituteInPlace src/ppx_accessor.ml \
+            --replace "open! Base" "module Typey = Type;; open! Base" \
+            --replace "Type." "Typey."
+        '';
+      });
+
+      streamable = jsBase.streamable.overrideAttrs (_: {
+        postPatch = ''
+          substituteInPlace ppx/src/clause.mli ppx/src/clause.ml \
+                            ppx/src/tuple_clause.ml \
+                            ppx/src/helpers.ml ppx/src/helpers.mli \
+                            ppx/src/keyed_container_clause.ml \
+                            ppx/src/sexp_clause.ml \
+                            ppx/src/core_primitive_clause.ml \
+                            ppx/src/or_error_clause.ml \
+                            ppx/src/type_parameter_clause.ml \
+                            ppx/src/parameterized_type_clause.ml \
+                            ppx/src/atomic_clause.ml \
+                            ppx/src/module_dot_t_clause.ml \
+                            ppx/src/ppx_streamable.ml \
+            --replace "open! Base" "module Typey = Type;; open! Base" \
+            --replace "Type." "Typey."
+        '';
+      });
+    };
 
 in
 
@@ -118,12 +158,6 @@ with oself;
       substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
       substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
       substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
-
-      # https://github.com/ocaml/ocaml/pull/11990
-      substituteInPlace apron/ap_config.h \
-        --replace "typedef char bool;" "#include <stdbool.h>" \
-        --replace "static const bool false = 0;" "" \
-        --replace "static const bool true  = 1;" ""
     '';
   });
 
@@ -713,16 +747,6 @@ with oself;
     doCheck = false;
   });
 
-  elina = osuper.elina.overrideAttrs (_: {
-    postPatch = ''
-      # https://github.com/ocaml/ocaml/pull/11990
-      substituteInPlace elina_auxiliary/elina_config.h \
-        --replace "typedef char bool;" "#include <stdbool.h>" \
-        --replace "static const bool false = 0;" "" \
-        --replace "static const bool true  = 1;" ""
-    '';
-  });
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -945,9 +969,11 @@ with oself;
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.2.0/js_of_ocaml-5.2.0.tbz;
-      sha256 = "1dffgy5368v132zljcr9l3bbz9wg8a9v5bbkddqhb9d6zyjb02k5";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "b19a97daf211c5b1567b785c7f524c0f434ed9b4";
+      hash = "sha256-OYrKHQ8LbgqlWxxQH+ewjtachHcdU5X163EPQV8VFJY=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
   });
@@ -1217,16 +1243,6 @@ with oself;
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
     postPatch = null;
-  });
-
-  minisat = osuper.minisat.overrideAttrs (_: {
-    postPatch = ''
-      # https://github.com/ocaml/ocaml/pull/11990
-      substituteInPlace src/solver.h \
-        --replace "typedef int  bool;" "#include <stdbool.h>" \
-        --replace "static const bool  true      = 1;" "" \
-        --replace "static const bool  false     = 0;" ""
-    '';
   });
 
   mongo = callPackage ./mongo { };
@@ -1719,11 +1735,11 @@ with oself;
         then
           fetchFromGitHub
             {
-              owner = "ocaml-ppx";
+              owner = "anmonteiro";
               repo = "ppxlib";
               # trunk-support branch
-              rev = "a45cbc65bec13fad862eaeae19fd5d4a3076383d";
-              hash = "sha256-vfWMGPDeCua6tDkUA8vjI1ZREwbI+nA+6ep84sk7RQk=";
+              rev = "0e98a83442f8cce672dcdb3e12ff72706659c822";
+              hash = "sha256-nZlKLgAoEukfvfwLLcBvfohT4BE/1URIqwKrk4wQxrQ=";
             }
         else
           builtins.fetchurl {

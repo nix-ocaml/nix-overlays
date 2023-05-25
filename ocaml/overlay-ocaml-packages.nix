@@ -42,8 +42,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "5.1.0-alpha1";
-          hash = "sha256-KRl3MlkV8nne7JZCbSSLfuH3uFGUsS/h5uojavx58NE=";
+          rev = "613f96d7bff9a63c7a12347a2082c7e8e5c1c0c9";
+          hash = "sha256-oMTawmHLi6SnIFQFrMy94x8HW/tzUf/WnXnGdSAfqbc=";
         };
       };
 
