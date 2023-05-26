@@ -1573,14 +1573,10 @@ with oself;
     '';
   });
   owl-base = osuper.owl-base.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/owlbarn/owl/releases/download/1.1/owl-1.1.tbz;
-      sha256 = "126agxlhqh5hvya6n8f7zc1ighkraf15g86fpp259pgpdikh4dlq";
-    };
     meta.platforms = lib.platforms.all;
   });
   owl = osuper.owl.overrideAttrs (_: {
-    inherit (owl-base) version src meta;
+    meta = owl-base.meta;
   });
 
   ocaml-protoc = osuper.ocaml-protoc.overrideAttrs (_: {
