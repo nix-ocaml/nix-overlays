@@ -115,6 +115,7 @@ jobs:
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
         run: ./ci.sh x86_64-darwin build_${{ matrix.setup.ocaml-version }}
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   cross-compilers:
     # needs: [native-linux]
@@ -124,7 +125,7 @@ jobs:
         setup:
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_0, continue-on-error: false }
-          - { ocaml-version: 5_1, continue-on-error: true }
+          - { ocaml-version: 5_1, continue-on-error: false }
         target:
           - arm64
           - musl
