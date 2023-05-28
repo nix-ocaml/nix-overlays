@@ -23,8 +23,9 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "3e08a98718e433f5c240f6fd1920ba0de88f56cc";
-    hash = "sha256-TKDIL8kt3LEo5o1cWOXURr4qmWZvYwOVAqhOF3O6YXI=";
+    # https://github.com/melange-re/melange/pull/583
+    rev = "47c95b328039161142c6313843100ffb989282f5";
+    hash = "sha256-bAlcd7cOFvhspb6mWHar1qZfS2/NmKVk0VJKqAx3EO4=";
     fetchSubmodules = true;
   };
 
