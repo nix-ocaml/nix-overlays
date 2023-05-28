@@ -7,10 +7,10 @@ with oself;
     pname = "melange-fetch";
     version = "n/a";
     src = fetchFromGitHub {
-      owner = "reasonml-community";
-      repo = "bs-fetch";
-      rev = "7e3ee61562884c83d03c5e0fbf37bb4f7c4eaf68";
-      hash = "sha256-egUYML8wd5IhZ9vF/pUSM+B72jYxZ4jllbCwUof2ilU=";
+      owner = "melange-community";
+      repo = "melange-fetch";
+      rev = "d2183ec245cbf5c7a8f99f8c41d2de0758c8cda7";
+      hash = "sha256-HP+DfQSeOYCzKVdsnPLpDP/qz8bU9YNaJD2TPPfV7Hs=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
