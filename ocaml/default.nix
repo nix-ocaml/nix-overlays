@@ -1348,10 +1348,6 @@ with oself;
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/astrada/ocamlfuse/archive/v2.7.1_cvs8.tar.gz;
-      sha256 = "13sr6mwa6k17naikzg0lvsaj3d2yrj4pfay5qh5243wgs63l4x0q";
-    };
     meta = {
       platforms = lib.platforms.all;
     };
@@ -1551,13 +1547,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
     '';
-  });
-
-  oseq = osuper.oseq.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/oseq/releases/download/v0.5/oseq-0.5.tbz;
-      sha256 = "1si3ql8fdbxz2q3ycnajrdq2sd6k0clmxjx95cgpl3n58azif75f";
-    };
   });
 
   eigen = osuper.eigen.overrideAttrs (_: {
