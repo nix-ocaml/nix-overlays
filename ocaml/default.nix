@@ -354,10 +354,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "paurkedal";
       repo = "ocaml-caqti";
-      rev = "c6b4e484d321cc6fa85a4a9a6424aea00221ca4f";
-      hash = "sha256-I+x40OKhGFrDzRLtOPU5o9b1K3uU4ytWGnfEQPDvZ6U=";
+      rev = "ce291f9cd94ff0012118e5af7bb978c6953d9134";
+      hash = "sha256-5yhq1NY20od7h8j2Mckq1G7/qBymLeQ/64izgERVbY8=";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
