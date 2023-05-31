@@ -1746,7 +1746,12 @@ with oself;
 
   printbox-text = disableTests osuper.printbox-text;
 
-  progress = osuper.progress.override { mtime = mtime_1; };
+  terminal = osuper.terminal.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/craigfe/progress/releases/download/0.2.2/progress-0.2.2.tbz;
+      sha256 = "1d8h87xkslsh4khfa3wlcz1p55gmh4wyrafgnnsxc7524ccw4h9k";
+    };
+  });
 
   ptime = osuper.ptime.overrideAttrs (_: {
     src = builtins.fetchurl {
