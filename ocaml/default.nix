@@ -943,7 +943,14 @@ with oself;
     '';
   });
 
-  index = osuper.index.override { mtime = mtime_1; };
+  index = osuper.index.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "index";
+      rev = "cfa32e984b633d08b2f0c1fc1f792925c6d74f8e";
+      hash = "sha256-eAGxVPwXr4/RVhnYUBz1E0M2QdVJdQ4vOkD7C0rbPno=";
+    };
+  });
 
   itv-tree = buildDunePackage {
     pname = "itv-tree";
