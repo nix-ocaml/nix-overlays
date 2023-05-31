@@ -925,15 +925,6 @@ with oself;
     };
   };
 
-  iter = osuper.iter.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/iter/releases/download/v1.7/iter-1.7.tbz;
-      sha256 = "0c5p0khy0bmcv3nv6469xp52qx8jkhgb2wzdpl1ir91iyff15mxy";
-    };
-    postPatch = ''
-      substituteInPlace src/dune --replace "bytes" ""
-    '';
-  });
   qtest = osuper.qtest.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace "bytes" ""
@@ -1498,15 +1489,6 @@ with oself;
       substituteInPlace src/dune --replace "libraries bytes" "libraries "
     '';
     buildInputs = o.buildInputs ++ [ findlib ];
-  });
-
-  ocplib-endian = osuper.ocplib-endian.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "OCamlPro";
-      repo = "ocplib-endian";
-      rev = "fda4d5525";
-      sha256 = "sha256-EoiMaiQobxtDGHRKL/GYXhM2aNVAvrBdYdgGv82LGyw=";
-    };
   });
 
   ocurl = stdenv.mkDerivation rec {
