@@ -905,19 +905,16 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
-  irmin = osuper.irmin.override { mtime = mtime_1; };
-  irmin-chunk = disableTests osuper.irmin-chunk;
-  irmin-containers = osuper.irmin-containers.override { mtime = mtime_1; };
-  irmin-fs = disableTests osuper.irmin-fs;
-  irmin-pack = disableTests (osuper.irmin-pack.override { mtime = mtime_1; });
-  irmin-git = disableTests osuper.irmin-git;
-  irmin-http = osuper.irmin-http.overrideAttrs (_: {
-    dontDetectOcamlConflicts = true;
-    doCheck = false;
+  irmin = osuper.irmin.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "irmin";
+      rev = "08641f0007337c167bf4ea461ac6d4c692a65bbe";
+      hash = "sha256-9NwtYCFS1qsG9bWjWFGvFm/ppwonRBgpSsxMvqGCNhU=";
+    };
   });
-  irmin-tezos = disableTests osuper.irmin-tezos;
-  # https://github.com/mirage/metrics/issues/57
-  irmin-test = null;
+  irmin-git = disableTests osuper.irmin-git;
+  irmin-http = disableTests osuper.irmin-http;
 
   iso639 = buildDunePackage {
     pname = "iso639";
@@ -1244,7 +1241,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "mirage";
       repo = "metrics";
-      rev = "995eb18d";
+      rev = "995eb18d2837df02c8ead719c00fb156cf475ab5";
       sha256 = "sha256-edG8L9PMjZNJlcwKBdJ54NT6mm3z1j12nAzOC9VUtJI=";
     };
   });
