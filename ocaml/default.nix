@@ -502,6 +502,14 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  containers = osuper.containers.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "c-cube";
+      repo = "ocaml-containers";
+      rev = "v3.12";
+      hash = "sha256-iiQT2I46rZZQYVJGXGts8+/2NgSyuM3jkjNyw775Njg=";
+    };
+  });
   containers-data = osuper.containers-data.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
@@ -1780,20 +1788,6 @@ with oself;
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
-
-  reactjs-jsx-ppx = buildDunePackage {
-    pname = "reactjs-jsx-ppx";
-    version = "n/a";
-    inherit (melange) src patches;
-    propagatedBuildInputs = [ ppxlib ];
-  };
-
-  rescript-syntax = buildDunePackage {
-    pname = "rescript-syntax";
-    version = "n/a";
-    inherit (melange) src patches;
-    propagatedBuildInputs = [ ppxlib melange ];
-  };
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };

@@ -23,19 +23,15 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    # https://github.com/melange-re/melange/pull/583
-    rev = "4e993cef346020ab2e4f3d346a4d99a5219e4fda";
-    hash = "sha256-pvUs3LJWSNT3HeGhjJ61DbZNU4zN8WQB9QdEkgaKHBU=";
+    rev = "915805367726aa48633ed392dfcbbd347f87b80e";
+    hash = "sha256-HBpsetVGcRmqyX/hRZkgELQ0bo3clwQttvXZmihp9cE=";
     fetchSubmodules = true;
   };
-
-  # https://github.com/melange-re/melange/pull/544
-  patches = [ ./new-reactjs-jsx-ppx.patch ];
 
   doCheck = true;
 
   nativeCheckInputs = [ nodejs_latest reason tree ];
-  checkInputs = [ ounit2 reactjs-jsx-ppx ];
+  checkInputs = [ ounit2 ];
   nativeBuildInputs = [ cppo menhir makeWrapper ];
   propagatedBuildInputs = [
     cmdliner
