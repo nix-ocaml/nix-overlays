@@ -1191,16 +1191,6 @@ with oself;
   melange = callPackage ./melange { };
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
-    version = "20230428";
-    src = fetchFromGitLab {
-      domain = "gitlab.inria.fr";
-      owner = "fpottier";
-      repo = "menhir";
-      rev = "20230428";
-      hash = "sha256-8Hl9JNKqwD0502PdV/Y/tOq9p3ZOXCZ2fvLtndG8wm8=";
-    };
-  });
-  menhirLib_20230415 = osuper.menhirLib.overrideAttrs (_: {
     src = fetchFromGitLab {
       domain = "gitlab.inria.fr";
       owner = "fpottier";
@@ -1209,13 +1199,6 @@ with oself;
       hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
     };
   });
-  menhirSdk_20230415 = osuper.menhirSdk.override {
-    menhirLib = menhirLib_20230415;
-  };
-  menhir_20230415 = osuper.menhir.override {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-  };
 
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
@@ -1341,11 +1324,7 @@ with oself;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib = callPackage ./ocamlformat/lib.nix {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-    menhir = menhir_20230415;
-  };
+  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
@@ -1462,10 +1441,7 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-  }).overrideAttrs (o: {
+  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override { }).overrideAttrs (o: {
     postPatch = ''
       substituteInPlace "menhir-recover/emitter.ml" --replace \
         "String.capitalize" "String.capitalize_ascii"
@@ -1768,11 +1744,7 @@ with oself;
         nativeBuildInputs = [ cppo ];
       };
 
-  reason = callPackage ./reason {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-    menhir = menhir_20230415;
-  };
+  reason = callPackage ./reason { };
 
   rtop = callPackage ./reason/rtop.nix { };
 
