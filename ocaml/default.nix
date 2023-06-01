@@ -2070,10 +2070,6 @@ with oself;
   });
 
   utop = osuper.utop.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.12.1/utop-2.12.1.tbz;
-      sha256 = "0lr23gplf75q8jncz00nxj8j4fdvj1a534a7xr88wi9q86jvg937";
-    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
