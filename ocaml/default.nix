@@ -1263,8 +1263,6 @@ with oself;
     doCheck = !lib.versionAtLeast ocaml.version "5.0";
   });
 
-  mtime_1 = osuper.mtime;
-
   mtime = osuper.mtime.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "dbuenzli";
@@ -1822,12 +1820,29 @@ with oself;
     patches = [ ./opium-status.patch ];
   });
 
-  rope = osuper.rope.overrideAttrs (_: {
+  rope = buildDunePackage rec {
+    pname = "rope";
+    version = "0.6.2";
+    minimalOCamlVersion = "4.03";
+
+    src = builtins.fetchurl {
+      url = "https://github.com/Chris00/ocaml-rope/releases/download/${version}/rope-${version}.tbz";
+      sha256 = "15cvfa0s1vjx7gjd07d3fkznilishqf4z4h2q5f20wm9ysjh2h2i";
+    };
+
+    buildInputs = [ benchmark ];
     postPatch = ''
       substituteInPlace "src/dune" --replace "bytes" ""
       substituteInPlace "src/rope.ml" --replace "Pervasives" "Stdlib"
     '';
-  });
+
+    meta = {
+      homepage = "https://github.com/Chris00/ocaml-rope";
+      description = "Ropes (“heavyweight strings”) in OCaml";
+      license = lib.licenses.lgpl21;
+      maintainers = with lib.maintainers; [ ];
+    };
+  };
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2055,18 +2070,9 @@ with oself;
   });
 
   utop = osuper.utop.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.12.1/utop-2.12.1.tbz;
-      sha256 = "0lr23gplf75q8jncz00nxj8j4fdvj1a534a7xr88wi9q86jvg937";
-    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
-  uuidm = osuper.uuidm.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace pkg/META --replace "bytes" ""
-    '';
-  });
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
   });
