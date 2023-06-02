@@ -502,6 +502,14 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  containers = osuper.containers.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "c-cube";
+      repo = "ocaml-containers";
+      rev = "v3.12";
+      hash = "sha256-iiQT2I46rZZQYVJGXGts8+/2NgSyuM3jkjNyw775Njg=";
+    };
+  });
   containers-data = osuper.containers-data.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
@@ -1183,16 +1191,6 @@ with oself;
   melange = callPackage ./melange { };
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
-    version = "20230428";
-    src = fetchFromGitLab {
-      domain = "gitlab.inria.fr";
-      owner = "fpottier";
-      repo = "menhir";
-      rev = "20230428";
-      hash = "sha256-8Hl9JNKqwD0502PdV/Y/tOq9p3ZOXCZ2fvLtndG8wm8=";
-    };
-  });
-  menhirLib_20230415 = osuper.menhirLib.overrideAttrs (_: {
     src = fetchFromGitLab {
       domain = "gitlab.inria.fr";
       owner = "fpottier";
@@ -1201,13 +1199,6 @@ with oself;
       hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
     };
   });
-  menhirSdk_20230415 = osuper.menhirSdk.override {
-    menhirLib = menhirLib_20230415;
-  };
-  menhir_20230415 = osuper.menhir.override {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-  };
 
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
@@ -1333,11 +1324,7 @@ with oself;
   });
 
   ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib = callPackage ./ocamlformat/lib.nix {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-    menhir = menhir_20230415;
-  };
+  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
   ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
@@ -1454,10 +1441,7 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-  }).overrideAttrs (o: {
+  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override { }).overrideAttrs (o: {
     postPatch = ''
       substituteInPlace "menhir-recover/emitter.ml" --replace \
         "String.capitalize" "String.capitalize_ascii"
@@ -1760,11 +1744,7 @@ with oself;
         nativeBuildInputs = [ cppo ];
       };
 
-  reason = callPackage ./reason {
-    menhirLib = menhirLib_20230415;
-    menhirSdk = menhirSdk_20230415;
-    menhir = menhir_20230415;
-  };
+  reason = callPackage ./reason { };
 
   rtop = callPackage ./reason/rtop.nix { };
 
@@ -1780,20 +1760,6 @@ with oself;
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
-
-  reactjs-jsx-ppx = buildDunePackage {
-    pname = "reactjs-jsx-ppx";
-    version = "n/a";
-    inherit (melange) src patches;
-    propagatedBuildInputs = [ ppxlib ];
-  };
-
-  rescript-syntax = buildDunePackage {
-    pname = "rescript-syntax";
-    version = "n/a";
-    inherit (melange) src patches;
-    propagatedBuildInputs = [ ppxlib melange ];
-  };
 
   redemon = callPackage ./redemon { };
   redis = callPackage ./redis { };

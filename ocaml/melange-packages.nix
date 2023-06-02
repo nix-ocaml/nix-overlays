@@ -33,13 +33,27 @@ with oself;
   reason-react = buildDunePackage {
     pname = "reason-react";
     version = "n/a";
+    inherit (reactjs-jsx-ppx) src;
+    nativeBuildInputs = [ reason melange ];
+    propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
+  };
+
+  reactjs-jsx-ppx = buildDunePackage {
+    pname = "reactjs-jsx-ppx";
+    version = "n/a";
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "1c35274e7c1c3df96f0e71b59793b365850fcdb8";
-      hash = "sha256-xKwc46QbdSuuuBKhtBKgERdYZS0Vu/R7arzl5nqF2DI=";
+      rev = "a35f96b153bfd653e095a3b2c235d38f37736844";
+      hash = "sha256-zyuf4jXbk++lmVKcIftP9lHiNQKq0zlQK+RywZdwQnA=";
     };
-    nativeBuildInputs = [ reason melange ];
-    propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
+    propagatedBuildInputs = [ ppxlib ];
+  };
+
+  rescript-syntax = buildDunePackage {
+    pname = "rescript-syntax";
+    version = "n/a";
+    inherit (melange) src patches;
+    propagatedBuildInputs = [ ppxlib melange ];
   };
 }
