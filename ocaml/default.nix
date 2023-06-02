@@ -1359,8 +1359,16 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "odoc";
-      rev = "bfb69bab5955fe1eaab0af795bfbbb9792b3131c";
-      hash = "sha256-qC8uKMEHpCbEdsmVZVJOnFBSJ0tsKlYu1uhkQbSVppY=";
+      rev = "29810eb04a3f9ed04bae3d31a4877a0953b44cbf";
+      hash = "sha256-ZWOxZlWamTWEuwXljQgOkhN2VXE9xj6gg0M3ypv1wpY=";
+    };
+  });
+  odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-doc";
+      repo = "odoc-parser";
+      rev = "f98cfe3";
+      hash = "sha256-xWGDR0gcakLDubzSLM29mAy0HhkSAsOpzxEgBj6hNII=";
     };
   });
 
@@ -1685,8 +1693,8 @@ with oself;
               owner = "anmonteiro";
               repo = "ppxlib";
               # trunk-support branch
-              rev = "0e98a83442f8cce672dcdb3e12ff72706659c822";
-              hash = "sha256-nZlKLgAoEukfvfwLLcBvfohT4BE/1URIqwKrk4wQxrQ=";
+              rev = "1164e2d6d3bb1da0cf27a92b27b3e6d3880a56a8";
+              hash = "sha256-7bncV/prkt9AVAnDuQ2PVh6OehugTxufrqdwTP6oOao=";
             }
         else
           builtins.fetchurl {
