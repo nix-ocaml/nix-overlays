@@ -722,11 +722,9 @@ with oself;
     inherit (dyn) preBuild;
   });
   fiber = osuper.fiber.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-dune";
-      repo = "fiber";
-      rev = "a7b5456b95a67099c5f8078d7098e565e4d5b9ea";
-      sha256 = "sha256-nnvQU9Kk63BQqQiAhzPVLnjnEpKBSxjcfTn31RfiMoU=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-dune/fiber/releases/download/3.7.0/fiber-lwt-3.7.0.tbz;
+      sha256 = "10ln7cf7l3nc43ji8iwwh9i3p4d355s8hdnfk4lr9rizx5da2j46";
     };
     propagatedBuildInputs = [ dyn stdune ];
     preBuild = "";
@@ -940,11 +938,9 @@ with oself;
   });
 
   index = osuper.index.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "index";
-      rev = "cfa32e984b633d08b2f0c1fc1f792925c6d74f8e";
-      hash = "sha256-eAGxVPwXr4/RVhnYUBz1E0M2QdVJdQ4vOkD7C0rbPno=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/index/releases/download/1.6.2/index-1.6.2.tbz;
+      sha256 = "0q48mgn29dxrh14isccq5bqrs12whn3fsw6hrvp49vd4k188724k";
     };
   });
 
@@ -1195,8 +1191,8 @@ with oself;
       domain = "gitlab.inria.fr";
       owner = "fpottier";
       repo = "menhir";
-      rev = "20230415";
-      hash = "sha256-WjE3iOKlUb15MDG3+GOi+nertAw9L2Ryazi/0JEvjqc=";
+      rev = "20230608";
+      hash = "sha256-dUPoIUVr3gqvE5bniyQh/b37tNfRsZN8X3e99GFkyLY=";
     };
   });
 
@@ -1220,11 +1216,9 @@ with oself;
   };
 
   metrics = osuper.metrics.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "metrics";
-      rev = "995eb18d2837df02c8ead719c00fb156cf475ab5";
-      sha256 = "sha256-edG8L9PMjZNJlcwKBdJ54NT6mm3z1j12nAzOC9VUtJI=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/metrics/releases/download/v0.4.1/metrics-0.4.1.tbz;
+      sha256 = "0k8lqvrwfal5jwy45l0aq1hkrvjv0k30pv5hvc1n3l61nl7w5q3p";
     };
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
@@ -1880,8 +1874,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
-      rev = "50b1ced2bc13416a1116850feb97f297e07b5dde";
-      hash = "sha256-PbARYr+r3PL6vvu7GI7nUebvGJez8BswB7FTVoKKkMU=";
+      rev = "d48edf4f9247531322aef75cc368b79501db45eb";
+      hash = "sha256-EO2420qjwV7WBHqYNgghZb+D2gcEgrBCejf93rct/Tk=";
     };
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
