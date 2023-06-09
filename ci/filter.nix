@@ -46,7 +46,6 @@ let
     # broken since OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
-    "wasm"
 
     # Broken since OCaml 4.14
     "eliom"
@@ -105,7 +104,6 @@ let
     "piqi"
     "piqi-ocaml"
     "semver"
-    "twt"
     "lambdapi"
 
     # broken on 5.1
