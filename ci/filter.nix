@@ -86,6 +86,7 @@ let
     "tls-async"
     "graphql-async"
     "magic-trace"
+    "tdigest"
   ];
 
   ocaml5Ignores = [

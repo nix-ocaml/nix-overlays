@@ -507,7 +507,7 @@ with oself;
       owner = "c-cube";
       repo = "ocaml-containers";
       rev = "v3.12";
-      hash = "sha256-iiQT2I46rZZQYVJGXGts8+/2NgSyuM3jkjNyw775Njg=";
+      hash = "sha256-15Wd6k/NvjAvTmxlPlZPClODBtFXM6FG3VxniC66u88=";
     };
   });
   containers-data = osuper.containers-data.overrideAttrs (_: {
