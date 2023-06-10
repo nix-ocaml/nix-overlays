@@ -507,7 +507,7 @@ with oself;
       owner = "c-cube";
       repo = "ocaml-containers";
       rev = "v3.12";
-      hash = "sha256-iiQT2I46rZZQYVJGXGts8+/2NgSyuM3jkjNyw775Njg=";
+      hash = "sha256-15Wd6k/NvjAvTmxlPlZPClODBtFXM6FG3VxniC66u88=";
     };
   });
   containers-data = osuper.containers-data.overrideAttrs (_: {
@@ -882,12 +882,6 @@ with oself;
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
   httpaf-mirage = callPackage ./httpaf/mirage.nix { };
   httpaf-async = callPackage ./httpaf/async.nix { };
-
-  headache = osuper.headache.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace dune --replace "bytes" ""
-    '';
-  });
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -1572,6 +1566,7 @@ with oself;
   pecu = disableTests osuper.pecu;
 
   pgocaml = osuper.pgocaml.overrideAttrs (o: {
+    patches = [ ];
     postPatch = ''
       substituteInPlace src/dune --replace \
         "(libraries calendar" \
@@ -2045,13 +2040,22 @@ with oself;
     pname = "uutf";
   });
 
-  vlq = osuper.vlq.overrideAttrs (_: {
+  vlq = buildDunePackage {
+    pname = "vlq";
+    version = "0.2.1";
+
+    src = builtins.fetchurl {
+      url = https://github.com/flowtype/ocaml-vlq/releases/download/v0.2.1/vlq-v0.2.1.tbz;
+      sha256 = "02wr9ph4q0nxmqgbc67ydf165hmrdv9b655krm2glc3ahb6larxi";
+    };
+
+    buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
       substituteInPlace "src/dune" --replace \
         '(public_name vlq))' '(libraries camlp-streams)(public_name vlq))'
     '';
-  });
+  };
 
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
