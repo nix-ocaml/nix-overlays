@@ -29,7 +29,6 @@
 , python3Packages
 , lmdb
 , curl
-, writeScriptBin
 , libsodium
 , cairo
 , gtk2
@@ -1688,8 +1687,8 @@ with oself;
               owner = "anmonteiro";
               repo = "ppxlib";
               # trunk-support branch
-              rev = "1164e2d6d3bb1da0cf27a92b27b3e6d3880a56a8";
-              hash = "sha256-7bncV/prkt9AVAnDuQ2PVh6OehugTxufrqdwTP6oOao=";
+              rev = "0dc7cd4df3f07f2bd8689645722d7a85ac0f0b3c";
+              hash = "sha256-RVxMEjbMx4e9ViFGr5kAFbNjD4FiMgZsjw8jrbtJSNc=";
             }
         else
           builtins.fetchurl {
