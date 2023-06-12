@@ -13,7 +13,7 @@
 
 buildDunePackage {
   pname = "eio";
-  version = "0.9";
+  version = "0.10";
 
   src = fetchFromGitHub {
     owner = "ocaml-multicore";
