@@ -810,12 +810,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  functoria-runtime = osuper.functoria-runtime.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./lib_runtime/functoria/dune --replace "bytes" ""
-    '';
-  });
-
   gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-stub = disableTests osuper.gettext-stub;
@@ -923,12 +917,6 @@ with oself;
       sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
     };
   };
-
-  qtest = osuper.qtest.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/dune --replace "bytes" ""
-    '';
-  });
 
   index = osuper.index.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1490,12 +1478,6 @@ with oself;
       rev = "499e8260df6487ebdacb9fcccb2f9dec36df8063";
       sha256 = "sha256-h1+D0HiCdEOBez+9EyqkF63TRW7pWkoUJYkugBTywI4=";
     };
-  });
-
-  omd = osuper.omd.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace src/dune --replace "bytes" ""
-    '';
   });
 
   opam-core = osuper.opam-core.overrideAttrs (_: {
