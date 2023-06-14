@@ -18,13 +18,6 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
-  domain-local-await = callPackage ./domain-local-await { };
-
-  eio = callPackage ./eio { };
-  eio_linux = callPackage ./eio/linux.nix { };
-  eio_posix = callPackage ./eio/posix.nix { };
-  eio_main = callPackage ./eio/main.nix { };
-
   eio-ssl = callPackage ./eio-ssl { };
 
   gluten-eio = callPackage ./gluten/eio.nix { };
