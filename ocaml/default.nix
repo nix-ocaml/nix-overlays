@@ -1,5 +1,7 @@
 { nixpkgs
 , autoconf
+, autoreconfHook
+, bzip2
 , automake
 , bash
 , buildPackages
@@ -137,12 +139,6 @@ with oself;
     propagatedBuildInputs = [ atd cmdliner ];
   };
 
-  ansiterminal = osuper.ansiterminal.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/dune --replace " bytes" ""
-    '';
-  });
-
   apron = osuper.apron.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
@@ -254,12 +250,44 @@ with oself;
     };
   });
 
-  bz2 = osuper.bz2.overrideAttrs (_: {
+  bz2 = stdenv.mkDerivation rec {
+    pname = "ocaml${ocaml.version}-bz2";
+    version = "0.7.0";
+
+    src = fetchFromGitLab {
+      owner = "irill";
+      repo = "camlbz2";
+      rev = version;
+      sha256 = "sha256-jBFEkLN2fbC3LxTu7C0iuhvNg64duuckBHWZoBxrV/U=";
+    };
+
+    autoreconfFlags = [ "-I" "." ];
+
+    nativeBuildInputs = [
+      autoreconfHook
+      ocaml
+      findlib
+    ];
+
+    propagatedBuildInputs = [
+      bzip2
+    ];
+
+    strictDeps = true;
+
+    preInstall = "mkdir -p $OCAMLFIND_DESTDIR/stublibs";
     postPatch = ''
       substituteInPlace bz2.ml --replace "Pervasives" "Stdlib"
       substituteInPlace bz2.mli --replace "Pervasives" "Stdlib"
     '';
-  });
+
+    meta = with lib; {
+      description = "OCaml bindings for the libbz2 (AKA, bzip2) (de)compression library";
+      downloadPage = "https://gitlab.com/irill/camlbz2";
+      license = licenses.lgpl21;
+      maintainers = with maintainers; [ ];
+    };
+  };
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -558,22 +586,6 @@ with oself;
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
     doCheck = false;
   });
-
-  cudf = buildDunePackage {
-    pname = "cudf";
-    version = "0.5.97+500";
-    src = builtins.fetchurl {
-      url = https://gitlab.com/irill/cudf/-/archive/419631fac6dac1eaa68abe15152fbba52100aa27.tar.gz;
-      sha256 = "0yiisyl5a6la9mlhplfyjxl21ccwv6axjbb1v76xm69324z2xf9g";
-    };
-
-    propagatedBuildInputs = [ extlib ];
-
-    postPatch = ''
-      substituteInPlace ./cudf.ml --replace "Pervasives." "Stdlib."
-      substituteInPlace ./cudf_types_pp.ml --replace "Pervasives." "Stdlib."
-    '';
-  };
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -883,16 +895,9 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
-  iomux = buildDunePackage {
-    pname = "iomux";
-    version = "0.2";
-    src = builtins.fetchurl {
-      url = https://github.com/haesbaert/ocaml-iomux/releases/download/v0.2/iomux-0.2.tbz;
-      sha256 = "10b1gl9fq7nk4j9bbpvbmk627cflnw51f4s2gbjh4jddkcgs7bfj";
-    };
+  iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
-    buildInputs = [ lmdb-pkg dune-configurator ];
-  };
+  });
 
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
@@ -1229,14 +1234,8 @@ with oself;
     doCheck = !lib.versionAtLeast ocaml.version "5.0";
   });
 
-  mtime = osuper.mtime.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "mtime";
-      rev = "v2.0.0";
-      sha256 = "sha256-R1kujDbLJZbyyk91qNYAxpwdfnBUHm80zUeJ6GZeaTk=";
-    };
-  });
+  # Upstream keeps mtime_1 but we've moved past that need
+  mtime_1 = mtime;
 
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
@@ -1531,14 +1530,6 @@ with oself;
         src/compilerlib/pb_codegen_util.ml \
         --replace "Char.uppercase " "Char.uppercase_ascii "
     '';
-  });
-  parmap = osuper.parmap.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "rdicosmo";
-      repo = "parmap";
-      rev = "1.2.5";
-      sha256 = "sha256-tBu7TGtDOe5FbxLZuz6nl+65aN9FHIngq/O4dJWzr3Q=";
-    };
   });
 
   ocaml_pcre = osuper.ocaml_pcre.override { pcre = pcre-oc; };
