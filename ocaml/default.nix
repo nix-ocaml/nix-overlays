@@ -418,11 +418,6 @@ with oself;
     };
   });
 
-  cohttp = osuper.cohttp.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace ./cohttp/src/dune --replace "bytes" ""
-    '';
-  });
   cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace "cohttp-async/src/body_raw.ml" --replace \
@@ -825,12 +820,6 @@ with oself;
   gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-stub = disableTests osuper.gettext-stub;
-
-  github-unix = osuper.github-unix.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./unix/dune --replace "bytes" ""
-    '';
-  });
 
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
