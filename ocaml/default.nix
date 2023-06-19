@@ -382,8 +382,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "paurkedal";
       repo = "ocaml-caqti";
-      rev = "ce291f9cd94ff0012118e5af7bb978c6953d9134";
-      hash = "sha256-5yhq1NY20od7h8j2Mckq1G7/qBymLeQ/64izgERVbY8=";
+      rev = "71aceaae808c7f87794ab776220db34defa84a57";
+      hash = "sha256-+zTsAIQFgfcvZZIqaHiCtRBdR2TAipeZK5Opa6DJDM8=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -1650,7 +1650,7 @@ with oself;
               owner = "anmonteiro";
               repo = "ppxlib";
               # trunk-support branch
-              rev = "0dc7cd4df3f07f2bd8689645722d7a85ac0f0b3c";
+              rev = "cc54c517b8854736d981b634ab1dc0f4f11282a6";
               hash = "sha256-RVxMEjbMx4e9ViFGr5kAFbNjD4FiMgZsjw8jrbtJSNc=";
             }
         else
