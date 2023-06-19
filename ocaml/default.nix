@@ -376,6 +376,7 @@ with oself;
   });
 
   carton = disableTests osuper.carton;
+  carton-lwt = disableTests osuper.carton-lwt;
 
   caqti = osuper.caqti.overrideAttrs (o: {
     src = fetchFromGitHub {
