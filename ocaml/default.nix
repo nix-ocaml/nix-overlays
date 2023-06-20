@@ -186,6 +186,20 @@ with oself;
     };
   };
 
+  batteries = buildDunePackage {
+    pname = "batteries";
+    version = "dev";
+    src =
+      fetchFromGitHub {
+        owner = "ocaml-batteries-team";
+        repo = "batteries-included";
+        rev = "cdd5626ac526fc5205db00a39d14268e267abdd0";
+        hash = "sha256-PSdEGTe5AFWAUV4R33qSDFbD9nCQW43b3SwhLcMkN6A=";
+      };
+
+    propagatedBuildInputs = [ num camlp-streams ];
+  };
+
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -1419,6 +1433,19 @@ with oself;
         "String.capitalize" "String.capitalize_ascii"
     '';
   });
+
+  ocplib-simplex = buildDunePackage {
+    pname = "ocplib-simplex";
+    version = "dev";
+    src = fetchFromGitHub {
+      owner = "ocamlpro";
+      repo = "ocplib-simplex";
+      rev = "eac35128d5ab4f48af4b972cd77cd9257a250db5";
+      hash = "sha256-OAU7JXGlLJYhsaOdZJbHHn63AYBSyTmG/jYXxZ5hjXI=";
+    };
+
+    propagatedBuildInputs = [ logs ];
+  };
 
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
