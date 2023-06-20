@@ -86,6 +86,7 @@ let
     "graphql-async"
     "magic-trace"
     "tdigest"
+    "telegraml"
   ];
 
   ocaml5Ignores = [
