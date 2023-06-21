@@ -90,6 +90,10 @@ let
 
     # Old mirage-kv interface
     "mirage-fs"
+
+    # conflicts with new LSP
+    "linol"
+    "linol-lwt"
   ];
 
   ocaml5Ignores = [

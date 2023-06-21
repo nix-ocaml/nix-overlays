@@ -1894,6 +1894,7 @@ with oself;
       tar
     ];
   };
+  tar-unix = disableTests osuper.tar-unix;
 
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
