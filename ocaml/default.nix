@@ -966,16 +966,13 @@ with oself;
   });
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionAtLeast ocaml.version "5.0" then
-        fetchFromGitHub
-          {
-            owner = "ocaml";
-            repo = "ocaml-lsp";
-            fetchSubmodules = true;
-            rev = "63c12eb178471c7bd660460f489922377a3701d0";
-            sha256 = "sha256-9WOieVlaojMuJTZLo0cCY5Qm1M0JX2asnlmwO6JbhJs=";
-          }
-      else o.src;
+      builtins.fetchurl {
+        url = https://github.com/ocaml/ocaml-lsp/releases/download/1.16.1/lsp-1.16.1.tbz;
+        sha256 = "1rh4ihm823cf4c88svknq5lffjlyiy9xr1n2pq1mx4xrzdd31yw4";
+      };
+  });
+  ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ odoc-parser merlin-lib ];
   });
 
   kafka = (osuper.kafka.override {
@@ -1129,23 +1126,23 @@ with oself;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
-  #   mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
-  # sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
-  # };
-  # propagatedBuildInputs = [ fmt optint lwt ptime ];
-  #   });
+  mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
+      sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
+    };
+    propagatedBuildInputs = [ fmt optint lwt ptime ];
+  });
 
-  # mirage-kv-mem = buildDunePackage {
-  # pname = "mirage-kv-mem";
-  # version = "3.2.1";
-  # src = builtins.fetchurl {
-  # url = https://github.com/mirage/mirage-kv-mem/releases/download/v3.2.1/mirage-kv-mem-3.2.1.tbz;
-  # sha256 = "07qr508kb4v9acybncz395p0mnlakib3r8wx5gk7sxdxhmic1z59";
-  # };
-  # propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
-  # };
+  mirage-kv-mem = buildDunePackage {
+    pname = "mirage-kv-mem";
+    version = "3.2.1";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-kv-mem/releases/download/v3.2.1/mirage-kv-mem-3.2.1.tbz;
+      sha256 = "07qr508kb4v9acybncz395p0mnlakib3r8wx5gk7sxdxhmic1z59";
+    };
+    propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
+  };
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
@@ -1668,22 +1665,11 @@ with oself;
   ppxlib =
     let
       src =
-        if lib.hasPrefix "5.1" osuper.ocaml.version
-        then
-          fetchFromGitHub
-            {
-              owner = "anmonteiro";
-              repo = "ppxlib";
-              # trunk-support branch
-              rev = "cc54c517b8854736d981b634ab1dc0f4f11282a6";
-              hash = "sha256-RVxMEjbMx4e9ViFGr5kAFbNjD4FiMgZsjw8jrbtJSNc=";
-            }
-        else
-          builtins.fetchurl {
-            url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.29.1/ppxlib-0.29.1.tbz;
-            sha256 = "0yfxwmkcgrn8j0m8dsklm7d979119f0jszrfc6kdnks1f23qrsn8";
+        builtins.fetchurl {
+          url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.30.0/ppxlib-0.30.0.tbz;
+          sha256 = "04118jn57bdnh8chxjj1m5vz2cn96wwnbmq41s0lk6yjx6yn6jnx";
 
-          };
+        };
     in
     osuper.ppxlib.overrideAttrs (_: {
       inherit src;
@@ -1888,6 +1874,13 @@ with oself;
     '';
   });
 
+  tar = osuper.tar.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.5.1/tar-2.5.1.tbz;
+      sha256 = "0naphl91y9bpxa05i656j5vmdihqg16lv770nyfprx3clnffkixn";
+    };
+  });
+
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;
@@ -1901,6 +1894,7 @@ with oself;
       tar
     ];
   };
+  tar-unix = disableTests osuper.tar-unix;
 
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2071,8 +2065,8 @@ with oself;
 
   zed = osuper.zed.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/zed/releases/download/3.2.0/zed-3.2.0.tbz;
-      sha256 = "0gji5rp44mqsld117n8g93cqg8302py1piqshmvg63268fylj8rl";
+      url = https://github.com/ocaml-community/zed/releases/download/3.2.2/zed-3.2.2.tbz;
+      sha256 = "0bkpmg8vb8bfi9zjnqba11kp74b7b6zh40az13pnj61gyb4fqsh9";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
   });
