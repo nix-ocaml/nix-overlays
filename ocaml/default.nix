@@ -253,8 +253,6 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
-  bls12-381 = disableTests osuper.bls12-381;
-
   bos = osuper.bos.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "dbuenzli";
