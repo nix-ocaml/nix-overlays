@@ -87,6 +87,9 @@ let
     "magic-trace"
     "tdigest"
     "telegraml"
+
+    # Old mirage-kv interface
+    "mirage-fs"
   ];
 
   ocaml5Ignores = [
