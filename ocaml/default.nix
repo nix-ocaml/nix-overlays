@@ -1877,7 +1877,7 @@ with oself;
   tar = osuper.tar.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ocaml-tar/releases/download/v2.5.1/tar-2.5.1.tbz;
-      sha256 = "0naphl91y9bpxa05i656j5vmdihqg16lv770nyfprx3clnffkixn";
+      sha256 = "1x1xik316m3a6d616bwa9c9s2ji50g8p3hs9ckhmp837hr40yi6k";
     };
   });
 
