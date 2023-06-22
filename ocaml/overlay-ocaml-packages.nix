@@ -59,6 +59,19 @@ let
           hash = "sha256-1EgkG+FEZtK2uzIXLDouzDa+UHeclASt++hdhrOo024=";
         };
       };
+
+      ocamlPackages_jst = newOCamlScope {
+        major_version = "4";
+        minor_version = "14";
+        patch_version = "1+jst";
+        hardeningDisable = [ "strictoverflow" ];
+        src = super.fetchFromGitHub {
+          owner = "ocaml-flambda";
+          repo = "ocaml-jst";
+          rev = "e3076d2e7321a8e8ff18e560ed7a55d6ff0ebf04";
+          hash = "sha256-y5p73ZZtwkgUzvCHlE9nqA2OdlDbYWr8wnWRhYH82hE=";
+        };
+      };
     } else { });
 
   overlaySinglePackageSet = pkgSet:
