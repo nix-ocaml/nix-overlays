@@ -14,6 +14,7 @@ let
     "5_0"
     "5_1"
     "trunk"
+    "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
     ocaml-ng.ocamlPackages_4_13.overrideScope'
