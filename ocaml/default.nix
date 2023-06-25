@@ -762,16 +762,6 @@ with oself;
   });
 
 
-  dune-release = osuper.dune-release.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocamllabs";
-      repo = "dune-release";
-      rev = "ab37686";
-      sha256 = "sha256-x94XNMdHbSrubcmYLMXor7OLY/c2LyRiq/Ot/IHYjxM=";
-    };
-    doCheck = false;
-  });
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
