@@ -761,7 +761,6 @@ with oself;
     inherit (dyn) preBuild;
   });
 
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -946,11 +945,9 @@ with oself;
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "b19a97daf211c5b1567b785c7f524c0f434ed9b4";
-      hash = "sha256-OYrKHQ8LbgqlWxxQH+ewjtachHcdU5X163EPQV8VFJY=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.3.0/js_of_ocaml-5.3.0.tbz;
+      sha256 = "1lk4rll6cjxa125wv36mgv05z26j0iy89ndjpkqjhpcfp7p3v7my";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
   });
