@@ -14,7 +14,7 @@
 , tree
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "melange";
   version = "0.3.0";
   duneVersion = "3";

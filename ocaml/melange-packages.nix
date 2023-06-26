@@ -21,9 +21,9 @@ with oself;
     version = "n/a";
     src = fetchFromGitHub {
       owner = "anmonteiro";
-      repo = "rescript-relay";
-      rev = "022781d8e3a86983cbb4e00330e3982e9b0aa24d";
-      hash = "sha256-6oAy72YI7e9JrYmbykzEXp3DKz9hgMxbKcd4xWFUvIU=";
+      repo = "melange-relay";
+      rev = "ea1083d7e9da36bf9faa46d4943d661064008121";
+      hash = "sha256-szcKcUPbv7jzsc8xjMnbNyOLM1Ie95/x0FGtePxfT04=";
       sparseCheckout = [ "packages/rescript-relay" ];
     };
     nativeBuildInputs = [ melange reason ];

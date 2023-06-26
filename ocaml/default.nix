@@ -1837,9 +1837,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
-      rev = "d48edf4f9247531322aef75cc368b79501db45eb";
-      hash = "sha256-EO2420qjwV7WBHqYNgghZb+D2gcEgrBCejf93rct/Tk=";
+      rev = "cb7c8d758d1e5598535ecfd8698fd5a0c155063f";
+      hash = "sha256-/J/LyDuR1pFreir4ddNvzoVRcu5yCGVWQAvQFB5Pl08=";
     };
+    nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
