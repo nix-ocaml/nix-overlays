@@ -21,31 +21,31 @@ with oself;
     version = "n/a";
     src = fetchFromGitHub {
       owner = "anmonteiro";
-      repo = "rescript-relay";
-      rev = "022781d8e3a86983cbb4e00330e3982e9b0aa24d";
-      hash = "sha256-6oAy72YI7e9JrYmbykzEXp3DKz9hgMxbKcd4xWFUvIU=";
+      repo = "melange-relay";
+      rev = "ea1083d7e9da36bf9faa46d4943d661064008121";
+      hash = "sha256-szcKcUPbv7jzsc8xjMnbNyOLM1Ie95/x0FGtePxfT04=";
       sparseCheckout = [ "packages/rescript-relay" ];
     };
     nativeBuildInputs = [ melange reason ];
-    propagatedBuildInputs = [ reason-react reactjs-jsx-ppx graphql_parser melange-fetch ];
+    propagatedBuildInputs = [ reason-react reason-react-ppx graphql_parser melange-fetch ];
   };
 
   reason-react = buildDunePackage {
     pname = "reason-react";
     version = "n/a";
-    inherit (reactjs-jsx-ppx) src;
+    inherit (reason-react-ppx) src;
     nativeBuildInputs = [ reason melange ];
-    propagatedBuildInputs = [ reactjs-jsx-ppx melange ];
+    propagatedBuildInputs = [ reason-react-ppx melange ];
   };
 
-  reactjs-jsx-ppx = buildDunePackage {
-    pname = "reactjs-jsx-ppx";
+  reason-react-ppx = buildDunePackage {
+    pname = "reason-react-ppx";
     version = "n/a";
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "a35f96b153bfd653e095a3b2c235d38f37736844";
-      hash = "sha256-zyuf4jXbk++lmVKcIftP9lHiNQKq0zlQK+RywZdwQnA=";
+      rev = "9e70d7548918816f1c0d8be8bdc66b6deabd339a";
+      hash = "sha256-EY2HZmG3ueh9sSShJ02S/7KavbQRu/EMuTQMq13itSo=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };

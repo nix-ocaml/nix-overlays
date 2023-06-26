@@ -10,12 +10,11 @@
 , ppxlib
 , ounit2
 , reason
-, reactjs-jsx-ppx
 , nodejs_latest
 , tree
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "melange";
   version = "0.3.0";
   duneVersion = "3";
