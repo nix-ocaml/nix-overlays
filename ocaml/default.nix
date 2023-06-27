@@ -666,10 +666,10 @@ with oself;
   dream-serve = callPackage ./dream-serve { };
 
   duff = osuper.duff.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace "lib/duff.ml" --replace \
-        "(Uint32.(to_int (hash land hmask)))" "(let ha = hash in Uint32.(to_int (ha land hmask)))"
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/duff/releases/download/v0.5/duff-0.5.tbz;
+      sha256 = "1pkfmpcya0xvpzm7q5xg3w8z5rgbagq16vycx3pm0s1vmbs3qigr";
+    };
   });
 
   dum = osuper.dum.overrideAttrs (_: {
