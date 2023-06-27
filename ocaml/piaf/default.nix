@@ -23,8 +23,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "fce1dbcc538569c257b296cb2dfd3e3eae11881d";
-    hash = "sha256-Mtqucp4/FAa6DCBdZRk1eo3Cef9+wGTJp6BvD4a9rIc=";
+    rev = "f5eb57cb6207b416322beca8a2da60506ea465ec";
+    hash = "sha256-xQXb9pNjgD9Bh9GAcFYyj4JebE+J0drO1EWh/rU/Dfg=";
   };
 
   doCheck = true;

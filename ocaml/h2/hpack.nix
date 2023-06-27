@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "ocaml-h2";
-    rev = "d80e74b8ad78e782dd20eea433517b68f6d3af8d";
-    hash = "sha256-gTNZOIMU+4gsa4shk1iKS65/OcMDRqzuPJl6vKfsC8U=";
+    rev = "88f421cc0399c305764357bf99eb17b9034a096c";
+    hash = "sha256-jYX335WESN05r0sb5FUHKri+EyoKbJi3jPEvBRYG82U=";
   };
   propagatedBuildInputs = [ angstrom faraday ];
 }
