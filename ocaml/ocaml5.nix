@@ -14,6 +14,11 @@ with oself;
         caqti-eio/lib/system.ml caqti-eio/lib/caqti_eio.mli \
         caqti-eio/lib-unix/caqti_eio_unix.mli \
         --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
+
+      substituteInPlace caqti-eio/lib/system.ml \
+        --replace \
+          'fork_sub ~sw ~on_error:(fun _ -> ()) (fun _sw -> f ())' \
+          'fork ~sw (fun () -> (Switch.run (fun _sw -> f ())))'
     '';
     propagatedBuildInputs = [ eio eio_main caqti ];
   };

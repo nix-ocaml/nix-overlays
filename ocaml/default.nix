@@ -761,6 +761,15 @@ with oself;
     inherit (dyn) preBuild;
   });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "eio";
+      rev = "dcf8624cde9164d74d036d267702a575c4d06ce9";
+      hash = "sha256-nwpvz8hWsKLHCf4nnB9VgUmeNGDvYF/MFDQu/Q26JhE=";
+    };
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
