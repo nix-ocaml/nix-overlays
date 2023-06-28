@@ -665,13 +665,6 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
-  duff = osuper.duff.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/duff/releases/download/v0.5/duff-0.5.tbz;
-      sha256 = "1pkfmpcya0xvpzm7q5xg3w8z5rgbagq16vycx3pm0s1vmbs3qigr";
-    };
-  });
-
   dum = osuper.dum.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
