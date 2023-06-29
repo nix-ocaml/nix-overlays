@@ -1480,10 +1480,93 @@ with oself;
     };
   });
 
-  opam-core = osuper.opam-core.overrideAttrs (_: {
+  swhid_core = buildDunePackage {
+    pname = "swhid_core";
+    version = "0.1";
+    src = fetchFromGitHub {
+      owner = "ocamlpro";
+      repo = "swhid_core";
+      rev = "0.1";
+      hash = "sha256-uLnVbptCvmBeNbOjGjyAWAKgzkKLDTYVFY6SNH2zf0A=";
+    };
+  };
+  spdx_licenses = buildDunePackage {
+    pname = "spdx_licenses";
+    version = "1.2.0";
+    src = fetchFromGitHub {
+      owner = "kit-ty-kate";
+      repo = "spdx_licenses";
+      rev = "v1.2.0";
+      hash = "sha256-GRadJmX+ddzYa8XwX1Nxe7iYIkcumI94fuTCq6FHAGA=";
+    };
+  };
+  x0install-solver = buildDunePackage {
+    pname = "0install-solver";
+    version = "2.18";
+    src = builtins.fetchurl {
+      url = https://github.com/0install/0install/releases/download/v2.18/0install-2.18.tbz;
+      sha256 = "1hr0k47cxqcsycxhmn2ajaakfwnap1m24p068k5xy9hsihqlp334";
+    };
+  };
+  opam-0install-cudf = buildDunePackage {
+    pname = "opam-0install-cudf";
+    version = "0.4.3";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-opam/opam-0install-solver/releases/download/v0.4.3/opam-0install-cudf-0.4.3.tbz;
+      sha256 = "12jv2kk6fkapa04w4f0c6iy5lfw9hcy23ghfyn7pk3x5vnyhx7nm";
+    };
+    propagatedBuildInputs = [ cudf x0install-solver ];
+  };
+
+  opam-client = buildDunePackage {
+    pname = "opam-client";
+    inherit (opam-format) src version meta;
+    configureFlags = [ "--disable-checks" ];
+    propagatedBuildInputs = [ cmdliner base64 re opam-repository opam-solver opam-state ];
+  };
+  opam = buildDunePackage {
+    pname = "opam";
+    inherit (opam-format) src version meta;
+    nativeBuildInputs = [ curl ];
+    configureFlags = [ "--disable-checks" ];
+    propagatedBuildInputs = [ cmdliner opam-client ];
+  };
+  opam-core = osuper.opam-core.overrideAttrs (o: {
+    inherit (opam-format) src version meta;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ uutf swhid_core jsonm sha ];
     postPatch = ''
       substituteInPlace src/core/dune --replace "bigarray" ""
     '';
+  });
+  opam-repository = osuper.opam-repository.overrideAttrs (o: {
+    configureFlags = [ "--disable-checks" ];
+  });
+  opam-solver = buildDunePackage {
+    pname = "opam-solver";
+    inherit (opam-format) src version meta;
+    configureFlags = [ "--disable-checks" ];
+    propagatedBuildInputs = [ opam-0install-cudf re dose3 opam-format ];
+  };
+  opam-format = osuper.opam-format.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "opam";
+      rev = "2.2.0-alpha";
+      hash = "sha256-zFfAbxzQStJ5OhrlWZtpY11LzRq4RmnMlH56bDOkDtM=";
+    };
+    version = "2.2.0-alpha";
+    meta = with lib; {
+      description = "A package manager for OCaml";
+      homepage = "https://opam.ocaml.org/";
+      changelog = "https://github.com/ocaml/opam/raw/${version}/CHANGES";
+      maintainers = [ maintainers.henrytill maintainers.marsam ];
+      license = licenses.lgpl21Only;
+      platforms = platforms.all;
+    };
+  });
+  opam-state = osuper.opam-state.overrideAttrs (o: {
+    inherit (opam-format) src version meta;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ spdx_licenses ];
   });
 
   opaline = super-opaline.override { ocamlPackages = oself; };
@@ -1773,6 +1856,15 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/anuragsoni/routes/releases/download/2.0.0/routes-2.0.0.tbz;
       sha256 = "126nn0gbh12i7yf0qn01ryfp2qw0aj1xfk1vq42fa01biilrsqiv";
+    };
+  });
+
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "sedlex";
+      rev = "v3.2";
+      hash = "sha256-5Vf1LRhSotNpTPzHmRgCMRYtrpgaspLlyzv1XdGt+u8=";
     };
   });
 

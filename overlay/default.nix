@@ -215,6 +215,8 @@ in
     cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
 
+  opam = self.ocamlPackages.opam;
+
   pnpm =
     let
       inherit (self)
