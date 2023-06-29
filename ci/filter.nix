@@ -94,6 +94,9 @@ let
     # conflicts with new LSP
     "linol"
     "linol-lwt"
+
+    # broken after opam 2.2 update
+    "odep"
   ];
 
   ocaml5Ignores = [
