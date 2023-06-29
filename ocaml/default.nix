@@ -682,14 +682,7 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "dune";
-      rev = "df8db5c20edd492b1bb7a7fdfd55f610f73ab58a";
-      hash = "sha256-+nfbtdBJLtDwpR62mBYlTzKZbpowarrUCfzbV5oGltY=";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
-
     postFixup =
       if stdenv.isDarwin then ''
         wrapProgram $out/bin/dune \
@@ -1457,7 +1450,11 @@ with oself;
   });
 
   ocurl = osuper.ocurl.overrideAttrs (_: {
+<<<<<<< HEAD
     propagatedBuildInputs = [ curl ];
+=======
+    propagatedBuildInputs = [ curl lwt ];
+>>>>>>> 3d33a3e (wip)
   });
 
   oidc = callPackage ./oidc { };
