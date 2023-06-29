@@ -1456,18 +1456,9 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
-  ocurl = stdenv.mkDerivation rec {
-    name = "ocurl-0.9.1";
-    src = builtins.fetchurl {
-      url = "http://ygrek.org.ua/p/release/ocurl/${name}.tar.gz";
-      sha256 = "0n621cxb9012pj280c7821qqsdhypj8qy9qgrah79dkh6a8h2py6";
-    };
-
-    nativeBuildInputs = [ pkg-config ocaml findlib ];
-    propagatedBuildInputs = [ curl lwt ];
-    createFindlibDestdir = true;
-  };
-
+  ocurl = osuper.ocurl.overrideAttrs (_: {
+    propagatedBuildInputs = [ curl ];
+  });
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
 
