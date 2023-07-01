@@ -1154,12 +1154,9 @@ with oself;
   melange = callPackage ./melange { };
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
-    src = fetchFromGitLab {
-      domain = "gitlab.inria.fr";
-      owner = "fpottier";
-      repo = "menhir";
-      rev = "20230608";
-      hash = "sha256-dUPoIUVr3gqvE5bniyQh/b37tNfRsZN8X3e99GFkyLY=";
+    src = builtins.fetchurl {
+      url = https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20230608.tar.gz;
+      sha256 = "1kmj8b954cdpb7gfyfi7hmvsc1h4b2sfl6nhr9z7kkgbpm9wmlh9";
     };
   });
 
