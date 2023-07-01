@@ -799,12 +799,9 @@ with oself;
   });
 
   fix = osuper.fix.overrideAttrs (_: {
-    src = fetchFromGitLab {
-      domain = "gitlab.inria.fr";
-      owner = "fpottier";
-      repo = "fix";
-      rev = "20230505";
-      hash = "sha256-Xuw4pEPqAbQjSHrpMCNE7Th0mpbNMSxdEdwvH4hu2SM=";
+    src = builtins.fetchurl {
+      url = https://anmonteiro.s3.eu-west-3.amazonaws.com/fix-20230505.tar.gz;
+      sha256 = "06q8h71q9j1jcr1gprr1ykigb9l4y6zil6c7i9p0b0f4qkyhcvrj";
     };
   });
 
