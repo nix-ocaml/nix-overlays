@@ -1450,11 +1450,7 @@ with oself;
   });
 
   ocurl = osuper.ocurl.overrideAttrs (_: {
-<<<<<<< HEAD
     propagatedBuildInputs = [ curl ];
-=======
-    propagatedBuildInputs = [ curl lwt ];
->>>>>>> 3d33a3e (wip)
   });
 
   oidc = callPackage ./oidc { };
