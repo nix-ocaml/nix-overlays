@@ -1844,15 +1844,6 @@ with oself;
     };
   });
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "sedlex";
-      rev = "v3.2";
-      hash = "sha256-5Vf1LRhSotNpTPzHmRgCMRYtrpgaspLlyzv1XdGt+u8=";
-    };
-  });
-
   sendfile = callPackage ./sendfile { };
 
   session = callPackage ./session { };
