@@ -1,4 +1,4 @@
 (executable
  (name main)
- (public_name package)
- (libraries package))
+ (public_name example)
+ (libraries example))

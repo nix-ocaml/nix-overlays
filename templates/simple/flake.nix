@@ -16,16 +16,16 @@
       let pkgs = nixpkgs.legacyPackages.${system}; in
       {
         packages = {
-          inherit (pkgs.ocamlPackages.callPackage ./nix {
+          default = pkgs.callPackage ./nix {
             inherit nix-filter;
             doCheck = true;
-          }) package;
+          };
         };
 
         devShells = {
           default = pkgs.mkShell {
-            inputsFrom = with self.packages.${system}; [
-              package
+            inputsFrom = [
+              self.packages.${system}.default
             ];
 
             nativeBuildInputs = with pkgs.ocamlPackages; [
