@@ -1097,6 +1097,10 @@ with oself;
     };
   });
 
+  matrix-common = callPackage ./matrix { };
+  matrix-ctos = callPackage ./matrix/ctos.nix { };
+  matrix-stos = callPackage ./matrix/stos.nix { };
+
   mdx = osuper.mdx.overrideAttrs (o: {
     doCheck = false;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
