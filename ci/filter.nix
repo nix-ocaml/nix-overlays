@@ -97,10 +97,6 @@ let
 
     # broken after opam 2.2 update
     "odep"
-
-    # infinite loop building with dune 3.9
-    "cohttp-lwt-jsoo"
-    "github-jsoo"
   ];
 
   ocaml5Ignores = [
