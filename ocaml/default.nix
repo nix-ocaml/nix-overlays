@@ -2066,7 +2066,7 @@ with oself;
       url = https://github.com/ocaml-community/utop/releases/download/2.13.0/utop-2.13.0.tbz;
       sha256 = "1n462ayxxspipcrvxwgcnnc74zm5sax4365y39w10bbc00h0yic8";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib xdg ];
   });
 
   uutf = osuper.uutf.overrideAttrs (_: {
