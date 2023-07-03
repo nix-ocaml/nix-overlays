@@ -1272,7 +1272,13 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
+  } // (if stdenv.isDarwin && lib.versionAtLeast osuper.ocaml.version "5.0" then {
+    buildPhase = ''
+      make world
+      make -j2 bootstrap
+      make world.opt
+    '';
+  } else { }));
 
   ocamlformat = callPackage ./ocamlformat { };
   ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
@@ -1432,7 +1438,7 @@ with oself;
 
     # `String.sub Sys.ocaml_version 0 6` doesn't work on OCaml 5.0
     postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
+      if lib.versionAtLeast osuper.ocaml.version "5.0" then ''
         substituteInPlace ./src/ocplib_stuff/dune \
           --replace "failwith \"Wrong ocaml version\"" "\"5.0.0\""
       '' else "";
@@ -2059,7 +2065,7 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
-    doCheck = ! (lib.versionOlder "5.1" ocaml.version);
+    doCheck = ! (lib.versionOlder "5.1" osuper.ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace \
