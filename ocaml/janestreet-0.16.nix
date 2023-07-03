@@ -1,6 +1,7 @@
 { self
 , bash
 , fetchpatch
+, fetchFromGitHub
 , fzf
 , lib
 , linuxHeaders
@@ -331,6 +332,12 @@ with self;
 
   core = janePackage {
     pname = "core";
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "core";
+      rev = "v0.16.1";
+      hash = "sha256-09uI4ANhdjamfLq4dUm7QNBHi6COyTpGuXE9Dh+kUsc=";
+    };
     hash = "sha256-09uI4ANhdjamfLq4dUm7QNBHi6COyTpGuXE9Dh+kUsc=";
     meta.description = "Industrial strength alternative to OCaml's standard library";
     buildInputs = [ jst-config ];

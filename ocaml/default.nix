@@ -73,6 +73,7 @@ let
         inherit
           bash
           fetchpatch
+          fetchFromGitHub
           fzf
           lib
           kerberos
@@ -83,15 +84,6 @@ let
       };
     in
     jsBase // {
-      core = jsBase.core.overrideAttrs (_: {
-        postPatch =
-          if lib.versionOlder "5.1" osuper.ocaml.version then ''
-            substituteInPlace core/src/gc_stubs.c \
-              --replace "caml_stat_minor_collections" \
-                        "atomic_load(&caml_minor_collections_count)"
-          '' else null;
-      });
-
       ppx_accessor = jsBase.ppx_accessor.overrideAttrs (_: {
         postPatch = ''
           substituteInPlace src/ppx_accessor.ml \
@@ -2012,8 +2004,8 @@ with oself;
 
   tls = osuper.tls.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.0/tls-0.17.0.tbz;
-      sha256 = "0yplkpnvwzi7jcg9db3gmj7mmizmf8zp8rcsv4bw8n3anzqfhigs";
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.1/tls-0.17.1.tbz;
+      sha256 = "0gsxih0dv85wa113syqmz9hgl86p7ciis618d4la538lvsvd4440";
     };
     propagatedBuildInputs = [
       cstruct
@@ -2070,6 +2062,10 @@ with oself;
   });
 
   utop = osuper.utop.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/releases/download/2.13.0/utop-2.13.0.tbz;
+      sha256 = "1n462ayxxspipcrvxwgcnnc74zm5sax4365y39w10bbc00h0yic8";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
@@ -2099,6 +2095,13 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+
+  x509 = osuper.x509.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-x509/releases/download/v0.16.5/x509-0.16.5.tbz;
+      sha256 = "16fdii9sffdbrbzzhdfk677rs77h01ffw2v9nagn2zx3zsjjb7hl";
+    };
+  });
 
   xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams ];
