@@ -5,9 +5,9 @@ buildDunePackage {
   version = "2023-07-02";
   src = fetchFromGitHub {
     repo = "ocaml-matrix";
-    owner = "mirage";
-    rev = "d77c5bbde67028d444551cd28c05cb44cd381265";
-    sha256 = "sha256-i7iqtI/GFFLFIgj+bKZ5n0RrmF1RVRzolq9eVulUNeY=";
+    owner = "ulrikstrid";
+    rev = "3d807294692069455316af019384f08a7a2ada87";
+    sha256 = "sha256-3HP56hYMrbGrsADmS7/TPRKdVM4lKDMEnwfb4LMaunM=";
   };
 
   propagatedBuildInputs = [
