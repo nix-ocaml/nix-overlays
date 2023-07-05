@@ -890,6 +890,20 @@ with oself;
       sha256 = "0wi9yyli4mrl1yd340rpcp558g6cwf9rm39zp3x8dvlwf7k1fh6s";
     };
   });
+  irmin-pack-tools = buildDunePackage {
+    pname = "irmin-pack-tools";
+    inherit (irmin) src version;
+    propagatedBuildInputs = [
+      ppx_repr
+      cmdliner
+      ppx_irmin
+      ptime
+      irmin-pack
+      hex
+      notty
+      irmin-tezos
+    ];
+  };
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
 
