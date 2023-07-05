@@ -944,13 +944,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.3.0/js_of_ocaml-5.3.0.tbz;
-      sha256 = "1lk4rll6cjxa125wv36mgv05z26j0iy89ndjpkqjhpcfp7p3v7my";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ sedlex ];
-  });
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       builtins.fetchurl {
