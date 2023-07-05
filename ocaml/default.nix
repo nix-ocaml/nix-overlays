@@ -560,17 +560,15 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
-      rev = "64b6494d0";
-      sha256 = "sha256-YMaKJK8gqsUdYglB4xGdMUpTXbgUgZLLvUG/lSvJesE=";
+      # https://github.com/yallop/ocaml-ctypes/pull/588
+      rev = "3bc53d447a23b24ab238f456a0947b21ab52985e";
+      hash = "sha256-7GTJwMVMYxD8nFI0quI94tJNKOrbhu0GSSylbkUORcI=";
     };
 
     nativeBuildInputs = [ pkg-config ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
 
-    postPatch = ''
-      substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
-    '';
     postInstall = ''
       echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
     '';
