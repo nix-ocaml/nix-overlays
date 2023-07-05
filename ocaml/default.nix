@@ -560,17 +560,15 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
-      rev = "64b6494d0";
-      sha256 = "sha256-YMaKJK8gqsUdYglB4xGdMUpTXbgUgZLLvUG/lSvJesE=";
+      # https://github.com/yallop/ocaml-ctypes/pull/588
+      rev = "3bc53d447a23b24ab238f456a0947b21ab52985e";
+      hash = "sha256-7GTJwMVMYxD8nFI0quI94tJNKOrbhu0GSSylbkUORcI=";
     };
 
     nativeBuildInputs = [ pkg-config ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
 
-    postPatch = ''
-      substituteInPlace src/ctypes/dune --replace "libraries bytes" "libraries"
-    '';
     postInstall = ''
       echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
     '';
@@ -885,13 +883,25 @@ with oself;
   });
 
   irmin = osuper.irmin.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "irmin";
-      rev = "08641f0007337c167bf4ea461ac6d4c692a65bbe";
-      hash = "sha256-9NwtYCFS1qsG9bWjWFGvFm/ppwonRBgpSsxMvqGCNhU=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/irmin/releases/download/3.8.0/irmin-3.8.0.tbz;
+      sha256 = "0wi9yyli4mrl1yd340rpcp558g6cwf9rm39zp3x8dvlwf7k1fh6s";
     };
   });
+  irmin-pack-tools = buildDunePackage {
+    pname = "irmin-pack-tools";
+    inherit (irmin) src version;
+    propagatedBuildInputs = [
+      ppx_repr
+      cmdliner
+      ppx_irmin
+      ptime
+      irmin-pack
+      hex
+      notty
+      irmin-tezos
+    ];
+  };
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
 
@@ -1102,6 +1112,13 @@ with oself;
   mdx = osuper.mdx.overrideAttrs (o: {
     doCheck = false;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+  });
+
+  functoria = osuper.functoria.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage/releases/download/v4.4.0/mirage-4.4.0.tbz;
+      sha256 = "09rykqfb4v6jd7p3lvv9d70x40qgh13s93h365i7v85rvr0ysbm7";
+    };
   });
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
