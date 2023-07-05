@@ -1114,6 +1114,13 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
   });
 
+  functoria = osuper.functoria.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage/releases/download/v4.4.0/mirage-4.4.0.tbz;
+      sha256 = "09rykqfb4v6jd7p3lvv9d70x40qgh13s93h365i7v85rvr0ysbm7";
+    };
+  });
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
