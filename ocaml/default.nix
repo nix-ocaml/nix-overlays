@@ -885,11 +885,9 @@ with oself;
   });
 
   irmin = osuper.irmin.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "irmin";
-      rev = "08641f0007337c167bf4ea461ac6d4c692a65bbe";
-      hash = "sha256-9NwtYCFS1qsG9bWjWFGvFm/ppwonRBgpSsxMvqGCNhU=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/irmin/releases/download/3.8.0/irmin-3.8.0.tbz;
+      sha256 = "0wi9yyli4mrl1yd340rpcp558g6cwf9rm39zp3x8dvlwf7k1fh6s";
     };
   });
   irmin-git = disableTests osuper.irmin-git;
