@@ -97,6 +97,15 @@ let
 
     # broken after opam 2.2 update
     "odep"
+
+    # too old ocamlformat versions
+    "ocamlformat_0_19_0"
+    "ocamlformat_0_20_0"
+    "ocamlformat_0_20_1"
+    "ocamlformat_0_21_0"
+    "ocamlformat_0_22_4"
+    "ocamlformat_0_23_0"
+    "ocamlformat_0_24_1"
   ];
 
   ocaml5Ignores = [

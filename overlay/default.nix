@@ -199,14 +199,6 @@ in
       })
       { });
 
-  ocamlformat = super.ocamlformat.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \
-      --replace \
-      "String.capitalize" "String.capitalize_ascii"
-    '';
-  });
-
   lib = lib // { inherit overlayOCamlPackages; };
 
   inherit (callPackage ../cockroachdb { })

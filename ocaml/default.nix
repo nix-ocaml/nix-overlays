@@ -1284,9 +1284,15 @@ with oself;
     enableParallelBuilding = true;
   });
 
-  ocamlformat = callPackage ./ocamlformat { };
-  ocamlformat-lib = callPackage ./ocamlformat/lib.nix { };
-  ocamlformat-rpc-lib = callPackage ./ocamlformat/rpc-lib.nix { };
+  ocamlformat-rpc-lib = buildDunePackage {
+    pname = "ocamlformat-rpc-lib";
+    inherit (ocamlformat-lib) src version;
+
+    minimumOCamlVersion = "4.08";
+    strictDeps = true;
+
+    propagatedBuildInputs = [ csexp ];
+  };
 
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
     meta = {
