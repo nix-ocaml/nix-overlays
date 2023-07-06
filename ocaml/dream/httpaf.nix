@@ -1,20 +1,15 @@
 { lib
-, fetchFromGitHub
 , buildDunePackage
 , dream-pure
 , lwt
 , lwt_ppx
 , lwt_ssl
 , ssl
-, angstrom
-, base64
-, bigstringaf
 , digestif
 , faraday
 , faraday-lwt-unix
 , psq
 , result
-, ppx_expect
 , ke
 }:
 
@@ -29,12 +24,12 @@ buildDunePackage rec {
     lwt_ssl
     ssl
 
-    ppx_expect
     faraday
     faraday-lwt-unix
     digestif
     ke
     psq
+    result
   ];
 
   doCheck = false;
