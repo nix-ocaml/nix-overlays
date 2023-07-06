@@ -35,6 +35,7 @@ buildDunePackage rec {
     digestif
     ke
     psq
+    result
   ];
 
   doCheck = false;
