@@ -1109,7 +1109,10 @@ with oself;
 
   mdx = osuper.mdx.overrideAttrs (o: {
     doCheck = false;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner result ];
+    postPatch = ''
+      substituteInPlace lib/dune --replace "astring" "astring result"
+    '';
   });
 
   functoria = osuper.functoria.overrideAttrs (_: {
