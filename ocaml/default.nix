@@ -119,6 +119,10 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  angstrom = osuper.angstrom.overrideAttrs (_: {
+    propagatedBuildInputs = [ bigstringaf ];
+  });
+
   atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ahrefs/atd/releases/download/2.12.0/atdts-2.12.0.tbz;
@@ -1065,6 +1069,7 @@ with oself;
       url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
       sha256 = "1h2n9iij4mh60sy3g437p1xwqyqpyw72fgh4417d8j9ahq46m7vn";
     };
+    propagatedBuildInputs = [ ctypes ];
   });
 
   luv_unix = buildDunePackage {
@@ -1153,6 +1158,7 @@ with oself;
 
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (_: {
     pname = "logs";
+    propagatedBuildInputs = [ ];
   });
 
   logs-ppx = callPackage ./logs-ppx { };
@@ -1196,6 +1202,13 @@ with oself;
   });
   metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
     postPatch = null;
+  });
+
+  mew = osuper.mew.overrideAttrs (_: {
+    propagatedBuildInputs = [ trie ];
+    postPatch = ''
+      substituteInPlace src/dune --replace "result" ""
+    '';
   });
 
   mongo = callPackage ./mongo { };
@@ -1329,6 +1342,7 @@ with oself;
   };
 
   odoc = osuper.odoc.overrideAttrs (_: {
+    buildInputs = [ astring cmdliner fpath tyxml odoc-parser fmt ];
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "odoc";
@@ -1343,6 +1357,10 @@ with oself;
       rev = "f98cfe3";
       hash = "sha256-xWGDR0gcakLDubzSLM29mAy0HhkSAsOpzxEgBj6hNII=";
     };
+    propagatedBuildInputs = [ astring camlp-streams ];
+    postPatch = ''
+      substituteInPlace src/dune --replace "result" ""
+    '';
   });
 
   ocaml_libvirt = osuper.ocaml_libvirt.override {
@@ -2069,7 +2087,13 @@ with oself;
   });
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
-    patches = [ ./unix-errno.patch ];
+    src = fetchFromGitHub {
+      owner = "xapi-project";
+      repo = "ocaml-unix-errno";
+      rev = "a36eec0aa612141ababbc8131a489bc6df7094a8";
+      hash = "sha256-8e5NR69LyHnNdbDA/18OOYCUtsJW0h3mZkgxiQ85/QI=";
+    };
+    propagatedBuildInputs = [ ctypes integers ];
   });
 
   unstrctrd = disableTests osuper.unstrctrd;
@@ -2093,6 +2117,20 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
+  });
+
+  vg = osuper.vg.overrideAttrs (_: {
+    propagatedBuildInputs = [
+      uchar
+      gg
+      uutf
+      otfm
+      js_of_ocaml
+      js_of_ocaml-ppx
+    ];
+  });
+  visitors = osuper.visitors.overrideAttrs (_: {
+    propagatedBuildInputs = [ ppxlib ppx_deriving ];
   });
 
   vlq = buildDunePackage {
@@ -2149,7 +2187,10 @@ with oself;
       url = https://github.com/ocaml-community/zed/releases/download/3.2.2/zed-3.2.2.tbz;
       sha256 = "0bkpmg8vb8bfi9zjnqba11kp74b7b6zh40az13pnj61gyb4fqsh9";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ uuseg uutf ];
+    propagatedBuildInputs = [ react uchar uutf uucp uuseg ];
+    postPatch = ''
+      substituteInPlace src/dune --replace "result" ""
+    '';
   });
 
   zmq = osuper.zmq.overrideAttrs (_: {
