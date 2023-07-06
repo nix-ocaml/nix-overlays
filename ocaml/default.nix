@@ -1351,7 +1351,6 @@ with oself;
   };
 
   odoc = osuper.odoc.overrideAttrs (_: {
-    buildInputs = [ astring cmdliner fpath tyxml odoc-parser fmt ];
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "odoc";
