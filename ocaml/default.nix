@@ -1140,6 +1140,12 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
+  mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/vnetif/dune --replace "result" ""
+    '';
+  });
+
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "rgrinberg";
