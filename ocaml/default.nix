@@ -5,6 +5,7 @@
 , automake
 , bash
 , buildPackages
+, cmake
 , fetchpatch
 , fetchFromGitHub
 , fetchFromGitLab
@@ -136,19 +137,21 @@ with oself;
   };
 
   apron = osuper.apron.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace mlapronidl/scalar.idl --replace "Pervasives." "Stdlib."
-      substituteInPlace mlapronidl/scalar.idl --replace " alloc_small" " caml_alloc_small"
-      substituteInPlace mlapronidl/linexpr0.idl --replace " callback2" " caml_callback2"
-      substituteInPlace mlapronidl/manager.idl --replace " invalid_argument" " caml_invalid_argument"
-      substituteInPlace mlapronidl/apron_caml.c --replace "alloc_custom" "caml_alloc_custom"
-      substituteInPlace mlapronidl/apron_caml.c --replace "serialize_int_8" "caml_serialize_int_8"
-      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_uint_8" "caml_deserialize_uint_8"
-      substituteInPlace mlapronidl/apron_caml.c --replace " serialize_block_1" " caml_serialize_block_1"
-      substituteInPlace mlapronidl/apron_caml.c --replace "deserialize_block_1" "caml_deserialize_block_1"
-      substituteInPlace mlapronidl/apron_caml.h --replace "alloc_custom" "caml_alloc_custom"
-      substituteInPlace mlapronidl/apron_caml.c --replace " alloc_small" " caml_alloc_small"
-      substituteInPlace mlapronidl/apron_caml.c --replace "register_custom_operations" "caml_register_custom_operations"
+    src = fetchFromGitHub {
+      owner = "antoinemine";
+      repo = "apron";
+      rev = "v0.9.14-beta1";
+      hash = "sha256-j7Fp1IEaq7rSF+3OufYQPn5ZWLzOcIEJQWiqG0E+Wtk=";
+    };
+
+    configurePhase = ''
+      runHook preConfigure
+      ./configure -prefix $out \
+        ${if stdenv.isDarwin then "--absolute-dylibs" else ""} \
+        --debug \
+        --no-strip
+      mkdir -p $out/lib/ocaml/${ocaml.version}/site-lib/stublibs
+      runHook postConfigure
     '';
   });
 
@@ -424,6 +427,13 @@ with oself;
     src = builtins.fetchurl {
       url = https://erratique.ch/software/cmdliner/releases/cmdliner-1.2.0.tbz;
       sha256 = "0y00vnlk3nim8bh4gvimdpg71gp22z3b35sfyvb4yf98j1c11vdg";
+    };
+  });
+
+  cohttp = osuper.cohttp.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.2.0/cohttp-5.2.0.tbz;
+      sha256 = "16vg57vimwjkf9gfcsgynb8shar307vsvyzby8kzn0sn30k8zfjx";
     };
   });
 
@@ -865,6 +875,20 @@ with oself;
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
 
+  hdr_histogram = buildDunePackage {
+    pname = "hdr_histogram";
+    version = "0.0.3";
+
+    dontUseCmakeConfigure = true;
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/hdr_histogram_ocaml/releases/download/v0.0.3/hdr_histogram-0.0.3.tbz;
+      sha256 = "05d4w4a5x9kgyx02px2biggkbs8id4xlij2w7gfj663ppc1jr49d";
+    };
+
+    nativeBuildInputs = [ cmake ];
+    propagatedBuildInputs = [ zlib-oc ctypes ];
+  };
+
   httpaf = callPackage ./httpaf { };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
@@ -947,6 +971,13 @@ with oself;
   });
 
   jose = callPackage ./jose { };
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.4.0/js_of_ocaml-5.4.0.tbz;
+      sha256 = "151vilm2vlmxxq6syqkllmln8i70bqi8lyg22vdyyzw66ghms8gi";
+    };
+  });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
@@ -1143,6 +1174,13 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
+  mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-logs/releases/download/v2.0.0/mirage-logs-2.0.0.tbz;
+      sha256 = "086x45sijjldg1vcvf7lq23fqxrl8mbbp2ym8hja7gl6m9j759pj";
+    };
+  });
+
   mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/vnetif/dune --replace "result" ""
@@ -1218,6 +1256,15 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace "result" ""
     '';
+  });
+
+  mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "nberth";
+      repo = "mlgmpidl";
+      rev = "1.2.15";
+      hash = "sha256-+s8g/WpiTpvKeFJzmq79c8G/5Yipx3wac1T6DqDRS+U=";
+    };
   });
 
   mongo = callPackage ./mongo { };
@@ -2117,8 +2164,8 @@ with oself;
 
   utop = osuper.utop.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.13.0/utop-2.13.0.tbz;
-      sha256 = "1n462ayxxspipcrvxwgcnnc74zm5sax4365y39w10bbc00h0yic8";
+      url = https://github.com/ocaml-community/utop/releases/download/2.13.1/utop-2.13.1.tbz;
+      sha256 = "1zbgb89c5wg6lr573x018kvvfxxbdvv5hk24g65a59nijjiw4kmh";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib xdg ];
   });

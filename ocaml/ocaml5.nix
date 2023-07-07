@@ -58,6 +58,18 @@ with oself;
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
 
+  runtime_events_tools = buildDunePackage {
+    pname = "runtime_events_tools";
+    version = "0.4.0";
+
+    src = builtins.fetchurl {
+      url = https://github.com/tarides/runtime_events_tools/releases/download/0.4.0/runtime_events_tools-0.4.0.tbz;
+      sha256 = "185gyw4p9i4bjav0y3ighbnmsaidlc4szni4qpmafk8rx10by9j9";
+    };
+
+    propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
+  };
+
   tls-eio = buildDunePackage {
     pname = "tls-eio";
     inherit (tls) version src;
