@@ -761,8 +761,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-multicore";
       repo = "eio";
-      rev = "dcf8624cde9164d74d036d267702a575c4d06ce9";
-      hash = "sha256-nwpvz8hWsKLHCf4nnB9VgUmeNGDvYF/MFDQu/Q26JhE=";
+      rev = "57ace760036b7855efddd3e2a67aeae20288a511";
+      hash = "sha256-nEzqjJxIyDfqltDDrckEhsVLAPkQcE4EKsA0PMIAf/I=";
     };
   });
 
