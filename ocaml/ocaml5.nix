@@ -70,6 +70,26 @@ with oself;
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
   };
 
+  saturn = buildDunePackage {
+    pname = "saturn";
+
+    inherit (saturn_lockfree) src version;
+
+    propagatedBuildInputs = [ domain-shims saturn_lockfree ];
+  };
+
+  saturn_lockfree = buildDunePackage {
+    pname = "saturn_lockfree";
+    version = "0.0.4";
+
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/saturn/releases/download/0.4.0/saturn-0.4.0.tbz;
+      sha256 = "1yw86yimwq5q6aji3i8vsrx9nz58qv0zqh1mm0db8mbhlaayqyvw";
+    };
+
+    propagatedBuildInputs = [ domain-shims ];
+  };
+
   tls-eio = buildDunePackage {
     pname = "tls-eio";
     inherit (tls) version src;
