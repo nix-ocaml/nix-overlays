@@ -10,18 +10,13 @@ let
     "ulex"
     "lablgl"
 
-    # too long to build or broken
-    "z3"
-
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
-    # jbuild files
-    "ocsigen-start"
+    # <cassert> not found
     "torch"
 
     # linking issues?
-    "spacetime_lib"
     "mariadb"
     "caqti-driver-mariadb"
 
@@ -82,10 +77,8 @@ let
     "biocaml"
     "kafka_async"
     "pythonlib"
-    "tls-async"
     "graphql-async"
     "magic-trace"
-    "tdigest"
     "telegraml"
 
     # Old mirage-kv interface
@@ -143,7 +136,6 @@ let
 
     "uring"
     "eio_linux"
-    "magic-trace"
   ];
 in
 

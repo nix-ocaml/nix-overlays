@@ -1810,6 +1810,24 @@ with oself;
     };
   });
 
+  ppx_tools = buildDunePackage {
+    pname = "ppx_tools";
+    src = fetchFromGitHub {
+      owner = "alainfrisch";
+      repo = "ppx_tools";
+      rev = "6.6";
+      hash = "sha256-QhuaQ9346a3neoRM4GrOVzjR8fg9ysMZR1VzNgyIQtc=";
+    };
+    meta = with lib; {
+      description = "Tools for authors of ppx rewriters";
+      homepage = "https://www.lexifi.com/ppx_tools";
+      license = licenses.mit;
+      maintainers = with maintainers; [ vbgl ];
+    };
+    version = "6.6";
+    nativeBuildInputs = [ cppo ];
+  };
+
   ppxlib =
     let
       src =
@@ -2125,6 +2143,22 @@ with oself;
     ];
   });
 
+  tsdl = osuper.tsdl.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace _tags --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    propagatedBuildInputs =
+      o.propagatedBuildInputs
+      ++ [ ctypes-foreign ]
+      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+        Cocoa
+        CoreAudio
+        CoreVideo
+        AudioToolbox
+        ForceFeedback
+      ]);
+  });
+
   tyxml = osuper.tyxml.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocsigen";
@@ -2261,40 +2295,6 @@ with oself;
       rev = "8a24cd042";
       sha256 = "sha256-EZKDSzW08lNgJgtgNOBgQ8ub29pSy2rwcqoMNu+P3kI=";
     };
-  });
-
-  ppx_tools = buildDunePackage {
-    pname = "ppx_tools";
-    src = fetchFromGitHub {
-      owner = "alainfrisch";
-      repo = "ppx_tools";
-      rev = "6.6";
-      hash = "sha256-QhuaQ9346a3neoRM4GrOVzjR8fg9ysMZR1VzNgyIQtc=";
-    };
-    meta = with lib; {
-      description = "Tools for authors of ppx rewriters";
-      homepage = "https://www.lexifi.com/ppx_tools";
-      license = licenses.mit;
-      maintainers = with maintainers; [ vbgl ];
-    };
-    version = "6.6";
-    nativeBuildInputs = [ cppo ];
-  };
-
-  tsdl = osuper.tsdl.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace _tags --replace "ctypes.foreign" "ctypes-foreign"
-    '';
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ [ ctypes-foreign ]
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Cocoa
-        CoreAudio
-        CoreVideo
-        AudioToolbox
-        ForceFeedback
-      ]);
   });
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
