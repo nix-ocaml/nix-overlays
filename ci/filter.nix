@@ -13,6 +13,8 @@ let
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
+    "ocsigen-start"
+
     # <cassert> not found
     "torch"
 
