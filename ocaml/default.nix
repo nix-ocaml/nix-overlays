@@ -580,9 +580,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
-      # https://github.com/yallop/ocaml-ctypes/pull/588
-      rev = "3bc53d447a23b24ab238f456a0947b21ab52985e";
-      hash = "sha256-7GTJwMVMYxD8nFI0quI94tJNKOrbhu0GSSylbkUORcI=";
+      rev = "0.21.0";
+      hash = "sha256-zGQckxxUaokNptACHvV/WEGpsRjzD1s38Pq9s/kBCIk=";
     };
 
     nativeBuildInputs = [ pkg-config ];
@@ -767,8 +766,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-multicore";
       repo = "eio";
-      rev = "57ace760036b7855efddd3e2a67aeae20288a511";
-      hash = "sha256-nEzqjJxIyDfqltDDrckEhsVLAPkQcE4EKsA0PMIAf/I=";
+      rev = "v0.11";
+      hash = "sha256-VfrfdzMvs1kAgJItOMuuGnPx7nP5oO/CJ5NBQWxOGuo=";
     };
   });
 
