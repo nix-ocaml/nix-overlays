@@ -221,6 +221,15 @@ in
         "$@"
     '';
 
+  rdkafka = super.rdkafka.overrideAttrs (_: {
+    src = super.fetchFromGitHub {
+      owner = "confluentinc";
+      repo = "librdkafka";
+      rev = "v2.2.0";
+      hash = "sha256-v/FjnDg22ZNQHmrUsPvjaCs4UQ/RPAxQdg9i8k6ba/4=";
+    };
+  });
+
   melange-relay-compiler =
     let
       inherit (super) rustPlatform darwin pkg-config openssl;
