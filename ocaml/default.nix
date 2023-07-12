@@ -580,9 +580,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
-      # https://github.com/yallop/ocaml-ctypes/pull/588
-      rev = "3bc53d447a23b24ab238f456a0947b21ab52985e";
-      hash = "sha256-7GTJwMVMYxD8nFI0quI94tJNKOrbhu0GSSylbkUORcI=";
+      rev = "0.21.0";
+      hash = "sha256-zGQckxxUaokNptACHvV/WEGpsRjzD1s38Pq9s/kBCIk=";
     };
 
     nativeBuildInputs = [ pkg-config ];
