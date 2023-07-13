@@ -22,8 +22,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "915805367726aa48633ed392dfcbbd347f87b80e";
-    hash = "sha256-HBpsetVGcRmqyX/hRZkgELQ0bo3clwQttvXZmihp9cE=";
+    rev = "00433ccbe19a1de56329c48cf27a9b1f586fb8f4";
+    hash = "sha256-tmYEYzkpV7AKfpIfSU6C9p009OgyFx1yxG2d5KV5R40=";
     fetchSubmodules = true;
   };
 
@@ -42,9 +42,9 @@ buildDunePackage {
 
   postInstall = ''
     wrapProgram "$out/bin/melc" \
-      --set MELANGELIB \
-      "$OCAMLFIND_DESTDIR/melange/melange:$OCAMLFIND_DESTDIR/melange/runtime/melange:$OCAMLFIND_DESTDIR/melange/belt/melange"
+      --set MELANGELIB "$OCAMLFIND_DESTDIR/melange/melange:$OCAMLFIND_DESTDIR/melange/js/melange:$OCAMLFIND_DESTDIR/melange/belt/melange:$OCAMLFIND_DESTDIR/melange/dom/melange"
   '';
+
 
   meta.mainProgram = "melc";
 }
