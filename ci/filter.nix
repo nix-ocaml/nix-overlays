@@ -10,6 +10,9 @@ let
     "ulex"
     "lablgl"
 
+    # too long to build
+    "z3"
+
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
@@ -101,6 +104,10 @@ let
     "ocamlformat_0_22_4"
     "ocamlformat_0_23_0"
     "ocamlformat_0_24_1"
+
+    # infinite loop building with dune 3.9?
+    "cohttp-lwt-jsoo"
+    "github-jsoo"
   ];
 
   ocaml5Ignores = [
