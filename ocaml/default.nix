@@ -2040,7 +2040,7 @@ with oself;
       owner = "savonet";
       repo = "ocaml-ssl";
       rev = "v0.7.0";
-      hash = "sha256-X0rlfP6m/9f+wbPG2Filc7a7dJg7snWYlSA+5U8QQ+M=";
+      hash = "sha256-gi80iwlKaI4TdAVnCyPG03qRWFa19DHdTrA0KMFBAc4=";
     };
     nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
