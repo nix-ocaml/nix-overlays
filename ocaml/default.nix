@@ -661,6 +661,21 @@ with oself;
     };
   };
 
+  domainslib = osuper.domainslib.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/domainslib/releases/download/0.5.1/domainslib-0.5.1.tbz;
+      sha256 = "00axhfwyyjzqvsb3ff3giy0nswdyw2jzrmn56sbl96frlpxmvhi8";
+    };
+    propagatedBuildInputs = [ domain-local-await saturn ];
+    checkInputs = [
+      qcheck
+      qcheck-multicoretests-util
+      qcheck-stm
+      mirage-clock-unix
+      kcas
+    ];
+  });
+
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream =
@@ -1358,6 +1373,17 @@ with oself;
     enableParallelBuilding = true;
   });
 
+  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
+    version = "0.26.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.0/ocamlformat-0.26.0.tbz;
+      sha256 = "0zc7bskmkj7y22qmgm0cdjmc6ihfcssvw75aysl11vqcfymr8503";
+    };
+  });
+  ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
+    inherit (ocamlformat-lib) src version;
+  });
+
   ocamlformat-rpc-lib = buildDunePackage {
     pname = "ocamlformat-rpc-lib";
     inherit (ocamlformat-lib) src version;
@@ -1385,11 +1411,9 @@ with oself;
   odep = buildDunePackage {
     pname = "odep";
     version = "0.1.0";
-    src = fetchFromGitHub {
-      owner = "sim642";
-      repo = "odep";
-      rev = "0.1.0";
-      sha256 = "sha256-PAnzKWOZ/4jvSWVNlvZIi5MycqjTxsC2hG27PYXAhDY=";
+    src = builtins.fetchurl {
+      url = https://github.com/sim642/odep/releases/download/0.2.0/odep-0.2.0.tbz;
+      sha256 = "15sjb5s1j6mns6dkddm3lbwd0n499smffrs55sw0xfczn3vaxaiv";
     };
     propagatedBuildInputs = [
       bos
@@ -2015,12 +2039,18 @@ with oself;
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
-      rev = "cb7c8d758d1e5598535ecfd8698fd5a0c155063f";
-      hash = "sha256-/J/LyDuR1pFreir4ddNvzoVRcu5yCGVWQAvQFB5Pl08=";
+      rev = "v0.7.0";
+      hash = "sha256-X0rlfP6m/9f+wbPG2Filc7a7dJg7snWYlSA+5U8QQ+M=";
     };
     nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
+
+  markup-lwt = buildDunePackage {
+    pname = "markup-lwt";
+    inherit (markup) src version;
+    propagatedBuildInputs = [ markup lwt ];
+  };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
@@ -2297,6 +2327,6 @@ with oself;
   });
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix { inherit oself darwin; })
+  then (import ./ocaml5.nix { inherit oself darwin fetchFromGitHub; })
   else { }
 ) // (import ./melange-packages.nix { inherit oself fetchFromGitHub; })

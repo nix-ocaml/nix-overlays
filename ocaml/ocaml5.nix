@@ -1,4 +1,4 @@
-{ darwin, oself }:
+{ darwin, fetchFromGitHub, oself }:
 
 with oself;
 
@@ -57,6 +57,30 @@ with oself;
   carl = callPackage ./piaf/carl.nix { };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
+
+
+  qcheck-multicoretests-util = buildDunePackage {
+    pname = "qcheck-multicoretests-util";
+    version = "0.2";
+
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "multicoretests";
+      rev = "0.2";
+      hash = "sha256-U1ZqfWMwpAvbPq5yp2U9YTFklT4MypzTSfNvcKJfaYE=";
+    };
+    propagatedBuildInputs = [ qcheck-core ];
+  };
+  qcheck-lin = buildDunePackage {
+    pname = "qcheck-lin";
+    inherit (qcheck-multicoretests-util) src version;
+    propagatedBuildInputs = [ qcheck-core qcheck-multicoretests-util ];
+  };
+  qcheck-stm = buildDunePackage {
+    pname = "qcheck-stm";
+    inherit (qcheck-multicoretests-util) src version;
+    propagatedBuildInputs = [ qcheck-core qcheck-multicoretests-util ];
+  };
 
   runtime_events_tools = buildDunePackage {
     pname = "runtime_events_tools";
