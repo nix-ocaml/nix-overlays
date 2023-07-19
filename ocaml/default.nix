@@ -10,6 +10,7 @@
 , fetchFromGitHub
 , fetchFromGitLab
 , fzf
+, gsl
 , kerberos
 , lib
 , libvirt
@@ -49,6 +50,7 @@
 oself: osuper:
 
 let
+  nativeGsl = gsl;
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
@@ -777,15 +779,6 @@ with oself;
     inherit (dyn) preBuild;
   });
 
-  eio = osuper.eio.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "eio";
-      rev = "v0.11";
-      hash = "sha256-VfrfdzMvs1kAgJItOMuuGnPx7nP5oO/CJ5NBQWxOGuo=";
-    };
-  });
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -862,18 +855,24 @@ with oself;
     nativeBuildInputs = [ ocaml dune findlib crunch ];
   });
 
-  gsl = osuper.gsl.overrideAttrs (o: {
+  gsl = buildDunePackage rec {
+    pname = "gsl";
+    version = "1.24.3";
+    minimalOCamlVersion = "4.12";
+
+    nativeBuildInputs = [ pkg-config ];
+    buildInputs = [ dune-configurator nativeGsl ];
+    propagatedBuildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
     src = fetchFromGitHub {
       owner = "mmottl";
       repo = "gsl-ocaml";
       rev = "38fc895";
       hash = "sha256-Nm/H9O83Q7JZAua3vhv94MBHkxbawAVg7qFW60fbDGE=";
     };
-    patches = [ ];
     postPatch = ''
       substituteInPlace ./src/dune --replace "bigarray" ""
     '';
-  });
+  };
 
   gstreamer = osuper.gstreamer.overrideAttrs (o: {
     buildInputs = o.buildInputs ++
@@ -1870,8 +1869,6 @@ with oself;
         stdlib-shims
       ];
     });
-
-  printbox-text = disableTests osuper.printbox-text;
 
   terminal = osuper.terminal.overrideAttrs (_: {
     src = builtins.fetchurl {

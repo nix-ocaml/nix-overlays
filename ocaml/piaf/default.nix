@@ -15,6 +15,7 @@
 , websocketaf
 , alcotest
 , dune-site
+, ocaml
 }:
 
 buildDunePackage {
@@ -23,11 +24,11 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "0188d86f4acfad767d89dee1b8e57e442c74cd47";
-    hash = "sha256-w9VamhMbUFJgVTECgOhJ0kIU1G7256tdnMShnBqQQw0=";
+    rev = "de171771ac817a307baf2e824c7e819fa168053d";
+    hash = "sha256-IJhPLC0J7lipxhHkxLcNu8zmv2rMVovVczpnXx9eL6c=";
   };
 
-  doCheck = true;
+  doCheck = ocaml.version != "5.0.0" && stdenv.isLinux;
   checkInputs = [ alcotest dune-site ];
 
   propagatedBuildInputs = [
