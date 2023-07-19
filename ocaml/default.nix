@@ -1584,6 +1584,8 @@ with oself;
     };
   });
 
+  revery = callPackage ./revery { };
+
   swhid_core = buildDunePackage {
     pname = "swhid_core";
     version = "0.1";
