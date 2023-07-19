@@ -13,6 +13,7 @@
 , gsl
 , kerberos
 , lib
+, libcxx
 , libvirt
 , libpq
 , libev-oc
@@ -834,7 +835,29 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
+  functoria = osuper.functoria.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage/releases/download/v4.4.0/mirage-4.4.0.tbz;
+      sha256 = "09rykqfb4v6jd7p3lvv9d70x40qgh13s93h365i7v85rvr0ysbm7";
+    };
+  });
+
+  functory = osuper.functory.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace network.ml --replace "Pervasives." "Stdlib."
+    '';
+  });
+
   gen_js_api = disableTests osuper.gen_js_api;
+
+  getopt = osuper.getopt.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "scemama";
+      repo = "ocaml-getopt";
+      rev = "20230213";
+      hash = "sha256-oYDm945LgjIW+8x7UrO4FlbHywnu8480aiEVvnjBxc8=";
+    };
+  });
 
   gettext-stub = disableTests osuper.gettext-stub;
 
@@ -855,7 +878,7 @@ with oself;
     nativeBuildInputs = [ ocaml dune findlib crunch ];
   });
 
-  gsl = buildDunePackage rec {
+  gsl = buildDunePackage {
     pname = "gsl";
     version = "1.24.3";
     minimalOCamlVersion = "4.12";
@@ -885,7 +908,26 @@ with oself;
     '';
   });
 
-  hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
+  hack_parallel = (osuper.hack_parallel.override { sqlite = sqlite-oc; }).overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace \
+        src/utils/collections/myMap.ml \
+        src/third-party/hack_core/hack_result.ml \
+        src/third-party/hack_core/hack_result.mli \
+        src/third-party/hack_core/hack_core_list.ml \
+        src/utils/exit_status.ml \
+        src/utils/measure.ml \
+        src/utils/daemon.ml \
+        src/utils/daemon.mli \
+        src/utils/timeout.ml \
+        src/utils/hack_path.ml \
+        src/procs/worker.ml \
+        src/interface/hack_parallel_intf.mli \
+        --replace "Pervasives." "Stdlib."
+      substituteInPlace src/third-party/hack_core/hack_caml.ml --replace "include Pervasives" ""
+      substituteInPlace src/utils/sys_utils.ml --replace "String.create" "Bytes.create"
+    '';
+  });
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -920,6 +962,12 @@ with oself;
   });
 
   hyper = callPackage ./hyper { };
+
+  inifiles = osuper.inifiles.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace inifiles.ml --replace "String.lowercase" "String.lowercase_ascii"
+    '';
+  });
 
   iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
@@ -1163,13 +1211,6 @@ with oself;
     postPatch = ''
       substituteInPlace lib/dune --replace "astring" "astring result"
     '';
-  });
-
-  functoria = osuper.functoria.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage/releases/download/v4.4.0/mirage-4.4.0.tbz;
-      sha256 = "09rykqfb4v6jd7p3lvv9d70x40qgh13s93h365i7v85rvr0ysbm7";
-    };
   });
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
@@ -2006,6 +2047,10 @@ with oself;
     '';
   });
 
+  soundtouch = osuper.soundtouch.overrideAttrs (o: {
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+  });
+
   sourcemaps = buildDunePackage {
     pname = "sourcemaps";
     version = "n/a";
@@ -2065,6 +2110,10 @@ with oself;
     postPatch = ''
       substituteInPlace "syslog.ml" --replace "%.15s" "%s"
     '';
+  });
+
+  taglib = osuper.taglib.overrideAttrs (o: {
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
   tar = osuper.tar.overrideAttrs (_: {
@@ -2167,6 +2216,14 @@ with oself;
       x509
       ipaddr
     ];
+  });
+
+  torch = osuper.torch.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/wrapper/dune --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
