@@ -13,11 +13,6 @@ let
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
-    "ocsigen-start"
-
-    # <cassert> not found
-    "torch"
-
     # linking issues?
     "mariadb"
     "caqti-driver-mariadb"
@@ -46,6 +41,7 @@ let
 
     # Broken since OCaml 4.14
     "eliom"
+    "ocsigen-start"
     "ocsigen-toolkit"
 
     "dream-serve"
@@ -53,10 +49,6 @@ let
     "gd4o"
 
     "ocaml-sat-solvers"
-
-    "taglib"
-    "getopt"
-    "soundtouch"
 
     "inotify"
     "async_inotify"
@@ -90,9 +82,6 @@ let
     "linol"
     "linol-lwt"
 
-    # broken after opam 2.2 update
-    "odep"
-
     # too old ocamlformat versions
     "ocamlformat_0_19_0"
     "ocamlformat_0_20_0"
@@ -106,10 +95,7 @@ let
   ocaml5Ignores = [
     "erm_xml"
     "fontconfig"
-    "functory"
     "gapi-ocaml"
-    "hack_parallel"
-    "inifiles"
     "lastfm"
     "ocaml_expat"
     "ocaml_oasis"
