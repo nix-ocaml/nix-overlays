@@ -579,12 +579,12 @@ with oself;
 
   ctypes = buildDunePackage rec {
     pname = "ctypes";
-    version = "0.20.1";
+    version = "0.21.1";
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
-      rev = "0.21.0";
-      hash = "sha256-zGQckxxUaokNptACHvV/WEGpsRjzD1s38Pq9s/kBCIk=";
+      rev = "0.21.1";
+      hash = "sha256-Cay+8dwFxw4d1OgMP4CR94l4ic2269YCAaziesEqwHM=";
     };
 
     nativeBuildInputs = [ pkg-config ];
@@ -2342,8 +2342,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "Zarith";
-      rev = "64ba1c7";
-      sha256 = "sha256-dPe+S68TMGrjSEr+RiawjqAJw2gvwa5BVqFglDgOm1s=";
+      rev = "release-1.13";
+      hash = "sha256-CNVKoJeO3fsmWaV/dwnUA8lgI4ZlxR/LKCXpCXUrpSg=";
     };
   });
 
