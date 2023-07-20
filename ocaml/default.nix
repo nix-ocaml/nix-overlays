@@ -2223,7 +2223,10 @@ with oself;
       substituteInPlace src/wrapper/dune --replace "ctypes.foreign" "ctypes-foreign"
     '';
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+    propagatedBuildInputs =
+      o.propagatedBuildInputs ++
+      [ ctypes-foreign ] ++
+      lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
     doCheck = !stdenv.isDarwin;
     checkPhase = "dune runtest --profile=release";
   });
