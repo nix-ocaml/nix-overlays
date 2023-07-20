@@ -170,6 +170,10 @@ in
       # TODO handle ios, android
       #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
     ] ++
+    lib.optionals stdenv.isLinux [
+      fontconfig
+      freetype
+    ] ++
     lib.optionals stdenv.isDarwin [
       darwin.cctools
       darwin.apple_sdk.frameworks.ApplicationServices
