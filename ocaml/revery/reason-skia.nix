@@ -12,6 +12,17 @@
 , SDL2
 , lib
 , stdenv
+, libGLU
+, libXxf86vm
+, libXcursor
+, libXrandr
+, libXinerama
+, libXi
+, zlib
+, bzip2
+, fontconfig
+, findlib
+, libfontconfig
 }:
 
 buildDunePackage {
@@ -27,7 +38,9 @@ buildDunePackage {
   '';
 
   nativeBuildInputs = [ reason pkg-config ];
-  buildInputs = [ dune-configurator ];
+  buildInputs = [
+    dune-configurator
+  ];
   propagatedBuildInputs = with darwin.apple_sdk.frameworks; [
     libiconv
     reason-sdl2
@@ -37,6 +50,19 @@ buildDunePackage {
     AppKit
     Cocoa
     ForceFeedback
+  ] ++
+  lib.optionals stdenv.isLinux [
+    libfontconfig
+    #findlib
+    #builtins.trace "fontconfig" fontconfig
+    libGLU
+    libXxf86vm
+    libXcursor
+    libXrandr
+    libXinerama
+    libXi
+    zlib
+    bzip2
   ];
   SDL2_INCLUDE_PATH = "${SDL2.dev}/include";
   SDL2_LIB_PATH = "${SDL2.override { withStatic = true; }}/lib";
@@ -44,4 +70,5 @@ buildDunePackage {
   SKIA_LIB_PATH = "${esy-skia}/out/Release";
   JPEG_LIB_PATH = "${(libjpeg.override { enableStatic = true; }).out}/lib";
   FREETYPE2_LIB_PATH = "${freetype}/lib";
+  FREETYPE2_INCLUDE_PATH = "${freetype}/include";
 }

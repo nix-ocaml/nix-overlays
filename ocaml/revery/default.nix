@@ -56,7 +56,7 @@ buildDunePackage {
     # This supresses a warning from the use of CAMLparam2, where caml__frame is unused:
     #   dialog.c:32:5: error: unused variable 'caml__frame' [-Werror,-Wunused-variable]
     # TODO: try to suppress this for the single file
-    substituteInPlace src/Native/dune --replace "-Werror" "-Werror\n   -Wno-unused-variable"
+    substituteInPlace src/Native/dune --replace "-Werror" "-Werror  -Wno-unused-variable"
   '';
   buildInputs = [
     dune-configurator

@@ -46,6 +46,7 @@
 , libxcb
 , xorg
 , zstd-oc
+, libfontconfig
 }:
 
 oself: osuper:
@@ -308,6 +309,14 @@ with oself;
       maintainers = with maintainers; [ ];
     };
   };
+
+  fontconfig = osuper.fontconfig.overrideAttrs (o: {
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.0" then ''
+        substituteInPlace extract_consts.ml --replace "String.lowercase" "String.lowercase_ascii"
+        substituteInPlace extract_consts.ml --replace "String.capitalize" "String.capitalize_ascii"
+      '' else "";
+  });
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -1586,7 +1595,9 @@ with oself;
 
   reason-harfbuzz = callPackage ./revery/reason-harfbuzz.nix { };
   reason-sdl2 = callPackage ./revery/reason-sdl2.nix { };
-  reason-skia = callPackage ./revery/reason-skia.nix { };
+  reason-skia = callPackage ./revery/reason-skia.nix {
+    inherit libfontconfig;
+  };
   revery = callPackage ./revery { };
 
   rench = buildDunePackage {
