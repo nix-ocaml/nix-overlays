@@ -10,7 +10,12 @@
 , lib
 , stdenv
 , libcxx
-
+, libGLU
+, libXxf86vm
+, libXcursor
+, libXrandr
+, libXinerama
+, libXi
 }:
 
 buildDunePackage rec {
@@ -35,9 +40,19 @@ buildDunePackage rec {
     dune-configurator
     # SDL2
     # SDL2.dev
+    libiconv
+  ] ++
+  lib.optionals stdenv.isDarwin [
     darwin.apple_sdk.frameworks.Cocoa
     darwin.apple_sdk.frameworks.ForceFeedback
-    libiconv
+  ] ++
+  lib.optionals stdenv.isLinux [
+    libGLU
+    libXxf86vm
+    libXcursor
+    libXrandr
+    libXinerama
+    libXi
   ];
   nativeBuildInputs = [
     reason

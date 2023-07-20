@@ -10,6 +10,8 @@
 , reason
 , reason-sdl2
 , SDL2
+, lib
+, stdenv
 }:
 
 buildDunePackage {
@@ -27,12 +29,14 @@ buildDunePackage {
   nativeBuildInputs = [ reason pkg-config ];
   buildInputs = [ dune-configurator ];
   propagatedBuildInputs = with darwin.apple_sdk.frameworks; [
-    AppKit
-    Cocoa
-    ForceFeedback
     libiconv
     reason-sdl2
     ctypes
+  ] ++
+  lib.optionals stdenv.isDarwin [
+    AppKit
+    Cocoa
+    ForceFeedback
   ];
   SDL2_INCLUDE_PATH = "${SDL2.dev}/include";
   SDL2_LIB_PATH = "${SDL2.override { withStatic = true; }}/lib";

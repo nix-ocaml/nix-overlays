@@ -17,7 +17,8 @@ buildDunePackage {
 
   buildInputs = [ dune-configurator ] ++
     lib.optionals stdenv.isDarwin
-      (with darwin.apple_sdk.frameworks; [ Foundation AppKit ]);
+      (with darwin.apple_sdk.frameworks;
+      lib.optionals stdenv.isDarwin [ Foundation AppKit ]);
   nativeBuildInputs = [
     reason
     pkg-config
