@@ -1039,13 +1039,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.4.0/js_of_ocaml-5.4.0.tbz;
-      sha256 = "151vilm2vlmxxq6syqkllmln8i70bqi8lyg22vdyyzw66ghms8gi";
-    };
-  });
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       builtins.fetchurl {
@@ -1411,17 +1404,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
-
-  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    version = "0.26.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.0/ocamlformat-0.26.0.tbz;
-      sha256 = "0zc7bskmkj7y22qmgm0cdjmc6ihfcssvw75aysl11vqcfymr8503";
-    };
-  });
-  ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
-    inherit (ocamlformat-lib) src version;
   });
 
   ocamlformat-rpc-lib = buildDunePackage {
