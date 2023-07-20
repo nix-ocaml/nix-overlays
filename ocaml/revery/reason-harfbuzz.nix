@@ -7,6 +7,7 @@
 , lib
 , libcxx
 , stdenv
+, darwin
 }:
 
 buildDunePackage {
@@ -14,7 +15,9 @@ buildDunePackage {
   version = "0.0.0";
   inherit (reason-sdl2) src;
 
-  buildInputs = [ dune-configurator ];
+  buildInputs = [ dune-configurator ] ++
+    lib.optionals stdenv.isDarwin
+      (with darwin.apple_sdk.frameworks; [ Foundation AppKit ]);
   nativeBuildInputs = [
     reason
     pkg-config

@@ -161,15 +161,13 @@ in
 
     stdenv.mkDerivation rec {
       name = "skia";
-      patches = [
-        ../ocaml/revery/patches/0002-esy-skia-use-libtool.patch
-      ];
       src = fetchFromGitHub {
         owner = "revery-ui";
         repo = "esy-skia";
         rev = "29349b9279ed24a73ec41acd7082caea9bd8c04e";
         sha256 = "sha256-VyY1clAdTEZu0cFy/+Bw19OQ4lb55s4gIV/7TsFKdnk=";
       };
+
       nativeBuildInputs = with self; [
         gn
         ninja
@@ -185,9 +183,6 @@ in
         darwin.apple_sdk.frameworks.OpenGL
         # TODO handle ios, android
         #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
-        stdenv.cc
-        # needed to get libtool - TODO: double check this, add darwin flag, test on linux if ar is needed
-        darwin.cctools
       ];
 
       preConfigure = ''
@@ -195,8 +190,7 @@ in
         ln -s ${angle2} third_party/externals/angle2
         ln -s ${piex} third_party/externals/piex
       '';
-      #TODO: remove cc= ccx=
-      #TODO: optional xcode_sysroot
+
       #TODO: built this based on feature flags, with sane defaults per os
       #TODO: enable more features
       configurePhase = ''
