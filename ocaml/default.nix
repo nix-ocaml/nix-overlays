@@ -590,10 +590,6 @@ with oself;
     nativeBuildInputs = [ pkg-config ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
-
-    postInstall = ''
-      echo -e '\nversion = "${version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/site-lib/ctypes/META
-    '';
   };
 
   ctypes-foreign = buildDunePackage {
