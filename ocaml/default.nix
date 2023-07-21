@@ -441,22 +441,9 @@ with oself;
 
   cohttp = osuper.cohttp.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.2.0/cohttp-5.2.0.tbz;
-      sha256 = "16vg57vimwjkf9gfcsgynb8shar307vsvyzby8kzn0sn30k8zfjx";
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.3.0/cohttp-5.3.0.tbz;
+      sha256 = "1pgddshvk0s8xy60z2s4rqn6mi0zvqpap0sbj8753sp50k3r3gdk";
     };
-  });
-
-  cohttp-async = osuper.cohttp-async.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace "cohttp-async/src/body_raw.ml" --replace \
-        "Deferred.List.iter" 'Deferred.List.iter ~how:`Sequential'
-
-      substituteInPlace "cohttp-async/bin/cohttp_server_async.ml" --replace \
-        "Deferred.List.map" 'Deferred.List.map ~how:`Sequential'
-
-      substituteInPlace "cohttp-async/src/client.ml" --replace \
-        "Deferred.Queue.map" 'Deferred.Queue.map ~how:`Sequential'
-    '';
   });
 
   colombe = buildDunePackage {
