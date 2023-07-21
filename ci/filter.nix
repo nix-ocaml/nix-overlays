@@ -74,7 +74,6 @@ let
     "graphql-async"
     "magic-trace"
     "telegraml"
-    "toplevel_expect_test"
 
     # Old mirage-kv interface
     "mirage-fs"

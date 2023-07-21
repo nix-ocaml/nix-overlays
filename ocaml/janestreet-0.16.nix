@@ -194,7 +194,7 @@ with self;
   base = janePackage {
     pname = "base";
     version = "0.16.2";
-    hash = "sha256-7dr6iMi+12MsFbv7QSrrcWyAJ9m2IMIghL+F3to7W9g=";
+    hash = "sha256-8OvZe+aiWipJ6busBufx3OqERmqxBva55UOLjL8KoPc=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ sexplib0 ];
@@ -331,22 +331,15 @@ with self;
     propagatedBuildInputs = [ core ppx_jane ];
   };
 
-  core = (janePackage {
+  core = janePackage {
     pname = "core";
-    hash = "sha256-09uI4ANhdjamfLq4dUm7QNBHi6COyTpGuXE9Dh+kUsc=";
     meta.description = "Industrial strength alternative to OCaml's standard library";
+    version = "0.16.1";
+    hash = "sha256-cKJi67VLIsbLEgIZyFiVz00z/QEvJhNBb8+M+bR4iHU=";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base base_bigstring base_quickcheck ppx_jane time_now ];
     doCheck = false; # circular dependency with core_kernel
-  }).overrideAttrs
-    (_: {
-      src = fetchFromGitHub {
-        owner = "janestreet";
-        repo = "core";
-        rev = "v0.16.1";
-        hash = "sha256-cKJi67VLIsbLEgIZyFiVz00z/QEvJhNBb8+M+bR4iHU=";
-      };
-    });
+  };
 
   core_bench = janePackage {
     pname = "core_bench";
