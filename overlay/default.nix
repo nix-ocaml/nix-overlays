@@ -153,7 +153,6 @@ in
       rev = "29349b9279ed24a73ec41acd7082caea9bd8c04e";
       sha256 = "sha256-VyY1clAdTEZu0cFy/+Bw19OQ4lb55s4gIV/7TsFKdnk=";
     };
-
     nativeBuildInputs = with self; [
       gn
       ninja
@@ -169,6 +168,10 @@ in
       darwin.apple_sdk.frameworks.OpenGL
       # TODO handle ios, android
       #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
+    ] ++
+    lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [ darwin.cctools ];
+    patches = lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [
+      ../ocaml/revery/patches/0002-esy-skia-use-libtool.patch
     ];
 
     preConfigure =
@@ -195,7 +198,7 @@ in
     configurePhase = ''
       runHook preConfigure
       gn gen out/Release \
-        --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] target_cpu="arm64" host_os="mac" skia_enable_gpu=true skia_use_metal=true skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=false skia_use_freetype=false skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true'
+          --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=true skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=false skia_use_freetype=false skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
       runHook postConfigure
     '';
     buildPhase = ''
