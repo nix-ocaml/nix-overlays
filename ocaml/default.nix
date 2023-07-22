@@ -310,14 +310,6 @@ with oself;
     };
   };
 
-  fontconfig = osuper.fontconfig.overrideAttrs (o: {
-    postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace extract_consts.ml --replace "String.lowercase" "String.lowercase_ascii"
-        substituteInPlace extract_consts.ml --replace "String.capitalize" "String.capitalize_ascii"
-      '' else "";
-  });
-
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch =

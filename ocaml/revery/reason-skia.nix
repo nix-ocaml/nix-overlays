@@ -53,8 +53,6 @@ buildDunePackage {
   ] ++
   lib.optionals stdenv.isLinux [
     libfontconfig
-    #findlib
-    #builtins.trace "fontconfig" fontconfig
     libGLU
     libXxf86vm
     libXcursor

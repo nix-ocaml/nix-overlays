@@ -56,15 +56,12 @@ buildDunePackage rec {
   ];
   nativeBuildInputs = [
     reason
-    # SDL2
-    # SDL2.dev
     findlib
   ];
   propagatedBuildInputs = [
     SDL2
     SDL2.dev
     ctypes
-    # findlib
   ];
   SDL2_LIB_PATH = ''${(SDL2.override { withStatic = true; }).out}/lib'';
   SDL2_INCLUDE_PATH = "${SDL2.dev}/include";

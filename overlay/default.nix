@@ -25,9 +25,7 @@ let
   staticLightExtend = pkgSet: pkgSet.extend (self: super:
     super.lib.overlayOCamlPackages {
       inherit super;
-      overlays = [
-        (super.callPackage ../static/ocaml.nix { })
-      ];
+      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
       updateOCamlPackages = true;
     });
 
@@ -157,7 +155,7 @@ in
       rev = "29349b9279ed24a73ec41acd7082caea9bd8c04e";
       sha256 = "sha256-VyY1clAdTEZu0cFy/+Bw19OQ4lb55s4gIV/7TsFKdnk=";
     };
-    nativeBuildInputs = with self; ([
+    nativeBuildInputs = with self; [
       gn
       ninja
       libjpeg
@@ -182,34 +180,35 @@ in
       # TODO handle ios, android
       #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
     ] ++
-    lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [ darwin.cctools ]
-    );
+    lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [ darwin.cctools ];
+
     patches = lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [
       ../ocaml/revery/patches/0002-esy-skia-use-libtool.patch
     ];
     preConfigure =
       let
-        angle2 = fetchgit
-          {
-            url = "https://chromium.googlesource.com/angle/angle.git";
-            rev = "47b3db22be33213eea4ad58f2453ee1088324ceb";
-            sha256 = "sha256-ZF5wDOqh3cRfQGwOMay//4aWh9dBWk/cLmUsx+Ab2vw=";
-          };
-        piex = fetchgit
-          {
-            url = "https://android.googlesource.com/platform/external/piex.git";
-            rev = "bb217acdca1cc0c16b704669dd6f91a1b509c406";
-            sha256 = "05ipmag6k55jmidbyvg5mkqm69zfw03gfkqhi9jnjlmlbg31y412";
-          };
+        angle2 = fetchgit {
+          url = "https://chromium.googlesource.com/angle/angle.git";
+          rev = "47b3db22be33213eea4ad58f2453ee1088324ceb";
+          sha256 = "sha256-ZF5wDOqh3cRfQGwOMay//4aWh9dBWk/cLmUsx+Ab2vw=";
+        };
+        piex = fetchgit {
+          url = "https://android.googlesource.com/platform/external/piex.git";
+          rev = "bb217acdca1cc0c16b704669dd6f91a1b509c406";
+          sha256 = "05ipmag6k55jmidbyvg5mkqm69zfw03gfkqhi9jnjlmlbg31y412";
+        };
       in
       ''
-         mkdir -p third_party/externals
-         ln -s ${angle2} third_party/externals/angle2
-         ln -s ${piex} third_party/externals/piex
+        mkdir -p third_party/externals
+        ln -s ${angle2} third_party/externals/angle2
+        ln -s ${piex} third_party/externals/piex
 
+        # this file is incorrectly referenced as paths are relative when gn runs in the folder
         substituteInPlace gn/BUILDCONFIG.gn --replace "gn/is_clang.py" "is_clang.py"
+        # python 3 compat
         substituteInPlace gn/is_clang.py --replace "print 'true'" "print('true')"
         substituteInPlace gn/is_clang.py --replace "print 'false'" "print('false')"
+        # python 3 returns raw binary instead of an ecoded string
         substituteInPlace gn/is_clang.py --replace "shell=True)" "shell=True).decode(sys.stdout.encoding)"
       '';
     #TODO: built this based on feature flags, with sane defaults per os
@@ -217,7 +216,7 @@ in
     configurePhase = ''
       runHook preConfigure
       gn gen out/Release \
-        --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=${lib.trivial.boolToString stdenv.isDarwin} skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=false skia_use_freetype=false skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
+          --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=${lib.trivial.boolToString stdenv.isDarwin} skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=false skia_use_freetype=false skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
       runHook postConfigure
     '';
     buildPhase = ''
@@ -249,19 +248,18 @@ in
     '';
   };
 
-  h2spec = self.buildGoModule
-    {
-      pname = "h2spec";
-      version = "dev";
+  h2spec = self.buildGoModule {
+    pname = "h2spec";
+    version = "dev";
 
-      src = fetchFromGitHub {
-        owner = "summerwind";
-        repo = "h2spec";
-        rev = "af83a65f0b";
-        sha256 = "sha256-z06uQiImMD4nPLp4Qxka9JT9NTmY0AurnHQKhB/kM40=";
-      };
-      vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
+    src = fetchFromGitHub {
+      owner = "summerwind";
+      repo = "h2spec";
+      rev = "af83a65f0b";
+      sha256 = "sha256-z06uQiImMD4nPLp4Qxka9JT9NTmY0AurnHQKhB/kM40=";
     };
+    vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
+  };
 
   h3spec = haskell.lib.compose.justStaticExecutables
     (haskellPackages.callPackage
@@ -318,83 +316,71 @@ in
   pnpm =
     let
       inherit (self)
-        writeScriptBin
-        runtimeShell
-        nodejs_latest
-        nodePackages_latest;
+        writeScriptBin runtimeShell nodejs_latest nodePackages_latest;
     in
-    writeScriptBin
-      "pnpm"
-      ''
-        #!${runtimeShell}
-        ${nodejs_latest}/bin/node \
-          ${nodePackages_latest.pnpm}/lib/node_modules/pnpm/bin/pnpm.cjs \
-          "$@"
-      '';
+    writeScriptBin "pnpm" ''
+      #!${runtimeShell}
+      ${nodejs_latest}/bin/node \
+        ${nodePackages_latest.pnpm}/lib/node_modules/pnpm/bin/pnpm.cjs \
+        "$@"
+    '';
 
-  rdkafka = super.rdkafka.overrideAttrs
-    (_: {
-      src = super.fetchFromGitHub {
-        owner = "confluentinc";
-        repo = "librdkafka";
-        rev = "v2.2.0";
-        hash = "sha256-v/FjnDg22ZNQHmrUsPvjaCs4UQ/RPAxQdg9i8k6ba/4=";
-      };
-    });
+  rdkafka = super.rdkafka.overrideAttrs (_: {
+    src = super.fetchFromGitHub {
+      owner = "confluentinc";
+      repo = "librdkafka";
+      rev = "v2.2.0";
+      hash = "sha256-v/FjnDg22ZNQHmrUsPvjaCs4UQ/RPAxQdg9i8k6ba/4=";
+    };
+  });
 
   melange-relay-compiler =
     let
-      inherit (super)
-        rustPlatform
-        darwin
-        pkg-config
-        openssl;
-      melange-relay-compiler-src = stdenv.mkDerivation
-        {
-          name = "melange-relay-compiler-src";
-          src = fetchFromGitHub {
-            owner = "anmonteiro";
-            repo = "relay";
-            rev = "59b2edc6a9332ec83b79166bd6b1c9535d4bf6ab";
-            hash = "sha256-3uN/oPMJd5bTCrINzGpkApb5fRTKj6TwPE6NCcXf95g=";
-            sparseCheckout = [ "compiler" ];
-          };
-          # patches = [ ./reason-relay-cargo.patch ];
-          dontBuild = true;
-          installPhase = ''
-            mkdir $out
-            cp -r ./* $out
-          '';
+      inherit (super) rustPlatform darwin pkg-config openssl;
+      melange-relay-compiler-src = stdenv.mkDerivation {
+        name = "melange-relay-compiler-src";
+        src = fetchFromGitHub {
+          owner = "anmonteiro";
+          repo = "relay";
+          rev = "59b2edc6a9332ec83b79166bd6b1c9535d4bf6ab";
+          hash = "sha256-3uN/oPMJd5bTCrINzGpkApb5fRTKj6TwPE6NCcXf95g=";
+          sparseCheckout = [ "compiler" ];
         };
-    in
-    rustPlatform.buildRustPackage
-      {
-        pname = "relay";
-        version = "n/a";
-        src = "${melange-relay-compiler-src}/compiler";
-        cargoHash = "sha256-iyFSsvw3+YCiJz43XVE2IhvooimWdNvuLsBKPtC5EWk=";
-
-        nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
-        # Needed to get openssl-sys to use pkg-config.
-        # Doesn't seem to like OpenSSL 3
-        OPENSSL_NO_VENDOR = 1;
-
-        buildInputs = lib.optionals stdenv.isLinux [ openssl ];
-        propagatedBuildInputs = lib.optionals stdenv.isDarwin [
-          darwin.apple_sdk.frameworks.Security
-        ];
-
-        postInstall = ''
-          mv $out/bin/relay $out/bin/melange-relay-compiler
-          ln -sf $out/bin/melange-relay-compiler $out/bin/melrelay
+        # patches = [ ./reason-relay-cargo.patch ];
+        dontBuild = true;
+        installPhase = ''
+          mkdir $out
+          cp -r ./* $out
         '';
-        doCheck = false;
-        meta = with lib; {
-          description = "Melange Relay compiler";
-          homepage = "https://github.com/anmonteiro/relay";
-          maintainers = [ maintainers.anmonteiro ];
-        };
       };
+    in
+    rustPlatform.buildRustPackage {
+      pname = "relay";
+      version = "n/a";
+      src = "${melange-relay-compiler-src}/compiler";
+      cargoHash = "sha256-iyFSsvw3+YCiJz43XVE2IhvooimWdNvuLsBKPtC5EWk=";
+
+      nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
+      # Needed to get openssl-sys to use pkg-config.
+      # Doesn't seem to like OpenSSL 3
+      OPENSSL_NO_VENDOR = 1;
+
+      buildInputs = lib.optionals stdenv.isLinux [ openssl ];
+      propagatedBuildInputs = lib.optionals stdenv.isDarwin [
+        darwin.apple_sdk.frameworks.Security
+      ];
+
+      postInstall = ''
+        mv $out/bin/relay $out/bin/melange-relay-compiler
+        ln -sf $out/bin/melange-relay-compiler $out/bin/melrelay
+      '';
+      doCheck = false;
+      meta = with lib; {
+        description = "Melange Relay compiler";
+        homepage = "https://github.com/anmonteiro/relay";
+        maintainers = [ maintainers.anmonteiro ];
+      };
+    };
 } // (
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
