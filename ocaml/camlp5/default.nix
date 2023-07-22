@@ -1,4 +1,16 @@
-{ stdenv, fetchFromGitHub, ocaml, findlib, camlp-streams, fmt, fix, perl }:
+{ stdenv
+, fetchFromGitHub
+, ocaml
+, findlib
+, camlp-streams
+, fmt
+, fix
+, perl
+, bos
+, ocaml_pcre
+, re
+, rresult
+}:
 
 stdenv.mkDerivation
 {
@@ -7,13 +19,21 @@ stdenv.mkDerivation
   src = fetchFromGitHub {
     owner = "camlp5";
     repo = "camlp5";
-    rev = "rel8.00.04";
-    sha256 = "sha256-U+EifChwxtAh2wn7MW1KTQex3a+QGQ3KOupHUlkdNVk=";
+    rev = "8.02.00";
+    hash = "sha256-No+rTEJEHaaPVV8BSPeuDDOiNd58DF+YArz+h2hxvaM=";
   };
 
   nativeBuildInputs = [ ocaml findlib ];
   buildInputs = [ perl ];
-  propagatedBuildInputs = [ camlp-streams fmt fix ];
+  propagatedBuildInputs = [
+    bos
+    camlp-streams
+    fmt
+    fix
+    ocaml_pcre
+    re
+    rresult
+  ];
 
   prefixKey = "-prefix ";
   postPatch = ''
