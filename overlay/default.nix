@@ -216,7 +216,7 @@ in
     configurePhase = ''
       runHook preConfigure
       gn gen out/Release \
-          --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=${lib.trivial.boolToString stdenv.isDarwin} skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=false skia_use_freetype=false skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
+          --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=${lib.trivial.boolToString stdenv.isDarwin} skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=${lib.trivial.boolToString stdenv.isLinux} skia_use_freetype=${lib.trivial.boolToString stdenv.isLinux} skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
       runHook postConfigure
     '';
     buildPhase = ''
