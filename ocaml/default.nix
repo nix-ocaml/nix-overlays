@@ -46,6 +46,7 @@
 , libxcb
 , xorg
 , zstd-oc
+, libfontconfig
 }:
 
 oself: osuper:
@@ -1583,6 +1584,39 @@ with oself;
       sha256 = "sha256-h1+D0HiCdEOBez+9EyqkF63TRW7pWkoUJYkugBTywI4=";
     };
   });
+
+  reason-harfbuzz = callPackage ./revery/reason-harfbuzz.nix { };
+  reason-sdl2 = callPackage ./revery/reason-sdl2.nix { };
+  reason-skia = callPackage ./revery/reason-skia.nix {
+    inherit libfontconfig;
+  };
+  revery = callPackage ./revery { };
+
+  rench = buildDunePackage {
+    pname = "Rench";
+    version = "0.0.0";
+    src = fetchFromGitHub {
+      owner = "revery-ui";
+      repo = "rench";
+      rev = "df44c5277ed1d3ccfa959f2623705baefd26ad99";
+      sha256 = "sha256-cGBYBIxVIuhbvkGxM1lAN0j5m5Fiqlc3O1xyt9OFP4U=";
+    };
+    nativeBuildInputs = [ reason ];
+    propagatedBuildInputs = [ flex fpath ];
+  };
+
+  timber = buildDunePackage {
+    pname = "timber";
+    version = "0.0.0";
+    src = fetchFromGitHub {
+      owner = "revery-ui";
+      repo = "timber";
+      rev = "f4c40ee5d7cb93801160340ac4ac9c974ce01b66";
+      sha256 = "sha256-tk/2Of0R4WzjM7Fiv0mXVSbmiRHXMtppLgBcgvX4p9s=";
+    };
+    nativeBuildInputs = [ reason ];
+    propagatedBuildInputs = [ fmt logs re ];
+  };
 
   swhid_core = buildDunePackage {
     pname = "swhid_core";

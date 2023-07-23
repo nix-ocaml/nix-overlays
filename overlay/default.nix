@@ -11,10 +11,13 @@ let
     stdenv
     fetchFromGitHub
     callPackage
+    darwin
     fetchpatch
+    fetchgit
     buildGoModule
     haskell
-    haskellPackages;
+    haskellPackages
+    fontconfig;
 
   overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
     inherit nixpkgs;
@@ -34,6 +37,7 @@ in
     (callPackage ../ocaml {
       inherit nixpkgs;
       super-opaline = super.opaline;
+      libfontconfig = fontconfig;
     })
   ];
 }) // {
@@ -143,6 +147,106 @@ in
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
   esy = callPackage ../ocaml/esy { };
+  esy-skia = stdenv.mkDerivation rec {
+    name = "skia";
+    src = fetchFromGitHub {
+      owner = "revery-ui";
+      repo = "esy-skia";
+      rev = "29349b9279ed24a73ec41acd7082caea9bd8c04e";
+      sha256 = "sha256-VyY1clAdTEZu0cFy/+Bw19OQ4lb55s4gIV/7TsFKdnk=";
+    };
+    nativeBuildInputs = with self; [
+      gn
+      ninja
+      libjpeg
+      libpng
+      zlib
+      python3
+      expat
+      # TODO: add optional webp support
+      #libwebp
+      # TODO handle ios, android
+      #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
+    ] ++
+    lib.optionals stdenv.isLinux [
+      fontconfig
+      freetype
+    ] ++
+    lib.optionals stdenv.isDarwin [
+      darwin.cctools
+      darwin.apple_sdk.frameworks.ApplicationServices
+      darwin.apple_sdk.frameworks.AppKit
+      darwin.apple_sdk.frameworks.OpenGL
+      # TODO handle ios, android
+      #-framework CoreServices -framework CoreGraphics -framework CoreText -framework CoreFoundation
+    ] ++
+    lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [ darwin.cctools ];
+
+    patches = lib.optionals (stdenv.isDarwin && !stdenv.isAarch64) [
+      ../ocaml/revery/patches/0002-esy-skia-use-libtool.patch
+    ];
+    preConfigure =
+      let
+        angle2 = fetchgit {
+          url = "https://chromium.googlesource.com/angle/angle.git";
+          rev = "47b3db22be33213eea4ad58f2453ee1088324ceb";
+          sha256 = "sha256-ZF5wDOqh3cRfQGwOMay//4aWh9dBWk/cLmUsx+Ab2vw=";
+        };
+        piex = fetchgit {
+          url = "https://android.googlesource.com/platform/external/piex.git";
+          rev = "bb217acdca1cc0c16b704669dd6f91a1b509c406";
+          sha256 = "05ipmag6k55jmidbyvg5mkqm69zfw03gfkqhi9jnjlmlbg31y412";
+        };
+      in
+      ''
+        mkdir -p third_party/externals
+        ln -s ${angle2} third_party/externals/angle2
+        ln -s ${piex} third_party/externals/piex
+
+        # this file is incorrectly referenced as paths are relative when gn runs in the folder
+        substituteInPlace gn/BUILDCONFIG.gn --replace "gn/is_clang.py" "is_clang.py"
+        # python 3 compat
+        substituteInPlace gn/is_clang.py --replace "print 'true'" "print('true')"
+        substituteInPlace gn/is_clang.py --replace "print 'false'" "print('false')"
+        # python 3 returns raw binary instead of an ecoded string
+        substituteInPlace gn/is_clang.py --replace "shell=True)" "shell=True).decode(sys.stdout.encoding)"
+      '';
+    #TODO: built this based on feature flags, with sane defaults per os
+    #TODO: enable more features
+    configurePhase = ''
+      runHook preConfigure
+      gn gen out/Release \
+          --args='is_debug=false is_official_build=true skia_use_egl=false skia_use_dng_sdk=false skia_enable_tools=false extra_asmflags=[] host_os="${if stdenv.isDarwin then "mac" else "linux"}" skia_enable_gpu=true skia_use_metal=${lib.trivial.boolToString stdenv.isDarwin} skia_use_vulkan=false skia_use_angle=false skia_use_fontconfig=${lib.trivial.boolToString stdenv.isLinux} skia_use_freetype=${lib.trivial.boolToString stdenv.isLinux} skia_enable_pdf=false skia_use_sfntly=false skia_use_icu=false skia_use_libwebp=false skia_use_libpng=true esy_skia_enable_svg=true target_cpu="${if stdenv.isAarch64 then "arm64" else "x86_64"}"'
+      runHook postConfigure
+    '';
+    buildPhase = ''
+      runHook preBuild
+      ninja -C out/Release skia
+      runHook postBuild
+    '';
+
+    # TODO: these includes were taken from alperite and can probably be simplified to include everything
+    installPhase = ''
+      mkdir -p $out
+
+      # Glob will match all subdirs.
+      shopt -s globstar
+
+      cp -r --parents -t $out/ \
+        include/codec \
+        include/config \
+        include/core \
+        include/effects \
+        include/gpu \
+        include/private \
+        include/utils \
+        include/c \
+        out/Release/*.a \
+        src/gpu/**/*.h \
+        third_party/externals/angle2/include \
+        third_party/skcms/**/*.h
+    '';
+  };
 
   h2spec = self.buildGoModule {
     pname = "h2spec";

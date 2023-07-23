@@ -1,0 +1,52 @@
+From 445b2e0cb969f9de458b8464bd3b18caade11fc4 Mon Sep 17 00:00:00 2001
+From: Joseph Price <pricejosephd@gmail.com>
+Date: Wed, 19 Jul 2023 07:37:32 -0400
+Subject: [PATCH] use libtool
+
+---
+ gn/toolchain/BUILD.gn | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/gn/toolchain/BUILD.gn b/gn/toolchain/BUILD.gn
+index cd1def114d..8a914a99c3 100644
+--- a/gn/toolchain/BUILD.gn
++++ b/gn/toolchain/BUILD.gn
+@@ -260,11 +260,22 @@ template("gcc_like_toolchain") {
+       description = "assemble {{source}}"
+     }
+ 
++    if (is_mac || is_ios) {
++      not_needed([ "ar" ])  # We use libtool instead.
++    }
+     tool("alink") {
+-      rspfile = "{{output}}.rsp"
+-      rspfile_content = "{{inputs}}"
+-      ar_py = rebase_path("../ar.py")
+-      command = "python $ar_py $ar {{output}} $rspfile"
++      if (is_mac || is_ios) {
++        command = "libtool -static -o {{output}} -no_warning_for_no_symbols {{inputs}}"
++      } else {
++        rspfile = "{{output}}.rsp"
++        rspfile_content = "{{inputs}}"
++        # TODO: add rm.py
++        #rm_py = rebase_path("../rm.py")
++        #command = "$shell python3 \"$rm_py\" \"{{output}}\" && $ar rcs {{output}} @$rspfile"
++        ar_py = rebase_path("../ar.py")
++        command = "python $ar_py $ar {{output}} $rspfile"
++      }
++
+       outputs = [
+         "{{root_out_dir}}/{{target_output_name}}{{output_extension}}",
+       ]
+@@ -280,7 +291,7 @@ template("gcc_like_toolchain") {
+       }
+ 
+       rpath = "-Wl,-soname,$soname"
+-      if (is_mac) {
++      if (is_mac || is_ios) {
+         rpath = "-Wl,-install_name,@rpath/$soname"
+       }
+ 
+-- 
+2.40.1
+

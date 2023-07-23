@@ -1,0 +1,49 @@
+diff --git a/src/lru.ml b/src/lru.ml
+index f3e1301..fffcec2 100644
+--- a/src/lru.ml
++++ b/src/lru.ml
+@@ -209,7 +209,7 @@ module M = struct
+     type t
+     type k
+     type v
+-    val create : ?random:bool -> int -> t
++    val create : ?random:bool -> ?initialSize: int -> int -> t
+     val is_empty : t -> bool
+     val size : t -> int
+     val weight : t -> int
+@@ -250,9 +250,11 @@ module M = struct
+ 
+     let cap_makes_sense = cap_makes_sense ~m:"M"
+ 
+-    let create ?random cap =
++    let create ?random ?initialSize cap =
++      let hashSize =
++        match initialSize with | None -> cap | (Some v) -> v in
+       cap_makes_sense ~f:"create" cap;
+-      { cap; w = 0; ht = HT.create ?random cap; q = Q.create () }
++      { cap; w = 0; ht = HT.create ?random hashSize; q = Q.create () }
+ 
+     let lru t = match t.q.Q.first with Some n -> Some n.Q.value | _ -> None
+ 
+diff --git a/src/lru.mli b/src/lru.mli
+index 5271846..ea81bf0 100644
+--- a/src/lru.mli
++++ b/src/lru.mli
+@@ -219,12 +219,15 @@ module M : sig
+     type v
+     (** Values in {{!t}[t]}. *)
+ 
+-    val create : ?random:bool -> int -> t
+-    (** [create ?random cap] is a new map with capacity [cap].
++    val create : ?random:bool -> ?initialSize:int -> int -> t
++    (** [create ?random ?initialSize cap] is a new map with capacity [cap].
+ 
+         [~random] randomizes the underlying hash table. It defaults to [false].
+         See {!Hashtbl.create}.
+ 
++        [~initialSize] sets the initial size of the underlying hash table. If not set,
++        [initialSize] is set to [cap].
++
+         {b Note.} The internal hash table is created with size [cap].
+ 
+         @raise Invalid_argument when [cap < 0]. *)
