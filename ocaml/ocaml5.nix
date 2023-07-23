@@ -23,6 +23,18 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
+  domain-local-timeout = buildDunePackage {
+    pname = "domain-local-timeout";
+    version = "dev";
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "domain-local-timeout";
+      rev = "e8ee5d7a0afa326365e20b31483fc8c9fbac860c";
+      hash = "sha256-JUaOg8URnaKkcIU7f8Ex4sHXLbs5yDp+OSVJxvsr6dM=";
+    };
+    propagatedBuildInputs = [ mtime psq thread-table ];
+  };
+
   eio-ssl = callPackage ./eio-ssl { };
 
   gluten-eio = callPackage ./gluten/eio.nix { };
@@ -112,6 +124,17 @@ with oself;
     };
 
     propagatedBuildInputs = [ domain-shims ];
+  };
+
+  thread-table = buildDunePackage {
+    pname = "thread-table";
+    version = "dev";
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "thread-table";
+      rev = "0.1.0";
+      hash = "sha256-DwaendVYXDd2Pnghrtgz8So7Qdp8m50nk+sGtxs3mkI=";
+    };
   };
 
   tls-eio = buildDunePackage {
