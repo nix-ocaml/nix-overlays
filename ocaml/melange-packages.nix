@@ -22,8 +22,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "edae6cdcd1d27d4fe5cdcb6cb4b944ebf8ff9d8b";
-      hash = "sha256-4p9dvztRREqw5XUDNIkiAsLBCo2zAwgUZCCSBKEry/w=";
+      rev = "4860812ef8dbee12e7b6a05d0a52c18c1ef934d8";
+      hash = "sha256-sH4X7KEME4Ie2ROo24cx3w4XRgJqvfIOmvGLOCSXli0=";
       sparseCheckout = [ "packages/rescript-relay" ];
     };
     nativeBuildInputs = [ melange reason ];
@@ -49,8 +49,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "89f0b81f987925dced87118084a78c2c2629cf0a";
-      hash = "sha256-iryo3OrPn4cK7bcz8oImbN7gMZyt7PyKKcZhS4P7uvM=";
+      rev = "e80c1c9da2cabc4ad93b5b88f70648455bcbbfed";
+      hash = "sha256-IdwDMPi5yEWEEnKhn0QTWffaIrh67LGDhTpi27IdgrE=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
