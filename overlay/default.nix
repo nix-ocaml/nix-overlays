@@ -238,11 +238,10 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "59b2edc6a9332ec83b79166bd6b1c9535d4bf6ab";
-          hash = "sha256-3uN/oPMJd5bTCrINzGpkApb5fRTKj6TwPE6NCcXf95g=";
+          rev = "f36e209996e23355329da17a78644034b103b4b8";
+          hash = "sha256-+m6lUmSf//ah6AYYpo8e/bnuBCoN8QBwzAuJLADYth8=";
           sparseCheckout = [ "compiler" ];
         };
-        # patches = [ ./reason-relay-cargo.patch ];
         dontBuild = true;
         installPhase = ''
           mkdir $out
