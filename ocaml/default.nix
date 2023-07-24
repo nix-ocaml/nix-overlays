@@ -1584,6 +1584,15 @@ with oself;
     };
   });
 
+  omd = osuper.omd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/omd/releases/download/2.0.0.alpha4/omd-2.0.0.alpha4.tbz;
+      sha256 = "076zc9mbz9698lcx5fw0hvllbv4n29flglz64n15n02vhybrd5lk";
+    };
+    preBuild = "";
+    propagatedBuildInputs = [ uutf uucp uunf dune-build-info ];
+  });
+
   swhid_core = buildDunePackage {
     pname = "swhid_core";
     version = "0.1";
