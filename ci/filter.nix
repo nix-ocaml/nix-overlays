@@ -90,6 +90,9 @@ let
     "ocamlformat_0_22_4"
     "ocamlformat_0_23_0"
     "ocamlformat_0_24_1"
+
+    # Incompatible with omd 2.0
+    "sail"
   ];
 
   ocaml5Ignores = [
