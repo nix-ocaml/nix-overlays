@@ -624,17 +624,6 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
-  dolog = buildDunePackage {
-    pname = "dolog";
-    version = "6.0.0";
-    src = fetchFromGitHub {
-      owner = "UnixJunkie";
-      repo = "dolog";
-      rev = "v6.0.0";
-      sha256 = "sha256-g68260mcb4G4wX8y4T0MTaXsYnM9wn2d0V1VCdSFZjY=";
-    };
-  };
-
   domain-shims = buildDunePackage {
     pname = "domain_shims";
     version = "0.1.0";
@@ -2262,14 +2251,6 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
-  });
-
-  utop = osuper.utop.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.13.1/utop-2.13.1.tbz;
-      sha256 = "1zbgb89c5wg6lr573x018kvvfxxbdvv5hk24g65a59nijjiw4kmh";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib xdg ];
   });
 
   uutf = osuper.uutf.overrideAttrs (_: {
