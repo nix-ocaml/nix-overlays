@@ -153,13 +153,11 @@ with self;
 
   async_ssl = janePackage {
     pname = "async_ssl";
-    hash = "sha256-BvZ3rZ6dq7spWhKWLfYzr4zZhS0LqlCLuxxRPNsRoZ8=";
+    version = "0.16.1";
+    hash = "sha256-83YKxvVb/JwBnQG4R/R1Ztik9T/hO4cbiNTfFnErpG4=";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ async ctypes ctypes-foreign openssl ];
-    postPatch = ''
-      substituteInPlace bindings/dune --replace "ctypes.foreign" "ctypes-foreign"
-    '';
   };
 
   async_udp = janePackage {

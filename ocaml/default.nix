@@ -1231,7 +1231,10 @@ with oself;
   landmarks = callPackage ./landmarks { };
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
-  melange = callPackage ./melange { };
+  melange =
+    if lib.versionAtLeast ocaml.version "5.1" then
+      callPackage ./melange { }
+    else null;
 
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
     src = builtins.fetchurl {

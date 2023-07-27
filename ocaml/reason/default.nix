@@ -20,7 +20,7 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "reasonml";
     repo = "reason";
-    rev = "03f588e1c91f232763ac6ca5312aa790f5c24680";
+    rev = "a2203e09d474db82adec72edff31abb8dc77656d";
     hash = "sha256-KSX4feOWkIJDxQ2YC0XZ4wAXS9aqs0Un6JCyCBT6WFM=";
   };
 
