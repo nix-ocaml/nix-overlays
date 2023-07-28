@@ -20,6 +20,7 @@
 , sexplib
 , nixpkgs
 , callPackage
+, lib
 }:
 
 stdenv.mkDerivation rec {
@@ -73,11 +74,11 @@ stdenv.mkDerivation rec {
 
   passthru.withProvers = callPackage "${nixpkgs}/pkgs/applications/science/logic/why3/with-provers.nix" { };
 
-  # meta = with lib; {
-  # description = "A platform for deductive program verification";
-  # homepage = "https://why3.lri.fr/";
-  # license = licenses.lgpl21;
-  # platforms = platforms.unix;
-  # maintainers = with maintainers; [ thoughtpolice vbgl ];
-  # };
+  meta = with lib; {
+    description = "A platform for deductive program verification";
+    homepage = "https://why3.lri.fr/";
+    license = licenses.lgpl21;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ thoughtpolice vbgl ];
+  };
 }
