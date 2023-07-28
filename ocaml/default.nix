@@ -28,6 +28,7 @@
 , super-opaline
 , gmp-oc
 , openssl-oc
+, oniguruma-lib
 , pam
 , pkg-config
 , python3
@@ -915,6 +916,17 @@ with oself;
     propagatedBuildInputs = [ zlib-oc ctypes ];
   };
 
+  hilite = buildDunePackage {
+    pname = "hilite";
+    version = "0.3.0";
+    src = builtins.fetchurl {
+      url = https://github.com/patricoferris/hilite/releases/download/v0.3.0/hilite-0.3.0.tbz;
+      sha256 = "130rpa4d4335vchzry2bnyxnr34d0s0skv0ba5cx3q4srh4155wv";
+    };
+
+    propagatedBuildInputs = [ omd textmate-language ];
+  };
+
   httpaf = callPackage ./httpaf { };
   httpaf-lwt = callPackage ./httpaf/lwt.nix { };
   httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
@@ -1597,6 +1609,17 @@ with oself;
     propagatedBuildInputs = [ uutf uucp uunf dune-build-info ];
   });
 
+  oniguruma = buildDunePackage {
+    pname = "oniguruma";
+    version = "0.1.2";
+    src = builtins.fetchurl {
+      url = https://github.com/alan-j-hu/ocaml-oniguruma/releases/download/0.1.2/oniguruma-0.1.2.tbz;
+      sha256 = "0rc70nwgx4bqm3h7rar2pmnh543np67rw5m8f6gwzhrwvbykzxp3";
+    };
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ oniguruma-lib ];
+  };
+
   swhid_core = buildDunePackage {
     pname = "swhid_core";
     version = "0.1";
@@ -1795,6 +1818,17 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson biotk ];
   });
 
+  plist-xml = buildDunePackage {
+    pname = "plist-xml";
+    version = "";
+    src = builtins.fetchurl {
+      url = https://github.com/alan-j-hu/ocaml-plist-xml/releases/download/0.5.0/plist-xml-0.5.0.tbz;
+      sha256 = "1hw3l8q8ip56niszh24yr6dijm7da2rrixdyviffyxv4c9dhd1di";
+    };
+    nativeBuildInputs = [ menhir ];
+    propagatedBuildInputs = [ menhirLib xmlm base64 cstruct iso8601 ];
+  };
+
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "mmottl";
@@ -1888,6 +1922,16 @@ with oself;
         stdlib-shims
       ];
     });
+
+  textmate-language = buildDunePackage {
+    pname = "textmate-language";
+    version = "0.3.4";
+    src = builtins.fetchurl {
+      url = https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/0.3.4/textmate-language-0.3.4.tbz;
+      sha256 = "17c540ddzqzl8c72rzpm3id6ixi91cq5r8dmjvf0kzj6kjdgrg63";
+    };
+    propagatedBuildInputs = [ oniguruma ];
+  };
 
   terminal = osuper.terminal.overrideAttrs (_: {
     src = builtins.fetchurl {
