@@ -1048,6 +1048,25 @@ with oself;
       '' else "";
   });
 
+  lambdapi = osuper.lambdapi.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/Deducteam/lambdapi/releases/download/2.4.0/lambdapi-2.4.0.tbz;
+      sha256 = "09carxza5vh18bhwjrl1c5sw6xr62kxyzniwdyh4kqxxp077abfl";
+    };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ dream ];
+    propagatedBuildInputs = [
+      bindlib
+      cmdliner
+      dream
+      lwt_ppx
+      menhirLib
+      pratter
+      sedlex
+      timed
+      why3
+    ];
+  });
+
   lambda-term = osuper.lambda-term.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-community/lambda-term/releases/download/3.3.1/lambda-term-3.3.1.tbz;
@@ -2289,6 +2308,8 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+
+  why3 = callPackage ./why3 { inherit nixpkgs; };
 
   x509 = osuper.x509.overrideAttrs (_: {
     src = builtins.fetchurl {
