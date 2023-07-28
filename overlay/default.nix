@@ -34,6 +34,7 @@ in
     (callPackage ../ocaml {
       inherit nixpkgs;
       super-opaline = super.opaline;
+      oniguruma-lib = super.oniguruma;
     })
   ];
 }) // {
