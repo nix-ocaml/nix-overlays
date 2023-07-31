@@ -1063,7 +1063,7 @@ with oself;
   lambdapi = osuper.lambdapi.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/Deducteam/lambdapi/releases/download/2.4.0/lambdapi-2.4.0.tbz;
-      sha256 = "1vjcw74rmc1ya9zgqhqmmlv174f0274rzrlgmpfqinzy9xwsqjx8";
+      sha256 = "1dlc88jpq5ys8n8saz5af3xacjdprpyvc3r1vzkv0fkc1adap73k";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ dream ];
     propagatedBuildInputs = [
@@ -1987,10 +1987,15 @@ with oself;
 
   reenv = callPackage ./reenv { };
 
-  rfc7748 = osuper.rfc7748.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace "src/curve.ml" --replace "Pervasives." "Stdlib."
-    '';
+  rfc7748 = osuper.rfc7748.overrideAttrs (o: {
+    patches = [ ];
+    src = fetchFromGitHub {
+      owner = "burgerdev";
+      repo = "ocaml-rfc7748";
+      rev = "ed034213ff02cd55870ae1387e91deebc9838eb4";
+      hash = "sha256-26w6YcjBgfe2Fz/Z0RvCdU0MR4MAxIk2HGQ0ri0rrqU=";
+    };
+    checkInputs = o.checkInputs ++ [ hex ];
   });
 
   rock = osuper.rock.overrideAttrs (_: {
@@ -2060,14 +2065,6 @@ with oself;
     '';
     propagatedBuildInputs = [ ctypes libsodium ];
   };
-
-  sosa = osuper.sosa.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/lib/functors.ml --replace "Pervasives" "Stdlib"
-      substituteInPlace src/lib/list_of.ml --replace "Pervasives" "Stdlib"
-      substituteInPlace src/lib/of_mutable.ml --replace "Pervasives" "Stdlib"
-    '';
-  });
 
   soundtouch = osuper.soundtouch.overrideAttrs (o: {
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
@@ -2360,14 +2357,6 @@ with oself;
       url = https://github.com/mirleft/ocaml-x509/releases/download/v0.16.5/x509-0.16.5.tbz;
       sha256 = "16fdii9sffdbrbzzhdfk677rs77h01ffw2v9nagn2zx3zsjjb7hl";
     };
-  });
-
-  xenstore-tool = osuper.xenstore-tool.overrideAttrs (o: {
-    propagatedBuildInputs = [ camlp-streams ];
-    postPatch = ''
-      substituteInPlace "cli/dune" --replace \
-        "libraries lwt" "libraries camlp-streams lwt"
-    '';
   });
 
   yuscii = disableTests osuper.yuscii;
