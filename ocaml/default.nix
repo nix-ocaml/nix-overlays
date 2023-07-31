@@ -1063,7 +1063,7 @@ with oself;
   lambdapi = osuper.lambdapi.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/Deducteam/lambdapi/releases/download/2.4.0/lambdapi-2.4.0.tbz;
-      sha256 = "1vjcw74rmc1ya9zgqhqmmlv174f0274rzrlgmpfqinzy9xwsqjx8";
+      sha256 = "1dlc88jpq5ys8n8saz5af3xacjdprpyvc3r1vzkv0fkc1adap73k";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ dream ];
     propagatedBuildInputs = [
