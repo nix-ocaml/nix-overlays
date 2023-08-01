@@ -6,8 +6,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "websocketaf";
-    rev = "cf9b5289066476741635d8598b015ac33548c4ea";
-    hash = "sha256-HBt7vtx0Wqv4NnjvQ7QGN0gY/stSeBt1j9oQJHBNa2I=";
+    rev = "aa6a1472926ac496b3403a0dafb0360a1bb32623";
+    hash = "sha256-Rzxr9AtDJAk/gZ19DI2ui2duB/9/F+m6lvJvnFm9bJc=";
   };
 
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
