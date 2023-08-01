@@ -1940,13 +1940,6 @@ with oself;
     };
   });
 
-  ptime = osuper.ptime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/ptime/releases/ptime-1.1.0.tbz;
-      sha256 = "1c9y07vnvllfprf0z1vqf6fr73qxw7hj6h1k5ig109zvaiab3xfb";
-    };
-  });
-
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else
