@@ -6,8 +6,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "eio-ssl";
-    rev = "f8294caed5edf4801a8d1e5fe371d23dc9f6837d";
-    hash = "sha256-oLOhkciZroy+PYVVrPUpm+48JCn2INHO3QP6SacXl+k=";
+    rev = "19bc32c2aa2d3ad5917993f4e676f06344f7cb17";
+    hash = "sha256-YiEjWFKGvNM/K3o2EJgVbwGhMhXTgxX+AEk3Isd8seM=";
   };
   propagatedBuildInputs = [ ssl eio ];
 }
