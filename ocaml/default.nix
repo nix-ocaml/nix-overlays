@@ -2294,7 +2294,7 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
-    src = super.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "ocaml-multicore";
       repo = "ocaml-uring";
       rev = "fbdd72770f78c4b4268ddd662171f7705cf2a116";
