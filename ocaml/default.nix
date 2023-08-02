@@ -2345,13 +2345,6 @@ with oself;
 
   why3 = callPackage ./why3 { inherit nixpkgs; };
 
-  x509 = osuper.x509.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-x509/releases/download/v0.16.5/x509-0.16.5.tbz;
-      sha256 = "16fdii9sffdbrbzzhdfk677rs77h01ffw2v9nagn2zx3zsjjb7hl";
-    };
-  });
-
   yuscii = disableTests osuper.yuscii;
 
   zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
