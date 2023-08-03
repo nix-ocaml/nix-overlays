@@ -441,13 +441,6 @@ with oself;
     ];
   };
 
-  cohttp = osuper.cohttp.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.3.0/cohttp-5.3.0.tbz;
-      sha256 = "1pgddshvk0s8xy60z2s4rqn6mi0zvqpap0sbj8753sp50k3r3gdk";
-    };
-  });
-
   colombe = buildDunePackage {
     pname = "colombe";
     version = "0.5.2";
