@@ -922,7 +922,8 @@ with self;
   ppx_accessor = janePackage {
     pname = "ppx_accessor";
     minimalOCamlVersion = "4.14";
-    hash = "sha256-dJODaOozZ0sVBTZYx4/21AEI6phTQuAgxDOjLA0SqKU=";
+    version = "0.16.1";
+    hash = "sha256-o70q8eSbPeuGkIcCnKoK0BpaqPhy/NS7x2YYR6wfki8=";
     meta.description = "[@@deriving] plugin to generate accessors for use with the Accessor libraries";
     propagatedBuildInputs = [ accessor ];
   };
