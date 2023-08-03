@@ -191,8 +191,8 @@ with self;
 
   base = janePackage {
     pname = "base";
-    version = "0.16.2";
-    hash = "sha256-8OvZe+aiWipJ6busBufx3OqERmqxBva55UOLjL8KoPc=";
+    version = "0.16.3";
+    hash = "sha256-PA7nhGud/gCv22cow+KrSgNKgi2NYq/zGsCEAgVRBac=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ sexplib0 ];
