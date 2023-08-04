@@ -2297,7 +2297,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-multicore";
       repo = "ocaml-uring";
-      rev = "fbdd72770f78c4b4268ddd662171f7705cf2a116";
+      rev = "566b225c1b028fa845d071b9950f03e96c34e82f";
       hash = "sha256-3FAMsk26BrC1YVSFoq7B762ZJiDbpaMO9kAYxas6BLw=";
     };
 
