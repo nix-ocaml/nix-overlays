@@ -2295,6 +2295,13 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "ocaml-uring";
+      rev = "566b225c1b028fa845d071b9950f03e96c34e82f";
+      hash = "sha256-3FAMsk26BrC1YVSFoq7B762ZJiDbpaMO9kAYxas6BLw=";
+    };
+
     doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
