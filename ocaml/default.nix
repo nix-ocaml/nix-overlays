@@ -1170,8 +1170,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "lwt";
-      rev = "3d6f0fac";
-      sha256 = "sha256-QIxKQEoA5EOGqhwCKdIWQ09RhPKYoleTWdbT1GI397o=";
+      rev = "5.7.0";
+      hash = "sha256-o0wPK6dPdnsr/LzwcSwbIGcL85wkDjdFuEcAxuS/UEs=";
     };
   });
 
