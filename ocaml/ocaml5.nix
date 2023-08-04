@@ -65,6 +65,15 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
+  multicore-magic = buildDunePackage {
+    pname = "multicore-magic";
+    version = "2.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/multicore-magic/releases/download/2.0.0/multicore-magic-2.0.0.tbz;
+      sha256 = "0bg045f0b7jj6wywivnl5g84hngcm69gs4vchk31xxy7d3yx7lav";
+    };
+  };
+
   piaf = callPackage ./piaf { stdenv = darwin.apple_sdk_11_0.stdenv; };
   carl = callPackage ./piaf/carl.nix { };
 

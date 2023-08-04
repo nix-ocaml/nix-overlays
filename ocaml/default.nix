@@ -310,6 +310,14 @@ with oself;
     };
   };
 
+  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
+    version = "3.92";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.92/ca-certs-nss-3.92.tbz;
+      sha256 = "0f05qwslhx8sy15sv8rr7lzdg63b5zgnjp89150a5xhf6kk8b9qp";
+    };
+  });
+
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch =
@@ -432,13 +440,6 @@ with oself;
       cohttp-lwt
     ];
   };
-
-  cohttp = osuper.cohttp.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v5.3.0/cohttp-5.3.0.tbz;
-      sha256 = "1pgddshvk0s8xy60z2s4rqn6mi0zvqpap0sbj8753sp50k3r3gdk";
-    };
-  });
 
   colombe = buildDunePackage {
     pname = "colombe";
@@ -2351,13 +2352,6 @@ with oself;
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   why3 = callPackage ./why3 { inherit nixpkgs; };
-
-  x509 = osuper.x509.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-x509/releases/download/v0.16.5/x509-0.16.5.tbz;
-      sha256 = "16fdii9sffdbrbzzhdfk677rs77h01ffw2v9nagn2zx3zsjjb7hl";
-    };
-  });
 
   yuscii = disableTests osuper.yuscii;
 
