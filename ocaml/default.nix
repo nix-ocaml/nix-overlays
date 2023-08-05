@@ -186,6 +186,15 @@ with oself;
     propagatedBuildInputs = [ ppx_jane ppx_deriving core_kernel stdint digestif ];
   };
 
+  backoff = buildDunePackage {
+    pname = "backoff";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz;
+      sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
+    };
+  };
+
   base32 = buildDunePackage {
     pname = "base32";
     version = "dev";
@@ -2258,6 +2267,33 @@ with oself;
         AudioToolbox
         ForceFeedback
       ]);
+  });
+
+  tsdl-image = osuper.tsdl-image.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "sanette";
+      repo = "tsdl-image";
+      rev = "0.6";
+      hash = "sha256-mgTFwkuFJVwJmHrzHSdNh8v4ehZIcWemK+eLqjglw5o=";
+    };
+  });
+
+  tsdl-mixer = osuper.tsdl-mixer.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "sanette";
+      repo = "tsdl-mixer";
+      rev = "0.6";
+      hash = "sha256-szuGmLzgGyQExCQwpopVNswtZZdhP29Q1+uNQJZb43Q=";
+    };
+  });
+
+  tsdl-ttf = osuper.tsdl-ttf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "sanette";
+      repo = "tsdl-ttf";
+      rev = "0.6";
+      hash = "sha256-1MGbsekaBoCz4vAwg+Dfzsl0xUKgs8dUEr+OpLopnig=";
+    };
   });
 
   tyxml = osuper.tyxml.overrideAttrs (_: {
