@@ -1574,6 +1574,15 @@ with oself;
     '';
   });
 
+  ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "gildor478";
+      repo = "ocaml-gettext";
+      rev = "9fa474310f383abf3d4349a25c44955ee62410c1";
+      hash = "sha256-QYKWtHJMHVU86aWh9f6zlB4nuzgQYvignA01m3b54Kg=";
+    };
+  });
+
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace "libraries bytes" "libraries "
