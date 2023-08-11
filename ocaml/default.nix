@@ -1075,6 +1075,9 @@ with oself;
     hardeningDisable = [ "strictoverflow" ];
   });
 
+  # Added by the ocaml5.nix
+  kcas = null;
+
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
