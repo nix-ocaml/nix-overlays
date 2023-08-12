@@ -509,6 +509,7 @@ with oself;
     doCheck = false;
   });
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
+  cohttp-top = disableTests osuper.cohttp-top;
 
 
   conan = callPackage ./conan { };

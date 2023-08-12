@@ -43,6 +43,11 @@ let
     "eliom"
     "ocsigen-start"
     "ocsigen-toolkit"
+    "ocsigen_server"
+    "ocsipersist"
+    "ocsipersist-pgsql"
+    "ocsipersist-sqlite"
+
 
     "dream-serve"
 
