@@ -508,6 +508,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ http ];
     doCheck = false;
   });
+  cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
 
 
   conan = callPackage ./conan { };
