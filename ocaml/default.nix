@@ -497,8 +497,8 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_alpha0/cohttp-eio-6.0.0.alpha0.tbz;
-      sha256 = "0vmm618kb0dfd3d73x00n0dfrz2a9cmg1j8yfdja171hxbasrm1f";
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_alpha2/cohttp-6.0.0.alpha2.tbz;
+      sha256 = "1xngq0kanna3j1v6lmbdwh31w4lgbasfa1r0q4kk9hf1694d201g";
     };
     doCheck = false;
   };
@@ -507,10 +507,6 @@ with oself;
     inherit (http) src version;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ http ];
     doCheck = false;
-
-    postPatch = ''
-      substituteInPlace cohttp/src/dune --replace "bytes" ""
-    '';
   });
 
 

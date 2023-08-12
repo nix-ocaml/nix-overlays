@@ -27,7 +27,7 @@ with oself;
     pname = "cohttp-eio";
     inherit (http) src version;
     doCheck = false;
-    propagatedBuildInputs = [ cohttp eio_main ];
+    propagatedBuildInputs = [ cohttp eio_main ptime ];
   };
 
   eio-ssl = callPackage ./eio-ssl { };
