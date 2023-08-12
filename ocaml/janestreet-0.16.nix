@@ -306,6 +306,12 @@ with self;
     hash = "sha256-OBtyKMyvfz0KNG4SWmvoTMVPnVTpO12N38q+kEbegJE=";
     meta.description = "Websocket library for use with cohttp and async";
     propagatedBuildInputs = [ async_websocket cohttp-async ppx_jane uri-sexp ];
+    postPatch = ''
+      substituteInPlace "src/cohttp_async_websocket.ml" \
+        --replace Cohttp_async.Io Cohttp_async.Io.IO \
+        --replace "read_websocket_response request reader" \
+          'read_websocket_response request (Cohttp_async__Input_channel.create reader)'
+    '';
   };
 
   cohttp_static_handler = janePackage {
