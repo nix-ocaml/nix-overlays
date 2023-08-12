@@ -429,11 +429,10 @@ with oself;
   carton-lwt = disableTests osuper.carton-lwt;
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "paurkedal";
-      repo = "ocaml-caqti";
-      rev = "71aceaae808c7f87794ab776220db34defa84a57";
-      hash = "sha256-+zTsAIQFgfcvZZIqaHiCtRBdR2TAipeZK5Opa6DJDM8=";
+    version = "2.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v2.0.0/caqti-v2.0.0.tbz;
+      sha256 = "0w97g5n5s23msahxqlazr0s3g79klfahw749ibl8fhk3mngklbxs";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -2452,9 +2451,11 @@ with oself;
   });
 
   zed = osuper.zed.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/zed/releases/download/3.2.2/zed-3.2.2.tbz;
-      sha256 = "0bkpmg8vb8bfi9zjnqba11kp74b7b6zh40az13pnj61gyb4fqsh9";
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "zed";
+      rev = "3.2.3";
+      hash = "sha256-lbhqjZxeUqHdd+yahRO+B6L2mc+h+4T2+qKVgWC2HY8=";
     };
     propagatedBuildInputs = [ react uchar uutf uucp uuseg ];
     postPatch = ''
