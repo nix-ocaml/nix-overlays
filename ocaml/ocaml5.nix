@@ -8,18 +8,6 @@ with oself;
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
-    postPatch = ''
-      substituteInPlace caqti-eio/lib/dune --replace "logs" "logs eio_main"
-      substituteInPlace \
-        caqti-eio/lib/system.ml caqti-eio/lib/caqti_eio.mli \
-        caqti-eio/lib-unix/caqti_eio_unix.mli \
-        --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
-
-      substituteInPlace caqti-eio/lib/system.ml \
-        --replace \
-          'fork_sub ~sw ~on_error:(fun _ -> ()) (fun _sw -> f ())' \
-          'fork ~sw (fun () -> (Switch.run (fun _sw -> f ())))'
-    '';
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
@@ -137,12 +125,10 @@ with oself;
 
   thread-table = buildDunePackage {
     pname = "thread-table";
-    version = "dev";
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "thread-table";
-      rev = "0.1.0";
-      hash = "sha256-DwaendVYXDd2Pnghrtgz8So7Qdp8m50nk+sGtxs3mkI=";
+    version = "1.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/thread-table/releases/download/1.0.0/thread-table-1.0.0.tbz;
+      sha256 = "17749si4nzy56776dw8maj3qf027c2i5rrwgsx4z54s0xgnwjaiv";
     };
   };
 
