@@ -2056,6 +2056,16 @@ with oself;
     };
   });
 
+  resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/server.ml --replace \
+        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body"
+
+      substituteInPlace src/server.mli --replace \
+        "'d Lwt_io.channel" "Cohttp_lwt_unix.Private.Input_channel.t"
+    '';
+  });
+
   rfc7748 = osuper.rfc7748.overrideAttrs (o: {
     patches = [ ];
     src = fetchFromGitHub {
