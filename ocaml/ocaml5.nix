@@ -23,6 +23,13 @@ with oself;
     propagatedBuildInputs = [ mtime psq thread-table ];
   };
 
+  cohttp-eio = buildDunePackage {
+    pname = "cohttp-eio";
+    inherit (http) src version;
+    doCheck = false;
+    propagatedBuildInputs = [ cohttp eio_main ptime ];
+  };
+
   eio-ssl = callPackage ./eio-ssl { };
 
   gluten-eio = callPackage ./gluten/eio.nix { };

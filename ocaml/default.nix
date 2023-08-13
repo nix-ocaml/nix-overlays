@@ -493,6 +493,25 @@ with oself;
     propagatedBuildInputs = [ angstrom emile mrmime colombe ];
   };
 
+  http = buildDunePackage {
+    pname = "http";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_alpha2/cohttp-6.0.0.alpha2.tbz;
+      sha256 = "1xngq0kanna3j1v6lmbdwh31w4lgbasfa1r0q4kk9hf1694d201g";
+    };
+    doCheck = false;
+  };
+
+  cohttp = osuper.cohttp.overrideAttrs (o: {
+    inherit (http) src version;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ http ];
+    doCheck = false;
+  });
+  cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
+  cohttp-top = disableTests osuper.cohttp-top;
+
+
   conan = callPackage ./conan { };
   conan-lwt = callPackage ./conan/lwt.nix { };
   conan-unix = callPackage ./conan/unix.nix { };
@@ -2035,6 +2054,16 @@ with oself;
       url = https://github.com/mirage/repr/releases/download/0.7.0/repr-0.7.0.tbz;
       sha256 = "1b014p74l0mi3gk9klwv9mzip3p92rr0v0dnxqh0x2mzhpzcknla";
     };
+  });
+
+  resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/server.ml --replace \
+        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body"
+
+      substituteInPlace src/server.mli --replace \
+        "'d Lwt_io.channel" "Cohttp_lwt_unix.Private.Input_channel.t"
+    '';
   });
 
   rfc7748 = osuper.rfc7748.overrideAttrs (o: {
