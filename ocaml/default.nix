@@ -402,29 +402,6 @@ with oself;
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
-  cpdf = osuper.cpdf.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "johnwhitington";
-      repo = "cpdf-source";
-      rev = "d98556e89b2eb1508fdd85b3814b0dd5cd7889fd";
-      hash = "sha256-nXF2wdevFoMOYxHHabC42zd1TIGBQJ/0nUt3jqcMA6M=";
-    };
-    postPatch = ''
-      substituteInPlace Makefile --replace \
-        "PACKS = camlpdf" "PACKS = camlpdf camlp-streams"
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
-
-  camlpdf = osuper.camlpdf.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "johnwhitington";
-      repo = "camlpdf";
-      rev = "010792c1e22b0bb3030023011549995bd19d4e73";
-      hash = "sha256-eYLFqqeIUyiXNT50jQyFvhgG6a5wyZr2W0BuzpSWNjc=";
-    };
-  });
-
   carton = disableTests osuper.carton;
   carton-lwt = disableTests osuper.carton-lwt;
 
@@ -982,12 +959,6 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
-  inifiles = osuper.inifiles.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace inifiles.ml --replace "String.lowercase" "String.lowercase_ascii"
-    '';
-  });
-
   iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
   });
@@ -1057,17 +1028,6 @@ with oself;
   });
 
   jose = callPackage ./jose { };
-
-  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
-    src =
-      builtins.fetchurl {
-        url = https://github.com/ocaml/ocaml-lsp/releases/download/1.16.1/lsp-1.16.1.tbz;
-        sha256 = "1rh4ihm823cf4c88svknq5lffjlyiy9xr1n2pq1mx4xrzdd31yw4";
-      };
-  });
-  ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ odoc-parser merlin-lib ];
-  });
 
   kafka = (osuper.kafka.override {
     rdkafka = rdkafka-oc;
@@ -1500,12 +1460,6 @@ with oself;
     ];
   };
 
-  odoc = osuper.odoc.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/odoc/releases/download/2.2.1/odoc-2.2.1.tbz;
-      sha256 = "00v8h6ipf7rnjrirx5kp2v8saik8hiyjl7dqqz3y2kw2y0xyb1hp";
-    };
-  });
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-doc";

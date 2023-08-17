@@ -15,7 +15,7 @@
 stdenv.mkDerivation
 {
   pname = "camlp5";
-  version = "8.00.04";
+  version = "8.02.00";
   src = fetchFromGitHub {
     owner = "camlp5";
     repo = "camlp5";
