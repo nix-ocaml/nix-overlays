@@ -130,15 +130,6 @@ with oself;
     propagatedBuildInputs = [ domain-shims ];
   };
 
-  thread-table = buildDunePackage {
-    pname = "thread-table";
-    version = "1.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/thread-table/releases/download/1.0.0/thread-table-1.0.0.tbz;
-      sha256 = "17749si4nzy56776dw8maj3qf027c2i5rrwgsx4z54s0xgnwjaiv";
-    };
-  };
-
   tls-eio = buildDunePackage {
     pname = "tls-eio";
     inherit (tls) version src;
