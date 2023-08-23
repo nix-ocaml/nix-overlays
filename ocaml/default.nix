@@ -893,26 +893,7 @@ with oself;
     '';
   });
 
-  hack_parallel = (osuper.hack_parallel.override { sqlite = sqlite-oc; }).overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace \
-        src/utils/collections/myMap.ml \
-        src/third-party/hack_core/hack_result.ml \
-        src/third-party/hack_core/hack_result.mli \
-        src/third-party/hack_core/hack_core_list.ml \
-        src/utils/exit_status.ml \
-        src/utils/measure.ml \
-        src/utils/daemon.ml \
-        src/utils/daemon.mli \
-        src/utils/timeout.ml \
-        src/utils/hack_path.ml \
-        src/procs/worker.ml \
-        src/interface/hack_parallel_intf.mli \
-        --replace "Pervasives." "Stdlib."
-      substituteInPlace src/third-party/hack_core/hack_caml.ml --replace "include Pervasives" ""
-      substituteInPlace src/utils/sys_utils.ml --replace "String.create" "Bytes.create"
-    '';
-  });
+  hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -2366,14 +2347,6 @@ with oself;
   unstrctrd = disableTests osuper.unstrctrd;
 
   uring = osuper.uring.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "ocaml-uring";
-      rev = "566b225c1b028fa845d071b9950f03e96c34e82f";
-      hash = "sha256-3FAMsk26BrC1YVSFoq7B762ZJiDbpaMO9kAYxas6BLw=";
-    };
-
-    doCheck = ! (lib.versionOlder "5.1" ocaml.version);
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace \
