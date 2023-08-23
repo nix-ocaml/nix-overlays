@@ -23,6 +23,11 @@ buildDunePackage {
     sha256 = "174c0zv823sqc3ng43x35zrgwgxsm6nb33c2hddnnibnkpljxrj1";
   };
 
+  postPatch = ''
+    substituteInPlace src/serialize.ml \
+      --replace "Re.View.Group t" "Re.View.Group (_, t)"
+  '';
+
   doCheck = false;
   propagatedBuildInputs = [ re uutf ptime ];
   checkInputs = [
