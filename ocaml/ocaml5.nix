@@ -38,6 +38,93 @@ with oself;
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
 
+
+
+  irmin-eio = buildDunePackage {
+    pname = "irmin";
+
+    version = "2023-08-25+eio";
+
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "irmin";
+      rev = "5eb94d774e505ee9f870bbfdbc799b07439a489d";
+      sha256 = "sha256-LXA2Io5Cq/s6Ym4zp6Q/4rvtAzie17gwpbE2viJN6QM=";
+    };
+
+    propagatedBuildInputs = with oself; [
+      repr
+      fmt
+      uri
+      uutf
+      jsonm
+      eio
+      lwt
+      digestif
+      ocamlgraph
+      logs
+      bheap
+      astring
+      mtime
+      bigstringaf
+      ppx_irmin
+    ];
+
+    checkInputs = with oself; [
+      hex
+      alcotest
+      eio_main
+      qcheck-alcotest
+      vector
+      bisect_ppx
+    ];
+
+    doCheck = true;
+  };
+
+  irmin-eio-fs = buildDunePackage {
+    pname = "irmin-fs";
+    inherit (oself.irmin-eio) version src;
+
+    propagatedBuildInputs = with oself; [
+      irmin-eio
+      astring
+      logs
+      eio
+      lwt
+    ];
+
+    # need to package more before we can do this
+    doCheck = false;
+  };
+
+  irmin-eio-pack = buildDunePackage {
+    pname = "irmin-pack";
+    inherit (oself.irmin-eio) version src;
+
+    propagatedBuildInputs = with oself; [
+      irmin-eio
+      ppx_irmin
+      index
+      fmt
+      logs
+      eio
+      mtime
+      cmdliner
+      optint
+      checkseum
+      rusage
+    ];
+
+    checkInputs = [
+      astring
+      alcotest
+    ];
+
+    # need to package more before we can do this
+    doCheck = false;
+  };
+
   kafka-eio = buildDunePackage {
     pname = "kafka-eio";
     inherit (kafka) hardeningDisable version src;
