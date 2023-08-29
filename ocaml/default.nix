@@ -406,12 +406,10 @@ with oself;
   carton-lwt = disableTests osuper.carton-lwt;
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.0.0";
-    src = fetchFromGitHub {
-      owner = "paurkedal";
-      repo = "ocaml-caqti";
-      rev = "2cc442dd15919e62d2cef5e168a4efff19468e0a";
-      hash = "sha256-pEFuzD5UYTWF+CLL8vWdckjpmboJeScnKuh/iOIPkB8=";
+    version = "2.0.1";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v2.0.1/caqti-v2.0.1.tbz;
+      sha256 = "12ysi0cn25mv4ylc4yz4r8n2pfw1qfqn1nakaqwjbzi1qljp5dby";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -1927,20 +1925,10 @@ with oself;
       ];
     });
 
-  textmate-language = buildDunePackage {
-    pname = "textmate-language";
-    version = "0.3.4";
+  re = osuper.re.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/0.3.4/textmate-language-0.3.4.tbz;
-      sha256 = "17c540ddzqzl8c72rzpm3id6ixi91cq5r8dmjvf0kzj6kjdgrg63";
-    };
-    propagatedBuildInputs = [ oniguruma ];
-  };
-
-  terminal = osuper.terminal.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/craigfe/progress/releases/download/0.2.2/progress-0.2.2.tbz;
-      sha256 = "1d8h87xkslsh4khfa3wlcz1p55gmh4wyrafgnnsxc7524ccw4h9k";
+      url = https://github.com/ocaml/ocaml-re/releases/download/1.11.0/re-1.11.0.tbz;
+      sha256 = "0kwdvzb2wy3rxq3mvmsgc8cdwrzka2viysvrmrrbxxn0h13j9z01";
     };
   });
 
@@ -2175,6 +2163,23 @@ with oself;
     ];
   };
   tar-unix = disableTests osuper.tar-unix;
+
+  textmate-language = buildDunePackage {
+    pname = "textmate-language";
+    version = "0.3.4";
+    src = builtins.fetchurl {
+      url = https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/0.3.4/textmate-language-0.3.4.tbz;
+      sha256 = "17c540ddzqzl8c72rzpm3id6ixi91cq5r8dmjvf0kzj6kjdgrg63";
+    };
+    propagatedBuildInputs = [ oniguruma ];
+  };
+
+  terminal = osuper.terminal.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/craigfe/progress/releases/download/0.2.2/progress-0.2.2.tbz;
+      sha256 = "1d8h87xkslsh4khfa3wlcz1p55gmh4wyrafgnnsxc7524ccw4h9k";
+    };
+  });
 
   topkg = osuper.topkg.overrideAttrs (_: {
     src = builtins.fetchurl {

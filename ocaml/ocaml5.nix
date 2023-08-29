@@ -13,12 +13,10 @@ with oself;
 
   domain-local-timeout = buildDunePackage {
     pname = "domain-local-timeout";
-    version = "dev";
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "domain-local-timeout";
-      rev = "e8ee5d7a0afa326365e20b31483fc8c9fbac860c";
-      hash = "sha256-JUaOg8URnaKkcIU7f8Ex4sHXLbs5yDp+OSVJxvsr6dM=";
+    version = "1.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.0/domain-local-timeout-1.0.0.tbz;
+      sha256 = "0m98gvj2l2l23v811zsdgyw86dbz3k1diz3lywxch6rl6jg72bwa";
     };
     propagatedBuildInputs = [ mtime psq thread-table ];
   };
