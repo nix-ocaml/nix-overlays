@@ -1905,25 +1905,14 @@ with oself;
     nativeBuildInputs = [ cppo ];
   };
 
-  ppxlib =
-    let
-      src =
-        builtins.fetchurl {
-          url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.30.0/ppxlib-0.30.0.tbz;
-          sha256 = "04118jn57bdnh8chxjj1m5vz2cn96wwnbmq41s0lk6yjx6yn6jnx";
-
-        };
-    in
-    osuper.ppxlib.overrideAttrs (_: {
-      inherit src;
-
-      propagatedBuildInputs = [
-        ocaml-compiler-libs
-        ppx_derivers
-        sexplib0
-        stdlib-shims
-      ];
-    });
+  ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    propagatedBuildInputs = [
+      ocaml-compiler-libs
+      ppx_derivers
+      sexplib0
+      stdlib-shims
+    ];
+  });
 
   re = osuper.re.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2414,12 +2403,6 @@ with oself;
   });
 
   zed = osuper.zed.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "zed";
-      rev = "3.2.3";
-      hash = "sha256-lbhqjZxeUqHdd+yahRO+B6L2mc+h+4T2+qKVgWC2HY8=";
-    };
     propagatedBuildInputs = [ react uchar uutf uucp uuseg ];
     postPatch = ''
       substituteInPlace src/dune --replace "result" ""
