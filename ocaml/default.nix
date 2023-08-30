@@ -407,9 +407,11 @@ with oself;
 
   caqti = osuper.caqti.overrideAttrs (o: {
     version = "2.0.1";
-    src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v2.0.1/caqti-v2.0.1.tbz;
-      sha256 = "12ysi0cn25mv4ylc4yz4r8n2pfw1qfqn1nakaqwjbzi1qljp5dby";
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "ocaml-caqti";
+      rev = "46f0d96799d892ace1c6b6aafb1d6a4124142f83";
+      hash = "sha256-7u821uXHv1Hv2xtmxOR0s/CVeB72Jfdh6WInvHg5I70=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -763,6 +765,13 @@ with oself;
     inherit (dyn) preBuild;
   });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/eio/releases/download/v0.12/eio-0.12.tbz;
+      sha256 = "1816v5csrv2pw9mavvawi33c4p5bqvilplka950qddzzhp74fj6q";
+    };
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -1015,8 +1024,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "7653f0bfcff375795bc35581e0f549289a6b0a9a";
-      hash = "sha256-sQdtginXq+TH1lsn6F0iXhk3PFyqgQ/k/ALASdrawIk=";
+      rev = "4ee21d040050272105bbdae7336732cc80ad8f00";
+      hash = "sha256-oU9pUSLXn6SGAj5iBvC8FJpooG0kt52kvHwCoO9ZvJE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
@@ -1194,6 +1203,15 @@ with oself;
     '';
   });
 
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
+    # https://github.com/mirage/mirage-crypto/pull/182
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "mirage-crypto";
+      rev = "f35ec71ca11f544a6918e60dfa4564de0f4897ce";
+      hash = "sha256-FHftjHj5jR8bLr5X6JLXuWqnyLCvGC/upiSyhDbH9y4=";
+    };
+  });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -2229,9 +2247,11 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.1/tls-0.17.1.tbz;
-      sha256 = "0gsxih0dv85wa113syqmz9hgl86p7ciis618d4la538lvsvd4440";
+    src = fetchFromGitHub {
+      owner = "mirleft";
+      repo = "ocaml-tls";
+      rev = "19e5eff864483956551499622a45deda0e795576";
+      hash = "sha256-B7DCunKP1NfC+cjiNGQrp/RU61mGFnXm6MyPyizujBc=";
     };
     propagatedBuildInputs = [
       cstruct
