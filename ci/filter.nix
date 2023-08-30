@@ -98,6 +98,9 @@ let
 
     # Incompatible with omd 2.0
     "sail"
+
+    # Incompatible with EIO v0.12
+    "cohttp-eio"
   ];
 
   ocaml5Ignores = [
