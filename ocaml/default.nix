@@ -763,6 +763,13 @@ with oself;
     inherit (dyn) preBuild;
   });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/eio/releases/download/v0.12/eio-0.12.tbz;
+      sha256 = "1816v5csrv2pw9mavvawi33c4p5bqvilplka950qddzzhp74fj6q";
+    };
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
