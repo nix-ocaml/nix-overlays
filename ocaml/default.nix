@@ -407,9 +407,11 @@ with oself;
 
   caqti = osuper.caqti.overrideAttrs (o: {
     version = "2.0.1";
-    src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v2.0.1/caqti-v2.0.1.tbz;
-      sha256 = "12ysi0cn25mv4ylc4yz4r8n2pfw1qfqn1nakaqwjbzi1qljp5dby";
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "ocaml-caqti";
+      rev = "46f0d96799d892ace1c6b6aafb1d6a4124142f83";
+      hash = "sha256-7u821uXHv1Hv2xtmxOR0s/CVeB72Jfdh6WInvHg5I70=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
