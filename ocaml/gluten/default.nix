@@ -7,8 +7,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "gluten";
-    rev = "d19ca19bc04f37011431665786ab7ca3ea809600";
-    hash = "sha256-SzmNs+WpuCHkO2VEgSwHGQAQaF/UVSAkr0KpDiwg2x8=";
+    rev = "0c672bf386047e5ce88677f3e5dfc67b7e9c04d9";
+    hash = "sha256-NDB92mTncEWr9wJ6h4Ahi6UwdKpg8BZcPxiH7lbnCH8=";
   };
   propagatedBuildInputs = [ bigstringaf faraday ke ];
 }
