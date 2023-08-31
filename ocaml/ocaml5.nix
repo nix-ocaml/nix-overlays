@@ -58,6 +58,17 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
+  moonpool = buildDunePackage {
+    pname = "moonpool";
+    version = "0.4";
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/moonpool/releases/download/v0.4/moonpool-0.4.tbz;
+      sha256 = "0zzmgp9dib1aqkpfqhypikv5jvqva3bnv6sh969ms6psblrxqkkg";
+    };
+
+    propagatedBuildInputs = [ either ];
+  };
+
   multicore-magic = buildDunePackage {
     pname = "multicore-magic";
     version = "2.0.0";

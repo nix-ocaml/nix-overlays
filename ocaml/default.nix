@@ -13,6 +13,7 @@
 , gsl
 , kerberos
 , lib
+, libargon2
 , libcxx
 , libvirt
 , libpq
@@ -134,6 +135,17 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   });
 
+  argon2 = buildDunePackage {
+    pname = "argon2";
+    version = "1.0.2";
+    src = builtins.fetchurl {
+      url = https://github.com/Khady/ocaml-argon2/releases/download/1.0.2/argon2-1.0.2.tbz;
+      sha256 = "01gjs2b0nzyjfjz1aay8f209jlpr1880qizk96kn8kqgi5bhwfrl";
+    };
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ ctypes ctypes-foreign result libargon2 ];
+  };
+
   atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ahrefs/atd/releases/download/2.12.0/atdts-2.12.0.tbz;
@@ -211,8 +223,8 @@ with oself;
       fetchFromGitHub {
         owner = "ocaml-batteries-team";
         repo = "batteries-included";
-        rev = "cdd5626ac526fc5205db00a39d14268e267abdd0";
-        hash = "sha256-PSdEGTe5AFWAUV4R33qSDFbD9nCQW43b3SwhLcMkN6A=";
+        rev = "v3.7.0_test00";
+        hash = "sha256-G1nM6FH9FTla/ykG2NxIhoRnRPQeW3EHi9FOkhDRvek=";
       };
 
     propagatedBuildInputs = [ num camlp-streams ];
@@ -959,12 +971,12 @@ with oself;
   irmin-git = disableTests osuper.irmin-git;
   irmin-http = disableTests osuper.irmin-http;
 
-  iso639 = buildDunePackage {
-    pname = "iso639";
-    version = "0.0.5";
+  iostream = buildDunePackage {
+    pname = "iostream";
+    version = "0.1";
     src = builtins.fetchurl {
-      url = https://github.com/paurkedal/ocaml-iso639/releases/download/v0.0.5/iso639-v0.0.5.tbz;
-      sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
+      url = https://github.com/c-cube/ocaml-iostream/releases/download/v0.1/iostream-0.1.tbz;
+      sha256 = "0gipllhlzd9xzhy4xkvxg8qnpdcd013knyhfc64cx83vzv0f0v98";
     };
   };
 
@@ -974,6 +986,15 @@ with oself;
       sha256 = "0q48mgn29dxrh14isccq5bqrs12whn3fsw6hrvp49vd4k188724k";
     };
   });
+
+  iso639 = buildDunePackage {
+    pname = "iso639";
+    version = "0.0.5";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-iso639/releases/download/v0.0.5/iso639-v0.0.5.tbz;
+      sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
+    };
+  };
 
   itv-tree = buildDunePackage {
     pname = "itv-tree";
@@ -1412,6 +1433,13 @@ with oself;
     };
   });
 
+  ocamlgraph = osuper.ocamlgraph.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/backtracking/ocamlgraph/releases/download/2.1.0/ocamlgraph-2.1.0.tbz;
+      sha256 = "0r9d61yva190bdwyz79az6r2d95nfjq43bsm74wz4g95z4v2r5hg";
+    };
+  });
+
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace "src/config/discover.ml" --replace \
@@ -1845,6 +1873,14 @@ with oself;
   });
 
   pp = disableTests osuper.pp;
+  pprint = osuper.pprint.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "fpottier";
+      repo = "pprint";
+      rev = "20230830";
+      hash = "sha256-avf71vAgCL1MU8O7Q3FNN3wEdCDtbNZP0ipETnn8AqA=";
+    };
+  });
 
   ppx_cstruct = disableTests osuper.ppx_cstruct;
 
