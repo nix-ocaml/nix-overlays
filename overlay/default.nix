@@ -56,6 +56,8 @@ in
       aarch64-multiplatform-musl =
         (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
           [ cross-overlay static-overlay ]);
+
+      riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
     };
 
 
