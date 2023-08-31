@@ -637,18 +637,6 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
-  domain-shims = buildDunePackage {
-    pname = "domain_shims";
-    version = "0.1.0";
-
-    src = fetchFromGitLab {
-      owner = "gasche";
-      repo = "domain-shims";
-      rev = "0.1.0";
-      hash = "sha256-/5Cw+M0A1rnT7gFqzryd4Z0tylN0kZgSBXtn9jr8u1c=";
-    };
-  };
-
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-multicore/domainslib/releases/download/0.5.1/domainslib-0.5.1.tbz;
@@ -763,13 +751,6 @@ with oself;
   });
   xdg = osuper.xdg.overrideAttrs (o: {
     inherit (dyn) preBuild;
-  });
-
-  eio = osuper.eio.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/eio/releases/download/v0.12/eio-0.12.tbz;
-      sha256 = "1816v5csrv2pw9mavvawi33c4p5bqvilplka950qddzzhp74fj6q";
-    };
   });
 
   ezgzip = buildDunePackage rec {
