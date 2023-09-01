@@ -3,11 +3,9 @@
 buildDunePackage {
   pname = "lwt_eio";
   version = "n/a";
-  src = fetchFromGitHub {
-    owner = "ocaml-multicore";
-    repo = "lwt_eio";
-    rev = "220dfd5c57b3d8a620f908daa58dad993719e005";
-    hash = "sha256-L8Th5edqERr0Yz9mlEn+sSQBY+HnyfFdrG0uU/Nm0MQ=";
+  src = builtins.fetchurl {
+    url = https://github.com/ocaml-multicore/lwt_eio/releases/download/v0.5/lwt_eio-0.5.tbz;
+    sha256 = "1dr4f93pgrg49y51kaxqrm47zblmzhb5c1qbbpqh5ghy825gwfaa";
   };
 
   propagatedBuildInputs = [ lwt eio ];

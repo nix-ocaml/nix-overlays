@@ -13,12 +13,10 @@ with oself;
 
   domain-local-timeout = buildDunePackage {
     pname = "domain-local-timeout";
-    version = "dev";
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "domain-local-timeout";
-      rev = "e8ee5d7a0afa326365e20b31483fc8c9fbac860c";
-      hash = "sha256-JUaOg8URnaKkcIU7f8Ex4sHXLbs5yDp+OSVJxvsr6dM=";
+    version = "1.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.0/domain-local-timeout-1.0.0.tbz;
+      sha256 = "0m98gvj2l2l23v811zsdgyw86dbz3k1diz3lywxch6rl6jg72bwa";
     };
     propagatedBuildInputs = [ mtime psq thread-table ];
   };
@@ -147,6 +145,17 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
+  moonpool = buildDunePackage {
+    pname = "moonpool";
+    version = "0.4";
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/moonpool/releases/download/v0.4/moonpool-0.4.tbz;
+      sha256 = "0zzmgp9dib1aqkpfqhypikv5jvqva3bnv6sh969ms6psblrxqkkg";
+    };
+
+    propagatedBuildInputs = [ either ];
+  };
+
   multicore-magic = buildDunePackage {
     pname = "multicore-magic";
     version = "2.0.0";
@@ -171,26 +180,6 @@ with oself;
     };
 
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
-  };
-
-  saturn = buildDunePackage {
-    pname = "saturn";
-
-    inherit (saturn_lockfree) src version;
-
-    propagatedBuildInputs = [ domain-shims saturn_lockfree ];
-  };
-
-  saturn_lockfree = buildDunePackage {
-    pname = "saturn_lockfree";
-    version = "0.0.4";
-
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/saturn/releases/download/0.4.0/saturn-0.4.0.tbz;
-      sha256 = "1yw86yimwq5q6aji3i8vsrx9nz58qv0zqh1mm0db8mbhlaayqyvw";
-    };
-
-    propagatedBuildInputs = [ domain-shims ];
   };
 
   tls-eio = buildDunePackage {
