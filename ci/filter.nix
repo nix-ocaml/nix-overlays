@@ -133,6 +133,9 @@ let
     "mm"
     "owl"
 
+    "lambdapi"
+    "why3"
+
     "uring"
     "eio_linux"
   ];
