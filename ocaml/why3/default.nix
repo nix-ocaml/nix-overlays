@@ -1,4 +1,5 @@
 { stdenv
+, darwin
 , ocaml
 , findlib
 , menhir
@@ -59,10 +60,9 @@ stdenv.mkDerivation rec {
     ppx_deriving
     ppx_sexp_conv
   ]
-  ++
   # Coq Support
-  (with coqPackages; [ coq flocq ])
-  ;
+  ++ (with coqPackages; [ coq flocq ])
+  ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ AppKit ]);
 
   propagatedBuildInputs = [ camlzip menhirLib num re sexplib ];
 
