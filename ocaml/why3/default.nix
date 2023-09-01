@@ -1,4 +1,6 @@
-{ stdenv
+{ autoconf
+, automake
+, stdenv
 , darwin
 , ocaml
 , findlib
@@ -41,6 +43,8 @@ stdenv.mkDerivation rec {
     menhir
     # Coq Support
     coqPackages.coq
+    autoconf
+    automake
   ];
 
   buildInputs = [
