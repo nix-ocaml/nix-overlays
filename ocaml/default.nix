@@ -20,6 +20,7 @@
 , libev-oc
 , libffi-oc
 , linuxHeaders
+, llvmPackages
 , net-snmp
 , pcre-oc
 , sqlite-oc
@@ -206,6 +207,11 @@ with oself;
       sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
     };
   };
+
+  bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/bap" {
+    inherit (llvmPackages) llvm;
+  };
+  ppx_bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/ppx_bap" { };
 
   base32 = buildDunePackage {
     pname = "base32";
@@ -2285,6 +2291,9 @@ with oself;
       x509
       ipaddr
     ];
+  });
+  tls-async = osuper.tls-async.overrideAttrs (_: {
+    patches = [ ];
   });
 
   torch = osuper.torch.overrideAttrs (o: {
