@@ -10,7 +10,7 @@
 , fetchFromGitHub
 , fetchFromGitLab
 , fzf
-, gsl
+, libgsl
 , kerberos
 , lib
 , libargon2
@@ -54,7 +54,6 @@
 oself: osuper:
 
 let
-  nativeGsl = gsl;
   nativeCairo = cairo;
   lmdb-pkg = lmdb;
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
@@ -875,7 +874,7 @@ with oself;
     minimalOCamlVersion = "4.12";
 
     nativeBuildInputs = [ pkg-config ];
-    buildInputs = [ dune-configurator nativeGsl ];
+    buildInputs = [ dune-configurator libgsl ];
     propagatedBuildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
     src = fetchFromGitHub {
       owner = "mmottl";
@@ -1045,6 +1044,17 @@ with oself;
     inherit (kafka) src version;
     propagatedBuildInputs = [ async kafka ];
     hardeningDisable = [ "strictoverflow" ];
+    postPatch = ''
+      substituteInPlace lib_async/kafka_async.ml \
+        --replace "Time.Span" "Time_float.Span" \
+        --replace "Int.Table.add_exn" "Hashtbl.add_exn" \
+        --replace "Int.Table.find_and_remove" "Hashtbl.find_and_remove" \
+        --replace "String.Table.add_exn" "Hashtbl.add_exn" \
+        --replace "String.Table.find" "Hashtbl.find" \
+        --replace "String.Table.mem" "Hashtbl.mem" \
+        --replace "String.Table.keys" "Hashtbl.keys" \
+        --replace "String.Table.remove" "Hashtbl.remove"
+    '';
   };
 
   kafka_lwt = osuper.kafka_lwt.overrideAttrs (_: {
@@ -1119,6 +1129,22 @@ with oself;
           propagatedBuildInputs = [ lev-fiber csexp ];
         } else null;
 
+  lilv = osuper.lilv.overrideAttrs (o: {
+    postPatch = ''
+      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
+    '';
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
+  });
+
+  linol = osuper.linol.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "c-cube";
+      repo = "linol";
+      rev = "bb92d7d73b721f8faf55b3518df5b4bc93250a4d";
+      hash = "sha256-WdtJ+Ixo3byXxfU14E4MRQbGZBzPjbyEI9XMC95QxXY=";
+    };
+  });
+
   lmdb = buildDunePackage {
     pname = "lmdb";
     version = "1.0";
@@ -1132,13 +1158,6 @@ with oself;
     buildInputs = [ lmdb-pkg dune-configurator ];
     propagatedBuildInputs = [ bigstringaf ];
   };
-
-  lilv = osuper.lilv.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
-  });
 
   lutils = buildDunePackage {
     pname = "lutils";

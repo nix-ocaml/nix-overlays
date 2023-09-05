@@ -30,13 +30,13 @@ buildDunePackage {
       then
         builtins.fetchurl
           {
-            url = https://github.com/ocaml/merlin/releases/download/v4.9-500/merlin-4.9-500.tbz;
-            sha256 = "09lm37rwbzzh613iga8aqfzqklpsw8w7x4r83ljifkri79mwc1xr";
+            url = https://github.com/ocaml/merlin/releases/download/v4.10-500/merlin-4.10-500.tbz;
+            sha256 = "17a9lcmwnzvv1zcnj1amshg158j09csrjnha9f6qrxykq37r1pwv";
           }
       else
         builtins.fetchurl {
-          url = https://github.com/ocaml/merlin/releases/download/v4.9-414/merlin-4.9-414.tbz;
-          sha256 = "1zfbk5s5289bcpmgf2nxi4n6c2jjisc21j17kpznj4jr2dwc8gz2";
+          url = https://github.com/ocaml/merlin/releases/download/v4.10-414/merlin-4.10-414.tbz;
+          sha256 = "0rs7y2jz7mdkr7y29q6cig13gcfnlv384xp8x7s9cjl80jl4xbgx";
         };
 
   buildInputs = [ yojson csexp result ];
