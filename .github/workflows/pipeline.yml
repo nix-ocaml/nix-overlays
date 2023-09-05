@@ -63,7 +63,7 @@ jobs:
       matrix:
         setup:
           - { os: ubuntu-latest, target: x86_64-linux }
-          - { os: macos-latest, target: x86_64-darwin }
+          - { os: macos-13, target: x86_64-darwin }
     name: Native (Top-level) packages (${{ matrix.setup.os }})
     runs-on: ${{ matrix.setup.os }}
     env:
@@ -95,7 +95,7 @@ jobs:
           - { ocaml-version: 5_0, continue-on-error: false }
           - { ocaml-version: 5_1, continue-on-error: true }
     name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
-    runs-on: macos-latest
+    runs-on: macos-13
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
