@@ -70,11 +70,8 @@ let
     "ocaml-probes"
 
     "biotk"
-    "bistro"
     "phylogenetics"
-    "cfstream"
     "biocaml"
-    "kafka_async"
     "pythonlib"
     "graphql-async"
     "magic-trace"
@@ -82,10 +79,6 @@ let
 
     # Old mirage-kv interface
     "mirage-fs"
-
-    # conflicts with new LSP
-    "linol"
-    "linol-lwt"
 
     # too old ocamlformat versions
     "ocamlformat_0_19_0"
