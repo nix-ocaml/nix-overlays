@@ -228,8 +228,8 @@ with oself;
       fetchFromGitHub {
         owner = "ocaml-batteries-team";
         repo = "batteries-included";
-        rev = "v3.7.0_test00";
-        hash = "sha256-G1nM6FH9FTla/ykG2NxIhoRnRPQeW3EHi9FOkhDRvek=";
+        rev = "v3.7.0";
+        hash = "sha256-5kl5Vypi2ov3iMm+l4Kwe42mUWWz1Xn6/HANQ1HC1ys=";
       };
 
     propagatedBuildInputs = [ num camlp-streams ];
