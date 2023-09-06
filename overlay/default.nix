@@ -284,7 +284,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libev pcre zstd rdkafka sqlite;
+      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
       openssl = super.openssl_3_0;
     }

@@ -21,6 +21,7 @@
 , libffi-oc
 , linuxHeaders
 , llvmPackages
+, lz4-oc
 , net-snmp
 , pcre-oc
 , sqlite-oc
@@ -142,8 +143,7 @@ with oself;
       url = https://github.com/Khady/ocaml-argon2/releases/download/1.0.2/argon2-1.0.2.tbz;
       sha256 = "01gjs2b0nzyjfjz1aay8f209jlpr1880qizk96kn8kqgi5bhwfrl";
     };
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ ctypes ctypes-foreign result libargon2 ];
+    propagatedBuildInputs = [ ctypes dune-configurator ctypes-foreign result libargon2 ];
   };
 
   atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
@@ -1204,6 +1204,16 @@ with oself;
   });
 
   lwt_react = callPackage ./lwt/react.nix { };
+
+  lz4 = buildDunePackage {
+    pname = "lz4";
+    version = "1.3.0";
+    src = builtins.fetchurl {
+      url = https://github.com/whitequark/ocaml-lz4/releases/download/v1.3.0/lz4-1.3.0.tbz;
+      sha256 = "13i4fjvhybnys1x7fjf5k07abq9khh68zr4pqy72si0n740d5frw";
+    };
+    propagatedBuildInputs = [ dune-configurator ctypes lz4-oc ];
+  };
 
   magic-mime = osuper.magic-mime.overrideAttrs (_: {
     src = builtins.fetchurl {
