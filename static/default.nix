@@ -12,6 +12,7 @@ in
   libffi-oc = super.libffi-oc.overrideAttrs (_: { dontDisableStatic = true; });
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
   libxml2 = super.libxml2.override { zlib = self.zlib-oc; };
+  lz4-oc = super.lz4-oc.override { enableStatic = true; };
   gmp-oc = super.gmp-oc.override { withStatic = true; };
   openssl-oc = super.openssl-oc.override { static = true; };
 
