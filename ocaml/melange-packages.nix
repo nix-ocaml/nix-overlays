@@ -22,11 +22,11 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "4860812ef8dbee12e7b6a05d0a52c18c1ef934d8";
-      hash = "sha256-sH4X7KEME4Ie2ROo24cx3w4XRgJqvfIOmvGLOCSXli0=";
+      rev = "567a2f7fac31d263c3315f8b4ed0183d6c6762b4";
+      hash = "sha256-GEIwd1m+FNJdToFFUCEFlQ3wPHcRcH3L/LZ48UIbbWQ=";
       sparseCheckout = [ "packages/rescript-relay" ];
     };
-    nativeBuildInputs = [ melange reason ];
+    nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [
       reason-react
       reason-react-ppx
@@ -49,16 +49,9 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "e80c1c9da2cabc4ad93b5b88f70648455bcbbfed";
-      hash = "sha256-IdwDMPi5yEWEEnKhn0QTWffaIrh67LGDhTpi27IdgrE=";
+      rev = "2e99c8ee87cefe241b698c191c74226da54cf9db";
+      hash = "sha256-PZTlTgZHaF/ap0BLdWG/LFna5THFPcq8BrouPbn8eKA=";
     };
     propagatedBuildInputs = [ ppxlib ];
-  };
-
-  rescript-syntax = buildDunePackage {
-    pname = "rescript-syntax";
-    version = "n/a";
-    inherit (melange) src patches;
-    propagatedBuildInputs = [ ppxlib melange ];
   };
 }
