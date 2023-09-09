@@ -522,6 +522,7 @@ with oself;
   });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
+    patches = [ ];
   });
 
   confero =
@@ -2320,9 +2321,6 @@ with oself;
       x509
       ipaddr
     ];
-  });
-  tls-async = osuper.tls-async.overrideAttrs (_: {
-    patches = [ ];
   });
 
   torch = osuper.torch.overrideAttrs (o: {
