@@ -108,7 +108,6 @@ let
     "owl"
     "piqi"
     "piqi-ocaml"
-    "semver"
     "lambdapi"
 
     # broken on 5.1

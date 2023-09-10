@@ -2103,6 +2103,15 @@ with oself;
     };
   });
 
+  semver = buildDunePackage {
+    pname = "semver";
+    version = "0.2.0";
+    src = builtins.fetchurl {
+      url = https://github.com/rgrinberg/ocaml-semver/releases/download/0.2.1/semver-0.2.1.tbz;
+      sha256 = "1f4qyrzh8y72k96dyh8l8m2sb2sl5bhny9ijxgnppr0yv99c6g0a";
+    };
+  };
+
   sendfile = callPackage ./sendfile { };
 
   session = callPackage ./session { };
