@@ -1958,24 +1958,6 @@ with oself;
     };
   });
 
-  ppx_tools = buildDunePackage {
-    pname = "ppx_tools";
-    src = fetchFromGitHub {
-      owner = "alainfrisch";
-      repo = "ppx_tools";
-      rev = "6.6";
-      hash = "sha256-QhuaQ9346a3neoRM4GrOVzjR8fg9ysMZR1VzNgyIQtc=";
-    };
-    meta = with lib; {
-      description = "Tools for authors of ppx rewriters";
-      homepage = "https://www.lexifi.com/ppx_tools";
-      license = licenses.mit;
-      maintainers = with maintainers; [ vbgl ];
-    };
-    version = "6.6";
-    nativeBuildInputs = [ cppo ];
-  };
-
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     propagatedBuildInputs = [
       ocaml-compiler-libs
