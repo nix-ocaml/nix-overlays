@@ -35,19 +35,6 @@ let
         });
       });
 
-      ocamlPackages_5_1 = newOCamlScope {
-        major_version = "5";
-        minor_version = "1";
-        patch_version = "0~rc3";
-        hardeningDisable = [ "strictoverflow" ];
-        src = super.fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml";
-          rev = "5.1.0-rc3";
-          hash = "sha256-ow1TQlWHcxPPBAL/67Mlj7TjzXysmRBqBQfigDVrezE=";
-        };
-      };
-
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
         minor_version = "2";
