@@ -2195,8 +2195,8 @@ with oself;
 
   tar = osuper.tar.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.5.1/tar-2.5.1.tbz;
-      sha256 = "1x1xik316m3a6d616bwa9c9s2ji50g8p3hs9ckhmp837hr40yi6k";
+      url = https://github.com/mirage/ocaml-tar/releases/download/v2.6.0/tar-2.6.0.tbz;
+      sha256 = "1vmidxdri4j737xqjj2cbraka4p3whbr43zwyyzy4hv30jvhrzya";
     };
   });
 
