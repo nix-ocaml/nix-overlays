@@ -19,14 +19,9 @@ buildDunePackage {
   pname = "conan";
   version = "0.0.1";
   src = builtins.fetchurl {
-    url = https://github.com/mirage/conan/releases/download/v0.0.4/conan-0.0.4.tbz;
-    sha256 = "174c0zv823sqc3ng43x35zrgwgxsm6nb33c2hddnnibnkpljxrj1";
+    url = https://github.com/mirage/conan/releases/download/v0.0.5/conan-0.0.5.tbz;
+    sha256 = "13zvay99i8pbzi2d1c24ppd9z9szj6nhdy7g6n8bx9zgl6k9rbh4";
   };
-
-  postPatch = ''
-    substituteInPlace src/serialize.ml \
-      --replace "Re.View.Group t" "Re.View.Group (_, t)"
-  '';
 
   doCheck = false;
   propagatedBuildInputs = [ re uutf ptime ];
