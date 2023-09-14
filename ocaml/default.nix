@@ -228,8 +228,8 @@ with oself;
       fetchFromGitHub {
         owner = "ocaml-batteries-team";
         repo = "batteries-included";
-        rev = "v3.7.0";
-        hash = "sha256-5kl5Vypi2ov3iMm+l4Kwe42mUWWz1Xn6/HANQ1HC1ys=";
+        rev = "v3.7.1";
+        hash = "sha256-0ZCaJA9xowO9QxCWcyJ1zhqG7+GNkMYJt62+VPOFj4Y=";
       };
 
     propagatedBuildInputs = [ num camlp-streams ];
@@ -2213,7 +2213,6 @@ with oself;
       tar
     ];
   };
-  tar-unix = disableTests osuper.tar-unix;
 
   textmate-language = buildDunePackage {
     pname = "textmate-language";
