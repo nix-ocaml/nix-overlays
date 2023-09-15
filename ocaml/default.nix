@@ -1453,6 +1453,15 @@ with oself;
     enableParallelBuilding = true;
   });
 
+  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.1/ocamlformat-0.26.1.tbz;
+      sha256 = "1my6fh6sfispalyypar5xv1vgncvb53d825q5xhyrf8mgx16w06s";
+    };
+  });
+  ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
+    inherit (ocamlformat-lib) src;
+  });
   ocamlformat-rpc-lib = buildDunePackage {
     pname = "ocamlformat-rpc-lib";
     inherit (ocamlformat-lib) src version;
@@ -1908,7 +1917,12 @@ with oself;
     '';
   });
 
-  pp = disableTests osuper.pp;
+  pp = osuper.pp.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-dune/pp/releases/download/1.2.0/pp-1.2.0.tbz;
+      sha256 = "174hwr63gpliw9w2ipzjbkvdib7js6n6xicyn8nv9bsm7ibj5s55";
+    };
+  });
   pprint = osuper.pprint.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "fpottier";
@@ -2409,6 +2423,32 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
+  });
+
+
+  uucd = osuper.uucd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uucd/releases/uucd-15.1.0.tbz;
+      sha256 = "1wkdm0f7qhh27vv9id7fvax57qfr3v85ngwwjsnwq9c3jikhv00w";
+    };
+  });
+  uucp = osuper.uucp.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uucp/releases/uucp-15.1.0.tbz;
+      sha256 = "11srn8zwba31zmj129v6l8sigdm9qrgcfd59vl1qmds70s44n7m9";
+    };
+  });
+  uunf = osuper.uunf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uunf/releases/uunf-15.1.0.tbz;
+      sha256 = "1r296gz56prq7aa746gjzc6md6zz7m7yf6d368qscnamp1pszk0g";
+    };
+  });
+  uuseg = osuper.uuseg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/uuseg/releases/uuseg-15.1.0.tbz;
+      sha256 = "1ial0afpc02ih73ad7136gv3dsz26h3p51pbkzw3a7vmvrckgwi0";
+    };
   });
 
   uutf = osuper.uutf.overrideAttrs (_: {
