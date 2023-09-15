@@ -9,8 +9,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-fetch";
-      rev = "796f941b6b85eb7e6182ac6e4f40708bfde7a9a9";
-      hash = "sha256-Ey6HNUoJL13iMpm2vchmrD5pEM2/G+HsrkPQrzRZwQ8=";
+      rev = "bb67c4de36ef00f90424561e630522ee2f57fe54";
+      hash = "sha256-A0l4r++sTZ0NaIUdg7hlH1XfmznnLumlofvOCvUYwrc=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -35,8 +35,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-json";
-      rev = "9f56e03b1a0beaa3625564af44b26c6381b3c293";
-      hash = "sha256-P2ZF3S9R52jdVHfDH02hqdYM83n0ew8Mr5LZrujk7go=";
+      rev = "443fdffd33e9eee0cc1e4922c49d9bfc738044be";
+      hash = "sha256-vLXq8cGQ5j5xfQF6ZjrPhKOFQ5WvCVcyNPDxYYpPb3k=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -61,8 +61,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-webapi";
-      rev = "e3b2486138fb7107cfd73d34092fd65cbd1262b0";
-      hash = "sha256-n2p6sEw2cb2H1Dse7PwXrMbXgbqt80sIxnPH1/hwb+8=";
+      rev = "e06f7711ea51a25274daca249fc4fcf17357a85c";
+      hash = "sha256-DX+wh27tKQ5tDT/+Ba1jkgXAGKf8YjLYiLeOr2XzSo4=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
@@ -100,8 +100,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "0ab8d33bd811e02f8d14e202a07ca82f4da6fb33";
-      hash = "sha256-sbKhRKdzglGgKouoQoGJCLAffoYv8k0vNvPiE9M96yM=";
+      rev = "e76e0859025832bc17f8333df3b254e080bf1cad";
+      hash = "sha256-HECd1qLMN/ZMlzMZ+KTrjNOYibWg/Flh1dOQJjJfwBs=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
