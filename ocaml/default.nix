@@ -1801,26 +1801,6 @@ with oself;
     meta = owl-base.meta;
   });
 
-  ocaml-protoc = osuper.ocaml-protoc.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace \
-        src/compilerlib/pb_codegen_util.ml \
-        src/compilerlib/pb_codegen_backend.ml \
-        src/compilerlib/pb_codegen_encode_binary.ml \
-        --replace "String.capitalize " "String.capitalize_ascii "
-
-      substituteInPlace \
-        src/compilerlib/pb_codegen_util.ml \
-        src/compilerlib/pb_codegen_backend.ml \
-        src/compilerlib/pb_codegen_encode_binary.ml \
-        --replace "String.lowercase" "String.lowercase_ascii "
-
-      substituteInPlace \
-        src/compilerlib/pb_codegen_util.ml \
-        --replace "Char.uppercase " "Char.uppercase_ascii "
-    '';
-  });
-
   ocaml_pcre = osuper.ocaml_pcre.override { pcre = pcre-oc; };
 
   # These require crowbar which is still not compatible with newer cmdliner.
