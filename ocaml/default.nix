@@ -700,11 +700,9 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "dune";
-      rev = "ade58ac71a5829a6df376a103078422d451e4e5c";
-      hash = "sha256-6kA9fJhg8dKaESLLouArR1XVg/5bugvBV5Wj7QlGx9I=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.11.0_alpha1/dune-3.11.0.alpha1.tbz;
+      sha256 = "0rh92rmq18h1558bx41j8s0xf702z4z463vap0szq7z9364yjwar";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -1405,6 +1403,21 @@ with oself;
     };
   });
 
+  nanoid = buildDunePackage {
+    pname = "nanoid";
+    version = "dev";
+    src = fetchFromGitHub {
+      # anmonteiro/mirage-crypto
+      owner = "routineco";
+      repo = "ocaml-nanoid";
+      rev = "620bb69410774bc8d3285ae2fe9b5534b3c96688";
+      hash = "sha256-Elz6yBXHGqpGmxWEfhNxLcc4Ju8wmnrPDqkOgRzkPf4=";
+    };
+    propagatedBuildInputs = [ mirage-crypto-rng ];
+    checkInputs = [ alcotest ];
+    doCheck = true;
+  };
+
   npy = osuper.npy.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/dune --replace " bigarray" ""
@@ -1923,6 +1936,12 @@ with oself;
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
+
+  ppx_show = osuper.ppx_show.overrideAttrs (_: {
+    postPatch = ''
+      touch ppx_show.opam
+    '';
+  });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = fetchFromGitHub {
