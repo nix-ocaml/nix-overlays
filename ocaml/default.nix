@@ -1937,6 +1937,12 @@ with oself;
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
+  ppx_show = osuper.ppx_show.overrideAttrs (_: {
+    postPatch = ''
+      touch ppx_show.opam
+    '';
+  });
+
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
