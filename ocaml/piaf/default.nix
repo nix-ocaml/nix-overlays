@@ -24,8 +24,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "5bd21ca45a16925a10d950707bb2fef64169f04f";
-    hash = "sha256-wAq+jT2hcN3N7e3zBDMPv6jY+Z1nhq+nrXTeVIJLkQg=";
+    rev = "9ec58d0f03c2db2e783f81f816a9d7ee2200e623";
+    hash = "sha256-TycNx7j6AfSVd+GEX1hJA5p7jyD/yxl6DxvoRv436x8=";
   };
 
   doCheck = ocaml.version != "5.0.0" && stdenv.isLinux;

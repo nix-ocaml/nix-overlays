@@ -1947,6 +1947,16 @@ with oself;
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
+  ppx_optint = buildDunePackage {
+    pname = "ppx_optint";
+    version = "0.2.0";
+    src = builtins.fetchurl {
+      url = https://github.com/reynir/ppx_optint/releases/download/v0.2.0/ppx_optint-0.2.0.tbz;
+      sha256 = "09casz0hzmhj8ajjq595a8aa1l567lzhiszjrv2d8q0jbr8zw19l";
+    };
+    propagatedBuildInputs = [ optint ppxlib ];
+  };
+
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
