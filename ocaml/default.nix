@@ -136,6 +136,16 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   });
 
+  ansi = buildDunePackage {
+    pname = "ansi";
+    version = "0.7.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ansi/releases/download/0.7.0/ansi-0.7.0.tbz;
+      sha256 = "1958wiwba3699qxyhrqy30g2b7m82i2avnaa38lx3izb3q9nlav7";
+    };
+    propagatedBuildInputs = [ fmt astring tyxml ];
+  };
+
   argon2 = buildDunePackage {
     pname = "argon2";
     version = "1.0.2";
@@ -389,8 +399,8 @@ with oself;
 
   checkseum = osuper.checkseum.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/checkseum/releases/download/v0.5.0/checkseum-0.5.0.tbz;
-      sha256 = "0bnyzxvagc4cvpz0a434xngk9ra1mjjh67nhyv3qz5ghk5s6a5bv";
+      url = https://github.com/mirage/checkseum/releases/download/v0.5.2/checkseum-0.5.2.tbz;
+      sha256 = "1j5g1pgq59fvp3645vwrcj5f0cqq4m1pb1q0vysaid2w83a4yply";
     };
   });
 
@@ -1240,12 +1250,9 @@ with oself;
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
-    # https://github.com/mirage/mirage-crypto/pull/182
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "mirage-crypto";
-      rev = "f35ec71ca11f544a6918e60dfa4564de0f4897ce";
-      hash = "sha256-FHftjHj5jR8bLr5X6JLXuWqnyLCvGC/upiSyhDbH9y4=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-crypto/releases/download/v0.11.2/mirage-crypto-0.11.2.tbz;
+      sha256 = "0r7pxlqz5x3cc8a1cwnh0phhlzqygh9h7k0k4mh4ld6wy2vprffn";
     };
   });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
@@ -1464,6 +1471,13 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
+  });
+
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.2/ocaml-version-3.6.2.tbz;
+      sha256 = "1cpyd504g87xzb415dz7f67yic8cqnsm020llvyiv2arpnmk37aw";
+    };
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
