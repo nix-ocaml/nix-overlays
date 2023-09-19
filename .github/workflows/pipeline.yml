@@ -30,7 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_13, continue-on-error: false }
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_0, continue-on-error: false }
           - { ocaml-version: 5_1, continue-on-error: false }
