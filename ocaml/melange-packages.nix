@@ -55,6 +55,17 @@ with oself;
     propagatedBuildInputs = [ melange reason-react ];
   };
 
+  melange-numeral = buildDunePackage {
+    pname = "melange-numeral";
+    version = "0.0.1";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/melange-numeral/releases/download/0.0.1/melange-numeral-0.0.1.tbz;
+      sha256 = "1a16j014ps835xqks7mgybqqq34rpvhnzbibrh1pypcqa7hhcdnd";
+    };
+    nativeBuildInputs = [ melange reason ];
+    propagatedBuildInputs = [ melange ];
+  };
+
   melange-webapi = buildDunePackage {
     pname = "melange-webapi";
     version = "n/a";
