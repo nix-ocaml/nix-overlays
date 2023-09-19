@@ -665,6 +665,18 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
+  decompress = osuper.decompress.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/decompress/releases/download/v1.5.3/decompress-1.5.3.tbz;
+      sha256 = "0q5cfd9h6dhxfh489cag9djyiwcrkk4zfchd8ihwngzzprw6j7pr";
+    };
+  });
+  rfc1951 = buildDunePackage {
+    pname = "rfc1951";
+    inherit (decompress) src version;
+    propagatedBuildInputs = [ decompress ];
+  };
+
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-multicore/domainslib/releases/download/0.5.1/domainslib-0.5.1.tbz;
@@ -2330,8 +2342,9 @@ with oself;
     src = fetchFromGitHub {
       owner = "mirleft";
       repo = "ocaml-tls";
-      rev = "19e5eff864483956551499622a45deda0e795576";
-      hash = "sha256-B7DCunKP1NfC+cjiNGQrp/RU61mGFnXm6MyPyizujBc=";
+      # https://github.com/mirleft/ocaml-tls/pull/479
+      rev = "8ca414e61d1f70985301ddef70ed6a0ca6a71114";
+      hash = "sha256-VnWCIem+N3F3ZCO5PnCgJRQXiDdnaavhipsrP/rS+II=";
     };
     propagatedBuildInputs = [
       cstruct
