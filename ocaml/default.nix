@@ -1987,6 +1987,12 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppxlib";
+      rev = "4026b795d9b9bd44beaf11b790a7f9a26fc0aa63";
+      hash = "sha256-dRWHkE9aZS7gQp5CAT8qCX/uKYEbiIy7our5XXgMHGI=";
+    };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
