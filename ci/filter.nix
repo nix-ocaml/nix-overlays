@@ -75,7 +75,6 @@ let
     "pythonlib"
     "graphql-async"
     "magic-trace"
-    "telegraml"
 
     # Old mirage-kv interface
     "mirage-fs"
