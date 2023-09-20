@@ -1481,8 +1481,11 @@ with oself;
     '';
   });
 
-  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
+  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
     enableParallelBuilding = true;
+    propagatedBuildInputs =
+      o.propagatedBuildInputs ++
+      lib.optional (lib.versionAtLeast o.version "5.1") zstd-oc;
   });
 
   ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
