@@ -126,6 +126,10 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  afl-persistent = osuper.afl-persistent.overrideAttrs (_: {
+    buildInputs = lib.optional (lib.versionAtLeast ocaml.version "5.1") [ ocaml ];
+  });
+
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
@@ -282,7 +286,7 @@ with oself;
   });
 
   bigstringaf = osuper.bigstringaf.overrideAttrs (o: {
-    buildInputs = [ dune-configurator ];
+    buildInputs = o.buildInputs ++ [ dune-configurator ];
     src = fetchFromGitHub {
       owner = "inhabitedtype";
       repo = "bigstringaf";
@@ -306,6 +310,14 @@ with oself;
       sha256 = "sha256-ga7CwQpXntW0wg6tP9/c16wfSGEf07DfZdd7b6cp0r0=";
     };
   });
+
+  buildDunePackage =
+    args: osuper.buildDunePackage
+      (args // {
+        buildInputs =
+          (args.buildInputs or [ ]) ++
+          lib.optional (lib.versionAtLeast ocaml.version "5.1") [ ocaml ];
+      });
 
   bz2 = stdenv.mkDerivation rec {
     pname = "ocaml${ocaml.version}-bz2";
@@ -726,6 +738,9 @@ with oself;
       url = https://github.com/ocaml/dune/releases/download/3.11.0_alpha2/dune-3.11.0.alpha2.tbz;
       sha256 = "14ygi4jdlg1rz7280hxiy03n0baqb0x82477cnvr3bnljfbvmj4k";
     };
+    buildInputs =
+      (o.buildInputs or [ ]) ++
+      lib.optional (lib.versionAtLeast ocaml.version "5.1") [ ocaml ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
@@ -1599,6 +1614,8 @@ with oself;
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+    buildInputs = (o.buildInputs or [ ]) ++
+    lib.optional (lib.versionAtLeast ocaml.version "5.1") [ ocaml ];
 
     # OCamlbuild needs to find the native toolchain when cross compiling (to
     # link myocamlbuild programs)
@@ -2288,6 +2305,7 @@ with oself;
       url = https://erratique.ch/software/topkg/releases/topkg-1.0.6.tbz;
       sha256 = "11ycfk0prqvifm9jca2308gw8a6cjb1hqlgfslbji2cqpan09kpq";
     };
+    propagatedBuildInputs = lib.optional (lib.versionAtLeast ocaml.version "5.1") [ ocaml ];
   });
 
   tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
