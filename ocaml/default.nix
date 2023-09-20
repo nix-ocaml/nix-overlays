@@ -231,20 +231,6 @@ with oself;
     };
   };
 
-  batteries = buildDunePackage {
-    pname = "batteries";
-    version = "dev";
-    src =
-      fetchFromGitHub {
-        owner = "ocaml-batteries-team";
-        repo = "batteries-included";
-        rev = "v3.7.1";
-        hash = "sha256-0ZCaJA9xowO9QxCWcyJ1zhqG7+GNkMYJt62+VPOFj4Y=";
-      };
-
-    propagatedBuildInputs = [ num camlp-streams ];
-  };
-
   benchmark = osuper.buildDunePackage {
     pname = "benchmark";
     version = "1.6";
@@ -1514,13 +1500,6 @@ with oself;
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
     meta = {
       platforms = lib.platforms.all;
-    };
-  });
-
-  ocamlgraph = osuper.ocamlgraph.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/backtracking/ocamlgraph/releases/download/2.1.0/ocamlgraph-2.1.0.tbz;
-      sha256 = "0r9d61yva190bdwyz79az6r2d95nfjq43bsm74wz4g95z4v2r5hg";
     };
   });
 
