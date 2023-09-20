@@ -111,8 +111,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "ac33eecf90b68a8696f27e15698013c032d99f6f";
-      hash = "sha256-1/5unalmwbP7YvSU6bZvssT6TdBx7+0IzuYFXLssduA=";
+      rev = "4828ec6c25d4c1a2ce40716245d258f25da97483";
+      hash = "sha256-CrLe+JD8vMkWiOBtT1lqjxIs4dQarPkJkh0B6UKgI7M=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
