@@ -1934,6 +1934,10 @@ with oself;
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
+    postPatch = ''
+      substituteInPlace src/internal/ppxc__script_real.ml \
+        --replace "C_content_make ()" "C_content_make (struct end)"
+    '';
   });
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
@@ -1987,6 +1991,10 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.31.0/ppxlib-0.31.0.tbz;
+      sha256 = "1n21msr5a6l7j4j1bkzgcqfm4r1vf3lgzjlmg0ns3yjp9rjpc5nj";
+    };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers

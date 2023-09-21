@@ -93,6 +93,9 @@ let
 
     # Incompatible with EIO v0.12
     "cohttp-eio"
+
+    # Incompatible with ppxlib >= 0.31
+    "vcaml"
   ];
 
   ocaml5Ignores = [
