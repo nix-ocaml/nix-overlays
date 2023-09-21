@@ -72,8 +72,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-webapi";
-      rev = "e06f7711ea51a25274daca249fc4fcf17357a85c";
-      hash = "sha256-DX+wh27tKQ5tDT/+Ba1jkgXAGKf8YjLYiLeOr2XzSo4=";
+      rev = "1f53fc044e49b4c63e52881b555ea29bec14291c";
+      hash = "sha256-3N2QcmV4thPmAr9hKLEMYIu21h4rL7Ua1eJMX9mzYg8=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
