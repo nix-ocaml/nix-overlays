@@ -709,8 +709,8 @@ with oself;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.11.0_alpha2/dune-3.11.0.alpha2.tbz;
-      sha256 = "14ygi4jdlg1rz7280hxiy03n0baqb0x82477cnvr3bnljfbvmj4k";
+      url = https://github.com/ocaml/dune/releases/download/3.11.0_alpha3/dune-3.11.0.alpha3.tbz;
+      sha256 = "1a1nccjirm84yr81sbgq3bhw7bp4npw63mwpzv1gnajb0sskn55h";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -1955,12 +1955,6 @@ with oself;
   ppx_rapper = callPackage ./ppx_rapper { };
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
-
-  ppx_show = osuper.ppx_show.overrideAttrs (_: {
-    postPatch = ''
-      touch ppx_show.opam
-    '';
-  });
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = fetchFromGitHub {
