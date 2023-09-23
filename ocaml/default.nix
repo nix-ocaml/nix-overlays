@@ -332,14 +332,6 @@ with oself;
     };
   };
 
-  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
-    version = "3.92";
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.92/ca-certs-nss-3.92.tbz;
-      sha256 = "0f05qwslhx8sy15sv8rr7lzdg63b5zgnjp89150a5xhf6kk8b9qp";
-    };
-  });
-
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch =
