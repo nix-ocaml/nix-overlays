@@ -207,6 +207,29 @@ in
       })
       { });
 
+  hermes = stdenv.mkDerivation {
+    name = "hermes";
+    src = super.fetchFromGitHub {
+      owner = "facebook";
+      repo = "hermes";
+      rev = "ee2922a50fb719bdb378025d95dbd32ad93cd679";
+      hash = "sha256-TXTcKAdfnznJQu2YPCRwzDlKMoV/nvp5mpsIrMUmH1c=";
+    };
+    cmakeFlags = lib.optional stdenv.isDarwin [
+      "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
+    ];
+    nativeBuildInputs = with self; [
+      cmake
+      ninja
+      icu
+      python3
+      zip
+      readline
+      git
+    ];
+  };
+
+
   lib = lib // { inherit overlayOCamlPackages; };
 
   inherit (callPackage ../cockroachdb { })
