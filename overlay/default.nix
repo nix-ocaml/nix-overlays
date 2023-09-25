@@ -207,6 +207,22 @@ in
       })
       { });
 
+  hermes = stdenv.mkDerivation {
+    name = "hermes";
+    src = super.fetchFromGitHub {
+      owner = "facebook";
+      repo = "hermes";
+      rev = "ee2922a50fb719bdb378025d95dbd32ad93cd679";
+      hash = "sha256-TXTcKAdfnznJQu2YPCRwzDlKMoV/nvp5mpsIrMUmH1c=";
+    };
+    cmakeFlags = lib.optional stdenv.isDarwin [
+      "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
+    ];
+    nativeBuildInputs = with self; [ cmake python3 ];
+    buildInputs = with self; [ icu readline-oc ];
+  };
+
+
   lib = lib // { inherit overlayOCamlPackages; };
 
   inherit (callPackage ../cockroachdb { })
@@ -288,7 +304,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd;
+      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd readline;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
       openssl = super.openssl_3_0;
     }
