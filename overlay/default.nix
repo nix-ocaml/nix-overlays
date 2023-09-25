@@ -218,15 +218,8 @@ in
     cmakeFlags = lib.optional stdenv.isDarwin [
       "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
     ];
-    nativeBuildInputs = with self; [
-      cmake
-      ninja
-      icu
-      python3
-      zip
-      readline
-      git
-    ];
+    nativeBuildInputs = with self; [ cmake python3 ];
+    buildInputs = with self; [ icu readline-oc ];
   };
 
 
@@ -311,7 +304,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd;
+      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd readline;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
       openssl = super.openssl_3_0;
     }
