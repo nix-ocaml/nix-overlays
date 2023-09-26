@@ -215,10 +215,17 @@ in
       rev = "ee2922a50fb719bdb378025d95dbd32ad93cd679";
       hash = "sha256-TXTcKAdfnznJQu2YPCRwzDlKMoV/nvp5mpsIrMUmH1c=";
     };
-    cmakeFlags = lib.optional stdenv.isDarwin [
+    patches = [ ./hermes-static-link.patch ];
+    buildPhase = ''
+      ninjaBuildPhase
+    '';
+    cmakeFlags = [
+      "-GNinja"
+      "-DHERMES_ENABLE_TEST_SUITE=false"
+    ] ++ lib.optional stdenv.isDarwin [
       "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
     ];
-    nativeBuildInputs = with self; [ cmake python3 ];
+    nativeBuildInputs = with self; [ cmake python3 ninja ];
     buildInputs = with self; [ icu readline-oc ];
   };
 
