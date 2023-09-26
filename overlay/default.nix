@@ -262,8 +262,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "29df59f27f4f83552c3251d118c82897940d0e6c";
-          hash = "sha256-t9osbIYh7CdRF4HlVZ76M1wuKe0E6j6Pup2CaTEvolQ=";
+          rev = "f36197ca47bb0ec1d33175397491b1173643eec4";
+          hash = "sha256-yKuO29g79kDtIlvBpuIYAW4lq/v+nEPmAw1HvfeK24k=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;

@@ -413,10 +413,10 @@ with oself;
   caqti = osuper.caqti.overrideAttrs (o: {
     version = "2.0.1";
     src = fetchFromGitHub {
-      owner = "anmonteiro";
+      owner = "paurkedal";
       repo = "ocaml-caqti";
-      rev = "46f0d96799d892ace1c6b6aafb1d6a4124142f83";
-      hash = "sha256-7u821uXHv1Hv2xtmxOR0s/CVeB72Jfdh6WInvHg5I70=";
+      rev = "8ede56807b020548e2ab8089be58929205059a83";
+      hash = "sha256-aQDxI1mOWLbwdi8cytAeFpw0mygv9z4pN/CqrCJFzb0=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -2316,8 +2316,8 @@ with oself;
       owner = "mirleft";
       repo = "ocaml-tls";
       # https://github.com/mirleft/ocaml-tls/pull/479
-      rev = "8ca414e61d1f70985301ddef70ed6a0ca6a71114";
-      hash = "sha256-VnWCIem+N3F3ZCO5PnCgJRQXiDdnaavhipsrP/rS+II=";
+      rev = "1175137a29fbad550f47e0982845b826c2253e10";
+      hash = "sha256-KwuNqf2uJj6hJn4aByXfmTqTk4mXrjdu6W9phBL82DY=";
     };
     propagatedBuildInputs = [
       cstruct
@@ -2405,13 +2405,10 @@ with oself;
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
   uri = osuper.uri.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "ocaml-uri";
-      rev = "cca065b1e6f9c6271eb60d16179806a775b08579";
-      hash = "sha256-y/RfO87ffRZhdFxhfCJRE7Mcs/lq7yOZ6Sv8twcD4Sw=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-uri/releases/download/v4.4.0/uri-4.4.0.tbz;
+      sha256 = "1i6ygbqnn6wf6cp015jfkw5biv3899p4rdy7kkjn28fdympazayd";
     };
-    doCheck = false;
   });
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
