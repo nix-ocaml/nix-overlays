@@ -8,17 +8,9 @@ let
 in
 
 {
-
   hermes = super.hermes.overrideAttrs (o: {
-    configureFlags = (o.configureFlags or [ ]) ++ [ "--enable-static" "--disable-shared" ];
-    postPatch = ''
-      substituteInPlace "API/hermes/CMakeLists.txt" --replace \
-      'add_library(libhermes SHARED ''${api_sources})' \
-      'add_library(libhermes ''${api_sources})'
-    '';
     cmakeFlags = o.cmakeFlags ++ [
       "-DHERMES_STATIC_LINK=true"
-      "-DCMAKE_POSITION_INDEPENDENT_CODE=true"
       "-DCMAKE_CROSSCOMPILING=false"
       "-DHERMES_USE_STATIC_ICU=true"
       "-DBUILD_SHARED_LIBS:BOOL=OFF"
