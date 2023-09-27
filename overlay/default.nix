@@ -63,24 +63,6 @@ in
 
 
   # Other packages
-  postgresql_16 = (super.postgresql_15.override (_: {
-    version = "16.0";
-    hash = "sha256-356CPrIjMEROHUjlLMZRNaZSpv2zzjJePwhUkzn1G5k=";
-    psqlSchema = "16";
-  })).overrideAttrs (_: {
-    patches = [
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/less-is-more.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/hardcode-pgxs-path.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/specify_pkglibdir_at_runtime.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/findstring.patch"
-      (super.substituteAll {
-        src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
-        locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
-      })
-    ] ++ lib.optionals stdenv.isLinux [
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
-    ];
-  });
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
@@ -105,6 +87,20 @@ in
       "--with-lz4"
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
     ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
+
+    patches = [
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/disable-normalize_exec_path.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/less-is-more.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/hardcode-pgxs-path.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/specify_pkglibdir_at_runtime.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/findstring.patch"
+      (super.substituteAll {
+        src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
+        locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
+      })
+    ] ++ lib.optionals stdenv.isLinux [
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
+    ];
 
     propagatedBuildInputs = [ self.openssl-oc.dev ];
     # Use a single output derivation. The upstream PostgreSQL derivation
