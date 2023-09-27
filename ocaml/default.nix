@@ -1232,11 +1232,11 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = osuper.mdx.overrideAttrs (o: {
-    doCheck = false;
+    src = builtins.fetchurl {
+      url = https://github.com/realworldocaml/mdx/releases/download/2.3.1/mdx-2.3.1.tbz;
+      sha256 = "1ws3jz0av8vf06my8y5hq751ch6ic31gxm1b74lpxm3qm9gs8h4s";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner result ];
-    postPatch = ''
-      substituteInPlace lib/dune --replace "astring" "astring result"
-    '';
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
@@ -2393,11 +2393,9 @@ with oself;
   });
 
   tyxml = osuper.tyxml.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "tyxml";
-      rev = "c28e871df6db66a261ba541aa15caad314c78ddc";
-      sha256 = "sha256-2dgkuDjeZDJcxZHoZK7uAiPCwg29eYZkTjgsD8OeTQA=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/tyxml/releases/download/4.6.0/tyxml-4.6.0.tbz;
+      sha256 = "1p82r68lxk6wzxihzd620a6kzp27vn548j2cr970l4jfdcy6gsxz";
     };
   });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };

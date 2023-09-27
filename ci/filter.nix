@@ -96,6 +96,9 @@ let
 
     # Incompatible with ppxlib >= 0.31
     "vcaml"
+
+    # Incompatible with tyxml 4.6
+    "tyxml-lwd"
   ];
 
   ocaml5Ignores = [
