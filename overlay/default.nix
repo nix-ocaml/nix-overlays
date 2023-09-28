@@ -222,7 +222,7 @@ in
       "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
     ];
     nativeBuildInputs = with self; [ cmake python3 ninja ];
-    buildInputs = with self; [ icu readline-oc ];
+    propagatedBuildInputs = with self; [ icu readline-oc ];
   };
 
 
