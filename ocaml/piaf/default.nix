@@ -24,11 +24,10 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "9ec58d0f03c2db2e783f81f816a9d7ee2200e623";
-    hash = "sha256-TycNx7j6AfSVd+GEX1hJA5p7jyD/yxl6DxvoRv436x8=";
+    rev = "d9c3c4562bd1633320ca2406051bb37a7a792eba";
+    hash = "sha256-GH3QmugwyWFfd1cDO7Ue7Q+FjPDRNDKGznRlTwjEFoo=";
   };
 
-  doCheck = ocaml.version != "5.0.0" && stdenv.isLinux;
   checkInputs = [ alcotest dune-site ];
 
   propagatedBuildInputs = [
