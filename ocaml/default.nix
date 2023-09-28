@@ -407,8 +407,12 @@ with oself;
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
-  carton = disableTests osuper.carton;
-  carton-lwt = disableTests osuper.carton-lwt;
+  carton = osuper.carton.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.7.0/git-carton-v0.7.0.tbz;
+      sha256 = "1y8fybp97csszdzjqpm2bkhv4xklxk619sqc2d198rpqscjh2sdx";
+    };
+  });
 
   caqti = osuper.caqti.overrideAttrs (o: {
     version = "2.0.1";
