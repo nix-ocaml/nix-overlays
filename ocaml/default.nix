@@ -1027,6 +1027,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "ocaml-lsp";
+      rev = "e38c1ea4b893cfae04ae03a2ef6d439b97f9172f";
+      hash = "sha256-GExq1zo03H2BUNoeolzD0OWxw8hXs5JNp0IKej0Sc2I=";
+    };
+  });
+
   kafka = (osuper.kafka.override {
     rdkafka = rdkafka-oc;
     zlib = zlib-oc;
@@ -1507,37 +1516,6 @@ with oself;
     '';
   });
 
-  odep = buildDunePackage {
-    pname = "odep";
-    version = "0.1.0";
-    src = builtins.fetchurl {
-      url = https://github.com/sim642/odep/releases/download/0.2.0/odep-0.2.0.tbz;
-      sha256 = "15sjb5s1j6mns6dkddm3lbwd0n499smffrs55sw0xfczn3vaxaiv";
-    };
-    propagatedBuildInputs = [
-      bos
-      opam-state
-      parsexp
-      ppx_deriving
-      sexplib
-      ppx_sexp_conv
-      cmdliner
-    ];
-  };
-
-  odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-doc";
-      repo = "odoc-parser";
-      rev = "f98cfe3";
-      hash = "sha256-xWGDR0gcakLDubzSLM29mAy0HhkSAsOpzxEgBj6hNII=";
-    };
-    propagatedBuildInputs = [ astring camlp-streams ];
-    postPatch = ''
-      substituteInPlace src/dune --replace "result" ""
-    '';
-  });
-
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
   };
@@ -1674,6 +1652,46 @@ with oself;
 
   ocurl = osuper.ocurl.overrideAttrs (_: {
     propagatedBuildInputs = [ curl ];
+  });
+
+  odate = osuper.odate.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/hhugo/odate/releases/download/0.7/odate-0.7.tbz;
+      sha256 = "1bsmix8qbsk04a1l2x4lrh919xq6a3pmanvgkdlc5wwp3p42q6bl";
+    };
+  });
+
+  odep = buildDunePackage {
+    pname = "odep";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/sim642/odep/releases/download/0.2.0/odep-0.2.0.tbz;
+      sha256 = "15sjb5s1j6mns6dkddm3lbwd0n499smffrs55sw0xfczn3vaxaiv";
+    };
+    propagatedBuildInputs = [
+      bos
+      opam-state
+      parsexp
+      ppx_deriving
+      sexplib
+      ppx_sexp_conv
+      cmdliner
+    ];
+  };
+
+  odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/odoc/releases/download/v2.3.0/odoc-2.3.0.tbz;
+      sha256 = "0v4dfhxgbx0nz37vi0difb7aiz5fp34yg06wn8b92f7wxygjsvf4";
+    };
+    propagatedBuildInputs = [ astring camlp-streams ];
+    postPatch = ''
+      substituteInPlace src/parser/dune --replace "result" ""
+    '';
+  });
+
+  odoc = osuper.odoc.overrideAttrs (_: {
+    inherit (odoc-parser) src;
   });
 
   oidc = callPackage ./oidc { };
