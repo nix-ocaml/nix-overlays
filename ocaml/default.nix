@@ -1027,6 +1027,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "ocaml-lsp";
+      rev = "e38c1ea4b893cfae04ae03a2ef6d439b97f9172f";
+      hash = "sha256-GExq1zo03H2BUNoeolzD0OWxw8hXs5JNp0IKej0Sc2I=";
+    };
+  });
+
   kafka = (osuper.kafka.override {
     rdkafka = rdkafka-oc;
     zlib = zlib-oc;
