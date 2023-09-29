@@ -99,6 +99,9 @@ let
 
     # Incompatible with tyxml 4.6
     "tyxml-lwd"
+
+    "linol"
+    "linol-lwt"
   ];
 
   ocaml5Ignores = [
