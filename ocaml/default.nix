@@ -195,6 +195,15 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
+  async-uri = buildDunePackage {
+    pname = "async-uri";
+    version = "0.4.0";
+    src = builtins.fetchurl {
+      url = https://github.com/vbmithr/async-uri/releases/download/0.4.0/async-uri-0.4.0.tbz;
+      sha256 = "0420rqs65y976kcka0mxsqfq4khyp2ypwq6mbi329w4wm8ji5pdi";
+    };
+    propagatedBuildInputs = [ async_ssl uri uri-sexp ];
+  };
 
   multiformats = buildDunePackage {
     pname = "multiformats";
@@ -854,6 +863,13 @@ with oself;
 
   gettext-stub = disableTests osuper.gettext-stub;
 
+  git = osuper.git.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-git/releases/download/3.14.0/git-3.14.0.tbz;
+      sha256 = "1hb238s79kbx1g4imaysd8w1cjspk25gi6vq8lkz0q9n7brnllxv";
+    };
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -1043,11 +1059,12 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
-      rev = "4ee21d040050272105bbdae7336732cc80ad8f00";
-      hash = "sha256-oU9pUSLXn6SGAj5iBvC8FJpooG0kt52kvHwCoO9ZvJE=";
+      # https://github.com/anmonteiro/ocaml-kafka/tree/anmonteiro/eio
+      rev = "b5553ac55d43a59c1378b14e8d067df76f4a4cb4";
+      hash = "sha256-kvkwNHa85NWag06cdhiFb+oiY9A2vAsxwH09XXErBIQ=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
-    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-configurator ];
     hardeningDisable = [ "strictoverflow" ];
   });
 
@@ -1056,17 +1073,6 @@ with oself;
     inherit (kafka) src version;
     propagatedBuildInputs = [ async kafka ];
     hardeningDisable = [ "strictoverflow" ];
-    postPatch = ''
-      substituteInPlace lib_async/kafka_async.ml \
-        --replace "Time.Span" "Time_float.Span" \
-        --replace "Int.Table.add_exn" "Hashtbl.add_exn" \
-        --replace "Int.Table.find_and_remove" "Hashtbl.find_and_remove" \
-        --replace "String.Table.add_exn" "Hashtbl.add_exn" \
-        --replace "String.Table.find" "Hashtbl.find" \
-        --replace "String.Table.mem" "Hashtbl.mem" \
-        --replace "String.Table.keys" "Hashtbl.keys" \
-        --replace "String.Table.remove" "Hashtbl.remove"
-    '';
   };
 
   kafka_lwt = osuper.kafka_lwt.overrideAttrs (_: {
