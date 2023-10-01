@@ -2017,13 +2017,6 @@ with oself;
     ];
   });
 
-  re = osuper.re.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/ocaml-re/releases/download/1.11.0/re-1.11.0.tbz;
-      sha256 = "0kwdvzb2wy3rxq3mvmsgc8cdwrzka2viysvrmrrbxxn0h13j9z01";
-    };
-  });
-
   reanalyze =
     if lib.versionOlder "4.13" osuper.ocaml.version then null
     else
