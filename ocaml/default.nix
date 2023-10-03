@@ -368,15 +368,14 @@ with oself;
       rev = "2.0.0";
       hash = "sha256-JYAa3awHqW5lS4a+TSyK3+xQSi123PhfWwNUt5iOmjg=";
     };
+    propagatedBuildInputs = [ camomile ];
+    postPatch = ''
+      substituteInPlace src/dune --replace "result" ""
+      substituteInPlace src/cfg.mli --replace "Result.result" "result"
+    '';
   });
 
   camomile = osuper.camomile.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "camomile";
-      rev = "v2.0.0";
-      hash = "sha256-HklX+VPD0Ta3Knv++dBT2rhsDSlDRH90k4Cj1YtWIa8=";
-    };
     propagatedBuildInputs = [ camlp-streams dune-site ];
     checkInputs = [ stdlib-random ];
     dontConfigure = true;
@@ -861,6 +860,9 @@ with oself;
     };
   });
 
+  gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
+    propagatedBuildInputs = [ camomile ocaml_gettext ];
+  });
   gettext-stub = disableTests osuper.gettext-stub;
 
   git = osuper.git.overrideAttrs (_: {
