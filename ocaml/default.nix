@@ -200,7 +200,7 @@ with oself;
     version = "0.4.0";
     src = builtins.fetchurl {
       url = https://github.com/vbmithr/async-uri/releases/download/0.4.0/async-uri-0.4.0.tbz;
-      sha256 = "0420rqs65y976kcka0mxsqfq4khyp2ypwq6mbi329w4wm8ji5pdi";
+      sha256 = "16hz01g42aj0zvjqjadg3x4j1jvd279c4vbc2f6zcjvm0dzmlbs0";
     };
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
