@@ -338,8 +338,8 @@ with self;
   core = janePackage {
     pname = "core";
     meta.description = "Industrial strength alternative to OCaml's standard library";
-    version = "0.16.1";
-    hash = "sha256-cKJi67VLIsbLEgIZyFiVz00z/QEvJhNBb8+M+bR4iHU=";
+    version = "0.16.2";
+    hash = "sha256-cyOU++XJJkU2YMHfn8saFOxLoQSFhF7kARJi/9unbFQ=";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base base_bigstring base_quickcheck ppx_jane time_now ];
     doCheck = false; # circular dependency with core_kernel
@@ -1114,7 +1114,8 @@ with self;
 
   ppx_inline_test = janePackage {
     pname = "ppx_inline_test";
-    hash = "sha256-Ql0/80KitKvW3xffeCapYREmZvlg+QWCb2JM2T4Rjlc=";
+    version = "0.16.1";
+    hash = "sha256-01q5GX53p0QQf8sifYuR0by/+d0hsaOx4YQFhp6l2es=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Syntax extension for writing in-line tests in ocaml code";
     propagatedBuildInputs = [ ppxlib time_now ];
