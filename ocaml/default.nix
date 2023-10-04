@@ -383,13 +383,6 @@ with oself;
     postInstall = null;
   });
 
-  checkseum = osuper.checkseum.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/checkseum/releases/download/v0.5.2/checkseum-0.5.2.tbz;
-      sha256 = "1j5g1pgq59fvp3645vwrcj5f0cqq4m1pb1q0vysaid2w83a4yply";
-    };
-  });
-
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz;
@@ -570,14 +563,6 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  containers = osuper.containers.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "c-cube";
-      repo = "ocaml-containers";
-      rev = "v3.12";
-      hash = "sha256-15Wd6k/NvjAvTmxlPlZPClODBtFXM6FG3VxniC66u88=";
-    };
-  });
   containers-data = osuper.containers-data.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
@@ -655,12 +640,6 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
-  decompress = osuper.decompress.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/decompress/releases/download/v1.5.3/decompress-1.5.3.tbz;
-      sha256 = "0q5cfd9h6dhxfh489cag9djyiwcrkk4zfchd8ihwngzzprw6j7pr";
-    };
-  });
   rfc1951 = buildDunePackage {
     pname = "rfc1951";
     inherit (decompress) src version;
@@ -1253,11 +1232,7 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = osuper.mdx.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/releases/download/2.3.1/mdx-2.3.1.tbz;
-      sha256 = "1ws3jz0av8vf06my8y5hq751ch6ic31gxm1b74lpxm3qm9gs8h4s";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ cmdliner result ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
   });
 
   mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
@@ -1937,12 +1912,6 @@ with oself;
     '';
   });
 
-  pp = osuper.pp.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-dune/pp/releases/download/1.2.0/pp-1.2.0.tbz;
-      sha256 = "174hwr63gpliw9w2ipzjbkvdib7js6n6xicyn8nv9bsm7ibj5s55";
-    };
-  });
   pprint = osuper.pprint.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "fpottier";
