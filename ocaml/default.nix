@@ -1039,8 +1039,8 @@ with oself;
       owner = "anmonteiro";
       repo = "ocaml-kafka";
       # https://github.com/anmonteiro/ocaml-kafka/tree/anmonteiro/eio
-      rev = "0c0933cea6d67ce15249543e9af993059eace931";
-      hash = "sha256-DnCSn9DgXg3Kt/QvkZ1EZFlp8W6KJE7zYyuXUY7diA0=";
+      rev = "af50ca854f92097ed254bf0e0f2dcaf3e7d35991";
+      hash = "sha256-FZX9fGJg+52bA4/K+NbcUyT0aCWjCsJvfML/3ygn5Qw=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-configurator ];

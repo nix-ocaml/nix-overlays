@@ -20,8 +20,8 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "reasonml";
     repo = "reason";
-    rev = "f92f7ecc228d19ebf4d9d0214792da7b45472766";
-    hash = "sha256-b1kXUOmqUhJrXG42GFAS7QUFTzQ2sNrAUm6/bDQwPTU=";
+    rev = "d47e613b736cc25629aabc1c8ef91795e265eacb";
+    hash = "sha256-KNxIKaXlHbwN0ae6YwGifHzBQsKNKdTlrGO7JlvDKhg=";
   };
 
   propagatedBuildInputs = [
