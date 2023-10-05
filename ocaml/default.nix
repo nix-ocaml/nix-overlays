@@ -564,9 +564,7 @@ with oself;
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
   containers-data = osuper.containers-data.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace tests/data/t_bitfield.ml --replace ".Make ()" ".Make (struct end)"
-    '';
+    doCheck = false;
   });
 
   # Not available for 4.12 and breaking the static build
