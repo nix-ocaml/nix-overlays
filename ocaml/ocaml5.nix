@@ -30,6 +30,12 @@ with oself;
 
   eio-ssl = callPackage ./eio-ssl { };
 
+  graphql-eio = buildDunePackage {
+    pname = "graphql-eio";
+    inherit (graphql_parser) src version;
+    propagatedBuildInputs = [ eio_main graphql ];
+  };
+
   gluten-eio = callPackage ./gluten/eio.nix { };
 
   h2-eio = callPackage ./h2/eio.nix { };

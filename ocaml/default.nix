@@ -2510,8 +2510,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "issuu";
       repo = "ocaml-zmq";
-      rev = "8a24cd042";
-      sha256 = "sha256-EZKDSzW08lNgJgtgNOBgQ8ub29pSy2rwcqoMNu+P3kI=";
+      rev = "76519114b6b1092aeccaa4d21504695c6b0cd0a2";
+      hash = "sha256-jjOh6bgHiPI7CZhq4NdMT6yqGSaZ9N5WBIcyTzriwBs=";
     };
   });
 } // janeStreet // (
