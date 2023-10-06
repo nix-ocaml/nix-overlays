@@ -73,7 +73,6 @@ let
     "phylogenetics"
     "biocaml"
     "pythonlib"
-    "graphql-async"
     "magic-trace"
 
     # Old mirage-kv interface
