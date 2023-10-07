@@ -563,10 +563,6 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  containers-data = osuper.containers-data.overrideAttrs (_: {
-    doCheck = false;
-  });
-
   # Not available for 4.12 and breaking the static build
   cooltt = null;
 
@@ -1054,9 +1050,21 @@ with oself;
     hardeningDisable = [ "strictoverflow" ];
   };
 
-  kafka_lwt = osuper.kafka_lwt.overrideAttrs (_: {
-    hardeningDisable = [ "strictoverflow" ];
-  });
+  kafka_lwt =
+    buildDunePackage rec {
+      pname = "kafka_lwt";
+      hardeningDisable = [ "strictoverflow" ];
+
+      inherit (kafka) version src;
+
+      buildInputs = [ cmdliner ];
+
+      propagatedBuildInputs = [ kafka lwt ];
+
+      meta = kafka.meta // {
+        description = "OCaml bindings for Kafka, Lwt bindings";
+      };
+    };
 
   # Added by the ocaml5.nix
   kcas = null;
@@ -1184,14 +1192,7 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "lwt";
-      rev = "5.7.0";
-      hash = "sha256-o0wPK6dPdnsr/LzwcSwbIGcL85wkDjdFuEcAxuS/UEs=";
-    };
-  });
+  lwt = (osuper.lwt.override { libev = libev-oc; });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
