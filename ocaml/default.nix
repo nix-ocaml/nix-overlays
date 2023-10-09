@@ -1911,15 +1911,6 @@ with oself;
     '';
   });
 
-  pprint = osuper.pprint.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "fpottier";
-      repo = "pprint";
-      rev = "20230830";
-      hash = "sha256-avf71vAgCL1MU8O7Q3FNN3wEdCDtbNZP0ipETnn8AqA=";
-    };
-  });
-
   ppx_cstruct = disableTests osuper.ppx_cstruct;
 
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
