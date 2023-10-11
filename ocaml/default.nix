@@ -2563,7 +2563,7 @@ with oself;
   });
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix { inherit oself darwin fetchFromGitHub; })
+  then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub; })
   else { }
 ) // (
   if lib.versionAtLeast osuper.ocaml.version "5.1"

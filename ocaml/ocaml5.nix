@@ -1,4 +1,4 @@
-{ darwin, fetchFromGitHub, oself }:
+{ darwin, fetchFromGitHub, oself, osuper }:
 
 with oself;
 
