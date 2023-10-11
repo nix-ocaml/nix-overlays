@@ -2495,15 +2495,6 @@ with oself;
     '';
   };
 
-  wayland = osuper.wayland.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/talex5/ocaml-wayland/releases/download/v2.0/wayland-2.0.tbz;
-      sha256 = "0jw3x66yscl77w17pp31s4vhsba2xk6z2yvb30fvh0vd9p7ba8c8";
-    };
-    propagatedBuildInputs = [ eio ];
-    checkInputs = o.checkInputs ++ [ eio_main ];
-  });
-
   websocket = buildDunePackage {
     pname = "websocket";
     version = "2.16";
