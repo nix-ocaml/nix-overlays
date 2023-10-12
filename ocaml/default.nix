@@ -991,7 +991,7 @@ with oself;
     ];
   };
   irmin-git = disableTests osuper.irmin-git;
-  irmin-http = disableTests osuper.irmin-http;
+  irmin-http = null;
 
   iostream = buildDunePackage {
     pname = "iostream";
