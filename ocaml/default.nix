@@ -948,11 +948,34 @@ with oself;
   });
 
   irmin = osuper.irmin.overrideAttrs (_: {
+    version = "3.9.0";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/irmin/releases/download/3.8.0/irmin-3.8.0.tbz;
-      sha256 = "0wi9yyli4mrl1yd340rpcp558g6cwf9rm39zp3x8dvlwf7k1fh6s";
+      url = https://github.com/mirage/irmin/releases/download/3.9.0/irmin-3.9.0.tbz;
+      sha256 = "182immvlgvcj1bl6nx816p2k5g6ssz4hc9n3b1nmpysz3fz3l1wf";
     };
   });
+  irmin-server = buildDunePackage {
+    pname = "irmin-server";
+    inherit (irmin) src version;
+    propagatedBuildInputs = [
+      optint
+      irmin
+      ppx_irmin
+      irmin-pack
+      uri
+      fmt
+      cmdliner
+      logs
+      lwt
+      conduit-lwt-unix
+      websocket-lwt-unix
+      cohttp-lwt-unix
+      ppx_blob
+      digestif
+    ];
+    checkInputs = [ alcotest-lwt ];
+    doCheck = true;
+  };
   irmin-pack-tools = buildDunePackage {
     pname = "irmin-pack-tools";
     inherit (irmin) src version;
@@ -968,7 +991,7 @@ with oself;
     ];
   };
   irmin-git = disableTests osuper.irmin-git;
-  irmin-http = disableTests osuper.irmin-http;
+  irmin-http = null;
 
   iostream = buildDunePackage {
     pname = "iostream";
@@ -2472,6 +2495,31 @@ with oself;
     '';
   };
 
+  websocket = buildDunePackage {
+    pname = "websocket";
+    version = "2.16";
+    src = builtins.fetchurl {
+      url = https://github.com/vbmithr/ocaml-websocket/releases/download/2.16/websocket-2.16.tbz;
+      sha256 = "1sy5gp40l476qmbn6d8cfw61pkg8b7pg1hrbsvdq9n6s7mlg888j";
+    };
+    propagatedBuildInputs = [ cohttp astring base64 ocplib-endian conduit ];
+  };
+  websocket-lwt-unix = buildDunePackage {
+    pname = "websocket-lwt-unix";
+    inherit (websocket) src version;
+    propagatedBuildInputs = [ lwt websocket cohttp-lwt-unix lwt_log ];
+    doCheck = true;
+
+    postPatch = ''
+      substituteInPlace lwt/websocket_lwt_unix.ml --replace \
+        "fun (flow, ic, oc) ->" \
+        "fun (flow, ic, oc) -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in" \
+        --replace "Lwt_io.close ic" "Cohttp_lwt_unix.Private.Input_channel.close ic" \
+        --replace "(fun flow ic oc ->" "(fun flow ic oc -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in "
+    '';
+
+  };
+
   websocketaf = callPackage ./websocketaf { };
   websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
@@ -2479,6 +2527,13 @@ with oself;
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   why3 = callPackage ./why3 { inherit nixpkgs; };
+
+  yojson = osuper.yojson.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/yojson/releases/download/2.1.1/yojson-2.1.1.tbz;
+      sha256 = "0ww1x289g01qb8bw9nf077hzjd2c0xp0cfb2hrjw138rgch870fm";
+    };
+  });
 
   yuscii = disableTests osuper.yuscii;
 
@@ -2508,7 +2563,7 @@ with oself;
   });
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix { inherit oself darwin fetchFromGitHub; })
+  then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub; })
   else { }
 ) // (
   if lib.versionAtLeast osuper.ocaml.version "5.1"
