@@ -138,6 +138,7 @@ let
 
     "uring"
     "eio_linux"
+    "wayland"
   ];
 in
 
