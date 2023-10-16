@@ -1257,12 +1257,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
   });
 
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-crypto/releases/download/v0.11.2/mirage-crypto-0.11.2.tbz;
-      sha256 = "0r7pxlqz5x3cc8a1cwnh0phhlzqygh9h7k0k4mh4ld6wy2vprffn";
-    };
-  });
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -2040,13 +2034,6 @@ with oself;
   redis-sync = callPackage ./redis/sync.nix { };
 
   reenv = callPackage ./reenv { };
-
-  repr = osuper.repr.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/repr/releases/download/0.7.0/repr-0.7.0.tbz;
-      sha256 = "1b014p74l0mi3gk9klwv9mzip3p92rr0v0dnxqh0x2mzhpzcknla";
-    };
-  });
 
   resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
     postPatch = ''
