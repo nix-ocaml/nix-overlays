@@ -39,7 +39,7 @@ let
     "hol_light"
     "ppx_tools_versioned"
 
-    # Broken since OCaml 4.14
+    # Conflicts with cohttp v6 because of the HTTP module
     "eliom"
     "ocsigen-start"
     "ocsigen-toolkit"
@@ -101,6 +101,9 @@ let
 
     "linol"
     "linol-lwt"
+
+    # Doesn't build on 4.14. Re-enable when we remove 4.14
+    "asai"
   ];
 
   ocaml5Ignores = [
