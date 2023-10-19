@@ -48,6 +48,17 @@ let
         };
       };
 
+      ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope' (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "a7840563fe9fe972d1f34f72f58d46d9dd67fa16";
+            hash = "sha256-9uEZm0IZv+TDoLwmpFKzCjkucuYDBBSjquQx9CqfhK0=";
+          };
+        });
+      });
+
       ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
