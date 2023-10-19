@@ -1280,8 +1280,8 @@ with oself;
 
   mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-logs/releases/download/v2.0.0/mirage-logs-2.0.0.tbz;
-      sha256 = "086x45sijjldg1vcvf7lq23fqxrl8mbbp2ym8hja7gl6m9j759pj";
+      url = https://github.com/mirage/mirage-logs/releases/download/v2.1.0/mirage-logs-2.1.0.tbz;
+      sha256 = "1fww8q0an84wiqfwycqlv9chc52a9apf6swbiqk28h1v1jrc52mf";
     };
   });
 
