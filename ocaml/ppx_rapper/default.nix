@@ -1,4 +1,4 @@
-{ fetchFromGitHub, buildDunePackage, caqti, pg_query }:
+{ fetchFromGitHub, buildDunePackage, base, caqti, pg_query }:
 
 buildDunePackage rec {
   pname = "ppx_rapper";
@@ -11,5 +11,5 @@ buildDunePackage rec {
     hash = "sha256-HF7VVS2o5tdblkvd3Rwp8dohlwMJ/Dyo0fnd+D1+8vc=";
   };
 
-  propagatedBuildInputs = [ caqti pg_query ];
+  propagatedBuildInputs = [ caqti pg_query base ];
 }
