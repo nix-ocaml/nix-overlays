@@ -16,14 +16,14 @@
 
 buildDunePackage {
   pname = "melange";
-  version = "2.0.0-dev";
+  version = "2.1.0";
   duneVersion = "3";
 
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "2.0.0";
-    hash = "sha256-OrZnHUQaBvCsyBvbQr5V2V+HcK4Hg4lHM5gvguyKJ4o=";
+    rev = "2.1.0";
+    hash = "sha256-kdguJxSQkGShL4RN9N2K52USy9I4SovjcH/F4NiS/8Y=";
     fetchSubmodules = true;
   };
 

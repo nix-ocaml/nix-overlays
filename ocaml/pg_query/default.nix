@@ -1,6 +1,6 @@
 { fetchFromGitHub
 , buildDunePackage
-, ppx_inline_test
+, alcotest
 , ppx_deriving
 , ctypes
 , ctypes-foreign
@@ -13,18 +13,15 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "pg_query-ocaml";
-    rev = "f9f7a63363a56bf885bd84c68385696abe494e2f";
-    hash = "sha256-60OYony6I5+6tLLlGWQ4pbFO8N3ZWJrjKztiKMyKHsQ=";
+    rev = "703b4dbfdf4aaee284ca53b8a92682210b0ed0a7";
+    hash = "sha256-ICOh2N6ei8d7Ar0c1YOYV/NhhOzq2uLuIKu5dzMP9tM=";
   };
 
-  postPatch = ''
-    rm -rf bin/
-  '';
-
   propagatedBuildInputs = [
-    ppx_inline_test
     ppx_deriving
     ctypes
     ctypes-foreign
   ];
+  doCheck = true;
+  checkInputs = [ alcotest ];
 }
