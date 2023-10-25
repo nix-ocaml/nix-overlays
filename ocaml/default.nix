@@ -408,13 +408,6 @@ with oself;
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
-  carton = osuper.carton.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.7.0/git-carton-v0.7.0.tbz;
-      sha256 = "1y8fybp97csszdzjqpm2bkhv4xklxk619sqc2d198rpqscjh2sdx";
-    };
-  });
-
   caqti = osuper.caqti.overrideAttrs (o: {
     version = "2.0.1";
     src = fetchFromGitHub {
@@ -2514,13 +2507,6 @@ with oself;
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   why3 = callPackage ./why3 { inherit nixpkgs; };
-
-  yojson = osuper.yojson.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/yojson/releases/download/2.1.1/yojson-2.1.1.tbz;
-      sha256 = "0ww1x289g01qb8bw9nf077hzjd2c0xp0cfb2hrjw138rgch870fm";
-    };
-  });
 
   yuscii = disableTests osuper.yuscii;
 
