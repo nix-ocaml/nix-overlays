@@ -556,9 +556,6 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  # Not available for 4.12 and breaking the static build
-  cooltt = null;
-
   cry = osuper.cry.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bytes" ""
