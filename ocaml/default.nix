@@ -556,9 +556,6 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  # Not available for 4.12 and breaking the static build
-  cooltt = null;
-
   cry = osuper.cry.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace "bytes" ""
@@ -877,12 +874,6 @@ with oself;
   gstreamer = osuper.gstreamer.overrideAttrs (o: {
     buildInputs = o.buildInputs ++
     lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
-  });
-
-  hacl-star = osuper.hacl-star.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
-    '';
   });
 
   hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
