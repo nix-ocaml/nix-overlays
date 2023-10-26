@@ -75,8 +75,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "cf654d4dd9b694b968a20e23db29a273e059e945";
-      hash = "sha256-Gy5Z/1WmhQy+xQvW0Ef2b9kmh4eLz2Cv+wUG+yAPp+0=";
+      rev = "3b9430c441b0d15fb435d80c2f5d5993200be182";
+      hash = "sha256-z58p6Cz9HjAI55d1PVuVbW121qWaWMtDfYk7CKIg0VY=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [

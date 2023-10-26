@@ -601,7 +601,21 @@ with oself;
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
-  data-encoding = disableTests osuper.data-encoding;
+  json-data-encoding = osuper.json-data-encoding.overrideAttrs (o: {
+    src = fetchFromGitLab {
+      owner = "nomadic-labs";
+      repo = "data-encoding";
+      rev = "v1.0.1";
+      hash = "sha256-768uEfqo5pTW9VhmmHNjtoI5eA7KA6epTsjeq2uJC1I=";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hex ];
+    # Tests need js_of_ocaml
+    doCheck = false;
+  });
+  data-encoding = osuper.data-encoding.overrideAttrs (o: {
+    inherit (json-data-encoding) src doCheck;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_expect ];
+  });
 
   dataloader = callPackage ./dataloader { };
   dataloader-lwt = callPackage ./dataloader/lwt.nix { };
@@ -1670,8 +1684,8 @@ with oself;
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/odoc/releases/download/v2.3.0/odoc-2.3.0.tbz;
-      sha256 = "0v4dfhxgbx0nz37vi0difb7aiz5fp34yg06wn8b92f7wxygjsvf4";
+      url = https://github.com/ocaml/odoc/releases/download/2.3.1/odoc-2.3.1.tbz;
+      sha256 = "00z6fzxfjy5cvgddbp6vi9y8py94cz8m0vbbrgyvswvya01h3qin";
     };
     propagatedBuildInputs = [ astring camlp-streams ];
     postPatch = ''
@@ -2524,11 +2538,9 @@ with oself;
   });
 
   zmq = osuper.zmq.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "issuu";
-      repo = "ocaml-zmq";
-      rev = "76519114b6b1092aeccaa4d21504695c6b0cd0a2";
-      hash = "sha256-jjOh6bgHiPI7CZhq4NdMT6yqGSaZ9N5WBIcyTzriwBs=";
+    src = builtins.fetchurl {
+      url = https://github.com/issuu/ocaml-zmq/releases/download/5.2.2/zmq-5.2.2.tbz;
+      sha256 = "0qgzdnk99xrd842g4f6na5djygf5fli2sfjn1ppqar7ma1m4xdqk";
     };
   });
 } // janeStreet // (
