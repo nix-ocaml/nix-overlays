@@ -876,6 +876,12 @@ with oself;
     lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
   });
 
+  hacl-star = osuper.hacl-star.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
+    '';
+  });
+
   hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
 
   h2 = callPackage ./h2 { };
