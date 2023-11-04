@@ -115,7 +115,6 @@ let
     "ocaml_oasis"
     "ocamlify"
     "ocp-build"
-    "owl"
     "piqi"
     "piqi-ocaml"
     "lambdapi"
@@ -137,7 +136,6 @@ let
 
     "alsa"
     "mm"
-    "owl"
 
     "uring"
     "eio_linux"

@@ -240,7 +240,18 @@ with oself;
     };
   };
 
-  benchmark = osuper.buildDunePackage {
+  bechamel = buildDunePackage {
+    pname = "bechamel";
+    version = "0.5.0";
+
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/bechamel/releases/download/v0.5.0/bechamel-0.5.0.tbz;
+      sha256 = "0s68bsfa4j8y69pfxlylc9qrfkgrifc849rmcyh2x9jz752ab6ig";
+    };
+    propagatedBuildInputs = [ fmt ];
+  };
+
+  benchmark = buildDunePackage {
     pname = "benchmark";
     version = "1.6";
 
@@ -1839,9 +1850,16 @@ with oself;
     '';
   });
   owl-base = osuper.owl-base.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "owlbarn";
+      repo = "owl";
+      rev = "d3b5390531a05b2a74754f46625a7f4d1efdb9b7";
+      hash = "sha256-b1T4sWbnGEVnZtPXo5nM0uuyzD8FbBcJPIzVEtyqrdM=";
+    };
     meta.platforms = lib.platforms.all;
   });
-  owl = osuper.owl.overrideAttrs (_: {
+  owl = osuper.owl.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ eigen ];
     meta = owl-base.meta;
   });
 
