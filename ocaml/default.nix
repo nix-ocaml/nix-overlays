@@ -354,11 +354,6 @@ with oself;
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
-    postPatch =
-      if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace core/images.ml --replace "String.lowercase" "String.lowercase_ascii"
-        substituteInPlace core/units.ml --replace "String.lowercase" "String.lowercase_ascii"
-      '' else "";
   });
 
   camlp5 = callPackage ./camlp5 { };
@@ -567,12 +562,6 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  cry = osuper.cry.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/dune --replace "bytes" ""
-    '';
-  });
-
   cryptokit = osuper.cryptokit.override { zlib = zlib-oc; };
 
   ctypes = buildDunePackage rec {
@@ -682,13 +671,6 @@ with oself;
   dream-livereload = callPackage ./dream-livereload { };
 
   dream-serve = callPackage ./dream-serve { };
-
-  dum = osuper.dum.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace "dum.ml" --replace "Lazy.lazy_is_val" "Lazy.is_val"
-      substituteInPlace "dum.ml" --replace "Obj.final_tag" "Obj.custom_tag"
-    '';
-  });
 
   dune_1 = dune;
 
