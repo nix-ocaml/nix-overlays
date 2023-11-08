@@ -883,7 +883,8 @@ with self;
 
   patdiff = janePackage {
     pname = "patdiff";
-    hash = "sha256-iVRYKgVBBJws3ZlUwnZt52bIydMtzV7a2R5mjksQAps=";
+    version = "0.16.1";
+    hash = "sha256-1AXozxcpKzNJVYuFUtQKSMfJC49+iPgJg5LPnlBv4l8=";
 
     # Used by patdiff-git-wrapper.  Providing it here also causes the shebang
     # line to be automatically patched.
