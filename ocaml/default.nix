@@ -483,15 +483,15 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_alpha2/cohttp-6.0.0.alpha2.tbz;
-      sha256 = "1xngq0kanna3j1v6lmbdwh31w4lgbasfa1r0q4kk9hf1694d201g";
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta1/cohttp-6.0.0.beta1.tbz;
+      sha256 = "1q0b62in3aa7wsqzihml0rgal9ndwnygdlfhycxxhyabjl81gciv";
     };
     doCheck = false;
   };
 
   cohttp = osuper.cohttp.overrideAttrs (o: {
     inherit (http) src version;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ http ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ http logs ];
     doCheck = false;
   });
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
@@ -2518,6 +2518,13 @@ with oself;
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
   why3 = callPackage ./why3 { inherit nixpkgs; };
+
+  yaml = osuper.yaml.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/avsm/ocaml-yaml/releases/download/v3.2.0/yaml-3.2.0.tbz;
+      sha256 = "09w2l2inc0ymzd9l8gpx9pd4xlp5a4rn1qbi5dwndydr5352l3f5";
+    };
+  });
 
   yuscii = disableTests osuper.yuscii;
 
