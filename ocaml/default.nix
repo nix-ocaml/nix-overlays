@@ -2528,14 +2528,7 @@ with oself;
 
   yuscii = disableTests osuper.yuscii;
 
-  zarith = (osuper.zarith.override { gmp = gmp-oc; }).overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "Zarith";
-      rev = "release-1.13";
-      hash = "sha256-CNVKoJeO3fsmWaV/dwnUA8lgI4ZlxR/LKCXpCXUrpSg=";
-    };
-  });
+  zarith = (osuper.zarith.override { gmp = gmp-oc; });
 
   zed = osuper.zed.overrideAttrs (o: {
     propagatedBuildInputs = [ react uchar uutf uucp uuseg ];
