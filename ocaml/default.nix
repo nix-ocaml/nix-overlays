@@ -659,6 +659,7 @@ with oself;
     ];
   });
 
+  dream-html = callPackage ./dream-html { };
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream =
