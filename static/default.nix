@@ -8,10 +8,26 @@ let
 in
 
 {
+  hermes = super.hermes.overrideAttrs (o: {
+    cmakeFlags = o.cmakeFlags ++ [
+      "-DHERMES_STATIC_LINK=true"
+      "-DCMAKE_CROSSCOMPILING=false"
+      "-DHERMES_USE_STATIC_ICU=true"
+      "-DBUILD_SHARED_LIBS:BOOL=OFF"
+    ];
+  });
+  icu = super.icu.overrideAttrs (o: {
+    configureFlags = o.configureFlags ++ [ "--enable-static" ];
+  });
+  readline-oc = super.readline-oc.overrideAttrs (o: {
+    configureFlags = (o.configureFlags or [ ]) ++ [ "--enable-static" "--disable-shared" ];
+  });
+
   libev-oc = super.libev-oc.override { static = true; };
   libffi-oc = super.libffi-oc.overrideAttrs (_: { dontDisableStatic = true; });
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
   libxml2 = super.libxml2.override { zlib = self.zlib-oc; };
+  lz4-oc = super.lz4-oc.override { enableStatic = true; };
   gmp-oc = super.gmp-oc.override { withStatic = true; };
   openssl-oc = super.openssl-oc.override { static = true; };
 

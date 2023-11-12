@@ -14,6 +14,7 @@ let
     "5_0"
     "5_1"
     "trunk"
+    "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
     ocaml-ng.ocamlPackages_4_13.overrideScope'
@@ -34,36 +35,57 @@ let
         });
       });
 
-      ocamlPackages_5_1 = newOCamlScope {
-        major_version = "5";
-        minor_version = "1";
-        patch_version = "0~alpha1";
-        hardeningDisable = [ "strictoverflow" ];
-        src = super.fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml";
-          rev = "5.1.0-alpha1";
-          hash = "sha256-KRl3MlkV8nne7JZCbSSLfuH3uFGUsS/h5uojavx58NE=";
-        };
-      };
-
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
-        minor_version = "1";
+        minor_version = "2";
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "25b0c13dd7f612e49a4f3a7782a007dbd4468820";
-          hash = "sha256-o9uURDquoBaorc2Khs3qZ6KVQr1QO7mb+1j4CsZJB4Y=";
+          rev = "8e595b2ffb56eacf08e4587d449f81ed544aab1e";
+          hash = "sha256-1EgkG+FEZtK2uzIXLDouzDa+UHeclASt++hdhrOo024=";
         };
-        buildPhase = ''
-          make -j8 world
-          # make bootstrap
-          make -j8 world.opt
-        '';
       };
+
+      ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope' (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "a7840563fe9fe972d1f34f72f58d46d9dd67fa16";
+            hash = "sha256-9uEZm0IZv+TDoLwmpFKzCjkucuYDBBSjquQx9CqfhK0=";
+          };
+        });
+      });
+
+      ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
+        ocaml = (callPackage
+          (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
+            major_version = "4";
+            minor_version = "14";
+            patch_version = "1+jst";
+          })
+          { }).overrideAttrs (o: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml-flambda";
+            repo = "ocaml-jst";
+            rev = "e3076d2e7321a8e8ff18e560ed7a55d6ff0ebf04";
+            hash = "sha256-y5p73ZZtwkgUzvCHlE9nqA2OdlDbYWr8wnWRhYH82hE=";
+          };
+          hardeningDisable = [ "strictoverflow" ];
+        });
+
+        dune_3 = osuper.dune_3.overrideAttrs (_: {
+          postPatch = ''
+            substituteInPlace boot/bootstrap.ml --replace 'v >= (5, 0, 0)' "true"
+            substituteInPlace boot/duneboot.ml --replace 'ocaml_version >= (5, 0)' "true"
+            substituteInPlace src/ocaml-config/ocaml_config.ml --replace 'version >= (5, 0, 0)' "true"
+            substituteInPlace src/ocaml/version.ml --replace 'version >= (5, 0, 0)' "true"
+          '';
+        });
+      });
+
     } else { });
 
   overlaySinglePackageSet = pkgSet:
@@ -81,8 +103,7 @@ in
 rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-    ocamlPackages_latest = oPs.ocamlPackages_5_0;
-    ocamlPackages_5_00 = lib.warn "`ocamlPackages_5_00` is deprecated: use `ocamlPackages_5_0` instead" oPs.ocamlPackages_5_0;
+    ocamlPackages_latest = oPs.ocamlPackages_5_1;
   };
   ocamlPackages =
     if updateOCamlPackages then

@@ -10,18 +10,10 @@ let
     "ulex"
     "lablgl"
 
-    # too long to build or broken
-    "z3"
-
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
-    # jbuild files
-    "ocsigen-start"
-    "torch"
-
     # linking issues?
-    "spacetime_lib"
     "mariadb"
     "caqti-driver-mariadb"
 
@@ -46,21 +38,22 @@ let
     # broken since OCaml 4.13
     "hol_light"
     "ppx_tools_versioned"
-    "wasm"
 
-    # Broken since OCaml 4.14
+    # Conflicts with cohttp v6 because of the HTTP module
     "eliom"
+    "ocsigen-start"
     "ocsigen-toolkit"
+    "ocsigen_server"
+    "ocsipersist"
+    "ocsipersist-pgsql"
+    "ocsipersist-sqlite"
+
 
     "dream-serve"
 
     "gd4o"
 
     "ocaml-sat-solvers"
-
-    "taglib"
-    "getopt"
-    "soundtouch"
 
     "inotify"
     "async_inotify"
@@ -77,38 +70,63 @@ let
     "ocaml-probes"
 
     "biotk"
-    "bistro"
     "phylogenetics"
-    "cfstream"
     "biocaml"
-    "kafka_async"
     "pythonlib"
-    "tls-async"
-    "graphql-async"
     "magic-trace"
+
+    # Old mirage-kv interface
+    "mirage-fs"
+
+    # too old ocamlformat versions
+    "ocamlformat_0_19_0"
+    "ocamlformat_0_20_0"
+    "ocamlformat_0_20_1"
+    "ocamlformat_0_21_0"
+    "ocamlformat_0_22_4"
+    "ocamlformat_0_23_0"
+    "ocamlformat_0_24_1"
+
+    # Incompatible with omd 2.0
+    "sail"
+
+    # Incompatible with EIO v0.12
+    "cohttp-eio"
+
+    # Incompatible with ppxlib >= 0.31
+    "vcaml"
+
+    # Incompatible with tyxml 4.6
+    "tyxml-lwd"
+
+    "linol"
+    "linol-lwt"
+
+    # Doesn't build on 4.14. Re-enable when we remove 4.14
+    "asai"
+
+    "torch"
   ];
 
   ocaml5Ignores = [
     "erm_xml"
     "fontconfig"
-    "functory"
     "gapi-ocaml"
-    "hack_parallel"
-    "inifiles"
     "lastfm"
     "ocaml_expat"
     "ocaml_oasis"
     "ocamlify"
     "ocp-build"
-    "owl"
     "piqi"
     "piqi-ocaml"
-    "semver"
-    "twt"
     "lambdapi"
 
     # broken on 5.1
     "labltk"
+    "ocaml-migrate-parsetree-2"
+    "ocaml-migrate-types"
+    "ppx_debug"
+    "typedppxlib"
   ];
 
   darwinIgnores = [
@@ -120,11 +138,10 @@ let
 
     "alsa"
     "mm"
-    "owl"
 
     "uring"
     "eio_linux"
-    "magic-trace"
+    "wayland"
   ];
 in
 

@@ -99,6 +99,9 @@ buildDunePackage rec {
       "Caqti_lwt.connect_pool" \
       "Caqti_lwt_unix.connect_pool"
     substituteInPlace src/sql/sql.ml --replace \
+      "?max_size:size" \
+      "?pool_config:(Option.map (fun max_size -> Caqti_pool_config.create ~max_size ()) size)"
+    substituteInPlace src/sql/sql.ml --replace \
       "Caqti_lwt.Pool" \
       "Caqti_lwt_unix.Pool"
   '';

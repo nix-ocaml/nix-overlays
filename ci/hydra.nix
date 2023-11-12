@@ -8,10 +8,6 @@ in
 
 with filter;
 {
-  build_4_13 = ocamlCandidates {
-    inherit pkgs;
-    ocamlVersion = "4_14";
-  };
   build_4_14 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "4_14";
@@ -28,8 +24,11 @@ with filter;
   };
 
   build_top-level-packages =
-    { inherit (pkgs) esy melange-relay-compiler; } //
-    (if stdenv.isLinux then { inherit (pkgs) kubernetes; } else { });
+    { inherit (pkgs) esy melange-relay-compiler hermes; } //
+    (if stdenv.isLinux then {
+      inherit (pkgs) kubernetes;
+      hermes-musl64 = pkgs.pkgsCross.musl64.hermes;
+    } else { });
 
   arm64_4_14 = (if system == "x86_64-linux" then
     crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "4_14"

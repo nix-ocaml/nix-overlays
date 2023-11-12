@@ -1,12 +1,14 @@
-{ buildDunePackage, bigstringaf, faraday, ke }:
+{ fetchFromGitHub, buildDunePackage, bigstringaf, faraday }:
 
 buildDunePackage {
   pname = "gluten";
   version = "0.4.1";
 
-  src = builtins.fetchurl {
-    url = https://github.com/anmonteiro/gluten/releases/download/0.4.1/gluten-0.4.1.tbz;
-    sha256 = "1d1xcw2v3k8g1ifm0wj0ryabgy55qq9g076pgc9c2rjnslzg7rkq";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "gluten";
+    rev = "166e1e917710e1e43b04d33a368b6701a9f8b1f5";
+    hash = "sha256-wl6fgMVz996su8+pRFzjvQa2BPDtsIo1eQ9X2REzJsc=";
   };
-  propagatedBuildInputs = [ bigstringaf faraday ke ];
+  propagatedBuildInputs = [ bigstringaf faraday ];
 }

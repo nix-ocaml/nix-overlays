@@ -82,20 +82,20 @@ in
                 )
         else { };
 
-      makeFindlibConf = b:
+      makeFindlibConf = nativePackage: package:
         let
           inputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
             "checkInputs"
           ]
-            b;
+            package;
           natInputs = mergeInputs [
             "propagatedBuildInputs"
             "buildInputs"
             "nativeBuildInputs"
           ]
-            (findNativePackage b);
+            nativePackage;
 
           path =
             builtins.concatStringsSep ":"
@@ -107,7 +107,7 @@ in
                 natInputs);
 
           native_findlib_conf =
-            writeText "${b.name or b.pname}-findlib.conf" ''
+            writeText "${package.name or package.pname}-findlib.conf" ''
               path="${natocaml}/lib/ocaml:${natfindlib}/lib/ocaml/${natocaml.version}/site-lib:${natPath}"
               ldconf="ignore"
               stdlib = "${natocaml}/lib/ocaml"
@@ -124,7 +124,7 @@ in
             let
               inherit (oself) ocaml findlib;
             in
-            writeText "${b.name or b.pname}-${crossName}.conf" ''
+            writeText "${package.name or package.pname}-${crossName}.conf" ''
               path(${crossName}) = "${ocaml}/lib/ocaml:${findlib}/lib/ocaml/${ocaml.version}/site-lib:${path}"
               ldconf(${crossName})="ignore"
               stdlib(${crossName}) = "${ocaml}/lib/ocaml"
@@ -138,7 +138,7 @@ in
             '';
 
           findlib_conf = stdenv.mkDerivation {
-            name = "${b.name or b.pname}-findlib-conf";
+            name = "${package.name or package.pname}-findlib-conf";
             version = "0.0.1";
             unpackPhase = "true";
 
@@ -155,7 +155,7 @@ in
 
       fixOCamlPackage = b:
         b.overrideAttrs (o: {
-          OCAMLFIND_CONF = makeFindlibConf b;
+          OCAMLFIND_CONF = makeFindlibConf (findNativePackage b) b;
         });
     in
 
@@ -173,6 +173,8 @@ in
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
         '';
+
+        passthru = { inherit makeFindlibConf; };
 
         setupHook = writeText "setupHook.sh" ''
           addOCamlPath () {

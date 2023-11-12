@@ -2,11 +2,11 @@
 
 buildDunePackage {
   pname = "timedesc-tzlocal";
-  version = "0.9.0";
+  version = "2.0.0";
   src = fetchFromGitHub {
     owner = "daypack-dev";
     repo = "timere";
-    rev = "timedesc-1.2.0";
-    hash = "sha256-KQkA+UhxPALKnrbFxiWKNb+Cc4LiaXkuxKPTZdVrftk=";
+    rev = "timedesc-2.0.0";
+    hash = "sha256-bHdRZMG9oGA0M7DSj6iC6kSwiTImBvNS/Pm1gSs/rY0=";
   };
 }

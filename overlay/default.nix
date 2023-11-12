@@ -34,6 +34,8 @@ in
     (callPackage ../ocaml {
       inherit nixpkgs;
       super-opaline = super.opaline;
+      oniguruma-lib = super.oniguruma;
+      libgsl = super.gsl;
     })
   ];
 }) // {
@@ -55,6 +57,8 @@ in
       aarch64-multiplatform-musl =
         (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
           [ cross-overlay static-overlay ]);
+
+      riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
     };
 
 
@@ -62,7 +66,7 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql_14.override {
+  libpq = (self.postgresql_16.override {
     systemd = null;
     libkrb5 = null;
     enableSystemd = false;
@@ -83,6 +87,20 @@ in
       "--with-lz4"
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
     ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
+
+    patches = [
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/disable-normalize_exec_path.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/less-is-more.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/hardcode-pgxs-path.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/specify_pkglibdir_at_runtime.patch"
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/findstring.patch"
+      (super.substituteAll {
+        src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
+        locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
+      })
+    ] ++ lib.optionals stdenv.isLinux [
+      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
+    ];
 
     propagatedBuildInputs = [ self.openssl-oc.dev ];
     # Use a single output derivation. The upstream PostgreSQL derivation
@@ -185,13 +203,28 @@ in
       })
       { });
 
-  ocamlformat = super.ocamlformat.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace vendor/parse-wyc/menhir-recover/emitter.ml \
-      --replace \
-      "String.capitalize" "String.capitalize_ascii"
+  hermes = stdenv.mkDerivation {
+    name = "hermes";
+    src = super.fetchFromGitHub {
+      owner = "facebook";
+      repo = "hermes";
+      rev = "ee2922a50fb719bdb378025d95dbd32ad93cd679";
+      hash = "sha256-TXTcKAdfnznJQu2YPCRwzDlKMoV/nvp5mpsIrMUmH1c=";
+    };
+    patches = [ ./hermes-static-link.patch ];
+    buildPhase = ''
+      ninjaBuildPhase
     '';
-  });
+    cmakeFlags = [
+      "-GNinja"
+      "-DHERMES_ENABLE_TEST_SUITE=false"
+    ] ++ lib.optional stdenv.isDarwin [
+      "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
+    ];
+    nativeBuildInputs = with self; [ cmake python3 ninja ];
+    propagatedBuildInputs = with self; [ icu readline-oc ];
+  };
+
 
   lib = lib // { inherit overlayOCamlPackages; };
 
@@ -200,6 +233,8 @@ in
     cockroachdb-21_2_x
     cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
+
+  opam = self.ocamlPackages.opam;
 
   pnpm =
     let
@@ -213,6 +248,15 @@ in
         "$@"
     '';
 
+  rdkafka = super.rdkafka.overrideAttrs (_: {
+    src = super.fetchFromGitHub {
+      owner = "confluentinc";
+      repo = "librdkafka";
+      rev = "v2.2.0";
+      hash = "sha256-v/FjnDg22ZNQHmrUsPvjaCs4UQ/RPAxQdg9i8k6ba/4=";
+    };
+  });
+
   melange-relay-compiler =
     let
       inherit (super) rustPlatform darwin pkg-config openssl;
@@ -221,11 +265,10 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "4aa0e71928c3836f5be31843c358b64d7330f3cb";
-          hash = "sha256-msbG7pkYShOUdLSbW85pn1EqzrWq70rqRlixMY8SYPE=";
+          rev = "fa42044a06b50117d3d511c0ea7893d29058cdce";
+          hash = "sha256-DAGrgfl41w1v1llq82iyNcQSfuBCPhiTmn5WM9tqGkQ=";
           sparseCheckout = [ "compiler" ];
         };
-        # patches = [ ./reason-relay-cargo.patch ];
         dontBuild = true;
         installPhase = ''
           mkdir $out
@@ -237,7 +280,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-Zuw97AwLiU8BelBYpb8HsR1Ucggk8bmUg82PN8H8fWE=";
+      cargoHash = "sha256-4QAmf3ZqC4uxlpoyG8slBTEXYOuzT5GLRBZcVjjSBxQ=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.
@@ -264,7 +307,7 @@ in
   lib.mapAttrs'
     (n: p: lib.nameValuePair "${n}-oc" p)
     {
-      inherit (super) zlib gmp libev pcre zstd rdkafka sqlite;
+      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd readline;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
       openssl = super.openssl_3_0;
     }

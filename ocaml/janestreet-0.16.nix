@@ -1,6 +1,7 @@
 { self
 , bash
 , fetchpatch
+, fetchFromGitHub
 , fzf
 , lib
 , linuxHeaders
@@ -152,13 +153,11 @@ with self;
 
   async_ssl = janePackage {
     pname = "async_ssl";
-    hash = "sha256-BvZ3rZ6dq7spWhKWLfYzr4zZhS0LqlCLuxxRPNsRoZ8=";
+    version = "0.16.1";
+    hash = "sha256-83YKxvVb/JwBnQG4R/R1Ztik9T/hO4cbiNTfFnErpG4=";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ async ctypes ctypes-foreign openssl ];
-    postPatch = ''
-      substituteInPlace bindings/dune --replace "ctypes.foreign" "ctypes-foreign"
-    '';
   };
 
   async_udp = janePackage {
@@ -192,7 +191,8 @@ with self;
 
   base = janePackage {
     pname = "base";
-    hash = "sha256-XFALLxuOLeSd3QtmrDk3oROxMKfbkBVUI8Hmbov9tHc=";
+    version = "0.16.3";
+    hash = "sha256-PA7nhGud/gCv22cow+KrSgNKgi2NYq/zGsCEAgVRBac=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ sexplib0 ];
@@ -306,6 +306,12 @@ with self;
     hash = "sha256-OBtyKMyvfz0KNG4SWmvoTMVPnVTpO12N38q+kEbegJE=";
     meta.description = "Websocket library for use with cohttp and async";
     propagatedBuildInputs = [ async_websocket cohttp-async ppx_jane uri-sexp ];
+    postPatch = ''
+      substituteInPlace "src/cohttp_async_websocket.ml" \
+        --replace Cohttp_async.Io Cohttp_async.Io.IO \
+        --replace "read_websocket_response request reader" \
+          'read_websocket_response request (Cohttp_async__Input_channel.create reader)'
+    '';
   };
 
   cohttp_static_handler = janePackage {
@@ -331,8 +337,9 @@ with self;
 
   core = janePackage {
     pname = "core";
-    hash = "sha256-09uI4ANhdjamfLq4dUm7QNBHi6COyTpGuXE9Dh+kUsc=";
     meta.description = "Industrial strength alternative to OCaml's standard library";
+    version = "0.16.2";
+    hash = "sha256-cyOU++XJJkU2YMHfn8saFOxLoQSFhF7kARJi/9unbFQ=";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base base_bigstring base_quickcheck ppx_jane time_now ];
     doCheck = false; # circular dependency with core_kernel
@@ -876,7 +883,8 @@ with self;
 
   patdiff = janePackage {
     pname = "patdiff";
-    hash = "sha256-iVRYKgVBBJws3ZlUwnZt52bIydMtzV7a2R5mjksQAps=";
+    version = "0.16.1";
+    hash = "sha256-1AXozxcpKzNJVYuFUtQKSMfJC49+iPgJg5LPnlBv4l8=";
 
     # Used by patdiff-git-wrapper.  Providing it here also causes the shebang
     # line to be automatically patched.
@@ -921,7 +929,8 @@ with self;
   ppx_accessor = janePackage {
     pname = "ppx_accessor";
     minimalOCamlVersion = "4.14";
-    hash = "sha256-dJODaOozZ0sVBTZYx4/21AEI6phTQuAgxDOjLA0SqKU=";
+    version = "0.16.1";
+    hash = "sha256-o70q8eSbPeuGkIcCnKoK0BpaqPhy/NS7x2YYR6wfki8=";
     meta.description = "[@@deriving] plugin to generate accessors for use with the Accessor libraries";
     propagatedBuildInputs = [ accessor ];
   };
@@ -1106,7 +1115,8 @@ with self;
 
   ppx_inline_test = janePackage {
     pname = "ppx_inline_test";
-    hash = "sha256-Ql0/80KitKvW3xffeCapYREmZvlg+QWCb2JM2T4Rjlc=";
+    version = "0.16.1";
+    hash = "sha256-01q5GX53p0QQf8sifYuR0by/+d0hsaOx4YQFhp6l2es=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Syntax extension for writing in-line tests in ocaml code";
     propagatedBuildInputs = [ ppxlib time_now ];

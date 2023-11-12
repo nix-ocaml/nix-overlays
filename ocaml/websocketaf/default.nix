@@ -6,9 +6,13 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "websocketaf";
-    rev = "890a21453181a2a5230d598a87c2741defb2ade0";
-    hash = "sha256-sNKEI4XnpBHL31OoKb+wZZGYeKEv0tM658igsxZeZww=";
+    rev = "28abb768916f606287a2eb05a5d6a4aa11ec31b6";
+    hash = "sha256-9VeOVw3ve+7tGsiLB9XdmgzpTAzc6DgR6CqLt/h3wB8=";
   };
 
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
+
+  postPatch = ''
+    substituteInPlace lib/dune --replace "result" ""
+  '';
 }
