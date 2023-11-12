@@ -8,10 +8,6 @@ in
 
 with filter;
 {
-  build_4_13 = ocamlCandidates {
-    inherit pkgs;
-    ocamlVersion = "4_14";
-  };
   build_4_14 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "4_14";
