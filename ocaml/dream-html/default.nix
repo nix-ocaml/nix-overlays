@@ -7,7 +7,7 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "yawaramin";
     repo = "dream-html";
-    rev = "a0f269f419160cafd8af15bba93c64065b2dad7b";
+    rev = "1.1.0";
     sha256 = "sha256-OfdWal7fYqiT+4vfZZi5x6ItBVCP4rPHb2aO5TO6L88=";
   };
 
