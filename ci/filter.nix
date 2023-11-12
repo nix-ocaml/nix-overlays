@@ -104,6 +104,8 @@ let
 
     # Doesn't build on 4.14. Re-enable when we remove 4.14
     "asai"
+
+    "torch"
   ];
 
   ocaml5Ignores = [
