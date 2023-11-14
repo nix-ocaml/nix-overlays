@@ -814,11 +814,29 @@ with oself;
     };
   });
 
-  functory = osuper.functory.overrideAttrs (_: {
+  functory = stdenv.mkDerivation {
+    pname = "ocaml${ocaml.version}-functory";
+    version = "0.6";
+    src = builtins.fetchurl {
+      url = "https://www.lri.fr/~filliatr/functory/download/functory-0.6.tar.gz";
+      sha256 = "18wpyxblz9jh5bfp0hpffnd0q8cq1b0dqp0f36vhqydfknlnpx8y";
+    };
+
+    nativeBuildInputs = [ ocaml findlib ];
+    strictDeps = true;
+    installTargets = [ "ocamlfind-install" ];
+    createFindlibDestdir = true;
     postPatch = ''
       substituteInPlace network.ml --replace "Pervasives." "Stdlib."
     '';
-  });
+
+    meta = with lib; {
+      homepage = "https://www.lri.fr/~filliatr/functory/";
+      description = "A distributed computing library for Objective Caml which facilitates distributed execution of parallelizable computations in a seamless fashion";
+      license = licenses.lgpl21;
+      inherit (ocaml.meta) platforms;
+    };
+  };
 
   gen_js_api = disableTests osuper.gen_js_api;
 
@@ -834,7 +852,6 @@ with oself;
   gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
     propagatedBuildInputs = [ camomile ocaml_gettext ];
   });
-  gettext-stub = disableTests osuper.gettext-stub;
 
   git = osuper.git.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1465,7 +1482,7 @@ with oself;
     installPhase = ''
       # Not sure if this is entirely correct, but opaline doesn't like `lib_root`
       substituteInPlace num.install --replace lib_root lib
-      OCAMLRUNPARAM=b ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
+      ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
     '';
   });
 
