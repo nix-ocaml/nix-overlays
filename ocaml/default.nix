@@ -840,15 +840,6 @@ with oself;
 
   gen_js_api = disableTests osuper.gen_js_api;
 
-  getopt = osuper.getopt.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "scemama";
-      repo = "ocaml-getopt";
-      rev = "20230213";
-      hash = "sha256-oYDm945LgjIW+8x7UrO4FlbHywnu8480aiEVvnjBxc8=";
-    };
-  });
-
   gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
     propagatedBuildInputs = [ camomile ocaml_gettext ];
   });
