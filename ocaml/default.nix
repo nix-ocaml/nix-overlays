@@ -673,6 +673,13 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  dscheck = osuper.dscheck.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/dscheck/releases/download/0.3.0/dscheck-0.3.0.tbz;
+      sha256 = "17fysdimr9ziv5hswslja46gvdncxy35afq05zzryx7nfvwnh1ad";
+    };
+  });
+
   dune_1 = dune;
 
   dune =
@@ -1023,6 +1030,13 @@ with oself;
       sha256 = "11bk38m5wsh3g4pr1px3865w8p42n0cq401pnrgpgyl25zdfamk0";
     };
   };
+
+  iter = osuper.iter.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/iter/releases/download/v1.8/iter-1.8.tbz;
+      sha256 = "08rhykcizbs21mri4zx1b6vg42a4wybl238cla5bmi79bah9qwzq";
+    };
+  });
 
   itv-tree = buildDunePackage {
     pname = "itv-tree";
@@ -1802,10 +1816,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.2.0-alpha";
-      hash = "sha256-zFfAbxzQStJ5OhrlWZtpY11LzRq4RmnMlH56bDOkDtM=";
+      rev = "2.2.0-alpha3";
+      hash = "sha256-wxKUu/BdRSLqCSc08Qfjx65aTeZFpBVjN06dmvXxAg4=";
     };
-    version = "2.2.0-alpha";
+    version = "2.2.0-alpha3";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
@@ -2109,6 +2123,13 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/anuragsoni/routes/releases/download/2.0.0/routes-2.0.0.tbz;
       sha256 = "126nn0gbh12i7yf0qn01ryfp2qw0aj1xfk1vq42fa01biilrsqiv";
+    };
+  });
+
+  saturn_lockfree = osuper.saturn_lockfree.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/saturn/releases/download/0.4.1/saturn-0.4.1.tbz;
+      sha256 = "1g8f552wblfinslk0qp42s7zj6rkq21k2fni3qhflwm826lmmvdl";
     };
   });
 
