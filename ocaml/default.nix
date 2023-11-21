@@ -683,9 +683,11 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.12.0_alpha2/dune-3.12.0.alpha2.tbz;
-      sha256 = "178fk1jdpd43vz98wvnknnvp9xdlysqc53yhdsnqhrd49s6s7jcj";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "e40920982b28698239afadb8fb53f5b0f07f343a";
+      hash = "sha256-BCkY0LigrP3eK3koHDvxfl8rPwfXqnxi5/5m4ad6Bs0=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
