@@ -816,8 +816,8 @@ with oself;
 
   functoria = osuper.functoria.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage/releases/download/v4.4.0/mirage-4.4.0.tbz;
-      sha256 = "09rykqfb4v6jd7p3lvv9d70x40qgh13s93h365i7v85rvr0ysbm7";
+      url = https://github.com/mirage/mirage/releases/download/v4.4.1/mirage-4.4.1.tbz;
+      sha256 = "02078ffd3jfwk0yz5clqjcl1jkcp7hhlxava14mramj9nk79v80l";
     };
   });
 
@@ -930,13 +930,13 @@ with oself;
 
   hilite = buildDunePackage {
     pname = "hilite";
-    version = "0.3.0";
+    version = "0.4.0";
     src = builtins.fetchurl {
-      url = https://github.com/patricoferris/hilite/releases/download/v0.3.0/hilite-0.3.0.tbz;
-      sha256 = "130rpa4d4335vchzry2bnyxnr34d0s0skv0ba5cx3q4srh4155wv";
+      url = https://github.com/patricoferris/hilite/releases/download/v0.4.0/hilite-0.4.0.tbz;
+      sha256 = "1s2qi3dk2284wkaq0vnr78wx8jn905dyr64fi3byqcpvy79kbhqv";
     };
 
-    propagatedBuildInputs = [ omd textmate-language ];
+    propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
   httpaf = callPackage ./httpaf { };
@@ -2331,13 +2331,11 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirleft";
-      repo = "ocaml-tls";
-      # https://github.com/mirleft/ocaml-tls/pull/479
-      rev = "1175137a29fbad550f47e0982845b826c2253e10";
-      hash = "sha256-KwuNqf2uJj6hJn4aByXfmTqTk4mXrjdu6W9phBL82DY=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.3/tls-0.17.3.tbz;
+      sha256 = "1m1ia0nsk08bb4a5qryxnd3l2ivpw0xacn34fdkw7l8fsg6xxra7";
     };
+
     propagatedBuildInputs = [
       cstruct
       domain-name
