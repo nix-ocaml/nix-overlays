@@ -2126,13 +2126,6 @@ with oself;
     };
   });
 
-  saturn_lockfree = osuper.saturn_lockfree.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/saturn/releases/download/0.4.1/saturn-0.4.1.tbz;
-      sha256 = "1g8f552wblfinslk0qp42s7zj6rkq21k2fni3qhflwm826lmmvdl";
-    };
-  });
-
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
