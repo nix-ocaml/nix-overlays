@@ -130,7 +130,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "angstrom";
-      rev = "1ca889cc641a1c57e33f6e63d0e3be41087a4931";
+      rev = "78de4bb429d4df1efe2e876ae7720e14db724f34";
       hash = "sha256-JuiAKMRTXiTEh5jko51qaVWIQ6noq9lpYH9Qnzljfuc=";
     };
     propagatedBuildInputs = [ bigstringaf ];
