@@ -1064,6 +1064,15 @@ with oself;
 
   });
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "51277d10ddb932181d157949625a16e1486d70cc";
+      hash = "sha256-0iWH6A3VajvymccP9N/rGZiaIa7cTk4ZKJzF+2OvS6A=";
+    };
+  });
+
   jose = callPackage ./jose { };
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {

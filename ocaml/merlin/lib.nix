@@ -1,4 +1,5 @@
-{ lib
+{ fetchFromGitHub
+, lib
 , ocaml
 , buildDunePackage
 , yojson
@@ -20,10 +21,12 @@ buildDunePackage {
   version = version;
   src =
     if (lib.versionOlder "5.1" ocaml.version) then
-      builtins.fetchurl
+      fetchFromGitHub
         {
-          url = https://github.com/ocaml/merlin/releases/download/v4.12-501/merlin-4.12-501.tbz;
-          sha256 = "1h48j0pvn6mwbrjbkcw47536b8i76y52z2pnyj83ah4pahik7k6c";
+          owner = "ocaml";
+          repo = "merlin";
+          rev = "e5275d333fd4048606e6bddcf1aa9a8daca06fc2";
+          hash = "sha256-51X/EZ+0q+SyP2xXy34aelDvsjw8FyoYcjWkAZ5a/dI=";
         }
     else
       if (lib.versionOlder "5.0" ocaml.version)
