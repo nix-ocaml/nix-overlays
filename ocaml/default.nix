@@ -352,6 +352,13 @@ with oself;
     };
   };
 
+  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.95/ca-certs-nss-3.95.tbz;
+      sha256 = "0aq5f3qx7lz25nwalm53lgsxnynp31i9hq047vahmwkk30311jdr";
+    };
+  });
+
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
   });
@@ -505,11 +512,9 @@ with oself;
   conan-cli = callPackage ./conan/cli.nix { };
 
   conduit = osuper.conduit.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "ocaml-conduit";
-      rev = "403b4cec528dae71aded311215868a35c11dad7e";
-      hash = "sha256-1dEjC/y1rP8LBGIYSE1HB66Q2fX722sHxJpDwQS+A3Q=";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.1/conduit-6.2.1.tbz;
+      sha256 = "1fsvyp1gsyjqm3ycxr43qqwyy15cj3zi3kkr1fdligip4jvfgmar";
     };
   });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
