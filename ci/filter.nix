@@ -106,6 +106,14 @@ let
     "asai"
 
     "torch"
+
+    "bonsai"
+    "incr_dom_interactive"
+    "incr_dom"
+    "incr_dom_sexp_form"
+    "incr_dom_partial_render"
+    "vg"
+    "memtrace_viewer"
   ];
 
   ocaml5Ignores = [
