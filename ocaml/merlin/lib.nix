@@ -21,12 +21,10 @@ buildDunePackage {
   version = version;
   src =
     if (lib.versionOlder "5.1" ocaml.version) then
-      fetchFromGitHub
+      builtins.fetchurl
         {
-          owner = "ocaml";
-          repo = "merlin";
-          rev = "e5275d333fd4048606e6bddcf1aa9a8daca06fc2";
-          hash = "sha256-51X/EZ+0q+SyP2xXy34aelDvsjw8FyoYcjWkAZ5a/dI=";
+          url = https://github.com/ocaml/merlin/releases/download/v4.13.1-501/merlin-4.13.1-501.tbz;
+          sha256 = "1bf1f2flhicnkmgaph54ckclxgl288lml84i08hhicf5f1gy0mrm";
         }
     else
       if (lib.versionOlder "5.0" ocaml.version)
@@ -38,8 +36,8 @@ buildDunePackage {
           }
       else
         builtins.fetchurl {
-          url = https://github.com/ocaml/merlin/releases/download/v4.12-414/merlin-4.12-414.tbz;
-          sha256 = "050xjz5bic1bf03a2wkha83wz6zmdwkxan45dmpf45djh97i80xn";
+          url = https://github.com/ocaml/merlin/releases/download/v4.13-414/merlin-4.13-414.tbz;
+          sha256 = "00yvn5w21yg44jvy8m1z82pzpfv9fpz25kyrylb0kr517flz2p02";
         };
 
   buildInputs = [ yojson csexp result ];
