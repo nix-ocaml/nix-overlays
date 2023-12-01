@@ -28,9 +28,11 @@ with oself;
   melange-json = buildDunePackage {
     pname = "melange-json";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/melange-community/melange-json/releases/download/1.0.0/melange-json-1.0.0.tbz;
-      sha256 = "1adahq3ywjjvy9a68qmhlrg8hc7fk30vvfjg0hy0pwpihg7511yz";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-json";
+      rev = "3bb100347eadf16c81c12c989e885a0dda23ea16";
+      hash = "sha256-gi5Cgq+Ybu8NNXtIjFSfVJ3A7S5KBjUPPKLtkEVqhY8=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -101,8 +103,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "9e5a8887c350d254d21d39932fe68ef292bb92d4";
-      hash = "sha256-L4ESh7IPUUFY/eDD2/GfxHYN6Jln04XNEZ8F50YqwM8=";
+      rev = "c87a0ee3a1cbc62f3d31b416cb7dda85dcaea326";
+      hash = "sha256-rZeQSmIG/UN5uop5uiwph9kbcmk6rEDx+i9StuX3Z8Q=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
