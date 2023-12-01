@@ -240,6 +240,15 @@ with oself;
     };
   };
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-batteries-team";
+      repo = "batteries-included";
+      rev = "56d59d7f63a581d4dd05c147ebbef487fdcff604";
+      hash = "sha256-e3FTZz7oHZ+pRX0x7sAL13vc6Tj52gAg8r0fZE+sLvg=";
+    };
+  });
+
   bechamel = buildDunePackage {
     pname = "bechamel";
     version = "0.5.0";
@@ -1062,6 +1071,15 @@ with oself;
       substituteInPlace ./src/jFile.ml --replace "Pervasives." "Stdlib."
     '';
 
+  });
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "51277d10ddb932181d157949625a16e1486d70cc";
+      hash = "sha256-0iWH6A3VajvymccP9N/rGZiaIa7cTk4ZKJzF+2OvS6A=";
+    };
   });
 
   jose = callPackage ./jose { };

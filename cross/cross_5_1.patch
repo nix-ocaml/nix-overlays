@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index b73eb129c4..a129f2f8e5 100644
+index 66bd61752e..4328026cbc 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -856,7 +856,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
+@@ -855,7 +855,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
  ## Runtime libraries and programs
  
  runtime/ocamlrun$(EXE): runtime/prims.$(O) runtime/libcamlrun.$(A)
@@ -12,7 +12,16 @@ index b73eb129c4..a129f2f8e5 100644
  
  runtime/ocamlruns$(EXE): runtime/prims.$(O) runtime/libcamlrun_non_shared.$(A)
  	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^ $(BYTECCLIBS))
-@@ -1458,7 +1459,7 @@ ocamltex_MODULES = tools/ocamltex
+@@ -930,6 +931,8 @@ runtime/%.npic.$(O): OC_CFLAGS += $(OC_NATIVE_CFLAGS) $(SHAREDLIB_CFLAGS)
+ runtime/%.npic.$(O): OC_CPPFLAGS += $(OC_NATIVE_CPPFLAGS)
+ $(DEPDIR)/runtime/%.npic.$(D): OC_CPPFLAGS += $(OC_NATIVE_CPPFLAGS)
+ 
++runtime/zstd.npic.$(O): CC=$(SAK_CC)
++
+ ## Compilation of runtime C files
+ 
+ # The COMPILE_C_FILE macro below receives as argument the pattern
+@@ -1457,7 +1460,7 @@ ocamltex_MODULES = tools/ocamltex
  # configuration.
  # Note: the following definitions apply to all the prerequisites
  # of ocamltex.
@@ -21,7 +30,7 @@ index b73eb129c4..a129f2f8e5 100644
  $(ocamltex): OC_COMMON_LINKFLAGS += -linkall
  $(ocamltex): VPATH += $(addprefix otherlibs/,str unix)
  
-@@ -1830,8 +1831,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+@@ -1829,8 +1832,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
  endif
  	$(INSTALL_DATA) \
  	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
@@ -30,7 +39,7 @@ index b73eb129c4..a129f2f8e5 100644
  	   file_formats/*.cmx \
  	   lambda/*.cmx \
  	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
-@@ -1845,7 +1844,6 @@ endif
+@@ -1844,7 +1845,6 @@ endif
  	$(INSTALL_DATA) \
  	   $(ocamlc_MODULES:=.cmx) $(ocamlc_MODULES:=.$(O)) \
  	   $(ocamlopt_MODULES:=.cmx) $(ocamlopt_MODULES:=.$(O)) \

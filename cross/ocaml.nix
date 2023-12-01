@@ -165,7 +165,7 @@ in
       ocaml = import ./ocaml-compiler.nix {
         inherit
           lib buildPackages writeScriptBin
-          natocamlPackages osuper;
+          natocamlPackages osuper stdenv;
       };
 
       findlib = osuper.findlib.overrideAttrs (o: {

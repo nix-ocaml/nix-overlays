@@ -1,4 +1,4 @@
-{ lib, buildPackages, natocamlPackages, writeScriptBin, osuper }:
+{ stdenv, lib, buildPackages, natocamlPackages, writeScriptBin, osuper }:
 
 let
   natocaml = natocamlPackages.ocaml;
@@ -26,6 +26,7 @@ in {
   '';
   configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
   postConfigure = ''
+    cp Makefile.config Makefile.config.bak
     echo 'SAK_CC=${buildPackages.stdenv.cc}/bin/gcc' >> Makefile.config
     echo 'SAK_CFLAGS=$(OC_CFLAGS) $(OC_CPPFLAGS)' >> Makefile.config
     echo 'SAK_LINK=$(SAK_CC) $(SAK_CFLAGS) $(OUTPUTEXE)$(1) $(2)' >> Makefile.config
@@ -92,10 +93,14 @@ in {
     rm $(find . | grep -E '\.cm.?.$')
     make_target -C stdlib all allopt
     make_target ocaml ocamlc
-    make_target ocamlopt otherlibraries \
-                otherlibrariesopt ocamltoolsopt \
-                driver/main.cmx driver/optmain.cmx \
-                compilerlibs/ocamlcommon.cmxa \
+    make_target ocamlopt
+    make_target otherlibraries otherlibrariesopt ocamltoolsopt \
+                driver/main.cmx driver/optmain.cmx
+
+    # build the compiler shared libraries with the target `zstd.npic.o`
+    cp Makefile.config.bak Makefile.config
+    echo 'SAK_CC=${stdenv.cc.targetPrefix}gcc' >> Makefile.config
+    make_target compilerlibs/ocamlcommon.cmxa \
                 compilerlibs/ocamlbytecomp.cmxa \
                 compilerlibs/ocamloptcomp.cmxa
     ${if isOCaml5 then "make_target othertools" else ""}

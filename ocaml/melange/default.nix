@@ -1,16 +1,18 @@
-{ fetchFromGitHub
+{ base64
 , buildDunePackage
-, dune-build-info
 , cppo
 , cmdliner
-, base64
+, dune-build-info
+, fetchFromGitHub
+, jq
 , makeWrapper
 , menhir
 , menhirLib
-, ppxlib
-, ounit2
-, reason
+, merlin
 , nodejs_latest
+, ounit2
+, ppxlib
+, reason
 , tree
 }:
 
@@ -22,14 +24,14 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "melange-re";
     repo = "melange";
-    rev = "c5bf086511ed4830018e67ca63df86045dbe356d";
-    hash = "sha256-axGv65Odh4gaPA+fovezkx2HNs9K2K4uqFSWjGVs+yE=";
+    rev = "e8838216706c2ea3dd22c85487d39ba18a2e7748";
+    hash = "sha256-tJ4NpyhtGK2D7CixbVcX4VuVl8G0DoqI/0nKXn1uUwQ=";
     fetchSubmodules = true;
   };
 
   doCheck = true;
 
-  nativeCheckInputs = [ nodejs_latest reason tree ];
+  nativeCheckInputs = [ nodejs_latest reason tree merlin jq ];
   checkInputs = [ ounit2 ];
   nativeBuildInputs = [ cppo menhir makeWrapper ];
   propagatedBuildInputs = [ cmdliner dune-build-info ppxlib menhirLib ];
