@@ -572,6 +572,13 @@ with oself;
       ];
     };
 
+  containers = osuper.containers.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/ocaml-containers/releases/download/v3.13/containers-3.13.tbz;
+      sha256 = "1nmiaypm8xjk16m2mbz5s5a9gn7zn8p3k8r8kjanrs2159pghb9p";
+    };
+  });
+
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
@@ -1075,8 +1082,8 @@ with oself;
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.5.1/js_of_ocaml-5.5.1.tbz;
-      sha256 = "1dqaavq4chb18n7az68lp5ld2rrmxs872ygjbzcdv2xgdmv9nv98";
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.5.2/js_of_ocaml-5.5.2.tbz;
+      sha256 = "0cxc5555rg04n4rgyp6c3a0j3icqpfwpypvq6rsdkwag2498brlp";
     };
   });
 
