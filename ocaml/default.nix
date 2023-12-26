@@ -884,6 +884,10 @@ with oself;
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
   gluten-mirage = callPackage ./gluten/mirage.nix { };
   gluten-async = callPackage ./gluten/async.nix { };
+  gluten-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./gluten/eio.nix { }
+    else null;
 
   graphql_parser = callPackage ./graphql/parser.nix { };
   graphql = callPackage ./graphql { };
