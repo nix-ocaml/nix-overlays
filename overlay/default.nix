@@ -126,22 +126,14 @@ in
   });
 
   binaryen = super.binaryen.overrideAttrs (_: rec {
-    version = "108";
+    version = "114";
 
     src = fetchFromGitHub {
       owner = "WebAssembly";
       repo = "binaryen";
       rev = "version_${version}";
-      sha256 = "sha256-HMPoiuTvYhTDaBUfSOfh/Dt4FdO9jGqUaFpi92pnscI=";
+      hash = "sha256-bzHNIQy0AN8mIFGG+638p/MBSqlkWuaOzKGSsMDAPH4=";
     };
-
-    patches = [
-      # https://github.com/WebAssembly/binaryen/pull/4913
-      (fetchpatch {
-        url = "https://github.com/WebAssembly/binaryen/commit/b70fe755aa4c90727edfd91dc0a9a51febf0239d.patch";
-        sha256 = "sha256-kjPLbdiMVQepSJ7J1gK6dRSMI/2SsH39k7W5AMOIrkM=";
-      })
-    ];
   });
 
   opaline = null;
