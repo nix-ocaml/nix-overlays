@@ -19,15 +19,15 @@ let
 in
 
 {
-  top-level-packages = [ pkgs.esy pkgs.melange-relay-compiler ] ++ lib.optional stdenv.isLinux pkgs.kubernetes;
+  top-level-packages = with pkgs;
+    [ melange-relay-compiler ] ++
+    lib.optionals stdenv.isLinux [ esy kubernetes ];
 
-  native = (lib.attrValues (filter.ocamlCandidates {
+  native = lib.attrValues (filter.ocamlCandidates {
     inherit pkgs ocamlVersion;
-  }))
-  ++ lib.optional (ocamlVersion == "4_14") pkgs.ocamlPackages.melange;
+  });
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
   arm64 = filter.crossTargetList pkgsCross.aarch64-multiplatform-musl ocamlVersion;
-
 }."${target}"

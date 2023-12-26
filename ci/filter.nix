@@ -150,6 +150,16 @@ let
     "uring"
     "eio_linux"
     "wayland"
+
+    "ocaml_libvirt"
+    "mcss"
+    "line-up-words"
+    "janestreet_csv"
+    "core_profiler"
+    "class_group_vdf"
+    "z3"
+    "zelus"
+    "zelus-gtk"
   ];
 in
 
