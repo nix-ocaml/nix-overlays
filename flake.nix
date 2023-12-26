@@ -34,9 +34,11 @@
             pkgs = import nixpkgs ({
               inherit system;
               overlays = [ overlay ];
-              config.allowUnfree = true;
-            } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
-              config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
+              config = {
+                allowUnfree = true;
+              } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
+                config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
+              };
             } // attrs);
           in
             /*
