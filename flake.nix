@@ -7,7 +7,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=54f00576aa6139a9d54062d0edc2fb31423f0ffb";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=cb574470bb7e360016c254867f7734a95812b47f";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -34,7 +34,11 @@
             pkgs = import nixpkgs ({
               inherit system;
               overlays = [ overlay ];
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+              } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
+                config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
+              };
             } // attrs);
           in
             /*

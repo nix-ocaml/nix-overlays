@@ -2,13 +2,13 @@
 
 buildDunePackage rec {
   pname = "binaryen";
-  version = "0.18.0";
+  version = "0.24.0";
 
   src = fetchFromGitHub {
     owner = "grain-lang";
     repo = "binaryen.ml";
     rev = "v${version}";
-    sha256 = "sha256-JqD9RNQ0+Kmv45RF6yqRUKeJvoT3bTIUud5iKlA/ogc=";
+    hash = "sha256-TE0EXojbKcNmNIvFDLtoUDgqbNEdFillPuTgEN4gmaI=";
   };
 
   postPatch = ''substituteInPlace src/dune --replace "(libraries libbinaryen.c)" "(c_library_flags -lbinaryen)"'';

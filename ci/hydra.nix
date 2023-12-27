@@ -24,9 +24,9 @@ with filter;
   };
 
   build_top-level-packages =
-    { inherit (pkgs) esy melange-relay-compiler hermes; } //
+    { inherit (pkgs) melange-relay-compiler hermes; } //
     (if stdenv.isLinux then {
-      inherit (pkgs) kubernetes;
+      inherit (pkgs) esy kubernetes;
       hermes-musl64 = pkgs.pkgsCross.musl64.hermes;
     } else { });
 

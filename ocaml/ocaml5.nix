@@ -36,8 +36,6 @@ with oself;
     propagatedBuildInputs = [ eio_main graphql ];
   };
 
-  gluten-eio = callPackage ./gluten/eio.nix { };
-
   h2-eio = callPackage ./h2/eio.nix { };
 
   httpaf-eio = callPackage ./httpaf/eio.nix { };
