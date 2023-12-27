@@ -179,6 +179,8 @@ let
     "caqti-eio"
     "ppx_rapper_eio"
     "ocamlfuse"
+    "graphql-eio"
+    "vercel"
   ];
 in
 
