@@ -156,12 +156,6 @@ with oself;
     propagatedBuildInputs = [ ctypes dune-configurator ctypes-foreign result libargon2 ];
   };
 
-  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ahrefs/atd/releases/download/2.12.0/atdts-2.12.0.tbz;
-      sha256 = "1h2g1aravv24brn9j6h9pydg7hlm5zvg86lm45hcpcfxjay0qlq2";
-    };
-  });
   atdts = buildDunePackage {
     pname = "atdts";
     inherit (atdgen-codec-runtime) version src;
@@ -520,15 +514,8 @@ with oself;
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
 
-  conduit = osuper.conduit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.1/conduit-6.2.1.tbz;
-      sha256 = "1fsvyp1gsyjqm3ycxr43qqwyy15cj3zi3kkr1fdligip4jvfgmar";
-    };
-  });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
-    patches = [ ];
   });
 
   confero =
@@ -711,10 +698,6 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.12.1/dune-3.12.1.tbz;
-      sha256 = "0vsgyxw50chzcvxxkz6g410krk9b1mxrcz58x05397czhxh6bzdr";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
@@ -760,10 +743,6 @@ with oself;
     inherit (dyn) preBuild;
   });
   fiber = osuper.fiber.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-dune/fiber/releases/download/3.7.0/fiber-lwt-3.7.0.tbz;
-      sha256 = "10ln7cf7l3nc43ji8iwwh9i3p4d355s8hdnfk4lr9rizx5da2j46";
-    };
     propagatedBuildInputs = [ dyn stdune ];
     preBuild = "";
   });
@@ -835,13 +814,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  functoria = osuper.functoria.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage/releases/download/v4.4.1/mirage-4.4.1.tbz;
-      sha256 = "02078ffd3jfwk0yz5clqjcl1jkcp7hhlxava14mramj9nk79v80l";
-    };
-  });
-
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
@@ -899,25 +871,6 @@ with oself;
     # https://github.com/NixOS/nixpkgs/pull/170664
     nativeBuildInputs = [ ocaml dune findlib crunch ];
   });
-
-  gsl = buildDunePackage {
-    pname = "gsl";
-    version = "1.24.3";
-    minimalOCamlVersion = "4.12";
-
-    nativeBuildInputs = [ pkg-config ];
-    buildInputs = [ dune-configurator libgsl ];
-    propagatedBuildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
-    src = fetchFromGitHub {
-      owner = "mmottl";
-      repo = "gsl-ocaml";
-      rev = "38fc895";
-      hash = "sha256-Nm/H9O83Q7JZAua3vhv94MBHkxbawAVg7qFW60fbDGE=";
-    };
-    postPatch = ''
-      substituteInPlace ./src/dune --replace "bigarray" ""
-    '';
-  };
 
   gstreamer = osuper.gstreamer.overrideAttrs (o: {
     buildInputs = o.buildInputs ++
@@ -1056,13 +1009,6 @@ with oself;
     };
   };
 
-  iter = osuper.iter.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/iter/releases/download/v1.8/iter-1.8.tbz;
-      sha256 = "08rhykcizbs21mri4zx1b6vg42a4wybl238cla5bmi79bah9qwzq";
-    };
-  });
-
   itv-tree = buildDunePackage {
     pname = "itv-tree";
     version = "2.2";
@@ -1168,16 +1114,6 @@ with oself;
       timed
       why3
     ];
-  });
-
-  lambda-term = osuper.lambda-term.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "lambda-term";
-      rev = "3.3.2";
-      hash = "sha256-T2DDpHqLar1sgmju0PLvhAZef5VzOpPWcFVhuZlPQmM=";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ logs ];
   });
 
   lev = buildDunePackage {
@@ -1525,13 +1461,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
-
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.2/ocaml-version-3.6.2.tbz;
-      sha256 = "1cpyd504g87xzb415dz7f67yic8cqnsm020llvyiv2arpnmk37aw";
-    };
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
@@ -2256,12 +2185,6 @@ with oself;
     propagatedBuildInputs = [ xmlm uri ptime ];
   };
 
-  syslog = osuper.syslog.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace "syslog.ml" --replace "%.15s" "%s"
-    '';
-  });
-
   taglib = osuper.taglib.overrideAttrs (o: {
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
@@ -2363,11 +2286,6 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.3/tls-0.17.3.tbz;
-      sha256 = "1m1ia0nsk08bb4a5qryxnd3l2ivpw0xacn34fdkw7l8fsg6xxra7";
-    };
-
     propagatedBuildInputs = [
       cstruct
       domain-name
@@ -2576,13 +2494,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/avsm/ocaml-yaml/releases/download/v3.2.0/yaml-3.2.0.tbz;
       sha256 = "09w2l2inc0ymzd9l8gpx9pd4xlp5a4rn1qbi5dwndydr5352l3f5";
-    };
-  });
-
-  yojson = osuper.yojson.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/yojson/releases/download/2.1.2/yojson-2.1.2.tbz;
-      sha256 = "1ydlvw0f50vg8ia9529ldq07d2jyqzjr9230pyywr9y8pymz3wjr";
     };
   });
 
