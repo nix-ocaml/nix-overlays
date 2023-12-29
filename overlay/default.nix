@@ -125,6 +125,10 @@ in
     '';
   });
 
+  libuv = super.libuv.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   binaryen = super.binaryen.overrideAttrs (_: rec {
     version = "114";
 
