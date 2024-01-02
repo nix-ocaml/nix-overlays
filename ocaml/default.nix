@@ -421,6 +421,10 @@ with oself;
   };
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.3.0.tbz;
+      sha256 = "15yg7d9dbp9qm1i7spzzwcwm2v0j3lc88cpfsg9y8m9v4pk8r2s6";
+    };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
@@ -1032,8 +1036,8 @@ with oself;
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.5.2/js_of_ocaml-5.5.2.tbz;
-      sha256 = "0cxc5555rg04n4rgyp6c3a0j3icqpfwpypvq6rsdkwag2498brlp";
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.6.0/js_of_ocaml-5.6.0.tbz;
+      sha256 = "0gy2yvdgc395ak5d9dsg1k00dcpx6xjil5x3l74gczm16ckg0dc4";
     };
   });
 
@@ -1447,8 +1451,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "num";
-      rev = "f06af1fda2e722542cc5f2d2d4d1f4441055a92f";
-      hash = "sha256-WdH2W5K7UykxCnJu+AwBeRsHR+TWpDyJX3sqF7mk+Cw=";
+      rev = "v1.5";
+      hash = "sha256-60yT7BN+E93LJWKlO3v55Lbb11pNLPzdf1wrNXkLtmk=";
     };
     buildFlags = [ "opam-modern" ];
     patches = [ ];
@@ -1461,6 +1465,13 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
+  });
+
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.3/ocaml-version-3.6.3.tbz;
+      sha256 = "0ladh2fn78bb0j2qdsi60pxfvlkip4k08q95fkrzz78isd15j0as";
+    };
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
@@ -1528,6 +1539,13 @@ with oself;
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "ocamlbuild";
+      rev = "0.14.3";
+      hash = "sha256-dfcNu4ugOYu/M0rRQla7lXum/g1UzncdLGmpPYo0QUM=";
+    };
+
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     # OCamlbuild needs to find the native toolchain when cross compiling (to
@@ -1661,17 +1679,18 @@ with oself;
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/odoc/releases/download/2.3.1/odoc-2.3.1.tbz;
-      sha256 = "00z6fzxfjy5cvgddbp6vi9y8py94cz8m0vbbrgyvswvya01h3qin";
+      url = https://github.com/ocaml/odoc/releases/download/2.4.0/odoc-2.4.0.tbz;
+      sha256 = "17cmcgw9x1akx6a185zjdr2469hia425nsvp6lsxc6zy29pwclps";
     };
-    propagatedBuildInputs = [ astring camlp-streams ];
+    propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
       substituteInPlace src/parser/dune --replace "result" ""
     '';
   });
 
-  odoc = osuper.odoc.overrideAttrs (_: {
+  odoc = osuper.odoc.overrideAttrs (o: {
     inherit (odoc-parser) src;
+    nativeBuildInputs = o.nativeBuildInputs ++ [ crunch.bin ];
   });
 
   oidc = callPackage ./oidc { };
