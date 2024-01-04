@@ -1850,6 +1850,10 @@ with oself;
 
   ocaml_pcre = osuper.ocaml_pcre.override { pcre = pcre-oc; };
 
+  otfed = osuper.otfed.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
+  });
+
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
 
