@@ -98,6 +98,12 @@ in
         src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
         locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
       })
+      (super.fetchurl
+        # https://www.postgresql.org/message-id/CACpMh%2BDMZVHM%2BiDSyqdcpK8sr7jd_HxxLJRNvGTzcLBE0W07QA%40mail.gmail.com
+        {
+          url = "https://www.postgresql.org/message-id/attachment/152769/v1-0001-Make-PostgreSQL-work-with-newer-version-of-libxml.patch";
+          hash = "sha256-1j5mtG++hFmYwfS98PdN1SmNI4T86q4FXvKLz2VeJyg=";
+        })
     ] ++ lib.optionals stdenv.isLinux [
       "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
     ];
