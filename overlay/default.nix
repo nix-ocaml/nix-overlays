@@ -127,6 +127,7 @@ in
 
   binaryen = super.binaryen.overrideAttrs (_: rec {
     version = "114";
+    patches = [ ];
 
     src = fetchFromGitHub {
       owner = "WebAssembly";
@@ -257,8 +258,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "fa42044a06b50117d3d511c0ea7893d29058cdce";
-          hash = "sha256-DAGrgfl41w1v1llq82iyNcQSfuBCPhiTmn5WM9tqGkQ=";
+          rev = "a005a70d2542b043dcadd60895fcac0680e9ee7b";
+          hash = "sha256-q69n80QvF7m4dESzVj96JxU8RrZk/vYVina1+hX+2xk=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
