@@ -4,7 +4,6 @@ let
     # not supported in 4.11+
     "bap"
     "lwt_camlp4"
-    "macaque"
     "config-file"
     "erm_xmpp"
     "ulex"

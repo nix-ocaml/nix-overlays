@@ -1340,16 +1340,6 @@ with oself;
     propagatedBuildInputs = [ ppxlib stdcompat findlib ];
   };
 
-  metrics = osuper.metrics.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/metrics/releases/download/v0.4.1/metrics-0.4.1.tbz;
-      sha256 = "0k8lqvrwfal5jwy45l0aq1hkrvjv0k30pv5hvc1n3l61nl7w5q3p";
-    };
-  });
-  metrics-unix = osuper.metrics-unix.overrideAttrs (_: {
-    postPatch = null;
-  });
-
   mew = osuper.mew.overrideAttrs (_: {
     propagatedBuildInputs = [ trie ];
     postPatch = ''
@@ -1850,15 +1840,6 @@ with oself;
   # These require crowbar which is still not compatible with newer cmdliner.
   pecu = disableTests osuper.pecu;
 
-  pgocaml = osuper.pgocaml.overrideAttrs (o: {
-    patches = [ ];
-    postPatch = ''
-      substituteInPlace src/dune --replace \
-        "(libraries calendar" \
-        "(libraries camlp-streams calendar"
-    '';
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ camlp-streams ];
-  });
   pg_query = callPackage ./pg_query { };
 
   binning = buildDunePackage {
@@ -2423,12 +2404,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://erratique.ch/software/uucp/releases/uucp-15.1.0.tbz;
       sha256 = "11srn8zwba31zmj129v6l8sigdm9qrgcfd59vl1qmds70s44n7m9";
-    };
-  });
-  uunf = osuper.uunf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uunf/releases/uunf-15.1.0.tbz;
-      sha256 = "1r296gz56prq7aa746gjzc6md6zz7m7yf6d368qscnamp1pszk0g";
     };
   });
   uuseg = osuper.uuseg.overrideAttrs (_: {
