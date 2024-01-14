@@ -113,6 +113,8 @@ let
     "incr_dom_partial_render"
     "vg"
     "memtrace_viewer"
+
+    "binaryen"
   ];
 
   ocaml5Ignores = [
@@ -142,6 +144,8 @@ let
 
     # broken on macOS?
     "llvm"
+
+    "owl"
 
     "alsa"
     "mm"
