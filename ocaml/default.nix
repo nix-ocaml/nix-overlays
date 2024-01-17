@@ -702,6 +702,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.13.0/dune-3.13.0.tbz;
+      sha256 = "1pkq6r2whz5k6fwpjn8d1ar33zbm5d5mvv0p23bnp10ww1bi507i";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
