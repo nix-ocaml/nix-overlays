@@ -1307,7 +1307,10 @@ with oself;
   landmarks-ppx = callPackage ./landmarks/ppx.nix { };
 
   melange =
-    if lib.versionAtLeast ocaml.version "5.1" then
+    # No version supported on 5.0
+    if (lib.versionAtLeast ocaml.version "4.14" && !(lib.versionAtLeast ocaml.version "5.0"))
+    || lib.versionAtLeast ocaml.version "5.1"
+    then
       callPackage ./melange { }
     else null;
 
@@ -2508,7 +2511,9 @@ with oself;
   then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub; })
   else { }
 ) // (
-  if lib.versionAtLeast osuper.ocaml.version "5.1"
+  if # No version supported on 5.0
+    (lib.versionAtLeast osuper.ocaml.version "4.14" && !(lib.versionAtLeast osuper.ocaml.version "5.0"))
+    || lib.versionAtLeast osuper.ocaml.version "5.1"
   then (import ./melange-packages.nix { inherit oself fetchFromGitHub; })
   else { }
 )
