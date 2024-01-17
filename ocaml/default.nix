@@ -1038,13 +1038,6 @@ with oself;
 
   });
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.6.0/js_of_ocaml-5.6.0.tbz;
-      sha256 = "0gy2yvdgc395ak5d9dsg1k00dcpx6xjil5x3l74gczm16ckg0dc4";
-    };
-  });
-
   jose = callPackage ./jose { };
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
