@@ -31,8 +31,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-json";
-      rev = "3bb100347eadf16c81c12c989e885a0dda23ea16";
-      hash = "sha256-gi5Cgq+Ybu8NNXtIjFSfVJ3A7S5KBjUPPKLtkEVqhY8=";
+      rev = "0039ac6c88a87c71c8bb54f38c31d67c032d2c8f";
+      hash = "sha256-+TchVofnTdPWqFq5FtoEjLO0+9wyTFobXBYvCkryA8c=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -41,9 +41,11 @@ with oself;
   melange-jest = buildDunePackage {
     pname = "melange-jest";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/melange-community/melange-jest/releases/download/0.1.0/melange-jest-0.1.0.tbz;
-      sha256 = "1nv926jxl4yp15iwqd127bvdpfhvh8l9rkffd7l6p701xxk72ln4";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-jest";
+      rev = "0a0f4d203be04d4412c558114d2332d4814a9bbb";
+      hash = "sha256-SHaBn1y3TL5ONf6KoYEp9/4hG59GlJWB4A8lYO6BpMc=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange reason-react ];
@@ -63,9 +65,11 @@ with oself;
   melange-webapi = buildDunePackage {
     pname = "melange-webapi";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = https://github.com/melange-community/melange-webapi/releases/download/0.20.0/melange-webapi-0.20.0.tbz;
-      sha256 = "0hw165mmcl0a57g0qas0zbi429rskm1cpy5qlkcwnmn8aax8z8pf";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-webapi";
+      rev = "9f771a09178dba704693a11593d3a9192f211056";
+      hash = "sha256-lbQePqINrP3TSn1d4zq6XVeceAf9rx/+UFtsUcEOFYs=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
@@ -103,8 +107,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "c87a0ee3a1cbc62f3d31b416cb7dda85dcaea326";
-      hash = "sha256-rZeQSmIG/UN5uop5uiwph9kbcmk6rEDx+i9StuX3Z8Q=";
+      rev = "1f084f4ecf380b2144809065e5935a41866eab3f";
+      hash = "sha256-F+n+8j1tEs6C0U4P/kmnHQIUPdnBXjazt+Sz2Y+S238=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
