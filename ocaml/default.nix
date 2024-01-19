@@ -421,10 +421,6 @@ with oself;
   };
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/cmarkit/releases/cmarkit-0.3.0.tbz;
-      sha256 = "15yg7d9dbp9qm1i7spzzwcwm2v0j3lc88cpfsg9y8m9v4pk8r2s6";
-    };
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
@@ -702,10 +698,6 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.13.0/dune-3.13.0.tbz;
-      sha256 = "1pkq6r2whz5k6fwpjn8d1ar33zbm5d5mvv0p23bnp10ww1bi507i";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
@@ -1190,14 +1182,6 @@ with oself;
     '';
   };
 
-  luv = osuper.luv.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz;
-      sha256 = "1h2n9iij4mh60sy3g437p1xwqyqpyw72fgh4417d8j9ahq46m7vn";
-    };
-    propagatedBuildInputs = [ ctypes ];
-  });
-
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
@@ -1678,15 +1662,6 @@ with oself;
 
   oidc = callPackage ./oidc { };
   oidc-client = callPackage ./oidc/client.nix { };
-
-  ocsigen-toolkit = osuper.ocsigen-toolkit.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "ocsigen-toolkit";
-      rev = "499e8260df6487ebdacb9fcccb2f9dec36df8063";
-      sha256 = "sha256-h1+D0HiCdEOBez+9EyqkF63TRW7pWkoUJYkugBTywI4=";
-    };
-  });
 
   omd = osuper.omd.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2395,12 +2370,6 @@ with oself;
   });
 
 
-  uucd = osuper.uucd.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uucd/releases/uucd-15.1.0.tbz;
-      sha256 = "1wkdm0f7qhh27vv9id7fvax57qfr3v85ngwwjsnwq9c3jikhv00w";
-    };
-  });
   uucp = osuper.uucp.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://erratique.ch/software/uucp/releases/uucp-15.1.0.tbz;
