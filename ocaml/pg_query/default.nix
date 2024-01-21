@@ -1,6 +1,7 @@
 { fetchFromGitHub
 , buildDunePackage
 , alcotest
+, cmdliner
 , ppx_deriving
 , ctypes
 , ctypes-foreign
@@ -21,6 +22,7 @@ buildDunePackage {
     ppx_deriving
     ctypes
     ctypes-foreign
+    cmdliner
   ];
   doCheck = true;
   checkInputs = [ alcotest ];
