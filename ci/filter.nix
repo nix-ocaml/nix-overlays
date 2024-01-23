@@ -155,6 +155,7 @@ let
     "wayland"
 
     # x86_64-darwin is broken even with clang11Stdenv
+    "gapi-ocaml"
     "bz2"
     "camlimages"
     "curses"
