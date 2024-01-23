@@ -560,13 +560,6 @@ with oself;
       ];
     };
 
-  containers = osuper.containers.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/c-cube/ocaml-containers/releases/download/v3.13/containers-3.13.tbz;
-      sha256 = "1nmiaypm8xjk16m2mbz5s5a9gn7zn8p3k8r8kjanrs2159pghb9p";
-    };
-  });
-
   cookie = callPackage ./cookie { };
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
