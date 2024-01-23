@@ -7,6 +7,7 @@
 , buildPackages
 , cmake
 , fetchpatch
+, fetchFromBitbucket
 , fetchFromGitHub
 , fetchFromGitLab
 , fzf
@@ -1405,9 +1406,11 @@ with oself;
 
     minimalOCamlVersion = "4.02";
 
-    src = builtins.fetchurl {
-      url = "https://bitbucket.org/smondet/${pname}/get/${pname}.${version}.tar.gz";
-      sha256 = "1gn9pawdqlnnc8qsna17ypik7f686gr86zipiw4srmzb7c293b26";
+    src = fetchFromBitbucket {
+      owner = "smondet";
+      repo = "nonstd";
+      rev = "nonstd.0.0.3";
+      hash = "sha256-hkh0zpJXrvafH+q5a9YkBdjIE1uWBRmT2A5VHjPjkjE=";
     };
 
     postPatch = "echo '(lang dune 2.0)' > dune-project";
