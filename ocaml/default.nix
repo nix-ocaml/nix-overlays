@@ -7,6 +7,7 @@
 , buildPackages
 , cmake
 , fetchpatch
+, fetchFromBitbucket
 , fetchFromGitHub
 , fetchFromGitLab
 , fzf
@@ -429,8 +430,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "paurkedal";
       repo = "ocaml-caqti";
-      rev = "8ede56807b020548e2ab8089be58929205059a83";
-      hash = "sha256-aQDxI1mOWLbwdi8cytAeFpw0mygv9z4pN/CqrCJFzb0=";
+      rev = "d62f805ba5787f48aa586f6ad0bc07252683193d";
+      hash = "sha256-mXL774zNhz3xdZmS+8G4V8DWM520IkXXrxqjID2Teqo=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
   });
@@ -1405,9 +1406,11 @@ with oself;
 
     minimalOCamlVersion = "4.02";
 
-    src = builtins.fetchurl {
-      url = "https://bitbucket.org/smondet/${pname}/get/${pname}.${version}.tar.gz";
-      sha256 = "1gn9pawdqlnnc8qsna17ypik7f686gr86zipiw4srmzb7c293b26";
+    src = fetchFromBitbucket {
+      owner = "smondet";
+      repo = "nonstd";
+      rev = "nonstd.0.0.3";
+      hash = "sha256-hkh0zpJXrvafH+q5a9YkBdjIE1uWBRmT2A5VHjPjkjE=";
     };
 
     postPatch = "echo '(lang dune 2.0)' > dune-project";
