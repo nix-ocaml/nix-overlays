@@ -608,7 +608,7 @@ with oself;
       owner = "nomadic-labs";
       repo = "data-encoding";
       rev = "v1.0.1";
-      hash = "sha256-768uEfqo5pTW9VhmmHNjtoI5eA7KA6epTsjeq2uJC1I=";
+      hash = "sha256-KoA4xX4tNyi6bX5kso/Wof1LA7431EXJ34eD5X4jnd8=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hex ];
     # Tests need js_of_ocaml
