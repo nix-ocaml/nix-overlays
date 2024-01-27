@@ -608,7 +608,7 @@ with oself;
       owner = "nomadic-labs";
       repo = "data-encoding";
       rev = "v1.0.1";
-      hash = "sha256-768uEfqo5pTW9VhmmHNjtoI5eA7KA6epTsjeq2uJC1I=";
+      hash = "sha256-KoA4xX4tNyi6bX5kso/Wof1LA7431EXJ34eD5X4jnd8=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hex ];
     # Tests need js_of_ocaml
@@ -2325,6 +2325,13 @@ with oself;
       repo = "tsdl-ttf";
       rev = "0.6";
       hash = "sha256-1MGbsekaBoCz4vAwg+Dfzsl0xUKgs8dUEr+OpLopnig=";
+    };
+  });
+
+  type_eq = osuper.type_eq.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/skolemlabs/type_eq/releases/download/0.0.1/type_eq-0.0.1.tbz;
+      sha256 = "0zy7f7w56cy90hk2swbmlsh671l51w1lr2gzf98zyvc7vlbwgvz2";
     };
   });
 
