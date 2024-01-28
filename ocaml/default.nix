@@ -2328,13 +2328,6 @@ with oself;
     };
   });
 
-  type_eq = osuper.type_eq.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/skolemlabs/type_eq/releases/download/0.0.1/type_eq-0.0.1.tbz;
-      sha256 = "0zy7f7w56cy90hk2swbmlsh671l51w1lr2gzf98zyvc7vlbwgvz2";
-    };
-  });
-
   tyxml = osuper.tyxml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocsigen/tyxml/releases/download/4.6.0/tyxml-4.6.0.tbz;
