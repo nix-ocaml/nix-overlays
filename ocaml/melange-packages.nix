@@ -68,8 +68,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "melange-community";
       repo = "melange-webapi";
-      rev = "9f771a09178dba704693a11593d3a9192f211056";
-      hash = "sha256-lbQePqINrP3TSn1d4zq6XVeceAf9rx/+UFtsUcEOFYs=";
+      rev = "e9d57c5212734858004cf6b8d4a4f677ea34aed4";
+      hash = "sha256-5P4I+dAGw5ST2y/yu+mt0JQnfdhiNBb3PPAhj2ZESio=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
@@ -81,8 +81,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "3b9430c441b0d15fb435d80c2f5d5993200be182";
-      hash = "sha256-z58p6Cz9HjAI55d1PVuVbW121qWaWMtDfYk7CKIg0VY=";
+      rev = "cc76de77b5a8a81adb2694924ea1fe80f50e70d3";
+      hash = "sha256-+bbmO9ZILH/aBZwl2BIoeFltv1cgw7ce3TW1wFHs6HA=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [
