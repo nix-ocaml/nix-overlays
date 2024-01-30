@@ -30,8 +30,8 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_14, continue-on-error: false }
-          - { ocaml-version: 5_0, continue-on-error: false }
+          # - { ocaml-version: 4_14, continue-on-error: false }
+          # - { ocaml-version: 5_0, continue-on-error: false }
           - { ocaml-version: 5_1, continue-on-error: false }
           - { ocaml-version: 5_2, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
@@ -64,6 +64,7 @@ jobs:
         setup:
           - { os: ubuntu-latest, target: x86_64-linux }
           - { os: macos-13, target: x86_64-darwin }
+          - { os: macos-14, target: aarch64-darwin }
     name: Native (Top-level) packages (${{ matrix.setup.os }})
     runs-on: ${{ matrix.setup.os }}
     env:
@@ -91,12 +92,14 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_14, continue-on-error: false }
-          - { ocaml-version: 5_0, continue-on-error: false }
-          - { ocaml-version: 5_1, continue-on-error: false }
-          - { ocaml-version: 5_2, continue-on-error: true }
-    name: Native packages (macOS, OCaml ${{ matrix.setup.ocaml-version }})
-    runs-on: macos-13
+          - { os: macos-13, target: x86_64-darwin, ocaml-version: 4_14, continue-on-error: false }
+          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_0, continue-on-error: false }
+          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_1, continue-on-error: false }
+          - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_1, continue-on-error: false }
+          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_2, continue-on-error: true }
+          - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_2, continue-on-error: true }
+    name: Native packages (macOS (${{ matrix.setup.os }}), OCaml ${{ matrix.setup.ocaml-version }})
+    runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -115,7 +118,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: ./ci.sh x86_64-darwin build_${{ matrix.setup.ocaml-version }}
+        run: ./ci.sh ${{ matrix.setup.target }} build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   cross-compilers:
