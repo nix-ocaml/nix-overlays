@@ -128,7 +128,6 @@ let
     "ocp-build"
     "piqi"
     "piqi-ocaml"
-    "lambdapi"
 
     # broken on 5.1
     "labltk"

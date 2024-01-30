@@ -1084,25 +1084,6 @@ with oself;
       '' else "";
   });
 
-  lambdapi = osuper.lambdapi.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/Deducteam/lambdapi/releases/download/2.4.0/lambdapi-2.4.0.tbz;
-      sha256 = "1dlc88jpq5ys8n8saz5af3xacjdprpyvc3r1vzkv0fkc1adap73k";
-    };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ dream ];
-    propagatedBuildInputs = [
-      bindlib
-      cmdliner
-      dream
-      lwt_ppx
-      menhirLib
-      pratter
-      sedlex
-      timed
-      why3
-    ];
-  });
-
   lev = buildDunePackage {
     pname = "lev";
     version = "n/a";
@@ -2444,8 +2425,6 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
-
-  why3 = callPackage ./why3 { inherit nixpkgs; };
 
   yaml = osuper.yaml.overrideAttrs (_: {
     src = builtins.fetchurl {
