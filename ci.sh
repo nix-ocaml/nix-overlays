@@ -5,10 +5,9 @@ args=(
   --accept-flake-config
   --check-cache-status
   --gc-roots-dir gc-root
-  --max-memory-size "12000"
+  --max-memory-size "7000"
   --option allow-import-from-derivation false
   --show-trace
-  --workers 4
   --flake ".#hydraJobs.${1}.${2}"
 )
 
