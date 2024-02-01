@@ -26,13 +26,13 @@ buildDunePackage {
   src =
     if (lib.versionOlder "5.1" ocaml.version) then
       (builtins.fetchurl {
-        url = https://github.com/melange-re/melange/releases/download/3.0.0-v51/melange-3.0.0-v51.tbz;
-        sha256 = "1apismbgyq8m8kl1hh43wcb6ffp4hmz2ly53qdwfpmj1rb03cnp6";
+        url = https://github.com/melange-re/melange/releases/download/3.0.0-51/melange-3.0.0-51.tbz
+          sha256 = "0iz9bx0i3w4gk67zzyb88z3akyrpbap954gkw509zsncjnfg5g0y";
       })
     else
       builtins.fetchurl {
-        url = https://github.com/melange-re/melange/releases/download/3.0.0-v414/melange-3.0.0-v414.tbz;
-        sha256 = "122vxyprcfpgymz8w815z8kqaa9q1warfhzm70j5bs8v7r9jj7wl";
+        url = https://github.com/melange-re/melange/releases/download/3.0.0-414/melange-3.0.0-414.tbz;
+        sha256 = "1gsn3941c47y22gl4b16mvhf09s3fgladg1jj9rgn9026vhrfkqj";
       };
 
   doCheck = lib.versionOlder "5.1" ocaml.version;
