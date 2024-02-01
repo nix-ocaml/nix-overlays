@@ -17,7 +17,7 @@ let
     "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
-    ocaml-ng.ocamlPackages_4_13.overrideScope'
+    ocaml-ng.ocamlPackages_4_13.overrideScope
       (oself: osuper: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
@@ -29,7 +29,7 @@ let
   custom-ocaml-ng =
     ocaml-ng //
     (if !(ocaml-ng ? "ocamlPackages_trunk") then {
-      ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
+      ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           hardeningDisable = [ "strictoverflow" ];
         });
@@ -48,7 +48,7 @@ let
         };
       };
 
-      ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope' (oself: osuper: {
+      ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
           src = super.fetchFromGitHub {
             owner = "ocaml";
@@ -59,7 +59,7 @@ let
         });
       });
 
-      ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope' (oself: osuper: {
+      ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
             major_version = "4";
@@ -89,7 +89,7 @@ let
     } else { });
 
   overlaySinglePackageSet = pkgSet:
-    builtins.foldl' (acc: x: acc.overrideScope' x) pkgSet overlays;
+    builtins.foldl' (acc: x: acc.overrideScope x) pkgSet overlays;
 
   overlayOCamlPackages = version:
     lib.nameValuePair

@@ -1953,7 +1953,7 @@ with oself;
 
   rtop = callPackage ./reason/rtop.nix { };
 
-  reason-native = osuper.reason-native.overrideScope' (rself: rsuper: {
+  reason-native = osuper.reason-native.overrideScope (rself: rsuper: {
     rely = rsuper.rely.overrideAttrs (_: {
       postPatch = ''
         substituteInPlace "src/rely/TestSuiteRunner.re" --replace "Pervasives." "Stdlib."
