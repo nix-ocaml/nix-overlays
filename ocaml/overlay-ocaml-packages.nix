@@ -13,11 +13,12 @@ let
     "4_14"
     "5_0"
     "5_1"
+    "5_2"
     "trunk"
     "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
-    ocaml-ng.ocamlPackages_4_13.overrideScope
+    ocaml-ng.ocamlPackages_5_1.overrideScope
       (oself: osuper: {
         ocaml = (callPackage
           (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
@@ -58,6 +59,30 @@ let
           };
         });
       });
+
+      ocamlPackages_5_2 = newOCamlScope {
+        major_version = "5";
+        minor_version = "2";
+        patch_version = "0~alpha1";
+        hardeningDisable = [ "strictoverflow" ];
+        src = super.fetchFromGitHub {
+          owner = "ocaml";
+          repo = "ocaml";
+          rev = "5.2.0-alpha1";
+          hash = "sha256-hZ9np+lj5BgsIC3M4dm3UM4XH1tvdhW6/H8dOccPZEk=";
+        };
+
+        buildPhase = ''
+          runHook preBuild
+          make world -j -j$NIX_BUILD_CORES
+
+          # Bootstrapping currently causes "dllunixbyt.so" can't be found
+          # make bootstrap
+
+          make world.opt -j -j$NIX_BUILD_CORES
+          runHook postBuild
+        '';
+      };
 
       ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
         ocaml = (callPackage
