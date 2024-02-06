@@ -1,0 +1,63 @@
+diff --git a/Makefile b/Makefile
+index 7fabd20360..ae3f93a285 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1306,7 +1306,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
+ ## Runtime libraries and programs
+ 
+ runtime/ocamlrun$(EXE): runtime/prims.$(O) runtime/libcamlrun.$(A)
+-	$(V_MKEXE)$(MKEXE) -o $@ $^ $(BYTECCLIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
+ 
+ runtime/ocamlruns$(EXE): runtime/prims.$(O) runtime/libcamlrun_non_shared.$(A)
+ 	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^ $(BYTECCLIBS))
+@@ -1384,6 +1385,8 @@ runtime/%.npic.$(O): OC_CFLAGS += $(OC_NATIVE_CFLAGS) $(SHAREDLIB_CFLAGS)
+ runtime/%.npic.$(O): OC_CPPFLAGS += $(OC_NATIVE_CPPFLAGS)
+ $(DEPDIR)/runtime/%.npic.$(D): OC_CPPFLAGS += $(OC_NATIVE_CPPFLAGS)
+ 
++runtime/zstd.npic.$(O): CC=$(SAK_CC)
++
+ ## Compilation of runtime C files
+ 
+ # The COMPILE_C_FILE macro below receives as argument the pattern
+@@ -2292,7 +2295,7 @@ ocamltex_SOURCES = tools/ocamltex.mli tools/ocamltex.ml
+ # configuration.
+ # Note: the following definitions apply to all the prerequisites
+ # of ocamltex.
+-$(ocamltex): CAMLC = $(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) $(STDLIBFLAGS)
++$(ocamltex): CAMLC = $(CAMLC) $(STDLIBFLAGS)
+ $(ocamltex): OC_COMMON_LINKFLAGS += -linkall
+ $(ocamltex): VPATH += $(addprefix otherlibs/,str unix)
+ 
+@@ -2690,8 +2693,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+ endif
+ 	$(INSTALL_DATA) \
+ 	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
+-	   toplevel/*.cmx toplevel/native/*.cmx \
+-	   toplevel/native/tophooks.cmi \
+ 	   file_formats/*.cmx \
+ 	   lambda/*.cmx \
+ 	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
+@@ -2705,7 +2706,6 @@ endif
+ 	$(INSTALL_DATA) \
+ 	   $(ocamlc_CMX_FILES) $(ocamlc_CMX_FILES:.cmx=.$(O)) \
+ 	   $(ocamlopt_CMX_FILES) $(ocamlopt_CMX_FILES:.cmx=.$(O)) \
+-	   $(ocamlnat_CMX_FILES:.cmx=.$(O)) \
+ 	   "$(INSTALL_COMPLIBDIR)"
+ ifeq "$(INSTALL_OCAMLNAT)" "true"
+ 	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"
+diff --git a/stdlib/Makefile b/stdlib/Makefile
+index 50f825a1b3..0da6f7224a 100644
+--- a/stdlib/Makefile
++++ b/stdlib/Makefile
+@@ -97,9 +97,6 @@ endif
+ tmpheader.exe: $(HEADERPROGRAM).$(O)
+ 	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^)
+ # FIXME This is wrong - mingw could invoke strip; MSVC equivalent?
+-ifneq "$(UNIX_OR_WIN32)" "win32"
+-	strip $@
+-endif
+ 
+ stdlib.cma: $(OBJS)
+ 	$(V_LINKC)$(CAMLC) -a -o $@ $^

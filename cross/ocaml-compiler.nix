@@ -110,7 +110,9 @@ in {
   installTargets = o.installTargets ++ [ "installoptopt" ];
   postInstall = "cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc";
   patches = [
-    (if lib.versionOlder "5.1" o.version
+    (if lib.versionOlder "5.2" o.version
+    then ./cross_5_2.patch
+    else if lib.versionOlder "5.1" o.version
     then ./cross_5_1.patch
     else if isOCaml5
     then ./cross_5_00.patch
