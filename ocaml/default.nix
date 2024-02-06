@@ -2357,12 +2357,6 @@ with oself;
       sha256 = "11srn8zwba31zmj129v6l8sigdm9qrgcfd59vl1qmds70s44n7m9";
     };
   });
-  uuseg = osuper.uuseg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/uuseg/releases/uuseg-15.1.0.tbz;
-      sha256 = "1ial0afpc02ih73ad7136gv3dsz26h3p51pbkzw3a7vmvrckgwi0";
-    };
-  });
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
