@@ -18,14 +18,12 @@ let
     "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
-    ocaml-ng.ocamlPackages_5_1.overrideScope
-      (oself: osuper: {
-        ocaml = (callPackage
-          (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
-            inherit major_version minor_version patch_version;
-          })
-          { }).overrideAttrs (_: { inherit src; } // extraOpts);
-      });
+    ocaml-ng.mkOcamlPackages
+      ((callPackage
+        (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
+          inherit major_version minor_version patch_version;
+        })
+        { }).overrideAttrs (_: { inherit src; } // extraOpts));
 
   custom-ocaml-ng =
     ocaml-ng //
