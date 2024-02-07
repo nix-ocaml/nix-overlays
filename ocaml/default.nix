@@ -1081,6 +1081,16 @@ with oself;
   # Added by the ocaml5.nix
   kcas = null;
 
+  lablgtk3 = osuper.lablgtk3.overrideAttrs (_: {
+    # https://github.com/garrigue/lablgtk/pull/175
+    src = fetchFromGitHub {
+      owner = "garrigue";
+      repo = "lablgtk";
+      rev = "a9b64b9ed8a13855c672cde0a2d9f78687f4214b";
+      hash = "sha256-CRUIuZ4ILJ0GegrIVHkOg9migQz/OUEGWoN0V0Nb7vc=";
+    };
+  });
+
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
