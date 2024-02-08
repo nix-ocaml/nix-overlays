@@ -3,6 +3,18 @@
 with oself;
 
 {
+  melange-atdgen-codec-runtime = buildDunePackage {
+    pname = "melange-atdgen-codec-runtime";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.0/melange-atdgen-codec-runtime-3.0.0.tbz;
+      sha256 = "1fkw1ynqzmpf9h6jkqzcfv2i2cw4a16wmvbmc8hmgw0wymb99m2n";
+    };
+
+    nativeBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange melange-json ];
+  };
+
   melange-fetch = buildDunePackage {
     pname = "melange-fetch";
     version = "n/a";
