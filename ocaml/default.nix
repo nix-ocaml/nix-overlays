@@ -757,6 +757,8 @@ with oself;
     inherit (dyn) preBuild;
   });
 
+  dune-release = disableTests osuper.dune-release;
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
