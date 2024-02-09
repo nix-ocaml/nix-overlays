@@ -3,6 +3,18 @@
 with oself;
 
 {
+  melange-atdgen-codec-runtime = buildDunePackage {
+    pname = "melange-atdgen-codec-runtime";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.0/melange-atdgen-codec-runtime-3.0.0.tbz;
+      sha256 = "1fkw1ynqzmpf9h6jkqzcfv2i2cw4a16wmvbmc8hmgw0wymb99m2n";
+    };
+
+    nativeBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange melange-json ];
+  };
+
   melange-fetch = buildDunePackage {
     pname = "melange-fetch";
     version = "n/a";
@@ -75,8 +87,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "cc76de77b5a8a81adb2694924ea1fe80f50e70d3";
-      hash = "sha256-+bbmO9ZILH/aBZwl2BIoeFltv1cgw7ce3TW1wFHs6HA=";
+      rev = "77e1f32f17d98fc2996b76c74f5fe79824f012c2";
+      hash = "sha256-DK06WuRmGbNwt0WOGQbIM/YKNZscDGiiVceSwP2oS+k=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [
@@ -101,8 +113,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "1f084f4ecf380b2144809065e5935a41866eab3f";
-      hash = "sha256-F+n+8j1tEs6C0U4P/kmnHQIUPdnBXjazt+Sz2Y+S238=";
+      rev = "f9052c12ccc26c6d2a67fe94c3f58d8b3f77f1a6";
+      hash = "sha256-EZym7ohaisE5nhI4tvaHTSJJQaE9zTiGrNjsCQaZllU=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
