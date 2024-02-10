@@ -692,6 +692,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.14.0_alpha1/dune-3.14.0.alpha1.tbz;
+      sha256 = "1xrdjfr6qj0xkjdx2gk49z8388f7l761igf2bx99i34fw6ncxa77";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
@@ -752,6 +756,8 @@ with oself;
   xdg = osuper.xdg.overrideAttrs (o: {
     inherit (dyn) preBuild;
   });
+
+  dune-release = disableTests osuper.dune-release;
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
