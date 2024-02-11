@@ -48,16 +48,24 @@ index 7fabd20360..ae3f93a285 100644
  ifeq "$(INSTALL_OCAMLNAT)" "true"
  	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"
 diff --git a/stdlib/Makefile b/stdlib/Makefile
-index 50f825a1b3..0da6f7224a 100644
+index 50f825a1b3..b2bce8e83e 100644
 --- a/stdlib/Makefile
 +++ b/stdlib/Makefile
-@@ -97,9 +97,6 @@ endif
- tmpheader.exe: $(HEADERPROGRAM).$(O)
+@@ -34,6 +34,8 @@ include $(ROOTDIR)/Makefile.common
+ # ../runtime/ocamlrun.
+ USE_BOOT_OCAMLC ?=
+ 
++STRIP ?= strip
++
+ ifeq "$(USE_BOOT_OCAMLC)" ""
+ CAMLC = $(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE)
+ else
+@@ -98,7 +100,7 @@ tmpheader.exe: $(HEADERPROGRAM).$(O)
  	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^)
  # FIXME This is wrong - mingw could invoke strip; MSVC equivalent?
--ifneq "$(UNIX_OR_WIN32)" "win32"
+ ifneq "$(UNIX_OR_WIN32)" "win32"
 -	strip $@
--endif
++	$(STRIP) $@
+ endif
  
  stdlib.cma: $(OBJS)
- 	$(V_LINKC)$(CAMLC) -a -o $@ $^
