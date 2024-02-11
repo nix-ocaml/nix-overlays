@@ -67,4 +67,14 @@ with filter;
     { }
   );
 
+  arm64_5_2 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_2"
+  else
+    { });
+
+  musl_5_2 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.musl64 "5_2"
+  else
+    { }
+  );
 }
