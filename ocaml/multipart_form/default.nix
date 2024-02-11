@@ -4,6 +4,7 @@
 , buildDunePackage
 , unstrctrd
 , lwt
+, ocaml
 , prettym
 , logs
 , ke
@@ -60,6 +61,7 @@ buildDunePackage {
     faraday
   ];
 
-  doCheck = true;
+  doCheck = ! lib.versionOlder "5.2" ocaml.version;
+
   checkInputs = [ alcotest rosetta ];
 }
