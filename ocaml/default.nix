@@ -568,12 +568,12 @@ with oself;
 
   ctypes = buildDunePackage rec {
     pname = "ctypes";
-    version = "0.21.1";
+    version = "0.22.0";
     src = fetchFromGitHub {
-      owner = "ocamllabs";
+      owner = "yallop";
       repo = "ocaml-ctypes";
-      rev = "0.21.1";
-      hash = "sha256-Cay+8dwFxw4d1OgMP4CR94l4ic2269YCAaziesEqwHM=";
+      rev = "0.22.0";
+      hash = "sha256-xgDKupQuakjHTbjoap/r2aAjNQUpH9K4HmeLbbgw1x4=";
     };
 
     nativeBuildInputs = [ pkg-config ];
@@ -645,6 +645,15 @@ with oself;
     inherit (decompress) src version;
     propagatedBuildInputs = [ decompress ];
   };
+
+  domain-local-await = osuper.domain-local-await.overrideAttrs (_: {
+    # mdx in checkInputs is still not compatible with OCaml 5.2
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
+  });
+  thread-table = osuper.thread-table.overrideAttrs (_: {
+    # mdx in checkInputs is still not compatible with OCaml 5.2
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
+  });
 
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -1937,10 +1946,19 @@ with oself;
   });
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.31.0/ppxlib-0.31.0.tbz;
-      sha256 = "1n21msr5a6l7j4j1bkzgcqfm4r1vf3lgzjlmg0ns3yjp9rjpc5nj";
-    };
+    src =
+      if lib.versionAtLeast osuper.ocaml.version "5.2" then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppxlib";
+            rev = "e05f6cb251d47f2688fb65c8f025063838a78f27";
+            hash = "sha256-h1KsL5Y4v2TgXzjGtxK8UCQmZltQnX0xAzBc/tZPEPw=";
+          } else
+        builtins.fetchurl {
+          url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
+          sha256 = "0as2an2i9ygfbvswypqh165a664chd1j4yi5npp24pw9rwycfz2h";
+        };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -2362,6 +2380,14 @@ with oself;
     '';
   });
 
+  utop = osuper.utop.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "utop";
+      rev = "4a97c4c2e96b0abdd9776598f195d23f2139a2e8";
+      hash = "sha256-u/ImbQG9sOjhfb6nWWe5dEkan/9zAnkL5QOQlqhBUDI=";
+    };
+  });
 
   uucp = osuper.uucp.overrideAttrs (_: {
     src = builtins.fetchurl {
