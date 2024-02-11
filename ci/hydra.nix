@@ -22,6 +22,11 @@ with filter;
     ocamlVersion = "5_1";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+  build_5_2 = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_2";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_top-level-packages =
     { inherit (pkgs) melange-relay-compiler hermes; } //

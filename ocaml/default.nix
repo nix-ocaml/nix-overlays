@@ -127,6 +127,8 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  alcotest = disableTests osuper.alcotest;
+
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
@@ -1944,6 +1946,11 @@ with oself;
       sha256 = "sha256-mbjWCpmhWU3nM2vPbXF2n7bLLsxp+Ft8P/w6f3vsWyI=";
     };
   });
+
+  ppx_tools =
+    if lib.versionOlder "5.2" ocaml.version
+    then null
+    else osuper.ppx_tools;
 
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src =
