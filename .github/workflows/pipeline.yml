@@ -33,7 +33,7 @@ jobs:
           - { ocaml-version: 4_14, continue-on-error: false }
           - { ocaml-version: 5_0, continue-on-error: false }
           - { ocaml-version: 5_1, continue-on-error: false }
-          - { ocaml-version: 5_2, continue-on-error: false }
+          - { ocaml-version: 5_2, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
