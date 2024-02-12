@@ -127,6 +127,8 @@ with oself;
 {
   inherit janePackage janeStreet;
 
+  alcotest = disableTests osuper.alcotest;
+
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
@@ -1945,6 +1947,11 @@ with oself;
     };
   });
 
+  ppx_tools =
+    if lib.versionOlder "5.2" ocaml.version
+    then null
+    else osuper.ppx_tools;
+
   ppxlib = osuper.ppxlib.overrideAttrs (_: {
     src =
       if lib.versionAtLeast osuper.ocaml.version "5.2" then
@@ -2378,6 +2385,9 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
+
+    # mdx in checkInputs is still not compatible with OCaml 5.2
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   });
 
   utop = osuper.utop.overrideAttrs (_: {
