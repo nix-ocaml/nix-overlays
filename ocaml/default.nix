@@ -2385,6 +2385,9 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
+
+    # mdx in checkInputs is still not compatible with OCaml 5.2
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   });
 
   utop = osuper.utop.overrideAttrs (_: {
