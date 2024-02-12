@@ -127,7 +127,15 @@ with oself;
 {
   inherit janePackage janeStreet;
 
-  alcotest = disableTests osuper.alcotest;
+  alcotest = osuper.alcotest.overrideAttrs (_: {
+    # https://github.com/mirage/alcotest/pull/402
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "alcotest";
+      rev = "aa437168b258db97680021116af176c55e1bd53b";
+      hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
+    };
+  });
 
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -648,13 +656,11 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   };
 
-  domain-local-await = osuper.domain-local-await.overrideAttrs (_: {
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
-  });
-  thread-table = osuper.thread-table.overrideAttrs (_: {
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
+  domain-local-timeout = osuper.domain-local-timeout.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.1/domain-local-timeout-1.0.1.tbz;
+      sha256 = "1pyicqahwsm3y3an1403njzg8jxn4xac3m72xhzc2dx38d9amh7a";
+    };
   });
 
   domainslib = osuper.domainslib.overrideAttrs (o: {
@@ -1229,6 +1235,13 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = osuper.mdx.overrideAttrs (o: {
+    # https://github.com/realworldocaml/mdx/pull/448
+    src = fetchFromGitHub {
+      owner = "realworldocaml";
+      repo = "mdx";
+      rev = "a76d9147b4853a270afc56736b2ce14f7ce1a8bf";
+      hash = "sha256-kn4lIDUVDZkauytgKvcxK5/u385GLeCcLof2padTma4=";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
   });
 
@@ -2385,9 +2398,6 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
-
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   });
 
   utop = osuper.utop.overrideAttrs (_: {
