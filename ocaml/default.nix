@@ -446,6 +446,13 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
+  carton = osuper.carton.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.7.1/git-carton-v0.7.1.tbz;
+      sha256 = "1w93ir31rps9vwilv2hq69rrlqrr1qapl9q2zxk49dqipiaca089";
+    };
+  });
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
@@ -857,8 +864,8 @@ with oself;
 
   git = osuper.git.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/3.14.0/git-3.14.0.tbz;
-      sha256 = "1hb238s79kbx1g4imaysd8w1cjspk25gi6vq8lkz0q9n7brnllxv";
+      url = https://github.com/mirage/ocaml-git/releases/download/3.15.0/git-3.15.0.tbz;
+      sha256 = "1lamw2a412y5lccg4r1bnli2aa8i9x0iyv4nx73z55bwi2gwlv72";
     };
   });
 
@@ -1183,6 +1190,17 @@ with oself;
       substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
     '';
   };
+
+  luv = osuper.luv.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "aantron";
+      repo = "luv";
+      rev = "0.5.13";
+      hash = "sha256-+I8XN5ccli61uxc+Pws56wIcdakYPsCIWZtHebGUCO0=";
+      fetchSubmodules = true;
+    };
+    doCheck = false;
+  });
 
   luv_unix = buildDunePackage {
     pname = "luv_unix";
