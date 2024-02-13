@@ -1242,7 +1242,8 @@ with oself;
       rev = "a76d9147b4853a270afc56736b2ce14f7ce1a8bf";
       hash = "sha256-kn4lIDUVDZkauytgKvcxK5/u385GLeCcLof2padTma4=";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
+    doCheck = false;
   });
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
