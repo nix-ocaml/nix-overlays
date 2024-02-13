@@ -1049,6 +1049,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "323bd4028186e6c6fea078905daf5da9f5853c31";
+      hash = "sha256-L9s1RkyS/awmR22g2GRdkBTm5lqrRJCsktAJYfSotiE=";
+    };
+  });
+
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml";
@@ -2175,7 +2184,7 @@ with oself;
       sha256 = "0n95h57z0d9hf1y5a3v7bbci303wl63jn20ymnb8n2v8zs1034wb";
     };
     nativeBuildInputs = [ cppo ];
-    doCheck = true;
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
