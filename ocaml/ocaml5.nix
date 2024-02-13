@@ -11,16 +11,6 @@ with oself;
     propagatedBuildInputs = [ eio eio_main caqti ];
   };
 
-  domain-local-timeout = buildDunePackage {
-    pname = "domain-local-timeout";
-    version = "1.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.0/domain-local-timeout-1.0.0.tbz;
-      sha256 = "0m98gvj2l2l23v811zsdgyw86dbz3k1diz3lywxch6rl6jg72bwa";
-    };
-    propagatedBuildInputs = [ mtime psq thread-table ];
-  };
-
   cohttp-eio = buildDunePackage {
     pname = "cohttp-eio";
     inherit (http) src version;

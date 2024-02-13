@@ -127,7 +127,15 @@ with oself;
 {
   inherit janePackage janeStreet;
 
-  alcotest = disableTests osuper.alcotest;
+  alcotest = osuper.alcotest.overrideAttrs (_: {
+    # https://github.com/mirage/alcotest/pull/402
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "alcotest";
+      rev = "aa437168b258db97680021116af176c55e1bd53b";
+      hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
+    };
+  });
 
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -648,13 +656,11 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   };
 
-  domain-local-await = osuper.domain-local-await.overrideAttrs (_: {
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
-  });
-  thread-table = osuper.thread-table.overrideAttrs (_: {
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
+  domain-local-timeout = osuper.domain-local-timeout.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.1/domain-local-timeout-1.0.1.tbz;
+      sha256 = "1pyicqahwsm3y3an1403njzg8jxn4xac3m72xhzc2dx38d9amh7a";
+    };
   });
 
   domainslib = osuper.domainslib.overrideAttrs (o: {
@@ -1043,6 +1049,15 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "323bd4028186e6c6fea078905daf5da9f5853c31";
+      hash = "sha256-L9s1RkyS/awmR22g2GRdkBTm5lqrRJCsktAJYfSotiE=";
+    };
+  });
+
   jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml";
@@ -1229,7 +1244,15 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = osuper.mdx.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
+    # https://github.com/realworldocaml/mdx/pull/448
+    src = fetchFromGitHub {
+      owner = "realworldocaml";
+      repo = "mdx";
+      rev = "a76d9147b4853a270afc56736b2ce14f7ce1a8bf";
+      hash = "sha256-kn4lIDUVDZkauytgKvcxK5/u385GLeCcLof2padTma4=";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
+    doCheck = false;
   });
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
@@ -2161,7 +2184,7 @@ with oself;
       sha256 = "0n95h57z0d9hf1y5a3v7bbci303wl63jn20ymnb8n2v8zs1034wb";
     };
     nativeBuildInputs = [ cppo ];
-    doCheck = true;
+    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   };
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
@@ -2385,9 +2408,6 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
-
-    # mdx in checkInputs is still not compatible with OCaml 5.2
-    doCheck = ! lib.versionOlder "5.2" ocaml.version;
   });
 
   utop = osuper.utop.overrideAttrs (_: {
