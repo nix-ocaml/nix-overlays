@@ -11,6 +11,11 @@ buildDunePackage {
   };
 
   propagatedBuildInputs = [ luv cmdliner logs fmt ];
+  postPatch = ''
+    substituteInPlace bin/main.ml \
+      --replace-fail '%s" file' '%s" (Option.get file)' \
+      --replace-fail '.extension file' '.extension (Option.get file)'
+  '';
 
   meta = {
     description = "nodemon replacement written in OCaml, with luv";
