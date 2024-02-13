@@ -72,7 +72,7 @@ with oself;
     };
   };
 
-  piaf = callPackage ./piaf { stdenv = darwin.apple_sdk_11_0.stdenv; };
+  piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
