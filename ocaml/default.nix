@@ -11,6 +11,7 @@
 , fetchFromGitHub
 , fetchFromGitLab
 , fzf
+, git
 , libgsl
 , kerberos
 , lib
@@ -51,12 +52,16 @@
 , libxcb
 , xorg
 , zstd-oc
+, mercurial
+, gnutar
+, coreutils
 }:
 
 oself: osuper:
 
 let
   nativeCairo = cairo;
+  nativeGit = git;
   lmdb-pkg = lmdb;
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
   addBase = p: p.overrideAttrs (o: {
@@ -716,10 +721,6 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.14.0_alpha1/dune-3.14.0.alpha1.tbz;
-      sha256 = "1xrdjfr6qj0xkjdx2gk49z8388f7l761igf2bx99i34fw6ncxa77";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
@@ -781,7 +782,19 @@ with oself;
     inherit (dyn) preBuild;
   });
 
-  dune-release = disableTests osuper.dune-release;
+  dune-release = osuper.dune-release.overrideAttrs (o:
+    let
+      runtimeInputs =
+        [ opam findlib nativeGit mercurial bzip2 gnutar coreutils ];
+    in
+    {
+      nativeBuildInputs = [ makeWrapper ocaml dune ] ++ runtimeInputs;
+      checkInputs = [ alcotest ] ++ runtimeInputs;
+      preFixup = ''
+        wrapProgram $out/bin/dune-release \
+          --prefix PATH : "${lib.makeBinPath runtimeInputs}"
+      '';
+    });
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
