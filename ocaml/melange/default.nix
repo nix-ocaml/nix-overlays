@@ -1,5 +1,4 @@
-{ base64
-, buildDunePackage
+{ buildDunePackage
 , cppo
 , cmdliner
 , dune-build-info
