@@ -2004,8 +2004,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "e05f6cb251d47f2688fb65c8f025063838a78f27";
-            hash = "sha256-h1KsL5Y4v2TgXzjGtxK8UCQmZltQnX0xAzBc/tZPEPw=";
+            rev = "51851b4f9b18fe75a0bc24c383d5843855de87e3";
+            hash = "sha256-MhHY3PU9fAtecEWwiF6k4Vx92ru8GiGfsZLfE0FOo4o=";
           } else
         builtins.fetchurl {
           url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
