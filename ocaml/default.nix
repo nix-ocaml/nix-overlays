@@ -215,6 +215,13 @@ with oself;
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
 
+  awa = osuper.awa.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/awa-ssh/releases/download/v0.3.1/awa-0.3.1.tbz;
+      sha256 = "028936js6lgsjw8x2ph0v61j4vlzksv8q2vf23lgq1rvglbcgs2m";
+    };
+  });
+
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
@@ -441,14 +448,13 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.0.1";
-    src = fetchFromGitHub {
-      owner = "paurkedal";
-      repo = "ocaml-caqti";
-      rev = "d62f805ba5787f48aa586f6ad0bc07252683193d";
-      hash = "sha256-mXL774zNhz3xdZmS+8G4V8DWM520IkXXrxqjID2Teqo=";
+    version = "2.1.1";
+    src = builtins.fetchurl {
+      url = https://github.com/paurkedal/ocaml-caqti/releases/download/v2.1.1/caqti-v2.1.1.tbz;
+      sha256 = "02h9hfak85r6i80v7cc3h973zz2zs55cwchqzhbijr7285gm6fj8";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime lwt-dllist ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime dune-site lwt-dllist ];
+    doCheck = false;
   });
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
