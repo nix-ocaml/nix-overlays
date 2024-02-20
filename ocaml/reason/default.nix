@@ -18,10 +18,11 @@ buildDunePackage rec {
   version = "3.10.0";
 
   src = fetchFromGitHub {
+    # https://github.com/reasonml/reason/pull/2734
     owner = "reasonml";
     repo = "reason";
-    rev = "f32f244df217b5a140d401b9b0950dc163ded808";
-    hash = "sha256-CR/LE05J4/0GHjsWkGSReIW4twLzX6CTD2RmbYVmA5M=";
+    rev = "d4a8d70b0403c5b0afc38f5bf3e5b0e0d726dee3";
+    hash = "sha256-hnGRI/BNWeL4q9UZaSxScRNPgZgnL/psVZO4kArBATY=";
   };
 
   propagatedBuildInputs = [

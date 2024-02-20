@@ -721,6 +721,12 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "579d59d23d96541882921ec74fe556af369b9c0a";
+      hash = "sha256-BNa5QMNWWvDWCMI9Dov1KW6nrLf1fheRSfBFqhuF5/o=";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
