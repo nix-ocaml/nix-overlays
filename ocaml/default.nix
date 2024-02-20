@@ -1134,6 +1134,7 @@ with oself;
       rev = "a9b64b9ed8a13855c672cde0a2d9f78687f4214b";
       hash = "sha256-CRUIuZ4ILJ0GegrIVHkOg9migQz/OUEGWoN0V0Nb7vc=";
     };
+    patches = [ ];
   });
 
   lacaml = osuper.lacaml.overrideAttrs (_: {
