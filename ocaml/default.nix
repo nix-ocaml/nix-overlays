@@ -1384,15 +1384,6 @@ with oself;
     '';
   });
 
-  mlgmpidl = osuper.mlgmpidl.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "nberth";
-      repo = "mlgmpidl";
-      rev = "1.2.15";
-      hash = "sha256-+s8g/WpiTpvKeFJzmq79c8G/5Yipx3wac1T6DqDRS+U=";
-    };
-  });
-
   mongo = callPackage ./mongo { };
   mongo-lwt = callPackage ./mongo/lwt.nix { };
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
