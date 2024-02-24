@@ -808,11 +808,14 @@ with oself;
       '';
     });
 
-  eio = osuper.eio.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/eio/releases/download/v0.15/eio-0.15.tbz;
-      sha256 = "19qqfw992z362ci5xcbfwwvcdxg652ligg9xbnq4ka6x6zrwwzl0";
-    };
+  eio = osuper.eio.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.1" ocaml.version then
+        builtins.fetchurl
+          {
+            url = https://github.com/ocaml-multicore/eio/releases/download/v0.15/eio-0.15.tbz;
+            sha256 = "19qqfw992z362ci5xcbfwwvcdxg652ligg9xbnq4ka6x6zrwwzl0";
+          } else o.src;
   });
 
   ezgzip = buildDunePackage rec {
@@ -1095,13 +1098,16 @@ with oself;
     };
   });
 
-  jsonrpc = osuper.jsonrpc.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "ocaml-lsp";
-      rev = "ceae461fe87a18bae2f7fe5bb54ed79579421b68";
-      hash = "sha256-2P/aHolR9VTxS3vINPxonRXqy4NH0LX906MAXsticyY=";
-    };
+  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
+    src =
+      if (lib.versionOlder "5.2" ocaml.version) then
+        fetchFromGitHub
+          {
+            owner = "ocaml";
+            repo = "ocaml-lsp";
+            rev = "ceae461fe87a18bae2f7fe5bb54ed79579421b68";
+            hash = "sha256-2P/aHolR9VTxS3vINPxonRXqy4NH0LX906MAXsticyY=";
+          } else o.src;
   });
 
   kafka = (osuper.kafka.override {
