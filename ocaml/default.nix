@@ -712,8 +712,8 @@ with oself;
 
   dscheck = osuper.dscheck.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/dscheck/releases/download/0.3.0/dscheck-0.3.0.tbz;
-      sha256 = "17fysdimr9ziv5hswslja46gvdncxy35afq05zzryx7nfvwnh1ad";
+      url = https://github.com/ocaml-multicore/dscheck/releases/download/0.4.0/dscheck-0.4.0.tbz;
+      sha256 = "0h7n9ygjsmqajvvj068n18hm4zxfx6ifqinc47llmvkjxpc9lsjr";
     };
   });
 
@@ -807,6 +807,16 @@ with oself;
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
       '';
     });
+
+  eio = osuper.eio.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.1" ocaml.version then
+        builtins.fetchurl
+          {
+            url = https://github.com/ocaml-multicore/eio/releases/download/v0.15/eio-0.15.tbz;
+            sha256 = "19qqfw992z362ci5xcbfwwvcdxg652ligg9xbnq4ka6x6zrwwzl0";
+          } else o.src;
+  });
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -1082,12 +1092,22 @@ with oself;
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "323bd4028186e6c6fea078905daf5da9f5853c31";
-      hash = "sha256-L9s1RkyS/awmR22g2GRdkBTm5lqrRJCsktAJYfSotiE=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.0/js_of_ocaml-5.7.0.tbz;
+      sha256 = "1gl356k46r3sfzspy37f20xxhvcbj0a81ghacf5ljyirv6hdxwfd";
     };
+  });
+
+  jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
+    src =
+      if (lib.versionOlder "5.2" ocaml.version) then
+        fetchFromGitHub
+          {
+            owner = "ocaml";
+            repo = "ocaml-lsp";
+            rev = "ceae461fe87a18bae2f7fe5bb54ed79579421b68";
+            hash = "sha256-2P/aHolR9VTxS3vINPxonRXqy4NH0LX906MAXsticyY=";
+          } else o.src;
   });
 
   kafka = (osuper.kafka.override {
@@ -1272,15 +1292,11 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = osuper.mdx.overrideAttrs (o: {
-    # https://github.com/realworldocaml/mdx/pull/448
-    src = fetchFromGitHub {
-      owner = "realworldocaml";
-      repo = "mdx";
-      rev = "a76d9147b4853a270afc56736b2ce14f7ce1a8bf";
-      hash = "sha256-kn4lIDUVDZkauytgKvcxK5/u385GLeCcLof2padTma4=";
+    src = builtins.fetchurl {
+      url = https://github.com/realworldocaml/mdx/releases/download/2.4.0/mdx-2.4.0.tbz;
+      sha256 = "0fkqm75jib2r2jv6m35nzmcrm0wzvlvlw373qz2qy47nxdrypq6x";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
-    doCheck = false;
   });
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
