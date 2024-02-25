@@ -2150,6 +2150,8 @@ with oself;
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
 
+  sherlodoc = callPackage ./sherlodoc { };
+
   sodium = buildDunePackage {
     pname = "sodium";
     version = "0.8+ahrefs";
