@@ -120,7 +120,7 @@ rec {
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
-    else ocaml-ng.ocamlPackages_4_14;
+    else ocaml-ng.ocamlPackages_5_1;
   ocamlPackages_latest =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackage_latest
