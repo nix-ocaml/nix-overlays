@@ -5,6 +5,15 @@ with oself;
 {
   archi-eio = callPackage ./archi/eio.nix { };
 
+  backoff = buildDunePackage {
+    pname = "backoff";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz;
+      sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
+    };
+  };
+
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";

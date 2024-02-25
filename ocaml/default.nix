@@ -808,14 +808,11 @@ with oself;
       '';
     });
 
-  eio = osuper.eio.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.1" ocaml.version then
-        builtins.fetchurl
-          {
-            url = https://github.com/ocaml-multicore/eio/releases/download/v0.15/eio-0.15.tbz;
-            sha256 = "19qqfw992z362ci5xcbfwwvcdxg652ligg9xbnq4ka6x6zrwwzl0";
-          } else o.src;
+  earlybird = osuper.earlybird.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/hackwaly/ocamlearlybird/releases/download/1.3.2/earlybird-1.3.2.tbz;
+      sha256 = "1w4bvzmlri1qqm4ga3vy0fc3dnh7dvrrpy1pz1l4fb2xc2hcrvz5";
+    };
   });
 
   ezgzip = buildDunePackage rec {
@@ -1367,10 +1364,17 @@ with oself;
       callPackage ./melange { }
     else null;
 
+  menhirCST = buildDunePackage {
+    pname = "menhirCST";
+    inherit (menhirLib) version src;
+  };
+  menhir = osuper.menhir.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ menhirCST ];
+  });
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20230608.tar.gz;
-      sha256 = "1kmj8b954cdpb7gfyfi7hmvsc1h4b2sfl6nhr9z7kkgbpm9wmlh9";
+      url = https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20231231.tar.gz;
+      sha256 = "1xn7760ahcf22y2ix597dh1wj7bc70x7fzj4vj73wch77imraffz";
     };
   });
 
