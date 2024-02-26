@@ -1961,7 +1961,13 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch = ''
       substituteInPlace src/internal/ppxc__script_real.ml \
-        --replace "C_content_make ()" "C_content_make (struct end)"
+        --replace-fail "C_content_make ()" "C_content_make (struct end)"
+
+      ${lib.optionalString (lib.versionOlder "5.2" ocaml.version) ''
+        substituteInPlace src/custom/ppx_cstubs_custom.cppo.ml \
+        --replace-fail "init_code fun_code" "init_code" \
+        --replace-fail "can_free = fun_code = []" "can_free = fun_code"
+        ''}
     '';
   });
 
@@ -2111,18 +2117,19 @@ with oself;
 
   rope = buildDunePackage rec {
     pname = "rope";
-    version = "0.6.2";
+    version = "0.6.3";
     minimalOCamlVersion = "4.03";
 
-    src = builtins.fetchurl {
-      url = "https://github.com/Chris00/ocaml-rope/releases/download/${version}/rope-${version}.tbz";
-      sha256 = "15cvfa0s1vjx7gjd07d3fkznilishqf4z4h2q5f20wm9ysjh2h2i";
+    src = fetchFromGitHub {
+      owner = "Chris00";
+      repo = "ocaml-rope";
+      rev = "0.6.3";
+      hash = "sha256-AIizs4nYdn98exV6m5RLWk0eqmk9rfLrROMhc5sfB6M=";
     };
 
-    buildInputs = [ benchmark ];
+    propagatedBuildInputs = [ benchmark ];
     postPatch = ''
       substituteInPlace "src/dune" --replace "bytes" ""
-      substituteInPlace "src/rope.ml" --replace "Pervasives" "Stdlib"
     '';
 
     meta = {
