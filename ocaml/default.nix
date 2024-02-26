@@ -1961,7 +1961,13 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch = ''
       substituteInPlace src/internal/ppxc__script_real.ml \
-        --replace "C_content_make ()" "C_content_make (struct end)"
+        --replace-fail "C_content_make ()" "C_content_make (struct end)"
+
+      ${lib.optionalString (lib.versionOlder "5.2" ocaml.version) ''
+        substituteInPlace src/custom/ppx_cstubs_custom.cppo.ml \
+        --replace-fail "init_code fun_code" "init_code" \
+        --replace-fail "can_free = fun_code = []" "can_free = fun_code"
+        ''}
     '';
   });
 
