@@ -1,11 +1,21 @@
-{ buildDunePackage, domain-local-await, domain-local-timeout }:
+{ backoff
+, buildDunePackage
+, domain-local-await
+, domain-local-timeout
+, multicore-magic
+}:
 
 buildDunePackage {
   pname = "kcas";
-  version = "0.6.1";
+  version = "0.7.9";
   src = builtins.fetchurl {
-    url = https://github.com/ocaml-multicore/kcas/releases/download/0.6.1/kcas-0.6.1.tbz;
-    sha256 = "0qid0kqaz3aczs76vgjca8h73njs4d312xn074hiakf81fw7qxmv";
+    url = https://github.com/ocaml-multicore/kcas/releases/download/0.7.0/kcas-0.7.0.tbz;
+    sha256 = "148zgbvkq67ial8rgmz5kzyi3y8m35dw62sqr4fx9vq1g6vfi3ws";
   };
-  propagatedBuildInputs = [ domain-local-await domain-local-timeout ];
+  propagatedBuildInputs = [
+    domain-local-await
+    domain-local-timeout
+    multicore-magic
+    backoff
+  ];
 }

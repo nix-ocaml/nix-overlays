@@ -144,7 +144,9 @@ in
 
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
-  esy = callPackage ../ocaml/esy { };
+  esy = callPackage ../ocaml/esy {
+    ocamlPackages = self.ocaml-ng.ocamlPackages_4_14;
+  };
 
   h2spec = self.buildGoModule {
     pname = "h2spec";
