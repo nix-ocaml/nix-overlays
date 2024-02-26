@@ -1324,12 +1324,12 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-flow/releases/download/v4.0.0/mirage-flow-4.0.0.tbz;
-      sha256 = "0za8wkqg0szgxyxbc49i7mcg5yh6ab4b22zmlg444zzyff8z1b5f";
-    };
-  });
+  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.0/mirage-flow-4.0.0.tbz;
+  # sha256 = "0za8wkqg0szgxyxbc49i7mcg5yh6ab4b22zmlg444zzyff8z1b5f";
+  # };
+  # });
 
   mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
     src = builtins.fetchurl {
