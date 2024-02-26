@@ -380,8 +380,8 @@ with oself;
 
   ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.95/ca-certs-nss-3.95.tbz;
-      sha256 = "0aq5f3qx7lz25nwalm53lgsxnynp31i9hq047vahmwkk30311jdr";
+      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.98/ca-certs-nss-3.98.tbz;
+      sha256 = "15x6gg0cil2fl9hk72lmlqavmrbfr5gnazny0plisa5pqz7xqprp";
     };
   });
 
@@ -1296,6 +1296,13 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-crypto/releases/download/v0.11.3/mirage-crypto-0.11.3.tbz;
+      sha256 = "1ccmbmx478glnsw93cn07816ggfg0ws9yi72qzmhbncw2vx31ddz";
+    };
+  });
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -1316,6 +1323,13 @@ with oself;
     };
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
+
+  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.0/mirage-flow-4.0.0.tbz;
+  # sha256 = "0za8wkqg0szgxyxbc49i7mcg5yh6ab4b22zmlg444zzyff8z1b5f";
+  # };
+  # });
 
   mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2459,11 +2473,9 @@ with oself;
   });
 
   utop = osuper.utop.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "4a97c4c2e96b0abdd9776598f195d23f2139a2e8";
-      hash = "sha256-u/ImbQG9sOjhfb6nWWe5dEkan/9zAnkL5QOQlqhBUDI=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-community/utop/releases/download/2.14.0/utop-2.14.0.tbz;
+      sha256 = "1a9v4w6nw8dp30qk1bkk6vhpp6vgs46gx8b32jkj91a5bfyakm8g";
     };
   });
 
