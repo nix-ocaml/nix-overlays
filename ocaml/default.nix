@@ -1529,9 +1529,11 @@ with oself;
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.1/ocamlformat-0.26.1.tbz;
-      sha256 = "1my6fh6sfispalyypar5xv1vgncvb53d825q5xhyrf8mgx16w06s";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ocamlformat";
+      rev = "910dbf336b0932ca4226ecccf651adfd832322a6";
+      hash = "sha256-O837yyVCCjBP225PAd/jA4Aa92PL4hwdsgpOFQ6kPUk=";
     };
   });
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
