@@ -4,7 +4,6 @@ let
     # not supported in 4.11+
     "bap"
     "lwt_camlp4"
-    "macaque"
     "config-file"
     "erm_xmpp"
     "ulex"
@@ -114,6 +113,8 @@ let
     "incr_dom_partial_render"
     "vg"
     "memtrace_viewer"
+
+    "binaryen"
   ];
 
   ocaml5Ignores = [
@@ -127,7 +128,6 @@ let
     "ocp-build"
     "piqi"
     "piqi-ocaml"
-    "lambdapi"
 
     # broken on 5.1
     "labltk"
@@ -144,6 +144,8 @@ let
     # broken on macOS?
     "llvm"
 
+    "owl"
+
     "alsa"
     "mm"
 
@@ -151,6 +153,37 @@ let
     "eio_linux"
     "wayland"
 
+    # x86_64-darwin is broken even with clang11Stdenv
+    "gapi-ocaml"
+    "bz2"
+    "camlimages"
+    "curses"
+    "ocaml_libvirt"
+    "magic"
+    "mccs"
+    "line-up-words"
+    "janestreet_csv"
+    "core_profiler"
+    "class_group_vdf"
+    "secp256k1"
+    "sexp"
+    "z3"
+    "zelus"
+    "zelus-gtk"
+    "eio_posix"
+    "eio_main"
+    "gluten-eio"
+    "h2-eio"
+    "httpaf-eio"
+    "piaf"
+    "carl"
+    "lambda-runtime"
+    "websocketaf-eio"
+    "caqti-eio"
+    "ppx_rapper_eio"
+    "ocamlfuse"
+    "graphql-eio"
+    "vercel"
   ];
 in
 

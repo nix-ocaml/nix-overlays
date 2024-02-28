@@ -806,13 +806,16 @@ with self;
     '';
   };
 
-  ocaml-compiler-libs = janePackage {
+  ocaml-compiler-libs = janePackage ({
     pname = "ocaml-compiler-libs";
-    version = "0.12.4";
     minimalOCamlVersion = "4.04.1";
     hash = "00if2f7j9d8igdkj4rck3p74y17j6b233l91mq02drzrxj199qjv";
     meta.description = "OCaml compiler libraries repackaged";
-  };
+  } // (if lib.versionAtLeast ocaml.version "5.2" then {
+    version = "0.17.0";
+    hash = "sha256-QaC6BWrpFblra6X1+TrlK+J3vZxLvLJZ2b0427DiQzM=";
+  }
+  else { }));
 
   ocaml-embed-file = janePackage {
     pname = "ocaml-embed-file";
@@ -824,7 +827,8 @@ with self;
   ocaml_intrinsics = janePackage {
     pname = "ocaml_intrinsics";
     minimalOCamlVersion = "4.14";
-    hash = "sha256-fbFXTakzxQEeCONSXRXh8FX3HD6h49LZHVsH62Zu3PA=";
+    version = "0.16.1";
+    hash = "sha256-+PJ0HiJhXSQ38CiniIVEW4msCbq/JSDpV1hpSofEfVQ=";
     meta.description = "Intrinsics";
     buildInputs = [ dune-configurator ];
     doCheck = false; # test rules broken

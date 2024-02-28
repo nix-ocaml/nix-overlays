@@ -3,6 +3,18 @@
 with oself;
 
 {
+  melange-atdgen-codec-runtime = buildDunePackage {
+    pname = "melange-atdgen-codec-runtime";
+    version = "n/a";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.0/melange-atdgen-codec-runtime-3.0.0.tbz;
+      sha256 = "1fkw1ynqzmpf9h6jkqzcfv2i2cw4a16wmvbmc8hmgw0wymb99m2n";
+    };
+
+    nativeBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange melange-json ];
+  };
+
   melange-fetch = buildDunePackage {
     pname = "melange-fetch";
     version = "n/a";
@@ -12,6 +24,19 @@ with oself;
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
+  };
+
+  melange-recharts = buildDunePackage {
+    pname = "melange-recharts";
+    version = "4.0.1";
+    src = fetchFromGitHub {
+      owner = "ahrefs";
+      repo = "melange-recharts";
+      rev = "fda583ba97148e09d5c3961d8278c189ce261b81";
+      hash = "sha256-ejuXTLhMiRzyC6yJLd5xPzGUoj1fDP2/TaELlFKJJVM=";
+    };
+    nativeBuildInputs = [ melange reason ];
+    propagatedBuildInputs = [ melange reason-react ];
   };
 
   melange-testing-library = buildDunePackage {
@@ -28,11 +53,9 @@ with oself;
   melange-json = buildDunePackage {
     pname = "melange-json";
     version = "n/a";
-    src = fetchFromGitHub {
-      owner = "melange-community";
-      repo = "melange-json";
-      rev = "3bb100347eadf16c81c12c989e885a0dda23ea16";
-      hash = "sha256-gi5Cgq+Ybu8NNXtIjFSfVJ3A7S5KBjUPPKLtkEVqhY8=";
+    src = builtins.fetchurl {
+      url = https://github.com/melange-community/melange-json/releases/download/1.1.0/melange-json-1.1.0.tbz;
+      sha256 = "12ih5drzrxjd70wfc0lz7q9pm6pm3j3wxnvwmqlvngvkkkh8dgnz";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -42,8 +65,8 @@ with oself;
     pname = "melange-jest";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/melange-community/melange-jest/releases/download/0.1.0/melange-jest-0.1.0.tbz;
-      sha256 = "1nv926jxl4yp15iwqd127bvdpfhvh8l9rkffd7l6p701xxk72ln4";
+      url = https://github.com/melange-community/melange-jest/releases/download/0.1.1/melange-jest-0.1.1.tbz;
+      sha256 = "1vnn19bz5sqnvrpl6wma50q8a75diyb9ddl19061halga3a410y6";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange reason-react ];
@@ -64,8 +87,8 @@ with oself;
     pname = "melange-webapi";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/melange-community/melange-webapi/releases/download/0.20.0/melange-webapi-0.20.0.tbz;
-      sha256 = "0hw165mmcl0a57g0qas0zbi429rskm1cpy5qlkcwnmn8aax8z8pf";
+      url = https://github.com/melange-community/melange-webapi/releases/download/0.21.0/melange-webapi-0.21.0.tbz;
+      sha256 = "1h8j3fy6d0shxv9wjhgmm85ac7f69waz9ay3khw8impiv6h5w00k";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
@@ -77,8 +100,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "3b9430c441b0d15fb435d80c2f5d5993200be182";
-      hash = "sha256-z58p6Cz9HjAI55d1PVuVbW121qWaWMtDfYk7CKIg0VY=";
+      rev = "fd3bfd537744bf75139c4736987e95183af878e5";
+      hash = "sha256-0r62kRFXwx1JvuOocZL8o3IXg0ZUvFfX1Fqm14DP6ws=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [
@@ -103,8 +126,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason-react";
-      rev = "c87a0ee3a1cbc62f3d31b416cb7dda85dcaea326";
-      hash = "sha256-rZeQSmIG/UN5uop5uiwph9kbcmk6rEDx+i9StuX3Z8Q=";
+      rev = "f9052c12ccc26c6d2a67fe94c3f58d8b3f77f1a6";
+      hash = "sha256-EZym7ohaisE5nhI4tvaHTSJJQaE9zTiGrNjsCQaZllU=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };

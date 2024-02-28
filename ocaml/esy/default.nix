@@ -33,7 +33,7 @@ let
 
   esyVersion = currentVersion;
 
-  esyOcamlPkgs = ocamlPackages.overrideScope' (self: super: rec {
+  esyOcamlPkgs = ocamlPackages.overrideScope (self: super: rec {
     alcotest = super.alcotest.overrideAttrs (_: {
       src = builtins.fetchurl {
         url = https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz;
@@ -90,6 +90,9 @@ let
         rev = "20211012";
         sha256 = "sha256-gHw9LmA4xudm6iNPpop4VDi988ge4pHZFLaEva4qbiI=";
       };
+    });
+    menhir = super.menhir.overrideAttrs (_: {
+      buildInputs = with self; [ menhirLib menhirSdk ];
     });
   });
 in

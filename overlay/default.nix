@@ -73,6 +73,11 @@ in
     gssSupport = false;
     openssl = self.openssl-oc;
   }).overrideAttrs (o: {
+    src = super.fetchurl {
+      url = "mirror://postgresql/source/v16.2/postgresql-16.2.tar.bz2";
+      hash = "sha256-RG6IKU28LJCFq0twYaZG+mBLS+wDUh1epnHC5a2bKVI=";
+    };
+
     doCheck = false;
     configureFlags = [
       "--without-ldap"
@@ -131,6 +136,7 @@ in
 
   binaryen = super.binaryen.overrideAttrs (_: rec {
     version = "114";
+    patches = [ ];
 
     src = fetchFromGitHub {
       owner = "WebAssembly";
@@ -142,7 +148,9 @@ in
 
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
-  esy = callPackage ../ocaml/esy { };
+  esy = callPackage ../ocaml/esy {
+    ocamlPackages = self.ocaml-ng.ocamlPackages_4_14;
+  };
 
   h2spec = self.buildGoModule {
     pname = "h2spec";
@@ -261,8 +269,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "fa42044a06b50117d3d511c0ea7893d29058cdce";
-          hash = "sha256-DAGrgfl41w1v1llq82iyNcQSfuBCPhiTmn5WM9tqGkQ=";
+          rev = "9284868941e42e4877365c8ed4b1dbe8eddc87e5";
+          hash = "sha256-xWqIGBOQ32ygDY+9/O5EKj+YMMKL1/2OWW2Qf1LzcDs=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
@@ -276,7 +284,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-4QAmf3ZqC4uxlpoyG8slBTEXYOuzT5GLRBZcVjjSBxQ=";
+      cargoHash = "sha256-A7rYqZqGiO4X+DH79VWICTpMMDu2uL7LAgaa1+qG3zY=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.

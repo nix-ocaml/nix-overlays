@@ -65,7 +65,7 @@ function update_flake() {
 
 function get_revisions() {
   return http_request(
-             "https://monitoring.nixos.org/prometheus/api/v1/query?query=channel_revision")
+             "https://prometheus.nixos.org/api/v1/query?query=channel_revision")
       .then((res) => res.data.result)
       .then((rev) => [rev.find((d) => d.metric.channel === "nixos-unstable"),
                       rev.find((d) =>

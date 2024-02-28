@@ -1,15 +1,16 @@
-{ base64
-, buildDunePackage
+{ buildDunePackage
 , cppo
 , cmdliner
 , dune-build-info
 , fetchFromGitHub
 , jq
+, lib
 , makeWrapper
 , menhir
 , menhirLib
 , merlin
 , nodejs_latest
+, ocaml
 , ounit2
 , ppxlib
 , reason
@@ -18,18 +19,32 @@
 
 buildDunePackage {
   pname = "melange";
-  version = "2.1.0";
+  version = "3.0.0";
   duneVersion = "3";
 
-  src = fetchFromGitHub {
-    owner = "melange-re";
-    repo = "melange";
-    rev = "e8838216706c2ea3dd22c85487d39ba18a2e7748";
-    hash = "sha256-tJ4NpyhtGK2D7CixbVcX4VuVl8G0DoqI/0nKXn1uUwQ=";
-    fetchSubmodules = true;
-  };
+  src =
+    if (lib.versionOlder "5.2" ocaml.version) then
+      fetchFromGitHub
+        {
+          owner = "melange-re";
+          repo = "melange";
+          rev = "db9d6ff2861394127cc71c57e2b27e61efd29f24";
+          hash = "sha256-FjkF32T8SVldxJoOUljCk4U3DKHBgMxvgy0Ift4gyJU=";
+          fetchSubmodules = true;
+        }
+    else if (lib.versionOlder "5.1" ocaml.version) then
+      builtins.fetchurl
+        {
+          url = https://github.com/melange-re/melange/releases/download/3.0.0-51/melange-3.0.0-51.tbz;
+          sha256 = "0iz9bx0i3w4gk67zzyb88z3akyrpbap954gkw509zsncjnfg5g0y";
+        }
+    else
+      builtins.fetchurl {
+        url = https://github.com/melange-re/melange/releases/download/3.0.0-414/melange-3.0.0-414.tbz;
+        sha256 = "1gsn3941c47y22gl4b16mvhf09s3fgladg1jj9rgn9026vhrfkqj";
+      };
 
-  doCheck = true;
+  doCheck = lib.versionOlder "5.1" ocaml.version && ! (lib.versionOlder "5.2" ocaml.version);
 
   nativeCheckInputs = [ nodejs_latest reason tree merlin jq ];
   checkInputs = [ ounit2 ];
