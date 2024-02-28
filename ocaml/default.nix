@@ -2554,6 +2554,14 @@ with oself;
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
 
+  xxhash = osuper.xxhash.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace lib/dune --replace-fail "ctypes.foreign" ""
+      substituteInPlace stubs/dune --replace-fail "ctypes.foreign" ""
+      substituteInPlace stubs/dune --replace-fail "libraries ctypes)" "libraries ctypes ctypes.stubs)"
+    '';
+  });
+
   yaml = osuper.yaml.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/avsm/ocaml-yaml/releases/download/v3.2.0/yaml-3.2.0.tbz;
