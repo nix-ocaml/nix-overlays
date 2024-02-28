@@ -1661,8 +1661,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocamlpro";
       repo = "ocp-index";
-      rev = "1.3.5";
-      hash = "sha256-Zn3BPaMB68V363OljFFdmLyYf+S0wFJK44L8t1TSG1Q=";
+      rev = "1.3.6";
+      hash = "sha256-EgRpC58NBVFO1w0xx11CnonatU2H7bECsEk6Y4c/odY=";
     };
   });
 
