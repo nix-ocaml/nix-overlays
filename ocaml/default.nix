@@ -261,8 +261,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-batteries-team";
       repo = "batteries-included";
-      rev = "56d59d7f63a581d4dd05c147ebbef487fdcff604";
-      hash = "sha256-e3FTZz7oHZ+pRX0x7sAL13vc6Tj52gAg8r0fZE+sLvg=";
+      rev = "v3.8.0";
+      hash = "sha256-Ixqfo2F4VftrIVF8oBOx/rSiJZppiwXOjVQ3Tcelxac=";
     };
   });
 
