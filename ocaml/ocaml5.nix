@@ -91,8 +91,8 @@ with oself;
     version = "0.5.0";
 
     src = builtins.fetchurl {
-      url = https://github.com/tarides/runtime_events_tools/releases/download/0.5.0/runtime_events_tools-0.5.0.tbz;
-      sha256 = "0w02cvp8dip5ykikp42jc693x1jsxjgxlvc4xry34hhxz3i5i0l1";
+      url = https://github.com/tarides/runtime_events_tools/releases/download/0.5.1/runtime_events_tools-0.5.1.tbz;
+      sha256 = "0r35cpbmj17ldpfkf4dzk4bs1knfy4hyjz6ax0ayrck25rm397dh";
     };
 
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];

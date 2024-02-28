@@ -261,8 +261,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-batteries-team";
       repo = "batteries-included";
-      rev = "56d59d7f63a581d4dd05c147ebbef487fdcff604";
-      hash = "sha256-e3FTZz7oHZ+pRX0x7sAL13vc6Tj52gAg8r0fZE+sLvg=";
+      rev = "v3.8.0";
+      hash = "sha256-Ixqfo2F4VftrIVF8oBOx/rSiJZppiwXOjVQ3Tcelxac=";
     };
   });
 
@@ -1529,9 +1529,11 @@ with oself;
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.1/ocamlformat-0.26.1.tbz;
-      sha256 = "1my6fh6sfispalyypar5xv1vgncvb53d825q5xhyrf8mgx16w06s";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ocamlformat";
+      rev = "910dbf336b0932ca4226ecccf651adfd832322a6";
+      hash = "sha256-O837yyVCCjBP225PAd/jA4Aa92PL4hwdsgpOFQ6kPUk=";
     };
   });
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
