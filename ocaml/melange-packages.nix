@@ -26,6 +26,19 @@ with oself;
     propagatedBuildInputs = [ melange ];
   };
 
+  melange-recharts = buildDunePackage {
+    pname = "melange-recharts";
+    version = "4.0.1";
+    src = fetchFromGitHub {
+      owner = "ahrefs";
+      repo = "melange-recharts";
+      rev = "fda583ba97148e09d5c3961d8278c189ce261b81";
+      hash = "sha256-ejuXTLhMiRzyC6yJLd5xPzGUoj1fDP2/TaELlFKJJVM=";
+    };
+    nativeBuildInputs = [ melange reason ];
+    propagatedBuildInputs = [ melange reason-react ];
+  };
+
   melange-testing-library = buildDunePackage {
     pname = "melange-testing-library";
     version = "n/a";
@@ -87,8 +100,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "melange-relay";
-      rev = "77e1f32f17d98fc2996b76c74f5fe79824f012c2";
-      hash = "sha256-DK06WuRmGbNwt0WOGQbIM/YKNZscDGiiVceSwP2oS+k=";
+      rev = "fd3bfd537744bf75139c4736987e95183af878e5";
+      hash = "sha256-0r62kRFXwx1JvuOocZL8o3IXg0ZUvFfX1Fqm14DP6ws=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [

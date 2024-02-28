@@ -91,6 +91,9 @@ let
         sha256 = "sha256-gHw9LmA4xudm6iNPpop4VDi988ge4pHZFLaEva4qbiI=";
       };
     });
+    menhir = super.menhir.overrideAttrs (_: {
+      buildInputs = with self; [ menhirLib menhirSdk ];
+    });
   });
 in
 

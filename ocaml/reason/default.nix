@@ -17,11 +17,9 @@ buildDunePackage rec {
   pname = "reason";
   version = "3.10.0";
 
-  src = fetchFromGitHub {
-    owner = "reasonml";
-    repo = "reason";
-    rev = "f32f244df217b5a140d401b9b0950dc163ded808";
-    hash = "sha256-CR/LE05J4/0GHjsWkGSReIW4twLzX6CTD2RmbYVmA5M=";
+  src = builtins.fetchurl {
+    url = https://github.com/reasonml/reason/releases/download/3.11.0/reason-3.11.0.tbz;
+    sha256 = "0l3jlahrhk18bgynqa3l6lsn9vhnxf553mcrxg44gw3r9bqkg255";
   };
 
   propagatedBuildInputs = [

@@ -5,20 +5,19 @@ with oself;
 {
   archi-eio = callPackage ./archi/eio.nix { };
 
+  backoff = buildDunePackage {
+    pname = "backoff";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz;
+      sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
+    };
+  };
+
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
     propagatedBuildInputs = [ eio eio_main caqti ];
-  };
-
-  domain-local-timeout = buildDunePackage {
-    pname = "domain-local-timeout";
-    version = "1.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.0/domain-local-timeout-1.0.0.tbz;
-      sha256 = "0m98gvj2l2l23v811zsdgyw86dbz3k1diz3lywxch6rl6jg72bwa";
-    };
-    propagatedBuildInputs = [ mtime psq thread-table ];
   };
 
   cohttp-eio = buildDunePackage {
@@ -82,7 +81,7 @@ with oself;
     };
   };
 
-  piaf = callPackage ./piaf { stdenv = darwin.apple_sdk_11_0.stdenv; };
+  piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
@@ -92,8 +91,8 @@ with oself;
     version = "0.5.0";
 
     src = builtins.fetchurl {
-      url = https://github.com/tarides/runtime_events_tools/releases/download/0.5.0/runtime_events_tools-0.5.0.tbz;
-      sha256 = "0w02cvp8dip5ykikp42jc693x1jsxjgxlvc4xry34hhxz3i5i0l1";
+      url = https://github.com/tarides/runtime_events_tools/releases/download/0.5.1/runtime_events_tools-0.5.1.tbz;
+      sha256 = "0r35cpbmj17ldpfkf4dzk4bs1knfy4hyjz6ax0ayrck25rm397dh";
     };
 
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];

@@ -73,6 +73,11 @@ in
     gssSupport = false;
     openssl = self.openssl-oc;
   }).overrideAttrs (o: {
+    src = super.fetchurl {
+      url = "mirror://postgresql/source/v16.2/postgresql-16.2.tar.bz2";
+      hash = "sha256-RG6IKU28LJCFq0twYaZG+mBLS+wDUh1epnHC5a2bKVI=";
+    };
+
     doCheck = false;
     configureFlags = [
       "--without-ldap"
@@ -98,12 +103,6 @@ in
         src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
         locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
       })
-      (super.fetchurl
-        # https://www.postgresql.org/message-id/CACpMh%2BDMZVHM%2BiDSyqdcpK8sr7jd_HxxLJRNvGTzcLBE0W07QA%40mail.gmail.com
-        {
-          url = "https://www.postgresql.org/message-id/attachment/152769/v1-0001-Make-PostgreSQL-work-with-newer-version-of-libxml.patch";
-          hash = "sha256-1j5mtG++hFmYwfS98PdN1SmNI4T86q4FXvKLz2VeJyg=";
-        })
     ] ++ lib.optionals stdenv.isLinux [
       "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
     ];
@@ -145,7 +144,9 @@ in
 
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
-  esy = callPackage ../ocaml/esy { };
+  esy = callPackage ../ocaml/esy {
+    ocamlPackages = self.ocaml-ng.ocamlPackages_4_14;
+  };
 
   h2spec = self.buildGoModule {
     pname = "h2spec";
@@ -264,8 +265,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "f9422c1944178c073d8935ee9f34ae3775e0d5e3";
-          hash = "sha256-iD01z9XWITihzNEXMCrjx4GYtVxTaahDNQzAc3ch0XE=";
+          rev = "9284868941e42e4877365c8ed4b1dbe8eddc87e5";
+          hash = "sha256-xWqIGBOQ32ygDY+9/O5EKj+YMMKL1/2OWW2Qf1LzcDs=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
@@ -279,7 +280,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-OkfrTOa71cSBKWadtIxlzgdeLuahBnEPAbvshJhJMRk=";
+      cargoHash = "sha256-A7rYqZqGiO4X+DH79VWICTpMMDu2uL7LAgaa1+qG3zY=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.
