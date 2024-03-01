@@ -73,11 +73,6 @@ in
     gssSupport = false;
     openssl = self.openssl-oc;
   }).overrideAttrs (o: {
-    src = super.fetchurl {
-      url = "mirror://postgresql/source/v16.2/postgresql-16.2.tar.bz2";
-      hash = "sha256-RG6IKU28LJCFq0twYaZG+mBLS+wDUh1epnHC5a2bKVI=";
-    };
-
     doCheck = false;
     configureFlags = [
       "--without-ldap"
