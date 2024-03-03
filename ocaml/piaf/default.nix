@@ -23,8 +23,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "3870acbadda43ea1a68f59a5825745c1e9b3382a";
-    hash = "sha256-raqzEs04jDBTZmKTVufoKALAFNoYjRk0VB0a415+a8M=";
+    rev = "be293120270ba5af7a8d1d84f29529c34b6a1389";
+    hash = "sha256-DOBv1evgPniWfH5b6NM3ZlEND9kc0B1ShW1e4zPsxbM=";
   };
 
   checkInputs = [ alcotest dune-site ];
