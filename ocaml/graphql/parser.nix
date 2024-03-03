@@ -6,8 +6,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "ocaml-graphql-server";
-    rev = "01d5e5efedcd0245bc1a992ddf261fb39388c859";
-    hash = "sha256-OS+pSgBZSoq8u+o6WO9ubnyTuWsIwSsRwpAO/8FZ768=";
+    rev = "0a5357d10364ecaf9aa17a3891c12481a713f7e2";
+    hash = "sha256-VBkVB7EGjPECduWZlQdYO27VEFhT74MouOaz+dV5m+w=";
   };
 
   nativeBuildInputs = [ menhir ];
