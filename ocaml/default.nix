@@ -257,15 +257,6 @@ with oself;
     };
   };
 
-  batteries = osuper.batteries.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-batteries-team";
-      repo = "batteries-included";
-      rev = "v3.8.0";
-      hash = "sha256-Ixqfo2F4VftrIVF8oBOx/rSiJZppiwXOjVQ3Tcelxac=";
-    };
-  });
-
   bechamel = buildDunePackage {
     pname = "bechamel";
     version = "0.5.0";
@@ -1657,13 +1648,6 @@ with oself;
 
   ocurl = osuper.ocurl.overrideAttrs (_: {
     propagatedBuildInputs = [ curl ];
-  });
-
-  odate = osuper.odate.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/hhugo/odate/releases/download/0.7/odate-0.7.tbz;
-      sha256 = "1bsmix8qbsk04a1l2x4lrh919xq6a3pmanvgkdlc5wwp3p42q6bl";
-    };
   });
 
   odep = buildDunePackage {
