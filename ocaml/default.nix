@@ -594,27 +594,13 @@ with oself;
 
   cryptokit = osuper.cryptokit.override { zlib = zlib-oc; };
 
-  ctypes = buildDunePackage rec {
-    pname = "ctypes";
-    version = "0.22.0";
-    src = fetchFromGitHub {
-      owner = "yallop";
-      repo = "ocaml-ctypes";
-      rev = "0.22.0";
-      hash = "sha256-xgDKupQuakjHTbjoap/r2aAjNQUpH9K4HmeLbbgw1x4=";
-    };
-
-    nativeBuildInputs = [ pkg-config ];
+  ctypes = osuper.ctypes.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ integers bigarray-compat libffi-oc.dev ];
-  };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
+  });
 
-  ctypes-foreign = buildDunePackage {
-    pname = "ctypes-foreign";
-    inherit (ctypes) src version;
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ ctypes ];
-  };
+  ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
 
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
     doCheck = false;
@@ -674,13 +660,6 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   };
 
-  domain-local-timeout = osuper.domain-local-timeout.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/domain-local-timeout/releases/download/1.0.1/domain-local-timeout-1.0.1.tbz;
-      sha256 = "1pyicqahwsm3y3an1403njzg8jxn4xac3m72xhzc2dx38d9amh7a";
-    };
-  });
-
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-multicore/domainslib/releases/download/0.5.1/domainslib-0.5.1.tbz;
@@ -709,13 +688,6 @@ with oself;
   dream-livereload = callPackage ./dream-livereload { };
 
   dream-serve = callPackage ./dream-serve { };
-
-  dscheck = osuper.dscheck.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/dscheck/releases/download/0.4.0/dscheck-0.4.0.tbz;
-      sha256 = "0h7n9ygjsmqajvvj068n18hm4zxfx6ifqinc47llmvkjxpc9lsjr";
-    };
-  });
 
   dune_1 = dune;
 
@@ -1296,13 +1268,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-crypto/releases/download/v0.11.3/mirage-crypto-0.11.3.tbz;
-      sha256 = "1ccmbmx478glnsw93cn07816ggfg0ws9yi72qzmhbncw2vx31ddz";
-    };
-  });
-
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -1519,13 +1484,6 @@ with oself;
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
     enableParallelBuilding = true;
-  });
-
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.3/ocaml-version-3.6.3.tbz;
-      sha256 = "0ladh2fn78bb0j2qdsi60pxfvlkip4k08q95fkrzz78isd15j0as";
-    };
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
@@ -2267,13 +2225,6 @@ with oself;
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
-  tar = osuper.tar.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-tar/releases/download/v2.6.0/tar-2.6.0.tbz;
-      sha256 = "1vmidxdri4j737xqjj2cbraka4p3whbr43zwyyzy4hv30jvhrzya";
-    };
-  });
-
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;
@@ -2472,13 +2423,6 @@ with oself;
       substituteInPlace lib/uring/dune --replace \
         '(run ./configure)' '(bash "./configure")'
     '';
-  });
-
-  utop = osuper.utop.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-community/utop/releases/download/2.14.0/utop-2.14.0.tbz;
-      sha256 = "1a9v4w6nw8dp30qk1bkk6vhpp6vgs46gx8b32jkj91a5bfyakm8g";
-    };
   });
 
   uucp = osuper.uucp.overrideAttrs (_: {
