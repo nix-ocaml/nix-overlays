@@ -382,6 +382,23 @@ with oself;
 
   camlp5 = callPackage ./camlp5 { };
 
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "cpdf-source";
+      rev = "v2.7";
+      hash = "sha256-Tm+xvL2HNdQsD04I9eR9tLL0bs5Ls2q+IndLV/p9sHs=";
+    };
+  });
+  camlpdf = osuper.camlpdf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "camlpdf";
+      rev = "v2.7";
+      hash = "sha256-SVmLWffB7GF+Bu0tj5fIvQVMRh6uV3u2G3rC4cVH2Gw=";
+    };
+  });
+
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "xavierleroy";
@@ -690,11 +707,9 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "dune";
-      rev = "579d59d23d96541882921ec74fe556af369b9c0a";
-      hash = "sha256-BNa5QMNWWvDWCMI9Dov1KW6nrLf1fheRSfBFqhuF5/o=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.14.1/dune-3.14.1.tbz;
+      sha256 = "0dnimr2srl73gnl173y7c5mp39bj88y0z398cpn4hlj54jmzk0za";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -1053,8 +1068,8 @@ with oself;
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.0/js_of_ocaml-5.7.0.tbz;
-      sha256 = "1gl356k46r3sfzspy37f20xxhvcbj0a81ghacf5ljyirv6hdxwfd";
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.1/js_of_ocaml-5.7.1.tbz;
+      sha256 = "0g9q21rggn4ggdifinhlfl74xdblyqzhkyi5y9icaklhm0m8x90f";
     };
   });
 
@@ -1985,8 +2000,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "51851b4f9b18fe75a0bc24c383d5843855de87e3";
-            hash = "sha256-MhHY3PU9fAtecEWwiF6k4Vx92ru8GiGfsZLfE0FOo4o=";
+            rev = "953398a914e6d23a0e21af5d73c70da306eec188";
+            hash = "sha256-lneDADEkokj7CDjJc3CiZpp49xNzx1xV7lBjisO3oeE=";
           } else
         builtins.fetchurl {
           url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
