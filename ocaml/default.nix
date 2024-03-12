@@ -513,8 +513,8 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta1/cohttp-6.0.0.beta1.tbz;
-      sha256 = "1q0b62in3aa7wsqzihml0rgal9ndwnygdlfhycxxhyabjl81gciv";
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta2/cohttp-v6.0.0_beta2.tbz;
+      sha256 = "05xh4hvjy90mqslwd0q6sa2h99f0p7vb4cf0f911nhc0sn5yrv4h";
     };
     doCheck = false;
   };
@@ -1244,8 +1244,8 @@ with oself;
 
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/releases/download/2.4.0/mdx-2.4.0.tbz;
-      sha256 = "0fkqm75jib2r2jv6m35nzmcrm0wzvlvlw373qz2qy47nxdrypq6x";
+      url = https://github.com/realworldocaml/mdx/releases/download/2.4.1/mdx-2.4.1.tbz;
+      sha256 = "04xg282dv9xrpcvav4fckrsxnfwmai1l73f9405fsgamrj8wqh0s";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
@@ -1271,10 +1271,10 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+  #   mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
   # src = builtins.fetchurl {
-  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.0/mirage-flow-4.0.0.tbz;
-  # sha256 = "0za8wkqg0szgxyxbc49i7mcg5yh6ab4b22zmlg444zzyff8z1b5f";
+  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz;
+  # sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
   # };
   # });
 
@@ -1940,8 +1940,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_deriving";
-      rev = "b4896214b0";
-      sha256 = "sha256-+HEpLltTLerHvZftOunRQgXkstUKNgJB2nKDBgD7hr8=";
+      rev = "5c6c528c8bbfe972f9750d8d075c895a9f525a3d";
+      hash = "sha256-Ynt4NFeIT9Oh3GCWLgPi3hB3y7Bi/8F2yfovtlRPSj0=";
     };
 
     buildInputs = [ ];
