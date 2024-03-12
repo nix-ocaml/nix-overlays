@@ -1365,6 +1365,13 @@ with oself;
     '';
   });
 
+  morbig = osuper.morbig.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/jsonHelpers.ml --replace-fail \
+        "Ppx_deriving_yojson_runtime.Result." ""
+    '';
+  });
+
   mongo = callPackage ./mongo { };
   mongo-lwt = callPackage ./mongo/lwt.nix { };
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
