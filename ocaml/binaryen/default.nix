@@ -11,7 +11,10 @@ buildDunePackage rec {
     hash = "sha256-TE0EXojbKcNmNIvFDLtoUDgqbNEdFillPuTgEN4gmaI=";
   };
 
-  postPatch = ''substituteInPlace src/dune --replace "(libraries libbinaryen.c)" "(c_library_flags -lbinaryen)"'';
+  postPatch = ''
+    substituteInPlace src/dune --replace-fail \
+      "(libraries libbinaryen.c)" "(c_library_flags -lbinaryen)"
+  '';
 
   # Only needed for tests
   # nativeBuildInputs = [ dune-configurator js_of_ocaml ];

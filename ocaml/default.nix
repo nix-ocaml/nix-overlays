@@ -77,53 +77,22 @@ let
       defaultVersion = "0.16.0";
     };
 
-  janeStreet =
-    let
-      jsBase = import ./janestreet-0.16.nix {
-        self = oself;
-        openssl = openssl-oc;
-        postgresql = libpq;
-        inherit
-          bash
-          fetchpatch
-          fetchFromGitHub
-          fzf
-          lib
-          kerberos
-          linuxHeaders
-          pam
-          net-snmp;
-        zstd = zstd-oc;
-      };
-    in
-    jsBase // {
-      ppx_accessor = jsBase.ppx_accessor.overrideAttrs (_: {
-        postPatch = ''
-          substituteInPlace src/ppx_accessor.ml \
-            --replace "open! Base" "module Typey = Type;; open! Base" \
-            --replace "Type." "Typey."
-        '';
-      });
-
-      streamable = jsBase.streamable.overrideAttrs (_: {
-        postPatch = ''
-          substituteInPlace ppx/src/clause.mli ppx/src/clause.ml \
-                            ppx/src/tuple_clause.ml \
-                            ppx/src/helpers.ml ppx/src/helpers.mli \
-                            ppx/src/keyed_container_clause.ml \
-                            ppx/src/sexp_clause.ml \
-                            ppx/src/core_primitive_clause.ml \
-                            ppx/src/or_error_clause.ml \
-                            ppx/src/type_parameter_clause.ml \
-                            ppx/src/parameterized_type_clause.ml \
-                            ppx/src/atomic_clause.ml \
-                            ppx/src/module_dot_t_clause.ml \
-                            ppx/src/ppx_streamable.ml \
-            --replace "open! Base" "module Typey = Type;; open! Base" \
-            --replace "Type." "Typey."
-        '';
-      });
-    };
+  janeStreet = import ./janestreet-0.16.nix {
+    self = oself;
+    openssl = openssl-oc;
+    postgresql = libpq;
+    inherit
+      bash
+      fetchpatch
+      fetchFromGitHub
+      fzf
+      lib
+      kerberos
+      linuxHeaders
+      pam
+      net-snmp;
+    zstd = zstd-oc;
+  };
 
 in
 
@@ -300,7 +269,7 @@ with oself;
 
   bigarray-overlap = osuper.bigarray-overlap.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace ./freestanding/Makefile --replace "pkg-config" "\$(PKG_CONFIG)"
+      substituteInPlace ./freestanding/Makefile --replace-fail "pkg-config" "\$(PKG_CONFIG)"
     '';
   });
 
@@ -357,8 +326,8 @@ with oself;
 
     preInstall = "mkdir -p $OCAMLFIND_DESTDIR/stublibs";
     postPatch = ''
-      substituteInPlace bz2.ml --replace "Pervasives" "Stdlib"
-      substituteInPlace bz2.mli --replace "Pervasives" "Stdlib"
+      substituteInPlace bz2.ml --replace-fail "Pervasives" "Stdlib"
+      substituteInPlace bz2.mli --replace-fail "Pervasives" "Stdlib"
     '';
 
     meta = with lib; {
@@ -400,8 +369,8 @@ with oself;
     };
     propagatedBuildInputs = [ camomile ];
     postPatch = ''
-      substituteInPlace src/dune --replace "result" ""
-      substituteInPlace src/cfg.mli --replace "Result.result" "result"
+      substituteInPlace src/dune --replace-fail "result" ""
+      substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
     '';
   });
 
@@ -422,7 +391,7 @@ with oself;
 
   cairo2 = osuper.cairo2.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace ./src/dune --replace "bigarray" ""
+      substituteInPlace ./src/dune --replace-fail "bigarray" ""
     '';
   });
 
@@ -786,7 +755,7 @@ with oself;
       sha256 = "sha256-OQ4JT1pYkeJbi8iMGpcFp8j0DawZCguFfWQmJCwgUXQ=";
     };
 
-    propagatedBuildInputs = [ rresult astring ocplib-endian camlzip result ];
+    propagatedBuildInputs = [ rresult astring ocplib-endian camlzip ];
   };
 
   facile = buildDunePackage rec {
@@ -844,7 +813,7 @@ with oself;
     installTargets = [ "ocamlfind-install" ];
     createFindlibDestdir = true;
     postPatch = ''
-      substituteInPlace network.ml --replace "Pervasives." "Stdlib."
+      substituteInPlace network.ml --replace-fail "Pervasives." "Stdlib."
     '';
 
     meta = with lib; {
@@ -896,7 +865,7 @@ with oself;
 
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace ./dune --replace "libraries " "libraries ctypes.stubs "
+      substituteInPlace ./dune --replace-fail "libraries " "libraries ctypes.stubs "
     '';
   });
 
@@ -1039,14 +1008,6 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   };
 
-  javalib = osuper.javalib.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace ./src/ptrees/ptset.ml --replace "Pervasives." "Stdlib."
-      substituteInPlace ./src/jFile.ml --replace "Pervasives." "Stdlib."
-    '';
-
-  });
-
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
@@ -1124,7 +1085,7 @@ with oself;
   lacaml = osuper.lacaml.overrideAttrs (_: {
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
-        substituteInPlace src/dune --replace " bigarray" ""
+        substituteInPlace src/dune --replace-fail " bigarray" ""
       '' else "";
   });
 
@@ -1159,7 +1120,7 @@ with oself;
 
   lilv = osuper.lilv.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
+      substituteInPlace src/dune --replace-fail "ctypes.foreign" "ctypes-foreign"
     '';
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
@@ -1188,7 +1149,7 @@ with oself;
     propagatedBuildInputs = [ num camlp-streams ];
 
     postPatch = ''
-      substituteInPlace lib/dune --replace "(libraries " "(libraries camlp-streams "
+      substituteInPlace lib/dune --replace-fail "(libraries " "(libraries camlp-streams "
     '';
   };
 
@@ -1285,7 +1246,7 @@ with oself;
 
   mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace src/vnetif/dune --replace "result" ""
+      substituteInPlace src/vnetif/dune --replace-fail "result" ""
     '';
   });
 
@@ -1359,7 +1320,7 @@ with oself;
   mew = osuper.mew.overrideAttrs (_: {
     propagatedBuildInputs = [ trie ];
     postPatch = ''
-      substituteInPlace src/dune --replace "result" ""
+      substituteInPlace src/dune --replace-fail "result" ""
     '';
   });
 
@@ -1425,7 +1386,7 @@ with oself;
 
   npy = osuper.npy.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace src/dune --replace " bigarray" ""
+      substituteInPlace src/dune --replace-fail " bigarray" ""
     '';
   });
 
@@ -1464,7 +1425,7 @@ with oself;
     patches = [ ];
     installPhase = ''
       # Not sure if this is entirely correct, but opaline doesn't like `lib_root`
-      substituteInPlace num.install --replace lib_root lib
+      substituteInPlace num.install --replace-fail lib_root lib
       ${opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR num.install
     '';
   });
@@ -1502,7 +1463,7 @@ with oself;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace "src/config/discover.ml" --replace \
+      substituteInPlace "src/config/discover.ml" --replace-fail \
         'let cmd = pkg_export ^ " pkg-config ' \
         'let cmd = let pkg_config = match Sys.getenv "PKG_CONFIG" with | s -> s | exception Not_found -> "pkg-config" in pkg_export ^ " " ^ pkg_config ^ " '
     '';
@@ -1579,9 +1540,9 @@ with oself;
     propagatedBuildInputs = [ dune-configurator react ];
   };
 
-  ocaml-recovery-parser = (osuper.ocaml-recovery-parser.override { }).overrideAttrs (o: {
+  ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace "menhir-recover/emitter.ml" --replace \
+      substituteInPlace "menhir-recover/emitter.ml" --replace-fail \
         "String.capitalize" "String.capitalize_ascii"
     '';
   });
@@ -1597,7 +1558,7 @@ with oself;
 
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace src/dune --replace "libraries bytes" "libraries "
+      substituteInPlace src/dune --replace-fail "libraries bytes" "libraries "
     '';
     buildInputs = o.buildInputs ++ [ findlib ];
   });
@@ -1638,7 +1599,7 @@ with oself;
     postPatch =
       if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace ./src/ocplib_stuff/dune \
-          --replace "failwith \"Wrong ocaml version\"" "\"5.0.0\""
+          --replace-fail "failwith \"Wrong ocaml version\"" "\"5.0.0\""
       '' else "";
   };
 
@@ -1671,7 +1632,7 @@ with oself;
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
-      substituteInPlace src/parser/dune --replace "result" ""
+      substituteInPlace src/parser/dune --replace-fail "result" ""
     '';
   });
 
@@ -1757,9 +1718,6 @@ with oself;
   opam-core = osuper.opam-core.overrideAttrs (o: {
     inherit (opam-format) src version meta;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ uutf swhid_core jsonm sha ];
-    postPatch = ''
-      substituteInPlace src/core/dune --replace "bigarray" ""
-    '';
   });
   opam-repository = osuper.opam-repository.overrideAttrs (o: {
     configureFlags = [ "--disable-checks" ];
@@ -1794,12 +1752,6 @@ with oself;
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
-  otfm = osuper.otfm.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/otfm.ml --replace "Pervasives." "Stdlib."
-    '';
-  });
-
   eigen = osuper.eigen.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/owlbarn/eigen/releases/download/0.3.3/eigen-0.3.3.tbz;
@@ -1808,8 +1760,8 @@ with oself;
     buildInputs = [ dune-configurator ];
     meta.platforms = lib.platforms.all;
     postPatch = ''
-      substituteInPlace "eigen/configure/configure.ml" --replace '-mcpu=apple-m1' ""
-      substituteInPlace "eigen_cpp/configure/configure.ml" --replace '-mcpu=apple-m1' ""
+      substituteInPlace "eigen/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
+      substituteInPlace "eigen_cpp/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
     '';
   });
   owl-base = osuper.owl-base.overrideAttrs (_: {
@@ -1905,7 +1857,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
-      substituteInPlace src/dune --replace " bigarray" ""
+      substituteInPlace src/dune --replace-fail " bigarray" ""
     '';
   });
 
@@ -2042,15 +1994,6 @@ with oself;
 
   rtop = callPackage ./reason/rtop.nix { };
 
-  reason-native = osuper.reason-native.overrideScope (rself: rsuper: {
-    rely = rsuper.rely.overrideAttrs (_: {
-      postPatch = ''
-        substituteInPlace "src/rely/TestSuiteRunner.re" --replace "Pervasives." "Stdlib."
-      '';
-    });
-    qcheck-rely = null;
-  });
-
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
@@ -2064,10 +2007,10 @@ with oself;
 
   resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
     postPatch = ''
-      substituteInPlace src/server.ml --replace \
+      substituteInPlace src/server.ml --replace-fail \
         "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body"
 
-      substituteInPlace src/server.mli --replace \
+      substituteInPlace src/server.mli --replace-fail \
         "'d Lwt_io.channel" "Cohttp_lwt_unix.Private.Input_channel.t"
     '';
   });
@@ -2104,12 +2047,12 @@ with oself;
       owner = "Chris00";
       repo = "ocaml-rope";
       rev = "0.6.3";
-      hash = "sha256-AIizs4nYdn98exV6m5RLWk0eqmk9rfLrROMhc5sfB6M=";
+      hash = "sha256-yUdIhtI1sy/BWFgxOfLdarQcCYGAq5eB0apqvfVOO4I=";
     };
 
     propagatedBuildInputs = [ benchmark ];
     postPatch = ''
-      substituteInPlace "src/dune" --replace "bytes" ""
+      substituteInPlace "src/dune" --replace-fail "bytes" ""
     '';
 
     meta = {
@@ -2154,9 +2097,9 @@ with oself;
     };
     patches = [ ./sodium-cc-patch.patch ];
     postPatch = ''
-      substituteInPlace lib_gen/dune --replace "ctypes)" "ctypes ctypes.stubs)"
-      substituteInPlace lib_gen/dune --replace "ctypes s" "ctypes ctypes.stubs s"
-      substituteInPlace lib_gen/dune --replace \
+      substituteInPlace lib_gen/dune --replace-fail "ctypes)" "ctypes ctypes.stubs)"
+      substituteInPlace lib_gen/dune --replace-fail "ctypes s" "ctypes ctypes.stubs s"
+      substituteInPlace lib_gen/dune --replace-fail \
         "ocamlfind query ctypes ctypes.stubs" \
         "ocamlfind query ctypes"
     '';
@@ -2179,16 +2122,10 @@ with oself;
     propagatedBuildInputs = [ vlq ];
   };
 
-  spelll = osuper.spelll.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/Spelll.ml --replace "Pervasives" "Stdlib"
-    '';
-  });
-
   srt = osuper.srt.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
     postPatch = ''
-      substituteInPlace "src/dune" "src/stubs/dune" --replace \
+      substituteInPlace "src/dune" "src/stubs/dune" --replace-fail \
         "ctypes.foreign" "ctypes-foreign"
     '';
   });
@@ -2269,49 +2206,6 @@ with oself;
     };
   });
 
-  tezos-protocol-compiler = osuper.tezos-protocol-compiler.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ ocp-ocamlres ];
-  });
-
-  tezos-protocol-010-PtGRANAD = osuper.tezos-protocol-010-PtGRANAD.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-      substituteInPlace proto_010_PtGRANAD/lib_protocol/dune.inc \
-        --replace "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68" "-w +a-4-6-7-9-16-29-32-40..42-44-45-48-60-67-68-58"
-    '';
-  });
-
-  tezos-protocol-011-PtHangz2 = osuper.tezos-protocol-011-PtHangz2.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-      substituteInPlace proto_011_PtHangz2/lib_protocol/dune.inc --replace "-w +a-4-40..42-44-45-48" "-w +a-4-40..42-44-45-48-58"
-    '';
-  });
-
-  tezos-011-PtHangz2-test-helpers = osuper.tezos-011-PtHangz2-test-helpers.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-    '';
-  });
-
-  tezos-protocol-011-PtHangz2-parameters = osuper.tezos-protocol-011-PtHangz2-parameters.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-    '';
-  });
-
-  tezos-protocol-plugin-011-PtHangz2 = osuper.tezos-protocol-plugin-011-PtHangz2.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-    '';
-  });
-
-  tezos-client-011-PtHangz2 = osuper.tezos-client-011-PtHangz2.overrideAttrs (_: {
-    postPatch = ''
-      echo "(lang dune 3.0)" > dune-project
-    '';
-  });
-
   timedesc = callPackage ./timere/timedesc.nix { };
   timedesc-json = callPackage ./timere/timedesc-json.nix { };
   timedesc-sexp = callPackage ./timere/timedesc-sexp.nix { };
@@ -2340,7 +2234,7 @@ with oself;
 
   torch = osuper.torch.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace src/wrapper/dune --replace "ctypes.foreign" "ctypes-foreign"
+      substituteInPlace src/wrapper/dune --replace-fail "ctypes.foreign" "ctypes-foreign"
     '';
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
     propagatedBuildInputs =
@@ -2353,7 +2247,7 @@ with oself;
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
     postPatch = ''
-      substituteInPlace _tags --replace "ctypes.foreign" "ctypes-foreign"
+      substituteInPlace _tags --replace-fail "ctypes.foreign" "ctypes-foreign"
     '';
     propagatedBuildInputs =
       o.propagatedBuildInputs
@@ -2426,7 +2320,7 @@ with oself;
   uring = osuper.uring.overrideAttrs (_: {
     postPatch = ''
       patchShebangs vendor/liburing/configure
-      substituteInPlace lib/uring/dune --replace \
+      substituteInPlace lib/uring/dune --replace-fail \
         '(run ./configure)' '(bash "./configure")'
     '';
   });
@@ -2472,7 +2366,7 @@ with oself;
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ camlp-streams ];
     postPatch = ''
-      substituteInPlace "src/dune" --replace \
+      substituteInPlace "src/dune" --replace-fail \
         '(public_name vlq))' '(libraries camlp-streams)(public_name vlq))'
     '';
   };
@@ -2493,7 +2387,7 @@ with oself;
     doCheck = true;
 
     postPatch = ''
-      substituteInPlace lwt/websocket_lwt_unix.ml --replace \
+      substituteInPlace lwt/websocket_lwt_unix.ml --replace-fail \
         "fun (flow, ic, oc) ->" \
         "fun (flow, ic, oc) -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in" \
         --replace "Lwt_io.close ic" "Cohttp_lwt_unix.Private.Input_channel.close ic" \
@@ -2530,7 +2424,7 @@ with oself;
   zed = osuper.zed.overrideAttrs (o: {
     propagatedBuildInputs = [ react uchar uutf uucp uuseg ];
     postPatch = ''
-      substituteInPlace src/dune --replace "result" ""
+      substituteInPlace src/dune --replace-fail "result" ""
     '';
   });
 

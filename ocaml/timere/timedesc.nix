@@ -4,7 +4,6 @@
 , seq
 , angstrom
 , ptime
-, result
 , crowbar
 , alcotest
 , qcheck-alcotest
@@ -20,7 +19,6 @@ buildDunePackage {
     seq
     angstrom
     ptime
-    result
   ];
 
   doCheck = true;

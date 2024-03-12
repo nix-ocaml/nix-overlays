@@ -6,13 +6,13 @@ buildDunePackage {
 
   propagatedBuildInputs = [ oidc jose uri yojson logs ];
   postPatch = ''
-    substituteInPlace oidc-client/dune --replace "piaf" "piaf-lwt"
+    substituteInPlace oidc-client/dune --replace-fail "piaf" "piaf-lwt"
     substituteInPlace \
       oidc-client/Static.ml oidc-client/Static.mli \
       oidc-client/MicrosoftClient.mli \
       oidc-client/Dynamic.ml oidc-client/Dynamic.mli \
       oidc-client/Utils.ml oidc-client/Internal.ml  \
-      --replace "Piaf" "Piaf_lwt"
+      --replace-fail "Piaf" "Piaf_lwt"
   '';
 
   meta = {

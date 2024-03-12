@@ -43,7 +43,7 @@ in
     postPatch = ''
       ${o.postPatch}
       # https://github.com/confluentinc/librdkafka/pull/4281
-      substituteInPlace mklove/Makefile.base --replace 'ar -r' '$(AR) -r'
+      substituteInPlace mklove/Makefile.base --replace-fail 'ar -r' '$(AR) -r'
     '';
     configureFlags = [ "--enable-static" ];
     STATIC_LIB_libzstd = "${self.zstd-oc}/lib/libzstd.a";
