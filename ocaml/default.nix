@@ -1953,6 +1953,14 @@ with oself;
     ];
   });
 
+  ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (o: {
+    patches = o.patches ++ [ ./ppx_deriving_cmdliner.patch ];
+    postPatch = ''
+      substituteInPlace src/dune --replace-fail "runtime result" "runtime"
+      substituteInPlace test/dune --replace-fail "alcotest result" "alcotest"
+    '';
+  });
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
