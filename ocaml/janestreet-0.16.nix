@@ -308,8 +308,8 @@ with self;
     propagatedBuildInputs = [ async_websocket cohttp-async ppx_jane uri-sexp ];
     postPatch = ''
       substituteInPlace "src/cohttp_async_websocket.ml" \
-        --replace Cohttp_async.Io Cohttp_async.Io.IO \
-        --replace "read_websocket_response request reader" \
+        --replace-fail Cohttp_async.Io Cohttp_async.Io.IO \
+        --replace-fail "read_websocket_response request reader" \
           'read_websocket_response request (Cohttp_async__Input_channel.create reader)'
     '';
   };
@@ -488,7 +488,7 @@ with self;
     meta.description = "A library for running the fzf command line tool";
     propagatedBuildInputs = [ async core_kernel ppx_jane ];
     postPatch = ''
-      substituteInPlace src/fzf.ml --replace /usr/bin/fzf ${fzf}/bin/fzf
+      substituteInPlace src/fzf.ml --replace-fail /usr/bin/fzf ${fzf}/bin/fzf
     '';
   };
 
@@ -1384,8 +1384,7 @@ with self;
     meta.description = "OCaml bindings for RE2, Google's regular expression library";
     propagatedBuildInputs = [ core_kernel jane_rope regex_parser_intf ];
     prePatch = ''
-      substituteInPlace src/re2_c/dune --replace 'CXX=g++' 'CXX=c++'
-      substituteInPlace src/dune --replace '(cxx_flags (:standard \ -pedantic) (-I re2_c/libre2))' '(cxx_flags (:standard \ -pedantic) (-I re2_c/libre2) (-x c++))'
+      substituteInPlace src/re2_c/dune --replace-fail 'CXX=g++' 'CXX=c++'
     '';
   };
 
@@ -1569,7 +1568,8 @@ with self;
 
   streamable = janePackage {
     pname = "streamable";
-    hash = "sha256-zFxjIb2zrz7DPcntafWC8BRHBVErUefGqGwnRgoIueU=";
+    version = "0.16.1";
+    hash = "sha256-3djrUW2tPKaEmoOIpdjN6ok7U9i07yreqbi1kP+6pnY=";
     minimalOCamlVersion = "4.14";
     meta.description = "A collection of types suitable for incremental serialization.";
     propagatedBuildInputs = [ async_kernel async_rpc_kernel base core core_kernel ppx_jane ppxlib ];

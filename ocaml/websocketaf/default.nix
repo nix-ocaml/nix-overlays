@@ -11,8 +11,4 @@ buildDunePackage {
   };
 
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
-
-  postPatch = ''
-    substituteInPlace lib/dune --replace "result" ""
-  '';
 }

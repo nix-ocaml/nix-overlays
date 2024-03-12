@@ -5,7 +5,6 @@
 , bigstringaf
 , ke
 , lwt
-, result
 , alcotest
 , alcotest-lwt
 , rosetta
@@ -26,7 +25,6 @@ buildDunePackage {
     bigstringaf
     ke
     lwt
-    result
     multipart_form
   ];
 

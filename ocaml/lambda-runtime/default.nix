@@ -19,7 +19,7 @@ buildDunePackage {
   };
   postPatch = ''
     substituteInPlace lib/context.ml lib/lambda_runtime.mli \
-      --replace "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
+      --replace-fail "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
   '';
 
   propagatedBuildInputs = [

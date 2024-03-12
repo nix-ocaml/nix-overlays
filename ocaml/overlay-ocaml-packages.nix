@@ -96,10 +96,10 @@ let
 
         dune_3 = osuper.dune_3.overrideAttrs (_: {
           postPatch = ''
-            substituteInPlace boot/bootstrap.ml --replace 'v >= (5, 0, 0)' "true"
-            substituteInPlace boot/duneboot.ml --replace 'ocaml_version >= (5, 0)' "true"
-            substituteInPlace src/ocaml-config/ocaml_config.ml --replace 'version >= (5, 0, 0)' "true"
-            substituteInPlace src/ocaml/version.ml --replace 'version >= (5, 0, 0)' "true"
+            substituteInPlace boot/bootstrap.ml --replace-fail 'v >= (5, 0, 0)' "true"
+            substituteInPlace boot/duneboot.ml --replace-fail 'ocaml_version >= (5, 0)' "true"
+            substituteInPlace src/ocaml-config/ocaml_config.ml --replace-fail 'version >= (5, 0, 0)' "true"
+            substituteInPlace src/ocaml/version.ml --replace-fail 'version >= (5, 0, 0)' "true"
           '';
         });
       });
