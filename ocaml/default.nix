@@ -2433,6 +2433,10 @@ with oself;
   });
   visitors = osuper.visitors.overrideAttrs (_: {
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
+    postPatch = ''
+      substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
+      substituteInPlace src/dune --replace-fail '(libraries result' "(libraries "
+    '';
   });
 
   vlq = buildDunePackage {
