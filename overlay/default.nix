@@ -111,7 +111,7 @@ in
     outputs = [ "out" ];
     postInstall = ''
       # Prevent a retained dependency on gcc-wrapper.
-      substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace-fail ${stdenv.cc}/bin/ld ld
+      substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace-warn ${stdenv.cc}/bin/ld ld
       if [ -z "''${dontDisableStatic:-}" ]; then
         # Remove static libraries in case dynamic are available.
         for i in $out/lib/*.a; do
