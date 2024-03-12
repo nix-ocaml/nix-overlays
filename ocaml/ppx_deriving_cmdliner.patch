@@ -1,0 +1,30 @@
+diff --git a/src/ppx_deriving_cmdliner_runtime.ml b/src/ppx_deriving_cmdliner_runtime.ml
+index bc65432..8a565b1 100644
+--- a/src/ppx_deriving_cmdliner_runtime.ml
++++ b/src/ppx_deriving_cmdliner_runtime.ml
+@@ -11,5 +11,5 @@ let rec map_bind f acc xs =
+   | x :: xs -> f x >>= fun x -> map_bind f (x :: acc) xs
+   | [] -> Result.Ok (List.rev acc)
+ 
+-type 'a error_or = ('a, string) Result.result
++type 'a error_or = ('a, string) result
+ 
+diff --git a/src/ppx_deriving_cmdliner_runtime.mli b/src/ppx_deriving_cmdliner_runtime.mli
+index 52bd19f..24e1076 100644
+--- a/src/ppx_deriving_cmdliner_runtime.mli
++++ b/src/ppx_deriving_cmdliner_runtime.mli
+@@ -1,4 +1,4 @@
+-type 'a error_or = ('a, string) Result.result
++type 'a error_or = ('a, string) result
+ 
+ val ( >>= ) : 'a error_or -> ('a -> 'b error_or) -> 'b error_or
+ val ( >|= ) : 'a error_or -> ('a -> 'b) -> 'b error_or
+@@ -11,8 +11,3 @@ module Int32 : (module type of Int32)
+ module Int64 : (module type of Int64)
+ module Nativeint : (module type of Nativeint)
+ module Array : (module type of Array)
+-module Result : sig
+-  type ('a, 'b) result = ('a, 'b) Result.result =
+-    | Ok of 'a
+-    | Error of 'b
+-end

@@ -513,8 +513,8 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta1/cohttp-6.0.0.beta1.tbz;
-      sha256 = "1q0b62in3aa7wsqzihml0rgal9ndwnygdlfhycxxhyabjl81gciv";
+      url = https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta2/cohttp-v6.0.0_beta2.tbz;
+      sha256 = "05xh4hvjy90mqslwd0q6sa2h99f0p7vb4cf0f911nhc0sn5yrv4h";
     };
     doCheck = false;
   };
@@ -1242,8 +1242,8 @@ with oself;
 
   mdx = osuper.mdx.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/releases/download/2.4.0/mdx-2.4.0.tbz;
-      sha256 = "0fkqm75jib2r2jv6m35nzmcrm0wzvlvlw373qz2qy47nxdrypq6x";
+      url = https://github.com/realworldocaml/mdx/releases/download/2.4.1/mdx-2.4.1.tbz;
+      sha256 = "04xg282dv9xrpcvav4fckrsxnfwmai1l73f9405fsgamrj8wqh0s";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
@@ -1269,10 +1269,10 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+  #   mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
   # src = builtins.fetchurl {
-  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.0/mirage-flow-4.0.0.tbz;
-  # sha256 = "0za8wkqg0szgxyxbc49i7mcg5yh6ab4b22zmlg444zzyff8z1b5f";
+  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz;
+  # sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
   # };
   # });
 
@@ -1360,6 +1360,13 @@ with oself;
     propagatedBuildInputs = [ trie ];
     postPatch = ''
       substituteInPlace src/dune --replace "result" ""
+    '';
+  });
+
+  morbig = osuper.morbig.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/jsonHelpers.ml --replace-fail \
+        "Ppx_deriving_yojson_runtime.Result." ""
     '';
   });
 
@@ -1938,17 +1945,43 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_deriving";
-      rev = "b4896214b0";
-      sha256 = "sha256-+HEpLltTLerHvZftOunRQgXkstUKNgJB2nKDBgD7hr8=";
+      # https://github.com/ocaml-ppx/ppx_deriving/pull/279 +
+      # https://github.com/ocaml-ppx/ppx_deriving/pull/277
+      rev = "43d5086e5bab76d7f06d5530fcc902bca884e76a";
+      hash = "sha256-gRq+VM6cNLIYdoEuaWDdmMsk8G5tX5Wyv5JvFhuOlEE=";
     };
+    patches = [
+      (fetchpatch {
+        name = "deriving.map.patch";
+        url = "https://github.com/ocaml-ppx/ppx_deriving/commit/6afd6ee2d4ed96365037aaa60e003084371a704e.patch";
+        hash = "sha256-m+MdRcDLqA2rBv/C6/ImNBCiuuBsgtMrlRp7hFitnds=";
+      })
+    ];
 
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
       ppxlib
       ppx_derivers
-      result
     ];
+  });
+
+  ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (o: {
+    patches = o.patches ++ [ ./ppx_deriving_cmdliner.patch ];
+    postPatch = ''
+      substituteInPlace src/dune --replace-fail "runtime result" "runtime"
+      substituteInPlace test/dune --replace-fail "alcotest result" "alcotest"
+    '';
+  });
+
+  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving_yojson";
+      # https://github.com/ocaml-ppx/ppx_deriving_yojson/pull/153
+      rev = "e47f749f153ad83b4944cae83e3e79f85b77e3dd";
+      hash = "sha256-REHrs1gVtBK7IY3x0lGdiqV8h5aQh/+dnv0fkz5gUi8=";
+    };
   });
 
   ppx_blob = disableTests osuper.ppx_blob;
@@ -2421,6 +2454,10 @@ with oself;
   });
   visitors = osuper.visitors.overrideAttrs (_: {
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
+    postPatch = ''
+      substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
+      substituteInPlace src/dune --replace-fail '(libraries result' "(libraries "
+    '';
   });
 
   vlq = buildDunePackage {
