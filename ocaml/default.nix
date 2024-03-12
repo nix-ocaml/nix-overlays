@@ -1940,9 +1940,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_deriving";
-      # https://github.com/ocaml-ppx/ppx_deriving/pull/279
-      rev = "5c6c528c8bbfe972f9750d8d075c895a9f525a3d";
-      hash = "sha256-Ynt4NFeIT9Oh3GCWLgPi3hB3y7Bi/8F2yfovtlRPSj0=";
+      # https://github.com/ocaml-ppx/ppx_deriving/pull/279 +
+      # https://github.com/ocaml-ppx/ppx_deriving/pull/277
+      rev = "43d5086e5bab76d7f06d5530fcc902bca884e76a";
+      hash = "sha256-gRq+VM6cNLIYdoEuaWDdmMsk8G5tX5Wyv5JvFhuOlEE=";
     };
 
     buildInputs = [ ];
