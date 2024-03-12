@@ -382,23 +382,6 @@ with oself;
 
   camlp5 = callPackage ./camlp5 { };
 
-  cpdf = osuper.cpdf.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "johnwhitington";
-      repo = "cpdf-source";
-      rev = "v2.7";
-      hash = "sha256-Tm+xvL2HNdQsD04I9eR9tLL0bs5Ls2q+IndLV/p9sHs=";
-    };
-  });
-  camlpdf = osuper.camlpdf.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "johnwhitington";
-      repo = "camlpdf";
-      rev = "v2.7";
-      hash = "sha256-SVmLWffB7GF+Bu0tj5fIvQVMRh6uV3u2G3rC4cVH2Gw=";
-    };
-  });
-
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "xavierleroy";
@@ -1181,15 +1164,6 @@ with oself;
       substituteInPlace src/dune --replace "ctypes.foreign" "ctypes-foreign"
     '';
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
-  });
-
-  linol = osuper.linol.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "c-cube";
-      repo = "linol";
-      rev = "bb92d7d73b721f8faf55b3518df5b4bc93250a4d";
-      hash = "sha256-WdtJ+Ixo3byXxfU14E4MRQbGZBzPjbyEI9XMC95QxXY=";
-    };
   });
 
   lmdb = buildDunePackage {
