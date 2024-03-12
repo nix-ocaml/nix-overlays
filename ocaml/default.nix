@@ -1940,6 +1940,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_deriving";
+      # https://github.com/ocaml-ppx/ppx_deriving/pull/279
       rev = "5c6c528c8bbfe972f9750d8d075c895a9f525a3d";
       hash = "sha256-Ynt4NFeIT9Oh3GCWLgPi3hB3y7Bi/8F2yfovtlRPSj0=";
     };
@@ -1949,8 +1950,17 @@ with oself;
       findlib
       ppxlib
       ppx_derivers
-      result
     ];
+  });
+
+  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving_yojson";
+      # https://github.com/ocaml-ppx/ppx_deriving_yojson/pull/153
+      rev = "e47f749f153ad83b4944cae83e3e79f85b77e3dd";
+      hash = "sha256-REHrs1gVtBK7IY3x0lGdiqV8h5aQh/+dnv0fkz5gUi8=";
+    };
   });
 
   ppx_blob = disableTests osuper.ppx_blob;
