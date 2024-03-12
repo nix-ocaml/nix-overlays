@@ -1952,6 +1952,13 @@ with oself;
       rev = "43d5086e5bab76d7f06d5530fcc902bca884e76a";
       hash = "sha256-gRq+VM6cNLIYdoEuaWDdmMsk8G5tX5Wyv5JvFhuOlEE=";
     };
+    patches = [
+      (fetchpatch {
+        name = "deriving.map.patch";
+        url = "https://github.com/ocaml-ppx/ppx_deriving/commit/6afd6ee2d4ed96365037aaa60e003084371a704e.patch";
+        hash = "sha256-m+MdRcDLqA2rBv/C6/ImNBCiuuBsgtMrlRp7hFitnds=";
+      })
+    ];
 
     buildInputs = [ ];
     propagatedBuildInputs = [
