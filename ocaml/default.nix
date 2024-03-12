@@ -795,6 +795,13 @@ with oself;
     };
   });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/eio/releases/download/v1.0/eio-1.0.tbz;
+      sha256 = "0bclc575czcvcsn9h92sp28cyqd22c5s4lk666gxwgcblffhs9ns";
+    };
+  });
+
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
