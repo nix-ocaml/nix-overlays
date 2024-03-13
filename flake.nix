@@ -37,7 +37,7 @@
               config = {
                 allowUnfree = true;
               } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
-                config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
+                replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
               };
             } // attrs);
           in
