@@ -30,12 +30,6 @@ let
     (if !(ocaml-ng ? "ocamlPackages_trunk") then {
       ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
-          src = super.fetchFromGitHub {
-            owner = "ocaml";
-            repo = "ocaml";
-            rev = "4.14.2-rc1";
-            hash = "sha256-QZiPaYY66kkhn9xO60LFHDaT76kAvkNIgNT+G17YJrM=";
-          };
           hardeningDisable = [ "strictoverflow" ];
         });
       });
