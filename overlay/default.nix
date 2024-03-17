@@ -67,11 +67,11 @@ in
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq = (self.postgresql_16.override {
-    systemd = null;
-    libkrb5 = null;
     systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
+    lz4 = self.lz4-oc;
+    zstd = self.zstd-oc;
   }).overrideAttrs (o: {
     doCheck = false;
     configureFlags = [
@@ -85,22 +85,22 @@ in
       "--enable-debug"
       "--with-icu"
       "--with-lz4"
+      "--with-zstd"
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
-    ] ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ];
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
+    ++ lib.optionals stdenv.isLinux [ "--with-pam" ];
 
-    patches = [
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/disable-normalize_exec_path.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/less-is-more.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/hardcode-pgxs-path.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/specify_pkglibdir_at_runtime.patch"
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/findstring.patch"
-      (super.substituteAll {
-        src = "${nixpkgs}/pkgs/servers/sql/postgresql/patches/locale-binary-path.patch";
-        locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
-      })
-    ] ++ lib.optionals stdenv.isLinux [
-      "${nixpkgs}/pkgs/servers/sql/postgresql/patches/socketdir-in-run-13.patch"
-    ];
+    buildInputs = with self; [
+      zlib-oc
+      libxml2
+      icu
+      libxcrypt
+      lz4
+      zstd
+    ]
+    ++ lib.optionals stdenv.isLinux [ linux-pam ]
+    ++ lib.optionals (!stdenv.isDarwin) [ libossp_uuid ];
 
     propagatedBuildInputs = [ self.openssl-oc.dev ];
     # Use a single output derivation. The upstream PostgreSQL derivation
