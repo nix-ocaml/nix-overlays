@@ -69,7 +69,7 @@ in
   libpq = (self.postgresql_16.override {
     systemd = null;
     libkrb5 = null;
-    enableSystemd = false;
+    systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
   }).overrideAttrs (o: {
@@ -95,7 +95,7 @@ in
       "${nixpkgs}/pkgs/servers/sql/postgresql/patches/specify_pkglibdir_at_runtime.patch"
       "${nixpkgs}/pkgs/servers/sql/postgresql/patches/findstring.patch"
       (super.substituteAll {
-        src = "${nixpkgs}/pkgs/servers/sql/postgresql/locale-binary-path.patch";
+        src = "${nixpkgs}/pkgs/servers/sql/postgresql/patches/locale-binary-path.patch";
         locale = "${if stdenv.isDarwin then super.darwin.adv_cmds else lib.getBin stdenv.cc.libc}/bin/locale";
       })
     ] ++ lib.optionals stdenv.isLinux [
