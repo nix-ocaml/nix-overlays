@@ -2284,12 +2284,6 @@ with oself;
     };
   });
 
-  tyxml = osuper.tyxml.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/tyxml/releases/download/4.6.0/tyxml-4.6.0.tbz;
-      sha256 = "1p82r68lxk6wzxihzd620a6kzp27vn548j2cr970l4jfdcy6gsxz";
-    };
-  });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
