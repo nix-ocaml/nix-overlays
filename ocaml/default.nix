@@ -620,6 +620,16 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   };
 
+  digestif = osuper.digestif.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/digestif/releases/download/v1.2.0/digestif-1.2.0.tbz;
+      sha256 = "0255nb9wjpkdh9v0w9p5y5s79zcqcdg3wsw0cx9nd6i7zv56h0f3";
+    };
+    postPatch = ''
+      rm -rf fuzz
+    '';
+  });
+
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-multicore/domainslib/releases/download/0.5.1/domainslib-0.5.1.tbz;
@@ -1955,8 +1965,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "953398a914e6d23a0e21af5d73c70da306eec188";
-            hash = "sha256-lneDADEkokj7CDjJc3CiZpp49xNzx1xV7lBjisO3oeE=";
+            rev = "d7c5971884a9f4659daf87f3cab992fe5cbdc9fe";
+            hash = "sha256-K+xPZLbcvw52ingt/7w1LfwvSdskSVTNwtBEfX7Tdfw=";
           } else
         builtins.fetchurl {
           url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
@@ -2420,8 +2430,8 @@ with oself;
 
   zmq = osuper.zmq.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/issuu/ocaml-zmq/releases/download/5.2.2/zmq-5.2.2.tbz;
-      sha256 = "0qgzdnk99xrd842g4f6na5djygf5fli2sfjn1ppqar7ma1m4xdqk";
+      url = https://github.com/issuu/ocaml-zmq/releases/download/5.3.0/zmq-5.3.0.tbz;
+      sha256 = "1a7vfnq8jhrk08jar5406m7wfahwankc1k71cy3zbvrnb2cl5sxm";
     };
   });
 } // janeStreet // (
