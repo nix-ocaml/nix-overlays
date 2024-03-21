@@ -1207,14 +1207,6 @@ with oself;
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
 
-  mdx = osuper.mdx.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/realworldocaml/mdx/releases/download/2.4.1/mdx-2.4.1.tbz;
-      sha256 = "04xg282dv9xrpcvav4fckrsxnfwmai1l73f9405fsgamrj8wqh0s";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
-  });
-
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
