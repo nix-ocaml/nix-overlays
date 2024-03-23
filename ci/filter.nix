@@ -143,6 +143,7 @@ let
     "z3"
     "zelus"
     "zelus-gtk"
+    "cohttp-eio"
     "eio_posix"
     "eio_main"
     "gluten-eio"
