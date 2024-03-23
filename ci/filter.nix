@@ -7,14 +7,9 @@ let
     "config-file"
     "erm_xmpp"
     "ulex"
-    "lablgl"
 
     # dune.configurator issue
     "google-drive-ocamlfuse"
-
-    # linking issues?
-    "mariadb"
-    "caqti-driver-mariadb"
 
     # graphql incompatible
     "irmin-graphql"
@@ -74,9 +69,6 @@ let
     "pythonlib"
     "magic-trace"
 
-    # Old mirage-kv interface
-    "mirage-fs"
-
     # too old ocamlformat versions
     "ocamlformat_0_19_0"
     "ocamlformat_0_20_0"
@@ -89,40 +81,21 @@ let
     # Incompatible with omd 2.0
     "sail"
 
-    # Incompatible with EIO v0.12
-    "cohttp-eio"
-
     # Incompatible with ppxlib >= 0.31
     "vcaml"
-
-    # Incompatible with tyxml 4.6
-    "tyxml-lwd"
-
-    "linol"
-    "linol-lwt"
 
     # Doesn't build on 4.14. Re-enable when we remove 4.14
     "asai"
 
     "torch"
 
-    "bonsai"
-    "incr_dom_interactive"
-    "incr_dom"
-    "incr_dom_sexp_form"
-    "incr_dom_partial_render"
-    "vg"
-    "memtrace_viewer"
-
     "binaryen"
   ];
 
   ocaml5Ignores = [
     "erm_xml"
-    "fontconfig"
     "gapi-ocaml"
     "lastfm"
-    "ocaml_expat"
     "ocaml_oasis"
     "ocamlify"
     "ocp-build"
