@@ -122,6 +122,7 @@ let
     "fontconfig"
     "gapi-ocaml"
     "lastfm"
+    "memprof-limits"
     "ocaml_expat"
     "ocaml_oasis"
     "ocamlify"
