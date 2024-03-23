@@ -1437,7 +1437,9 @@ with oself;
   });
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
-    enableParallelBuilding = true;
+    buildPhase = ''
+      make defaultentry -j$NIX_BUILD_CORES
+    '';
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
