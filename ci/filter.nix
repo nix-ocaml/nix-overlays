@@ -96,6 +96,7 @@ let
     "erm_xml"
     "gapi-ocaml"
     "lastfm"
+    "memprof-limits"
     "ocaml_oasis"
     "ocamlify"
     "ocp-build"
