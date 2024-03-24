@@ -1211,6 +1211,18 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
+  memprof-limits = buildDunePackage {
+    pname = "memprof-limits";
+    version = "0.2.1";
+    src = fetchFromGitLab {
+      owner = "gadmm";
+      repo = "memprof-limits";
+      rev = "v0.2.1";
+      hash = "sha256-Pmuln5TihPoPZuehZlqPfERif6lf7O+0454kW9y3aKc=";
+    };
+    doCheck = true;
+  };
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
@@ -1438,12 +1450,19 @@ with oself;
     '';
   });
 
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.5/ocaml-version-3.6.5.tbz;
+      sha256 = "1lnzz7m0g8zc4kx11acf7x7v6zkl403x760hjwdddksw8abzcww4";
+    };
+  });
+
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ocamlformat";
-      rev = "910dbf336b0932ca4226ecccf651adfd832322a6";
-      hash = "sha256-O837yyVCCjBP225PAd/jA4Aa92PL4hwdsgpOFQ6kPUk=";
+      rev = "6ce00bf1ac5faa8b8e56dc1c08c693b50529a72a";
+      hash = "sha256-QiOQSVgRHQEKCFL4h8jz5joOCuBa9cKXGyQNE/r51M0=";
     };
   });
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
@@ -1630,9 +1649,11 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/odoc/releases/download/2.4.0/odoc-2.4.0.tbz;
-      sha256 = "17cmcgw9x1akx6a185zjdr2469hia425nsvp6lsxc6zy29pwclps";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "ab233d0ddd878a5278bff353475a8fc20868307a";
+      hash = "sha256-PGc8Kk131tfdCpQwOtPKz8Zhpx5Tn/rOxfckQ+VZh6E=";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
