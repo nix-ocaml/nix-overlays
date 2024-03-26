@@ -1016,13 +1016,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.1/js_of_ocaml-5.7.1.tbz;
-      sha256 = "0g9q21rggn4ggdifinhlfl74xdblyqzhkyi5y9icaklhm0m8x90f";
-    };
-  });
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if (lib.versionOlder "5.2" ocaml.version) then
@@ -2221,13 +2214,6 @@ with oself;
     src = builtins.fetchurl {
       url = https://github.com/craigfe/progress/releases/download/0.2.2/progress-0.2.2.tbz;
       sha256 = "1d8h87xkslsh4khfa3wlcz1p55gmh4wyrafgnnsxc7524ccw4h9k";
-    };
-  });
-
-  topkg = osuper.topkg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://erratique.ch/software/topkg/releases/topkg-1.0.6.tbz;
-      sha256 = "11ycfk0prqvifm9jca2308gw8a6cjb1hqlgfslbji2cqpan09kpq";
     };
   });
 
