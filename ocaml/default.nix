@@ -1237,7 +1237,7 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  #   mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
   # src = builtins.fetchurl {
   # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz;
   # sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
@@ -1977,8 +1977,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "d7c5971884a9f4659daf87f3cab992fe5cbdc9fe";
-            hash = "sha256-K+xPZLbcvw52ingt/7w1LfwvSdskSVTNwtBEfX7Tdfw=";
+            rev = "04e050cbe2cf3e5cdb4441c480e4f472a5033941";
+            hash = "sha256-+qMxLVWgltXKackhZGHm21XPJukAbKFtvU1wgk97fCs=";
           } else
         builtins.fetchurl {
           url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
@@ -2200,6 +2200,13 @@ with oself;
     ];
   };
 
+  tcpip = osuper.tcpip.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-tcpip/releases/download/v8.0.1/tcpip-8.0.1.tbz;
+      sha256 = "138x60gld826anpgscnwyqjb5w516pszbx0dxbkazhjgk1prggjv";
+    };
+  });
+
   textmate-language = buildDunePackage {
     pname = "textmate-language";
     version = "0.3.4";
@@ -2226,6 +2233,10 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.4/tls-0.17.4.tbz;
+      sha256 = "0gx4w4ypcjfpdnld43l1p91f4q0mh5nc0gj96vjf1ynzf44jk932";
+    };
     propagatedBuildInputs = [
       cstruct
       domain-name
