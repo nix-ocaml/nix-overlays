@@ -90,6 +90,10 @@ let
     "torch"
 
     "binaryen"
+
+    # doesn't work with tls >= 0.17.4
+    "sendmail"
+    "sendmail-lwt"
   ];
 
   ocaml5Ignores = [
