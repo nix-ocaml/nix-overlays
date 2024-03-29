@@ -34,29 +34,11 @@ let
         });
       });
 
-      ocamlPackages_5_2 = newOCamlScope {
-        major_version = "5";
-        minor_version = "2";
-        patch_version = "0~beta1";
-        hardeningDisable = [ "strictoverflow" ];
-        src = super.fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml";
-          rev = "5.2.0-beta1";
-          hash = "sha256-VfHjckJImGBlxl0jI2FkBcKd35vyCmjtD17MQNRBLl8=";
-        };
-
-        buildPhase = ''
-          runHook preBuild
-          make world -j -j$NIX_BUILD_CORES
-
-          # Bootstrapping currently causes "dllunixbyt.so" can't be found
-          # make bootstrap
-
-          make world.opt -j -j$NIX_BUILD_CORES
-          runHook postBuild
-        '';
-      };
+      ocamlPackages_5_2 = ocaml-ng.ocamlPackages_5_2.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          hardeningDisable = [ "strictoverflow" ];
+        });
+      });
 
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
