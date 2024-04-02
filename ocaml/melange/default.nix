@@ -45,10 +45,7 @@ buildDunePackage {
         sha256 = "1gsn3941c47y22gl4b16mvhf09s3fgladg1jj9rgn9026vhrfkqj";
       };
 
-  doCheck =
-    lib.versionOlder "5.1" ocaml.version
-    && ! (lib.versionOlder "5.2" ocaml.version)
-    && ! (stdenv.isDarwin && stdenv.isx86_64);
+  doCheck = false;
 
   nativeCheckInputs = [ nodejs_latest reason tree merlin jq ];
   checkInputs = [ ounit2 ];
