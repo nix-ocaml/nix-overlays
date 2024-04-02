@@ -682,6 +682,7 @@ with oself;
   });
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
+    buildInputs = [ ];
     propagatedBuildInputs = [ pp ];
     inherit (dyn) preBuild;
   });
@@ -984,8 +985,8 @@ with oself;
     pname = "iostream";
     version = "0.1";
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/ocaml-iostream/releases/download/v0.1/iostream-0.1.tbz;
-      sha256 = "0gipllhlzd9xzhy4xkvxg8qnpdcd013knyhfc64cx83vzv0f0v98";
+      url = https://github.com/c-cube/ocaml-iostream/releases/download/v0.2.1/iostream-0.2.1.tbz;
+      sha256 = "1a8m2r9dxs6d1m0wghsmahgkn95bs8yhvgl6x48byijxfn7l7k89";
     };
   };
 
@@ -1594,12 +1595,10 @@ with oself;
 
   ocplib-simplex = buildDunePackage {
     pname = "ocplib-simplex";
-    version = "dev";
-    src = fetchFromGitHub {
-      owner = "ocamlpro";
-      repo = "ocplib-simplex";
-      rev = "eac35128d5ab4f48af4b972cd77cd9257a250db5";
-      hash = "sha256-OAU7JXGlLJYhsaOdZJbHHn63AYBSyTmG/jYXxZ5hjXI=";
+    version = "0.5.1";
+    src = builtins.fetchurl {
+      url = https://github.com/OCamlPro/ocplib-simplex/releases/download/v0.5.1/ocplib-simplex-0.5.1.tbz;
+      sha256 = "1kqkslhka5r07nm53cspghpb818bi0gb5i9pbm90rrhq9nz19j55";
     };
 
     propagatedBuildInputs = [ logs ];
@@ -2454,6 +2453,19 @@ with oself;
       sha256 = "1a7vfnq8jhrk08jar5406m7wfahwankc1k71cy3zbvrnb2cl5sxm";
     };
   });
+
+  zstd = buildDunePackage {
+    pname = "zstd";
+    version = "0.4";
+    src = builtins.fetchurl {
+      url = https://github.com/ygrek/ocaml-zstd/releases/download/v0.4/zstd-0.4.tbz;
+      sha256 = "0481m7rfk21n1wxqnczbpfmqkh8qky9wgvs9pl24xscmw91qd5n1";
+    };
+    nativeBuildInputs = [ pkg-config ];
+    propagatedBuildInputs = [ integers ctypes zstd-oc ];
+    doCheck = true;
+    checkInputs = [ extlib ];
+  };
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub; })
