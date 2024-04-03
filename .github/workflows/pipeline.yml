@@ -39,6 +39,18 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+      - name: Maximize disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v26
         with:
