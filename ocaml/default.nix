@@ -89,6 +89,7 @@ let
       lib
       kerberos
       linuxHeaders
+      nixpkgs
       pam
       net-snmp;
     zstd = zstd-oc;
@@ -1448,13 +1449,6 @@ with oself;
     '';
   });
 
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.5/ocaml-version-3.6.5.tbz;
-      sha256 = "1lnzz7m0g8zc4kx11acf7x7v6zkl403x760hjwdddksw8abzcww4";
-    };
-  });
-
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
@@ -1887,9 +1881,6 @@ with oself;
   ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
     postPatch = ''
-      substituteInPlace src/internal/ppxc__script_real.ml \
-        --replace-fail "C_content_make ()" "C_content_make (struct end)"
-
       ${lib.optionalString (lib.versionOlder "5.2" ocaml.version) ''
         substituteInPlace src/custom/ppx_cstubs_custom.cppo.ml \
         --replace-fail "init_code fun_code" "init_code" \
@@ -1973,7 +1964,7 @@ with oself;
     then null
     else osuper.ppx_tools;
 
-  ppxlib = osuper.ppxlib.overrideAttrs (_: {
+  ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src =
       if lib.versionAtLeast osuper.ocaml.version "5.2" then
         fetchFromGitHub
@@ -1983,10 +1974,7 @@ with oself;
             rev = "04e050cbe2cf3e5cdb4441c480e4f472a5033941";
             hash = "sha256-+qMxLVWgltXKackhZGHm21XPJukAbKFtvU1wgk97fCs=";
           } else
-        builtins.fetchurl {
-          url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.0/ppxlib-0.32.0.tbz;
-          sha256 = "0as2an2i9ygfbvswypqh165a664chd1j4yi5npp24pw9rwycfz2h";
-        };
+        o.src;
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
