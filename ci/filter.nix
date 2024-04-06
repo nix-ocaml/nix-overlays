@@ -81,9 +81,6 @@ let
     # Incompatible with omd 2.0
     "sail"
 
-    # Incompatible with ppxlib >= 0.31
-    "vcaml"
-
     # Doesn't build on 4.14. Re-enable when we remove 4.14
     "asai"
 
