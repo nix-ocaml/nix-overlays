@@ -2184,6 +2184,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "stdcompat";
+      # https://github.com/thierry-martinez/stdcompat/pull/33
       rev = "5d494d719c103c97ba24d3c402edc31a71c64228";
       hash = "sha256-2cRb9PKoq71K7bhG/MRaEI9nNgFeyY0G2quf5vKQw0M=";
     };
