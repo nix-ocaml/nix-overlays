@@ -1213,7 +1213,11 @@ with oself;
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
 
-  mdx = osuper.mdx.overrideAttrs (o: {
+  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    # Break the attempt to reduce `mdx`'s closure size by adding a different
+    # `logs` override, which breaks anything that uses logs (with OCaml package
+    # conflicts)
+    # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 

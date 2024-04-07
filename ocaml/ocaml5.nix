@@ -83,7 +83,7 @@ with oself;
     propagatedBuildInputs = [ either ];
     doCheck = true;
     nativeCheckInputs = [ mdx ];
-    checkInputs = [ qcheck-core trace trace-tef ];
+    checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
 
   multicore-magic = buildDunePackage {
