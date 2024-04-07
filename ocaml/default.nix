@@ -2180,6 +2180,19 @@ with oself;
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
+  stdcompat = osuper.stdcompat.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "thierry-martinez";
+      repo = "stdcompat";
+      rev = "5d494d719c103c97ba24d3c402edc31a71c64228";
+      hash = "sha256-2cRb9PKoq71K7bhG/MRaEI9nNgFeyY0G2quf5vKQw0M=";
+    };
+    postPatch = ''
+      substituteInPlace dune --replace-fail "%{configure}" "./configure" \
+      --replace-fail "(universe)" "(source_tree .)"
+    '';
+  });
+
   stdlib-random = buildDunePackage {
     pname = "stdlib-random";
     version = "1.1.0";
