@@ -986,8 +986,8 @@ with oself;
     pname = "iostream";
     version = "0.1";
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/ocaml-iostream/releases/download/v0.2.1/iostream-0.2.1.tbz;
-      sha256 = "1a8m2r9dxs6d1m0wghsmahgkn95bs8yhvgl6x48byijxfn7l7k89";
+      url = https://github.com/c-cube/ocaml-iostream/releases/download/v0.2.2/iostream-0.2.2.tbz;
+      sha256 = "17c2wg6cyhi030vw922p3h6z525h5x2amz2lij6gx96c1zr2a9vd";
     };
   };
 
@@ -1021,6 +1021,13 @@ with oself;
   };
 
   jose = callPackage ./jose { };
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.2/js_of_ocaml-5.7.2.tbz;
+      sha256 = "0g3rczk8h0vll0m97lhw9zk2siks5pdg2rkbby7vciggvd40fvyp";
+    };
+  });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
@@ -1358,13 +1365,11 @@ with oself;
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/mrmime/releases/download/v0.6.0/mrmime-0.6.0.tbz;
-      sha256 = "1349cnk9cp3xnlmgdvr31lsp177a8nmcc5cky2hvjdzf9zgqjvh5";
+      url = https://github.com/mirage/mrmime/releases/download/v0.6.1/mrmime-0.6.1.tbz;
+      sha256 = "05mh0avl2w8n3mkiax62iqjwf2001rg6qvl7ri499fzk2gpjnfqg";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
-
-    # https://github.com/mirage/mrmime/issues/91
-    doCheck = !lib.versionAtLeast ocaml.version "5.0";
+    doCheck = true;
   });
 
   # Upstream keeps mtime_1 but we've moved past that need
@@ -1800,8 +1805,24 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
+  patch = buildDunePackage {
+    pname = "patch";
+    version = "2.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/hannesm/patch/releases/download/v2.0.0/patch-2.0.0.tbz;
+      sha256 = "0n75k3pjj4a9a8y7rxjlscjv15sy3chkibaqfdalr7fpr59lprdh";
+    };
+    doCheck = true;
+    checkInputs = [ alcotest ];
+  };
+
   # These require crowbar which is still not compatible with newer cmdliner.
-  pecu = disableTests osuper.pecu;
+  pecu = osuper.pecu.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/pecu/releases/download/v0.7/pecu-0.7.tbz;
+      sha256 = "0y6pkz7bl63rhlhgdaizlkx4xnak95l6f02468yd6a34n6spfx5d";
+    };
+  });
 
   pg_query = callPackage ./pg_query { };
 
@@ -1948,14 +1969,19 @@ with oself;
     };
   });
 
-  ppx_blob = disableTests osuper.ppx_blob;
+  ppx_blob = osuper.ppx_blob.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/johnwhitington/ppx_blob/releases/download/0.8.0/ppx_blob-0.8.0.tbz;
+      sha256 = "0kwpn0l9sgisxd3h94225n0nys7iyizhkyd3vpddya8k0cbipfkn";
+    };
+  });
 
   ppx_import = osuper.ppx_import.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_import";
-      rev = "c9df42cfaa35b9c3a5190d0c6afd8ea90a0017b1";
-      sha256 = "sha256-mbjWCpmhWU3nM2vPbXF2n7bLLsxp+Ft8P/w6f3vsWyI=";
+      rev = "70c3120f3348b01a929873040fb589137655c6d7";
+      hash = "sha256-qZ3f9N9Ixty7MaTmsYkmBI/SfmGoKwTIKO11LABMYrg=";
     };
   });
 
@@ -2258,6 +2284,14 @@ with oself;
     checkPhase = "dune runtest --profile=release";
   });
 
+  trace = osuper.trace.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/ocaml-trace/releases/download/v0.7/trace-0.7.tbz;
+      sha256 = "0fckj3agx35smqpfq2vcn3zj3hghp682g22rjrn56j8bnclvxl7b";
+    };
+    propagatedBuildInputs = [ mtime ];
+  });
+
   tsdl = osuper.tsdl.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace _tags --replace-fail "ctypes.foreign" "ctypes-foreign"
@@ -2322,7 +2356,12 @@ with oself;
     propagatedBuildInputs = [ ctypes integers ];
   });
 
-  unstrctrd = disableTests osuper.unstrctrd;
+  unstrctrd = osuper.unstrctrd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dinosaure/unstrctrd/releases/download/v0.4/unstrctrd-0.4.tbz;
+      sha256 = "090q28jynppia69n17lklr2m7bwy5kdzbgg75yaqx67amj39p2in";
+    };
+  });
 
   uring = osuper.uring.overrideAttrs (_: {
     postPatch = ''

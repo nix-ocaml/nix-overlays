@@ -61,15 +61,29 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
+  miou = buildDunePackage {
+    pname = "miou";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/robur-coop/miou/releases/download/v0.1.0/miou-0.1.0.tbz;
+      sha256 = "04d66vbfw3hwx50dwk42256w1nk8f2aj21m7q3s5zkzqv0pklfsr";
+    };
+    doCheck = true;
+    checkInputs = [ dscheck fmt ];
+  };
+
   moonpool = buildDunePackage {
     pname = "moonpool";
-    version = "0.4";
+    version = "0.6";
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/moonpool/releases/download/v0.4/moonpool-0.4.tbz;
-      sha256 = "0zzmgp9dib1aqkpfqhypikv5jvqva3bnv6sh969ms6psblrxqkkg";
+      url = https://github.com/c-cube/moonpool/releases/download/v0.6/moonpool-0.6.tbz;
+      sha256 = "0cvnbv30nmpv7zpq9vfa3sz5wi1wxqm578mnga6blyx3h9f0kz9y";
     };
 
     propagatedBuildInputs = [ either ];
+    doCheck = true;
+    nativeCheckInputs = [ mdx ];
+    checkInputs = [ qcheck-core trace trace-tef ];
   };
 
   multicore-magic = buildDunePackage {

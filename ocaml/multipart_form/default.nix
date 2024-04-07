@@ -23,18 +23,18 @@
 
 let
   upstream_src = builtins.fetchurl {
-    url = https://github.com/dinosaure/multipart_form/releases/download/v0.4.1/multipart_form-0.4.1.tbz;
-    sha256 = "1ns0ans9kd983pcp6rsqrv3aahglm6j7gff0q9rk5if4zvk8w9in";
+    url = https://github.com/dinosaure/multipart_form/releases/download/v0.5.0/multipart_form-0.5.0.tbz;
+    sha256 = "0r4am2ba59kp61my6lifc436wxmnizxwsb6k7cdvlwr81qf6r8x8";
   };
   upstream_version = "0.4.1";
 
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "multipart_form";
-    rev = "958ada0c";
-    sha256 = "sha256-UliFmumgJnzHnrMntXPjcGkta9YtFqMzulNGBU3h6vs=";
+    rev = "06a86ad395a4f09cdf1ac4fd1f15993521e7ac47";
+    hash = "sha256-+bkJbwwLbYL3CTSSv6XxTaYGRRe3rlPTYRxeh1l4cXk=";
   };
-  version = "0.1.0-dev";
+  version = "0.5.0-dev";
 
 in
 
@@ -61,7 +61,7 @@ buildDunePackage {
     faraday
   ];
 
-  doCheck = ! lib.versionOlder "5.2" ocaml.version;
+  doCheck = !upstream;
 
   checkInputs = [ alcotest rosetta ];
 }
