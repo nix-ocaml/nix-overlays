@@ -63,9 +63,6 @@ in
 
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.unstable;
-  nix-eval-jobs = super.nix-eval-jobs.override {
-    nix = super.nixVersions.unstable;
-  };
 
 
   # Other packages
