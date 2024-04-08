@@ -61,6 +61,9 @@ in
       riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
     };
 
+  # Override `pkgs.nix` to the unstable channel
+  nix = super.nixVersions.unstable;
+
 
   # Other packages
 
