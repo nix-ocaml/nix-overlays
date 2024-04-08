@@ -25,7 +25,7 @@ fi
 exit_code=0
 error=0
 
-for job in $(nix run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
+for job in $(nix run .#nix -- run .#nix-eval-jobs -- "${args[@]}" | jq -r '. | @base64'); do
   job=$(echo "$job" | base64 -d)
   attr=$(echo "$job" | jq -r .attr)
   cached=$(echo "$job" | jq -r .isCached)
