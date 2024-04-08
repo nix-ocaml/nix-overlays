@@ -145,19 +145,7 @@ let
     "z3"
     "zelus"
     "zelus-gtk"
-    "cohttp-eio"
-    "gluten-eio"
-    "h2-eio"
-    "httpaf-eio"
-    "piaf"
-    "carl"
-    "lambda-runtime"
-    "websocketaf-eio"
-    "caqti-eio"
-    "ppx_rapper_eio"
     "ocamlfuse"
-    "graphql-eio"
-    "vercel"
   ];
 in
 
