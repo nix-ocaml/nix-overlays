@@ -25,6 +25,7 @@
 , llvmPackages
 , lz4-oc
 , net-snmp
+, nodejs_latest
 , pcre-oc
 , sqlite-oc
 , makeWrapper
@@ -2185,12 +2186,11 @@ with oself;
       owner = "thierry-martinez";
       repo = "stdcompat";
       # https://github.com/thierry-martinez/stdcompat/pull/33
-      rev = "5d494d719c103c97ba24d3c402edc31a71c64228";
-      hash = "sha256-2cRb9PKoq71K7bhG/MRaEI9nNgFeyY0G2quf5vKQw0M=";
+      rev = "325f99bc19cf4dc9720f7fdd3d4574bbb5487791";
+      hash = "sha256-mux/KoFyWX2sTOHhy6//TRBkBz2GjKv/dF8nGsIr94o=";
     };
     postPatch = ''
-      substituteInPlace dune --replace-fail "%{configure}" "./configure" \
-      --replace-fail "(universe)" "(source_tree .)"
+      substituteInPlace dune --replace-fail "(universe)" "(universe) (source_tree .)"
     '';
   });
 
@@ -2513,7 +2513,7 @@ with oself;
   };
 } // janeStreet // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub; })
+  then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub nodejs_latest; })
   else { }
 ) // (
   if # No version supported on 5.0

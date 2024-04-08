@@ -1,4 +1,4 @@
-{ darwin, fetchFromGitHub, oself, osuper }:
+{ darwin, fetchFromGitHub, nodejs_latest, oself, osuper }:
 
 with oself;
 
@@ -86,6 +86,20 @@ with oself;
     checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
 
+  multicore-bench = buildDunePackage {
+    pname = "multicore-bench";
+    version = "0.1.2";
+    src = builtins.fetchurl {
+      url =
+        https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz;
+      sha256 = "1cj3wvawk4rxbgcy1cj3pj421jafg5xz18ff93wa1040cz01c975";
+    };
+    propagatedBuildInputs = [ yojson mtime domain-local-await multicore-magic ];
+    doCheck = true;
+    nativeCheckInputs = [ mdx ];
+    checkInputs = [ backoff mdx ];
+  };
+
   multicore-magic = buildDunePackage {
     pname = "multicore-magic";
     version = "2.0.0";
@@ -97,6 +111,37 @@ with oself;
 
   piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
+
+  picos = buildDunePackage {
+    pname = "picos";
+    version = "0.1.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-multicore/picos/releases/download/0.1.0/picos-0.1.0.tbz;
+      sha256 = "0x269asidq7lzkfx39zbd8z745asfal3cb4g727wc9yivmkwqb8g";
+    };
+    propagatedBuildInputs = [
+      multicore-magic
+      backoff
+      thread-local-storage
+      mtime
+      psq
+    ];
+
+    doCheck = true;
+    nativeCheckInputs = [ mdx nodejs_latest js_of_ocaml ];
+    checkInputs = [
+      multicore-bench
+      alcotest
+      qcheck-core
+      qcheck-stm
+      qcheck-multicoretests-util
+      mdx
+      ocaml-version
+      domain_shims
+      js_of_ocaml
+      dscheck
+    ];
+  };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
 
@@ -110,6 +155,15 @@ with oself;
     };
 
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
+  };
+
+  thread-local-storage = buildDunePackage {
+    pname = "thread-local-storage";
+    version = "0.1";
+    src = builtins.fetchurl {
+      url = https://github.com/c-cube/thread-local-storage/releases/download/v0.1/thread-local-storage-0.1.tbz;
+      sha256 = "1bk702faacqgwsx96yx9pgkikbxd1nk5xilix3mrg5l9v04gkbbj";
+    };
   };
 
   tls-eio = buildDunePackage {
