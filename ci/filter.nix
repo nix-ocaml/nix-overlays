@@ -146,8 +146,6 @@ let
     "zelus"
     "zelus-gtk"
     "cohttp-eio"
-    "eio_posix"
-    "eio_main"
     "gluten-eio"
     "h2-eio"
     "httpaf-eio"
