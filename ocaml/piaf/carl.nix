@@ -1,5 +1,6 @@
 { lib
 , stdenv
+, overrideSDK
 , static ? false
 , piaf
 , ocaml
@@ -11,7 +12,11 @@
 , fmt
 }:
 
-stdenv.mkDerivation {
+let
+  stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
+in
+
+stdenv'.mkDerivation {
   name = "carl";
   version = "0.0.1-dev";
   inherit (piaf) src;
