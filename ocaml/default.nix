@@ -362,7 +362,9 @@ with oself;
     };
   });
 
-  charInfo_width = osuper.charInfo_width.overrideAttrs (_: {
+  charInfo_width = buildDunePackage {
+    pname = "charInfo_width";
+    version = "2.0.0";
     src = fetchFromGitHub {
       owner = "kandu";
       repo = "charInfo_width";
@@ -374,7 +376,7 @@ with oself;
       substituteInPlace src/dune --replace-fail "result" ""
       substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
     '';
-  });
+  };
 
   camomile = osuper.camomile.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams dune-site ];
