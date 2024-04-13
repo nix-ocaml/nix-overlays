@@ -64,12 +64,11 @@ in
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.unstable;
 
-
   # Other packages
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (self.postgresql_16.override {
+  libpq = (super.postgresql_16.override {
     systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
@@ -146,7 +145,7 @@ in
     ocamlPackages = self.ocaml-ng.ocamlPackages_4_14;
   };
 
-  h2spec = self.buildGoModule {
+  h2spec = super.buildGoModule {
     pname = "h2spec";
     version = "dev";
 

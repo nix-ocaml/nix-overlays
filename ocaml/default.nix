@@ -674,8 +674,8 @@ with oself;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.15.0_alpha2/dune-3.15.0.alpha2.tbz;
-      sha256 = "0nlb5am27c754q71xwhbspk4ya7j6bqd1xlgq6pbmb44vs0jvj69";
+      url = https://github.com/ocaml/dune/releases/download/3.15.0/dune-3.15.0.tbz;
+      sha256 = "1mr0g574qza8a61ayz18yidbb0b3sm10jkzwaspvyj30dw7x3hxm";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -1338,8 +1338,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "metapp";
-      rev = "v0.4.4";
-      sha256 = "sha256-lRE6Zh1oDnPOI8GqWO4g6qiS2j43NOHmckgmJ8uoHfE=";
+      rev = "26e20714348607cec5d978808e666ed414ba092b";
+      hash = "sha256-5h7uFPbVtp8A0PbTc+JGlv8H/6xQ1QjwNeRiImAHcfU=";
     };
     propagatedBuildInputs = [ ppxlib stdcompat findlib ];
   };
@@ -1759,10 +1759,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.2.0-alpha3";
-      hash = "sha256-wxKUu/BdRSLqCSc08Qfjx65aTeZFpBVjN06dmvXxAg4=";
+      rev = "2.2.0-beta2";
+      hash = "sha256-RcuUr4LIarVao3zXHZQRKlWW6zwsX0gAQRRAZYEMpT4=";
     };
-    version = "2.2.0-alpha3";
+    version = "2.2.0-beta2";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
@@ -2188,12 +2188,9 @@ with oself;
       owner = "thierry-martinez";
       repo = "stdcompat";
       # https://github.com/thierry-martinez/stdcompat/pull/33
-      rev = "325f99bc19cf4dc9720f7fdd3d4574bbb5487791";
-      hash = "sha256-mux/KoFyWX2sTOHhy6//TRBkBz2GjKv/dF8nGsIr94o=";
+      rev = "58b6d90fc53333f5e8112d42f96093802678c030";
+      hash = "sha256-7xfcCVOOMaZ5dwgTtSn0YAkZg9tdqvn1tNMqsIL4ZfA=";
     };
-    postPatch = ''
-      substituteInPlace dune --replace-fail "(universe)" "(universe) (source_tree .)"
-    '';
   });
 
   stdlib-random = buildDunePackage {
