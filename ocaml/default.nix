@@ -1300,9 +1300,6 @@ with oself;
 
   logs-ppx = callPackage ./logs-ppx { };
 
-  landmarks = callPackage ./landmarks { };
-  landmarks-ppx = callPackage ./landmarks/ppx.nix { };
-
   melange =
     # No version supported on 5.0
     if (lib.versionAtLeast ocaml.version "4.14" && !(lib.versionAtLeast ocaml.version "5.0"))
