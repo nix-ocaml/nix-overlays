@@ -23,8 +23,8 @@
 
 let
   upstream_src = builtins.fetchurl {
-    url = https://github.com/dinosaure/multipart_form/releases/download/v0.5.0/multipart_form-0.5.0.tbz;
-    sha256 = "0r4am2ba59kp61my6lifc436wxmnizxwsb6k7cdvlwr81qf6r8x8";
+    url = https://github.com/dinosaure/multipart_form/releases/download/v0.6.0/multipart_form-0.6.0.tbz;
+    sha256 = "05i10ql2zkf0v1rif3v08sas1rm1d1xghnndcx0svyng4g1jkqx0";
   };
   upstream_version = "0.4.1";
 
