@@ -61,17 +61,6 @@ with oself;
     propagatedBuildInputs = [ eio mirage-crypto-rng ];
   };
 
-  miou = buildDunePackage {
-    pname = "miou";
-    version = "0.1.0";
-    src = builtins.fetchurl {
-      url = https://github.com/robur-coop/miou/releases/download/v0.1.0/miou-0.1.0.tbz;
-      sha256 = "04d66vbfw3hwx50dwk42256w1nk8f2aj21m7q3s5zkzqv0pklfsr";
-    };
-    doCheck = true;
-    checkInputs = [ dscheck fmt ];
-  };
-
   moonpool = buildDunePackage {
     pname = "moonpool";
     version = "0.6";
@@ -116,8 +105,8 @@ with oself;
     pname = "picos";
     version = "0.1.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/picos/releases/download/0.1.0/picos-0.1.0.tbz;
-      sha256 = "0x269asidq7lzkfx39zbd8z745asfal3cb4g727wc9yivmkwqb8g";
+      url = https://github.com/ocaml-multicore/picos/releases/download/0.2.0/picos-0.2.0.tbz;
+      sha256 = "1mrv4mcycrnsl001a5361b4rgvzwyx9cpxbqdz8z8cw7168x14kv";
     };
     propagatedBuildInputs = [
       multicore-magic

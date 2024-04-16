@@ -1243,6 +1243,18 @@ with oself;
     propagatedBuildInputs = [ fmt optint lwt ptime ];
   });
 
+  mirage-kv-unix = buildDunePackage {
+    pname = "mirage-kv-unix";
+    version = "3.0.0";
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-kv-unix/releases/download/v3.0.0/mirage-kv-unix-3.0.0.tbz;
+      sha256 = "1ian5bb4xhxv902lnn94pzwncqy89asyvmkr8jyrzqml3575923y";
+    };
+    propagatedBuildInputs = [ mirage-kv ];
+    doCheck = true;
+    checkInputs = [ alcotest cstruct mirage-clock-unix ];
+  };
+
   mirage-kv-mem = buildDunePackage {
     pname = "mirage-kv-mem";
     version = "3.2.1";
@@ -1932,22 +1944,10 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_deriving";
-      # https://github.com/ocaml-ppx/ppx_deriving/pull/279 +
-      # https://github.com/ocaml-ppx/ppx_deriving/pull/277
-      rev = "43d5086e5bab76d7f06d5530fcc902bca884e76a";
-      hash = "sha256-gRq+VM6cNLIYdoEuaWDdmMsk8G5tX5Wyv5JvFhuOlEE=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.0.0/ppx_deriving-6.0.0.tbz;
+      sha256 = "09dcixb2k7xyrqg60m396wvihr6laq3r8pigw5s5k64v2npv5gw6";
     };
-    patches = [
-      (fetchpatch {
-        name = "deriving.map.patch";
-        url = "https://github.com/ocaml-ppx/ppx_deriving/commit/6afd6ee2d4ed96365037aaa60e003084371a704e.patch";
-        hash = "sha256-m+MdRcDLqA2rBv/C6/ImNBCiuuBsgtMrlRp7hFitnds=";
-      })
-    ];
-
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -2244,8 +2244,8 @@ with oself;
 
   terminal = osuper.terminal.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/craigfe/progress/releases/download/0.2.2/progress-0.2.2.tbz;
-      sha256 = "1d8h87xkslsh4khfa3wlcz1p55gmh4wyrafgnnsxc7524ccw4h9k";
+      url = https://github.com/craigfe/progress/releases/download/0.3.0/progress-0.3.0.tbz;
+      sha256 = "0z3bs3hmn2majhd6h08q37mdigzx08fph5wv2lwk4xzg9nyh1z9x";
     };
   });
 
@@ -2340,6 +2340,13 @@ with oself;
       repo = "tsdl-ttf";
       rev = "0.6";
       hash = "sha256-1MGbsekaBoCz4vAwg+Dfzsl0xUKgs8dUEr+OpLopnig=";
+    };
+  });
+
+  tuntap = osuper.tuntap.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-tuntap/releases/download/v2.0.1/tuntap-2.0.1.tbz;
+      sha256 = "1p8c9j32vzy59yavsis1rsb8i86wyhn5wzxb1rl5ki1vrjbh3ii7";
     };
   });
 
