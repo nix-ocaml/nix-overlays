@@ -155,7 +155,7 @@ in
       rev = "af83a65f0b";
       sha256 = "sha256-z06uQiImMD4nPLp4Qxka9JT9NTmY0AurnHQKhB/kM40=";
     };
-    vendorSha256 = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
+    vendorHash = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
   };
 
   h3spec = haskell.lib.compose.justStaticExecutables
