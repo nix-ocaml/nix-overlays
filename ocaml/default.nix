@@ -1273,6 +1273,11 @@ with oself;
     '';
   });
 
+  miou = osuper.miou.overrideAttrs {
+    doCheck = true;
+    checkInputs = [ dscheck fmt ];
+  };
+
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "rgrinberg";
@@ -1966,13 +1971,6 @@ with oself;
       # https://github.com/ocaml-ppx/ppx_deriving_yojson/pull/153
       rev = "e47f749f153ad83b4944cae83e3e79f85b77e3dd";
       hash = "sha256-REHrs1gVtBK7IY3x0lGdiqV8h5aQh/+dnv0fkz5gUi8=";
-    };
-  });
-
-  ppx_blob = osuper.ppx_blob.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/johnwhitington/ppx_blob/releases/download/0.8.0/ppx_blob-0.8.0.tbz;
-      sha256 = "0kwpn0l9sgisxd3h94225n0nys7iyizhkyd3vpddya8k0cbipfkn";
     };
   });
 
