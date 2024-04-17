@@ -1664,8 +1664,9 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "odoc";
-      rev = "ab233d0ddd878a5278bff353475a8fc20868307a";
-      hash = "sha256-PGc8Kk131tfdCpQwOtPKz8Zhpx5Tn/rOxfckQ+VZh6E=";
+      # https://github.com/ocaml/odoc/pull/1112
+      rev = "9337d9d42d57ac4562ac9ab2a67aa2e4b2f4d917";
+      hash = "sha256-fGDQBympp66/UOQC7WAsP1aFxVez5iEVteHrD5zB9pY=";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
