@@ -102,6 +102,7 @@ jobs:
     runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
+      OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v26
