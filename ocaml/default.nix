@@ -581,20 +581,10 @@ with oself;
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
-  json-data-encoding = osuper.json-data-encoding.overrideAttrs (o: {
-    src = fetchFromGitLab {
-      owner = "nomadic-labs";
-      repo = "data-encoding";
-      rev = "v1.0.1";
-      hash = "sha256-KoA4xX4tNyi6bX5kso/Wof1LA7431EXJ34eD5X4jnd8=";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hex ];
-    # Tests need js_of_ocaml
-    doCheck = false;
-  });
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
-    inherit (json-data-encoding) src doCheck;
+    buildInputs = [ ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_expect ];
+    doCheck = false;
   });
 
   dataloader = callPackage ./dataloader { };
@@ -935,13 +925,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
-  irmin = osuper.irmin.overrideAttrs (_: {
-    version = "3.9.0";
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/irmin/releases/download/3.9.0/irmin-3.9.0.tbz;
-      sha256 = "182immvlgvcj1bl6nx816p2k5g6ssz4hc9n3b1nmpysz3fz3l1wf";
-    };
-  });
   irmin-server = buildDunePackage {
     pname = "irmin-server";
     inherit (irmin) src version;
@@ -979,7 +962,6 @@ with oself;
     ];
   };
   irmin-git = disableTests osuper.irmin-git;
-  irmin-http = null;
 
   iostream = buildDunePackage {
     pname = "iostream";
@@ -989,13 +971,6 @@ with oself;
       sha256 = "17c2wg6cyhi030vw922p3h6z525h5x2amz2lij6gx96c1zr2a9vd";
     };
   };
-
-  index = osuper.index.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/index/releases/download/1.6.2/index-1.6.2.tbz;
-      sha256 = "0q48mgn29dxrh14isccq5bqrs12whn3fsw6hrvp49vd4k188724k";
-    };
-  });
 
   iso639 = buildDunePackage {
     pname = "iso639";
@@ -1233,15 +1208,6 @@ with oself;
   };
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
-
-  # `mirage-fs` needs to be updated to match `mirage-kv`'s new interface
-  mirage-kv = osuper.mirage-kv.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-kv/releases/download/v6.1.0/mirage-kv-6.1.0.tbz;
-      sha256 = "0i6faba2nrm2ayq8f6dvgvcv53b811k77ibi7jp4138jpj2nh4si";
-    };
-    propagatedBuildInputs = [ fmt optint lwt ptime ];
-  });
 
   mirage-kv-unix = buildDunePackage {
     pname = "mirage-kv-unix";
@@ -2242,13 +2208,6 @@ with oself;
     };
     propagatedBuildInputs = [ oniguruma ];
   };
-
-  terminal = osuper.terminal.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/craigfe/progress/releases/download/0.3.0/progress-0.3.0.tbz;
-      sha256 = "0z3bs3hmn2majhd6h08q37mdigzx08fph5wv2lwk4xzg9nyh1z9x";
-    };
-  });
 
   timedesc = callPackage ./timere/timedesc.nix { };
   timedesc-json = callPackage ./timere/timedesc-json.nix { };
