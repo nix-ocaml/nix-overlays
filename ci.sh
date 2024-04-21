@@ -6,7 +6,7 @@ args=(
   --eval-workers 4
   --flake ".#hydraJobs.${1}.${2}"
   --skip-cached
-  --debug
+  --no-nom
   --option allow-import-from-derivation false
   --eval-max-memory-size "12000"
 )
