@@ -9,6 +9,7 @@ args=(
   --no-nom
   --option allow-import-from-derivation false
   --eval-max-memory-size "12000"
+  --quiet-build
 )
 
 if [[ -n "${GITHUB_STEP_SUMMARY-}" ]]; then
@@ -21,4 +22,4 @@ else
   }
 fi
 
-nix run github:Mic92/nix-fast-build -- "${args[@]}"
+nix run github:anmonteiro/nix-fast-build?rev=036e4c3efb80ee17aa2d848ba0a0ef7d162a832c -- "${args[@]}"
