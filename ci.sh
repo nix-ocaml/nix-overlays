@@ -12,4 +12,4 @@ args=(
   # --quiet-build
 )
 
-EIO_BACKEND=posix nix run github:anmonteiro/nix-ci-build -- "${args[@]}"
+OCAMLRUNPARAM=b EIO_BACKEND=posix nix run github:anmonteiro/nix-ci-build -- "${args[@]}"
