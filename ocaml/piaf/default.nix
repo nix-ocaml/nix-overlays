@@ -28,11 +28,7 @@ buildDunePackage {
   };
 
   checkInputs = [ alcotest dune-site ];
-  checkPhase = ''
-    echo LOL >&2
-  '';
 
-  doCheck = true;
   propagatedBuildInputs = [
     eio
     eio_main
