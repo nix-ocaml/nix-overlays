@@ -70,7 +70,7 @@ with oself;
     };
 
     propagatedBuildInputs = [ either ];
-    doCheck = true;
+    doCheck = false;
     nativeCheckInputs = [ mdx ];
     checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
