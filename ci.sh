@@ -14,4 +14,4 @@ args=(
   # --quiet-build
 )
 
-OCAMLRUNPARAM=b nix run 'github:nix-ocaml/nix-ci-build?rev=d0770cd176b1356d95878d6cd5bfe331908be319' -- "${args[@]}"
+OCAMLRUNPARAM=b nix run 'github:nix-ocaml/nix-ci-build?rev=aab9dc026fea5fb446df2454dd16da1520bddf81' -- "${args[@]}"
