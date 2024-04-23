@@ -3,7 +3,8 @@ set -euo pipefail
 
 args=(
   --flake ".#hydraJobs.${1}.${2}"
-  --copy-to "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+  --copy-to
+  "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&compression=zstd&parallel-compression=true&secret-key=nix-cache-key.sec"
   # --no-link
   # --eval-workers 4
   # --skip-cached
