@@ -12,4 +12,4 @@ args=(
   # --quiet-build
 )
 
-nix run github:anmonteiro/nix-ci-build -- "${args[@]}"
+OCAMLRUNPARAM=b nix run github:anmonteiro/nix-ci-build -- "${args[@]}"
