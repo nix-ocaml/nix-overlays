@@ -454,10 +454,10 @@ with oself;
 
   colombe = buildDunePackage {
     pname = "colombe";
-    version = "0.5.2";
+    version = "0.8.1";
     src = builtins.fetchurl {
-      url = https://github.com/mirage/colombe/releases/download/v0.8.0/colombe-0.8.0.tbz;
-      sha256 = "1wzzwxdixv672py2fs419n92chjyq7703zzrgya6bxvsbffx6flx";
+      url = https://github.com/mirage/colombe/releases/download/v0.8.1/colombe-0.8.1.tbz;
+      sha256 = "0c4mplcdx2dw82f1lzhiw79bfa7krad0fgyqsxd4virvb4a6703q";
     };
     propagatedBuildInputs = [ ipaddr fmt angstrom emile ];
   };
@@ -1438,11 +1438,9 @@ with oself;
   });
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ocamlformat";
-      rev = "6ce00bf1ac5faa8b8e56dc1c08c693b50529a72a";
-      hash = "sha256-QiOQSVgRHQEKCFL4h8jz5joOCuBa9cKXGyQNE/r51M0=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.2/ocamlformat-0.26.2.tbz;
+      sha256 = "1ibm0cypks9z6s1c1pbra6kb455zn3va0fz89y27ldmayxmmjkrf";
     };
   });
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
@@ -1610,10 +1608,10 @@ with oself;
 
   odep = buildDunePackage {
     pname = "odep";
-    version = "0.1.0";
+    version = "0.2.2";
     src = builtins.fetchurl {
-      url = https://github.com/sim642/odep/releases/download/0.2.0/odep-0.2.0.tbz;
-      sha256 = "15sjb5s1j6mns6dkddm3lbwd0n499smffrs55sw0xfczn3vaxaiv";
+      url = https://github.com/sim642/odep/releases/download/0.2.1/odep-0.2.1.tbz;
+      sha256 = "0snwz7fg46bab9xhg19lfdmw57zcc06q939zih1qjq97rrcyiqgs";
     };
     propagatedBuildInputs = [
       bos
@@ -1935,9 +1933,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppx_deriving_yojson";
-      # https://github.com/ocaml-ppx/ppx_deriving_yojson/pull/153
-      rev = "e47f749f153ad83b4944cae83e3e79f85b77e3dd";
-      hash = "sha256-REHrs1gVtBK7IY3x0lGdiqV8h5aQh/+dnv0fkz5gUi8=";
+      rev = "4386d240589d5b1372d9ce3bf8654fca45c07ac8";
+      hash = "sha256-pnwjDsoHAxbTSSLVM6RIbIbadXCBPfgYj9hkntE9rrc=";
     };
   });
 
@@ -1956,16 +1953,10 @@ with oself;
     else osuper.ppx_tools;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast osuper.ocaml.version "5.2" then
-        fetchFromGitHub
-          {
-            owner = "ocaml-ppx";
-            repo = "ppxlib";
-            rev = "04e050cbe2cf3e5cdb4441c480e4f472a5033941";
-            hash = "sha256-+qMxLVWgltXKackhZGHm21XPJukAbKFtvU1wgk97fCs=";
-          } else
-        o.src;
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppxlib/releases/download/0.32.1/ppxlib-0.32.1.tbz;
+      sha256 = "0zwxq22xasy8jr0lp8qd3x9qcgfjbq5adg2q7zgz7d68n6ydiflx";
+    };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
