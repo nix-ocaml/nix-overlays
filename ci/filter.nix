@@ -149,10 +149,10 @@ let
 
 
     # broken on aarch64-darwin
-    janestreet_cpuid
-    stog
-    stog_asy
-    stog_markdown
+    "janestreet_cpuid"
+    "stog"
+    "stog_asy"
+    "stog_markdown"
   ];
 in
 
