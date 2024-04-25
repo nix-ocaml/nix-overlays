@@ -43,7 +43,6 @@ jobs:
       - uses: cachix/install-nix-action@v26
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
@@ -75,7 +74,6 @@ jobs:
       - uses: cachix/install-nix-action@v26
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
@@ -109,7 +107,6 @@ jobs:
       - uses: cachix/install-nix-action@v26
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
@@ -147,7 +144,6 @@ jobs:
       - uses: cachix/install-nix-action@v26
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
             system-features = nixos-test benchmark big-parallel kvm
             extra-substituters = https://anmonteiro.nix-cache.workers.dev
             extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
