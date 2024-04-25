@@ -1602,6 +1602,13 @@ with oself;
       '' else "";
   };
 
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.7/ocaml-version-3.6.7.tbz;
+      sha256 = "0341iz9cw46j71h36n4d0288v2743nkpdi49v2qfscwxcrdzs3ym";
+    };
+  });
+
   ocurl = osuper.ocurl.overrideAttrs (_: {
     propagatedBuildInputs = [ curl ];
   });
