@@ -186,13 +186,6 @@ with oself;
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
 
-  awa = osuper.awa.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/awa-ssh/releases/download/v0.3.1/awa-0.3.1.tbz;
-      sha256 = "028936js6lgsjw8x2ph0v61j4vlzksv8q2vf23lgq1rvglbcgs2m";
-    };
-  });
-
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
@@ -824,8 +817,6 @@ with oself;
       inherit (ocaml.meta) platforms;
     };
   };
-
-  gen_js_api = disableTests osuper.gen_js_api;
 
   gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
     propagatedBuildInputs = [ camomile ocaml_gettext ];
@@ -1602,13 +1593,6 @@ with oself;
       '' else "";
   };
 
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocurrent/ocaml-version/releases/download/v3.6.7/ocaml-version-3.6.7.tbz;
-      sha256 = "0341iz9cw46j71h36n4d0288v2743nkpdi49v2qfscwxcrdzs3ym";
-    };
-  });
-
   ocurl = osuper.ocurl.overrideAttrs (_: {
     propagatedBuildInputs = [ curl ];
   });
@@ -1814,52 +1798,6 @@ with oself;
   });
 
   pg_query = callPackage ./pg_query { };
-
-  binning = buildDunePackage {
-    pname = "binning";
-    version = "0.0.0";
-    src = builtins.fetchurl {
-      url = https://github.com/pveber/binning/releases/download/v0.0.0/binning-v0.0.0.tbz;
-      sha256 = "1xvz337wkfrs005hrjm09vzmccxfgk954kliwr8bjwqvvdrb2vvq";
-    };
-  };
-  biotk = buildDunePackage {
-    pname = "biotk";
-    version = "0.2.0";
-    src = builtins.fetchurl {
-      url = https://github.com/pveber/biotk/releases/download/v0.2.0/biotk-0.2.0.tbz;
-      sha256 = "1c5zbjd3dvzk7sn91zh4bq3wp7w01b4kj9m06y9bd6jc7rbdn2qm";
-    };
-    propagatedBuildInputs = [
-      angstrom-unix
-      camlzip
-      vg
-      ppx_compare
-      ppx_csv_conv
-      ppx_deriving
-      ppx_expect
-      ppx_fields_conv
-      ppx_inline_test
-      ppx_let
-      ppx_sexp_conv
-      uri
-      tyxml
-      rresult
-      gsl
-      fmt
-      core_unix
-      binning
-    ];
-    nativeBuildInputs = [ crunch.bin ];
-  };
-
-  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/biocaml/phylogenetics/releases/download/v0.2.0/phylogenetics-0.2.0.tbz;
-      sha256 = "0sppv1rvr3xky8na99qxrq1lyhn6v40c70is0vmv6nvjgakmhni4";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson biotk ];
-  });
 
   plist-xml = buildDunePackage {
     pname = "plist-xml";
@@ -2445,13 +2383,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace-fail "result" ""
     '';
-  });
-
-  zmq = osuper.zmq.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/issuu/ocaml-zmq/releases/download/5.3.0/zmq-5.3.0.tbz;
-      sha256 = "1a7vfnq8jhrk08jar5406m7wfahwankc1k71cy3zbvrnb2cl5sxm";
-    };
   });
 
   zstd = buildDunePackage {
