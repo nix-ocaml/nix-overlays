@@ -103,15 +103,16 @@ with oself;
 
   picos = buildDunePackage {
     pname = "picos";
-    version = "0.1.0";
+    version = "0.3.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/picos/releases/download/0.2.0/picos-0.2.0.tbz;
-      sha256 = "1mrv4mcycrnsl001a5361b4rgvzwyx9cpxbqdz8z8cw7168x14kv";
+      url = https://github.com/ocaml-multicore/picos/releases/download/0.3.0/picos-0.3.0.tbz;
+      sha256 = "0rphlxacn9n3zpvy6v2s7v26ph6pzvgff11gz1j9gcp4pp008j2l";
     };
     propagatedBuildInputs = [
       multicore-magic
       backoff
       thread-local-storage
+      lwt
       mtime
       psq
     ];

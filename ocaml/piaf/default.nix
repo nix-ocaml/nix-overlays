@@ -27,8 +27,6 @@ buildDunePackage {
     hash = "sha256-DOBv1evgPniWfH5b6NM3ZlEND9kc0B1ShW1e4zPsxbM=";
   };
 
-  checkInputs = [ alcotest dune-site ];
-
   propagatedBuildInputs = [
     eio
     eio_main
