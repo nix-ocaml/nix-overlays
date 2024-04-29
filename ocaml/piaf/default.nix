@@ -27,14 +27,6 @@ buildDunePackage {
     hash = "sha256-DOBv1evgPniWfH5b6NM3ZlEND9kc0B1ShW1e4zPsxbM=";
   };
 
-  checkInputs = [ alcotest dune-site ];
-  checkPhase = ''
-    echo LOL >&2
-    exit 33
-  '';
-  doCheck = true;
-
-
   propagatedBuildInputs = [
     eio
     eio_main
