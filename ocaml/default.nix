@@ -1620,12 +1620,9 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "odoc";
-      # https://github.com/ocaml/odoc/pull/1112
-      rev = "9337d9d42d57ac4562ac9ab2a67aa2e4b2f4d917";
-      hash = "sha256-fGDQBympp66/UOQC7WAsP1aFxVez5iEVteHrD5zB9pY=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/odoc/releases/download/2.4.2/odoc-2.4.2.tbz;
+      sha256 = "02x45ffakxv91yxmpqj87yasxfz00rd2ikx96zkk12pc4sxzsg2n";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
