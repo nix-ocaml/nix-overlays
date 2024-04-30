@@ -835,6 +835,15 @@ with self;
     doCheck = false; # test rules broken
   };
 
+  ocaml_intrinsics_kernel = janePackage {
+    pname = "ocaml_intrinsics_kernel";
+    minimalOCamlVersion = "4.14";
+    version = "0.17.0";
+    hash = "sha256-utD9HE0P3vPgSXDW8Bz0FxgEy+lNkIAlN/+JkfDqb9A=";
+    meta.description = "Intrinsics";
+    doCheck = false; # test rules broken
+  };
+
   ocaml-probes = janePackage {
     pname = "ocaml-probes";
     minimalOCamlVersion = "4.14";
