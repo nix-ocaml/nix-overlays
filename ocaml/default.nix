@@ -2260,7 +2260,7 @@ with oself;
       owner = "ocaml-multicore";
       repo = "ocaml-uring";
       rev = "abe340086574c124061434054937d1f19ee6bb71";
-      hash = "sha256-6VOAAHCW8y363oTg2cOxfGoueU0xZDQ0hWo7wOPEV7A=";
+      hash = "sha256-t/p2vdRrxu2psNXaOWjD7UtP3Gf2WmbYmCuycQdLtrU=";
     };
     postPatch = ''
       patchShebangs vendor/liburing/configure
