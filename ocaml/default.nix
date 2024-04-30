@@ -2262,6 +2262,7 @@ with oself;
       rev = "abe340086574c124061434054937d1f19ee6bb71";
       hash = "sha256-t/p2vdRrxu2psNXaOWjD7UtP3Gf2WmbYmCuycQdLtrU=";
     };
+    patches = [ ];
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace-fail \
