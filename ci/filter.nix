@@ -95,6 +95,10 @@ let
     # haven't been upgraded for mirage-flow v4
     "mirage-channel"
     "cohttp-mirage"
+    "mimic"
+    "mimic-happy-eyeballs"
+    "mirage-console-unix"
+    "git"
   ];
 
   ocaml5Ignores = [
