@@ -732,13 +732,6 @@ with oself;
       '';
     });
 
-  earlybird = osuper.earlybird.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/hackwaly/ocamlearlybird/releases/download/1.3.2/earlybird-1.3.2.tbz;
-      sha256 = "1w4bvzmlri1qqm4ga3vy0fc3dnh7dvrrpy1pz1l4fb2xc2hcrvz5";
-    };
-  });
-
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
     version = "0.2.3";
@@ -1345,9 +1338,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
     doCheck = true;
   });
-
-  # Upstream keeps mtime_1 but we've moved past that need
-  mtime_1 = mtime;
 
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
@@ -2230,15 +2220,6 @@ with oself;
     };
   });
 
-  tsdl-ttf = osuper.tsdl-ttf.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "sanette";
-      repo = "tsdl-ttf";
-      rev = "0.6";
-      hash = "sha256-1MGbsekaBoCz4vAwg+Dfzsl0xUKgs8dUEr+OpLopnig=";
-    };
-  });
-
   tuntap = osuper.tuntap.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/ocaml-tuntap/releases/download/v2.0.1/tuntap-2.0.1.tbz;
@@ -2275,6 +2256,13 @@ with oself;
   });
 
   uring = osuper.uring.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "ocaml-uring";
+      rev = "abe340086574c124061434054937d1f19ee6bb71";
+      hash = "sha256-t/p2vdRrxu2psNXaOWjD7UtP3Gf2WmbYmCuycQdLtrU=";
+    };
+    patches = [ ];
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace-fail \
