@@ -835,6 +835,15 @@ with self;
     doCheck = false; # test rules broken
   };
 
+  ocaml_intrinsics_kernel = janePackage {
+    pname = "ocaml_intrinsics_kernel";
+    minimalOCamlVersion = "4.14";
+    version = "0.17.0";
+    hash = "sha256-utD9HE0P3vPgSXDW8Bz0FxgEy+lNkIAlN/+JkfDqb9A=";
+    meta.description = "Intrinsics";
+    doCheck = false; # test rules broken
+  };
+
   ocaml-probes = janePackage {
     pname = "ocaml-probes";
     minimalOCamlVersion = "4.14";
@@ -1514,7 +1523,8 @@ with self;
 
   sexplib0 = janePackage {
     pname = "sexplib0";
-    hash = "sha256-wRr1M243Bqu/XLSsr5IVPH5RTVWeVgZjxkKOrm+PW5E=";
+    version = "0.17.0";
+    hash = "sha256-Q53wEhRet/Ou9Kr0TZNTyXT5ASQpsVLPz5n/I+Fhy+g=";
     minimalOCamlVersion = "4.08.0";
     meta.description = "Library containing the definition of S-expressions and some base converters";
   };

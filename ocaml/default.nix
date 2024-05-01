@@ -500,6 +500,12 @@ with oself;
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
 
+  conduit = osuper.conduit.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.2/conduit-6.2.2.tbz;
+      sha256 = "0i945dgj7b23mywywg1vxaxzx9a9yx7lhasgb8pn39g2iy3vzsjq";
+    };
+  });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
   });
@@ -1215,12 +1221,12 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  # mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz;
-  # sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
-  # };
-  # });
+  mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz;
+      sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
+    };
+  });
 
   mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1418,6 +1424,14 @@ with oself;
     '';
   });
 
+  ocaml-protoc-plugin = osuper.ocaml-protoc-plugin.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/andersfugmann/ocaml-protoc-plugin/releases/download/6.1.0/ocaml-protoc-plugin-6.1.0.tbz;
+      sha256 = "0yy5d2ih21inx02gdylcscp30gd9vvrm7ky1abyzahcypz3x2m32";
+    };
+    buildInputs = o.buildInputs ++ [ ptime base64 dune-configurator ];
+  });
+
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.2/ocamlformat-0.26.2.tbz;
@@ -1606,12 +1620,9 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "odoc";
-      # https://github.com/ocaml/odoc/pull/1112
-      rev = "9337d9d42d57ac4562ac9ab2a67aa2e4b2f4d917";
-      hash = "sha256-fGDQBympp66/UOQC7WAsP1aFxVez5iEVteHrD5zB9pY=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/odoc/releases/download/2.4.2/odoc-2.4.2.tbz;
+      sha256 = "02x45ffakxv91yxmpqj87yasxfz00rd2ikx96zkk12pc4sxzsg2n";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
@@ -2010,6 +2021,13 @@ with oself;
   session = callPackage ./session { };
   session-redis-lwt = callPackage ./session/redis.nix { };
 
+  shared-memory-ring = osuper.shared-memory-ring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/shared-memory-ring/releases/download/v3.2.1/shared-memory-ring-3.2.1.tbz;
+      sha256 = "0cqqrwpmlb3mb1r2w9w7rrmni2q1ippa1kjn4vy4z8yhqfv6f9x9";
+    };
+  });
+
   sherlodoc = callPackage ./sherlodoc { };
 
   sodium = buildDunePackage {
@@ -2279,6 +2297,21 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
+  });
+
+  vchan = osuper.vchan.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-vchan/releases/download/v6.0.2/vchan-6.0.2.tbz;
+      sha256 = "1razkj2jbplj1midhaiqlflzvibcl0ylivvz34g8rf6nbbdbaj3y";
+    };
+    propagatedBuildInputs = [
+      lwt
+      cstruct
+      io-page
+      mirage-flow
+      xenstore
+      xenstore_transport
+    ];
   });
 
   vg = osuper.vg.overrideAttrs (_: {

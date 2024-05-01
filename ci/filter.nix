@@ -91,6 +91,14 @@ let
     # doesn't work with tls >= 0.17.4
     "sendmail"
     "sendmail-lwt"
+
+    # haven't been upgraded for mirage-flow v4
+    "mirage-channel"
+    "cohttp-mirage"
+    "mimic"
+    "mimic-happy-eyeballs"
+    "mirage-console-unix"
+    "git"
   ];
 
   ocaml5Ignores = [
