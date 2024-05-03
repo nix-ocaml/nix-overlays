@@ -885,10 +885,10 @@ with oself;
 
   hilite = buildDunePackage {
     pname = "hilite";
-    version = "0.4.0";
+    version = "0.5.0";
     src = builtins.fetchurl {
-      url = https://github.com/patricoferris/hilite/releases/download/v0.4.0/hilite-0.4.0.tbz;
-      sha256 = "1s2qi3dk2284wkaq0vnr78wx8jn905dyr64fi3byqcpvy79kbhqv";
+      url = https://github.com/patricoferris/hilite/releases/download/v0.5.0/hilite-0.5.0.tbz;
+      sha256 = "092q0lbpjjbv9szhp9lv0jczf5rr1gqv0wfynv3w9gqhpw5mb2j9";
     };
 
     propagatedBuildInputs = [ cmarkit textmate-language ];
