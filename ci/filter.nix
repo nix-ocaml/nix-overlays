@@ -149,6 +149,7 @@ let
     "zelus"
     "zelus-gtk"
     "ocamlfuse"
+    "wayland"
 
 
     # broken on aarch64-darwin
