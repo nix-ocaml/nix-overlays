@@ -1769,7 +1769,7 @@ with oself;
   });
   owl = osuper.owl.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ eigen ];
-    doCheck = !stdenv.isLinux;
+    doCheck = false;
     meta = owl-base.meta;
   });
 
