@@ -36,6 +36,12 @@ let
 
       ocamlPackages_5_2 = ocaml-ng.ocamlPackages_5_2.overrideScope (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.2.0-rc1";
+            hash = "sha256-rrhgTeJSPv3K1jzO2tRbJJcfizn1joOxqbE6A2JTEuk=";
+          };
           hardeningDisable = [ "strictoverflow" ];
         });
       });
