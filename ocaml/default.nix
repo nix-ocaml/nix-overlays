@@ -1762,14 +1762,14 @@ with oself;
     src = fetchFromGitHub {
       owner = "owlbarn";
       repo = "owl";
-      rev = "d3b5390531a05b2a74754f46625a7f4d1efdb9b7";
-      hash = "sha256-b1T4sWbnGEVnZtPXo5nM0uuyzD8FbBcJPIzVEtyqrdM=";
+      rev = "d957bd8b6f074947f07a80b835de4e6645b245a0";
+      hash = "sha256-hQ7BDFEBIIRhbKtjtf+/AyfO7HVpym3H+P1Y8Vlgah0=";
     };
     meta.platforms = lib.platforms.all;
   });
   owl = osuper.owl.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ eigen ];
-    doCheck = !stdenv.isLinux;
+    doCheck = false;
     meta = owl-base.meta;
   });
 

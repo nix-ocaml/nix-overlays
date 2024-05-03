@@ -127,14 +127,11 @@ let
     # broken on macOS?
     "llvm"
 
-    "owl"
-
     "alsa"
     "mm"
 
     "uring"
     "eio_linux"
-    "wayland"
 
     # x86_64-darwin is broken even with clang11Stdenv
     "gapi-ocaml"
@@ -147,13 +144,12 @@ let
     "line-up-words"
     "janestreet_csv"
     "core_profiler"
-    "class_group_vdf"
     "secp256k1"
-    "sexp"
     "z3"
     "zelus"
     "zelus-gtk"
     "ocamlfuse"
+    "wayland"
 
 
     # broken on aarch64-darwin
