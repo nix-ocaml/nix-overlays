@@ -2345,6 +2345,15 @@ with oself;
     '';
   };
 
+  wayland =
+    let
+      stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
+    in
+
+    osuper.wayland.override {
+      inherit stdenv;
+    };
+
   websocket = buildDunePackage {
     pname = "websocket";
     version = "2.16";
