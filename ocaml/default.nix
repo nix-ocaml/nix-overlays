@@ -885,10 +885,10 @@ with oself;
 
   hilite = buildDunePackage {
     pname = "hilite";
-    version = "0.4.0";
+    version = "0.5.0";
     src = builtins.fetchurl {
-      url = https://github.com/patricoferris/hilite/releases/download/v0.4.0/hilite-0.4.0.tbz;
-      sha256 = "1s2qi3dk2284wkaq0vnr78wx8jn905dyr64fi3byqcpvy79kbhqv";
+      url = https://github.com/patricoferris/hilite/releases/download/v0.5.0/hilite-0.5.0.tbz;
+      sha256 = "092q0lbpjjbv9szhp9lv0jczf5rr1gqv0wfynv3w9gqhpw5mb2j9";
     };
 
     propagatedBuildInputs = [ cmarkit textmate-language ];
@@ -988,8 +988,8 @@ with oself;
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.7.2/js_of_ocaml-5.7.2.tbz;
-      sha256 = "0g3rczk8h0vll0m97lhw9zk2siks5pdg2rkbby7vciggvd40fvyp";
+      url = https://github.com/ocsigen/js_of_ocaml/releases/download/5.8.1/js_of_ocaml-5.8.1.tbz;
+      sha256 = "0lsa7yadqnl8n7h51sayp8z1zjk9hx5mqga5ky6w9a3kn886x20f";
     };
   });
 
