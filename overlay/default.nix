@@ -62,7 +62,7 @@ in
     };
 
   # Override `pkgs.nix` to the unstable channel
-  nix = super.nixVersions.unstable;
+  nix = super.nixVersions.latest;
 
   # Other packages
 
