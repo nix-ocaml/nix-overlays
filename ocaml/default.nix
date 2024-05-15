@@ -111,6 +111,7 @@ with oself;
       rev = "aa437168b258db97680021116af176c55e1bd53b";
       hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
     };
+    patches = [ ];
   });
 
   angstrom = osuper.angstrom.overrideAttrs (_: {
@@ -1557,15 +1558,6 @@ with oself;
       substituteInPlace src/dune --replace-fail "libraries bytes" "libraries "
     '';
     buildInputs = o.buildInputs ++ [ findlib ];
-  });
-
-  ocp-index = osuper.ocp-index.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocamlpro";
-      repo = "ocp-index";
-      rev = "1.3.6";
-      hash = "sha256-EgRpC58NBVFO1w0xx11CnonatU2H7bECsEk6Y4c/odY=";
-    };
   });
 
   ocplib-simplex = buildDunePackage {

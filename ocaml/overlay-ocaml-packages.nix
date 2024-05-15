@@ -34,18 +34,6 @@ let
         });
       });
 
-      ocamlPackages_5_2 = ocaml-ng.ocamlPackages_5_2.overrideScope (oself: osuper: {
-        ocaml = osuper.ocaml.overrideAttrs (_: {
-          src = super.fetchFromGitHub {
-            owner = "ocaml";
-            repo = "ocaml";
-            rev = "5.2.0";
-            hash = "sha256-cN5feAgjEX0ojyQaNWI5X4Q7HuccOmwLQsi9Khi8PB0=";
-          };
-          hardeningDisable = [ "strictoverflow" ];
-        });
-      });
-
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
         minor_version = "3";
