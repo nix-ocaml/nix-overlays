@@ -22,7 +22,7 @@ stdenv.mkDerivation
     owner = "camlp5";
     repo = "camlp5";
     rev = "8.03.00";
-    hash = "sha256-MXTG7qMjSD27bGTyY6eIc5RtjXTbSG0RWCKG4ibXxXM=";
+    hash = "sha256-hu/279gBvUc7Z4jM6EHiar6Wm4vjkGXl+7bxowj+vlM=";
   };
 
   nativeBuildInputs = [ ocaml findlib ];
