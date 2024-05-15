@@ -29,8 +29,8 @@ buildDunePackage {
         {
           owner = "melange-re";
           repo = "melange";
-          rev = "6c5e10d7087f4022d44ce357f57040a308557b8c";
-          hash = "sha256-kaQU1zJEzm/JKh+0UV32020D0xHEqQaZTjb5mcC5WAU=";
+          rev = "5cafbb78a04b7c5f6036327fe17eb50b2fe43244";
+          hash = "sha256-/DX8lyRM8A0eodZuFIxcr3dmk5nCg3z/uGEsVJfgKuY=";
           fetchSubmodules = true;
         }
     else if (lib.versionOlder "5.1" ocaml.version) then
