@@ -1620,10 +1620,6 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/odoc/releases/download/2.4.2/odoc-2.4.2.tbz;
-      sha256 = "02x45ffakxv91yxmpqj87yasxfz00rd2ikx96zkk12pc4sxzsg2n";
-    };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
       substituteInPlace src/parser/dune --replace-fail "result" ""
@@ -1789,14 +1785,6 @@ with oself;
     doCheck = true;
     checkInputs = [ alcotest ];
   };
-
-  # These require crowbar which is still not compatible with newer cmdliner.
-  pecu = osuper.pecu.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/pecu/releases/download/v0.7/pecu-0.7.tbz;
-      sha256 = "0y6pkz7bl63rhlhgdaizlkx4xnak95l6f02468yd6a34n6spfx5d";
-    };
-  });
 
   pg_query = callPackage ./pg_query { };
 
@@ -2260,13 +2248,6 @@ with oself;
       hash = "sha256-8e5NR69LyHnNdbDA/18OOYCUtsJW0h3mZkgxiQ85/QI=";
     };
     propagatedBuildInputs = [ ctypes integers ];
-  });
-
-  unstrctrd = osuper.unstrctrd.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/dinosaure/unstrctrd/releases/download/v0.4/unstrctrd-0.4.tbz;
-      sha256 = "090q28jynppia69n17lklr2m7bwy5kdzbgg75yaqx67amj39p2in";
-    };
   });
 
   uring = osuper.uring.overrideAttrs (_: {
