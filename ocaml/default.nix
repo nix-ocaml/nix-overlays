@@ -1239,10 +1239,9 @@ with oself;
   });
 
   mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-vnetif/releases/download/v0.6.1/mirage-vnetif-0.6.1.tbz;
-      sha256 = "1dnsp0bfgz9bwciy1mp9bgqs4dgrp29bmhklf401c8xqk193rbm6";
-    };
+    postPatch = ''
+      substituteInPlace src/vnetif/dune --replace-fail "result" ""
+    '';
   });
 
   miou = osuper.miou.overrideAttrs {
