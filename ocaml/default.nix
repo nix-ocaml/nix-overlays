@@ -1855,6 +1855,18 @@ with oself;
     '';
   });
 
+  ppx_deriving_variant_string = buildDunePackage {
+    pname = "ppx_deriving_variant_string";
+    version = "1.0.0";
+    src = fetchFromGitHub {
+      owner = "ahrefs";
+      repo = "ppx_deriving_variant_string";
+      rev = "02ce03e5083626e66078e00aefeadfeb696e35c3";
+      hash = "sha256-Od809x9pTt3Ey0arjmv0xNjyI7nUmaL3nr3O8wH7Vp0=";
+    };
+    propagatedBuildInputs = [ ppxlib ];
+  };
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
