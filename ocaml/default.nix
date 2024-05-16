@@ -170,8 +170,10 @@ with oself;
   });
 
   arp = osuper.arp.overrideAttrs (_: {
-    buildInputs = if stdenv.isDarwin then [ ethernet ] else [ ];
-    doCheck = ! stdenv.isDarwin;
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/arp/releases/download/v3.1.1/arp-3.1.1.tbz;
+      sha256 = "1w86iy3ccs1sbdl01rj09zmgxzbwal5vmhibnq7k1snyx64wacza";
+    };
   });
 
   archi = callPackage ./archi { };
@@ -186,6 +188,14 @@ with oself;
     };
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
+
+  asn1-combinators = osuper.asn1-combinators.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.1/asn1-combinators-0.3.1.tbz;
+      sha256 = "0kkwapy7vdq4202vmqhc831666b1mxjh2gq3w97iq7kfxb388ags";
+    };
+  });
+
 
   multiformats = buildDunePackage {
     pname = "multiformats";
@@ -1237,9 +1247,10 @@ with oself;
   });
 
   mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/vnetif/dune --replace-fail "result" ""
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-vnetif/releases/download/v0.6.1/mirage-vnetif-0.6.1.tbz;
+      sha256 = "1dnsp0bfgz9bwciy1mp9bgqs4dgrp29bmhklf401c8xqk193rbm6";
+    };
   });
 
   miou = osuper.miou.overrideAttrs {
@@ -1865,11 +1876,9 @@ with oself;
   });
 
   ppx_import = osuper.ppx_import.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_import";
-      rev = "70c3120f3348b01a929873040fb589137655c6d7";
-      hash = "sha256-qZ3f9N9Ixty7MaTmsYkmBI/SfmGoKwTIKO11LABMYrg=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppx_import/releases/download/v1.11.0/ppx_import-1.11.0.tbz;
+      sha256 = "06mcrr36by5h0gn80sl2588lsa6h938sfc8srgja988hi7afyrr6";
     };
   });
 
@@ -2348,6 +2357,15 @@ with oself;
   websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
   websocketaf-async = callPackage ./websocketaf/async.nix { };
   websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+
+  ohex = buildDunePackage {
+    pname = "ohex";
+    version = "0.2.0";
+    src = builtins.fetchurl {
+      url = https://git.robur.coop/robur/ohex/archive/v0.2.0.tar.gz;
+      sha256 = "1v6qwz6a0anbcjy74bgfinmib4c8wzc64y3b9dvhrc1lpanppdd6";
+    };
+  };
 
   xxhash = osuper.xxhash.overrideAttrs (_: {
     postPatch = ''
