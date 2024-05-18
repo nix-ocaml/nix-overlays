@@ -1870,13 +1870,6 @@ with oself;
     };
   });
 
-  ppx_import = osuper.ppx_import.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_import/releases/download/v1.11.0/ppx_import-1.11.0.tbz;
-      sha256 = "06mcrr36by5h0gn80sl2588lsa6h938sfc8srgja988hi7afyrr6";
-    };
-  });
-
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
     then null
