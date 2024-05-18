@@ -819,8 +819,8 @@ with oself;
 
   git = osuper.git.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/3.15.0/git-3.15.0.tbz;
-      sha256 = "1lamw2a412y5lccg4r1bnli2aa8i9x0iyv4nx73z55bwi2gwlv72";
+      url = https://github.com/mirage/ocaml-git/releases/download/3.16.0/git-3.16.0.tbz;
+      sha256 = "1gybdc6hh26r35bkmv8kmcb5wwcs99325zc35q19zvkhzvsqh59i";
     };
   });
 
@@ -1188,6 +1188,13 @@ with oself;
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
+  mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage/releases/download/v4.5.1/mirage-4.5.1.tbz;
+      sha256 = "033yhprafg792c3adlr9na3yb08nzv0j3xvb4ky740y0mbj0pq41";
+    };
+  });
+
   mirage-kv-unix = buildDunePackage {
     pname = "mirage-kv-unix";
     version = "3.0.0";
@@ -1318,6 +1325,13 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
+
+  mimic = osuper.mimic.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/dinosaure/mimic/releases/download/0.0.7/mimic-0.0.7.tbz;
+      sha256 = "0b9jh0lrhr9r3j07lnkpcs55r73p1q543bgi282kgrfgaikvijj9";
+    };
+  });
 
   mimic-happy-eyeballs = buildDunePackage {
     pname = "mimic-happy-eyeballs";
@@ -1840,11 +1854,9 @@ with oself;
   ppx_deriving_variant_string = buildDunePackage {
     pname = "ppx_deriving_variant_string";
     version = "1.0.0";
-    src = fetchFromGitHub {
-      owner = "ahrefs";
-      repo = "ppx_deriving_variant_string";
-      rev = "02ce03e5083626e66078e00aefeadfeb696e35c3";
-      hash = "sha256-Od809x9pTt3Ey0arjmv0xNjyI7nUmaL3nr3O8wH7Vp0=";
+    src = builtins.fetchurl {
+      url = https://github.com/ahrefs/ppx_deriving_variant_string/releases/download/1.0.1/ppx_deriving_variant_string-1.0.1.tbz;
+      sha256 = "01rgcg3x7yw81kfrv33h9sx0grqs0445ah4k18pf8f0g9hn3s9cx";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
@@ -2131,9 +2143,10 @@ with oself;
 
   tls = osuper.tls.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.4/tls-0.17.4.tbz;
-      sha256 = "0gx4w4ypcjfpdnld43l1p91f4q0mh5nc0gj96vjf1ynzf44jk932";
+      url = https://github.com/mirleft/ocaml-tls/releases/download/v0.17.5/tls-0.17.5.tbz;
+      sha256 = "06a8ms9ginhgbz22ybhgiiiisacwynix9a1555r8avrspxbqh449";
     };
+
     propagatedBuildInputs = [
       cstruct
       domain-name
