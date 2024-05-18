@@ -169,13 +169,6 @@ with oself;
     '';
   });
 
-  arp = osuper.arp.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/arp/releases/download/v3.1.1/arp-3.1.1.tbz;
-      sha256 = "1w86iy3ccs1sbdl01rj09zmgxzbwal5vmhibnq7k1snyx64wacza";
-    };
-  });
-
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
@@ -1435,12 +1428,6 @@ with oself;
     buildInputs = o.buildInputs ++ [ ptime base64 dune-configurator ];
   });
 
-  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ocamlformat/releases/download/0.26.2/ocamlformat-0.26.2.tbz;
-      sha256 = "1ibm0cypks9z6s1c1pbra6kb455zn3va0fz89y27ldmayxmmjkrf";
-    };
-  });
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
     inherit (ocamlformat-lib) src;
   });
