@@ -989,8 +989,8 @@ with oself;
           {
             owner = "ocaml";
             repo = "ocaml-lsp";
-            rev = "ceae461fe87a18bae2f7fe5bb54ed79579421b68";
-            hash = "sha256-2P/aHolR9VTxS3vINPxonRXqy4NH0LX906MAXsticyY=";
+            rev = "b2feb87dc288755b2c5df7b3a30b6a5229ea4a39";
+            hash = "sha256-48Pho5Yy18ny+j5MCA9bO6Pe+q1YDcuzEq2h8y8hXbg=";
           } else o.src;
   });
 
@@ -1532,6 +1532,10 @@ with oself;
 
     propagatedBuildInputs = [ dune-configurator react ];
   };
+
+  ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
+    buildInputs = o.buildInputs ++ [ base ];
+  });
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: {
     postPatch = ''
