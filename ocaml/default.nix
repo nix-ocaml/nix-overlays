@@ -1948,30 +1948,14 @@ with oself;
     patches = [ ./opium-status.patch ];
   });
 
-  rope = buildDunePackage rec {
-    pname = "rope";
-    version = "0.6.3";
-    minimalOCamlVersion = "4.03";
-
-    src = fetchFromGitHub {
-      owner = "Chris00";
-      repo = "ocaml-rope";
-      rev = "0.6.3";
-      hash = "sha256-yUdIhtI1sy/BWFgxOfLdarQcCYGAq5eB0apqvfVOO4I=";
-    };
-
+  rope = osuper.rope.overrideAttrs (_: {
+    patches = [ ];
+    buildInputs = [ ];
     propagatedBuildInputs = [ benchmark ];
     postPatch = ''
       substituteInPlace "src/dune" --replace-fail "bytes" ""
     '';
-
-    meta = {
-      homepage = "https://github.com/Chris00/ocaml-rope";
-      description = "Ropes (“heavyweight strings”) in OCaml";
-      license = lib.licenses.lgpl21;
-      maintainers = with lib.maintainers; [ ];
-    };
-  };
+  });
 
   routes = osuper.routes.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2194,15 +2178,6 @@ with oself;
       ]);
   });
 
-  tsdl-image = osuper.tsdl-image.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "sanette";
-      repo = "tsdl-image";
-      rev = "0.6";
-      hash = "sha256-mgTFwkuFJVwJmHrzHSdNh8v4ehZIcWemK+eLqjglw5o=";
-    };
-  });
-
   tsdl-mixer = osuper.tsdl-mixer.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "sanette";
@@ -2222,13 +2197,6 @@ with oself;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
-
-  uri = osuper.uri.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-uri/releases/download/v4.4.0/uri-4.4.0.tbz;
-      sha256 = "1i6ygbqnn6wf6cp015jfkw5biv3899p4rdy7kkjn28fdympazayd";
-    };
-  });
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
     src = fetchFromGitHub {
