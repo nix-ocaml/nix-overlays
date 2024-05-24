@@ -647,6 +647,13 @@ with oself;
         wrapProgram $out/bin/dune \
           --suffix PATH : "${darwin.sigtool}/bin"
       '' else "";
+    version = "3.16.0~alpha1";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "3.16.0_alpha1";
+      sha256 = "sha256-7xsEqkavmFjoehjCvk9fcmkQvzJRLtziccDr4yUFKUU=";
+    };
   });
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
