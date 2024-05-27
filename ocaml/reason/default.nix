@@ -15,7 +15,7 @@
 
 buildDunePackage rec {
   pname = "reason";
-  version = "3.10.0";
+  version = "3.11.0";
 
   src = builtins.fetchurl {
     url = https://github.com/reasonml/reason/releases/download/3.11.0/reason-3.11.0.tbz;

@@ -914,6 +914,13 @@ with oself;
     hardeningDisable = [ "strictoverflow" ];
   });
 
+  ipaddr = osuper.ipaddr.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-ipaddr/releases/download/v5.6.0/ipaddr-5.6.0.tbz;
+      sha256 = "0cw1431idd54v067p3mqbxhsgsx5mixl9ywgmak3g92cvczl6c4y";
+    };
+  });
+
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
@@ -996,8 +1003,8 @@ with oself;
           {
             owner = "ocaml";
             repo = "ocaml-lsp";
-            rev = "b2feb87dc288755b2c5df7b3a30b6a5229ea4a39";
-            hash = "sha256-48Pho5Yy18ny+j5MCA9bO6Pe+q1YDcuzEq2h8y8hXbg=";
+            rev = "3d84dc42c468d03ce36291985573b87767b6f670";
+            hash = "sha256-fWKJXw73f/h+oftQh17V6OoF0Tp7z/1H6/pAbIqG8cw=";
           } else o.src;
   });
 
@@ -1843,8 +1850,8 @@ with oself;
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.0.0/ppx_deriving-6.0.0.tbz;
-      sha256 = "09dcixb2k7xyrqg60m396wvihr6laq3r8pigw5s5k64v2npv5gw6";
+      url = https://github.com/ocaml-ppx/ppx_deriving/releases/download/v6.0.2/ppx_deriving-6.0.2.tbz;
+      sha256 = "151bcg9nxcn8k91f77pizv8nq30bih9cj38igq24452ajg2wzfks";
     };
     buildInputs = [ ];
     propagatedBuildInputs = [
@@ -1873,11 +1880,9 @@ with oself;
   };
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_deriving_yojson";
-      rev = "4386d240589d5b1372d9ce3bf8654fca45c07ac8";
-      hash = "sha256-pnwjDsoHAxbTSSLVM6RIbIbadXCBPfgYj9hkntE9rrc=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.8.0/ppx_deriving_yojson-3.8.0.tbz;
+      sha256 = "18f2w2cd9zkmpyffly2mlfkgnv5srh910jk650c0d3s1pr4cbjzx";
     };
   });
 
