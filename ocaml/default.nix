@@ -873,6 +873,7 @@ with oself;
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
+  httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
   httpun-lwt = callPackage ./httpun/lwt.nix { };
   httpun-lwt-unix = callPackage ./httpun/lwt-unix.nix { };
