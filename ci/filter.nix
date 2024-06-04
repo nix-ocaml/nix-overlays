@@ -111,6 +111,9 @@ let
     # build is broken, something with tls
     "riot"
     "minttea"
+    "opium"
+    "rock"
+    "subscriptions-transport-ws"
   ];
 
   ocaml5Ignores = [
