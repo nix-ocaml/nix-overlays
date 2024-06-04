@@ -1,14 +1,14 @@
 { buildDunePackage
-, httpaf
+, httpun
 , gluten-eio
 , eio_main
 }:
 
 buildDunePackage {
-  inherit (httpaf) version src;
-  pname = "httpaf-eio";
+  inherit (httpun) version src;
+  pname = "httpun-eio";
   propagatedBuildInputs = [
-    httpaf
+    httpun
     gluten-eio
     eio_main
   ];

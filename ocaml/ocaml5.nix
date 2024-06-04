@@ -37,7 +37,8 @@ with oself;
 
   h2-eio = callPackage ./h2/eio.nix { };
 
-  httpaf-eio = callPackage ./httpaf/eio.nix { };
+  httpun-eio = callPackage ./httpun/eio.nix { };
+  httpaf-eio = httpun-eio;
 
   kafka-eio = buildDunePackage {
     pname = "kafka-eio";
@@ -171,5 +172,6 @@ with oself;
     checkInputs = o.checkInputs ++ [ eio_main ];
   });
 
-  websocketaf-eio = callPackage ./websocketaf/eio.nix { };
+  httpun-ws-eio = callPackage ./httpun-ws/eio.nix { };
+  websocketaf-eio = httpun-ws-eio;
 }

@@ -2,13 +2,13 @@
 
 buildDunePackage {
   version = "0.7.0-dev";
-  pname = "httpaf";
+  pname = "httpun";
   propagatedBuildInputs = [ angstrom faraday ];
 
   src = fetchFromGitHub {
     owner = "anmonteiro";
-    repo = "httpaf";
-    rev = "0ddc76b7599a15cf5cc71ae39acf1585f21ed8d5";
-    hash = "sha256-UfBcOCKHbdBJ5WKkHz9HJU4a7CRbR/1ei1ajVy8u6rg=";
+    repo = "httpun";
+    rev = "d6f8d6ca29a9f7a5d1d2c116a4fd6fc1a048d2dc";
+    hash = "sha256-oMO/6dfKggSyQCwX7pYglOc1lFgKv8TwTbN4OWWNMjI=";
   };
 }

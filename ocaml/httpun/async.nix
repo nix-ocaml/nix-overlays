@@ -1,22 +1,20 @@
 { buildDunePackage
-, websocketaf
+, httpun
 , async
 , gluten-async
 , faraday-async
 , async_ssl
-, digestif
 }:
 
 buildDunePackage {
-  pname = "websocketaf-async";
-  inherit (websocketaf) src version;
-
+  inherit (httpun) version src;
+  pname = "httpun-async";
+  doCheck = false;
   propagatedBuildInputs = [
-    websocketaf
+    httpun
     async
     gluten-async
     faraday-async
     async_ssl
-    digestif
   ];
 }
