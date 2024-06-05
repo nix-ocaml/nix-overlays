@@ -110,6 +110,7 @@ let
     "libc"
     # build is broken, something with tls
     "riot"
+    "minttea"
   ];
 
   ocaml5Ignores = [
