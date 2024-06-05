@@ -100,6 +100,14 @@ let
     "mimic-happy-eyeballs"
     "mirage-console-unix"
     "git"
+
+    # we don't really care about these and they don't build on 4.14
+    "spices"
+    "gluon"
+    "rio"
+    "bytestring"
+    "config"
+    "libc"
   ];
 
   ocaml5Ignores = [
