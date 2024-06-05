@@ -2218,13 +2218,6 @@ with oself;
   });
 
   uring = osuper.uring.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "ocaml-uring";
-      rev = "abe340086574c124061434054937d1f19ee6bb71";
-      hash = "sha256-t/p2vdRrxu2psNXaOWjD7UtP3Gf2WmbYmCuycQdLtrU=";
-    };
-    patches = [ ];
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace-fail \
@@ -2327,9 +2320,11 @@ with oself;
   ohex = buildDunePackage {
     pname = "ohex";
     version = "0.2.0";
-    src = builtins.fetchurl {
-      url = https://git.robur.coop/robur/ohex/archive/v0.2.0.tar.gz;
-      sha256 = "1v6qwz6a0anbcjy74bgfinmib4c8wzc64y3b9dvhrc1lpanppdd6";
+    src = fetchFromGitHub {
+      owner = "robur-coop";
+      repo = "ohex";
+      rev = "v0.2.0";
+      hash = "sha256-9lg/IAkVuHFzk92IkuBjfJSwPUZ1AbLklxwFWMTbws8=";
     };
   };
 
