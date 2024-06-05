@@ -108,6 +108,8 @@ let
     "bytestring"
     "config"
     "libc"
+    # build is broken, something with tls
+    "riot"
   ];
 
   ocaml5Ignores = [
