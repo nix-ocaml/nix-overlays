@@ -2,13 +2,11 @@
 
 buildDunePackage {
   pname = "gluten";
-  version = "0.5.0";
+  version = "0.5.1";
 
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "gluten";
-    rev = "c4e50854b1a535776d85d27fdedb632852ba6519";
-    hash = "sha256-MWUEOE4QKSuWPBC7adtdCRfzWvgswwYVa/ZcAy2c1z8=";
+  src = builtins.fetchurl {
+    url = https://github.com/anmonteiro/gluten/releases/download/0.5.1/gluten-0.5.1.tbz;
+    sha256 = "15lx1zmkjzawi78qsssjf179p9f5302ygd3i97ay9gyia0q1p5sm";
   };
   propagatedBuildInputs = [ bigstringaf faraday ];
 }

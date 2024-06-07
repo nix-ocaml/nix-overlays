@@ -789,8 +789,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  functoria = disableTests osuper.functoria;
-
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
