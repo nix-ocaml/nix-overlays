@@ -1320,6 +1320,11 @@ with oself;
     '';
   });
 
+  minisat = osuper.minisat.overrideAttrs (_: {
+    NIX_CFLAGS_COMPILE =
+      lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+  });
+
   morbig = osuper.morbig.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/jsonHelpers.ml --replace-fail \
