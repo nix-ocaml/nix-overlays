@@ -789,8 +789,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  functoria = disableTests osuper.functoria;
-
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
@@ -1320,6 +1318,11 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace-fail "result" ""
     '';
+  });
+
+  minisat = osuper.minisat.overrideAttrs (_: {
+    NIX_CFLAGS_COMPILE =
+      lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
   morbig = osuper.morbig.overrideAttrs (_: {
