@@ -27,8 +27,8 @@ buildDunePackage {
     if (lib.versionOlder "5.2" ocaml.version) then
       builtins.fetchurl
         {
-          url = https://github.com/melange-re/melange/releases/download/4.0.0-52/melange-4.0.0-52.tbz;
-          sha256 = "1ni1p7k9s7bjknhi29k2p9p1121l2krjd9jzbmj0wih075k70p7q";
+          url = https://github.com/melange-re/melange/releases/download/4.0.1-52/melange-4.0.1-52.tbz;
+          sha256 = "0dvmdxzkvr5qc064p9q8yciv5jkcw9njn1nxhzrpwb9dlj344jci";
         }
     else if (lib.versionOlder "5.1" ocaml.version) then
       builtins.fetchurl
