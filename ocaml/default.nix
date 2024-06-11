@@ -647,12 +647,12 @@ with oself;
         wrapProgram $out/bin/dune \
           --suffix PATH : "${darwin.sigtool}/bin"
       '' else "";
-    version = "3.16.0~alpha1";
+    version = "3.16.0~alpha2";
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "3.16.0_alpha1";
-      sha256 = "sha256-7xsEqkavmFjoehjCvk9fcmkQvzJRLtziccDr4yUFKUU=";
+      rev = "3.16.0_alpha2";
+      hash = "sha256-NGQZQ/KbFy5sqpw2/dPhMFTAkJTQ3Mpf3v/4BzzV0HU=";
     };
   });
 
