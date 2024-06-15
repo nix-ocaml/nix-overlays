@@ -70,8 +70,8 @@ let
           src = super.fetchFromGitHub {
             owner = "ocaml";
             repo = "ocaml";
-            rev = "5.1.0";
-            hash = "sha256-mUEELbrmWF01ZDTeuyd+Ng+5gtzbeIE7hr7WFT0zavQ=";
+            rev = "5.1.1";
+            hash = "sha256-uSmTpDUVhj9niON65B9sc/8PBgurS3nIOx4dJjJiUqc=";
           };
         });
       });
@@ -95,8 +95,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "7f3ecc86e7d982dbef8fddcf9d744c1eb5d9f014";
-          hash = "sha256-DKN3z9qPpZujsxY37d/11R7WzGIqfhNZn1oMsiB/cz8=";
+          rev = "ba6dbe91d4dee4edbdebed58cca30b0e40d8b7d5";
+          hash = "sha256-hRG7IGrwlW4voInsmgd8Nsd2tBS7yS60c58YnLsipO4=";
         };
       };
 
@@ -144,12 +144,12 @@ in
 rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-    ocamlPackages_latest = oPs.ocamlPackages_5_1;
+    ocamlPackages_latest = oPs.ocamlPackages_5_2;
   };
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
-    else ocaml-ng.ocamlPackages_5_1;
+    else ocaml-ng.ocamlPackages_5_2;
   ocamlPackages_latest =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackage_latest
