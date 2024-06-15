@@ -151,19 +151,9 @@ with oself;
   };
 
   apron = osuper.apron.overrideAttrs (_: {
-    # src = fetchFromGitHub {
-    # owner = "antoinemine";
-    # repo = "apron";
-    # rev = "v0.9.14-beta1";
-    # hash = "sha256-j7Fp1IEaq7rSF+3OufYQPn5ZWLzOcIEJQWiqG0E+Wtk=";
-    # };
-
     configurePhase = ''
       runHook preConfigure
-      ./configure -prefix $out \
-        ${if stdenv.isDarwin then "--absolute-dylibs" else ""} \
-        --debug \
-        --no-strip
+      ./configure -prefix $out ${lib.optionalString stdenv.isDarwin "--no-strip"}
       mkdir -p $out/lib/ocaml/${ocaml.version}/site-lib/stublibs
       runHook postConfigure
     '';
