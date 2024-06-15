@@ -329,13 +329,6 @@ with oself;
     };
   };
 
-  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.98/ca-certs-nss-3.98.tbz;
-      sha256 = "15x6gg0cil2fl9hk72lmlqavmrbfr5gnazny0plisa5pqz7xqprp";
-    };
-  });
-
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
   });
@@ -1180,18 +1173,6 @@ with oself;
     # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
-
-  memprof-limits = buildDunePackage {
-    pname = "memprof-limits";
-    version = "0.2.1";
-    src = fetchFromGitLab {
-      owner = "gadmm";
-      repo = "memprof-limits";
-      rev = "v0.2.1";
-      hash = "sha256-Pmuln5TihPoPZuehZlqPfERif6lf7O+0454kW9y3aKc=";
-    };
-    doCheck = true;
-  };
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
