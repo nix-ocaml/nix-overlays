@@ -3,11 +3,6 @@
 let
   inherit (super) lib callPackage ocaml-ng;
   ocamlVersions = [
-    "4_06"
-    "4_08"
-    "4_09"
-    "4_10"
-    "4_11"
     "4_12"
     "4_13"
     "4_14"
@@ -28,9 +23,67 @@ let
   custom-ocaml-ng =
     ocaml-ng //
     (if !(ocaml-ng ? "ocamlPackages_trunk") then {
+      ocamlPackages_4_12 = ocaml-ng.ocamlPackages_4_12.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "4.12.1";
+            hash = "sha256-xIBRHPG0cmhKr0mYp+wKl1a9Bo0PYX2Uc8VO7lCMVzM=";
+          };
+        });
+      });
+      ocamlPackages_4_13 = ocaml-ng.ocamlPackages_4_13.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "4.13.1";
+            hash = "sha256-Mq4mQ9ZgzSpw21b2s55fPsA7rKqXCESr+TAg6PfzU8Q=";
+          };
+        });
+      });
       ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
         ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "4.14.2";
+            hash = "sha256-xKcFQ8vkiOTw7CAMddF8Xf82GNpg879bUdyVC63XREg=";
+          };
           hardeningDisable = [ "strictoverflow" ];
+        });
+      });
+      ocamlPackages_5_0 = ocaml-ng.ocamlPackages_5_0.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.0.0";
+            hash = "sha256-pQrbncjIYrrreJS7LV+Z5J0AhAikD+94MHnZ3ChHF9w=";
+          };
+
+        });
+      });
+      ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.1.1";
+            hash = "sha256-uSmTpDUVhj9niON65B9sc/8PBgurS3nIOx4dJjJiUqc=";
+          };
+        });
+      });
+
+      ocamlPackages_5_2 = ocaml-ng.ocamlPackages_5_2.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.2.0";
+            hash = "sha256-cN5feAgjEX0ojyQaNWI5X4Q7HuccOmwLQsi9Khi8PB0=";
+          };
         });
       });
 
@@ -42,8 +95,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "7f3ecc86e7d982dbef8fddcf9d744c1eb5d9f014";
-          hash = "sha256-DKN3z9qPpZujsxY37d/11R7WzGIqfhNZn1oMsiB/cz8=";
+          rev = "ba6dbe91d4dee4edbdebed58cca30b0e40d8b7d5";
+          hash = "sha256-hRG7IGrwlW4voInsmgd8Nsd2tBS7yS60c58YnLsipO4=";
         };
       };
 
@@ -91,12 +144,12 @@ in
 rec {
   ocaml-ng = custom-ocaml-ng // oPs // {
     ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-    ocamlPackages_latest = oPs.ocamlPackages_5_1;
+    ocamlPackages_latest = oPs.ocamlPackages_5_2;
   };
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
-    else ocaml-ng.ocamlPackages_5_1;
+    else ocaml-ng.ocamlPackages_5_2;
   ocamlPackages_latest =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackage_latest
