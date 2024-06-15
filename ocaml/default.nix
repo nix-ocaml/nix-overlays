@@ -329,13 +329,6 @@ with oself;
     };
   };
 
-  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = https://github.com/mirage/ca-certs-nss/releases/download/v3.98/ca-certs-nss-3.98.tbz;
-      sha256 = "15x6gg0cil2fl9hk72lmlqavmrbfr5gnazny0plisa5pqz7xqprp";
-    };
-  });
-
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
   });
@@ -1181,18 +1174,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
-  memprof-limits = buildDunePackage {
-    pname = "memprof-limits";
-    version = "0.2.1";
-    src = fetchFromGitLab {
-      owner = "gadmm";
-      repo = "memprof-limits";
-      rev = "v0.2.1";
-      hash = "sha256-Pmuln5TihPoPZuehZlqPfERif6lf7O+0454kW9y3aKc=";
-    };
-    doCheck = true;
-  };
-
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
@@ -1819,16 +1800,51 @@ with oself;
 
   ppx_cstruct = disableTests osuper.ppx_cstruct;
 
-  ppx_cstubs = osuper.ppx_cstubs.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++ [ findlib ];
+  ppx_cstubs = buildDunePackage {
+    pname = "ppx_cstubs";
+    version = "0.7.0";
+    minimalOCamlVersion = "4.08";
+
+    src = fetchFromGitHub {
+      owner = "fdopen";
+      repo = "ppx_cstubs";
+      rev = "0.7.0";
+      hash = "sha256-qMmwRWCIfNyhCQYPKLiufnb57sTR3P+WInOqtPDywFs=";
+    };
+
+    # patches = [ ./ppxlib.patch ];
     postPatch = ''
+      substituteInPlace src/internal/ppxc__script_real.ml \
+      --replace 'C_content_make ()' 'C_content_make (struct end)'
+
       ${lib.optionalString (lib.versionOlder "5.2" ocaml.version) ''
-        substituteInPlace src/custom/ppx_cstubs_custom.cppo.ml \
-        --replace-fail "init_code fun_code" "init_code" \
-        --replace-fail "can_free = fun_code = []" "can_free = fun_code"
-        ''}
+      substituteInPlace src/custom/ppx_cstubs_custom.cppo.ml \
+      --replace-fail "init_code fun_code" "init_code" \
+      --replace-fail "can_free = fun_code = []" "can_free = fun_code"
+      ''}
     '';
-  });
+
+    nativeBuildInputs = [ cppo ];
+
+    buildInputs = [
+      bigarray-compat
+      containers
+      findlib
+      integers
+      num
+      ppxlib
+      re
+    ];
+
+    propagatedBuildInputs = [ ctypes ];
+
+    meta = with lib; {
+      homepage = "https://github.com/fdopen/ppx_cstubs";
+      description = "Preprocessor for easier stub generation with ocaml-ctypes";
+      license = licenses.lgpl21Plus;
+      maintainers = [ lib.maintainers.anmonteiro ];
+    };
+  };
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
@@ -2056,7 +2072,10 @@ with oself;
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
 
-  stdcompat = osuper.stdcompat.overrideAttrs (_: {
+  stdcompat = buildDunePackage {
+    pname = "stdcompat";
+    version = "19-dev";
+
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "stdcompat";
@@ -2064,7 +2083,15 @@ with oself;
       rev = "58b6d90fc53333f5e8112d42f96093802678c030";
       hash = "sha256-7xfcCVOOMaZ5dwgTtSn0YAkZg9tdqvn1tNMqsIL4ZfA=";
     };
-  });
+
+    dontConfigure = true;
+
+    meta = {
+      homepage = "https://github.com/thierry-martinez/stdcompat";
+      license = lib.licenses.bsd2;
+      maintainers = [ lib.maintainers.anmonteiro ];
+    };
+  };
 
   stdlib-random = buildDunePackage {
     pname = "stdlib-random";
