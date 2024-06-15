@@ -151,12 +151,12 @@ with oself;
   };
 
   apron = osuper.apron.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "antoinemine";
-      repo = "apron";
-      rev = "v0.9.14-beta1";
-      hash = "sha256-j7Fp1IEaq7rSF+3OufYQPn5ZWLzOcIEJQWiqG0E+Wtk=";
-    };
+    # src = fetchFromGitHub {
+    # owner = "antoinemine";
+    # repo = "apron";
+    # rev = "v0.9.14-beta1";
+    # hash = "sha256-j7Fp1IEaq7rSF+3OufYQPn5ZWLzOcIEJQWiqG0E+Wtk=";
+    # };
 
     configurePhase = ''
       runHook preConfigure
