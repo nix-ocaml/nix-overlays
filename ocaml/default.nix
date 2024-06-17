@@ -1238,7 +1238,6 @@ with oself;
 
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (o: {
     pname = "logs";
-    propagatedBuildInputs = o.propagatedBuildInputs ++[topkg ];
   });
 
   logs-ppx = callPackage ./logs-ppx { };
