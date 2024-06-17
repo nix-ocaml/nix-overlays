@@ -1236,9 +1236,9 @@ with oself;
     '';
   });
 
-  logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (_: {
+  logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (o: {
     pname = "logs";
-    propagatedBuildInputs = [ ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++[topkg ];
   });
 
   logs-ppx = callPackage ./logs-ppx { };
