@@ -648,11 +648,9 @@ with oself;
           --suffix PATH : "${darwin.sigtool}/bin"
       '' else "";
     version = "3.16.0~alpha2";
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "dune";
-      rev = "3.16.0_alpha2";
-      hash = "sha256-NGQZQ/KbFy5sqpw2/dPhMFTAkJTQ3Mpf3v/4BzzV0HU=";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.16.0/dune-3.16.0.tbz;
+      sha256 = "19mxz5s1wisnh0dqryryi3ak4jvkkwrp8kf308g158wcj7kxv0al";
     };
   });
 
