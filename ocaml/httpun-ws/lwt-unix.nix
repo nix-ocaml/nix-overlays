@@ -1,17 +1,17 @@
 { buildDunePackage
-, websocketaf
-, websocketaf-lwt
+, httpun-ws
+, httpun-ws-lwt
 , faraday-lwt-unix
 , gluten-lwt-unix
 }:
 
 buildDunePackage {
-  pname = "websocketaf-lwt-unix";
-  inherit (websocketaf) src version;
+  pname = "httpun-ws-lwt-unix";
+  inherit (httpun-ws) src version;
 
   propagatedBuildInputs = [
-    websocketaf
-    websocketaf-lwt
+    httpun-ws
+    httpun-ws-lwt
     faraday-lwt-unix
     gluten-lwt-unix
   ];

@@ -873,11 +873,19 @@ with oself;
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
-  httpaf = callPackage ./httpaf { };
-  httpaf-lwt = callPackage ./httpaf/lwt.nix { };
-  httpaf-lwt-unix = callPackage ./httpaf/lwt-unix.nix { };
-  httpaf-mirage = callPackage ./httpaf/mirage.nix { };
-  httpaf-async = callPackage ./httpaf/async.nix { };
+  httpun-types = callPackage ./httpun/types.nix { };
+  httpun = callPackage ./httpun { };
+  httpun-lwt = callPackage ./httpun/lwt.nix { };
+  httpun-lwt-unix = callPackage ./httpun/lwt-unix.nix { };
+  httpun-mirage = callPackage ./httpun/mirage.nix { };
+  httpun-async = callPackage ./httpun/async.nix { };
+
+  # To help migrate, for now
+  httpaf = httpun;
+  httpaf-lwt = httpun-lwt;
+  httpaf-lwt-unix = httpun-lwt-unix;
+  httpaf-mirage = httpun-mirage;
+  httpaf-async = httpun-mirage;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -2333,11 +2341,17 @@ with oself;
 
   };
 
-  websocketaf = callPackage ./websocketaf { };
-  websocketaf-lwt = callPackage ./websocketaf/lwt.nix { };
-  websocketaf-lwt-unix = callPackage ./websocketaf/lwt-unix.nix { };
-  websocketaf-async = callPackage ./websocketaf/async.nix { };
-  websocketaf-mirage = callPackage ./websocketaf/mirage.nix { };
+  httpun-ws = callPackage ./httpun-ws { };
+  httpun-ws-lwt = callPackage ./httpun-ws/lwt.nix { };
+  httpun-ws-lwt-unix = callPackage ./httpun-ws/lwt-unix.nix { };
+  httpun-ws-async = callPackage ./httpun-ws/async.nix { };
+  httpun-ws-mirage = callPackage ./httpun-ws/mirage.nix { };
+
+  websocketaf = httpun-ws;
+  websocketaf-lwt = httpun-ws-lwt;
+  websocketaf-lwt-unix = httpun-ws-lwt-unix;
+  websocketaf-async = httpun-ws-async;
+  websocketaf-mirage = httpun-ws-mirage;
 
   ohex = buildDunePackage {
     pname = "ohex";

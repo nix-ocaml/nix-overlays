@@ -1,17 +1,17 @@
 { buildDunePackage
-, httpaf
-, httpaf-lwt
+, httpun
+, httpun-lwt
 , gluten-lwt-unix
 , faraday-lwt-unix
 , lwt_ssl
 }:
 
 buildDunePackage {
-  inherit (httpaf) version src;
-  pname = "httpaf-lwt-unix";
+  inherit (httpun) version src;
+  pname = "httpun-lwt-unix";
   propagatedBuildInputs = [
-    httpaf
-    httpaf-lwt
+    httpun
+    httpun-lwt
     gluten-lwt-unix
     faraday-lwt-unix
     lwt_ssl
