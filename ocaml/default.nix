@@ -641,17 +641,17 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
+    version = "3.16.0";
+    src = builtins.fetchurl {
+      url = https://github.com/ocaml/dune/releases/download/3.16.0/dune-3.16.0.tbz;
+      sha256 = "19mxz5s1wisnh0dqryryi3ak4jvkkwrp8kf308g158wcj7kxv0al";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
       if stdenv.isDarwin then ''
         wrapProgram $out/bin/dune \
           --suffix PATH : "${darwin.sigtool}/bin"
       '' else "";
-    version = "3.16.0~alpha2";
-    src = builtins.fetchurl {
-      url = https://github.com/ocaml/dune/releases/download/3.16.0/dune-3.16.0.tbz;
-      sha256 = "19mxz5s1wisnh0dqryryi3ak4jvkkwrp8kf308g158wcj7kxv0al";
-    };
   });
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
