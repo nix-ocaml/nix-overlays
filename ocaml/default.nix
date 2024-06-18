@@ -2343,12 +2343,6 @@ with oself;
   httpun-ws-async = callPackage ./httpun-ws/async.nix { };
   httpun-ws-mirage = callPackage ./httpun-ws/mirage.nix { };
 
-  websocketaf = httpun-ws;
-  websocketaf-lwt = httpun-ws-lwt;
-  websocketaf-lwt-unix = httpun-ws-lwt-unix;
-  websocketaf-async = httpun-ws-async;
-  websocketaf-mirage = httpun-ws-mirage;
-
   ohex = buildDunePackage {
     pname = "ohex";
     version = "0.2.0";

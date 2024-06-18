@@ -173,5 +173,4 @@ with oself;
   });
 
   httpun-ws-eio = callPackage ./httpun-ws/eio.nix { };
-  websocketaf-eio = httpun-ws-eio;
 }
