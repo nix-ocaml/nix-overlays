@@ -92,10 +92,10 @@ with oself;
 
   multicore-magic = buildDunePackage {
     pname = "multicore-magic";
-    version = "2.0.0";
+    version = "2.2.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/multicore-magic/releases/download/2.1.0/multicore-magic-2.1.0.tbz;
-      sha256 = "0i2if0vxj2np5qp5js6lgsc130fwz7vgf1rly9q34h0bfdj47zr4";
+      url = https://github.com/ocaml-multicore/multicore-magic/releases/download/2.2.0/multicore-magic-2.2.0.tbz;
+      sha256 = "1a86lzqv8cv3jw64ijzlnm1qx2ynyy8ixrwyazdija1g58c6b2zk";
     };
   };
 

@@ -392,11 +392,13 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
+
   carton = osuper.carton.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/carton-v0.7.1/git-carton-v0.7.1.tbz;
-      sha256 = "1w93ir31rps9vwilv2hq69rrlqrr1qapl9q2zxk49dqipiaca089";
+      url = https://github.com/robur-coop/carton/releases/download/0.7.2/carton-0.7.2.tbz;
+      sha256 = "14mndljn8a375mgb4r83ynqa17kca5sxkj8gv5ycxn2d8iamhya6";
     };
+    patches = [ ];
   });
 
   clz = buildDunePackage {
@@ -472,8 +474,8 @@ with oself;
 
   conduit = osuper.conduit.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.2/conduit-6.2.2.tbz;
-      sha256 = "0i945dgj7b23mywywg1vxaxzx9a9yx7lhasgb8pn39g2iy3vzsjq";
+      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.3/conduit-6.2.3.tbz;
+      sha256 = "0y9y89jafndxr8spnindqa97w0p1asix0k88sr3z5cc52jxq8iis";
     };
   });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
@@ -591,6 +593,19 @@ with oself;
     postPatch = ''
       rm -rf fuzz
     '';
+  });
+
+  dns = osuper.dns.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/ocaml-dns/releases/download/v8.0.0/dns-8.0.0.tbz;
+      sha256 = "0kl5v0kwkc4l4yay52iz3f9wafijca0cm13cn9d539xzqldhd0h8";
+    };
+  });
+  dns-client-lwt = osuper.dns-client-lwt.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-lwt ];
+  });
+  dns-client-mirage = osuper.dns-client-mirage.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-mirage ];
   });
 
   domainslib = osuper.domainslib.overrideAttrs (o: {
@@ -836,6 +851,41 @@ with oself;
   });
 
   hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
+
+  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/robur-coop/happy-eyeballs/releases/download/v1.1.0/happy-eyeballs-1.1.0.tbz;
+      sha256 = "1hfw9xdi04jgg30d837jpblmpwlcmdnncz4w6fybgxgcw6wp0rnf";
+    };
+  });
+  happy-eyeballs-lwt = osuper.happy-eyeballs-lwt.overrideAttrs (_: {
+    buildInputs = [ ];
+    propagatedBuildInputs = [
+      cmdliner
+      fmt
+      ipaddr
+      mtime
+      happy-eyeballs
+      logs
+      lwt
+    ];
+  });
+  happy-eyeballs-mirage = osuper.happy-eyeballs-mirage.overrideAttrs (_: {
+    buildInputs = [ ];
+
+    propagatedBuildInputs = [
+      logs
+      duration
+      domain-name
+      ipaddr
+      fmt
+      lwt
+      tcpip
+      happy-eyeballs
+      mirage-clock
+      mirage-time
+    ];
+  });
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -1169,6 +1219,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
+  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
@@ -1215,9 +1266,10 @@ with oself;
   });
 
   mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace src/vnetif/dune --replace-fail "result" ""
-    '';
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-vnetif/releases/download/v0.6.2/mirage-vnetif-0.6.2.tbz;
+      sha256 = "08j58plmrzzyx50ibpvzdzdyiljfxxhl02xb3lhjd131yjndr2ja";
+    };
   });
 
   miou = osuper.miou.overrideAttrs {
@@ -1352,7 +1404,6 @@ with oself;
     pname = "nanoid";
     version = "dev";
     src = fetchFromGitHub {
-      # anmonteiro/mirage-crypto
       owner = "routineco";
       repo = "ocaml-nanoid";
       rev = "620bb69410774bc8d3285ae2fe9b5534b3c96688";
@@ -1914,21 +1965,18 @@ with oself;
     ];
   });
 
-  reanalyze =
-    if lib.versionOlder "4.13" osuper.ocaml.version then null
-    else
-      osuper.buildDunePackage {
-        pname = "reanalyze";
-        version = "2.17.0";
-        src = fetchFromGitHub {
-          owner = "rescript-association";
-          repo = "reanalyze";
-          rev = "v2.17.0";
-          sha256 = "sha256-BAWWSLn111ihVl1gey+UmMFj1PGDmwkNd5g3kfqcP/Y=";
-        };
+  reanalyze = buildDunePackage {
+    pname = "reanalyze";
+    version = "2.25.1";
+    src = fetchFromGitHub {
+      owner = "rescript-association";
+      repo = "reanalyze";
+      rev = "v2.25.1";
+      hash = "sha256-cM39Gk4Ko7o/DyhrzgEHilobaB3h91Knltkcv2sglFw=";
+    };
 
-        nativeBuildInputs = [ cppo ];
-      };
+    nativeBuildInputs = [ cppo ];
+  };
 
   reason = callPackage ./reason { };
 
@@ -2134,11 +2182,12 @@ with oself;
     ];
   };
 
-  tcpip = osuper.tcpip.overrideAttrs (_: {
+  tcpip = osuper.tcpip.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/mirage-tcpip/releases/download/v8.0.1/tcpip-8.0.1.tbz;
-      sha256 = "138x60gld826anpgscnwyqjb5w516pszbx0dxbkazhjgk1prggjv";
+      url = https://github.com/mirage/mirage-tcpip/releases/download/v8.1.0/tcpip-8.1.0.tbz;
+      sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
     };
+    checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
   });
 
   textmate-language = buildDunePackage {
