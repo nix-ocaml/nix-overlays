@@ -270,7 +270,7 @@ with self;
       ppx_stable_witness
     ];
     postPatch = ''
-      patchShebangs xen/cflags.sh
+      rm -rf xen META.bin_prot.template
     '';
   };
 
