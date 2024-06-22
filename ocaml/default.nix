@@ -1414,6 +1414,8 @@ with oself;
     '';
   });
 
+  ocaml-index = callPackage ./ocaml-index { };
+
   ocaml-protoc-plugin = osuper.ocaml-protoc-plugin.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = https://github.com/andersfugmann/ocaml-protoc-plugin/releases/download/6.1.0/ocaml-protoc-plugin-6.1.0.tbz;
