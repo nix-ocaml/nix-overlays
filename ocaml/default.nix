@@ -2476,7 +2476,7 @@ with oself;
     doCheck = true;
     checkInputs = [ extlib ];
   };
-} // (if lib.versionAtLeast ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16) // (
+} // (if lib.versionAtLeast osuper.ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16) // (
   if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub nodejs_latest; })
   else { }
