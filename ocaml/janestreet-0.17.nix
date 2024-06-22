@@ -269,6 +269,9 @@ with self;
       ppx_variants_conv
       ppx_stable_witness
     ];
+    postPatch = ''
+      patchShebangs xen/cflags.sh
+    '';
   };
 
   bonsai = janePackage {
