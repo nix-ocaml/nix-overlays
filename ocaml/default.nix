@@ -983,9 +983,10 @@ with oself;
           {
             owner = "ocaml";
             repo = "ocaml-lsp";
-            rev = "3d84dc42c468d03ce36291985573b87767b6f670";
-            hash = "sha256-fWKJXw73f/h+oftQh17V6OoF0Tp7z/1H6/pAbIqG8cw=";
-          } else o.src;
+            rev = "0573158a2bdbe891d6d0026c922d9cfdca55bcf8";
+            hash = "sha256-aSLIu1Vzg7OJYMh2GgbbpIVhLKT5FHXp6Gq4AE/txfE=";
+          }
+      else o.src;
   });
 
   kafka = (osuper.kafka.override {
@@ -1413,6 +1414,11 @@ with oself;
       make defaultentry -j$NIX_BUILD_CORES
     '';
   });
+
+  ocaml-index =
+    if lib.versionAtLeast ocaml.version "5.2" then
+      callPackage ./ocaml-index { }
+    else null;
 
   ocaml-protoc-plugin = osuper.ocaml-protoc-plugin.overrideAttrs (o: {
     src = builtins.fetchurl {
