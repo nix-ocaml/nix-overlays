@@ -6,12 +6,12 @@
 , eio_main
 , eio-ssl
 , h2-eio
-, httpaf-eio
+, httpun-eio
 , ipaddr
 , magic-mime
 , multipart_form
 , uri
-, websocketaf
+, httpun-ws
 , alcotest
 , dune-site
 , ocaml
@@ -31,13 +31,13 @@ buildDunePackage {
     eio
     eio_main
     eio-ssl
-    httpaf-eio
+    httpun-eio
     h2-eio
     ipaddr
     magic-mime
     multipart_form
     uri
-    websocketaf
+    httpun-ws
   ];
 
   meta = {
