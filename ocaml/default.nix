@@ -1414,7 +1414,10 @@ with oself;
     '';
   });
 
-  ocaml-index = callPackage ./ocaml-index { };
+  ocaml-index =
+    if lib.versionAtLeast ocaml.version "5.2" then
+      callPackage ./ocaml-index { };
+    else null;
 
   ocaml-protoc-plugin = osuper.ocaml-protoc-plugin.overrideAttrs (o: {
     src = builtins.fetchurl {
