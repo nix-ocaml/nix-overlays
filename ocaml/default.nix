@@ -474,8 +474,8 @@ with oself;
 
   conduit = osuper.conduit.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.2/conduit-6.2.2.tbz;
-      sha256 = "0i945dgj7b23mywywg1vxaxzx9a9yx7lhasgb8pn39g2iy3vzsjq";
+      url = https://github.com/mirage/ocaml-conduit/releases/download/v6.2.3/conduit-6.2.3.tbz;
+      sha256 = "0y9y89jafndxr8spnindqa97w0p1asix0k88sr3z5cc52jxq8iis";
     };
   });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
