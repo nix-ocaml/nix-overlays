@@ -150,15 +150,6 @@ with oself;
     propagatedBuildInputs = [ atd cmdliner ];
   };
 
-  apron = osuper.apron.overrideAttrs (_: {
-    configurePhase = ''
-      runHook preConfigure
-      ./configure -prefix $out ${lib.optionalString stdenv.isDarwin "--no-strip"}
-      mkdir -p $out/lib/ocaml/${ocaml.version}/site-lib/stublibs
-      runHook postConfigure
-    '';
-  });
-
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
