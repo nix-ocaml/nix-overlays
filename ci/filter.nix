@@ -114,6 +114,9 @@ let
     "opium"
     "rock"
     "subscriptions-transport-ws"
+
+    # takes a long time to build, broken by recent Coq upgrade
+    "lambdapi"
   ];
 
   ocaml5Ignores = [
