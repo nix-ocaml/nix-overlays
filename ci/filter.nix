@@ -86,7 +86,6 @@ let
     "sendmail-lwt"
 
     # haven't been upgraded for mirage-flow v4
-    "mirage-channel"
     "cohttp-mirage"
     "mirage-console-unix"
 
@@ -156,7 +155,6 @@ let
     "netsnmp"
     "ocaml-probes"
 
-    # x86_64-darwin is broken even with clang11Stdenv
     "gapi-ocaml"
     "bz2"
     "camlimages"
