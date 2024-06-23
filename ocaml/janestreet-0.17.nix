@@ -730,6 +730,8 @@ with self;
     buildInputs = [ dune-configurator ppx_assert stdio ];
   };
 
+  krb = null;
+
   line-up-words = janePackage {
     pname = "line-up-words";
     hash = "sha256-LXXS4tlJFjdkWxcTrHGi+PiVq2QCG49OgmOnLWuyrTY=";

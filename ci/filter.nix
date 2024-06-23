@@ -117,6 +117,15 @@ let
 
     # takes a long time to build, broken by recent Coq upgrade
     "lambdapi"
+
+    # Broken on janestreet v0.17
+    "camlimages"
+    "cfstream"
+    "genspio"
+    "dbf"
+    "bistro"
+    "multiformats"
+    "ocaml_openapi_generator"
   ];
 
   ocaml5Ignores = [
