@@ -823,7 +823,7 @@ with self;
     pname = "netsnmp";
     hash = "sha256-Pi36I/ULt980G005nMegLg9vhyLH9c/3v6YmT0dXsyk=";
     meta.description = "An interface to the Net-SNMP client library";
-    propagatedBuildInputs = [ async core ppx_jane net-snmp ];
+    propagatedBuildInputs = [ async core ppx_jane net-snmp openssl ];
   };
 
   notty_async = janePackage {
@@ -901,6 +901,7 @@ with self;
     hash = "sha256-jml2OxJJUYXshCx+1AiDO7kFhctcw7vB86bpPDWFJJY=";
     meta.description = "USDT probes for OCaml: command line tool";
     propagatedBuildInputs = [ owee linuxHeaders ];
+    doCheck = false;
   };
 
   of_json = janePackage {
