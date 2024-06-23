@@ -785,7 +785,7 @@ with self;
     pname = "netsnmp";
     hash = "sha256-Zjm1fZgERh1TWL7GWgss4ek5oXD+/5P/si2Tw2547Vg=";
     meta.description = "An interface to the Net-SNMP client library";
-    propagatedBuildInputs = [ async core ppx_jane net-snmp ];
+    propagatedBuildInputs = [ async core ppx_jane net-snmp openssl ];
   };
 
   notty_async = janePackage {
