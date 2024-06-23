@@ -842,9 +842,10 @@ with oself;
 
   git = osuper.git.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/mirage/ocaml-git/releases/download/3.16.0/git-3.16.0.tbz;
-      sha256 = "1gybdc6hh26r35bkmv8kmcb5wwcs99325zc35q19zvkhzvsqh59i";
+      url = https://github.com/mirage/ocaml-git/releases/download/3.16.1/git-3.16.1.tbz;
+      sha256 = "00s8ja50mqka6wm6z2hxry78647wc5gcdkfrqr42ykcyrp6bsdf0";
     };
+    postPatch = "";
   });
 
   gluten = callPackage ./gluten { };
@@ -1351,6 +1352,13 @@ with oself;
     };
   });
 
+  merlin-extend = osuper.merlin-extend.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/let-def/merlin-extend/releases/download/v0.6.1/merlin-extend-0.6.1.tbz;
+      sha256 = "1mza1djw7gzpjpk7v30mwayxqfn9mjzk5ca8b6d14bfvblslpj2y";
+    };
+  });
+
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
@@ -1397,15 +1405,15 @@ with oself;
 
   mimic = osuper.mimic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = https://github.com/dinosaure/mimic/releases/download/0.0.7/mimic-0.0.7.tbz;
-      sha256 = "0b9jh0lrhr9r3j07lnkpcs55r73p1q543bgi282kgrfgaikvijj9";
+      url = https://github.com/dinosaure/mimic/releases/download/0.0.9/mimic-0.0.9.tbz;
+      sha256 = "17z2d55i2ffk6pnp1hyn6pvzfskas6jqa224hnkj5aa8np7g2kcm";
     };
   });
 
   mimic-happy-eyeballs = buildDunePackage {
     pname = "mimic-happy-eyeballs";
     inherit (mimic) version src;
-    propagatedBuildInputs = [ mimic happy-eyeballs-mirage ];
+    propagatedBuildInputs = [ mimic dns-client-mirage happy-eyeballs-mirage ];
   };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
