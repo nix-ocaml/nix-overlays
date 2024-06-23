@@ -269,6 +269,9 @@ with self;
       ppx_variants_conv
       ppx_stable_witness
     ];
+    postPatch = ''
+      rm -rf xen META.bin_prot.template
+    '';
   };
 
   bonsai = janePackage {
