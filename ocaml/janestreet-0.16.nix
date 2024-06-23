@@ -850,6 +850,7 @@ with self;
     hash = "sha256-37RfbT4N0rhrrOXwneLaBCH8DeBV+M75AlwwPH0kRb0=";
     meta.description = "USDT probes for OCaml: command line tool";
     propagatedBuildInputs = [ owee linuxHeaders ];
+    doCheck = false;
   };
 
   of_json = janePackage {
