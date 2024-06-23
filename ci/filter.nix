@@ -178,6 +178,8 @@ let
     "ocamlfuse"
     "wayland"
 
+    # Broken on janestreet v0.17
+    "ecaml"
 
     # broken on aarch64-darwin
     "janestreet_cpuid"
