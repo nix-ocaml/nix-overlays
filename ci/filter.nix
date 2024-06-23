@@ -117,6 +117,15 @@ let
 
     # takes a long time to build, broken by recent Coq upgrade
     "lambdapi"
+
+    # Broken on janestreet v0.17
+    "camlimages"
+    "cfstream"
+    "genspio"
+    "dbf"
+    "bistro"
+    "multiformats"
+    "ocaml_openapi_generator"
   ];
 
   ocaml5Ignores = [
@@ -169,6 +178,8 @@ let
     "ocamlfuse"
     "wayland"
 
+    # Broken on janestreet v0.17
+    "ecaml"
 
     # broken on aarch64-darwin
     "janestreet_cpuid"
@@ -224,8 +235,7 @@ rec {
       # packages
       inherit
         caqti-driver-postgresql ppx_deriving
-        base cohttp-lwt-unix tls core core_unix utop irmin
-        mirage-crypto-rng-async;
+        base cohttp-lwt-unix tls core utop irmin;
     } // (if lib.hasPrefix "5_" ocamlVersion then {
       inherit piaf carl;
       static-carl = carl.override { static = true; };

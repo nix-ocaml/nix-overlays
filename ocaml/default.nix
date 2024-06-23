@@ -73,12 +73,33 @@ let
   });
 
   # Jane Street
-  janePackage =
+  janePackage_0_16 =
     oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix" {
       defaultVersion = "0.16.0";
     };
+  janePackage_0_17 =
+    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix" {
+      defaultVersion = "0.17.0";
+    };
 
-  janeStreet = import ./janestreet-0.16.nix {
+  janeStreet_0_16 = import ./janestreet-0.16.nix {
+    self = oself;
+    openssl = openssl-oc;
+    postgresql = libpq;
+    inherit
+      bash
+      fetchpatch
+      fetchFromGitHub
+      fzf
+      lib
+      kerberos
+      linuxHeaders
+      nixpkgs
+      pam
+      net-snmp;
+    zstd = zstd-oc;
+  };
+  janeStreet_0_17 = import ./janestreet-0.17.nix {
     self = oself;
     openssl = openssl-oc;
     postgresql = libpq;
@@ -96,12 +117,20 @@ let
     zstd = zstd-oc;
   };
 
+
 in
 
 with oself;
 
 {
-  inherit janePackage janeStreet;
+  janePackage =
+    if lib.versionAtLeast ocaml.version "5.1" then
+      janePackage_0_17
+    else janePackage_0_16;
+  janeStreet =
+    if lib.versionAtLeast ocaml.version "5.1" then
+      janeStreet_0_17
+    else janeStreet_0_16;
 
   alcotest = osuper.alcotest.overrideAttrs (_: {
     # https://github.com/mirage/alcotest/pull/402
@@ -2447,7 +2476,7 @@ with oself;
     doCheck = true;
     checkInputs = [ extlib ];
   };
-} // janeStreet // (
+} // (if lib.versionAtLeast osuper.ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16) // (
   if lib.hasPrefix "5." osuper.ocaml.version
   then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub nodejs_latest; })
   else { }
