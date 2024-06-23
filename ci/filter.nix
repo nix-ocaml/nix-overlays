@@ -233,8 +233,7 @@ rec {
       # packages
       inherit
         caqti-driver-postgresql ppx_deriving
-        base cohttp-lwt-unix tls core core_unix utop irmin
-        mirage-crypto-rng-async;
+        base cohttp-lwt-unix tls core utop irmin;
     } // (if lib.hasPrefix "5_" ocamlVersion then {
       inherit piaf carl;
       static-carl = carl.override { static = true; };
