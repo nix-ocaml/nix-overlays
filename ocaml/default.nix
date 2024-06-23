@@ -1249,6 +1249,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
+  mirage-channel = disableTests osuper.mirage-channel;
+
   mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
