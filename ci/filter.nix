@@ -42,26 +42,18 @@ let
     "ocsipersist-pgsql"
     "ocsipersist-sqlite"
 
-
     "dream-serve"
 
     "gd4o"
 
     "ocaml-sat-solvers"
 
-    "inotify"
-    "async_inotify"
-    "async_smtp"
     "pgsolver"
     "tcslib"
     "plotkicadsch"
 
     # Not compatible with EIO yet
     "oidc-client"
-
-    "pam"
-    "netsnmp"
-    "ocaml-probes"
 
     "biotk"
     "phylogenetics"
@@ -96,10 +88,7 @@ let
     # haven't been upgraded for mirage-flow v4
     "mirage-channel"
     "cohttp-mirage"
-    "mimic"
-    "mimic-happy-eyeballs"
     "mirage-console-unix"
-    "git"
 
     # we don't really care about these and they don't build on 4.14
     "spices"
@@ -159,6 +148,13 @@ let
 
     "uring"
     "eio_linux"
+
+    "inotify"
+    "async_inotify"
+    "async_smtp"
+    "pam"
+    "netsnmp"
+    "ocaml-probes"
 
     # x86_64-darwin is broken even with clang11Stdenv
     "gapi-ocaml"
