@@ -142,7 +142,7 @@ let
   # current version information.
   esyNpm = builtins.fetchurl {
     url = "https://registry.npmjs.org/esy/${esyVersion}";
-    sha256 = "09b2543pm3bwj0lq7i1xk51rb9h5j9rmv8hl96krwnl2kzxa7ymq";
+    sha256 = "0sag090d9qycak0ipvldpy7n420b029pnq4yx9c3515ylsmbbshw";
   };
 
   esySolveCudfNpm = builtins.fetchurl {
