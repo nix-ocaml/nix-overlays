@@ -1,12 +1,25 @@
-{ lib, buildDunePackage, redis, lwt, ounit, containers }:
+{
+  lib,
+  buildDunePackage,
+  redis,
+  lwt,
+  ounit,
+  containers,
+}:
 
 buildDunePackage {
   pname = "redis-lwt";
   inherit (redis) src version;
 
-  propagatedBuildInputs = [ redis lwt ];
+  propagatedBuildInputs = [
+    redis
+    lwt
+  ];
 
-  checkInputs = [ ounit containers ];
+  checkInputs = [
+    ounit
+    containers
+  ];
 
   meta = {
     description = "Redis client (lwt interface)";

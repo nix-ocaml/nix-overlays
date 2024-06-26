@@ -1,4 +1,12 @@
-{ fetchFromGitHub, buildDunePackage, base, ppx_deriving, ppx_gen_rec, sedlex, wtf8 }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  base,
+  ppx_deriving,
+  ppx_gen_rec,
+  sedlex,
+  wtf8,
+}:
 
 buildDunePackage {
   pname = "flow_parser";

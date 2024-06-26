@@ -1,12 +1,13 @@
-{ buildDunePackage
-, seq
-, timedesc-tzlocal
-, oseq
-, containers
-, fmt
-, timedesc
-, timedesc-sexp
-, diet
+{
+  buildDunePackage,
+  seq,
+  timedesc-tzlocal,
+  oseq,
+  containers,
+  fmt,
+  timedesc,
+  timedesc-sexp,
+  diet,
 }:
 
 buildDunePackage {

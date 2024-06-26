@@ -1,4 +1,9 @@
-{ lib, buildDunePackage, fetchFromGitHub, dream }:
+{
+  lib,
+  buildDunePackage,
+  fetchFromGitHub,
+  dream,
+}:
 
 buildDunePackage {
   pname = "dream-html";
@@ -14,8 +19,7 @@ buildDunePackage {
   propagatedBuildInputs = [ dream ];
 
   meta = {
-    description =
-      "Write HTML directly in your OCaml source files with editor support.";
+    description = "Write HTML directly in your OCaml source files with editor support.";
     license = lib.licenses.gpl3;
   };
 }

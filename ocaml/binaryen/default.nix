@@ -1,4 +1,11 @@
-{ lib, pkgs, fetchFromGitHub, buildDunePackage, dune-configurator, js_of_ocaml }:
+{
+  lib,
+  pkgs,
+  fetchFromGitHub,
+  buildDunePackage,
+  dune-configurator,
+  js_of_ocaml,
+}:
 
 buildDunePackage rec {
   pname = "binaryen";

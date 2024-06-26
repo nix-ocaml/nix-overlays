@@ -1,20 +1,20 @@
-{ stdenv
-, fetchFromGitHub
-, ocaml
-, findlib
-, camlp-streams
-, fmt
-, fix
-, lib
-, perl
-, bos
-, ocaml_pcre
-, re
-, rresult
+{
+  stdenv,
+  fetchFromGitHub,
+  ocaml,
+  findlib,
+  camlp-streams,
+  fmt,
+  fix,
+  lib,
+  perl,
+  bos,
+  ocaml_pcre,
+  re,
+  rresult,
 }:
 
-stdenv.mkDerivation
-{
+stdenv.mkDerivation {
   pname = "camlp5";
   version = "8.02.00";
 
@@ -25,7 +25,10 @@ stdenv.mkDerivation
     hash = "sha256-hu/279gBvUc7Z4jM6EHiar6Wm4vjkGXl+7bxowj+vlM=";
   };
 
-  nativeBuildInputs = [ ocaml findlib ];
+  nativeBuildInputs = [
+    ocaml
+    findlib
+  ];
   buildInputs = [ perl ];
   propagatedBuildInputs = [
     bos

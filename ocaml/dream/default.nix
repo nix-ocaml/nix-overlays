@@ -1,42 +1,43 @@
-{ lib
-, fetchFromGitHub
-, buildDunePackage
-, bigarray-compat
-, camlp-streams
-, caqti
-, caqti-lwt
-, cstruct
-, dream-httpaf
-, dream-pure
-, fmt
-, graphql_parser
-, graphql-lwt
-, lwt
-, lwt_ppx
-, lwt_ssl
-, logs
-, magic-mime
-, mirage-clock
-, mirage-crypto
-, mirage-crypto-rng-lwt
-, multipart_form
-, multipart_form-lwt
-, ptime
-, ssl
-, uri
-, yojson
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  bigarray-compat,
+  camlp-streams,
+  caqti,
+  caqti-lwt,
+  cstruct,
+  dream-httpaf,
+  dream-pure,
+  fmt,
+  graphql_parser,
+  graphql-lwt,
+  lwt,
+  lwt_ppx,
+  lwt_ssl,
+  logs,
+  magic-mime,
+  mirage-clock,
+  mirage-crypto,
+  mirage-crypto-rng-lwt,
+  multipart_form,
+  multipart_form-lwt,
+  ptime,
+  ssl,
+  uri,
+  yojson,
   # test-inputs
-, bisect_ppx
-, alcotest
-, crunch
-, lambdasoup
-, ppx_expect
-, ppx_yojson_conv_lib
-, reason
-, tyxml
-, tyxml-jsx
-, tyxml-ppx
-, ocaml
+  bisect_ppx,
+  alcotest,
+  crunch,
+  lambdasoup,
+  ppx_expect,
+  ppx_yojson_conv_lib,
+  reason,
+  tyxml,
+  tyxml-jsx,
+  tyxml-ppx,
+  ocaml,
 }:
 
 buildDunePackage rec {
@@ -70,9 +71,7 @@ buildDunePackage rec {
     yojson
   ];
 
-  buildInputs = [
-    bisect_ppx
-  ];
+  buildInputs = [ bisect_ppx ];
 
   checkInputs = [
     alcotest

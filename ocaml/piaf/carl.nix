@@ -1,15 +1,16 @@
-{ lib
-, stdenv
-, overrideSDK
-, static ? false
-, piaf
-, ocaml
-, dune
-, findlib
-, cmdliner
-, camlzip
-, ezgzip
-, fmt
+{
+  lib,
+  stdenv,
+  overrideSDK,
+  static ? false,
+  piaf,
+  ocaml,
+  dune,
+  findlib,
+  cmdliner,
+  camlzip,
+  ezgzip,
+  fmt,
 }:
 
 let

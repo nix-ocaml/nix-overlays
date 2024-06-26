@@ -1,33 +1,41 @@
-{ ocamlVersion, target ? "native" }:
+{
+  ocamlVersion,
+  target ? "native",
+}:
 let
 
   system = builtins.currentSystem;
-  flake = (import
-    (fetchTarball {
-      url = https://github.com/edolstra/flake-compat/archive/35bb57c0.tar.gz;
+  flake =
+    (import (fetchTarball {
+      url = "https://github.com/edolstra/flake-compat/archive/35bb57c0.tar.gz";
       sha256 = "1prd9b1xx8c0sfwnyzkspplh30m613j42l1k789s521f4kv4c2z2";
-    })
-    { src = ../.; }).defaultNix;
+    }) { src = ../.; }).defaultNix;
 
-  pkgs = flake.legacyPackages.${system}.extend (final: prev:
-    if ocamlVersion != null && prev.lib.hasPrefix "5_" ocamlVersion then {
-      ocamlPackages = final.ocaml-ng."ocamlPackages_${ocamlVersion}";
-    } else { });
+  pkgs = flake.legacyPackages.${system}.extend (
+    final: prev:
+    if ocamlVersion != null && prev.lib.hasPrefix "5_" ocamlVersion then
+      { ocamlPackages = final.ocaml-ng."ocamlPackages_${ocamlVersion}"; }
+    else
+      { }
+  );
   filter = pkgs.callPackage ./filter.nix { };
   inherit (pkgs) lib stdenv pkgsCross;
 
 in
 
 {
-  top-level-packages = with pkgs;
-    [ melange-relay-compiler ] ++
-    lib.optionals stdenv.isLinux [ esy kubernetes ];
+  top-level-packages =
+    with pkgs;
+    [ melange-relay-compiler ]
+    ++ lib.optionals stdenv.isLinux [
+      esy
+      kubernetes
+    ];
 
-  native = lib.attrValues (filter.ocamlCandidates {
-    inherit pkgs ocamlVersion;
-  });
+  native = lib.attrValues (filter.ocamlCandidates { inherit pkgs ocamlVersion; });
 
   musl = filter.crossTargetList pkgsCross.musl64 ocamlVersion;
 
   arm64 = filter.crossTargetList pkgsCross.aarch64-multiplatform-musl ocamlVersion;
-}."${target}"
+}
+."${target}"

@@ -1,16 +1,17 @@
-{ buildDunePackage
-, multipart_form
-, angstrom
-, bigarray-compat
-, bigstringaf
-, ke
-, lwt
-, alcotest
-, alcotest-lwt
-, rosetta
-, rresult
-, unstrctrd
-, logs
+{
+  buildDunePackage,
+  multipart_form,
+  angstrom,
+  bigarray-compat,
+  bigstringaf,
+  ke,
+  lwt,
+  alcotest,
+  alcotest-lwt,
+  rosetta,
+  rresult,
+  unstrctrd,
+  logs,
 }:
 
 buildDunePackage {

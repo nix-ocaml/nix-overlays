@@ -1,4 +1,8 @@
-{ callPackage, go_1_18, buildGo118Module }:
+{
+  callPackage,
+  go_1_18,
+  buildGo118Module,
+}:
 
 {
   cockroachdb-21_2_x = callPackage ./generic.nix (rec {

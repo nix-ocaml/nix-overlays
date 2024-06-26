@@ -1,10 +1,19 @@
-{ lib, buildDunePackage, cookie, session-cookie, lwt }:
+{
+  lib,
+  buildDunePackage,
+  cookie,
+  session-cookie,
+  lwt,
+}:
 
 buildDunePackage {
   pname = "session-cookie-lwt";
   inherit (cookie) src version;
 
-  propagatedBuildInputs = [ session-cookie lwt ];
+  propagatedBuildInputs = [
+    session-cookie
+    lwt
+  ];
 
   postPatch = ''
     substituteInPlace session-cookie-lwt/dune --replace-fail "result" ""

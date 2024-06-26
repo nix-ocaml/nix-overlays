@@ -1,29 +1,30 @@
-{ upstream ? false
-, lib
-, fetchFromGitHub
-, buildDunePackage
-, unstrctrd
-, lwt
-, ocaml
-, prettym
-, logs
-, ke
-, bigstringaf
-, astring
-, faraday
-, base64
-, pecu
-, rosetta
-, rresult
-, uutf
-, fmt
-, angstrom
-, alcotest
+{
+  upstream ? false,
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  unstrctrd,
+  lwt,
+  ocaml,
+  prettym,
+  logs,
+  ke,
+  bigstringaf,
+  astring,
+  faraday,
+  base64,
+  pecu,
+  rosetta,
+  rresult,
+  uutf,
+  fmt,
+  angstrom,
+  alcotest,
 }:
 
 let
   upstream_src = builtins.fetchurl {
-    url = https://github.com/dinosaure/multipart_form/releases/download/v0.6.0/multipart_form-0.6.0.tbz;
+    url = "https://github.com/dinosaure/multipart_form/releases/download/v0.6.0/multipart_form-0.6.0.tbz";
     sha256 = "05i10ql2zkf0v1rif3v08sas1rm1d1xghnndcx0svyng4g1jkqx0";
   };
   upstream_version = "0.4.1";
@@ -63,5 +64,8 @@ buildDunePackage {
 
   doCheck = !upstream;
 
-  checkInputs = [ alcotest rosetta ];
+  checkInputs = [
+    alcotest
+    rosetta
+  ];
 }

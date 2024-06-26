@@ -14,17 +14,21 @@ let
     fetchpatch
     buildGoModule
     haskell
-    haskellPackages;
+    haskellPackages
+    ;
 
-  overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
-    inherit nixpkgs;
-  });
-  staticLightExtend = pkgSet: pkgSet.extend (self: super:
-    super.lib.overlayOCamlPackages {
-      inherit super;
-      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
-      updateOCamlPackages = true;
-    });
+  overlayOCamlPackages =
+    attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // { inherit nixpkgs; });
+  staticLightExtend =
+    pkgSet:
+    pkgSet.extend (
+      self: super:
+      super.lib.overlayOCamlPackages {
+        inherit super;
+        overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
+        updateOCamlPackages = true;
+      }
+    );
 
 in
 
@@ -38,7 +42,8 @@ in
       libgsl = super.gsl;
     })
   ];
-}) // {
+})
+// {
   # Cross-compilation / static overlays
   pkgsMusl = staticLightExtend super.pkgsMusl;
   pkgsStatic = staticLightExtend super.pkgsStatic;
@@ -48,15 +53,18 @@ in
       static-overlay = import ../static;
       cross-overlay = callPackage ../cross { };
     in
-    super.pkgsCross // {
+    super.pkgsCross
+    // {
       musl64 = super.pkgsCross.musl64.extend static-overlay;
 
-      aarch64-multiplatform =
-        super.pkgsCross.aarch64-multiplatform.extend cross-overlay;
+      aarch64-multiplatform = super.pkgsCross.aarch64-multiplatform.extend cross-overlay;
 
-      aarch64-multiplatform-musl =
-        (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
-          [ cross-overlay static-overlay ]);
+      aarch64-multiplatform-musl = (
+        super.pkgsCross.aarch64-multiplatform-musl.appendOverlays [
+          cross-overlay
+          static-overlay
+        ]
+      );
 
       riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
     };
@@ -68,64 +76,69 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql_16.override {
-    systemdSupport = false;
-    gssSupport = false;
-    openssl = self.openssl-oc;
-    lz4 = self.lz4-oc;
-    zstd = self.zstd-oc;
-  }).overrideAttrs (o: {
-    doCheck = false;
-    configureFlags = [
-      "--without-ldap"
-      "--without-readline"
-      "--with-openssl"
-      "--with-libxml"
-      "--sysconfdir=/etc"
-      "--libdir=$(out)/lib"
-      "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
-      "--enable-debug"
-      "--with-icu"
-      "--with-lz4"
-      "--with-zstd"
-      (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
-    ++ lib.optionals stdenv.isLinux [ "--with-pam" ];
+  libpq =
+    (super.postgresql_16.override {
+      systemdSupport = false;
+      gssSupport = false;
+      openssl = self.openssl-oc;
+      lz4 = self.lz4-oc;
+      zstd = self.zstd-oc;
+    }).overrideAttrs
+      (o: {
+        doCheck = false;
+        configureFlags =
+          [
+            "--without-ldap"
+            "--without-readline"
+            "--with-openssl"
+            "--with-libxml"
+            "--sysconfdir=/etc"
+            "--libdir=$(out)/lib"
+            "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
+            "--enable-debug"
+            "--with-icu"
+            "--with-lz4"
+            "--with-zstd"
+            (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
+          ]
+          ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
+          ++ lib.optionals stdenv.isLinux [ "--with-pam" ];
 
-    buildInputs = with self; [
-      zlib-oc
-      libxml2
-      icu
-      libxcrypt
-      lz4
-      zstd
-    ]
-    ++ lib.optionals stdenv.isLinux [ linux-pam ]
-    ++ lib.optionals (!stdenv.isDarwin) [ libossp_uuid ];
+        buildInputs =
+          with self;
+          [
+            zlib-oc
+            libxml2
+            icu
+            libxcrypt
+            lz4
+            zstd
+          ]
+          ++ lib.optionals stdenv.isLinux [ linux-pam ]
+          ++ lib.optionals (!stdenv.isDarwin) [ libossp_uuid ];
 
-    propagatedBuildInputs = [ self.openssl-oc.dev ];
-    # Use a single output derivation. The upstream PostgreSQL derivation
-    # produces multiple outputs (including "out" and "lib"), and then puts some
-    # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
-    # pkg-config `--libs` flags to be invalid (since it only knows about one
-    # such lib path, not both)
-    outputs = [ "out" ];
-    postInstall = ''
-      # Prevent a retained dependency on gcc-wrapper.
-      substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace-warn ${stdenv.cc}/bin/ld ld
-      if [ -z "''${dontDisableStatic:-}" ]; then
-        # Remove static libraries in case dynamic are available.
-        for i in $out/lib/*.a; do
-          name="$(basename "$i")"
-          ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
-          if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
-            rm "$i"
+        propagatedBuildInputs = [ self.openssl-oc.dev ];
+        # Use a single output derivation. The upstream PostgreSQL derivation
+        # produces multiple outputs (including "out" and "lib"), and then puts some
+        # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
+        # pkg-config `--libs` flags to be invalid (since it only knows about one
+        # such lib path, not both)
+        outputs = [ "out" ];
+        postInstall = ''
+          # Prevent a retained dependency on gcc-wrapper.
+          substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace-warn ${stdenv.cc}/bin/ld ld
+          if [ -z "''${dontDisableStatic:-}" ]; then
+            # Remove static libraries in case dynamic are available.
+            for i in $out/lib/*.a; do
+              name="$(basename "$i")"
+              ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
+              if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
+                rm "$i"
+              fi
+            done
           fi
-        done
-      fi
-    '';
-  });
+        '';
+      });
 
   binaryen = super.binaryen.overrideAttrs (_: rec {
     version = "114";
@@ -141,9 +154,7 @@ in
 
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
-  esy = callPackage ../ocaml/esy {
-    ocamlPackages = self.ocaml-ng.ocamlPackages_4_14;
-  };
+  esy = callPackage ../ocaml/esy { ocamlPackages = self.ocaml-ng.ocamlPackages_4_14; };
 
   h2spec = super.buildGoModule {
     pname = "h2spec";
@@ -158,20 +169,22 @@ in
     vendorHash = "sha256-YSaLOYIHgMCK2hXSDL+aoBEfOX7j6rnJ4DMWg0jhzWY=";
   };
 
-  h3spec = haskell.lib.compose.justStaticExecutables
-    (haskellPackages.callPackage
-      ({ mkDerivation
-       , base
-       , bytestring
-       , hspec
-       , hspec-core
-       , http-types
-       , http3
-       , network
-       , quic
-       , tls
-       , unliftio
-       }: mkDerivation rec {
+  h3spec = haskell.lib.compose.justStaticExecutables (
+    haskellPackages.callPackage (
+      {
+        mkDerivation,
+        base,
+        bytestring,
+        hspec,
+        hspec-core,
+        http-types,
+        http3,
+        network,
+        quic,
+        tls,
+        unliftio,
+      }:
+      mkDerivation rec {
         pname = "h3spec";
         version = "0.1.8";
         src = fetchFromGitHub {
@@ -197,8 +210,9 @@ in
         executableHaskellDepends = libraryHaskellDepends;
         mainProgram = "h3spec";
         license = lib.licenses.mit;
-      })
-      { });
+      }
+    ) { }
+  );
 
   hermes = stdenv.mkDerivation {
     name = "hermes";
@@ -215,20 +229,23 @@ in
     cmakeFlags = [
       "-GNinja"
       "-DHERMES_ENABLE_TEST_SUITE=false"
-    ] ++ lib.optional stdenv.isDarwin [
-      "-DHERMES_BUILD_APPLE_FRAMEWORK=false"
+    ] ++ lib.optional stdenv.isDarwin [ "-DHERMES_BUILD_APPLE_FRAMEWORK=false" ];
+    nativeBuildInputs = with self; [
+      cmake
+      python3
+      ninja
     ];
-    nativeBuildInputs = with self; [ cmake python3 ninja ];
-    propagatedBuildInputs = with self; [ icu readline-oc ];
+    propagatedBuildInputs = with self; [
+      icu
+      readline-oc
+    ];
   };
 
+  lib = lib // {
+    inherit overlayOCamlPackages;
+  };
 
-  lib = lib // { inherit overlayOCamlPackages; };
-
-  inherit (callPackage ../cockroachdb { })
-    cockroachdb-21_1_x
-    cockroachdb-21_2_x
-    cockroachdb-22_x;
+  inherit (callPackage ../cockroachdb { }) cockroachdb-21_1_x cockroachdb-21_2_x cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
 
   opam = self.ocamlPackages.opam;
@@ -236,7 +253,11 @@ in
   pnpm =
     let
       inherit (self)
-        writeScriptBin runtimeShell nodejs_latest nodePackages_latest;
+        writeScriptBin
+        runtimeShell
+        nodejs_latest
+        nodePackages_latest
+        ;
     in
     writeScriptBin "pnpm" ''
       #!${runtimeShell}
@@ -256,7 +277,12 @@ in
 
   melange-relay-compiler =
     let
-      inherit (super) rustPlatform darwin pkg-config openssl;
+      inherit (super)
+        rustPlatform
+        darwin
+        pkg-config
+        openssl
+        ;
       melange-relay-compiler-src = stdenv.mkDerivation {
         name = "melange-relay-compiler-src";
         src = fetchFromGitHub {
@@ -285,9 +311,7 @@ in
       OPENSSL_NO_VENDOR = 1;
 
       buildInputs = lib.optionals stdenv.isLinux [ openssl ];
-      propagatedBuildInputs = lib.optionals stdenv.isDarwin [
-        darwin.apple_sdk.frameworks.Security
-      ];
+      propagatedBuildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
       postInstall = ''
         mv $out/bin/relay $out/bin/melange-relay-compiler
@@ -300,12 +324,21 @@ in
         maintainers = [ maintainers.anmonteiro ];
       };
     };
-} // (
-  lib.mapAttrs'
-    (n: p: lib.nameValuePair "${n}-oc" p)
-    {
-      inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd readline;
-      libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
-      openssl = super.openssl_3_0;
-    }
-)
+}
+// (lib.mapAttrs' (n: p: lib.nameValuePair "${n}-oc" p) {
+  inherit (super)
+    gmp
+    libev
+    lz4
+    pcre
+    rdkafka
+    sqlite
+    zlib
+    zstd
+    readline
+    ;
+  libffi = super.libffi.overrideAttrs (_: {
+    doCheck = false;
+  });
+  openssl = super.openssl_3_0;
+})

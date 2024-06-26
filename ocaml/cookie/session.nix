@@ -1,10 +1,18 @@
-{ lib, buildDunePackage, cookie, session }:
+{
+  lib,
+  buildDunePackage,
+  cookie,
+  session,
+}:
 
 buildDunePackage {
   pname = "session-cookie";
   inherit (cookie) src version;
 
-  propagatedBuildInputs = [ cookie session ];
+  propagatedBuildInputs = [
+    cookie
+    session
+  ];
 
   meta = {
     description = "Session handling based on Cookie parsing and serialization for OCaml";
