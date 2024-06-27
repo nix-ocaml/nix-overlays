@@ -1,16 +1,17 @@
-{ lib
-, buildDunePackage
-, dream-pure
-, lwt
-, lwt_ppx
-, lwt_ssl
-, ssl
-, digestif
-, faraday
-, faraday-lwt-unix
-, psq
-, result
-, ke
+{
+  lib,
+  buildDunePackage,
+  dream-pure,
+  lwt,
+  lwt_ppx,
+  lwt_ssl,
+  ssl,
+  digestif,
+  faraday,
+  faraday-lwt-unix,
+  psq,
+  result,
+  ke,
 }:
 
 buildDunePackage rec {

@@ -1,4 +1,9 @@
-{ fetchFromGitHub, buildDunePackage, alcotest, hmap }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  alcotest,
+  hmap,
+}:
 
 buildDunePackage {
   pname = "archi";

@@ -1,4 +1,11 @@
-{ fetchFromGitHub, buildDunePackage, cppo, yojson, ppxlib, reason }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  cppo,
+  yojson,
+  ppxlib,
+  reason,
+}:
 
 buildDunePackage {
   pname = "graphql_ppx";
@@ -12,7 +19,11 @@ buildDunePackage {
   };
 
   nativeBuildInputs = [ cppo ];
-  propagatedBuildInputs = [ yojson ppxlib reason ];
+  propagatedBuildInputs = [
+    yojson
+    ppxlib
+    reason
+  ];
 
   postInstall = ''
     mkdir -p $out/lib-runtime

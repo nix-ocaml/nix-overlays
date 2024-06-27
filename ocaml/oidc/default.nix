@@ -1,5 +1,12 @@
-{ fetchFromGitHub, lib, buildDunePackage, jose, uri, yojson, logs }:
-
+{
+  fetchFromGitHub,
+  lib,
+  buildDunePackage,
+  jose,
+  uri,
+  yojson,
+  logs,
+}:
 
 buildDunePackage {
   pname = "oidc";
@@ -11,7 +18,12 @@ buildDunePackage {
     hash = "sha256-YyH4AWXbljMK0dt8e+ptk1SD66v6tGXyUaKCc5yeumo=";
   };
 
-  propagatedBuildInputs = [ jose uri yojson logs ];
+  propagatedBuildInputs = [
+    jose
+    uri
+    yojson
+    logs
+  ];
 
   meta = {
     description = "Base functions and types to work with OpenID Connect.";

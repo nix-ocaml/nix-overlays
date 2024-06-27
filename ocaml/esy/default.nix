@@ -11,15 +11,16 @@
 #    }' \
 #  --pure
 
-{ callPackage
-, bash
-, binutils
-, coreutils
-, makeWrapper
-, lib
-, fetchFromGitHub
-, fetchFromGitLab
-, ocamlPackages
+{
+  callPackage,
+  bash,
+  binutils,
+  coreutils,
+  makeWrapper,
+  lib,
+  fetchFromGitHub,
+  fetchFromGitLab,
+  ocamlPackages,
 }:
 
 let
@@ -33,25 +34,25 @@ let
 
   esyVersion = currentVersion;
 
-  esyOcamlPkgs = ocamlPackages.overrideScope (self: super: rec {
-    alcotest = super.alcotest.overrideAttrs (_: {
-      src = builtins.fetchurl {
-        url = https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz;
-        sha256 = "1h9yp44snb6sgm5g1x3wg4gwjscic7i56jf0j8jr07355pxwrami";
-      };
-      propagatedBuildInputs = with self; [
-        astring
-        cmdliner
-        fmt
-        uuidm
-        re
-        stdlib-shims
-        uutf
-      ];
-    });
+  esyOcamlPkgs = ocamlPackages.overrideScope (
+    self: super: rec {
+      alcotest = super.alcotest.overrideAttrs (_: {
+        src = builtins.fetchurl {
+          url = "https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz";
+          sha256 = "1h9yp44snb6sgm5g1x3wg4gwjscic7i56jf0j8jr07355pxwrami";
+        };
+        propagatedBuildInputs = with self; [
+          astring
+          cmdliner
+          fmt
+          uuidm
+          re
+          stdlib-shims
+          uutf
+        ];
+      });
 
-    cmdliner =
-      super.cmdliner.overrideAttrs (_: {
+      cmdliner = super.cmdliner.overrideAttrs (_: {
         src = fetchFromGitHub {
           owner = "esy-ocaml";
           repo = "cmdliner";
@@ -61,40 +62,44 @@ let
         createFindlibDestdir = true;
       });
 
-    fmt = super.fmt.overrideAttrs (_: {
-      src = fetchFromGitHub {
-        owner = "dbuenzli";
-        repo = "fmt";
-        rev = "v0.8.10";
-        sha256 = "sha256-HKNy7fWS7PUhjYpKCEzXx+jAvdeYENPlzW4/FrhtyOU=";
-      };
-    });
+      fmt = super.fmt.overrideAttrs (_: {
+        src = fetchFromGitHub {
+          owner = "dbuenzli";
+          repo = "fmt";
+          rev = "v0.8.10";
+          sha256 = "sha256-HKNy7fWS7PUhjYpKCEzXx+jAvdeYENPlzW4/FrhtyOU=";
+        };
+      });
 
-    uuidm = super.uuidm.overrideAttrs (_: {
-      src = builtins.fetchurl {
-        url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.7.tbz";
-        sha256 = "1ivxb3hxn9bk62rmixx6px4fvn52s4yr1bpla7rgkcn8981v45r8";
-      };
+      uuidm = super.uuidm.overrideAttrs (_: {
+        src = builtins.fetchurl {
+          url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.7.tbz";
+          sha256 = "1ivxb3hxn9bk62rmixx6px4fvn52s4yr1bpla7rgkcn8981v45r8";
+        };
 
-    });
+      });
 
-    uunf = super.uunf.override { cmdlinerSupport = false; };
-    uuseg = super.uuseg.override { cmdlinerSupport = false; };
+      uunf = super.uunf.override { cmdlinerSupport = false; };
+      uuseg = super.uuseg.override { cmdlinerSupport = false; };
 
-    menhirLib = super.menhirLib.overrideAttrs (_: {
-      version = "20211012";
-      src = fetchFromGitLab {
-        domain = "gitlab.inria.fr";
-        owner = "fpottier";
-        repo = "menhir";
-        rev = "20211012";
-        sha256 = "sha256-gHw9LmA4xudm6iNPpop4VDi988ge4pHZFLaEva4qbiI=";
-      };
-    });
-    menhir = super.menhir.overrideAttrs (_: {
-      buildInputs = with self; [ menhirLib menhirSdk ];
-    });
-  });
+      menhirLib = super.menhirLib.overrideAttrs (_: {
+        version = "20211012";
+        src = fetchFromGitLab {
+          domain = "gitlab.inria.fr";
+          owner = "fpottier";
+          repo = "menhir";
+          rev = "20211012";
+          sha256 = "sha256-gHw9LmA4xudm6iNPpop4VDi988ge4pHZFLaEva4qbiI=";
+        };
+      });
+      menhir = super.menhir.overrideAttrs (_: {
+        buildInputs = with self; [
+          menhirLib
+          menhirSdk
+        ];
+      });
+    }
+  );
 in
 
 with esyOcamlPkgs;
@@ -128,7 +133,7 @@ let
     '';
 
     meta = {
-      homepage = https://github.com/andreypopp/esy-solve-cudf;
+      homepage = "https://github.com/andreypopp/esy-solve-cudf";
       description = "package.json workflow for native development with Reason/OCaml";
       license = lib.licenses.gpl3;
     };
@@ -243,7 +248,7 @@ buildDunePackage {
   '';
 
   meta = {
-    homepage = https://github.com/esy/esy;
+    homepage = "https://github.com/esy/esy";
     description = "package.json workflow for native development with Reason/OCaml";
     license = lib.licenses.bsd2;
   };

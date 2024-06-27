@@ -1,10 +1,23 @@
-{ lib, buildDunePackage, tyxml, tyxml-syntax, ppxlib, reason, alcotest }:
+{
+  lib,
+  buildDunePackage,
+  tyxml,
+  tyxml-syntax,
+  ppxlib,
+  reason,
+  alcotest,
+}:
 
 buildDunePackage {
   inherit (tyxml) src version;
   pname = "tyxml-jsx";
 
-  propagatedBuildInputs = [ tyxml tyxml-syntax ppxlib reason ];
+  propagatedBuildInputs = [
+    tyxml
+    tyxml-syntax
+    ppxlib
+    reason
+  ];
 
   nativeCheckInputs = [ reason ];
   checkInputs = [ alcotest ];

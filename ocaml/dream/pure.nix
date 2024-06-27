@@ -1,17 +1,18 @@
-{ lib
-, fetchFromGitHub
-, buildDunePackage
-, base64
-, bigstringaf
-, hmap
-, lwt
-, lwt_ppx
-, ptime
-, uri
-, ppx_expect
-, alcotest
-, ppx_yojson_conv_lib
-, bisect_ppx
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  base64,
+  bigstringaf,
+  hmap,
+  lwt,
+  lwt_ppx,
+  ptime,
+  uri,
+  ppx_expect,
+  alcotest,
+  ppx_yojson_conv_lib,
+  bisect_ppx,
 }:
 
 buildDunePackage rec {

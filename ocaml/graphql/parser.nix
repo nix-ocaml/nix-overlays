@@ -1,4 +1,11 @@
-{ fetchFromGitHub, buildDunePackage, alcotest, menhir, fmt, re }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  alcotest,
+  menhir,
+  fmt,
+  re,
+}:
 
 buildDunePackage {
   pname = "graphql_parser";
@@ -12,5 +19,9 @@ buildDunePackage {
 
   nativeBuildInputs = [ menhir ];
   checkInputs = [ alcotest ];
-  propagatedBuildInputs = [ menhir fmt re ];
+  propagatedBuildInputs = [
+    menhir
+    fmt
+    re
+  ];
 }

@@ -186,31 +186,28 @@ in
 rec {
   inherit ocaml5Ignores darwinIgnores;
   ocamlCandidates =
-    { pkgs
-    , ocamlVersion
-    , extraIgnores ? if lib.hasPrefix "5_" ocamlVersion
-      then ocaml5Ignores
-      else [ ]
+    {
+      pkgs,
+      ocamlVersion,
+      extraIgnores ? if lib.hasPrefix "5_" ocamlVersion then ocaml5Ignores else [ ],
     }:
     let
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
 
       ignoredPackages =
-        baseIgnoredPackages ++
-        lib.optionals stdenv.isDarwin darwinIgnores ++
-        extraIgnores;
+        baseIgnoredPackages ++ lib.optionals stdenv.isDarwin darwinIgnores ++ extraIgnores;
     in
-    lib.filterAttrs
-      (n: v':
-      if # don't build tezos stuff
-        (builtins.substring 0 5 n) == "tezos"
-        || (builtins.elem n ignoredPackages)
-      then false
+    lib.filterAttrs (
+      n: v':
+      # don't build tezos stuff
+      if (builtins.substring 0 5 n) == "tezos" || (builtins.elem n ignoredPackages) then
+        false
       else
         let
           eval_result = builtins.tryEval v';
         in
-        if !eval_result.success then false
+        if !eval_result.success then
+          false
         else
           (
             let
@@ -218,24 +215,42 @@ rec {
               broken = (v ? meta && v.meta ? broken && v.meta.broken);
             in
             (lib.isDerivation v) && !broken
-          ))
-      ocamlPackages;
+          )
+    ) ocamlPackages;
 
-  crossTarget = pkgs: ocamlVersion:
-    with (ocamlCandidates {
-      inherit pkgs ocamlVersion;
-    }); ({
-      # just build a subset of the static overlay, with the most commonly used
-      # packages
-      inherit
-        caqti-driver-postgresql ppx_deriving
-        base cohttp-lwt-unix tls core utop irmin;
-    } // (if lib.hasPrefix "5_" ocamlVersion then {
-      inherit piaf carl;
-      static-carl = carl.override { static = true; };
-    } else { }));
+  crossTarget =
+    pkgs: ocamlVersion:
+    with (ocamlCandidates { inherit pkgs ocamlVersion; });
+    (
+      {
+        # just build a subset of the static overlay, with the most commonly used
+        # packages
+        inherit
+          caqti-driver-postgresql
+          ppx_deriving
+          base
+          cohttp-lwt-unix
+          tls
+          core
+          utop
+          irmin
+          ;
+      }
+      // (
+        if lib.hasPrefix "5_" ocamlVersion then
+          {
+            inherit piaf carl;
+            static-carl = carl.override { static = true; };
+          }
+        else
+          { }
+      )
+    );
 
-  crossTargetList = pkgs: ocamlVersion:
-    let attrs = crossTarget pkgs ocamlVersion; in
+  crossTargetList =
+    pkgs: ocamlVersion:
+    let
+      attrs = crossTarget pkgs ocamlVersion;
+    in
     lib.attrValues attrs;
 }

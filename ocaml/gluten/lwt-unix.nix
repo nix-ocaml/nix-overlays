@@ -1,4 +1,10 @@
-{ buildDunePackage, gluten, faraday-lwt-unix, gluten-lwt, lwt_ssl }:
+{
+  buildDunePackage,
+  gluten,
+  faraday-lwt-unix,
+  gluten-lwt,
+  lwt_ssl,
+}:
 
 buildDunePackage {
   pname = "gluten-lwt-unix";

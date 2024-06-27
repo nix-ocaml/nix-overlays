@@ -1,4 +1,8 @@
-{ lib, buildDunePackage, ppxlib }:
+{
+  lib,
+  buildDunePackage,
+  ppxlib,
+}:
 
 buildDunePackage rec {
   pname = "logs-ppx";

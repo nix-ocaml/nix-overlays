@@ -1,4 +1,11 @@
-{ fetchFromGitHub, lib, buildDunePackage, uri, ptime, astring }:
+{
+  fetchFromGitHub,
+  lib,
+  buildDunePackage,
+  uri,
+  ptime,
+  astring,
+}:
 
 buildDunePackage {
   pname = "cookie";
@@ -11,7 +18,11 @@ buildDunePackage {
     sha256 = "sha256-souA7AOa59tu4Tdh7UEZm67YAz+1aR3asRZxk35WcHA=";
   };
 
-  propagatedBuildInputs = [ uri ptime astring ];
+  propagatedBuildInputs = [
+    uri
+    ptime
+    astring
+  ];
 
   meta = {
     description = "Cookie parsing and serialization for OCaml";

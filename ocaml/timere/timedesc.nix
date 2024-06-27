@@ -1,13 +1,14 @@
-{ buildDunePackage
-, timedesc-tzdb
-, timedesc-tzlocal
-, seq
-, angstrom
-, ptime
-, crowbar
-, alcotest
-, qcheck-alcotest
-, qcheck
+{
+  buildDunePackage,
+  timedesc-tzdb,
+  timedesc-tzlocal,
+  seq,
+  angstrom,
+  ptime,
+  crowbar,
+  alcotest,
+  qcheck-alcotest,
+  qcheck,
 }:
 
 buildDunePackage {

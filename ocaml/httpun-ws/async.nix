@@ -1,10 +1,11 @@
-{ buildDunePackage
-, httpun-ws
-, async
-, gluten-async
-, faraday-async
-, async_ssl
-, digestif
+{
+  buildDunePackage,
+  httpun-ws,
+  async,
+  gluten-async,
+  faraday-async,
+  async_ssl,
+  digestif,
 }:
 
 buildDunePackage {

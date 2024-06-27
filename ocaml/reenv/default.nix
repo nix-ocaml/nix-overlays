@@ -1,12 +1,13 @@
-{ lib
-, fetchFromGitHub
-, buildDunePackage
-, alcotest
-, junit
-, junit_alcotest
-, reason
-, cmdliner
-, re
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  alcotest,
+  junit,
+  junit_alcotest,
+  reason,
+  cmdliner,
+  re,
 }:
 
 buildDunePackage {
@@ -19,12 +20,19 @@ buildDunePackage {
     sha256 = "sha256-p+RyVAmIEhUlRhLVrWJcrlcJ4fcyVbgo8YxZ0DT2c2w=";
   };
 
-  checkInputs = [ alcotest junit junit_alcotest ];
+  checkInputs = [
+    alcotest
+    junit
+    junit_alcotest
+  ];
 
   doCheck = true;
 
   nativeBuildInputs = [ reason ];
-  propagatedBuildInputs = [ cmdliner re ];
+  propagatedBuildInputs = [
+    cmdliner
+    re
+  ];
 
   meta = {
     description = "dotenv-cli written in reason";

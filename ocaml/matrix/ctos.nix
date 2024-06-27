@@ -1,4 +1,13 @@
-{ lib, fetchFromGitHub, buildDunePackage, matrix-common, ezjsonm, fmt, logs, ppxlib }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  matrix-common,
+  ezjsonm,
+  fmt,
+  logs,
+  ppxlib,
+}:
 
 buildDunePackage {
   pname = "matrix-ctos";

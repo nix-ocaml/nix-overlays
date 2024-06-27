@@ -1,8 +1,15 @@
-{ buildDunePackage, faraday-async, gluten }:
+{
+  buildDunePackage,
+  faraday-async,
+  gluten,
+}:
 
 buildDunePackage {
   pname = "gluten-async";
   inherit (gluten) src version;
 
-  propagatedBuildInputs = [ faraday-async gluten ];
+  propagatedBuildInputs = [
+    faraday-async
+    gluten
+  ];
 }

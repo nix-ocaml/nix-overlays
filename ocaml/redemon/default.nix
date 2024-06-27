@@ -1,4 +1,12 @@
-{ lib, fetchFromGitHub, buildDunePackage, luv, cmdliner, logs, fmt }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  luv,
+  cmdliner,
+  logs,
+  fmt,
+}:
 
 buildDunePackage {
   pname = "redemon";
@@ -10,7 +18,12 @@ buildDunePackage {
     sha256 = "sha256-M3tBxNLjEkZmmVbjqBmMRMK1cmiNTzxYfnPvnk3jfAE=";
   };
 
-  propagatedBuildInputs = [ luv cmdliner logs fmt ];
+  propagatedBuildInputs = [
+    luv
+    cmdliner
+    logs
+    fmt
+  ];
   postPatch = ''
     substituteInPlace bin/main.ml \
       --replace-fail '%s" file' '%s" (Option.get file)' \

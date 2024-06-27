@@ -1,14 +1,19 @@
-{ lib, binutils, stdenv, writeScriptBin }:
+{
+  lib,
+  binutils,
+  stdenv,
+  writeScriptBin,
+}:
 let
-  fixOCaml = ocaml:
-    (ocaml.override { useX11 = false; }).overrideAttrs (o:
+  fixOCaml =
+    ocaml:
+    (ocaml.override { useX11 = false; }).overrideAttrs (
+      o:
       let
         strip-script =
           let
             strip-pkg =
-              if stdenv.cc.targetPrefix == ""
-              then "${binutils}/bin/strip"
-              else "${stdenv.cc.targetPrefix}strip";
+              if stdenv.cc.targetPrefix == "" then "${binutils}/bin/strip" else "${stdenv.cc.targetPrefix}strip";
           in
           writeScriptBin "strip" ''
             #!${stdenv.shell}
@@ -24,9 +29,11 @@ let
           ${o.preConfigure or null}
           configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static" "STRIP=''${STRIP:strip}")
         '';
-      });
+      }
+    );
 
-  fixOCamlPackage = b:
+  fixOCamlPackage =
+    b:
     b.overrideAttrs (o: {
       # Static doesn't propagate `checkInputs` so we don't run the tests here
       doCheck = false;
@@ -35,12 +42,8 @@ in
 
 oself: osuper:
 
-lib.mapAttrs
-  (_: p:
-    if p ? overrideAttrs then
-      fixOCamlPackage p
-    else p)
-  osuper // {
+lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper
+// {
   ocaml = fixOCaml osuper.ocaml;
 
   kafka = osuper.kafka.overrideAttrs (o: {
@@ -52,8 +55,6 @@ lib.mapAttrs
   });
 
   zarith = osuper.zarith.overrideDerivation (o: {
-    configureFlags = o.configureFlags ++ [
-      "-prefixnonocaml ${o.stdenv.hostPlatform.config}-"
-    ];
+    configureFlags = o.configureFlags ++ [ "-prefixnonocaml ${o.stdenv.hostPlatform.config}-" ];
   });
 }

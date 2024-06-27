@@ -1,11 +1,12 @@
-{ buildDunePackage
-, fetchFromGitHub
-, yojson
-, ppx_deriving_yojson
-, piaf
-, uri
-, logs
-, lwt
+{
+  buildDunePackage,
+  fetchFromGitHub,
+  yojson,
+  ppx_deriving_yojson,
+  piaf,
+  uri,
+  logs,
+  lwt,
 }:
 
 buildDunePackage {

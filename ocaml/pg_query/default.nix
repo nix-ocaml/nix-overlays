@@ -1,10 +1,11 @@
-{ fetchFromGitHub
-, buildDunePackage
-, alcotest
-, cmdliner
-, ppx_deriving
-, ctypes
-, ctypes-foreign
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  alcotest,
+  cmdliner,
+  ppx_deriving,
+  ctypes,
+  ctypes-foreign,
 }:
 
 buildDunePackage {

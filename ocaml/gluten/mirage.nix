@@ -1,10 +1,11 @@
-{ buildDunePackage
-, faraday-lwt
-, gluten
-, gluten-lwt
-, conduit-mirage
-, mirage-flow
-, cstruct
+{
+  buildDunePackage,
+  faraday-lwt,
+  gluten,
+  gluten-lwt,
+  conduit-mirage,
+  mirage-flow,
+  cstruct,
 }:
 
 buildDunePackage {

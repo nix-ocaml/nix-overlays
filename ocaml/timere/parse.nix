@@ -1,10 +1,11 @@
-{ buildDunePackage
-, timere
-, oseq
-, re
-, containers
-, timedesc
-, mparser
+{
+  buildDunePackage,
+  timere,
+  oseq,
+  re,
+  containers,
+  timedesc,
+  mparser,
 }:
 
 buildDunePackage {

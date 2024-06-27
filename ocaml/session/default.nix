@@ -1,4 +1,11 @@
-{ lib, fetchFromGitHub, buildDunePackage, mirage-crypto, mirage-crypto-rng, base64 }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  mirage-crypto,
+  mirage-crypto-rng,
+  base64,
+}:
 
 buildDunePackage {
   pname = "session";
@@ -10,7 +17,11 @@ buildDunePackage {
     sha256 = "sha256-3n3LN1lFWy/F24Gnoc7Bhp69VUEVLZFITaXLL1vMzG4=";
   };
 
-  propagatedBuildInputs = [ mirage-crypto mirage-crypto-rng base64 ];
+  propagatedBuildInputs = [
+    mirage-crypto
+    mirage-crypto-rng
+    base64
+  ];
 
   meta = {
     description = "A session manager for your everyday needs";

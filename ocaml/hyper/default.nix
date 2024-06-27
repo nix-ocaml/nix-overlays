@@ -1,9 +1,10 @@
-{ fetchFromGitHub
-, buildDunePackage
-, dream-httpaf
-, dream-pure
-, mirage-crypto-rng-lwt
-, uri
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  dream-httpaf,
+  dream-pure,
+  mirage-crypto-rng-lwt,
+  uri,
 }:
 
 buildDunePackage rec {

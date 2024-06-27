@@ -1,4 +1,10 @@
-{ lib, buildDunePackage, domainslib, fetchFromGitHub, lwt }:
+{
+  lib,
+  buildDunePackage,
+  domainslib,
+  fetchFromGitHub,
+  lwt,
+}:
 
 buildDunePackage {
   pname = "lwt_domain";
@@ -9,7 +15,10 @@ buildDunePackage {
     rev = "28319c184a648c9e79f60b8ba4f57c271f7e9606";
     hash = "sha256-rjjJX19/SuKUdvlE8BfV0iGdzmFLF+F8L4HzG4ja2HI=";
   };
-  propagatedBuildInputs = [ domainslib lwt ];
+  propagatedBuildInputs = [
+    domainslib
+    lwt
+  ];
 
   meta = {
     description = "Helpers for using Domainslib with Lwt";
