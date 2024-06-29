@@ -970,6 +970,15 @@ with oself;
   httpaf-mirage = httpun-mirage;
   httpaf-async = httpun-mirage;
 
+  hkdf = osuper.hkdf.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/hannesm/ocaml-hkdf/releases/download/v2.0.0/hkdf-2.0.0.tbz;
+      sha256 = "1lsq2frgzhnzcj3i3zblbkmkvzxb0s03845dkkskjkg2kckp3c2l";
+    };
+    propagatedBuildInputs = [ cstruct digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
@@ -1258,14 +1267,27 @@ with oself;
 
   mirage-channel = disableTests osuper.mirage-channel;
 
-  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
-  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/mirage/releases/download/v4.5.1/mirage-4.5.1.tbz";
       sha256 = "033yhprafg792c3adlr9na3yb08nzv0j3xvb4ky740y0mbj0pq41";
     };
+  });
+
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-crypto/releases/download/v1.0.0/mirage-crypto-1.0.0.tbz;
+      sha256 = "0sa7hv7hdwn51zl68y0jm0qcs46ahh8w0ianbvlfwh349yphd6sg";
+    };
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
+  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
+  mirage-crypto-pk = disableTests (osuper.mirage-crypto-pk.override { gmp = gmp-oc; });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    propagatedBuildInputs = [ logs digestif mirage-crypto ];
+    doCheck = false;
   });
 
   mirage-kv-unix = buildDunePackage {
