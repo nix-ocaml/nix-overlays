@@ -1890,6 +1890,17 @@ with oself;
     checkInputs = [ alcotest ];
   };
 
+  pbkdf = osuper.pbkdf.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "abeaumont";
+      repo = "ocaml-pbkdf";
+      rev = "2273edb9347cfb0bbd280ad1989f616578e94b82";
+      hash = "sha256-f8Uw31cLW3RPgQ83iutDCdR7YciqeouzcMEtFR9pk1o=";
+    };
+    propagatedBuildInputs = [ cstruct mirage-crypto digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   pg_query = callPackage ./pg_query { };
 
   plist-xml = buildDunePackage {
