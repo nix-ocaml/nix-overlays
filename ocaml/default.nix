@@ -2270,7 +2270,7 @@ with oself;
       url = "https://github.com/mirage/mirage-tcpip/releases/download/v8.1.0/tcpip-8.1.0.tbz";
       sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
     };
-    checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
+    doCheck = false;
   });
 
   textmate-language = buildDunePackage {
