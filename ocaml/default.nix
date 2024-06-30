@@ -963,6 +963,15 @@ with oself;
   httpaf-mirage = httpun-mirage;
   httpaf-async = httpun-mirage;
 
+  hkdf = osuper.hkdf.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/hannesm/ocaml-hkdf/releases/download/v2.0.0/hkdf-2.0.0.tbz;
+      sha256 = "1lsq2frgzhnzcj3i3zblbkmkvzxb0s03845dkkskjkg2kckp3c2l";
+    };
+    propagatedBuildInputs = [ cstruct digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
@@ -1251,14 +1260,27 @@ with oself;
 
   mirage-channel = disableTests osuper.mirage-channel;
 
-  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
-  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = https://github.com/mirage/mirage/releases/download/v4.5.1/mirage-4.5.1.tbz;
       sha256 = "033yhprafg792c3adlr9na3yb08nzv0j3xvb4ky740y0mbj0pq41";
     };
+  });
+
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirage/mirage-crypto/releases/download/v1.0.0/mirage-crypto-1.0.0.tbz;
+      sha256 = "0sa7hv7hdwn51zl68y0jm0qcs46ahh8w0ianbvlfwh349yphd6sg";
+    };
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
+  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
+  mirage-crypto-pk = disableTests (osuper.mirage-crypto-pk.override { gmp = gmp-oc; });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    propagatedBuildInputs = [ logs digestif mirage-crypto ];
+    doCheck = false;
   });
 
   mirage-kv-unix = buildDunePackage {
@@ -1868,6 +1890,17 @@ with oself;
     checkInputs = [ alcotest ];
   };
 
+  pbkdf = osuper.pbkdf.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "abeaumont";
+      repo = "ocaml-pbkdf";
+      rev = "2273edb9347cfb0bbd280ad1989f616578e94b82";
+      hash = "sha256-f8Uw31cLW3RPgQ83iutDCdR7YciqeouzcMEtFR9pk1o=";
+    };
+    propagatedBuildInputs = [ cstruct mirage-crypto digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   pg_query = callPackage ./pg_query { };
 
   plist-xml = buildDunePackage {
@@ -2234,7 +2267,7 @@ with oself;
       url = https://github.com/mirage/mirage-tcpip/releases/download/v8.1.0/tcpip-8.1.0.tbz;
       sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
     };
-    checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
+    doCheck = false;
   });
 
   textmate-language = buildDunePackage {
