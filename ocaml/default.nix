@@ -1577,13 +1577,6 @@ with oself;
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "ocamlbuild";
-      rev = "0.15.0";
-      hash = "sha256-j4Nd5flyvshIo+XFtBS0fKqdd9YcxYsjE7ty6rZLDRc=";
-    };
-
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     # OCamlbuild needs to find the native toolchain when cross compiling (to
