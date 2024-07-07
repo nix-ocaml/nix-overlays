@@ -114,6 +114,7 @@ let
     "bistro"
     "multiformats"
     "ocaml_openapi_generator"
+    "tdigest"
   ];
 
   ocaml5Ignores = [
