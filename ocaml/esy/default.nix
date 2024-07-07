@@ -128,7 +128,7 @@ let
     '';
 
     meta = {
-      homepage = https://github.com/andreypopp/esy-solve-cudf;
+      homepage = "https://github.com/andreypopp/esy-solve-cudf";
       description = "package.json workflow for native development with Reason/OCaml";
       license = lib.licenses.gpl3;
     };
@@ -243,7 +243,7 @@ buildDunePackage {
   '';
 
   meta = {
-    homepage = https://github.com/esy/esy;
+    homepage = "https://github.com/esy/esy";
     description = "package.json workflow for native development with Reason/OCaml";
     license = lib.licenses.bsd2;
   };

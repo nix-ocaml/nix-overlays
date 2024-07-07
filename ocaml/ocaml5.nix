@@ -81,7 +81,7 @@ with oself;
     version = "0.1.2";
     src = builtins.fetchurl {
       url =
-        https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz;
+        "https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz";
       sha256 = "1cj3wvawk4rxbgcy1cj3pj421jafg5xz18ff93wa1040cz01c975";
     };
     propagatedBuildInputs = [ yojson mtime domain-local-await multicore-magic ];
