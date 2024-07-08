@@ -9,7 +9,7 @@ with oself;
     pname = "backoff";
     version = "0.1.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz;
+      url = "https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz";
       sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
     };
   };
@@ -66,7 +66,7 @@ with oself;
     pname = "moonpool";
     version = "0.6";
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/moonpool/releases/download/v0.6/moonpool-0.6.tbz;
+      url = "https://github.com/c-cube/moonpool/releases/download/v0.6/moonpool-0.6.tbz";
       sha256 = "0cvnbv30nmpv7zpq9vfa3sz5wi1wxqm578mnga6blyx3h9f0kz9y";
     };
 
@@ -81,7 +81,7 @@ with oself;
     version = "0.1.2";
     src = builtins.fetchurl {
       url =
-        https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz;
+        "https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz";
       sha256 = "1cj3wvawk4rxbgcy1cj3pj421jafg5xz18ff93wa1040cz01c975";
     };
     propagatedBuildInputs = [ yojson mtime domain-local-await multicore-magic ];
@@ -94,7 +94,7 @@ with oself;
     pname = "multicore-magic";
     version = "2.2.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/multicore-magic/releases/download/2.2.0/multicore-magic-2.2.0.tbz;
+      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.2.0/multicore-magic-2.2.0.tbz";
       sha256 = "1a86lzqv8cv3jw64ijzlnm1qx2ynyy8ixrwyazdija1g58c6b2zk";
     };
   };
@@ -106,7 +106,7 @@ with oself;
     pname = "picos";
     version = "0.3.0";
     src = builtins.fetchurl {
-      url = https://github.com/ocaml-multicore/picos/releases/download/0.3.0/picos-0.3.0.tbz;
+      url = "https://github.com/ocaml-multicore/picos/releases/download/0.3.0/picos-0.3.0.tbz";
       sha256 = "0rphlxacn9n3zpvy6v2s7v26ph6pzvgff11gz1j9gcp4pp008j2l";
     };
     propagatedBuildInputs = [
@@ -141,7 +141,7 @@ with oself;
     version = "0.5.0";
 
     src = builtins.fetchurl {
-      url = https://github.com/tarides/runtime_events_tools/releases/download/0.5.1/runtime_events_tools-0.5.1.tbz;
+      url = "https://github.com/tarides/runtime_events_tools/releases/download/0.5.1/runtime_events_tools-0.5.1.tbz";
       sha256 = "0r35cpbmj17ldpfkf4dzk4bs1knfy4hyjz6ax0ayrck25rm397dh";
     };
 
@@ -152,7 +152,7 @@ with oself;
     pname = "thread-local-storage";
     version = "0.1";
     src = builtins.fetchurl {
-      url = https://github.com/c-cube/thread-local-storage/releases/download/v0.1/thread-local-storage-0.1.tbz;
+      url = "https://github.com/c-cube/thread-local-storage/releases/download/v0.1/thread-local-storage-0.1.tbz";
       sha256 = "1bk702faacqgwsx96yx9pgkikbxd1nk5xilix3mrg5l9v04gkbbj";
     };
   };
@@ -165,7 +165,7 @@ with oself;
 
   wayland = osuper.wayland.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/talex5/ocaml-wayland/releases/download/v2.0/wayland-2.0.tbz;
+      url = "https://github.com/talex5/ocaml-wayland/releases/download/v2.0/wayland-2.0.tbz";
       sha256 = "0jw3x66yscl77w17pp31s4vhsba2xk6z2yvb30fvh0vd9p7ba8c8";
     };
     propagatedBuildInputs = [ eio ];

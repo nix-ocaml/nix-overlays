@@ -27,18 +27,18 @@ buildDunePackage {
     if (lib.versionOlder "5.2" ocaml.version) then
       builtins.fetchurl
         {
-          url = https://github.com/melange-re/melange/releases/download/4.0.1-52/melange-4.0.1-52.tbz;
+          url = "https://github.com/melange-re/melange/releases/download/4.0.1-52/melange-4.0.1-52.tbz";
           sha256 = "0dvmdxzkvr5qc064p9q8yciv5jkcw9njn1nxhzrpwb9dlj344jci";
         }
     else if (lib.versionOlder "5.1" ocaml.version) then
       builtins.fetchurl
         {
-          url = https://github.com/melange-re/melange/releases/download/4.0.0-51/melange-4.0.0-51.tbz;
+          url = "https://github.com/melange-re/melange/releases/download/4.0.0-51/melange-4.0.0-51.tbz";
           sha256 = "1mdxqqw3jyaf3ig1w9als2mghf9axbln6mm5k1x76pjrkp71i3gp";
         }
     else
       builtins.fetchurl {
-        url = https://github.com/melange-re/melange/releases/download/4.0.0-414/melange-4.0.0-414.tbz;
+        url = "https://github.com/melange-re/melange/releases/download/4.0.0-414/melange-4.0.0-414.tbz";
         sha256 = "14rcq4qxwc33xlnpfxjqz9fs5l29jvzc04jvpzgvpj08fqww70iw";
       };
 

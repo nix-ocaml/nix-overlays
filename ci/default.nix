@@ -4,7 +4,7 @@ let
   system = builtins.currentSystem;
   flake = (import
     (fetchTarball {
-      url = https://github.com/edolstra/flake-compat/archive/35bb57c0.tar.gz;
+      url = "https://github.com/edolstra/flake-compat/archive/35bb57c0.tar.gz";
       sha256 = "1prd9b1xx8c0sfwnyzkspplh30m613j42l1k789s521f4kv4c2z2";
     })
     { src = ../.; }).defaultNix;

@@ -36,7 +36,7 @@ let
   esyOcamlPkgs = ocamlPackages.overrideScope (self: super: rec {
     alcotest = super.alcotest.overrideAttrs (_: {
       src = builtins.fetchurl {
-        url = https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz;
+        url = "https://github.com/mirage/alcotest/releases/download/1.4.0/alcotest-mirage-1.4.0.tbz";
         sha256 = "1h9yp44snb6sgm5g1x3wg4gwjscic7i56jf0j8jr07355pxwrami";
       };
       propagatedBuildInputs = with self; [
@@ -128,7 +128,7 @@ let
     '';
 
     meta = {
-      homepage = https://github.com/andreypopp/esy-solve-cudf;
+      homepage = "https://github.com/andreypopp/esy-solve-cudf";
       description = "package.json workflow for native development with Reason/OCaml";
       license = lib.licenses.gpl3;
     };
@@ -243,7 +243,7 @@ buildDunePackage {
   '';
 
   meta = {
-    homepage = https://github.com/esy/esy;
+    homepage = "https://github.com/esy/esy";
     description = "package.json workflow for native development with Reason/OCaml";
     license = lib.licenses.bsd2;
   };
