@@ -204,8 +204,8 @@ with self;
 
   base = janePackage {
     pname = "base";
-    # version = "0.17.0";
-    hash = "sha256-CPIKv7x8dXQ5BguGsLQt/Tqf42gBnh3NrSP0H7D4Aiw=";
+    version = "0.17.1";
+    hash = "sha256-5wqBpOHhiIy9JUuxb3OnpZHrHSM7VODuLSihaIyeFn0=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ ocaml_intrinsics_kernel sexplib0 ];
@@ -934,7 +934,7 @@ with self;
     hash = "sha256-iKrZ6XDLM6eRl7obaniDKK6X8R7Kxry6HD7OQBwh3NU=";
     minimalOCamlVersion = "4.14";
     meta.description = "S-expression parsing library";
-    propagatedBuildInputs = [ base sexplib0 ];
+    propagatedBuildInputs = [ sexplib0 ];
   };
 
   parsexp_io = janePackage {

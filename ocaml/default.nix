@@ -349,8 +349,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "xavierleroy";
       repo = "camlzip";
-      rev = "3b0e0a5f7";
-      sha256 = "sha256-DflyuI2gt8HQI8qAgczClVdLy21uXT1A9VMD5cTaDl4=";
+      rev = "rel112";
+      hash = "sha256-oZ8zCdHDd90tYv1fw0Ak1nJ6BnZ0WKvDt/C2pUFooOA=";
     };
   });
 
@@ -556,7 +556,14 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
-  cryptokit = osuper.cryptokit.override { zlib = zlib-oc; };
+  cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "xavierleroy";
+      repo = "cryptokit";
+      rev = "release1201";
+      hash = "sha256-VFY10jGctQfIUVv7dK06KP8zLZHLXTxvLyTCObS+W+E=";
+    };
+  });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
@@ -1996,12 +2003,17 @@ with oself;
     else osuper.ppx_tools;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppxlib";
+      rev = "53e98994117caa83137d43410a3e47a3a6fddda8";
+      hash = "sha256-2uOxk1nKComEiwGR98VR8niyDhwRQAFCoJGpbFTQ/aQ=";
+    };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
       sexplib0
       stdlib-shims
-      stdio
     ];
   });
 
