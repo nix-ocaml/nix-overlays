@@ -1797,10 +1797,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.2.0-beta2";
-      hash = "sha256-RcuUr4LIarVao3zXHZQRKlWW6zwsX0gAQRRAZYEMpT4=";
+      rev = "2.2.0";
+      hash = "sha256-ogBSommjV3qM/11CmJSKOpiM7kWTUVtYdzgJ3MqdPLk=";
     };
-    version = "2.2.0-beta2";
+    version = "2.2.0";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
