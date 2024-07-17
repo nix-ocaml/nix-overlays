@@ -7,7 +7,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=bd24e293f22dd8f9edd561db9d921ef4ad3eac91";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=034f3eec9b56e2fa22ee77f67403310c202ed398";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
