@@ -279,8 +279,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "inhabitedtype";
       repo = "bigstringaf";
-      rev = "0.9.1";
-      hash = "sha256-SFp5QBb4GDcTzEzvgkGKCiuUUm1k8jlgjP6ndzcQBP8=";
+      rev = "0.10.0";
+      hash = "sha256-p1hdB3ArOd2UX7S6YvXCFbYjEiXdMDmBaC/lFQgua7Q=";
     };
   });
 
@@ -1356,8 +1356,8 @@ with oself;
   });
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20231231.tar.gz";
-      sha256 = "1xn7760ahcf22y2ix597dh1wj7bc70x7fzj4vj73wch77imraffz";
+      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20240715.tar.gz";
+      sha256 = "0c60kby2b1zmr0ypqaclakhk3kk4km4qvw7blynzmjxam928cj7g";
     };
   });
 

@@ -847,7 +847,7 @@ with self;
   ocaml-compiler-libs = janePackage ({
     pname = "ocaml-compiler-libs";
     version = "0.16.0";
-    hash = lib.fakeHash;
+    hash = "00if2f7j9d8igdkj4rck3p74y17j6b233l91mq02drzrxj199qjv";
     meta.description = "OCaml compiler libraries repackaged";
   } // (if lib.versionAtLeast ocaml.version "5.2" then {
     version = "0.17.0";
