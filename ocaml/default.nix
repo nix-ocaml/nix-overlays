@@ -133,12 +133,9 @@ with oself;
     else janeStreet_0_16;
 
   alcotest = osuper.alcotest.overrideAttrs (_: {
-    # https://github.com/mirage/alcotest/pull/402
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "alcotest";
-      rev = "aa437168b258db97680021116af176c55e1bd53b";
-      hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/alcotest/releases/download/1.8.0/alcotest-1.8.0.tbz";
+      sha256 = "03hxrbdxhmkf81makhgiw4hy6avkkj6dzc2bfss5b33wf00vv8fb";
     };
     patches = [ ];
   });
@@ -338,6 +335,13 @@ with oself;
       maintainers = with maintainers; [ ];
     };
   };
+
+  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/ca-certs-nss/releases/download/v3.101-1/ca-certs-nss-3.101-1.tbz";
+      sha256 = "05kmmp89psfz5w06wh699vg5i5rg2rd5v2lnpvrbknwcbg6yggsc";
+    };
+  });
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -2458,6 +2462,30 @@ with oself;
       hash = "sha256-9lg/IAkVuHFzk92IkuBjfJSwPUZ1AbLklxwFWMTbws8=";
     };
   };
+
+  x509 = osuper.x509.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirleft";
+      repo = "ocaml-x509";
+      rev = "v1.0.0";
+      hash = "sha256-fAQLoHhw0a3yIu1S5Ay/EW7V1A5LO7bDRQO4m3wMzeY=";
+    };
+    checkInputs = [ alcotest ];
+    propagatedBuildInputs = [
+      asn1-combinators
+      domain-name
+      fmt
+      gmap
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      pbkdf
+      logs
+      ohex
+      base64
+      ipaddr
+    ];
+  });
 
   xxhash = osuper.xxhash.overrideAttrs (_: {
     postPatch = ''
