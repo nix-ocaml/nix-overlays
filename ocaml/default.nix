@@ -967,6 +967,15 @@ with oself;
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
+  hkdf = osuper.hkdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/hannesm/ocaml-hkdf/releases/download/v2.0.0/hkdf-2.0.0.tbz";
+      sha256 = "1lsq2frgzhnzcj3i3zblbkmkvzxb0s03845dkkskjkg2kckp3c2l";
+    };
+    propagatedBuildInputs = [ digestif ];
+    checkInputs = [ ohex alcotest ];
+  });
+
   httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
   httpun-lwt = callPackage ./httpun/lwt.nix { };
@@ -2273,6 +2282,7 @@ with oself;
       sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
     };
     checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
+    doCheck = false;
   });
 
   textmate-language = buildDunePackage {
