@@ -2304,25 +2304,24 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v0.17.5/tls-0.17.5.tbz";
-      sha256 = "06a8ms9ginhgbz22ybhgiiiisacwynix9a1555r8avrspxbqh449";
+    src = fetchFromGitHub {
+      owner = "mirleft";
+      repo = "ocaml-tls";
+      rev = "04adff22b8b8852c6123d35b93134e211223da5f";
+      hash = "sha256-BCow+7oy3Z4yBIoXd8Yxko1ZKfhQG3QXiLwUTVlrDOg=";
     };
 
     propagatedBuildInputs = [
-      cstruct
       domain-name
       fmt
       logs
+      ipaddr
       hkdf
       mirage-crypto
       mirage-crypto-ec
       mirage-crypto-pk
       mirage-crypto-rng
-      ocaml_lwt
-      ptime
       x509
-      ipaddr
     ];
   });
 
