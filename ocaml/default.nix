@@ -170,12 +170,6 @@ with oself;
     propagatedBuildInputs = [ ctypes dune-configurator ctypes-foreign result libargon2 ];
   };
 
-  atdts = buildDunePackage {
-    pname = "atdts";
-    inherit (atdgen-codec-runtime) version src;
-    propagatedBuildInputs = [ atd cmdliner ];
-  };
-
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
@@ -187,6 +181,19 @@ with oself;
       sha256 = "16hz01g42aj0zvjqjadg3x4j1jvd279c4vbc2f6zcjvm0dzmlbs0";
     };
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
+  };
+
+  asn1-combinators = osuper.asn1-combinators.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.1/asn1-combinators-0.3.1.tbz;
+      sha256 = "0kkwapy7vdq4202vmqhc831666b1mxjh2gq3w97iq7kfxb388ags";
+    };
+  });
+
+  atdts = buildDunePackage {
+    pname = "atdts";
+    inherit (atdgen-codec-runtime) version src;
+    propagatedBuildInputs = [ atd cmdliner ];
   };
 
   multiformats = buildDunePackage {
@@ -1262,8 +1269,21 @@ with oself;
 
   mirage-channel = disableTests osuper.mirage-channel;
 
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/mirage-crypto/releases/download/v1.0.0/mirage-crypto-1.0.0.tbz";
+      sha256 = "0sa7hv7hdwn51zl68y0jm0qcs46ahh8w0ianbvlfwh349yphd6sg";
+    };
+    propagatedBuildInputs = [ eqaf ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
-  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+  mirage-crypto-pk = disableTests (osuper.mirage-crypto-pk.override { gmp = gmp-oc; });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    doCheck = false;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
+  });
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1871,6 +1891,17 @@ with oself;
     doCheck = true;
     checkInputs = [ alcotest ];
   };
+
+  pbkdf = osuper.pbkdf.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "abeaumont";
+      repo = "ocaml-pbkdf";
+      rev = "2.0.0";
+      hash = "sha256-D2dXpf1D/wsJrcajU3If37tuLYjahoA/+QoXZKr1vQs=";
+    };
+    propagatedBuildInputs = [ mirage-crypto digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
 
   pg_query = callPackage ./pg_query { };
 
