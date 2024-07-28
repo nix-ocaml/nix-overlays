@@ -87,6 +87,22 @@ let
     # Broken on janestreet v0.17
     "camlimages"
     "multiformats"
+
+    # cstruct -> string
+    "conduit-mirage"
+    "awa"
+    "awa-mirage"
+    "chacha"
+    "hyper"
+    "dream"
+    "letsencrypt"
+    "letsencrypt-dns"
+    "letsencrypt-app"
+    "mongo-lwt"
+    "matrix-stos"
+    "nanoid"
+    "jose"
+    "oidc"
   ];
 
   ocaml5Ignores = [
