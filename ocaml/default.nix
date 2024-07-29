@@ -1743,26 +1743,15 @@ with oself;
     propagatedBuildInputs = [ oniguruma-lib ];
   };
 
-  swhid_core = buildDunePackage {
-    pname = "swhid_core";
-    version = "0.1";
-    src = fetchFromGitHub {
-      owner = "ocamlpro";
-      repo = "swhid_core";
-      rev = "0.1";
-      hash = "sha256-uLnVbptCvmBeNbOjGjyAWAKgzkKLDTYVFY6SNH2zf0A=";
-    };
-  };
-  spdx_licenses = buildDunePackage {
-    pname = "spdx_licenses";
-    version = "1.2.0";
+  spdx_licenses = osuper.spdx_licenses.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "kit-ty-kate";
       repo = "spdx_licenses";
       rev = "v1.2.0";
       hash = "sha256-GRadJmX+ddzYa8XwX1Nxe7iYIkcumI94fuTCq6FHAGA=";
     };
-  };
+
+  });
   x0install-solver = buildDunePackage {
     pname = "0install-solver";
     version = "2.18";
@@ -1796,10 +1785,6 @@ with oself;
   };
   opam-core = osuper.opam-core.overrideAttrs (o: {
     inherit (opam-format) src version meta;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ uutf swhid_core jsonm sha ];
-  });
-  opam-repository = osuper.opam-repository.overrideAttrs (o: {
-    configureFlags = [ "--disable-checks" ];
   });
   opam-solver = buildDunePackage {
     pname = "opam-solver";
@@ -1826,7 +1811,6 @@ with oself;
   });
   opam-state = osuper.opam-state.overrideAttrs (o: {
     inherit (opam-format) src version meta;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ spdx_licenses ];
   });
 
   opaline = super-opaline.override { ocamlPackages = oself; };
