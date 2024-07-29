@@ -977,6 +977,13 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
+  inotify = osuper.inotify.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/whitequark/ocaml-inotify/releases/download/v2.6/inotify-2.6.tbz";
+      sha256 = "1i6ci7m30bq7ggpvwwy1gcklh9bnbdn2yb8v43qx1p9gsdykw40x";
+    };
+  });
+
   iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
   });
@@ -1895,6 +1902,13 @@ with oself;
     '';
   });
 
+  ppx_blob = osuper.ppx_blob.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/johnwhitington/ppx_blob/releases/download/0.9.0/ppx_blob-0.9.0.tbz";
+      sha256 = "1r3hnnpvhfdb8w8xq47f9p70wrzqf49bj2lkkpfcwx8hbw5fj5gi";
+    };
+  });
+
   ppx_cstruct = disableTests osuper.ppx_cstruct;
 
   ppx_cstubs = buildDunePackage {
@@ -1992,8 +2006,8 @@ with oself;
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.8.0/ppx_deriving_yojson-3.8.0.tbz";
-      sha256 = "18f2w2cd9zkmpyffly2mlfkgnv5srh910jk650c0d3s1pr4cbjzx";
+      url = "https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.9.0/ppx_deriving_yojson-3.9.0.tbz";
+      sha256 = "0is03hbr8grilnvz22v5p2radh90vbh62q99005qp4awc7vg8ib7";
     };
   });
 
