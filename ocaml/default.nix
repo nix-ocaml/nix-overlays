@@ -621,16 +621,6 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   };
 
-  digestif = osuper.digestif.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/digestif/releases/download/v1.2.0/digestif-1.2.0.tbz";
-      sha256 = "0255nb9wjpkdh9v0w9p5y5s79zcqcdg3wsw0cx9nd6i7zv56h0f3";
-    };
-    postPatch = ''
-      rm -rf fuzz
-    '';
-  });
-
   dns = osuper.dns.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/ocaml-dns/releases/download/v8.0.0/dns-8.0.0.tbz";
