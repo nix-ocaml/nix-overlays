@@ -137,6 +137,7 @@ let
 
     ## Doesn't work with latest lsp on 5.2
     "linol"
+    "linol-lwt"
   ];
 
   darwinIgnores = [
