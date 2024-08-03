@@ -134,6 +134,10 @@ let
     "ocaml-migrate-types"
     "ppx_debug"
     "typedppxlib"
+
+    ## Doesn't work with latest lsp on 5.2
+    "linol"
+    "linol-lwt"
   ];
 
   darwinIgnores = [
