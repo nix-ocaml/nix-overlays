@@ -1063,12 +1063,10 @@ with oself;
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if (lib.versionOlder "5.2" ocaml.version) then
-        fetchFromGitHub
+        builtins.fetchurl
           {
-            owner = "ocaml";
-            repo = "ocaml-lsp";
-            rev = "0573158a2bdbe891d6d0026c922d9cfdca55bcf8";
-            hash = "sha256-aSLIu1Vzg7OJYMh2GgbbpIVhLKT5FHXp6Gq4AE/txfE=";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.19.0/lsp-1.19.0.tbz";
+            sha256 = "1v75vqhr4i8bx0ys9k5v978qndi8l8salj4i9jzy377qlzqxk0z7";
           }
       else o.src;
   });
@@ -1542,11 +1540,16 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace "src/config/discover.ml" --replace-fail \
-        'let cmd = pkg_export ^ " pkg-config ' \
-        'let cmd = let pkg_config = match Sys.getenv "PKG_CONFIG" with | s -> s | exception Not_found -> "pkg-config" in pkg_export ^ " " ^ pkg_config ^ " '
-    '';
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.2.0/sqlite3-5.2.0.tbz";
+      sha256 = "1fwcr6kqq2xpyiw08swaqxwlfn9h78yvxs7j2xsizcplajj868ll";
+    };
+
+    doCheck = true;
+    checkInputs = [ ppx_inline_test ];
+
+    # https://github.com/mmottl/sqlite3-ocaml/pull/62
+    patches = [ ./sqlite3-pkg-config-env-var.patch ];
   });
 
   ocaml_libvirt = osuper.ocaml_libvirt.override {
