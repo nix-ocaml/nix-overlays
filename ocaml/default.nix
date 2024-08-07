@@ -133,12 +133,9 @@ with oself;
     else janeStreet_0_16;
 
   alcotest = osuper.alcotest.overrideAttrs (_: {
-    # https://github.com/mirage/alcotest/pull/402
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "alcotest";
-      rev = "aa437168b258db97680021116af176c55e1bd53b";
-      hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/alcotest/releases/download/1.8.0/alcotest-1.8.0.tbz";
+      sha256 = "03hxrbdxhmkf81makhgiw4hy6avkkj6dzc2bfss5b33wf00vv8fb";
     };
     patches = [ ];
   });
@@ -173,12 +170,6 @@ with oself;
     propagatedBuildInputs = [ ctypes dune-configurator ctypes-foreign result libargon2 ];
   };
 
-  atdts = buildDunePackage {
-    pname = "atdts";
-    inherit (atdgen-codec-runtime) version src;
-    propagatedBuildInputs = [ atd cmdliner ];
-  };
-
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
@@ -190,6 +181,19 @@ with oself;
       sha256 = "16hz01g42aj0zvjqjadg3x4j1jvd279c4vbc2f6zcjvm0dzmlbs0";
     };
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
+  };
+
+  asn1-combinators = osuper.asn1-combinators.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.1/asn1-combinators-0.3.1.tbz;
+      sha256 = "0kkwapy7vdq4202vmqhc831666b1mxjh2gq3w97iq7kfxb388ags";
+    };
+  });
+
+  atdts = buildDunePackage {
+    pname = "atdts";
+    inherit (atdgen-codec-runtime) version src;
+    propagatedBuildInputs = [ atd cmdliner ];
   };
 
   multiformats = buildDunePackage {
@@ -338,6 +342,13 @@ with oself;
       maintainers = with maintainers; [ ];
     };
   };
+
+  ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/ca-certs-nss/releases/download/v3.101-1/ca-certs-nss-3.101-1.tbz";
+      sha256 = "05kmmp89psfz5w06wh699vg5i5rg2rd5v2lnpvrbknwcbg6yggsc";
+    };
+  });
 
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
@@ -946,6 +957,15 @@ with oself;
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
+  hkdf = osuper.hkdf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/hannesm/ocaml-hkdf/releases/download/v2.0.0/hkdf-2.0.0.tbz";
+      sha256 = "1lsq2frgzhnzcj3i3zblbkmkvzxb0s03845dkkskjkg2kckp3c2l";
+    };
+    propagatedBuildInputs = [ digestif ];
+    checkInputs = [ ohex alcotest ];
+  });
+
   httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
   httpun-lwt = callPackage ./httpun/lwt.nix { };
@@ -1253,8 +1273,21 @@ with oself;
 
   mirage-channel = disableTests osuper.mirage-channel;
 
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/mirage-crypto/releases/download/v1.0.0/mirage-crypto-1.0.0.tbz";
+      sha256 = "0sa7hv7hdwn51zl68y0jm0qcs46ahh8w0ianbvlfwh349yphd6sg";
+    };
+    propagatedBuildInputs = [ eqaf ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
-  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+  mirage-crypto-pk = disableTests (osuper.mirage-crypto-pk.override { gmp = gmp-oc; });
+  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
+    doCheck = false;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
+  });
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1852,6 +1885,17 @@ with oself;
     checkInputs = [ alcotest ];
   };
 
+  pbkdf = osuper.pbkdf.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "abeaumont";
+      repo = "ocaml-pbkdf";
+      rev = "2.0.0";
+      hash = "sha256-D2dXpf1D/wsJrcajU3If37tuLYjahoA/+QoXZKr1vQs=";
+    };
+    propagatedBuildInputs = [ mirage-crypto digestif ];
+    checkInputs = o.checkInputs ++ [ ohex ];
+  });
+
   pg_query = callPackage ./pg_query { };
 
   plist-xml = buildDunePackage {
@@ -2229,6 +2273,7 @@ with oself;
       sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
     };
     checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
+    doCheck = false;
   });
 
   textmate-language = buildDunePackage {
@@ -2250,25 +2295,24 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v0.17.5/tls-0.17.5.tbz";
-      sha256 = "06a8ms9ginhgbz22ybhgiiiisacwynix9a1555r8avrspxbqh449";
+    src = fetchFromGitHub {
+      owner = "mirleft";
+      repo = "ocaml-tls";
+      rev = "04adff22b8b8852c6123d35b93134e211223da5f";
+      hash = "sha256-BCow+7oy3Z4yBIoXd8Yxko1ZKfhQG3QXiLwUTVlrDOg=";
     };
 
     propagatedBuildInputs = [
-      cstruct
       domain-name
       fmt
       logs
+      ipaddr
       hkdf
       mirage-crypto
       mirage-crypto-ec
       mirage-crypto-pk
       mirage-crypto-rng
-      ocaml_lwt
-      ptime
       x509
-      ipaddr
     ];
   });
 
@@ -2449,6 +2493,30 @@ with oself;
       hash = "sha256-9lg/IAkVuHFzk92IkuBjfJSwPUZ1AbLklxwFWMTbws8=";
     };
   };
+
+  x509 = osuper.x509.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirleft";
+      repo = "ocaml-x509";
+      rev = "v1.0.0";
+      hash = "sha256-fAQLoHhw0a3yIu1S5Ay/EW7V1A5LO7bDRQO4m3wMzeY=";
+    };
+    checkInputs = [ alcotest ];
+    propagatedBuildInputs = [
+      asn1-combinators
+      domain-name
+      fmt
+      gmap
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      pbkdf
+      logs
+      ohex
+      base64
+      ipaddr
+    ];
+  });
 
   xxhash = osuper.xxhash.overrideAttrs (_: {
     postPatch = ''
