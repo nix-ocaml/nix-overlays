@@ -132,17 +132,6 @@ with oself;
       janeStreet_0_17
     else janeStreet_0_16;
 
-  alcotest = osuper.alcotest.overrideAttrs (_: {
-    # https://github.com/mirage/alcotest/pull/402
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "alcotest";
-      rev = "aa437168b258db97680021116af176c55e1bd53b";
-      hash = "sha256-c+7+izYbrvMVjO03+rjSmahEISJq30SW2blw8PBpB7I=";
-    };
-    patches = [ ];
-  });
-
   angstrom = osuper.angstrom.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "anmonteiro";
