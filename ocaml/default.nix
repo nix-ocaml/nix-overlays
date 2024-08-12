@@ -555,6 +555,13 @@ with oself;
   });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocamllabs";
+      repo = "ocaml-ctypes";
+      rev = "0.23.0";
+      hash = "sha256-fZfTsOMppHiI7BVvgICVt/9ofGFAfYjXzHSDA7L4vZk=";
+    };
+
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
