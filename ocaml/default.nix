@@ -554,17 +554,19 @@ with oself;
     };
   });
 
-  ctypes = osuper.ctypes.overrideAttrs (o: {
+  ctypes_0_22 = osuper.ctypes.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
+  });
+
+  ctypes = ctypes_0_22.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
       rev = "0.23.0";
       hash = "sha256-fZfTsOMppHiI7BVvgICVt/9ofGFAfYjXzHSDA7L4vZk=";
     };
-
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
   });
 
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
@@ -1200,6 +1202,7 @@ with oself;
       fetchSubmodules = true;
     };
     doCheck = false;
+    propagatedBuildInputs = [ ctypes_0_22 ];
   });
 
   luv_unix = buildDunePackage {
