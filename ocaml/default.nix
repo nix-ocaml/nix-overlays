@@ -490,12 +490,6 @@ with oself;
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
 
-  conduit = osuper.conduit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-conduit/releases/download/v6.2.3/conduit-6.2.3.tbz";
-      sha256 = "0y9y89jafndxr8spnindqa97w0p1asix0k88sr3z5cc52jxq8iis";
-    };
-  });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
   });
@@ -618,19 +612,6 @@ with oself;
     inherit (decompress) src version;
     propagatedBuildInputs = [ decompress ];
   };
-
-  dns = osuper.dns.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-dns/releases/download/v8.0.0/dns-8.0.0.tbz";
-      sha256 = "0kl5v0kwkc4l4yay52iz3f9wafijca0cm13cn9d539xzqldhd0h8";
-    };
-  });
-  dns-client-lwt = osuper.dns-client-lwt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-lwt ];
-  });
-  dns-client-mirage = osuper.dns-client-mirage.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-mirage ];
-  });
 
   domainslib = osuper.domainslib.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -835,14 +816,6 @@ with oself;
     propagatedBuildInputs = [ camomile ocaml_gettext ];
   });
 
-  git = osuper.git.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-git/releases/download/3.16.1/git-3.16.1.tbz";
-      sha256 = "00s8ja50mqka6wm6z2hxry78647wc5gcdkfrqr42ykcyrp6bsdf0";
-    };
-    postPatch = "";
-  });
-
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -876,41 +849,6 @@ with oself;
   });
 
   hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
-
-  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/happy-eyeballs/releases/download/v1.1.0/happy-eyeballs-1.1.0.tbz";
-      sha256 = "1hfw9xdi04jgg30d837jpblmpwlcmdnncz4w6fybgxgcw6wp0rnf";
-    };
-  });
-  happy-eyeballs-lwt = osuper.happy-eyeballs-lwt.overrideAttrs (_: {
-    buildInputs = [ ];
-    propagatedBuildInputs = [
-      cmdliner
-      fmt
-      ipaddr
-      mtime
-      happy-eyeballs
-      logs
-      lwt
-    ];
-  });
-  happy-eyeballs-mirage = osuper.happy-eyeballs-mirage.overrideAttrs (_: {
-    buildInputs = [ ];
-
-    propagatedBuildInputs = [
-      logs
-      duration
-      domain-name
-      ipaddr
-      fmt
-      lwt
-      tcpip
-      happy-eyeballs
-      mirage-clock
-      mirage-time
-    ];
-  });
 
   h2 = callPackage ./h2 { };
   h2-lwt = callPackage ./h2/lwt.nix { };
@@ -1250,7 +1188,27 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
-  mirage-channel = disableTests osuper.mirage-channel;
+  mirage-channel = buildDunePackage rec {
+    pname = "mirage-channel";
+    version = "4.1.0";
+
+    minimalOCamlVersion = "4.07";
+    duneVersion = "3";
+
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/mirage-channel/releases/download/v${version}/mirage-channel-${version}.tbz";
+      sha256 = "0011lzyxkwz3bwcb2cqbll707rkqh48j1d3jf26rgxfxsi8nh5xh";
+    };
+
+    propagatedBuildInputs = [ cstruct logs lwt mirage-flow ];
+
+    meta = {
+      description = "Buffered channels for MirageOS FLOW types";
+      license = lib.licenses.isc;
+      maintainers = [ lib.maintainers.anmonteiro ];
+      homepage = "https://github.com/mirage/mirage-channel";
+    };
+  };
 
   mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
@@ -1284,24 +1242,10 @@ with oself;
     propagatedBuildInputs = [ optint mirage-kv fmt ptime mirage-clock ];
   };
 
-  mirage-flow = osuper.mirage-flow.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-flow/releases/download/v4.0.2/mirage-flow-4.0.2.tbz";
-      sha256 = "0npvxbg7mlxwpgc2lhbl4si913yw4piicm234jyp7rqv5vfy6ra8";
-    };
-  });
-
   mirage-logs = osuper.mirage-logs.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/mirage-logs/releases/download/v2.1.0/mirage-logs-2.1.0.tbz";
       sha256 = "1fww8q0an84wiqfwycqlv9chc52a9apf6swbiqk28h1v1jrc52mf";
-    };
-  });
-
-  mirage-vnetif = osuper.mirage-vnetif.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-vnetif/releases/download/v0.6.2/mirage-vnetif-0.6.2.tbz";
-      sha256 = "08j58plmrzzyx50ibpvzdzdyiljfxxhl02xb3lhjd131yjndr2ja";
     };
   });
 
@@ -1405,19 +1349,6 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
-
-  mimic = osuper.mimic.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/dinosaure/mimic/releases/download/0.0.9/mimic-0.0.9.tbz";
-      sha256 = "17z2d55i2ffk6pnp1hyn6pvzfskas6jqa224hnkj5aa8np7g2kcm";
-    };
-  });
-
-  mimic-happy-eyeballs = buildDunePackage {
-    pname = "mimic-happy-eyeballs";
-    inherit (mimic) version src;
-    propagatedBuildInputs = [ mimic dns-client-mirage happy-eyeballs-mirage ];
-  };
 
   mrmime = osuper.mrmime.overrideAttrs (o: {
     src = builtins.fetchurl {
@@ -2222,14 +2153,6 @@ with oself;
     ];
   };
 
-  tcpip = osuper.tcpip.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-tcpip/releases/download/v8.1.0/tcpip-8.1.0.tbz";
-      sha256 = "1h59fm6vhsi27ar36m3n1mbx4kz39igkpxhjag3dv2q7z695vfl6";
-    };
-    checkInputs = o.checkInputs ++ [ mirage-crypto-rng ];
-  });
-
   textmate-language = buildDunePackage {
     pname = "textmate-language";
     version = "0.3.4";
@@ -2247,29 +2170,6 @@ with oself;
   timedesc-tzlocal = callPackage ./timere/timedesc-tzlocal.nix { };
   timere = callPackage ./timere/default.nix { };
   timere-parse = callPackage ./timere/parse.nix { };
-
-  tls = osuper.tls.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v0.17.5/tls-0.17.5.tbz";
-      sha256 = "06a8ms9ginhgbz22ybhgiiiisacwynix9a1555r8avrspxbqh449";
-    };
-
-    propagatedBuildInputs = [
-      cstruct
-      domain-name
-      fmt
-      logs
-      hkdf
-      mirage-crypto
-      mirage-crypto-ec
-      mirage-crypto-pk
-      mirage-crypto-rng
-      ocaml_lwt
-      ptime
-      x509
-      ipaddr
-    ];
-  });
 
   torch = osuper.torch.overrideAttrs (o: {
     postPatch = ''
@@ -2355,21 +2255,6 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
-  });
-
-  vchan = osuper.vchan.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-vchan/releases/download/v6.0.2/vchan-6.0.2.tbz";
-      sha256 = "1razkj2jbplj1midhaiqlflzvibcl0ylivvz34g8rf6nbbdbaj3y";
-    };
-    propagatedBuildInputs = [
-      lwt
-      cstruct
-      io-page
-      mirage-flow
-      xenstore
-      xenstore_transport
-    ];
   });
 
   vg = osuper.vg.overrideAttrs (_: {

@@ -85,10 +85,6 @@ let
     "sendmail"
     "sendmail-lwt"
 
-    # haven't been upgraded for mirage-flow v4
-    "cohttp-mirage"
-    "mirage-console-unix"
-
     # we don't really care about these and they don't build on 4.14
     "spices"
     "gluon"
