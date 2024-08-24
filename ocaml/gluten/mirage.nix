@@ -2,7 +2,6 @@
 , faraday-lwt
 , gluten
 , gluten-lwt
-, conduit-mirage
 , mirage-flow
 , cstruct
 }:
@@ -14,7 +13,6 @@ buildDunePackage {
   propagatedBuildInputs = [
     faraday-lwt
     gluten-lwt
-    conduit-mirage
     mirage-flow
     cstruct
   ];
