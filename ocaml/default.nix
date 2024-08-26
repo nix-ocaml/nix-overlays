@@ -1352,6 +1352,15 @@ with oself;
     doCheck = true;
   });
 
+  multicore-magic = buildDunePackage {
+    pname = "multicore-magic";
+    version = "2.3.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.0/multicore-magic-2.3.0.tbz";
+      sha256 = "1vnf4x4clv9p5606i65yvizg8x9h95x5r120rw9kmn4xnfl197dg";
+    };
+  };
+
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
