@@ -2165,12 +2165,6 @@ with oself;
     propagatedBuildInputs = [ decompress ];
   });
 
-  tar-eio = buildDunePackage {
-    pname = "tar-eio";
-    inherit (tar) version src;
-    propagatedBuildInputs = [ tar eio ];
-  };
-
   tar-mirage = buildDunePackage {
     pname = "tar-mirage";
     inherit (tar) version src;

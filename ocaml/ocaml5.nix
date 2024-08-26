@@ -139,6 +139,12 @@ with oself;
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
   };
 
+  tar-eio = buildDunePackage {
+    pname = "tar-eio";
+    inherit (tar) version src;
+    propagatedBuildInputs = [ tar eio ];
+  };
+
   thread-local-storage = buildDunePackage {
     pname = "thread-local-storage";
     version = "0.1";
