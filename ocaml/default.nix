@@ -2027,8 +2027,13 @@ with oself;
       url = "https://github.com/ocaml-multicore/saturn/releases/download/0.5.0/saturn-0.5.0.tbz";
       sha256 = "0f9y8kscj0g946sdqvyvpzcyy5ldrrv3hvrp9pc26gmrhz0b2sb6";
     };
-
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ multicore-magic backoff ];
+  });
+
+  saturn = osuper.saturn.overrideAttrs (o: {
+    checkInputs =
+      o.checkInputs
+      ++ (if lib.versionOlder "5.0" ocaml.version then [ multicore-bench ] else [ ]);
   });
 
   semver = buildDunePackage {
