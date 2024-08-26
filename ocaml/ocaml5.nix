@@ -78,25 +78,16 @@ with oself;
 
   multicore-bench = buildDunePackage {
     pname = "multicore-bench";
-    version = "0.1.2";
+    version = "0.1.3";
     src = builtins.fetchurl {
       url =
-        "https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.2/multicore-bench-0.1.2.tbz";
-      sha256 = "1cj3wvawk4rxbgcy1cj3pj421jafg5xz18ff93wa1040cz01c975";
+        "https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.4/multicore-bench-0.1.4.tbz";
+      sha256 = "147ksr81gkzjaq9f27gqxilkiayrv8ndvdn5vnwzg8sqz117jb48";
     };
     propagatedBuildInputs = [ yojson mtime domain-local-await multicore-magic ];
     doCheck = true;
     nativeCheckInputs = [ mdx ];
     checkInputs = [ backoff mdx ];
-  };
-
-  multicore-magic = buildDunePackage {
-    pname = "multicore-magic";
-    version = "2.2.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.2.0/multicore-magic-2.2.0.tbz";
-      sha256 = "1a86lzqv8cv3jw64ijzlnm1qx2ynyy8ixrwyazdija1g58c6b2zk";
-    };
   };
 
   piaf = callPackage ./piaf { };
@@ -146,6 +137,12 @@ with oself;
     };
 
     propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
+  };
+
+  tar-eio = buildDunePackage {
+    pname = "tar-eio";
+    inherit (tar) version src;
+    propagatedBuildInputs = [ tar eio ];
   };
 
   thread-local-storage = buildDunePackage {

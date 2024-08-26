@@ -52,13 +52,13 @@ with oself;
 
   melange-json = buildDunePackage {
     pname = "melange-json";
-    version = "n/a";
+    version = "1.2.0";
     src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-json/releases/download/1.1.0/melange-json-1.1.0.tbz";
-      sha256 = "12ih5drzrxjd70wfc0lz7q9pm6pm3j3wxnvwmqlvngvkkkh8dgnz";
+      url = "https://github.com/melange-community/melange-json/releases/download/1.2.0/melange-json-1.2.0.tbz";
+      sha256 = "1xxm2ckcaywi9mvlflyb15nk5r9g2152ca5ss7m7b76fssi383q8";
     };
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange yojson ppxlib ];
   };
 
   melange-jest = buildDunePackage {
@@ -123,11 +123,9 @@ with oself;
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "n/a";
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason-react";
-      rev = "713ab6cdb1644fb44e2c0c8fdcbef31007b37b8d";
-      hash = "sha256-FXG9XZ8g0syq8/mX94w2ZJvzf6c3yJJAFDSWRmQodVA=";
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason-react/releases/download/0.15.0/reason-react-0.15.0.tbz";
+      sha256 = "1ka3zi9p8kh6f5lmq9s398xpjw1c6l1cmgq0liwgmlprysiwk4zs";
     };
     propagatedBuildInputs = [ ppxlib ];
   };

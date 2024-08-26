@@ -873,7 +873,8 @@ with self;
 
   ocaml_intrinsics_kernel = janePackage {
     pname = "ocaml_intrinsics_kernel";
-    hash = "sha256-utD9HE0P3vPgSXDW8Bz0FxgEy+lNkIAlN/+JkfDqb9A=";
+    version = "0.17.1";
+    hash = "sha256-2fBrJtI7bXbdFlILKhcBWWj4Q8/9hpi73egVbZmgBak=";
     meta.description = "Intrinsics";
   };
 
