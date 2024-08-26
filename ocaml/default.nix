@@ -607,6 +607,15 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
+  domainslib = osuper.domainslib.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "domainslib";
+      rev = "731f08891c87e788f2cc95f2a600328f6682a5e2";
+      hash = "sha256-32rk+gUeqFbZWFAjDVPezxnInUM9lPSDiNitMdpPyM4=";
+    };
+  });
+
   rfc1951 = buildDunePackage {
     pname = "rfc1951";
     inherit (decompress) src version;
