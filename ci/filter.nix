@@ -142,6 +142,7 @@ let
     "zelus"
     "zelus-gtk"
     "ocamlfuse"
+    "wayland"
 
     # Broken on janestreet v0.17
     "ecaml"
