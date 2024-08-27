@@ -3,9 +3,11 @@
 buildDunePackage {
   pname = "httpun-ws";
   version = "n/a";
-  src = builtins.fetchurl {
-    url = "https://github.com/anmonteiro/httpun-ws/releases/download/0.1.0/httpun-ws-0.1.0.tbz";
-    sha256 = "1p0z8sbzsm42ifl3awc923zz24f559lz5w3vn200wr0f0imcl6cx";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "httpun-ws";
+    rev = "9aacc120032c3f5b03b8775c82000d1cfe2b51ac";
+    hash = "sha256-UrGyoNeQo9tDMtCZDSbLNCFhi/7krqnIMf5nUAEdAWI=";
   };
 
   propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
