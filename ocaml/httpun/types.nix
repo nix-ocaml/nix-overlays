@@ -5,8 +5,10 @@ buildDunePackage {
   pname = "httpun-types";
   propagatedBuildInputs = [ faraday ];
 
-  src = builtins.fetchurl {
-    url = "https://github.com/anmonteiro/httpun/releases/download/0.1.0/httpun-0.1.0.tbz";
-    sha256 = "1lclla34qc03yss3vfbw83nmxg3r9ccik6013vn8vkz189glc1sh";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "httpun";
+    rev = "cebf3ac6d3e4d90944befe14f90ceafb1829717b";
+    hash = "sha256-LcvKXMn66NYTB64IYznvY8Da8zkiJqE+0GVp5fQCjow=";
   };
 }

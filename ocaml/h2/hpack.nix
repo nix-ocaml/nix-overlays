@@ -4,9 +4,11 @@ buildDunePackage {
   pname = "hpack";
   version = "0.10.0-dev";
 
-  src = builtins.fetchurl {
-    url = "https://github.com/anmonteiro/ocaml-h2/releases/download/0.12.0/h2-0.12.0.tbz";
-    sha256 = "1ijkijpk5ss9d2dn2myrqp1k2qc67ycvvix834v3islh7l8hpr1n";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "ocaml-h2";
+    rev = "d447dd55e1ddd31ed6ae76651f336f378992618e";
+    hash = "sha256-qt3SgBIhand5cqUMuN+qUEQM6+r97WRVFeMlCQ7lTxE=";
   };
   propagatedBuildInputs = [ angstrom faraday ];
 }
