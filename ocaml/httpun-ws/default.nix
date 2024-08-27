@@ -1,4 +1,11 @@
-{ fetchFromGitHub, buildDunePackage, angstrom, faraday, gluten, httpaf, base64 }:
+{ fetchFromGitHub
+, buildDunePackage
+, angstrom
+, faraday
+, gluten
+, httpun
+, base64
+}:
 
 buildDunePackage {
   pname = "httpun-ws";
@@ -10,5 +17,5 @@ buildDunePackage {
     hash = "sha256-UrGyoNeQo9tDMtCZDSbLNCFhi/7krqnIMf5nUAEdAWI=";
   };
 
-  propagatedBuildInputs = [ angstrom faraday gluten httpaf base64 ];
+  propagatedBuildInputs = [ angstrom faraday gluten httpun base64 ];
 }

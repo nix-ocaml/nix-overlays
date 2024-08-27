@@ -883,13 +883,6 @@ with oself;
   httpun-mirage = callPackage ./httpun/mirage.nix { };
   httpun-async = callPackage ./httpun/async.nix { };
 
-  # To help migrate, for now
-  httpaf = httpun;
-  httpaf-lwt = httpun-lwt;
-  httpaf-lwt-unix = httpun-lwt-unix;
-  httpaf-mirage = httpun-mirage;
-  httpaf-async = httpun-mirage;
-
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
@@ -1787,6 +1780,10 @@ with oself;
 
   otfed = osuper.otfed.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
+  });
+
+  paf = osuper.paf.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ httpaf ];
   });
 
   patch = buildDunePackage {

@@ -882,6 +882,7 @@ with self;
     pname = "ocaml_openapi_generator";
     hash = "sha256-HCq9fylcVjBMs8L6E860nw+EonWEQadlyEKpQI6mynU=";
     meta.description = "An OpenAPI 3 to OCaml client generator.";
+    nativeBuildInputs = [ ocaml-embed-file ];
     propagatedBuildInputs = [
       async
       core
@@ -890,9 +891,8 @@ with self;
       jsonaf
       ppx_jane
       ppx_jsonaf_conv
-      # httpaf
+      httpaf
       jingoo
-      ocaml-embed-file
       uri
     ];
   };

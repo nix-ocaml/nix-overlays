@@ -38,7 +38,6 @@ with oself;
   h2-eio = callPackage ./h2/eio.nix { };
 
   httpun-eio = callPackage ./httpun/eio.nix { };
-  httpaf-eio = httpun-eio;
 
   kafka-eio = buildDunePackage {
     pname = "kafka-eio";
