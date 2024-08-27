@@ -876,6 +876,8 @@ with oself;
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
 
+  http-mirage-client = disableTests osuper.http-mirage-client;
+
   httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
   httpun-lwt = callPackage ./httpun/lwt.nix { };
