@@ -1959,12 +1959,12 @@ with oself;
     ];
   });
 
-  re = osuper.re.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
-      sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
-    };
-  });
+  # re = osuper.re.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
+  # sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
+  # };
+  # });
 
   reanalyze = buildDunePackage {
     pname = "reanalyze";
