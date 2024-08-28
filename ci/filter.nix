@@ -15,19 +15,8 @@ let
     "irmin-graphql"
     "irmin-mirage-graphql"
 
-    # doesn't work with my fork of http/af
-    "paf"
-    "paf-le"
+    # doesn't work with cohttp 6.0
     "paf-cohttp"
-    "git-paf"
-    "git-unix"
-    "git-cohttp"
-    "git-cohttp-unix"
-    "irmin-mirage-git"
-    "git-mirage"
-    "irmin-git"
-    "http-mirage-client"
-    "letsencrypt-mirage"
 
     # broken since OCaml 4.13
     "hol_light"
@@ -50,13 +39,10 @@ let
 
     "pgsolver"
     "tcslib"
-    "plotkicadsch"
 
-    # Not compatible with EIO yet
+    # Not compatible with EIO piaf yet
     "oidc-client"
 
-    "biotk"
-    "phylogenetics"
     "biocaml"
     "pythonlib"
     "magic-trace"
@@ -81,10 +67,6 @@ let
 
     "binaryen"
 
-    # doesn't work with tls >= 0.17.4
-    "sendmail"
-    "sendmail-lwt"
-
     # we don't really care about these and they don't build on 4.14
     "spices"
     "gluon"
@@ -104,19 +86,12 @@ let
 
     # Broken on janestreet v0.17
     "camlimages"
-    "cfstream"
-    "genspio"
-    "dbf"
-    "bistro"
     "multiformats"
-    "ocaml_openapi_generator"
-    "tdigest"
   ];
 
   ocaml5Ignores = [
     "erm_xml"
     "gapi-ocaml"
-    "lastfm"
     "memprof-limits"
     "ocaml_oasis"
     "ocamlify"
@@ -162,10 +137,6 @@ let
     "curses"
     "ocaml_libvirt"
     "magic"
-    "mccs"
-    "line-up-words"
-    "janestreet_csv"
-    "core_profiler"
     "secp256k1"
     "z3"
     "zelus"
