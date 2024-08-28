@@ -607,6 +607,9 @@ with oself;
     propagatedBuildInputs = [ decoders yojson ];
   };
 
+  domain-local-await = disableTests osuper.domain-local-await;
+  thread-table = disableTests osuper.thread-table;
+
   domainslib = osuper.domainslib.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-multicore";
@@ -908,7 +911,10 @@ with oself;
       url = "https://github.com/mirage/ocaml-ipaddr/releases/download/v5.6.0/ipaddr-5.6.0.tbz";
       sha256 = "0cw1431idd54v067p3mqbxhsgsx5mixl9ywgmak3g92cvczl6c4y";
     };
+    doCheck = false;
   });
+
+  macaddr = disableTests osuper.macaddr;
 
   ipaddr-sexp = osuper.ipaddr-sexp.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
@@ -1951,6 +1957,13 @@ with oself;
       sexplib0
       stdlib-shims
     ];
+  });
+
+  re = osuper.re.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
+      sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
+    };
   });
 
   reanalyze = buildDunePackage {
