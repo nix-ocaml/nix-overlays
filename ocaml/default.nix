@@ -352,7 +352,7 @@ with oself;
   ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/ca-certs-nss/releases/download/v3.104/ca-certs-nss-3.104.tbz";
-      sha256 = "1iw8zmyikv1ana9k6agq3is8np6kn8dz98a9xvcrsq75ff9j6r5d";
+      sha256 = "02d7jnv73rrnj7g4f38waqm24xy0ydqy994kmrp8j46kl7i5h92s";
     };
   });
 
@@ -2557,10 +2557,12 @@ with oself;
   websocket-lwt-unix = buildDunePackage {
     pname = "websocket-lwt-unix";
     inherit (websocket) src version;
-    propagatedBuildInputs = [ lwt websocket cohttp-lwt-unix lwt_log ];
+    propagatedBuildInputs = [ lwt websocket cohttp-lwt-unix lwt_log sexplib ];
     doCheck = true;
 
     postPatch = ''
+      substituteInPlace lwt/dune --replace-fail \
+       "libraries conduit-lwt-unix" "libraries sexplib conduit-lwt-unix"
       substituteInPlace lwt/websocket_lwt_unix.ml --replace-fail \
         "fun (flow, ic, oc) ->" \
         "fun (flow, ic, oc) -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in" \

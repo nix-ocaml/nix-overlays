@@ -94,6 +94,7 @@ let
     "matrix-stos"
     "sendmail"
     "sendmail-lwt"
+    "otr"
   ];
 
   ocaml5Ignores = [
