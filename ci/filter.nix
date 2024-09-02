@@ -87,6 +87,14 @@ let
     # Broken on janestreet v0.17
     "camlimages"
     "multiformats"
+
+    # cstruct -> string
+    "chacha"
+    "hyper"
+    "matrix-stos"
+    "sendmail"
+    "sendmail-lwt"
+    "otr"
   ];
 
   ocaml5Ignores = [

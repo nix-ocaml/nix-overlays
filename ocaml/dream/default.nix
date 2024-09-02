@@ -11,11 +11,13 @@
 , fmt
 , graphql_parser
 , graphql-lwt
+, lambdasoup
 , lwt
 , lwt_ppx
 , lwt_ssl
 , logs
 , magic-mime
+, markup
 , mirage-clock
 , mirage-crypto
 , mirage-crypto-rng-lwt
@@ -29,7 +31,6 @@
 , bisect_ppx
 , alcotest
 , crunch
-, lambdasoup
 , ppx_expect
 , ppx_yojson_conv_lib
 , reason
@@ -68,6 +69,8 @@ buildDunePackage rec {
     ssl
     uri
     yojson
+    lambdasoup
+    markup
   ];
 
   buildInputs = [
@@ -77,7 +80,6 @@ buildDunePackage rec {
   checkInputs = [
     alcotest
     crunch
-    lambdasoup
     ppx_expect
     ppx_yojson_conv_lib
     reason
@@ -88,23 +90,6 @@ buildDunePackage rec {
 
   dontDetectOcamlConflicts = true;
   doCheck = !(lib.versionAtLeast ocaml.version "5.0");
-
-  # patches = [ ./upload.patch ];
-
-  # # Fix failing expect tests from formatting on the 0.15 JST package line
-  prePatch = ''
-    substituteInPlace src/sql/dune --replace-fail \
-      "caqti-lwt" "caqti-lwt caqti-lwt.unix"
-    substituteInPlace src/sql/sql.ml --replace-fail \
-      "Caqti_lwt.connect_pool" \
-      "Caqti_lwt_unix.connect_pool"
-    substituteInPlace src/sql/sql.ml --replace-fail \
-      "?max_size:size" \
-      "?pool_config:(Option.map (fun max_size -> Caqti_pool_config.create ~max_size ()) size)"
-    substituteInPlace src/sql/sql.ml --replace-fail \
-      "Caqti_lwt.Pool" \
-      "Caqti_lwt_unix.Pool"
-  '';
 
   preBuild = ''
     rm -rf src/vendor
