@@ -91,9 +91,7 @@ let
     # cstruct -> string
     "chacha"
     "hyper"
-    "mongo-lwt"
     "matrix-stos"
-    "nanoid"
     "sendmail"
     "sendmail-lwt"
   ];

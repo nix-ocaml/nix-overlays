@@ -5,8 +5,8 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "ocaml-mongodb";
-    rev = "6bc7cdfee3e5641077bfb77afdd9a6c66f8d1146";
-    hash = "sha256-zedMSGo2HIaFM+nDDHkXbhTD30Q0iP0UI90BKZJKy9A=";
+    rev = "91f1c6d9d47be0585245851b1f97a74ea12b2bdd";
+    hash = "sha256-g8j/LW3h/ItpFRBmMbd8DlJsSARNfNrJh0HuQIzyDMI=";
   };
   version = "0.0.1-dev";
 

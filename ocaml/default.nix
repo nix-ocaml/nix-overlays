@@ -1526,8 +1526,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "routineco";
       repo = "ocaml-nanoid";
-      rev = "620bb69410774bc8d3285ae2fe9b5534b3c96688";
-      hash = "sha256-Elz6yBXHGqpGmxWEfhNxLcc4Ju8wmnrPDqkOgRzkPf4=";
+      rev = "fb0f4f3262d33d537c9465262264c7d9b5621ee0";
+      hash = "sha256-Qzxi6xva+UagziX54ttZq290Nkexh3HEikwHxlkyUM0=";
     };
     propagatedBuildInputs = [ mirage-crypto-rng ];
     checkInputs = [ alcotest ];
