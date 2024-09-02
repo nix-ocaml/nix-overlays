@@ -539,6 +539,15 @@ with oself;
   session-cookie = callPackage ./cookie/session.nix { };
   session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
+  cppo = osuper.cppo.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "cppo";
+      rev = "v1.7.0";
+      hash = "sha256-Smd/cV08OuK2p1+K0s6YTDybCEb/0RV6iDL4PO5nvSg=";
+    };
+  });
+
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; }).overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "xavierleroy";
