@@ -896,6 +896,15 @@ with oself;
     propagatedBuildInputs = [ camomile ocaml_gettext ];
   });
 
+  git = osuper.git.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "ocaml-git";
+      rev = "247bc56cb347d1fe78b3f8191367fd8d85425b87";
+      hash = "sha256-7ngHXhX3pwTMqP3hWzBEGI4iWi64laZj7RAp2wOJHeg=";
+    };
+  });
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
