@@ -51,14 +51,10 @@ with oself;
   };
 
   melange-json = buildDunePackage {
+    inherit (melange-json-native) version src;
     pname = "melange-json";
-    version = "1.2.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-json/releases/download/1.2.0/melange-json-1.2.0.tbz";
-      sha256 = "1xxm2ckcaywi9mvlflyb15nk5r9g2152ca5ss7m7b76fssi383q8";
-    };
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange yojson ppxlib ];
+    propagatedBuildInputs = [ melange ppxlib ];
   };
 
   melange-jest = buildDunePackage {

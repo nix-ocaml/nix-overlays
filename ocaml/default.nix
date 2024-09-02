@@ -1208,6 +1208,16 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
   });
 
+  melange-json-native = buildDunePackage {
+    pname = "melange-json-native";
+    version = "1.3.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/melange-community/melange-json/releases/download/1.3.0/melange-json-1.3.0.tbz";
+      sha256 = "1iasna813gdm3aa4xpl5vqgjsh3yrvhz1253m3w3dickjzhpdlwy";
+    };
+    propagatedBuildInputs = [ ppxlib yojson ];
+  };
+
   mirage-channel = buildDunePackage rec {
     pname = "mirage-channel";
     version = "4.1.0";
