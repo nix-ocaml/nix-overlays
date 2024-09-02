@@ -12,14 +12,14 @@
 , ptime
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "jose";
   version = "0.9.0";
   src = fetchFromGitHub {
     owner = "ulrikstrid";
     repo = "ocaml-jose";
-    rev = "945032261126baa4d8d23eeee300c42f0c5feaad";
-    hash = "sha256-P7lbK68GMTeZ5sH3d7jbdtjbo6yDKQJNdbM7SXsRMHI=";
+    rev = "dc2778c611c693a89ee78b386cd4062bab7f7090";
+    hash = "sha256-DCG+bsjE+hd4Bhjvhr4HhVrz/6G6RkPoBci7R1CXgOU=";
   };
 
   propagatedBuildInputs = [
