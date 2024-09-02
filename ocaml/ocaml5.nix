@@ -5,15 +5,6 @@ with oself;
 {
   archi-eio = callPackage ./archi/eio.nix { };
 
-  backoff = buildDunePackage {
-    pname = "backoff";
-    version = "0.1.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz";
-      sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
-    };
-  };
-
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
@@ -73,20 +64,6 @@ with oself;
     doCheck = false;
     nativeCheckInputs = [ mdx ];
     checkInputs = [ mdx qcheck-core trace trace-tef ];
-  };
-
-  multicore-bench = buildDunePackage {
-    pname = "multicore-bench";
-    version = "0.1.3";
-    src = builtins.fetchurl {
-      url =
-        "https://github.com/ocaml-multicore/multicore-bench/releases/download/0.1.4/multicore-bench-0.1.4.tbz";
-      sha256 = "147ksr81gkzjaq9f27gqxilkiayrv8ndvdn5vnwzg8sqz117jb48";
-    };
-    propagatedBuildInputs = [ yojson mtime domain-local-await multicore-magic ];
-    doCheck = true;
-    nativeCheckInputs = [ mdx ];
-    checkInputs = [ backoff mdx ];
   };
 
   piaf = callPackage ./piaf { };

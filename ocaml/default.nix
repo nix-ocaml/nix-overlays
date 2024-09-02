@@ -617,6 +617,7 @@ with oself;
       rev = "731f08891c87e788f2cc95f2a600328f6682a5e2";
       hash = "sha256-32rk+gUeqFbZWFAjDVPezxnInUM9lPSDiNitMdpPyM4=";
     };
+    meta.broken = false;
   });
 
   rfc1951 = buildDunePackage {
@@ -1362,17 +1363,13 @@ with oself;
     doCheck = true;
   });
 
-  multicore-magic = buildDunePackage {
-    pname = "multicore-magic";
-    version = "2.3.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.0/multicore-magic-2.3.0.tbz";
-      sha256 = "1vnf4x4clv9p5606i65yvizg8x9h95x5r120rw9kmn4xnfl197dg";
-    };
-  };
-
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
+
+  multicore-bench =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.multicore-bench
+    else null;
 
   mmap = osuper.mmap.overrideAttrs (o: {
     src = fetchFromGitHub {
