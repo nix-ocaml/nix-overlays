@@ -617,6 +617,7 @@ with oself;
       rev = "731f08891c87e788f2cc95f2a600328f6682a5e2";
       hash = "sha256-32rk+gUeqFbZWFAjDVPezxnInUM9lPSDiNitMdpPyM4=";
     };
+    meta.broken = false;
   });
 
   rfc1951 = buildDunePackage {
