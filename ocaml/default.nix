@@ -1457,9 +1457,11 @@ with oself;
   });
 
   merlin-extend = osuper.merlin-extend.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/let-def/merlin-extend/releases/download/v0.6.1/merlin-extend-0.6.1.tbz";
-      sha256 = "1mza1djw7gzpjpk7v30mwayxqfn9mjzk5ca8b6d14bfvblslpj2y";
+    src = fetchFromGitHub {
+      owner = "let-def";
+      repo = "merlin-extend";
+      rev = "5780147e47ec2dbbc88d41c2f8cd421814f28db7";
+      hash = "sha256-G7AEXKoUMnvQYkPkQ+mn4h+EXrbUUwDESxVmZnEnW/I=";
     };
   });
 
@@ -2510,6 +2512,15 @@ with oself;
       substituteInPlace lib/uring/dune --replace-fail \
         '(run ./configure)' '(bash "./configure")'
     '';
+  });
+
+  utop = osuper.utop.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "utop";
+      rev = "4f90e33d862a5adb96ed84513435b5cba467ad7d";
+      hash = "sha256-30X9MV0vrurrwIpFIVw3ww3BthirhJdQh7hZKLeKWIA=";
+    };
   });
 
   uucp = osuper.uucp.overrideAttrs (_: {
