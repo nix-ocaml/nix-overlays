@@ -1365,6 +1365,11 @@ with oself;
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
+  multicore-bench =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.multicore-bench
+    else null;
+
   mmap = osuper.mmap.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "mirage";
