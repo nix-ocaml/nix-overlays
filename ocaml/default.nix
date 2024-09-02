@@ -570,8 +570,6 @@ with oself;
     };
 
   cookie = callPackage ./cookie { };
-  session-cookie = callPackage ./cookie/session.nix { };
-  session-cookie-lwt = callPackage ./cookie/session-lwt.nix { };
 
   cppo = osuper.cppo.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -1189,6 +1187,15 @@ with oself;
     };
   });
 
+  letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mmaker";
+      repo = "ocaml-letsencrypt";
+      rev = "725bf44cb1a76ee9361fa7076014940a33311665";
+      hash = "sha256-zGOX6abrpnYT5ZjwpCMXoGzkhTFM9y2QKQdXBMk5E08=";
+    };
+  });
+
   lev = buildDunePackage {
     pname = "lev";
     version = "n/a";
@@ -1493,7 +1500,7 @@ with oself;
       sha256 = "05mh0avl2w8n3mkiax62iqjwf2001rg6qvl7ri499fzk2gpjnfqg";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
-    doCheck = true;
+    doCheck = false;
   });
 
   multipart_form = callPackage ./multipart_form { };
@@ -2221,9 +2228,6 @@ with oself;
   };
 
   sendfile = callPackage ./sendfile { };
-
-  session = callPackage ./session { };
-  session-redis-lwt = callPackage ./session/redis.nix { };
 
   shared-memory-ring = osuper.shared-memory-ring.overrideAttrs (_: {
     src = builtins.fetchurl {

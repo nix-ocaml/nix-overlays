@@ -89,20 +89,13 @@ let
     "multiformats"
 
     # cstruct -> string
-    "conduit-mirage"
-    "awa"
-    "awa-mirage"
     "chacha"
     "hyper"
-    "dream"
-    "letsencrypt"
-    "letsencrypt-dns"
-    "letsencrypt-app"
     "mongo-lwt"
     "matrix-stos"
     "nanoid"
-    "jose"
-    "oidc"
+    "sendmail"
+    "sendmail-lwt"
   ];
 
   ocaml5Ignores = [
