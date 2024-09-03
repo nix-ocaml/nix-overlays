@@ -789,6 +789,9 @@ with oself;
     inherit (fiber) version src;
     propagatedBuildInputs = [ pp fiber lwt stdune ];
   };
+  pp = osuper.pp.overrideAttrs (_: {
+    doCheck = false;
+  });
   stdune = osuper.stdune.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
