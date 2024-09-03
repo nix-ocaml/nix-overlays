@@ -1,0 +1,49 @@
+diff --git a/Makefile b/Makefile
+index b23c9c30de..ebb2bc7116 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1405,7 +1405,8 @@ runtime/build_config.h: $(ROOTDIR)/Makefile.config $(SAK)
+ ## Runtime libraries and programs
+ 
+ runtime/ocamlrun$(EXE): runtime/prims.$(O) runtime/libcamlrun.$(A)
+-	$(V_MKEXE)$(MKEXE) -o $@ $^ $(BYTECCLIBS)
++	cp $(OCAMLRUN) $@
++	chmod 755 $@
+ 
+ runtime/ocamlruns$(EXE): runtime/prims.$(O) runtime/libcamlrun_non_shared.$(A)
+ 	$(V_MKEXE)$(call MKEXE_VIA_CC,$@,$^ $(BYTECCLIBS))
+@@ -1492,6 +1493,8 @@ runtime/%.npic.$(O): OC_CFLAGS = $(OC_NATIVE_CFLAGS) $(SHAREDLIB_CFLAGS)
+ runtime/%.npic.$(O): OC_CPPFLAGS = $(OC_NATIVE_CPPFLAGS)
+ $(DEPDIR)/runtime/%.npic.$(D): OC_CPPFLAGS = $(OC_NATIVE_CPPFLAGS)
+ 
++runtime/zstd.npic.$(O): CC=$(SAK_CC)
++
+ ## Compilation of runtime C files
+ 
+ # The COMPILE_C_FILE macro below receives as argument the pattern
+@@ -2444,7 +2447,7 @@ ocamltex_SOURCES = tools/ocamltex.mli tools/ocamltex.ml
+ # configuration.
+ # Note: the following definitions apply to all the prerequisites
+ # of ocamltex.
+-$(ocamltex): CAMLC = $(OCAMLRUN) $(ROOTDIR)/ocamlc$(EXE) $(STDLIBFLAGS)
++$(ocamltex): CAMLC = $(CAMLC) $(STDLIBFLAGS)
+ $(ocamltex): OC_COMMON_LINKFLAGS += -linkall
+ $(ocamltex): VPATH += $(addprefix otherlibs/,str unix)
+ 
+@@ -2927,8 +2930,6 @@ ifeq "$(BOOTSTRAPPING_FLEXDLL)" "true"
+ endif
+ 	$(INSTALL_DATA) \
+ 	   utils/*.cmx parsing/*.cmx typing/*.cmx bytecomp/*.cmx \
+-	   toplevel/*.cmx toplevel/native/*.cmx \
+-	   toplevel/native/tophooks.cmi \
+ 	   file_formats/*.cmx \
+ 	   lambda/*.cmx \
+ 	   driver/*.cmx asmcomp/*.cmx middle_end/*.cmx \
+@@ -2942,7 +2943,6 @@ endif
+ 	$(INSTALL_DATA) \
+ 	   $(ocamlc_CMX_FILES) $(ocamlc_CMX_FILES:.cmx=.$(O)) \
+ 	   $(ocamlopt_CMX_FILES) $(ocamlopt_CMX_FILES:.cmx=.$(O)) \
+-	   $(ocamlnat_CMX_FILES:.cmx=.$(O)) \
+ 	   "$(INSTALL_COMPLIBDIR)"
+ ifeq "$(INSTALL_OCAMLNAT)" "true"
+ 	  $(INSTALL_PROG) ocamlnat$(EXE) "$(INSTALL_BINDIR)"
