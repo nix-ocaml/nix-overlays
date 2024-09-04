@@ -71,34 +71,49 @@ with oself;
 
   picos = buildDunePackage {
     pname = "picos";
-    version = "0.3.0";
+    version = "0.5.0";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/picos/releases/download/0.3.0/picos-0.3.0.tbz";
-      sha256 = "0rphlxacn9n3zpvy6v2s7v26ph6pzvgff11gz1j9gcp4pp008j2l";
+      url = "https://github.com/ocaml-multicore/picos/releases/download/0.5.0/picos-0.5.0.tbz";
+      sha256 = "1gl2w7qf3bm28dww1sdha1ngkh6xs4gzpkzddf3kmy9d7qw62bc6";
     };
+    propagatedBuildInputs = [ backoff thread-local-storage ];
+  };
+
+  picos_aux = buildDunePackage {
+    pname = "picos_aux";
+    inherit (picos) src version;
+    propagatedBuildInputs = [ backoff multicore-magic ];
+  };
+
+  picos_std = buildDunePackage {
+    pname = "picos_std";
+    inherit (picos) src version;
+    propagatedBuildInputs = [ picos backoff multicore-magic ];
+  };
+
+  picos_io = buildDunePackage {
+    pname = "picos_io";
+    inherit (picos) src version;
     propagatedBuildInputs = [
-      multicore-magic
+      picos_aux
+      picos_std
       backoff
-      thread-local-storage
-      lwt
       mtime
+      multicore-magic
       psq
     ];
+  };
 
-    doCheck = true;
-    nativeCheckInputs = [ mdx nodejs_latest js_of_ocaml ];
-    checkInputs = [
-      multicore-bench
-      alcotest
-      qcheck-core
-      qcheck-stm
-      qcheck-multicoretests-util
-      mdx
-      ocaml-version
-      domain_shims
-      js_of_ocaml
-      dscheck
-    ];
+  picos_lwt = buildDunePackage {
+    pname = "picos_lwt";
+    inherit (picos) src version;
+    propagatedBuildInputs = [ picos_aux picos_std lwt ];
+  };
+
+  picos_mux = buildDunePackage {
+    pname = "picos_mux";
+    inherit (picos) src version;
+    propagatedBuildInputs = [ picos_aux picos_std multicore-magic backoff ];
   };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
@@ -123,10 +138,10 @@ with oself;
 
   thread-local-storage = buildDunePackage {
     pname = "thread-local-storage";
-    version = "0.1";
+    version = "0.2";
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/thread-local-storage/releases/download/v0.1/thread-local-storage-0.1.tbz";
-      sha256 = "1bk702faacqgwsx96yx9pgkikbxd1nk5xilix3mrg5l9v04gkbbj";
+      url = "https://github.com/c-cube/thread-local-storage/releases/download/v0.2/thread-local-storage-0.2.tbz";
+      sha256 = "0j83gv6iwx6w1iq6jf5pvbzh7lf45riiw53nzhzrk7vzs0g2p3m6";
     };
   };
 

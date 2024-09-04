@@ -421,13 +421,14 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.1.1";
+    version = "2.1.2";
     src = builtins.fetchurl {
-      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.1.1/caqti-v2.1.1.tbz";
-      sha256 = "02h9hfak85r6i80v7cc3h973zz2zs55cwchqzhbijr7285gm6fj8";
+      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.1.2/caqti-v2.1.2.tbz";
+      sha256 = "0nw9gvhc4wbnzrwkc9d0p85jqf9vgc5l30pn0ghbaxj3z5gzskds";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime dune-site lwt-dllist ];
-    doCheck = false;
+    checkInputs = [ alcotest re ];
+    doCheck = true;
   });
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
@@ -898,11 +899,9 @@ with oself;
   });
 
   git = osuper.git.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "ocaml-git";
-      rev = "247bc56cb347d1fe78b3f8191367fd8d85425b87";
-      hash = "sha256-7ngHXhX3pwTMqP3hWzBEGI4iWi64laZj7RAp2wOJHeg=";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/ocaml-git/releases/download/3.17.0/git-3.17.0.tbz";
+      sha256 = "0r82zmcj7q9sd96hja0508z8j2qfi6c14l6h4n2m66pd2820s87g";
     };
   });
 
@@ -2407,8 +2406,8 @@ with oself;
 
   tls = osuper.tls.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.0/tls-1.0.0.tbz";
-      sha256 = "1985fi0fhnskw6fw11k3k66kgkzqpqn9pl4gsif04s7qc9f4lp26";
+      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.2/tls-1.0.2.tbz";
+      sha256 = "1srz5ga05h2jknq15vbbxvl4flbv33gddxa72pz6y55k1hh525x2";
 
     };
 
@@ -2417,7 +2416,7 @@ with oself;
       fmt
       logs
       ipaddr
-      hkdf
+      kdf
       mirage-crypto
       mirage-crypto-ec
       mirage-crypto-pk
