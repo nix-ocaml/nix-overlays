@@ -1,14 +1,12 @@
 { fetchFromGitHub, buildDunePackage, faraday }:
 
 buildDunePackage {
-  version = "0.1.0-dev";
+  version = "0.2.0";
   pname = "httpun-types";
   propagatedBuildInputs = [ faraday ];
 
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "httpun";
-    rev = "cebf3ac6d3e4d90944befe14f90ceafb1829717b";
-    hash = "sha256-LcvKXMn66NYTB64IYznvY8Da8zkiJqE+0GVp5fQCjow=";
+  src = builtins.fetchurl {
+    url = "https://github.com/anmonteiro/httpun/releases/download/0.2.0/httpun-0.2.0.tbz";
+    sha256 = "0b5xhyv7sbwls8fnln1lp48v5mlkx3ay7l8820f8xbl59kpjgkm2";
   };
 }
