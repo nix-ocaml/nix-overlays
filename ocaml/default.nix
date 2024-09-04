@@ -433,6 +433,10 @@ with oself;
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ conduit-async ];
+    postPatch = ''
+      substituteInPlace caqti-async/lib/caqti_async.ml --replace-fail \
+        "Ivar.fill_exn" "Ivar.fill"
+    '';
   });
 
   caqti-dynload = osuper.caqti-dynload.overrideAttrs (o: {
