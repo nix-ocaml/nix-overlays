@@ -175,11 +175,12 @@ with oself;
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
 
-  asn1-combinators = osuper.asn1-combinators.overrideAttrs (_: {
+  asn1-combinators = osuper.asn1-combinators.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.1/asn1-combinators-0.3.1.tbz;
-      sha256 = "0kkwapy7vdq4202vmqhc831666b1mxjh2gq3w97iq7kfxb388ags";
+      url = "https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.2/asn1-combinators-0.3.2.tbz";
+      sha256 = "0zwa1pxprzq77h5y6j2s7dj14zkmsrdkb14zrlyhf8i7drgrh9ib";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ohex ];
   });
 
   atdts = buildDunePackage {
@@ -1194,11 +1195,9 @@ with oself;
   });
 
   letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mmaker";
-      repo = "ocaml-letsencrypt";
-      rev = "725bf44cb1a76ee9361fa7076014940a33311665";
-      hash = "sha256-zGOX6abrpnYT5ZjwpCMXoGzkhTFM9y2QKQdXBMk5E08=";
+    src = builtins.fetchurl {
+      url = "https://github.com/robur-coop/ocaml-letsencrypt/releases/download/v1.0.0/letsencrypt-1.0.0.tbz";
+      sha256 = "1w0sli6czy5iinppvxir044ank15xviwmimy3ny8sbd8svbld0wj";
     };
   });
 
@@ -2617,12 +2616,11 @@ with oself;
   };
 
   x509 = osuper.x509.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "mirleft";
-      repo = "ocaml-x509";
-      rev = "v1.0.2";
-      hash = "sha256-9cDvHISpjwOFEOa+D0GiscstlCZ69n/EibegJm27XxI=";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.3/x509-1.0.3.tbz";
+      sha256 = "1wf8nmgpw1rc7dy0l36g1j062yafks3jxl1nbqp5l1krak4w0lhl";
     };
+
     checkInputs = [ alcotest ];
     propagatedBuildInputs = [
       asn1-combinators
@@ -2632,7 +2630,7 @@ with oself;
       mirage-crypto
       mirage-crypto-pk
       mirage-crypto-ec
-      pbkdf
+      kdf
       logs
       ohex
       base64
