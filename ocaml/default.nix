@@ -117,6 +117,7 @@ let
     zstd = zstd-oc;
   };
 
+  isFlambda2 = lib.hasSuffix "flambda2" osuper.ocaml.version;
 
 in
 
@@ -1593,11 +1594,14 @@ with oself;
     '';
   });
 
-  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (_: {
-    buildPhase = ''
-      make defaultentry -j$NIX_BUILD_CORES
-    '';
-  });
+  ocaml =
+    (if isFlambda2
+    then osuper.ocaml
+    else osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
+      buildPhase = if isFlambda2 then (o.buildPhase or null) else ''
+        make defaultentry -j$NIX_BUILD_CORES
+      '';
+    });
 
   ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1684,6 +1688,11 @@ with oself;
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+
+    patches =
+      if isFlambda2
+      then [ ./flambda2-ocamlbuild.patch ]
+      else [ ];
 
     # OCamlbuild needs to find the native toolchain when cross compiling (to
     # link myocamlbuild programs)
@@ -2114,10 +2123,21 @@ with oself;
     else osuper.ppx_tools;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.33.0/ppxlib-0.33.0.tbz";
-      sha256 = "0fn6sai70bhwp3j9y2qlmwd3hc8464q8lsdx3pi7afzja7slx97z";
-    };
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppxlib";
+            rev = "e5ae762556a59c25a7356fe2282adbf51f93e25e";
+            hash = "sha256-EB+i0iMt/u/IRp0U/dS2tvQrSjuSxHaPQ3XaPZI6hAs=";
+          }
+      else
+        builtins.fetchurl {
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.33.0/ppxlib-0.33.0.tbz";
+          sha256 = "0fn6sai70bhwp3j9y2qlmwd3hc8464q8lsdx3pi7afzja7slx97z";
+        };
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers

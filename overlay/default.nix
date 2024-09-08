@@ -21,7 +21,7 @@ let
   });
   staticLightExtend = pkgSet: pkgSet.extend (self: super:
     super.lib.overlayOCamlPackages {
-      inherit super;
+      inherit self super;
       overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
       updateOCamlPackages = true;
     });
@@ -29,7 +29,7 @@ let
 in
 
 (overlayOCamlPackages {
-  inherit super;
+  inherit self super;
   overlays = [
     (callPackage ../ocaml {
       inherit nixpkgs;
