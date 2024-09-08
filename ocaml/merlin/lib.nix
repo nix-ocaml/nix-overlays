@@ -59,6 +59,10 @@ buildDunePackage {
 
   postPatch =
     if isFlambda2 then ''
+      # not sure what this file is doing, but it causes a duplicate symbol
+      # linking error
+      truncate --size=0 src/runtime/float32.c
+
       substituteInPlace src/frontend/dune --replace-fail \
         "merlin_specific" "merlin_specific merlin_extend"
     '' else "";
