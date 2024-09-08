@@ -27,7 +27,7 @@ in
     hash = "sha256-W2rSSbppNkulCgGeTiovzP5zInPWIVfflDxWkGpEOFA=";
     meta.description = "A small library describing abstract algebra concepts";
     propagatedBuildInputs = [ base ppx_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -47,7 +47,7 @@ in
     hash = "sha256-1inoFwDDhnfhW+W3aAkcFNUkf5Umy8BDGDEbMty+Fts=";
     meta.description = "A library that makes it nicer to work with nested functional data structures";
     propagatedBuildInputs = [ base higher_kinded ppx_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -67,7 +67,7 @@ in
     hash = "sha256-EYyxZur+yshYaX1EJbWc/bCaAa9PDKiuK87fIeqhspo=";
     meta.description = "Accessors for Async types, for use with the Accessor library";
     propagatedBuildInputs = [ accessor_core async_kernel core ppx_accessor ppx_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -87,7 +87,7 @@ in
     hash = "sha256-6LJ8dKPAuaxWinArkPl4OE0eYPqvM7+Ao6jff8jhjXc=";
     meta.description = "Accessors for Base types, for use with the Accessor library";
     propagatedBuildInputs = [ ppx_accessor ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -106,7 +106,7 @@ in
     hash = "sha256-ku83ZfLtVI8FvQhrKcnJmhmoNlYcVMKx1tor5N8Nq7M=";
     meta.description = "Accessors for Core types, for use with the Accessor library";
     propagatedBuildInputs = [ accessor_base core_kernel ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -127,7 +127,7 @@ in
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ async_rpc_kernel async_log async_unix textutils ];
     doCheck = false; # we don't have netkit_sockets
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -152,7 +152,7 @@ in
       core_kernel
       ppx_jane
     ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -171,7 +171,7 @@ in
     hash = "sha256-rZUROyYrvtgnI+leTMXuGcw71MfVhqdkfp9EIhAFUnM=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ async_kernel ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -190,7 +190,7 @@ in
     hash = "sha256-byvLJvhq7606gKP1kjLRYe3eonkAG3Vz6wQcsjJOiOE=";
     meta.description = "Directory traversal with Async";
     propagatedBuildInputs = [ async ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -988,7 +988,7 @@ in
     hash = "sha256-Ndt6ZPJamBYzr1YA941BLwvRgkkbD8AEQR/JjjR38xI=";
     meta.description = "Intrinsics";
     buildInputs = [ dune-configurator ocaml_intrinsics_kernel ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -1292,7 +1292,7 @@ in
     minimalOCamlVersion = "4.04.2";
     meta.description = "Generate a list containing all values of a finite type";
     propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -1422,7 +1422,7 @@ in
     minimalOCamlVersion = "4.04.2";
     meta.description = "Monadic let-bindings";
     propagatedBuildInputs = [ ppxlib ppx_here ppxlib_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -1473,7 +1473,7 @@ in
     minimalOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
     propagatedBuildInputs = [ stdio ppxlib ppxlib_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -1628,7 +1628,7 @@ in
     hash = "sha256-Av2F699LzVCpwcdji6qG0jt5DVxCnIY4eBLaPK1JC10=";
     meta.description = "Generation of accessor and iteration functions for ocaml variant types";
     propagatedBuildInputs = [ variantslib ppxlib ppxlib_jane ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
@@ -1671,7 +1671,7 @@ in
     hash = "sha256-8NC8CHh3pSdFuRDQCuuhc2xxU+84UAsGFJbbJoKwd0U=";
     meta.description = "Utilities for working with Jane Street AST constructs";
     propagatedBuildInputs = [ ppxlib ];
-  }).overrideAttrs (_: {
+  }).overrideAttrs (o: {
     src =
       if isFlambda2
       then
