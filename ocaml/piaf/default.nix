@@ -9,8 +9,11 @@
 , httpun-eio
 , ipaddr
 , magic-mime
-, multipart_form
+, pecu
+, prettym
 , uri
+, uutf
+, unstrctrd
 , httpun-ws
 , alcotest
 , dune-site
@@ -19,12 +22,10 @@
 
 buildDunePackage {
   pname = "piaf";
-  version = "n/a";
-  src = fetchFromGitHub {
-    owner = "anmonteiro";
-    repo = "piaf";
-    rev = "d3b2b3c9e40f6ba9a0ac27d2dfc49a1e5fcfb18f";
-    hash = "sha256-PHUbG3HXMmf8u8HnV3KM6dHgY8RT1pj6VNdO8tHJPuI=";
+  version = "0.2.0";
+  src = builtins.fetchurl {
+    url = "https://github.com/anmonteiro/piaf/releases/download/0.2.0/piaf-0.2.0.tbz";
+    sha256 = "1yvhfc8g4mclmddckivvbhc9n9zm0x8ff5k1v3kambigll4r1yh7";
   };
 
   propagatedBuildInputs = [
@@ -35,7 +36,10 @@ buildDunePackage {
     h2-eio
     ipaddr
     magic-mime
-    multipart_form
+    pecu
+    prettym
+    unstrctrd
+    uutf
     uri
     httpun-ws
   ];

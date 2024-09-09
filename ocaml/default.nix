@@ -595,19 +595,16 @@ with oself;
     };
   });
 
-  ctypes_0_22 = osuper.ctypes.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
-  });
-
-  ctypes = ctypes_0_22.overrideAttrs (o: {
+  ctypes = osuper.ctypes.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocamllabs";
       repo = "ocaml-ctypes";
       rev = "0.23.0";
       hash = "sha256-fZfTsOMppHiI7BVvgICVt/9ofGFAfYjXzHSDA7L4vZk=";
     };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ];
   });
 
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
@@ -1189,8 +1186,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "aantron";
       repo = "lambdasoup";
-      rev = "1.1.0";
-      hash = "sha256-HUYE29nhoBjG5OZSV4n0C5yLq8yDtP+wsmxYyWsF3lc=";
+      rev = "1.1.1";
+      hash = "sha256-+d1JPU7OyQgt8pDTlwZraqPHH+OBQD1ycsELKpHT95Y=";
     };
   });
 
@@ -1275,12 +1272,11 @@ with oself;
     src = fetchFromGitHub {
       owner = "aantron";
       repo = "luv";
-      rev = "0.5.13";
-      hash = "sha256-+I8XN5ccli61uxc+Pws56wIcdakYPsCIWZtHebGUCO0=";
+      rev = "0.5.14";
+      hash = "sha256-N0rtBuxoHg45BqTf+aR8f6SfCEtiFVAspDgWfSkjH6w=";
       fetchSubmodules = true;
     };
     doCheck = false;
-    propagatedBuildInputs = [ ctypes_0_22 ];
   });
 
   luv_unix = buildDunePackage {
@@ -2575,10 +2571,17 @@ with oself;
     pname = "websocket";
     version = "2.16";
     src = builtins.fetchurl {
-      url = "https://github.com/vbmithr/ocaml-websocket/releases/download/2.16/websocket-2.16.tbz";
-      sha256 = "1sy5gp40l476qmbn6d8cfw61pkg8b7pg1hrbsvdq9n6s7mlg888j";
+      url = "https://github.com/vbmithr/ocaml-websocket/releases/download/2.17/websocket-2.17.tbz";
+      sha256 = "173sgbk0xdlanj08wjl615gvwf04c850nw6gbjvgababafsmxbrr";
     };
-    propagatedBuildInputs = [ cohttp astring base64 ocplib-endian conduit ];
+    propagatedBuildInputs = [
+      cohttp
+      astring
+      base64
+      ocplib-endian
+      conduit
+      mirage-crypto-rng
+    ];
   };
   websocket-lwt-unix = buildDunePackage {
     pname = "websocket-lwt-unix";
@@ -2587,8 +2590,6 @@ with oself;
     doCheck = true;
 
     postPatch = ''
-      substituteInPlace lwt/dune --replace-fail \
-       "libraries conduit-lwt-unix" "libraries sexplib conduit-lwt-unix"
       substituteInPlace lwt/websocket_lwt_unix.ml --replace-fail \
         "fun (flow, ic, oc) ->" \
         "fun (flow, ic, oc) -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in" \
