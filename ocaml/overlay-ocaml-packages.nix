@@ -154,7 +154,8 @@ let
             makefile = null;
             postPatch = ''
               substituteInPlace "tools/merge_dot_a_files.sh" --replace-fail \
-                'Darwin' 'Darwinito'
+              'exec libtool -static -o $target $archives' \
+              'exec ar cr "$target" $archives && exec ranlib "$target"'
               cd ocaml && autoconf && cd ..
               autoconf
             '';
