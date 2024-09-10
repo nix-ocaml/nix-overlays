@@ -82,7 +82,6 @@ in
       "--with-openssl"
       "--with-libxml"
       "--sysconfdir=/etc"
-      "--libdir=$(out)/lib"
       "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
       "--enable-debug"
       "--with-icu"
@@ -91,7 +90,10 @@ in
       (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
     ]
     ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
-    ++ lib.optionals stdenv.isLinux [ "--with-pam" ];
+    ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
+    # This could be removed once the upstream issue is resolved:
+    # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
+    ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
 
     buildInputs = with self; [
       zlib-oc
@@ -110,10 +112,29 @@ in
     # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
     # pkg-config `--libs` flags to be invalid (since it only knows about one
     # such lib path, not both)
-    outputs = [ "out" ];
+    outputs = [ "out" "dev" "doc" "man" ];
+
     postInstall = ''
-      # Prevent a retained dependency on gcc-wrapper.
-      substituteInPlace "$out/lib/pgxs/src/Makefile.global" --replace-warn ${stdenv.cc}/bin/ld ld
+      moveToOutput "bin/ecpg" "$dev"
+      moveToOutput "lib/pgxs" "$dev"
+      # Pretend pg_config is located in $out/bin to return correct paths, but
+      # actually have it in -dev to avoid pulling in all other outputs.
+      moveToOutput "bin/pg_config" "$dev"
+      # To prevent a "pg_config: could not find own program executable" error, we fake
+      # pg_config in the default output.
+      cat << EOF > "$out/bin/pg_config" && chmod +x "$out/bin/pg_config"
+      #!${stdenv.shell}
+      echo The real pg_config can be found in the -dev output.
+      exit 1
+      EOF
+      wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
+      # postgres exposes external symbols get_pkginclude_path and similar. Those
+      # can't be stripped away by --gc-sections/LTO, because they could theoretically
+      # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
+      # references to -dev, -doc and -man are removed here. References to -lib must be kept,
+      # because there is a realistic use-case for extensions to locate the /lib directory to
+      # load other shared modules.
+      remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
       if [ -z "''${dontDisableStatic:-}" ]; then
         # Remove static libraries in case dynamic are available.
         for i in $out/lib/*.a; do
@@ -124,6 +145,9 @@ in
           fi
         done
       fi
+      # The remaining static libraries are libpgcommon.a, libpgport.a and related.
+      # Those are only used when building e.g. extensions, so go to $dev.
+      moveToOutput "lib/*.a" "$dev"
     '';
   });
 
