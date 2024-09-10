@@ -403,6 +403,13 @@ with oself;
     };
   });
 
+  containers = osuper.containers.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.14/containers-3.14.tbz";
+      sha256 = "0r75yydndv32hga79i9qwkfps6cm0h98a7y345q9nd2lgh6blky9";
+    };
+  });
+
   cairo2 = osuper.cairo2.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace-fail "bigarray" ""
@@ -1489,6 +1496,15 @@ with oself;
     '';
   });
 
+  mmap = osuper.mmap.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "mmap";
+      rev = "41596aa";
+      sha256 = "sha256-3sx0Wy8XMiW3gpnEo6s2ENP/X1dSSC6NE9SrJex84Kk=";
+    };
+  });
+
   minisat = osuper.minisat.overrideAttrs (_: {
     NIX_CFLAGS_COMPILE =
       lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
@@ -1516,6 +1532,13 @@ with oself;
     doCheck = false;
   });
 
+  mtime = osuper.mtime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/mtime/releases/mtime-2.1.0.tbz";
+      sha256 = "122dhf4qmba4kfpzljcllgqf5ii8b8ylh6rfazcyl09p5s0b4z09";
+    };
+  });
+
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
 
@@ -1523,15 +1546,6 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.0"
     then osuper.multicore-bench
     else null;
-
-  mmap = osuper.mmap.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "mirage";
-      repo = "mmap";
-      rev = "41596aa";
-      sha256 = "sha256-3sx0Wy8XMiW3gpnEo6s2ENP/X1dSSC6NE9SrJex84Kk=";
-    };
-  });
 
   nanoid = buildDunePackage {
     pname = "nanoid";
@@ -2125,6 +2139,35 @@ with oself;
       stdlib-shims
     ];
   });
+
+  ptime = osuper.ptime.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/ptime/releases/ptime-1.2.0.tbz";
+      sha256 = "1c1swx6h794gcck358nqfzshlfhyw1zb5ji4h1pc63j9vxzp85ln";
+    };
+  });
+
+  qrc =
+    let
+      version = "0.2.0";
+    in
+    stdenv.mkDerivation {
+      name = "ocaml${ocaml.version}-qrc-${version}";
+      inherit version;
+      src = builtins.fetchurl {
+        url = "https://erratique.ch/software/qrc/releases/qrc-0.2.0.tbz";
+        sha256 = "04cs8h26d9g3n07rb01jgzz2w51y9skvr03488fwchq7y95kk49w";
+      };
+
+      nativeBuildInputs = [ ocaml findlib ocamlbuild ];
+      buildInputs = [ topkg ];
+      propagatedBuildInputs = [ cmdliner ];
+
+      strictDeps = true;
+      buildPhase = topkg.buildPhase + " --with-cmdliner true";
+
+      inherit (topkg) installPhase;
+    };
 
   # re = osuper.re.overrideAttrs (_: {
   # src = builtins.fetchurl {

@@ -54,13 +54,13 @@ with oself;
 
   moonpool = buildDunePackage {
     pname = "moonpool";
-    version = "0.6";
+    version = "0.7";
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/moonpool/releases/download/v0.6/moonpool-0.6.tbz";
-      sha256 = "0cvnbv30nmpv7zpq9vfa3sz5wi1wxqm578mnga6blyx3h9f0kz9y";
+      url = "https://github.com/c-cube/moonpool/releases/download/v0.7/moonpool-0.7.tbz";
+      sha256 = "058vqpza66z5687n90s18pzn1cnvkwv3mphlc1zsnc0541sgk8f4";
     };
 
-    propagatedBuildInputs = [ either ];
+    propagatedBuildInputs = [ either picos_std ];
     doCheck = false;
     nativeCheckInputs = [ mdx ];
     checkInputs = [ mdx qcheck-core trace trace-tef ];

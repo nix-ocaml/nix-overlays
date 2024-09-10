@@ -22,10 +22,13 @@
 
 buildDunePackage {
   pname = "piaf";
-  version = "0.2.0";
-  src = builtins.fetchurl {
-    url = "https://github.com/anmonteiro/piaf/releases/download/0.2.0/piaf-0.2.0.tbz";
-    sha256 = "1yvhfc8g4mclmddckivvbhc9n9zm0x8ff5k1v3kambigll4r1yh7";
+  version = "n/a";
+  src = fetchFromGitHub {
+    owner = "anmonteiro";
+    repo = "piaf";
+    rev = "c27b38e4493e81b0a7c895c620976bf155f14d8b";
+    hash = "sha256-3IUxX3Zax5ddMTKJufMCeRvZoFWbTYMvfHFFpN15PuA=";
+    fetchSubmodules = true;
   };
 
   propagatedBuildInputs = [
