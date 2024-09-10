@@ -201,7 +201,6 @@ in
             rev = "23d67513c6e46934e420abf917478d0b1d6cff29";
           }
       else o.src;
-
   });
 
   async_inotify = janePackage {
@@ -226,12 +225,24 @@ in
     propagatedBuildInputs = [ async_rpc_kernel js_of_ocaml uri-sexp ];
   };
 
-  async_kernel = janePackage {
+  async_kernel = (janePackage {
     pname = "async_kernel";
     hash = "sha256-fEbo7EeOJHnBqTYvC/o2a2x69XPnANbe15v/yv29l/4=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ core_kernel ];
-  };
+  }).overrideAttrs (_: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_kernel";
+            rev = "364ab5b3c0c70a3b2da1e31b05b89853d59aace5";
+            hash = "sha256-cfXrkT3PG4LciYEP/B5cAgO8WkQ9QhMvtXFxeoqr1ws=";
+          }
+      else o.src;
+  });
 
   async_log = janePackage {
     pname = "async_log";
@@ -572,14 +583,26 @@ in
     propagatedBuildInputs = [ core_unix record_builder ];
   };
 
-  core_kernel = janePackage {
+  core_kernel = (janePackage {
     pname = "core_kernel";
     hash = "sha256-l7U0edUCNHTroYMBHiEMDx5sl7opEmmmeo2Z06tCMts=";
     meta.description = "System-independent part of Core";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base_bigstring core int_repr sexplib uopt ];
     doCheck = false; # we don't have quickcheck_deprecated
-  };
+  }).overrideAttrs (_: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "core_kernel";
+            rev = "8c10b1c9653d2598cba5da65fe4003766461e6da";
+            hash = "sha256-n2C4PVmOfVB91gkujNkpL8wNiYEx9egaCElyF52KOWQ=";
+          }
+      else o.src;
+  });
 
   core_profiler = janePackage {
     pname = "core_profiler";
@@ -2270,7 +2293,7 @@ in
       else o.src;
   });
 
-  uopt = janePackage {
+  uopt = (janePackage {
     pname = "uopt";
     hash = "sha256-t0SFJVF0ScyFFwziBZOYCOsmhRd6J5H3s0Kk9NKorcM=";
     meta.description = ''
@@ -2279,7 +2302,19 @@ in
       [option], and is not recommended for use in general-purpose software.
     '';
     propagatedBuildInputs = [ base ppx_jane ];
-  };
+  }).overrideAttrs (_: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "uopt";
+            rev = "27606a53f72d85159fff6b9d4277ab8778a5f1cd";
+            hash = "sha256-6X4NBQ+OF6Fh74y9cmIN10iF/FXP3vp+D5ozAO8ml14=";
+          }
+      else o.src;
+  });
 
   username_kernel = janePackage {
     pname = "username_kernel";
