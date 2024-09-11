@@ -3,7 +3,7 @@
 self: super:
 
 super.lib.overlayOCamlPackages {
-  inherit super;
+  inherit self super;
   overlays = super.callPackage ./ocaml.nix {
     inherit buildPackages;
   };
