@@ -2564,10 +2564,31 @@ with oself;
     };
   });
 
+  uucd = osuper.uucd.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uucd/releases/uucd-16.0.0.tbz";
+      sha256 = "1cx27vdvlbav5dlk0y51jlbq5846baa0hk6clcm1awk3lqdqylam";
+    };
+  });
+
   uucp = osuper.uucp.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uucp/releases/uucp-15.1.0.tbz";
-      sha256 = "11srn8zwba31zmj129v6l8sigdm9qrgcfd59vl1qmds70s44n7m9";
+      url = "https://erratique.ch/software/uucp/releases/uucp-16.0.0.tbz";
+      sha256 = "0i40ml2m2qa1r27akmwdi36r7w6s98zw6vfwc57f9p1fiqcd9zz7";
+    };
+  });
+
+  uunf = osuper.uunf.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uunf/releases/uunf-16.0.0.tbz";
+      sha256 = "1bjz3m2vcd7mkizshf4ql6a7qm8ibfrmkwkxbr4y7s5gar7n80w9";
+    };
+  });
+
+  uuseg = osuper.uuseg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uuseg/releases/uuseg-16.0.0.tbz";
+      sha256 = "097yxkjc35876qw21gwnh8bcia81j20m7gqfd8xdr1hz5axzs0sq";
     };
   });
 
