@@ -596,6 +596,10 @@ with oself;
     };
   });
 
+  cstruct = osuper.cstruct.overrideAttrs (_: {
+    doCheck = !isFlambda2;
+  });
+
   ctypes = osuper.ctypes.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocamllabs";
@@ -2550,6 +2554,7 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
+    patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
   });
 
   vg = osuper.vg.overrideAttrs (_: {
