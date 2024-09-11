@@ -60,7 +60,7 @@ in
 
   zstd-oc = super.zstd-oc.override { static = true; };
 } // super.lib.overlayOCamlPackages {
-  inherit super;
+  inherit self super;
   overlays = [ (super.callPackage ./ocaml.nix { }) ];
   updateOCamlPackages = true;
 }

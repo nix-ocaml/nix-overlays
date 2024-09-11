@@ -16,52 +16,131 @@
 
 with self;
 
-{
+let
+  isFlambda2 = lib.hasSuffix "flambda2" ocaml.version;
+in
 
-  abstract_algebra = janePackage {
+{
+  abstract_algebra = (janePackage {
     pname = "abstract_algebra";
     hash = "sha256-W2rSSbppNkulCgGeTiovzP5zInPWIVfflDxWkGpEOFA=";
     meta.description = "A small library describing abstract algebra concepts";
     propagatedBuildInputs = [ base ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "abstract_algebra";
+            rev = "3b71934227f034fa9a8e2b8d662e7129114cfbec";
+            hash = "sha256-F5qLHzy8JTR75132SYyj/KVSlf9RQzHNKFVrV2O6KzU=";
+          }
+      else o.src;
 
-  accessor = janePackage {
+  });
+
+  accessor = (janePackage {
     pname = "accessor";
     hash = "sha256-1inoFwDDhnfhW+W3aAkcFNUkf5Umy8BDGDEbMty+Fts=";
     meta.description = "A library that makes it nicer to work with nested functional data structures";
     propagatedBuildInputs = [ base higher_kinded ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "accessor";
+            rev = "b192a00353115bede0f7f53cff44555ea26f14ba";
+            hash = "sha256-4ZkYX6gkmE9c8wctFcD+wWlycAh2VxZoKd6m6hD5NYA=";
+          }
+      else o.src;
 
-  accessor_async = janePackage {
+  });
+
+  accessor_async = (janePackage {
     pname = "accessor_async";
     hash = "sha256-EYyxZur+yshYaX1EJbWc/bCaAa9PDKiuK87fIeqhspo=";
     meta.description = "Accessors for Async types, for use with the Accessor library";
     propagatedBuildInputs = [ accessor_core async_kernel core ppx_accessor ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "accessor_async";
+            rev = "f22161c0bf03272f60d98b063eab61c5a414a3d3";
+            hash = "sha256-iQgdE4IX6WAegSFW5Oh+XXvyJE98T5eC+TTUqXlTJ3E=";
+          }
+      else o.src;
 
-  accessor_base = janePackage {
+  });
+
+  accessor_base = (janePackage {
     pname = "accessor_base";
     hash = "sha256-6LJ8dKPAuaxWinArkPl4OE0eYPqvM7+Ao6jff8jhjXc=";
     meta.description = "Accessors for Base types, for use with the Accessor library";
     propagatedBuildInputs = [ ppx_accessor ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "accessor_base";
+            rev = "0fad4ef29e8df2796367722dfaee99412b426c5f";
+            hash = "sha256-C51Gg15HHlTOiJOGoG2yjA6xteOyk3XoKzKpD45j0fI=";
+          }
+      else o.src;
+  });
 
-  accessor_core = janePackage {
+  accessor_core = (janePackage {
     pname = "accessor_core";
     hash = "sha256-ku83ZfLtVI8FvQhrKcnJmhmoNlYcVMKx1tor5N8Nq7M=";
     meta.description = "Accessors for Core types, for use with the Accessor library";
     propagatedBuildInputs = [ accessor_base core_kernel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "accessor_core";
+            rev = "e2cdcc763ec8719119242ae5ce9c127e8792ab72";
+            hash = "sha256-G8Li9w6WcGxDW0GzrzbM3vbGaO4yw8k3i+o91eSbOz8=";
+          }
+      else o.src;
 
-  async = janePackage {
+  });
+
+  async = (janePackage {
     pname = "async";
     hash = "sha256-CwRPH5tFZHJqptdmNwdZvKvSJ1Qr21gV1jaxsa/vFBU=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ async_rpc_kernel async_log async_unix textutils ];
     doCheck = false; # we don't have netkit_sockets
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async";
+            rev = "9c6c215cef2c477ae26ab1f68d70c4f52456f920";
+            hash = "sha256-ZLNjO/gDG9Nk9yhcOLRroDX+D1FEWC26U9Ye1VaVhDo=";
+          }
+      else o.src;
+  });
 
-  async_durable = janePackage {
+  async_durable = (janePackage {
     pname = "async_durable";
     hash = "sha256-CAU54j3K47p4hQqAtHJYuAQ0IvZPMQZKFp5J7G+xtjM=";
     meta.description = "Durable connections for use with async";
@@ -72,21 +151,56 @@ with self;
       core_kernel
       ppx_jane
     ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_durable";
+            rev = "5a5c7035da88cd62d87b63716467a3669ef6597a";
+            hash = "sha256-8lOorr/FU+JSSTYYB8Ak8Rd/amVpqLuVaJa5pQMcpNk=";
+          }
+      else o.src;
+  });
 
-  async_extra = janePackage {
+  async_extra = (janePackage {
     pname = "async_extra";
     hash = "sha256-rZUROyYrvtgnI+leTMXuGcw71MfVhqdkfp9EIhAFUnM=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ async_kernel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_extra";
+            rev = "d06e8bbba5bea38bc43d65b597ca78ef9c465078";
+            hash = "sha256-ZV3FFVZpxvetpaUujkVXX4733NHLq5MpJ83uoU9nTgU=";
+          }
+      else o.src;
+  });
 
-  async_find = janePackage {
+  async_find = (janePackage {
     pname = "async_find";
     hash = "sha256-byvLJvhq7606gKP1kjLRYe3eonkAG3Vz6wQcsjJOiOE=";
     meta.description = "Directory traversal with Async";
     propagatedBuildInputs = [ async ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_find";
+            rev = "23d67513c6e46934e420abf917478d0b1d6cff29";
+          }
+      else o.src;
+  });
 
   async_inotify = janePackage {
     pname = "async_inotify";
@@ -110,14 +224,26 @@ with self;
     propagatedBuildInputs = [ async_rpc_kernel js_of_ocaml uri-sexp ];
   };
 
-  async_kernel = janePackage {
+  async_kernel = (janePackage {
     pname = "async_kernel";
     hash = "sha256-fEbo7EeOJHnBqTYvC/o2a2x69XPnANbe15v/yv29l/4=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ core_kernel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_kernel";
+            rev = "364ab5b3c0c70a3b2da1e31b05b89853d59aace5";
+            hash = "sha256-cfXrkT3PG4LciYEP/B5cAgO8WkQ9QhMvtXFxeoqr1ws=";
+          }
+      else o.src;
+  });
 
-  async_log = janePackage {
+  async_log = (janePackage {
     pname = "async_log";
     hash = "sha256-XeWC3oC0n4or3EDLrNLWXMWhyhH6kcah0Mdb56rZ5lA=";
     meta.description = "Logging library built on top of Async_unix";
@@ -128,14 +254,42 @@ with self;
       core_kernel
       ppx_jane
     ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_log";
+            rev = "016d58861525058813fcc0be9d7b51b5fd87b910";
+            hash = "sha256-SUHxEtEiDMmWAToT8oUqpN8kCs0pz0yENqVAhhsoQKI=";
+          }
+      else o.src;
+  });
 
-  async_rpc_kernel = janePackage {
+  async_rpc_kernel = (janePackage {
     pname = "async_rpc_kernel";
     hash = "sha256-zSqmRgybvWhS9XiNIqgxUjQU8xc9aXM69ZaBq4+r+HA=";
     meta.description = "Platform-independent core of Async RPC library";
-    propagatedBuildInputs = [ async_kernel protocol_version_header ];
-  };
+    propagatedBuildInputs = [
+      async_kernel
+      protocol_version_header
+      pipe_with_writer_error
+    ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_rpc_kernel";
+            rev = "15f4fa1a6e31052b3a2738dc79dd4c5cb252dfd2";
+            hash = "sha256-XyKvbevz6zm3mncDl85NuvbZ0pekSlddD85k4P26zjE=";
+          }
+      else o.src;
+  });
 
   async_rpc_websocket = janePackage {
     pname = "async_rpc_websocket";
@@ -165,13 +319,25 @@ with self;
     propagatedBuildInputs = [ async_extra async_inotify async_sendfile async_shell async_ssl email_message resource_cache re2_stable sexp_macro ];
   };
 
-  async_ssl = janePackage {
+  async_ssl = (janePackage {
     pname = "async_ssl";
     hash = "sha256-7obEoeckwydi2wHBkBmX0LynY1QVCb3sQ/U945eteJo=";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ async ctypes ctypes-foreign openssl ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_ssl";
+            rev = "77910a421d99c7ccca173b9ec1b6b1b728ab2f82";
+            hash = "sha256-qqEiH1SPWMBHTpg/O9JoNUyPQ4rf94lKEnQfqOPMaDc=";
+          }
+      else o.src;
+  });
 
   async_udp = janePackage {
     pname = "async_udp";
@@ -180,12 +346,24 @@ with self;
     propagatedBuildInputs = [ async core_unix ppx_jane ];
   };
 
-  async_unix = janePackage {
+  async_unix = (janePackage {
     pname = "async_unix";
     hash = "sha256-fA1e5AnNe/tMTMZ60jtGUofRi4rh+MmVx81kfhfaBaQ=";
     meta.description = "Monadic concurrency library";
     propagatedBuildInputs = [ async_kernel cstruct core_unix ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "async_unix";
+            rev = "6cc10173fff7a87c9f97839f70857ebc37cfa1dc";
+            hash = "sha256-VcEbD/QqCTOSp8uqIb8usDWdEJHJWM+tmJTMFjMdshU=";
+          }
+      else o.src;
+  });
 
   async_websocket = janePackage {
     pname = "async_websocket";
@@ -202,30 +380,65 @@ with self;
     checkInputs = [ alcotest ];
   };
 
-  base = janePackage {
+  base = (janePackage {
     pname = "base";
     version = "0.17.1";
     hash = "sha256-5wqBpOHhiIy9JUuxb3OnpZHrHSM7VODuLSihaIyeFn0=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ ocaml_intrinsics_kernel sexplib0 ];
-    checkInputs = [ alcotest ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "base";
+            rev = "b6ea40197d507005d3970c3fadb60b0cc5f0b234";
+            hash = "sha256-CkGYgDum7mCZrj7+mjLmhRtEsaU+sSu4E80rhBnIVUw=";
+          }
+      else o.src;
+  });
 
-  base_bigstring = janePackage {
+  base_bigstring = (janePackage {
     pname = "base_bigstring";
     hash = "sha256-tGDtkVOU10GzNsJ4wZtbqyIMjY5lHM4+rA3+w34TYOE=";
     meta.description = "String type based on [Bigarray], for use in I/O and C-bindings";
     propagatedBuildInputs = [ int_repr ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "base_bigstring";
+            rev = "e0a078cd2065f20a215276520307603f9ad1e2cf";
+            hash = "sha256-LSf2j9LprBnYijyO7mHnJWovD9f9ifhOKCYiRgA+Prs=";
+          }
+      else o.src;
+  });
 
-  base_quickcheck = janePackage {
+  base_quickcheck = (janePackage {
     pname = "base_quickcheck";
     hash = "sha256-jDxO+/9Qnntt6ZNX1xvaWvoJ0JpnPqeq8X8nsYpeqsY=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Randomized testing framework, designed for compatibility with Base";
     propagatedBuildInputs = [ ppx_base ppx_fields_conv ppx_let ppx_sexp_value splittable_random ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "base_quickcheck";
+            rev = "ca81f8736b682f00af3e843e878ee85027d50bff";
+            hash = "sha256-aY5G69KLo+srFHEGq0l53hXatnmvE/55eEmArgv4sbA=";
+          }
+      else o.src;
+  });
 
   base_trie = janePackage {
     pname = "base_trie";
@@ -256,7 +469,7 @@ with self;
     meta.description = "Core-flavoured wrapper around zarith's arbitrary-precision rationals";
   };
 
-  bin_prot = janePackage {
+  bin_prot = (janePackage {
     pname = "bin_prot";
     hash = "sha256-5QeK8Cdu+YjNE/MLiQps6SSf5bRJ/eYZYsJH7oYSarg=";
     minimalOCamlVersion = "4.04.2";
@@ -272,7 +485,19 @@ with self;
     postPatch = ''
       rm -rf xen META.bin_prot.template
     '';
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "bin_prot";
+            rev = "c8a7ce450fa20f240e9705673f29098fafb79b10";
+            hash = "sha256-3RIa106qsseBtqGiuWYm9lYnLrzadRIJenoY9G2sQb8=";
+          }
+      else o.src;
+  });
 
   bonsai = janePackage {
     pname = "bonsai";
@@ -366,7 +591,7 @@ with self;
     propagatedBuildInputs = [ core ppx_jane base64 cryptokit ];
   };
 
-  core = janePackage {
+  core = (janePackage {
     pname = "core";
     meta.description = "Industrial strength alternative to OCaml's standard library";
     version = "0.17.1";
@@ -380,7 +605,19 @@ with self;
       time_now
       ppx_diff
     ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "core";
+            rev = "d8071a5d100759f5cf7b4c098112e139d43eb3df";
+            hash = "sha256-EZK7tpG5oP0OVjAzhcFwj/lFX6hJUh8KxFxJfV9/L8s=";
+          }
+      else o.src;
+  });
 
   core_bench = janePackage {
     pname = "core_bench";
@@ -396,14 +633,26 @@ with self;
     propagatedBuildInputs = [ core_unix record_builder ];
   };
 
-  core_kernel = janePackage {
+  core_kernel = (janePackage {
     pname = "core_kernel";
     hash = "sha256-l7U0edUCNHTroYMBHiEMDx5sl7opEmmmeo2Z06tCMts=";
     meta.description = "System-independent part of Core";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [ base_bigstring core int_repr sexplib uopt ];
     doCheck = false; # we don't have quickcheck_deprecated
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "core_kernel";
+            rev = "8c10b1c9653d2598cba5da65fe4003766461e6da";
+            hash = "sha256-n2C4PVmOfVB91gkujNkpL8wNiYEx9egaCElyF52KOWQ=";
+          }
+      else o.src;
+  });
 
   core_profiler = janePackage {
     pname = "core_profiler";
@@ -412,7 +661,7 @@ with self;
     propagatedBuildInputs = [ core core_kernel core_unix ppx_jane re2 shell textutils textutils_kernel ];
   };
 
-  core_unix = janePackage {
+  core_unix = (janePackage {
     pname = "core_unix";
     hash = "sha256-eqBMiEJ5xUrgFJTMZoEDxqkhedQxxbbf0DedZKHprww=";
     meta.description = "Unix-specific portions of Core";
@@ -421,7 +670,7 @@ with self;
       core
       core_kernel
       expect_test_helpers_core
-      ocaml_intrinsics
+      # ocaml_intrinsics
       ppx_jane
       timezone
       spawn
@@ -430,7 +679,19 @@ with self;
       patchShebangs unix_pseudo_terminal/src/discover.sh
     '';
     doCheck = false;
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "core_unix";
+            rev = "e8efb05a79b22646dffafc66ac3df42873e3b518";
+            hash = "sha256-FnBemRcIVw0NUI3grvtWYxocyLmTilHr/6YIsB3V1XQ=";
+          }
+      else o.src;
+  });
 
   csvfields = janePackage {
     pname = "csvfields";
@@ -492,12 +753,24 @@ with self;
     propagatedBuildInputs = [ async expect_test_helpers_core ];
   };
 
-  expect_test_helpers_core = janePackage {
+  expect_test_helpers_core = (janePackage {
     pname = "expect_test_helpers_core";
     hash = "sha256-vnlDZ8k3JFCdN6WGiaG9OEEdQJnw0/eMogFCfTXIu2Y=";
     meta.description = "Helpers for writing expectation tests";
     propagatedBuildInputs = [ core_kernel sexp_pretty ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "expect_test_helpers_core";
+            rev = "6aea0cabc965bfc08d04c8efe8fca81b72173162";
+            hash = "sha256-k0DZz6DFmmvN8x4H/uCiyL4JztJ3OEfKDtx5bHu/QoU=";
+          }
+      else o.src;
+  });
 
   fieldslib = janePackage {
     pname = "fieldslib";
@@ -655,12 +928,24 @@ with self;
     propagatedBuildInputs = [ core ppx_jane ];
   };
 
-  int_repr = janePackage {
+  int_repr = (janePackage {
     pname = "int_repr";
     hash = "sha256-yeaAzw95zB1wow9Alg18CU+eemZVxjdLiO/wVRitDwE=";
     meta.description = "Integers of various widths";
     propagatedBuildInputs = [ base ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "int_repr";
+            rev = "898d314e0ac9aac93d7a3fd9baa1e345a5e37810";
+            hash = "sha256-nw/H1WSEH3Xx+FEsP2/yuX6+0s1GaDNRlrbL4R/lKLA=";
+          }
+      else o.src;
+  });
 
   jane_rope = janePackage {
     pname = "jane_rope";
@@ -844,7 +1129,7 @@ with self;
     '';
   };
 
-  ocaml-compiler-libs = janePackage ({
+  ocaml-compiler-libs = (janePackage ({
     pname = "ocaml-compiler-libs";
     version = "0.16.0";
     hash = "00if2f7j9d8igdkj4rck3p74y17j6b233l91mq02drzrxj199qjv";
@@ -855,7 +1140,10 @@ with self;
   } else {
     version = "0.12.4";
     hash = "00if2f7j9d8igdkj4rck3p74y17j6b233l91mq02drzrxj199qjv";
-  }));
+  }))).overrideAttrs
+    (_: {
+      patches = if isFlambda2 then [ ./flambda2-compiler-libs.patch ] else [ ];
+    });
 
   ocaml-embed-file = janePackage {
     pname = "ocaml-embed-file";
@@ -864,19 +1152,44 @@ with self;
     meta.description = "Files contents as module constants";
   };
 
-  ocaml_intrinsics = janePackage {
+  ocaml_intrinsics = (janePackage {
     pname = "ocaml_intrinsics";
     hash = "sha256-Ndt6ZPJamBYzr1YA941BLwvRgkkbD8AEQR/JjjR38xI=";
     meta.description = "Intrinsics";
     buildInputs = [ dune-configurator ocaml_intrinsics_kernel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ocaml_intrinsics";
+            rev = "9dc4e031e33de559385ca2e4c13f7f19ba804dcc";
+            hash = "sha256-OpyjX/RDbBrUu5VAqo2dV9sSaskQyOVKiftJKLRuS1I=";
+          }
+      else o.src;
 
-  ocaml_intrinsics_kernel = janePackage {
+  });
+
+  ocaml_intrinsics_kernel = (janePackage {
     pname = "ocaml_intrinsics_kernel";
     version = "0.17.1";
     hash = "sha256-2fBrJtI7bXbdFlILKhcBWWj4Q8/9hpi73egVbZmgBak=";
     meta.description = "Intrinsics";
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ocaml_intrinsics_kernel";
+            rev = "997a5da542ade9efe0ff743e02ed21f291cde1ed";
+            hash = "sha256-lHkX/6G5Hf5EbfvyvxK+B19jhLNOWDYVv+AN5+kOKUc=";
+          }
+      else o.src;
+  });
 
   ocaml_openapi_generator = janePackage {
     pname = "ocaml_openapi_generator";
@@ -966,6 +1279,33 @@ with self;
     propagatedBuildInputs = [ core_kernel ];
   };
 
+  pipe_with_writer_error = (janePackage {
+    pname = "pipe_with_writer_error";
+    hash = lib.fakeHash;
+    propagatedBuildInputs = [ ppx_jane async_kernel core ];
+    meta.description =
+      "Pipe that forces readers to consider errors from writers while reading";
+  }).overrideAttrs (_: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "pipe_with_writer_error";
+            rev = "5c3d4a746db76eacc23b0c090b63b073af989db3";
+            hash = "sha256-ekfOUVxu52nJQDiVoxDVytPQIy/R2EU3TTtkJVydOWE=";
+          }
+      else
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "pipe_with_writer_error";
+            rev = "5c3d4a746db76eacc23b0c090b63b073af989db3";
+            hash = "sha256-ekfOUVxu52nJQDiVoxDVytPQIy/R2EU3TTtkJVydOWE=";
+          };
+  });
+
   polling_state_rpc = janePackage {
     pname = "polling_state_rpc";
     minimalOCamlVersion = "4.14";
@@ -1034,14 +1374,26 @@ with self;
     propagatedBuildInputs = [ ppx_inline_test ];
   };
 
-  ppx_bin_prot = janePackage {
+  ppx_bin_prot = (janePackage {
     pname = "ppx_bin_prot";
     hash = "sha256-nQps/+Csx3+6H6KBzIm/dLCGWJ9fcRD7JxB4P2lky0o=";
     minimalOCamlVersion = "4.14";
     meta.description = "Generation of bin_prot readers and writers from types";
     propagatedBuildInputs = [ bin_prot ppx_here ];
     doCheck = false; # circular dependency with ppx_jane
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_bin_prot";
+            rev = "9427476a1043deaaf733da03572427694a566d83";
+            hash = "sha256-npyGcr+kTyukrTl6UmLieT2hOHKXg1lfZeg2eRg1UqA=";
+          }
+      else o.src;
+  });
 
   ppx_cold = janePackage {
     pname = "ppx_cold";
@@ -1051,13 +1403,25 @@ with self;
     propagatedBuildInputs = [ base ppxlib ];
   };
 
-  ppx_compare = janePackage {
+  ppx_compare = (janePackage {
     pname = "ppx_compare";
     hash = "sha256-uAXB9cba0IBl+cA2CAuGVVxuos4HXH5jlB6Qjxx44Y0=";
     minimalOCamlVersion = "4.14";
     meta.description = "Generation of comparison functions from types";
     propagatedBuildInputs = [ ppxlib ppxlib_jane base ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_compare";
+            rev = "aa309df74530af02877d5adb9699d9448ba34e0b";
+            hash = "sha256-Akp4p/n2qKZ+BVQ99Erym6Suw58OCb3QFb6indzOxKs=";
+          }
+      else o.src;
+  });
 
   ppx_conv_func = janePackage {
     pname = "ppx_conv_func";
@@ -1122,7 +1486,7 @@ with self;
     propagatedBuildInputs = [ base ppxlib ];
   };
 
-  ppx_diff = janePackage {
+  ppx_diff = (janePackage {
     pname = "ppx_diff";
     hash = "sha256-MAn+vcU6vLR8g16Wq1sORyLcLgWxLsazMQY1syY6HsA=";
     meta.description = ''
@@ -1130,7 +1494,19 @@ with self;
       Generates diffs and update functions for OCaml types.
     '';
     propagatedBuildInputs = [ ppxlib_jane ppx_jane gel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_diff";
+            rev = "4a766274acab51e0e85be19161d1f896597230ce";
+            hash = "sha256-vT5Xt9Z3AB2DiajRD5corrwRC3N1HkawOEq/30Ff234=";
+          }
+      else o.src;
+  });
 
   ppx_embed_file = janePackage {
     pname = "ppx_embed_file";
@@ -1142,22 +1518,46 @@ with self;
     propagatedBuildInputs = [ core ppx_jane ppxlib shell ];
   };
 
-  ppx_enumerate = janePackage {
+  ppx_enumerate = (janePackage {
     pname = "ppx_enumerate";
     hash = "sha256-YqBrxp2fe91k8L3aQVW6egoDPj8onGSRueQkE2Icdu4=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Generate a list containing all values of a finite type";
     propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_enumerate";
+            rev = "b1167dbc9dc6f71daa7c592956f0c99f2bfd8ae8";
+            hash = "sha256-+b9SiwcCSZcCa48R6Q0BOmWHPNV5fXQavf29bJEq0Sc=";
+          }
+      else o.src;
+  });
 
-  ppx_expect = janePackage {
+  ppx_expect = (janePackage {
     pname = "ppx_expect";
     hash = "sha256-m4Nr48ZET632I6vw5RjpNA0elW3lpN3aPmfA3RzsEn8=";
     minimalOCamlVersion = "4.14";
     meta.description = "Cram like framework for OCaml";
     propagatedBuildInputs = [ base ppx_here ppx_inline_test stdio re ppx_compare ];
     doCheck = false; # test build rules broken
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_expect";
+            rev = "640e8a8bbedefb5a8c0f72929a645e8003ac9c3e";
+            hash = "sha256-J5ePw8FD2Pft6MBA6Er/4LPvxDVuJpUI19CNI2UJqc4=";
+          }
+      else o.src;
+  });
 
   ppx_fields_conv = janePackage {
     pname = "ppx_fields_conv";
@@ -1175,21 +1575,45 @@ with self;
     propagatedBuildInputs = [ base ppxlib ];
   };
 
-  ppx_globalize = janePackage {
+  ppx_globalize = (janePackage {
     pname = "ppx_globalize";
     minimalOCamlVersion = "4.14";
     hash = "sha256-LKV5zfaf6AXn3NzOhN2ka8NtjItPTIsfmoJVBw5bYi8=";
     meta.description = "A ppx rewriter that generates functions to copy local values to the global heap";
     propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_globalize";
+            rev = "e1748590e4685ecb7a49fb727c5d2d15b073bd17";
+            hash = "sha256-q681BioQSnFBiehKRcUrii3WOvzONz6yqiWt7XMIiIc=";
+          }
+      else o.src;
+  });
 
-  ppx_hash = janePackage {
+  ppx_hash = (janePackage {
     pname = "ppx_hash";
     hash = "sha256-GADCLoF2GjZkvAiezn0xyReCs1avrUgjJGSS/pMNq38=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "A ppx rewriter that generates hash functions from type expressions and definitions";
     propagatedBuildInputs = [ ppx_compare ppx_sexp_conv ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_hash";
+            rev = "b39dac492b40bbc017c387830921d9c1420c12ca";
+            hash = "sha256-TyUn2bc6BWKxtW+jXE7G01TE8RAazVlA571clsRqqAw=";
+          }
+      else o.src;
+  });
 
   ppx_here = janePackage {
     pname = "ppx_here";
@@ -1217,7 +1641,7 @@ with self;
     doCheck = false; # test build rules broken
   };
 
-  ppx_jane = janePackage {
+  ppx_jane = (janePackage {
     pname = "ppx_jane";
     hash = "sha256-HgIob7iJkV0HcGi6IjjSUWdKOAu2TsC3GMyzpjYS1cs=";
     minimalOCamlVersion = "4.04.2";
@@ -1241,7 +1665,19 @@ with self;
       ppx_variants_conv
       ppx_tydi
     ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_jane";
+            rev = "b699ffd25f2de209bb8b2d2158c4c9ee8b3d434a";
+            hash = "sha256-WRaT6huQaii0F00Ar77/6mmY2t3Y5g2EnXs/v2DVAMg=";
+          }
+      else o.src;
+  });
 
   ppx_jsonaf_conv = janePackage {
     pname = "ppx_jsonaf_conv";
@@ -1260,13 +1696,25 @@ with self;
     propagatedBuildInputs = [ octavius base ppxlib ];
   };
 
-  ppx_let = janePackage {
+  ppx_let = (janePackage {
     pname = "ppx_let";
     hash = "sha256-JkNQgbPHVDH659m4Xy9ipcZ/iqGtj5q1qQn1P+O7TUY=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Monadic let-bindings";
-    propagatedBuildInputs = [ ppxlib ppx_here ];
-  };
+    propagatedBuildInputs = [ ppxlib ppx_here ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_let";
+            rev = "56a954cb7c19df5dee61b43efab12132ecf957e4";
+            hash = "sha256-nkd84j0Jw5MvNVcQi95ZdFFzb7IBaA25Eg9gpSwVxOE=";
+          }
+      else o.src;
+  });
 
   ppx_log = janePackage {
     pname = "ppx_log";
@@ -1299,13 +1747,25 @@ with self;
     propagatedBuildInputs = [ stdio time_now ];
   };
 
-  ppx_optcomp = janePackage {
+  ppx_optcomp = (janePackage {
     pname = "ppx_optcomp";
     hash = "sha256-H9oTzhJx9IGRkcwY2YEvcvNgeJ8ETNO95qKcjTXJBwk=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
-    propagatedBuildInputs = [ stdio ppxlib ];
-  };
+    propagatedBuildInputs = [ stdio ppxlib ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_optcomp";
+            rev = "f47aea71763e80c02c78b253d33b122726be7e93";
+            hash = "sha256-u3hmnfjJgTuvesMXbAa8slv67Dp+JO2E55/ADnMWojo=";
+          }
+      else o.src;
+  });
 
   ppx_optional = janePackage {
     pname = "ppx_optional";
@@ -1359,13 +1819,25 @@ with self;
     ];
   };
 
-  ppx_sexp_conv = janePackage {
+  ppx_sexp_conv = (janePackage {
     pname = "ppx_sexp_conv";
     minimalOCamlVersion = "4.14";
     hash = "sha256-hUi0I50SODK1MpL86xy8eM8yn8f4q1Hv4LP9zFnnr70=";
     meta.description = "[@@deriving] plugin to generate S-expression conversion functions";
     propagatedBuildInputs = [ ppxlib sexplib0 base ppxlib_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_sexp_conv";
+            rev = "37ba21167ae36f3c71bfd8d87d385272840ebf9f";
+            hash = "sha256-OB5y8OBs7Hl6g78CPol//Z73c2jBbWjIwy+XopSV8A8=";
+          }
+      else o.src;
+  });
 
   ppx_sexp_message = janePackage {
     pname = "ppx_sexp_message";
@@ -1383,15 +1855,27 @@ with self;
     propagatedBuildInputs = [ ppx_here ppx_sexp_conv ];
   };
 
-  ppx_stable = janePackage {
+  ppx_stable = (janePackage {
     pname = "ppx_stable";
     hash = "sha256-N5oPjjQcLgiO9liX8Z0vg0IbQXaGZ4BqOgwvuIKSKaA=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Stable types conversions generator";
-    propagatedBuildInputs = [ base ppxlib ];
-  };
+    propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_stable";
+            rev = "006955a00a247585f21cb9446507c24b47a14cec";
+            hash = "sha256-pfRxOBJOYb5t1BsZfiZNHfFvpZjwCe71xiXIlAahQMo=";
+          }
+      else o.src;
+  });
 
-  ppx_stable_witness = janePackage {
+  ppx_stable_witness = (janePackage {
     pname = "ppx_stable_witness";
     hash = "sha256-k45uR/OMPRsi5450CuUo592EVc82DPhO8TvBPjgJTh0=";
     minimalOCamlVersion = "4.14";
@@ -1401,8 +1885,20 @@ with self;
       never change. This allows programs running at different versions of the
       code to safely communicate.
     '';
-    propagatedBuildInputs = [ base ppxlib ];
-  };
+    propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_stable_witness";
+            rev = "cec735a627ca91354c32e0f3965fab734ae8cbc4";
+            hash = "sha256-/QbyG1LHr9L82QhUcYFm8KTgUo6pkLr/NX+LjSvcPYw=";
+          }
+      else o.src;
+  });
 
   ppx_string = janePackage {
     pname = "ppx_string";
@@ -1412,12 +1908,24 @@ with self;
     propagatedBuildInputs = [ ppx_base ppxlib stdio ];
   };
 
-  ppx_string_conv = janePackage {
+  ppx_string_conv = (janePackage {
     pname = "ppx_string_conv";
     hash = "sha256-r+XubSXjxVyCsra99D6keJ/lmXeK5SZbI6h/IFghvPQ=";
     meta.description = "Ppx extension for generating of_string & to_string";
     propagatedBuildInputs = [ base ppxlib ppx_let ppx_string capitalization ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_string_conv";
+            rev = "6e6f95e39f529017e83f9eee33e6270e09f877e7";
+            hash = "sha256-sIlOv50+1kZBN3jv2oH3yJvFMsr5S8pFTuP9XjkK830=";
+          }
+      else o.src;
+  });
 
   ppx_tydi = janePackage {
     pname = "ppx_tydi";
@@ -1434,21 +1942,45 @@ with self;
     propagatedBuildInputs = [ core ppx_jane ppxlib ];
   };
 
-  ppx_typerep_conv = janePackage {
+  ppx_typerep_conv = (janePackage {
     pname = "ppx_typerep_conv";
     minimalOCamlVersion = "4.04.2";
     hash = "sha256-V9yOSy3cj5/bz9PvpO3J+aeFu1G+qGQ8AR3gSczUZbY=";
     meta.description = "Generation of runtime types from type declarations";
-    propagatedBuildInputs = [ ppxlib typerep ];
-  };
+    propagatedBuildInputs = [ ppxlib typerep ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_typerep_conv";
+            rev = "31c6ede608ccdde8df06922e3e3b50c5fd7e5820";
+            hash = "sha256-2PQwnxg0ThR/mzn3wOe1IP2ovEOvZ3pqq3ITsp2bnWw=";
+          }
+      else o.src;
+  });
 
-  ppx_variants_conv = janePackage {
+  ppx_variants_conv = (janePackage {
     pname = "ppx_variants_conv";
     minimalOCamlVersion = "4.04.2";
     hash = "sha256-Av2F699LzVCpwcdji6qG0jt5DVxCnIY4eBLaPK1JC10=";
     meta.description = "Generation of accessor and iteration functions for ocaml variant types";
-    propagatedBuildInputs = [ variantslib ppxlib ];
-  };
+    propagatedBuildInputs = [ variantslib ppxlib ppxlib_jane ];
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_variants_conv";
+            rev = "ace387c672335639f37934d349b88840c9946789";
+            hash = "sha256-e0e6JKTTJS4alLxQFb+U0pbl4FMkYeLSK+YtLHdD2fc=";
+          }
+      else o.src;
+  });
 
   ppx_xml_conv = janePackage {
     pname = "ppx_xml_conv";
@@ -1474,12 +2006,25 @@ with self;
     propagatedBuildInputs = [ base ppx_js_style ppx_yojson_conv_lib ppxlib ];
   };
 
-  ppxlib_jane = janePackage {
+  ppxlib_jane = (janePackage {
     pname = "ppxlib_jane";
     hash = "sha256-8NC8CHh3pSdFuRDQCuuhc2xxU+84UAsGFJbbJoKwd0U=";
     meta.description = "Utilities for working with Jane Street AST constructs";
     propagatedBuildInputs = [ ppxlib ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppxlib_jane";
+            rev = "5793adbe30e2294d351a8145289cf2a220d0714f";
+            hash = "sha256-KEQMDIN/AMfEbFGlRrFt/tcShuKe9P0QIxA5RdM8Wuo=";
+          }
+      else o.src;
+
+  });
 
   profunctor = janePackage {
     pname = "profunctor";
@@ -1668,20 +2213,44 @@ with self;
     meta.description = "Quickcheck helpers for strings parsing to sexps";
   };
 
-  sexplib0 = janePackage {
+  sexplib0 = (janePackage {
     pname = "sexplib0";
     hash = "sha256-Q53wEhRet/Ou9Kr0TZNTyXT5ASQpsVLPz5n/I+Fhy+g=";
     minimalOCamlVersion = "4.08.0";
     meta.description = "Library containing the definition of S-expressions and some base converters";
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "sexplib0";
+            rev = "450be52c1553c6708b73af50def3cb5732566c50";
+            hash = "sha256-PXKNkuLNwbPV9yLoMKPP1BfOBaR9Sf8e73LNrCy5VmQ=";
+          }
+      else o.src;
+  });
 
-  sexplib = janePackage {
+  sexplib = (janePackage {
     pname = "sexplib";
     hash = "sha256-DxTMAQbskZ87pMVQnxYc3opGGCzmUKGCZfszr/Z9TGA=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Library for serializing OCaml values to and from S-expressions";
     propagatedBuildInputs = [ num parsexp ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "sexplib";
+            rev = "a9fca79eb16dbad7c23d2d7adc4f20a3cdca8714";
+            hash = "sha256-qnLZsbnxYen0UdJQUqlWLwucb++tC6QskURgv2QAmg0=";
+          }
+      else o.src;
+  });
 
   shell = janePackage {
     pname = "shell";
@@ -1753,19 +2322,43 @@ with self;
     meta.description = "A library for representing a list temporarily stored in reverse order.";
   };
 
-  textutils = janePackage {
+  textutils = (janePackage {
     pname = "textutils";
     hash = "sha256-J58sqp9fkx3JyjnH6oJLCyEC0ZvnuDfqLVl+dt3tEgA=";
     meta.description = "Text output utilities";
     propagatedBuildInputs = [ core_unix textutils_kernel ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "textutils";
+            rev = "177a4e7533f8116d62366a33e3a918948f838878";
+            hash = "sha256-NNgDQ4TruuJ59gBTHBLXXGe1jGdYIr0SegMWyqiMOUU=";
+          }
+      else o.src;
+  });
 
-  textutils_kernel = janePackage {
+  textutils_kernel = (janePackage {
     pname = "textutils_kernel";
     hash = "sha256-B5ExbKMRSw4RVJ908FVGob2soHFnJ6Ajsdn0q8lDhio=";
     meta.description = "Text output utilities";
     propagatedBuildInputs = [ core ppx_jane uutf ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "textutils_kernel";
+            rev = "b3a651f25a963e2ed93dd83b678815b9e46a90af";
+            hash = "sha256-lDrYv1tB/lqfbhY/2YE4bPbynxDTUkwgKch1DedH9Vs=";
+          }
+      else o.src;
+  });
 
   tilde_f = janePackage {
     pname = "tilde_f";
@@ -1829,15 +2422,27 @@ with self;
     propagatedBuildInputs = [ async core core_kernel core_unix ppx_jane ];
   };
 
-  typerep = janePackage {
+  typerep = (janePackage {
     pname = "typerep";
     hash = "sha256-0KwJdWtibgjxghFmOYKyPrcOAfoLpxYGBZm2KpH8tgA=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Typerep is a library for runtime types";
     propagatedBuildInputs = [ base ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "typerep";
+            rev = "c0ddd1226871d97a17ac4962d6f1f963bcc5d882";
+            hash = "sha256-TxNK4j1O9ddv9prt+2cMm1kRQCyxEDMakruODOU1650=";
+          }
+      else o.src;
+  });
 
-  uopt = janePackage {
+  uopt = (janePackage {
     pname = "uopt";
     hash = "sha256-t0SFJVF0ScyFFwziBZOYCOsmhRd6J5H3s0Kk9NKorcM=";
     meta.description = ''
@@ -1846,7 +2451,19 @@ with self;
       [option], and is not recommended for use in general-purpose software.
     '';
     propagatedBuildInputs = [ base ppx_jane ];
-  };
+  }).overrideAttrs (o: {
+    src =
+      if isFlambda2
+      then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "uopt";
+            rev = "27606a53f72d85159fff6b9d4277ab8778a5f1cd";
+            hash = "sha256-6X4NBQ+OF6Fh74y9cmIN10iF/FXP3vp+D5ozAO8ml14=";
+          }
+      else o.src;
+  });
 
   username_kernel = janePackage {
     pname = "username_kernel";

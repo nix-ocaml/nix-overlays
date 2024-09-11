@@ -1,4 +1,4 @@
-{ nixpkgs, overlays, super, updateOCamlPackages ? false }:
+{ nixpkgs, overlays, super, self, updateOCamlPackages ? false }:
 
 let
   inherit (super) lib callPackage ocaml-ng;
@@ -11,6 +11,7 @@ let
     "5_2"
     "5_3"
     "trunk"
+    "flambda2"
     "jst"
   ];
   newOCamlScope = { major_version, minor_version, patch_version, src, ... }@extraOpts:
@@ -19,7 +20,12 @@ let
         (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
           inherit major_version minor_version patch_version;
         })
-        { }).overrideAttrs (_: { inherit src; } // extraOpts));
+        { }).overrideAttrs (o: {
+        inherit src;
+      } //
+      (if lib.isFunction (extraOpts.overrideAttrs or null)
+      then extraOpts.overrideAttrs o
+      else extraOpts)));
 
   custom-ocaml-ng =
     ocaml-ng //
@@ -112,6 +118,70 @@ let
           rev = "b89105698ccbc794e9c6db1f871b493d93929624";
           hash = "sha256-eQjmsTzoRrclG5wYW/+TosX/6FX6X3aA0pbs+yV4eho=";
         };
+      };
+
+      ocamlPackages_flambda2 = newOCamlScope {
+        major_version = "5";
+        minor_version = "1";
+        patch_version = "1+flambda2";
+        src = super.fetchFromGitHub {
+          owner = "ocaml-flambda";
+          repo = "flambda-backend";
+          rev = "5.1.1minus-20";
+          hash = "sha256-r+6YzJybGMWYiKLm9Rh5GiAWgt8wI539XRcawXhNYRw=";
+        };
+        overrideAttrs =
+          let
+            ocaml14Scope = self.ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
+
+              menhir = osuper.menhir.overrideAttrs (o: {
+                buildInputs = with oself; [ menhirLib menhirSdk ];
+              });
+              menhirLib = osuper.menhirLib.overrideAttrs (_: {
+                version = "20210419";
+                src = super.fetchFromGitLab {
+                  owner = "fpottier";
+                  repo = "menhir";
+                  rev = "20210419";
+                  domain = "gitlab.inria.fr";
+                  hash = "sha256-fg4A8dobKvE4iCkX7Mt13px3AIFDL+96P9nxOPTJi0k=";
+                };
+              });
+            });
+          in
+          o: {
+            hardeningDisable = [ "strictoverflow" ];
+            makefile = null;
+            postPatch = ''
+              substituteInPlace "tools/merge_dot_a_files.sh" --replace-fail \
+              'exec libtool -static -o $target $archives' \
+              'exec ar cr "$target" $archives && exec ranlib "$target"'
+              cd ocaml && autoconf && cd ..
+              autoconf
+            '';
+            configureFlags = [
+              "--enable-runtime5"
+              "--enable-middle-end=flambda2"
+              "--disable-naked-pointers"
+            ];
+            buildFlags = [ "compiler" ];
+            installPhase = ''
+              make install
+              cp ${./compiler-libs-flambda2.META} $out/lib/ocaml/compiler-libs/META
+            '';
+            patches = [ ./flambda2.patch ];
+            nativeBuildInputs =
+              with ocaml14Scope; [
+                ocaml
+                findlib
+                dune
+                menhir
+                super.autoconf
+                super.libtool
+                super.rsync
+              ];
+            buildInputs = o.buildInputs ++ (with ocaml14Scope; [ menhirLib ]);
+          };
       };
 
       ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (oself: osuper: {
