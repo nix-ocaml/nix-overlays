@@ -594,14 +594,7 @@ with oself;
     };
   });
 
-  cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; }).overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "xavierleroy";
-      repo = "cryptokit";
-      rev = "release1201";
-      hash = "sha256-VFY10jGctQfIUVv7dK06KP8zLZHLXTxvLyTCObS+W+E=";
-    };
-  });
+  cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   cstruct = osuper.cstruct.overrideAttrs (_: {
     doCheck = !isFlambda2;
@@ -1621,13 +1614,6 @@ with oself;
       '';
     });
 
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocurrent/ocaml-version/releases/download/v3.6.8/ocaml-version-3.6.8.tbz";
-      sha256 = "1n8bk116k3l53yfg051a9vrjpb5vmgkbsr722viayyg9rdg1w8lq";
-    };
-  });
-
   ocaml-index =
     if lib.versionAtLeast ocaml.version "5.2" then
       callPackage ./ocaml-index { }
@@ -1661,11 +1647,6 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.2.0/sqlite3-5.2.0.tbz";
-      sha256 = "1fwcr6kqq2xpyiw08swaqxwlfn9h78yvxs7j2xsizcplajj868ll";
-    };
-
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
 
@@ -2024,13 +2005,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace-fail " bigarray" ""
     '';
-  });
-
-  ppx_blob = osuper.ppx_blob.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/johnwhitington/ppx_blob/releases/download/0.9.0/ppx_blob-0.9.0.tbz";
-      sha256 = "1r3hnnpvhfdb8w8xq47f9p70wrzqf49bj2lkkpfcwx8hbw5fj5gi";
-    };
   });
 
   ppx_cstruct = disableTests osuper.ppx_cstruct;
@@ -2539,15 +2513,6 @@ with oself;
         AudioToolbox
         ForceFeedback
       ]);
-  });
-
-  tsdl-mixer = osuper.tsdl-mixer.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "sanette";
-      repo = "tsdl-mixer";
-      rev = "0.6";
-      hash = "sha256-szuGmLzgGyQExCQwpopVNswtZZdhP29Q1+uNQJZb43Q=";
-    };
   });
 
   tuntap = osuper.tuntap.overrideAttrs (_: {
