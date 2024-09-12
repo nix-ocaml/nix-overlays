@@ -137,8 +137,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "angstrom";
-      rev = "78de4bb429d4df1efe2e876ae7720e14db724f34";
-      hash = "sha256-JuiAKMRTXiTEh5jko51qaVWIQ6noq9lpYH9Qnzljfuc=";
+      rev = "3173a5eb564f0f087db94b206460df02ac394281";
+      hash = "sha256-l0HdDOZL8p72u6KzMkIVrZxUSVlo2GIcpgb6nQU6eTk=";
     };
     propagatedBuildInputs = [ bigstringaf ];
   });
