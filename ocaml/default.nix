@@ -461,6 +461,18 @@ with oself;
     patches = [ ];
   });
 
+  cbor = buildDunePackage {
+    pname = "cbor";
+    version = "0.5";
+    src = fetchFromGitHub {
+      owner = "ygrek";
+      repo = "ocaml-cbor";
+      rev = "0.5";
+      hash = "sha256-f7YwzOZQ7CmmIVuDpbYTdr5nn7prcYh9K9i7ar8IBbI=";
+    };
+    propagatedBuildInputs = [ ocplib-endian ];
+  };
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
@@ -1521,14 +1533,7 @@ with oself;
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
 
-  mrmime = osuper.mrmime.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mrmime/releases/download/v0.6.1/mrmime-0.6.1.tbz";
-      sha256 = "05mh0avl2w8n3mkiax62iqjwf2001rg6qvl7ri499fzk2gpjnfqg";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ hxd jsonm cmdliner ];
-    doCheck = false;
-  });
+  mrmime = disableTests osuper.mrmime;
 
   mtime = osuper.mtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1809,6 +1814,10 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/2.4.3/odoc-2.4.3.tbz";
+      sha256 = "04ibpcxvzyxy21kl8h78rp6kyn5n21hv3dyphzkkr2dl0pn2rfyn";
+    };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
       substituteInPlace src/parser/dune --replace-fail "result" ""
@@ -2397,8 +2406,8 @@ with oself;
 
   tar = osuper.tar.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.0.0/tar-3.0.0.tbz";
-      sha256 = "1wxjhvxqrxfwnbapydw1r618fs4sbffrjakrirxy8yl3vdcghl84";
+      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.1.1/tar-3.1.1.tbz";
+      sha256 = "0m5h9p57rz6h1c1mh3m7c1ja5xi49pw2yhsrjc81dbw95gshg2d5";
     };
     propagatedBuildInputs = [ decompress ];
   });
@@ -2500,9 +2509,11 @@ with oself;
   });
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace _tags --replace-fail "ctypes.foreign" "ctypes-foreign"
-    '';
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/tsdl/releases/tsdl-1.1.0.tbz";
+      sha256 = "0fw78qby010ai8apgwc66ary6zm3a5nw57228i44vccypav3xpk4";
+    };
+
     propagatedBuildInputs =
       o.propagatedBuildInputs
       ++ [ ctypes-foreign ]
@@ -2692,6 +2703,23 @@ with oself;
       ipaddr
     ];
   });
+
+  webauthn = buildDunePackage {
+    pname = "webauthn";
+    version = "0.2.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/robur-coop/webauthn/releases/download/v0.2.0/webauthn-0.2.0.tbz";
+      sha256 = "08n62gq9ni553p7h1mk9a4xvvznsgq4h37n031my1hr1nhf3x8bl";
+    };
+    propagatedBuildInputs = [
+      ppx_deriving_yojson
+      cbor
+      mirage-crypto-rng
+      mirage-crypto-ec
+      base64
+      x509
+    ];
+  };
 
   xxhash = osuper.xxhash.overrideAttrs (_: {
     postPatch = ''

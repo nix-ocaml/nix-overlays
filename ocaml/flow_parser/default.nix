@@ -2,12 +2,12 @@
 
 buildDunePackage {
   pname = "flow_parser";
-  version = "0.229.0";
+  version = "0.246.0";
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "flow";
-    rev = "v0.229.0";
-    hash = "sha256-V2U53zby0XfAlKqfqUE7f6zvuwWFU2CCOy34KguZqLc=";
+    rev = "v0.246.0";
+    hash = "sha256-WLDEtMc8mLmf1cd39iAdFqJAh5X5lKoHEtDoMK/X8rY=";
   };
 
   postPatch = ''
