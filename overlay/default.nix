@@ -255,6 +255,19 @@ in
     cockroachdb-22_x;
   cockroachdb = self.cockroachdb-21_1_x;
 
+  dune-dev = self.ocamlPackages.dune_3.overrideAttrs (_: {
+    src = super.fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "cc260345db57ab639db6363b2dc89072a1492832";
+      hash = "sha256-/Cd6wvJw9eiHARwGgcmrH4HJzHwHsiBjztYUcfZX9+w=";
+    };
+    configureFlags = [
+      "--enable-toolchains"
+      "--enable-pkg-build-progress"
+      "--enable-lock-dev-tool"
+    ];
+  });
   opam = self.ocamlPackages.opam;
 
   pnpm =
