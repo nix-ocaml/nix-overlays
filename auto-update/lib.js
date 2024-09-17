@@ -48,7 +48,7 @@ function update_flake() {
 
       const shas = [
         ...stderr.matchAll(
-            /NixOS\/nixpkgs\/(.*)' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/gi),
+            /NixOS\/nixpkgs\/([^?']+).*?' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/gi),
       ].map(([ _, sha, date ]) => ({
               sha,
               date,
