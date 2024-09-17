@@ -2147,6 +2147,21 @@ with oself;
     ];
   });
 
+  processor = buildDunePackage {
+    version = "0.2";
+    pname = "processor";
+    src = fetchFromGitHub {
+      owner = "haesbaert";
+      repo = "ocaml-processor";
+      rev = "0.2";
+      hash = "sha256-0jxi3Qz1nlnClPQ6Za0vFBig4ahrkyezicyqmErx1QE=";
+    };
+    propagatedBuildInputs =
+      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+        Foundation
+      ]);
+  };
+
   ptime = osuper.ptime.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://erratique.ch/software/ptime/releases/ptime-1.2.0.tbz";

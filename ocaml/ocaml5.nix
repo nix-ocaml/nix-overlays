@@ -27,7 +27,7 @@ with oself;
       url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
       sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
     };
-    propagatedBuildInputs = [ eio lablgtk3 ];
+    propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
   };
 
   graphql-eio = buildDunePackage {
