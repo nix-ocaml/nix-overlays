@@ -20,15 +20,19 @@ with oself;
 
   eio-ssl = callPackage ./eio-ssl { };
 
-  eio-trace = buildDunePackage {
-    pname = "eio-trace";
-    version = "0.4";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
-      sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
-    };
-    propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
-  };
+  eio-trace =
+    let
+      stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
+    in
+    (buildDunePackage {
+      pname = "eio-trace";
+      version = "0.4";
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
+        sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
+      };
+      propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
+    }).overrideAttrs (_: { stdenv = stdenv'; });
 
   graphql-eio = buildDunePackage {
     pname = "graphql-eio";
