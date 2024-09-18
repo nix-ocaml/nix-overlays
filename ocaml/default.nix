@@ -492,10 +492,10 @@ with oself;
 
   colombe = buildDunePackage {
     pname = "colombe";
-    version = "0.8.1";
+    version = "0.9.0";
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/colombe/releases/download/v0.8.1/colombe-0.8.1.tbz";
-      sha256 = "0c4mplcdx2dw82f1lzhiw79bfa7krad0fgyqsxd4virvb4a6703q";
+      url = "https://github.com/mirage/colombe/releases/download/v0.9.0/colombe-0.9.0.tbz";
+      sha256 = "1p1npnk9k6sizcv38cqdp7m5637ipc3ap3xl9rcvvwm31l6f03cy";
     };
     propagatedBuildInputs = [ ipaddr fmt angstrom emile ];
   };
@@ -698,6 +698,52 @@ with oself;
     '';
   });
 
+  dkim = buildDunePackage {
+    pname = "dkim";
+    version = "0.7.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/ocaml-dkim/releases/download/v0.7.0/dkim-0.7.0.tbz";
+      sha256 = "1aa3s83w7kwgzq8r0r7d32psq36cxn498yml002qi076rimkqp6x";
+    };
+    propagatedBuildInputs = [
+      astring
+      hmap
+      logs
+      mirage-crypto-pk
+      domain-name
+      x509
+      mrmime
+    ];
+  };
+  dkim-bin = buildDunePackage {
+    pname = "dkim-bin";
+    inherit (dkim) src version;
+    propagatedBuildInputs = [
+      dkim
+      lwt
+      tls
+      ca-certs
+      cmdliner
+      logs
+      fmt
+      fpath
+      dns-client
+      dns-client-lwt
+    ];
+  };
+  dkim-mirage = buildDunePackage {
+    pname = "dkim-mirage";
+    inherit (dkim) src version;
+    propagatedBuildInputs = [
+      dkim
+      lwt
+      mirage-time
+      mirage-clock
+      tcpip
+      dns-client-mirage
+    ];
+  };
+
   dns = osuper.dns.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/ocaml-dns/releases/download/v9.0.0/dns-9.0.0.tbz";
@@ -834,6 +880,15 @@ with oself;
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
       '';
     });
+
+  extlib = osuper.extlib.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ygrek";
+      repo = "ocaml-extlib";
+      rev = "1.8.0";
+      hash = "sha256-5GvktCAwYSu9SGU06gR51iVf6i5anIYyP+o4pGoF0Dw=";
+    };
+  });
 
   ezgzip = buildDunePackage rec {
     pname = "ezgzip";
@@ -2518,8 +2573,8 @@ with oself;
 
   trace = osuper.trace.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-trace/releases/download/v0.7/trace-0.7.tbz";
-      sha256 = "0fckj3agx35smqpfq2vcn3zj3hghp682g22rjrn56j8bnclvxl7b";
+      url = "https://github.com/c-cube/ocaml-trace/releases/download/v0.8/trace-0.8.tbz";
+      sha256 = "1hvq13kwgbai5y45w44w6l5vkvh5wqg17f0gdwj1w7315dkabkrl";
     };
     propagatedBuildInputs = [ mtime ];
   });
@@ -2575,8 +2630,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "4f90e33d862a5adb96ed84513435b5cba467ad7d";
-      hash = "sha256-30X9MV0vrurrwIpFIVw3ww3BthirhJdQh7hZKLeKWIA=";
+      rev = "c7bab9e66e8b82795b2026c46e593ed87cdfa43d";
+      hash = "sha256-i8W4tnI8WMwDpWL37mjqqBd3FYr1C39AfzqvsHCxg9c=";
     };
   });
 
