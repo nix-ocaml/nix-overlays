@@ -1,4 +1,12 @@
-{ darwin, fetchFromGitHub, nodejs_latest, oself, osuper }:
+{ darwin
+, fetchFromGitHub
+, nodejs_latest
+, oself
+, osuper
+, nixpkgs
+, stdenv
+, overrideSDK
+}:
 
 with oself;
 
@@ -23,8 +31,12 @@ with oself;
   eio-trace =
     let
       stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
+      buildDunePackage' =
+        callPackage "${nixpkgs}/pkgs/build-support/ocaml/dune.nix" {
+          stdenv = stdenv';
+        };
     in
-    (buildDunePackage {
+    buildDunePackage' {
       pname = "eio-trace";
       version = "0.4";
       src = builtins.fetchurl {
@@ -32,7 +44,7 @@ with oself;
         sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
       };
       propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
-    }).overrideAttrs (_: { stdenv = stdenv'; });
+    };
 
   graphql-eio = buildDunePackage {
     pname = "graphql-eio";
