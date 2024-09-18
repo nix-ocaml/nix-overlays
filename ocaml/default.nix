@@ -35,6 +35,7 @@
 , gmp-oc
 , openssl-oc
 , oniguruma-lib
+, overrideSDK
 , pam
 , pkg-config
 , python3
@@ -2776,7 +2777,13 @@ with oself;
   };
 } // (if lib.versionAtLeast osuper.ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16) // (
   if lib.hasPrefix "5." osuper.ocaml.version
-  then (import ./ocaml5.nix { inherit oself osuper darwin fetchFromGitHub nodejs_latest; })
+  then
+    (import ./ocaml5.nix {
+      inherit
+        oself osuper
+        darwin stdenv overrideSDK
+        fetchFromGitHub nodejs_latest nixpkgs;
+    })
   else { }
 ) // (
   if # No version supported on 5.0
