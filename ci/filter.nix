@@ -92,8 +92,6 @@ let
     "chacha"
     "hyper"
     "matrix-stos"
-    "sendmail"
-    "sendmail-lwt"
     "otr"
   ];
 
