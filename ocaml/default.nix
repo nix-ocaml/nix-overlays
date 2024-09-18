@@ -495,7 +495,7 @@ with oself;
     version = "0.9.0";
     src = builtins.fetchurl {
       url = "https://github.com/mirage/colombe/releases/download/v0.9.0/colombe-0.9.0.tbz";
-      sha256 = "1p1npnk9k6sizcv38cqdp7m5637ipc3ap3xl9rcvvwm31l6f03cy";
+      sha256 = "0gkj6fplq600aw45nk7qil9gxxmh097y5asa4m2qr638ffnnyq35";
     };
     propagatedBuildInputs = [ ipaddr fmt angstrom emile ];
   };
