@@ -773,6 +773,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
   });
 
+  dose3 = disableTests osuper.dose3;
+
   dream-html = callPackage ./dream-html { };
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
