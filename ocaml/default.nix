@@ -2188,6 +2188,16 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
+  ppx_deriving_jsonschema = buildDunePackage {
+    pname = "ppx_deriving_jsonschema";
+    version = "0.0.1";
+    src = builtins.fetchurl {
+      url = "https://github.com/ahrefs/ppx_deriving_jsonschema/releases/download/0.0.1/ppx_deriving_jsonschema-0.0.1.tbz";
+      sha256 = "19l5jvk6w3v6jqik13826nsc62yd3ahni80gb94ipcp8056hivsk";
+    };
+    propagatedBuildInputs = [ ppxlib ];
+  };
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.9.0/ppx_deriving_yojson-3.9.0.tbz";
