@@ -547,8 +547,8 @@ with oself;
 
   conduit = osuper.conduit.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-conduit/releases/download/v7.0.0/conduit-7.0.0.tbz";
-      sha256 = "060jrfmy3kh59nbfmw0argwj9js6g8p7jdfiv1wd35bai62c43iy";
+      url = "https://github.com/mirage/ocaml-conduit/releases/download/v7.1.0/conduit-7.1.0.tbz";
+      sha256 = "1xspxb5v8hb9f1zx7b2cbgrp1s9k68js1373bl10c5z70y523ljq";
     };
   });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
@@ -773,6 +773,8 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
   });
 
+  dose3 = disableTests osuper.dose3;
+
   dream-html = callPackage ./dream-html { };
   dream-pure = callPackage ./dream/pure.nix { };
   dream-httpaf = callPackage ./dream/httpaf.nix { };
@@ -797,10 +799,12 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    version = "3.16.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.16.0/dune-3.16.0.tbz";
-      sha256 = "19mxz5s1wisnh0dqryryi3ak4jvkkwrp8kf308g158wcj7kxv0al";
+    version = "3.17.0-dev";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "d6f1a2740ac584127105773a43283829ae7a39e7";
+      hash = "sha256-tIa6mIQvhPi6B2c7aK+tq3WJkuEPiDuvRtvHkaxCC3w=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -856,9 +860,14 @@ with oself;
     inherit (fiber) version src;
     propagatedBuildInputs = [ pp fiber lwt stdune ];
   };
+
   pp = osuper.pp.overrideAttrs (_: {
-    doCheck = false;
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-dune/pp/releases/download/2.0.0/pp-2.0.0.tbz";
+      sha256 = "06a4nk6rr4kbkfqsi13azf92y5bnq9qq3q7lvsib94mh30akalc6";
+    };
   });
+
   stdune = osuper.stdune.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     inherit (dyn) preBuild;
@@ -1020,6 +1029,18 @@ with oself;
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
   hpack = callPackage ./h2/hpack.nix { };
+
+  hachis = buildDunePackage {
+    pname = "hachis";
+    version = "20240918";
+    src = fetchFromGitHub {
+      owner = "fpottier";
+      repo = "hachis";
+      rev = "20240918";
+      hash = "sha256-zrsrzZPBqnzEyk+BQqxSSf3j0+h+YfHC/1T0BY1xNcE=";
+    };
+    nativeBuildInputs = [ cppo ];
+  };
 
   hdr_histogram = buildDunePackage {
     pname = "hdr_histogram";
@@ -1927,10 +1948,12 @@ with oself;
   };
   opam-0install-cudf = buildDunePackage {
     pname = "opam-0install-cudf";
-    version = "0.4.3";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-opam/opam-0install-solver/releases/download/v0.4.3/opam-0install-cudf-0.4.3.tbz";
-      sha256 = "12jv2kk6fkapa04w4f0c6iy5lfw9hcy23ghfyn7pk3x5vnyhx7nm";
+    version = "0.5.0";
+    src = fetchFromGitHub {
+      owner = "ocaml-opam";
+      repo = "opam-0install-cudf";
+      rev = "v0.5.0";
+      hash = "sha256-TETfvR1Di4c8CylsKnMal/GfQcqMSr36o7511u1bYYs=";
     };
     propagatedBuildInputs = [ cudf x0install-solver ];
   };
@@ -1961,10 +1984,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.2.1";
-      hash = "sha256-V1rXRwkHUHU82zS8ThpkD8T4z7ZtdTIKB7/v+kSRHgM=";
+      rev = "2.3.0-alpha1";
+      hash = "sha256-+YTJjZpOd4SelbqemeOKepSwOwfbXi+/2T1ltRfozKA=";
     };
-    version = "2.2.0";
+    version = "2.3.0-alpha1";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
@@ -2167,6 +2190,16 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
+  ppx_deriving_jsonschema = buildDunePackage {
+    pname = "ppx_deriving_jsonschema";
+    version = "0.0.1";
+    src = builtins.fetchurl {
+      url = "https://github.com/ahrefs/ppx_deriving_jsonschema/releases/download/0.0.1/ppx_deriving_jsonschema-0.0.1.tbz";
+      sha256 = "19l5jvk6w3v6jqik13826nsc62yd3ahni80gb94ipcp8056hivsk";
+    };
+    propagatedBuildInputs = [ ppxlib ];
+  };
+
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.9.0/ppx_deriving_yojson-3.9.0.tbz";
@@ -2247,12 +2280,12 @@ with oself;
       inherit (topkg) installPhase;
     };
 
-  # re = osuper.re.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
-  # sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
-  # };
-  # });
+  re = osuper.re.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
+      sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
+    };
+  });
 
   randomconv = osuper.randomconv.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2477,8 +2510,8 @@ with oself;
 
   tar = osuper.tar.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.1.1/tar-3.1.1.tbz";
-      sha256 = "0m5h9p57rz6h1c1mh3m7c1ja5xi49pw2yhsrjc81dbw95gshg2d5";
+      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.1.2/tar-3.1.2.tbz";
+      sha256 = "18qnxlmh91cpibjg1c4ffiami1vbwjp2xr6gk15mjg8xlh497iw5";
     };
     propagatedBuildInputs = [ decompress ];
   });

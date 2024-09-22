@@ -259,13 +259,13 @@ in
     src = super.fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "cc260345db57ab639db6363b2dc89072a1492832";
-      hash = "sha256-/Cd6wvJw9eiHARwGgcmrH4HJzHwHsiBjztYUcfZX9+w=";
+      rev = "d6f1a2740ac584127105773a43283829ae7a39e7";
+      hash = "sha256-tIa6mIQvhPi6B2c7aK+tq3WJkuEPiDuvRtvHkaxCC3w=";
     };
     configureFlags = [
-      "--enable-toolchains"
-      "--enable-pkg-build-progress"
-      "--enable-lock-dev-tool"
+      "--toolchains enable"
+      "--pkg-build-progress enable"
+      "--lock-dev-tool enable"
     ];
   });
   opam = self.ocamlPackages.opam;

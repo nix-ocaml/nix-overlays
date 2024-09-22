@@ -1,6 +1,7 @@
 { buildDunePackage
 , alcotest
 , crowbar
+, fetchFromGitHub
 , fmt
 , rresult
 , mirage
@@ -17,9 +18,12 @@
 buildDunePackage {
   pname = "conan";
   version = "0.0.1";
-  src = builtins.fetchurl {
-    url = "https://github.com/mirage/conan/releases/download/v0.0.5/conan-0.0.5.tbz";
-    sha256 = "13zvay99i8pbzi2d1c24ppd9z9szj6nhdy7g6n8bx9zgl6k9rbh4";
+  src = fetchFromGitHub {
+    owner = "mirage";
+    repo = "conan";
+    # https://github.com/mirage/conan/pull/34
+    rev = "1ac2302cd2be8f40c33831b935e92dc108ef2e34";
+    hash = "sha256-1HEqmK/HCvKxW7vv+zn40wT9TlHgEzw0cMJDXSRKTvE=";
   };
 
   propagatedBuildInputs = [ re uutf ptime ];

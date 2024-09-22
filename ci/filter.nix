@@ -93,6 +93,10 @@ let
     "hyper"
     "matrix-stos"
     "otr"
+
+    # incompatible with newer conduit-lwt-unix
+    "websocket-lwt-unix"
+    "irmin-server"
   ];
 
   ocaml5Ignores = [
