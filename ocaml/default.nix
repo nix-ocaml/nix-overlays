@@ -2043,7 +2043,6 @@ with oself;
       rev = "0.7.0";
       hash = "sha256-1syLjF30a7xd7VOtSCbNaWAAum+2ewFo+hoH40xyLew=";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ httpaf ];
   });
 
   patch = buildDunePackage {
@@ -2665,13 +2664,6 @@ with oself;
       repo = "utop";
       rev = "c7bab9e66e8b82795b2026c46e593ed87cdfa43d";
       hash = "sha256-i8W4tnI8WMwDpWL37mjqqBd3FYr1C39AfzqvsHCxg9c=";
-    };
-  });
-
-  uucd = osuper.uucd.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uucd/releases/uucd-16.0.0.tbz";
-      sha256 = "1cx27vdvlbav5dlk0y51jlbq5846baa0hk6clcm1awk3lqdqylam";
     };
   });
 
