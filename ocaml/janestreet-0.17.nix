@@ -2022,8 +2022,15 @@ in
             rev = "5793adbe30e2294d351a8145289cf2a220d0714f";
             hash = "sha256-KEQMDIN/AMfEbFGlRrFt/tcShuKe9P0QIxA5RdM8Wuo=";
           }
+      else if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppxlib_jane";
+            rev = "a1c2f3a7d95b7efb69a88b7c3adfd6bedf1abdf8";
+            hash = "sha256-g+gFnju/NjhOaCZLc0Lh8Akwh+jQ+zQykBuHpdWOBn4=";
+          }
       else o.src;
-
   });
 
   profunctor = janePackage {
