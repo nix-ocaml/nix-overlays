@@ -1276,15 +1276,6 @@ with oself;
       '' else "";
   });
 
-  lambdasoup = osuper.lambdasoup.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "aantron";
-      repo = "lambdasoup";
-      rev = "1.1.1";
-      hash = "sha256-+d1JPU7OyQgt8pDTlwZraqPHH+OBQD1ycsELKpHT95Y=";
-    };
-  });
-
   letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/robur-coop/ocaml-letsencrypt/releases/download/v1.0.0/letsencrypt-1.0.0.tbz";
@@ -2664,13 +2655,6 @@ with oself;
       repo = "utop";
       rev = "c7bab9e66e8b82795b2026c46e593ed87cdfa43d";
       hash = "sha256-i8W4tnI8WMwDpWL37mjqqBd3FYr1C39AfzqvsHCxg9c=";
-    };
-  });
-
-  uucp = osuper.uucp.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uucp/releases/uucp-16.0.0.tbz";
-      sha256 = "0i40ml2m2qa1r27akmwdi36r7w6s98zw6vfwc57f9p1fiqcd9zz7";
     };
   });
 
