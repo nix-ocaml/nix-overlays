@@ -212,10 +212,10 @@ with oself;
 
   backoff = buildDunePackage {
     pname = "backoff";
-    version = "0.1.0";
+    version = "0.1.1";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/backoff/releases/download/0.1.0/backoff-0.1.0.tbz";
-      sha256 = "0013ikss0nq6yi8yjpkx67qnnpb3g6l8m386vqsd344y49war90i";
+      url = "https://github.com/ocaml-multicore/backoff/releases/download/0.1.1/backoff-0.1.1.tbz";
+      sha256 = "00wzmhvkg5d6jgqjqkjfgd2dh7wbwgfa97c7al5brc97n88s7gh0";
     };
   };
 
@@ -1832,6 +1832,13 @@ with oself;
     '';
   });
 
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocurrent/ocaml-version/releases/download/v3.6.9/ocaml-version-3.6.9.tbz";
+      sha256 = "11lmfdh1cpzlfarsfcm28a587cfvlsymm7xi7w78lgh34xhabirm";
+    };
+  });
+
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "gildor478";
@@ -2794,8 +2801,8 @@ with oself;
 
   x509 = osuper.x509.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.3/x509-1.0.3.tbz";
-      sha256 = "1wf8nmgpw1rc7dy0l36g1j062yafks3jxl1nbqp5l1krak4w0lhl";
+      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.4/x509-1.0.4.tbz";
+      sha256 = "152g2mnz9y25pmic25nz4iahfs6f8q35bvpmawa8rhnr1d7jirr3";
     };
 
     checkInputs = [ alcotest ];
