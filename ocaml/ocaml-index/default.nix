@@ -10,4 +10,9 @@ buildDunePackage {
   };
 
   propagatedBuildInputs = [ merlin-lib csexp ];
+
+  postPatch = ''
+    substituteInPlace lib/index.ml --replace-fail \
+      "Misc_utils.loc_of_decl" "Merlin_analysis.Typedtree_utils.location_of_declaration"
+  '';
 }

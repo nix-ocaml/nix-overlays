@@ -1195,7 +1195,7 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if (lib.versionOlder "5.2" ocaml.version) then
+      if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
           {
             url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.19.0/lsp-1.19.0.tbz";
@@ -1805,6 +1805,24 @@ with oself;
 
   ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ base ];
+
+    postPatch = if lib.versionOlder "5.2" ocaml.version then "" else ''
+      substituteInPlace ocaml-lsp-server/src/merlin_config.ml --replace-fail \
+        '| `ERROR_MSG' '| `SOURCE_ROOT _ | `UNIT_NAME _ | `WRAPPING_PREFIX _ -> assert false | `ERROR_MSG'
+
+      substituteInPlace \
+        "ocaml-lsp-server/src/rename.ml" \
+        "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+        'List.map locs' 'List.map (fst locs)'
+
+      substituteInPlace \
+        "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+        'List.filter_map locs' 'List.filter_map (fst locs)'
+
+      substituteInPlace \
+        "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+        'List.find_opt locs' 'List.find_opt (fst locs)'
+    '';
   });
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: {
@@ -2150,9 +2168,11 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/v6.0.2/ppx_deriving-6.0.2.tbz";
-      sha256 = "151bcg9nxcn8k91f77pizv8nq30bih9cj38igq24452ajg2wzfks";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving";
+      rev = "c3227d1f1ef15d907387dba38c26ea0167645b47";
+      hash = "sha256-xq96yAFIKbSl9xnNy8uCzgH2Qc7qHKwuFWoUtDgy0kg=";
     };
     buildInputs = [ ];
     propagatedBuildInputs = [
@@ -2214,9 +2234,11 @@ with oself;
             hash = "sha256-EB+i0iMt/u/IRp0U/dS2tvQrSjuSxHaPQ3XaPZI6hAs=";
           }
       else
-        builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.33.0/ppxlib-0.33.0.tbz";
-          sha256 = "0fn6sai70bhwp3j9y2qlmwd3hc8464q8lsdx3pi7afzja7slx97z";
+        fetchFromGitHub {
+          owner = "ocaml-ppx";
+          repo = "ppxlib";
+          rev = "ac7fcfc88d574609b62cc0a38e0de59d03cc96de";
+          hash = "sha256-I+AZfPyUNmHNJ37FTRUMpKlBY3B+haXaS/fmQIH6WG4=";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2655,6 +2677,15 @@ with oself;
       repo = "utop";
       rev = "c7bab9e66e8b82795b2026c46e593ed87cdfa43d";
       hash = "sha256-i8W4tnI8WMwDpWL37mjqqBd3FYr1C39AfzqvsHCxg9c=";
+    };
+  });
+
+  uuidm = osuper.uuidm.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "dbuenzli";
+      repo = "uuidm";
+      rev = "v0.9.9";
+      hash = "sha256-FyI90b/qHn25VZcALlN4lksduBPw8dXNfFpB5KR+/Pk=";
     };
   });
 
