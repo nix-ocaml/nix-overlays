@@ -2027,8 +2027,8 @@ in
           {
             owner = "janestreet";
             repo = "ppxlib_jane";
-            rev = "a1c2f3a7d95b7efb69a88b7c3adfd6bedf1abdf8";
-            hash = "sha256-g+gFnju/NjhOaCZLc0Lh8Akwh+jQ+zQykBuHpdWOBn4=";
+            rev = "v0.17.1";
+            hash = "sha256-kcGXqO1kFYds8KwLvpIQ7OKhqnp6JZs8WYYLi7o/nBw=";
           }
       else o.src;
   });
