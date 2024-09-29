@@ -2578,8 +2578,8 @@ with oself;
 
   tls = osuper.tls.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.2/tls-1.0.2.tbz";
-      sha256 = "1srz5ga05h2jknq15vbbxvl4flbv33gddxa72pz6y55k1hh525x2";
+      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.3/tls-1.0.3.tbz";
+      sha256 = "0l317wzc4bsmcrhh5b2q3v4h4vbcgk2zqw2hlkljdshszif0szxj";
 
     };
 
@@ -2802,7 +2802,7 @@ with oself;
   x509 = osuper.x509.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.4/x509-1.0.4.tbz";
-      sha256 = "152g2mnz9y25pmic25nz4iahfs6f8q35bvpmawa8rhnr1d7jirr3";
+      sha256 = "00p7ymc64an859gnzw4xbh67vnwmsl3rpyhbrd09s4ak7scd629y";
     };
 
     checkInputs = [ alcotest ];
