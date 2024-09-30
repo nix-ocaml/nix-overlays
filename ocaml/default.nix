@@ -890,6 +890,11 @@ with oself;
       '';
     });
 
+  eio-ssl =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./eio-ssl { }
+    else null;
+
   extlib = osuper.extlib.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
@@ -1028,6 +1033,11 @@ with oself;
   h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
+  h2-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./h2/eio.nix { }
+    else null;
+
   hpack = callPackage ./h2/hpack.nix { };
 
   hachis = buildDunePackage {
@@ -1089,6 +1099,10 @@ with oself;
   httpun-lwt-unix = callPackage ./httpun/lwt-unix.nix { };
   httpun-mirage = callPackage ./httpun/mirage.nix { };
   httpun-async = callPackage ./httpun/async.nix { };
+  httpun-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./httpun/eio.nix { }
+    else null;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
