@@ -86,7 +86,6 @@ with oself;
     checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
 
-  piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
   picos = buildDunePackage {

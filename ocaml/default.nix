@@ -2099,6 +2099,11 @@ with oself;
 
   pg_query = callPackage ./pg_query { };
 
+  piaf =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      callPackage ./piaf { }
+    else null;
+
   plist-xml = buildDunePackage {
     pname = "plist-xml";
     version = "";
