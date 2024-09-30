@@ -26,8 +26,6 @@ with oself;
     propagatedBuildInputs = [ cohttp eio_main ptime ];
   };
 
-  eio-ssl = callPackage ./eio-ssl { };
-
   eio-trace =
     let
       stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
@@ -51,10 +49,6 @@ with oself;
     inherit (graphql_parser) src version;
     propagatedBuildInputs = [ eio_main graphql ];
   };
-
-  h2-eio = callPackage ./h2/eio.nix { };
-
-  httpun-eio = callPackage ./httpun/eio.nix { };
 
   kafka-eio = buildDunePackage {
     pname = "kafka-eio";
@@ -92,7 +86,6 @@ with oself;
     checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
 
-  piaf = callPackage ./piaf { };
   carl = callPackage ./piaf/carl.nix { };
 
   picos = buildDunePackage {
