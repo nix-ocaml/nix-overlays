@@ -2715,13 +2715,6 @@ with oself;
     };
   });
 
-  uunf = osuper.uunf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uunf/releases/uunf-16.0.0.tbz";
-      sha256 = "1bjz3m2vcd7mkizshf4ql6a7qm8ibfrmkwkxbr4y7s5gar7n80w9";
-    };
-  });
-
   uuseg = osuper.uuseg.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://erratique.ch/software/uuseg/releases/uuseg-16.0.0.tbz";
