@@ -2715,13 +2715,6 @@ with oself;
     };
   });
 
-  uuseg = osuper.uuseg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uuseg/releases/uuseg-16.0.0.tbz";
-      sha256 = "097yxkjc35876qw21gwnh8bcia81j20m7gqfd8xdr1hz5axzs0sq";
-    };
-  });
-
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
