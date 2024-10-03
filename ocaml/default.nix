@@ -2837,9 +2837,11 @@ with oself;
   webauthn = buildDunePackage {
     pname = "webauthn";
     version = "0.2.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/webauthn/releases/download/v0.2.0/webauthn-0.2.0.tbz";
-      sha256 = "08n62gq9ni553p7h1mk9a4xvvznsgq4h37n031my1hr1nhf3x8bl";
+    src = fetchFromGitHub {
+      owner = "robur-coop";
+      repo = "webauthn";
+      rev = "ea5fc357da2d6bf1f1a35cc89af26d281f5c6521";
+      hash = "sha256-85Aoep+/qxr3qkRIte5QgyitvzDdGsPG4kR3xa0Gq4E=";
     };
     propagatedBuildInputs = [
       ppx_deriving_yojson
