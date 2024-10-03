@@ -127,6 +127,7 @@ let
   darwinIgnores = [
     "dssi"
     "elina"
+    "augeas"
 
     # broken on macOS?
     "llvm"
