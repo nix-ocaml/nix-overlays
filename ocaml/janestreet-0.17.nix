@@ -2281,7 +2281,8 @@ in
     version = "0.15.1";
     hash = "sha256-6vAkRjTZQGiPhYBWX4MBO3GxEDmAE+18vpMWXMcvWJk=";
     meta.description = "Spawning sub-processes";
-    buildInputs = [ ppx_expect ];
+    checkInputs = [ ppx_expect ];
+    doCheck = ! (lib.versionOlder "5.3" ocaml.version);
   };
 
   splay_tree = janePackage {

@@ -866,6 +866,7 @@ with oself;
       url = "https://github.com/ocaml-dune/pp/releases/download/2.0.0/pp-2.0.0.tbz";
       sha256 = "06a4nk6rr4kbkfqsi13azf92y5bnq9qq3q7lvsib94mh30akalc6";
     };
+    doCheck = ! (lib.versionOlder "5.3" ocaml.version);
   });
 
   stdune = osuper.stdune.overrideAttrs (o: {
@@ -1209,7 +1210,15 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.2" ocaml.version then
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml";
+            repo = "ocaml-lsp";
+            rev = "2d66db71a2870cb79057944f0336a0af257a9874";
+            hash = "sha256-1ghwFPAzy33eRUoh4jZmfGCR29rKTYYix15vRa2Krj0=";
+          }
+      else if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
           {
             url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.19.0/lsp-1.19.0.tbz";
@@ -2194,11 +2203,9 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_deriving";
-      rev = "c3227d1f1ef15d907387dba38c26ea0167645b47";
-      hash = "sha256-xq96yAFIKbSl9xnNy8uCzgH2Qc7qHKwuFWoUtDgy0kg=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/v6.0.3/ppx_deriving-6.0.3.tbz";
+      sha256 = "0vaar4csqm8l219497k4bcxj3311za5s843qm44irq6569xsjjip";
     };
     buildInputs = [ ];
     propagatedBuildInputs = [

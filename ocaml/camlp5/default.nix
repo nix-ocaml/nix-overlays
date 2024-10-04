@@ -16,13 +16,13 @@
 stdenv.mkDerivation
 {
   pname = "camlp5";
-  version = "8.02.00";
+  version = "8.03.01";
 
   src = fetchFromGitHub {
     owner = "camlp5";
     repo = "camlp5";
-    rev = "8.03.00";
-    hash = "sha256-hu/279gBvUc7Z4jM6EHiar6Wm4vjkGXl+7bxowj+vlM=";
+    rev = "8.03.01";
+    hash = "sha256-GnNSCfnizazMT5kgib7u5PIb2kWsnqpL33RsPEK4JvM=";
   };
 
   nativeBuildInputs = [ ocaml findlib ];
