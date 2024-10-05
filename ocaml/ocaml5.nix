@@ -28,13 +28,13 @@ with oself;
 
   eio-trace =
     let
-      stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
-      buildDunePackage' =
-        callPackage "${nixpkgs}/pkgs/build-support/ocaml/dune.nix" {
-          stdenv = stdenv';
-        };
+      stdenv' =
+        if stdenv.isDarwin && !stdenv.isAarch64
+        then overrideSDK stdenv "11.0"
+        else stdenv;
     in
-    buildDunePackage' {
+    buildDunePackage {
+      stdenv = stdenv';
       pname = "eio-trace";
       version = "0.4";
       src = builtins.fetchurl {
