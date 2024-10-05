@@ -13,7 +13,10 @@
 }:
 
 let
-  stdenv' = if stdenv.isDarwin then overrideSDK stdenv "11.0" else stdenv;
+  stdenv' =
+    if stdenv.isDarwin && !stdenv.isAarch64
+    then overrideSDK stdenv "11.0"
+    else stdenv;
 in
 
 stdenv'.mkDerivation {
