@@ -128,6 +128,7 @@ let
     "dssi"
     "elina"
     "augeas"
+    "nbd"
 
     # broken on macOS?
     "llvm"
