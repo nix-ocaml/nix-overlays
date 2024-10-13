@@ -1046,6 +1046,13 @@ with oself;
     nativeBuildInputs = [ cppo ];
   };
 
+  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/robur-coop/happy-eyeballs/releases/download/v1.2.2/happy-eyeballs-1.2.2.tbz";
+      sha256 = "1brfclji1gamana57n8mnvpbj89zgjm7x7d866qbkhhc0ikh4p8a";
+    };
+  });
+
   hdr_histogram = buildDunePackage {
     pname = "hdr_histogram";
     version = "0.0.3";
@@ -1200,6 +1207,15 @@ with oself;
   };
 
   jose = callPackage ./jose { };
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "95dafb1ad45c6ede3e7ff7ca278b93dd372f466c";
+      hash = "sha256-gB7uE8Kxaoi0n5FH3P5UNM+PrPLc4XQfsuOtFibSPsY=";
+    };
+  });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
@@ -1386,7 +1402,14 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; });
+  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "lwt";
+      rev = "5.8.0";
+      hash = "sha256-GX5CSJuTajvZJ0TgG95aHeOCBi2B9Aw2URLZRCdp91A=";
+    };
+  });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
