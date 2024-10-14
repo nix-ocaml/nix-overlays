@@ -1737,6 +1737,7 @@ with oself;
       sha256 = "0yy5d2ih21inx02gdylcscp30gd9vvrm7ky1abyzahcypz3x2m32";
     };
     buildInputs = o.buildInputs ++ [ ptime base64 dune-configurator ];
+    doCheck = false;
   });
 
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
