@@ -1392,6 +1392,14 @@ in
             rev = "9427476a1043deaaf733da03572427694a566d83";
             hash = "sha256-npyGcr+kTyukrTl6UmLieT2hOHKXg1lfZeg2eRg1UqA=";
           }
+      else if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_bin_prot";
+            rev = "197355d75437ce8233ce4464602539cdef9a28f9";
+            hash = "sha256-0YIbZ0C44WgkhCE/xwky7HldNL7PueeNvNh2jEutgsQ=";
+          }
       else o.src;
   });
 
@@ -1593,7 +1601,16 @@ in
             rev = "e1748590e4685ecb7a49fb727c5d2d15b073bd17";
             hash = "sha256-q681BioQSnFBiehKRcUrii3WOvzONz6yqiWt7XMIiIc=";
           }
-      else o.src;
+      else if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppx_globalize";
+            rev = "351edfb5e91ac5b5e4cd1251acfa2892a29b63ed";
+            hash = "sha256-nLO+hyvPWkcpTETp1HK6m0LFqpTB0VM6Sp5w4LEFSDU=";
+          }
+      else
+        o.src;
   });
 
   ppx_hash = (janePackage {
