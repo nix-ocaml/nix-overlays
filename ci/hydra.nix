@@ -32,7 +32,10 @@ with filter;
     { inherit (pkgs) melange-relay-compiler hermes; } //
     (if stdenv.isLinux then {
       inherit (pkgs) esy kubernetes;
-      hermes-musl64 = pkgs.pkgsCross.musl64.hermes;
+      # disabled after musl 1.2.5 upgrade. should be easy to find / replace
+      # lseek{64,} but likely not worth it as we'd like to move to the static
+      # branch in the future.
+      # hermes-musl64 = pkgs.pkgsCross.musl64.hermes;
     } else { });
 
   arm64_4_14 = (if system == "x86_64-linux" then
