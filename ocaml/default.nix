@@ -2726,15 +2726,6 @@ with oself;
     };
   });
 
-  uuidm = osuper.uuidm.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "uuidm";
-      rev = "v0.9.9";
-      hash = "sha256-FyI90b/qHn25VZcALlN4lksduBPw8dXNfFpB5KR+/Pk=";
-    };
-  });
-
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
