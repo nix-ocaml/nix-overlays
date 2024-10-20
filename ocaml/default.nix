@@ -13,7 +13,7 @@
 , fzf
 , git
 , libgsl
-, kerberos
+, krb5
 , lib
 , libargon2
 , libcxx
@@ -93,7 +93,7 @@ let
       fetchFromGitHub
       fzf
       lib
-      kerberos
+      krb5
       linuxHeaders
       nixpkgs
       pam
@@ -110,7 +110,6 @@ let
       fetchFromGitHub
       fzf
       lib
-      kerberos
       linuxHeaders
       nixpkgs
       pam

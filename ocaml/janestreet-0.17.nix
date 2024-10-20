@@ -7,7 +7,6 @@
 , linuxHeaders
 , nixpkgs
 , pam
-, kerberos
 , net-snmp
 , openssl
 , postgresql

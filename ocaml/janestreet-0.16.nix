@@ -7,7 +7,7 @@
 , linuxHeaders
 , nixpkgs
 , pam
-, kerberos
+, krb5
 , net-snmp
 , openssl
 , postgresql
@@ -687,7 +687,7 @@ with self;
     meta.description = "A library for using Kerberos for both Rpc and Tcp communication";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [
-      kerberos
+      krb5
       async
       base
       core
