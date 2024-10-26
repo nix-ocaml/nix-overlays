@@ -2803,16 +2803,14 @@ with oself;
   httpun-ws-async = callPackage ./httpun-ws/async.nix { };
   httpun-ws-mirage = callPackage ./httpun-ws/mirage.nix { };
 
-  ohex = buildDunePackage {
-    pname = "ohex";
-    version = "0.2.0";
+  ohex = osuper.ohex.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "robur-coop";
       repo = "ohex";
       rev = "v0.2.0";
       hash = "sha256-9lg/IAkVuHFzk92IkuBjfJSwPUZ1AbLklxwFWMTbws8=";
     };
-  };
+  });
 
   x509 = osuper.x509.overrideAttrs (_: {
     src = builtins.fetchurl {
