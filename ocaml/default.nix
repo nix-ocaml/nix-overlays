@@ -190,13 +190,6 @@ with oself;
     propagatedBuildInputs = [ atd cmdliner ];
   };
 
-  awa = osuper.awa.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/awa-ssh/releases/download/v0.4.0/awa-0.4.0.tbz";
-      sha256 = "1d69d64im477z982vkny3q4q3ps3fwgsri4vqz0wimw9pwdcl15q";
-    };
-  });
-
   multiformats = buildDunePackage {
     pname = "multiformats";
     version = "dev";
@@ -343,13 +336,6 @@ with oself;
       maintainers = with maintainers; [ ];
     };
   };
-
-  ca-certs = osuper.ca-certs.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ca-certs/releases/download/v1.0.0/ca-certs-1.0.0.tbz";
-      sha256 = "0wha5i3f5dz2l01lh5nl4yq2gdhnxj2bd8fqyaclfwj64cqz5446";
-    };
-  });
 
   ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -736,35 +722,6 @@ with oself;
     ];
   };
 
-  dns = osuper.dns.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-dns/releases/download/v9.0.0/dns-9.0.0.tbz";
-      sha256 = "1xnbxb6zl0pplffk8lgi93ll08zvyfzv8pzcaw3lrhsanm6g1x8y";
-    };
-    propagatedBuildInputs = [
-      logs
-      ptime
-      fmt
-      domain-name
-      gmap
-      ipaddr
-      lru
-      duration
-      metrics
-      ohex
-      base64
-    ];
-  });
-  dns-client-lwt = osuper.dns-client-lwt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-lwt ];
-  });
-  dns-client-mirage = osuper.dns-client-mirage.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ happy-eyeballs-mirage ];
-  });
-  dns-tsig = osuper.dns-tsig.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
-  });
-
   dose3 = disableTests osuper.dose3;
 
   dream-html = callPackage ./dream-html { };
@@ -976,13 +933,6 @@ with oself;
     propagatedBuildInputs = [ camomile ocaml_gettext ];
   });
 
-  git = osuper.git.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-git/releases/download/3.17.0/git-3.17.0.tbz";
-      sha256 = "0r82zmcj7q9sd96hja0508z8j2qfi6c14l6h4n2m66pd2820s87g";
-    };
-  });
-
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -1072,22 +1022,6 @@ with oself;
 
     propagatedBuildInputs = [ cmarkit textmate-language ];
   };
-
-  hkdf = osuper.hkdf.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/hannesm/ocaml-hkdf/releases/download/v2.0.0/hkdf-2.0.0.tbz";
-      sha256 = "1lsq2frgzhnzcj3i3zblbkmkvzxb0s03845dkkskjkg2kckp3c2l";
-    };
-    propagatedBuildInputs = [ digestif ];
-    checkInputs = [ ohex alcotest ];
-  });
-
-  http-mirage-client = osuper.http-mirage-client.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/http-mirage-client/releases/download/v0.0.7/http-mirage-client-0.0.7.tbz";
-      sha256 = "0lxlij4wr7bnvpszvqafa0cjmv51npqwpdnx5xybn4a7bclwk8qq";
-    };
-  });
 
   httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
@@ -1303,13 +1237,6 @@ with oself;
       '' else "";
   });
 
-  letsencrypt = osuper.letsencrypt.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/ocaml-letsencrypt/releases/download/v1.0.0/letsencrypt-1.0.0.tbz";
-      sha256 = "1w0sli6czy5iinppvxir044ank15xviwmimy3ny8sbd8svbld0wj";
-    };
-  });
-
   lev = buildDunePackage {
     pname = "lev";
     version = "n/a";
@@ -1475,24 +1402,8 @@ with oself;
     };
   };
 
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-crypto/releases/download/v1.1.0/mirage-crypto-1.1.0.tbz";
-      sha256 = "0lv3afzql0jgv4wnjxs8n3agfjn3s2fg685hr8ilkmgalxkrf667";
-    };
-    propagatedBuildInputs = [ eqaf ];
-    checkInputs = o.checkInputs ++ [ ohex ];
-  });
-
-  mirage-crypto-ec = disableTests osuper.mirage-crypto-ec;
-  mirage-crypto-pk = disableTests (osuper.mirage-crypto-pk.override { gmp = gmp-oc; });
-  mirage-crypto-rng = osuper.mirage-crypto-rng.overrideAttrs (o: {
-    doCheck = false;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ digestif ];
-  });
-  mirage-crypto-rng-mirage = osuper.mirage-crypto-rng-mirage.overrideAttrs (o: {
-    checkInputs = o.checkInputs ++ [ ohex ];
-  });
+  mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+  mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1634,8 +1545,6 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
-
-  mrmime = disableTests osuper.mrmime;
 
   mtime = osuper.mtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2107,17 +2016,6 @@ with oself;
     checkInputs = [ alcotest ];
   };
 
-  pbkdf = osuper.pbkdf.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "abeaumont";
-      repo = "ocaml-pbkdf";
-      rev = "2.0.0";
-      hash = "sha256-D2dXpf1D/wsJrcajU3If37tuLYjahoA/+QoXZKr1vQs=";
-    };
-    propagatedBuildInputs = [ mirage-crypto digestif ];
-    checkInputs = o.checkInputs ++ [ ohex ];
-  });
-
   pg_query = callPackage ./pg_query { };
 
   piaf =
@@ -2341,13 +2239,6 @@ with oself;
     src = builtins.fetchurl {
       url = "https://github.com/ocaml/ocaml-re/releases/download/1.12.0/re-1.12.0.tbz";
       sha256 = "1m6ipbd4si87l3axc6m4qmmvzh9mbriyglyqmfmz9hkj5zr2n7x0";
-    };
-  });
-
-  randomconv = osuper.randomconv.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/hannesm/randomconv/releases/download/v0.2.0/randomconv-0.2.0.tbz";
-      sha256 = "1sk3bdfz1nlqrivp8vy3slpbhqw858gc5zwjix3a8hg30zgiw5xk";
     };
   });
 
@@ -2586,15 +2477,7 @@ with oself;
     ];
   };
 
-  tcpip = osuper.tcpip.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-tcpip/releases/download/v8.2.0/tcpip-8.2.0.tbz";
-      sha256 = "1vfnnys2hqlw02g1sqxys7w3kmrsjvs2k0fv8k27cxl9pa56hvli";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ mirage-crypto-rng-mirage ];
-    checkInputs = o.checkInputs ++ [ mirage-crypto-rng ohex ];
-    doCheck = false;
-  });
+  tcpip = disableTests osuper.tcpip;
 
   textmate-language = buildDunePackage {
     pname = "textmate-language";
@@ -2620,19 +2503,6 @@ with oself;
       sha256 = "0l317wzc4bsmcrhh5b2q3v4h4vbcgk2zqw2hlkljdshszif0szxj";
 
     };
-
-    propagatedBuildInputs = [
-      domain-name
-      fmt
-      logs
-      ipaddr
-      kdf
-      mirage-crypto
-      mirage-crypto-ec
-      mirage-crypto-pk
-      mirage-crypto-rng
-      x509
-    ];
   });
 
   torch = osuper.torch.overrideAttrs (o: {
@@ -2817,22 +2687,6 @@ with oself;
       url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.4/x509-1.0.4.tbz";
       sha256 = "00p7ymc64an859gnzw4xbh67vnwmsl3rpyhbrd09s4ak7scd629y";
     };
-
-    checkInputs = [ alcotest ];
-    propagatedBuildInputs = [
-      asn1-combinators
-      domain-name
-      fmt
-      gmap
-      mirage-crypto
-      mirage-crypto-pk
-      mirage-crypto-ec
-      kdf
-      logs
-      ohex
-      base64
-      ipaddr
-    ];
   });
 
   webauthn = buildDunePackage {
