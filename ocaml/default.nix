@@ -2687,6 +2687,20 @@ with oself;
       url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.4/x509-1.0.4.tbz";
       sha256 = "00p7ymc64an859gnzw4xbh67vnwmsl3rpyhbrd09s4ak7scd629y";
     };
+    propagatedBuildInputs = [
+      asn1-combinators
+      domain-name
+      fmt
+      gmap
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      kdf
+      logs
+      ohex
+      base64
+      ipaddr
+    ];
   });
 
   webauthn = buildDunePackage {
