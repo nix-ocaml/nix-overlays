@@ -559,7 +559,7 @@ in
     pname = "cohttp_async_websocket";
     hash = "sha256-0InGCF34LWQes9S4OgbR6w+6cylThYuj1Dj0aQyTnuY=";
     meta.description = "Websocket library for use with cohttp and async";
-    propagatedBuildInputs = [ async_websocket cohttp-async ppx_jane uri-sexp ];
+    propagatedBuildInputs = [ async_ssl async_websocket cohttp-async ppx_jane uri-sexp ];
     postPatch = ''
       substituteInPlace "src/cohttp_async_websocket.ml" \
         --replace-fail Cohttp_async.Io Cohttp_async.Io.IO \
