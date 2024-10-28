@@ -354,8 +354,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "xavierleroy";
       repo = "camlzip";
-      rev = "rel112";
-      hash = "sha256-oZ8zCdHDd90tYv1fw0Ak1nJ6BnZ0WKvDt/C2pUFooOA=";
+      rev = "rel113";
+      hash = "sha256-hUHMJBfe0G0faa21kDFErkzJ1njHWNbHtWUF7QTJ8x0=";
     };
   });
 
@@ -410,6 +410,23 @@ with oself;
     buildInputs = [ dune-configurator gtk2.dev ];
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
+
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "cpdf-source";
+      rev = "997b32b44030908e502b5a9c8f8cfc1ea279d452";
+      hash = "sha256-D/ObDD5jHziyqz50HyvboZq8nUI7m/rPxckmjnKOOJY=";
+    };
+  });
+  camlpdf = osuper.camlpdf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "camlpdf";
+      rev = "v2.7.2";
+      hash = "sha256-ZZVLG2Py6g4MCikzDmclHsAYQO5UgaBVaNBGSXtG3y8=";
+    };
+  });
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
@@ -477,22 +494,22 @@ with oself;
 
   colombe = buildDunePackage {
     pname = "colombe";
-    version = "0.9.0";
+    version = "0.11.0";
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/colombe/releases/download/v0.9.0/colombe-0.9.0.tbz";
-      sha256 = "0gkj6fplq600aw45nk7qil9gxxmh097y5asa4m2qr638ffnnyq35";
+      url = "https://github.com/mirage/colombe/releases/download/v0.11.0/colombe-0.11.0.tbz";
+      sha256 = "0pksl4gfx39y7qlm6q7yni2gzcjlisn1rphijwh6j1v4bqkcgjha";
     };
     propagatedBuildInputs = [ ipaddr fmt angstrom emile ];
   };
   sendmail = buildDunePackage {
     pname = "sendmail";
     inherit (colombe) version src;
-    propagatedBuildInputs = [ colombe tls ke rresult base64 ];
+    propagatedBuildInputs = [ colombe tls ke rresult base64 hxd ];
   };
   sendmail-lwt = buildDunePackage {
     pname = "sendmail-lwt";
     inherit (colombe) version src;
-    propagatedBuildInputs = [ sendmail lwt tls-lwt ];
+    propagatedBuildInputs = [ sendmail lwt tls-lwt ca-certs ];
   };
 
   received = buildDunePackage {
@@ -721,6 +738,13 @@ with oself;
       dns-client-mirage
     ];
   };
+
+  dns = osuper.dns.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/ocaml-dns/releases/download/v9.1.0/dns-9.1.0.tbz";
+      sha256 = "1w24iz37lfmjz5ka1n5ikjjc5b71xa4sch2lkchp9x8lrxdcjglg";
+    };
+  });
 
   dose3 = disableTests osuper.dose3;
 
@@ -1485,11 +1509,9 @@ with oself;
   });
 
   merlin-extend = osuper.merlin-extend.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "let-def";
-      repo = "merlin-extend";
-      rev = "5780147e47ec2dbbc88d41c2f8cd421814f28db7";
-      hash = "sha256-G7AEXKoUMnvQYkPkQ+mn4h+EXrbUUwDESxVmZnEnW/I=";
+    src = builtins.fetchurl {
+      url = "https://github.com/let-def/merlin-extend/releases/download/v0.6.2/merlin-extend-0.6.2.tbz";
+      sha256 = "0yfpyjqf0j3qmnv5490ksnhcyfhkhzvvfby8p7r64i5n61zqwma7";
     };
   });
 
@@ -2586,11 +2608,49 @@ with oself;
     '';
   });
 
+  uspf = buildDunePackage {
+    pname = "uspf";
+    version = "0.0.4";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/uspf/releases/download/0.0.4/uspf-0.0.4.tbz";
+      sha256 = "09s838dfrns3ac1hlvqf8dj7g95amy04hvvw3srwxi2sg6f9dy46";
+    };
+    propagatedBuildInputs = [
+      logs
+      colombe
+      mrmime
+      ipaddr
+      hmap
+      angstrom
+      domain-name
+      dns
+      dns-client
+    ];
+  };
+
+  uspf-lwt = buildDunePackage {
+    pname = "uspf-lwt";
+    inherit (uspf) version src;
+    propagatedBuildInputs = [ uspf lwt ];
+  };
+
+  uspf-mirage = buildDunePackage {
+    pname = "uspf-mirage";
+    inherit (uspf) version src;
+    propagatedBuildInputs = [ uspf dns-client-mirage ];
+  };
+
+  uspf-unix = buildDunePackage {
+    pname = "uspf-unix";
+    inherit (uspf) version src;
+    propagatedBuildInputs = [ uspf ];
+  };
+
   utop = osuper.utop.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "c7bab9e66e8b82795b2026c46e593ed87cdfa43d";
+      rev = "b490baca2192312acc3c3bfe4902a43c115f93a6";
       hash = "sha256-i8W4tnI8WMwDpWL37mjqqBd3FYr1C39AfzqvsHCxg9c=";
     };
   });
