@@ -93,6 +93,9 @@ let
 
     # incompatible with new ppxlib?
     "metapp"
+
+    # flaky?
+    "binaryen"
   ];
 
   ocaml5Ignores = [
