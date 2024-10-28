@@ -1547,8 +1547,8 @@ in
 
   ppx_expect = (janePackage {
     pname = "ppx_expect";
-    version = "0.17.1";
-    hash = "sha256-Fx4COazc8yd/y+3eI6sGTPbJLEDsn3GnWKgqpSjitiY=";
+    version = "0.17.2";
+    hash = "sha256-na9n/+shkiHIIUQ2ZitybQ6NNsSS9gWFNAFxij+JNVo=";
     minimalOCamlVersion = "4.14";
     meta.description = "Cram like framework for OCaml";
     propagatedBuildInputs = [ base ppx_here ppx_inline_test stdio re ppx_compare ];
