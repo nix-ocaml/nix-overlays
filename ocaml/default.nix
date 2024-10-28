@@ -411,6 +411,14 @@ with oself;
     propagatedBuildInputs = [ cairo2 lablgtk ];
   };
 
+  cpdf = osuper.cpdf.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "johnwhitington";
+      repo = "cpdf-source";
+      rev = "997b32b44030908e502b5a9c8f8cfc1ea279d452";
+      hash = "sha256-D/ObDD5jHziyqz50HyvboZq8nUI7m/rPxckmjnKOOJY=";
+    };
+  });
   camlpdf = osuper.camlpdf.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "johnwhitington";
