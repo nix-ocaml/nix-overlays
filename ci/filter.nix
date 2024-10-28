@@ -11,15 +11,10 @@ let
     # dune.configurator issue
     "google-drive-ocamlfuse"
 
-    # graphql incompatible
-    "irmin-graphql"
-    "irmin-mirage-graphql"
-
     # doesn't work with cohttp 6.0
     "paf-cohttp"
 
     # broken since OCaml 4.13
-    "hol_light"
     "ppx_tools_versioned"
 
     # Conflicts with cohttp v6 because of the HTTP module
@@ -64,8 +59,6 @@ let
     "asai"
 
     "torch"
-
-    "binaryen"
 
     # we don't really care about these and they don't build on 4.14
     "spices"
@@ -148,7 +141,6 @@ let
 
     "gapi-ocaml"
     "bz2"
-    "camlimages"
     "curses"
     "ocaml_libvirt"
     "magic"
