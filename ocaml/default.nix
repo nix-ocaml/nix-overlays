@@ -496,12 +496,12 @@ with oself;
   sendmail = buildDunePackage {
     pname = "sendmail";
     inherit (colombe) version src;
-    propagatedBuildInputs = [ colombe tls ke rresult base64 ];
+    propagatedBuildInputs = [ colombe tls ke rresult base64 hxd ];
   };
   sendmail-lwt = buildDunePackage {
     pname = "sendmail-lwt";
     inherit (colombe) version src;
-    propagatedBuildInputs = [ sendmail lwt tls-lwt ];
+    propagatedBuildInputs = [ sendmail lwt tls-lwt ca-certs ];
   };
 
   received = buildDunePackage {
