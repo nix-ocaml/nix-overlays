@@ -1231,18 +1231,6 @@ with oself;
   # Added by the ocaml5.nix
   kcas = null;
 
-  kdf = buildDunePackage {
-    pname = "kdf";
-    version = "1.0.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/kdf/releases/download/v1.0.0/kdf-1.0.0.tbz";
-      sha256 = "1kp0cbn3v0l7rzb7g0r1rra697wf0qhrr33bvmcdjrpy1qmmhqfi";
-    };
-    propagatedBuildInputs = [ mirage-crypto digestif ];
-    doCheck = true;
-    checkInputs = [ alcotest ohex ];
-  };
-
   lablgtk3 = osuper.lablgtk3.overrideAttrs (_: {
     # https://github.com/garrigue/lablgtk/pull/175
     src = fetchFromGitHub {
