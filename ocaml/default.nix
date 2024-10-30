@@ -772,12 +772,12 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    version = "3.17.0-dev";
+    version = "3.16.1-dev";
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "dune";
-      rev = "d6f1a2740ac584127105773a43283829ae7a39e7";
-      hash = "sha256-tIa6mIQvhPi6B2c7aK+tq3WJkuEPiDuvRtvHkaxCC3w=";
+      rev = "3c2b57bc29e3ba758bfe025d93e22737e3b359f2";
+      hash = "sha256-oVA6vjSteFxq+emMAEB7zOPWf7D5uEry3Ga+wbzWiBw=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
