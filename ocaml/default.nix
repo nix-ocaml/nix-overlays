@@ -739,13 +739,6 @@ with oself;
     ];
   };
 
-  dns = osuper.dns.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-dns/releases/download/v9.1.0/dns-9.1.0.tbz";
-      sha256 = "1w24iz37lfmjz5ka1n5ikjjc5b71xa4sch2lkchp9x8lrxdcjglg";
-    };
-  });
-
   dose3 = disableTests osuper.dose3;
 
   dream-html = callPackage ./dream-html { };
