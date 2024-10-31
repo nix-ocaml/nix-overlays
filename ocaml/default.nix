@@ -835,6 +835,10 @@ with oself;
   };
 
   pp = osuper.pp.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-dune/pp/releases/download/1.2.0/pp-1.2.0.tbz";
+      sha256 = "174hwr63gpliw9w2ipzjbkvdib7js6n6xicyn8nv9bsm7ibj5s55";
+    };
     doCheck = ! (lib.versionOlder "5.3" ocaml.version);
   });
 
