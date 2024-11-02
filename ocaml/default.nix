@@ -1641,6 +1641,14 @@ with oself;
   ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
     inherit (ocamlformat-lib) src;
   });
+  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ocamlformat";
+      rev = "7ebe9fc020a9faf24e2c1d021dd2163230e6707b";
+      hash = "sha256-J2PCDoBfF8fj4YF4pFn7Yj2YOIOIC5x35+qVJg9GGjo=";
+    };
+  });
   ocamlformat-rpc-lib = buildDunePackage {
     pname = "ocamlformat-rpc-lib";
     inherit (ocamlformat-lib) src version;
@@ -1940,8 +1948,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.3.0-alpha1";
-      hash = "sha256-+YTJjZpOd4SelbqemeOKepSwOwfbXi+/2T1ltRfozKA=";
+      rev = "2.3.0-rc1";
+      hash = "sha256-HAr7LOuq9mOfgHGTm+WPJDL7Q1ih9YGSZOs5BWynTpk=";
     };
     version = "2.3.0-alpha1";
     meta = with lib; {
