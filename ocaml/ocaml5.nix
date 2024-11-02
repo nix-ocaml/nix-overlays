@@ -107,7 +107,7 @@ with oself;
   picos_std = buildDunePackage {
     pname = "picos_std";
     inherit (picos) src version;
-    propagatedBuildInputs = [ picos backoff multicore-magic ];
+    propagatedBuildInputs = [ picos picos_aux backoff multicore-magic ];
   };
 
   picos_io = buildDunePackage {
