@@ -1854,9 +1854,11 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/2.4.3/odoc-2.4.3.tbz";
-      sha256 = "04ibpcxvzyxy21kl8h78rp6kyn5n21hv3dyphzkkr2dl0pn2rfyn";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "2de9dfc32fe4a88b62db6448e89b95a02ff13b02";
+      hash = "sha256-0er3h5smzxbBQJ/zTFh404PuYemybk1V2DjPN3+TgVc=";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
