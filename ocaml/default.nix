@@ -202,15 +202,6 @@ with oself;
     propagatedBuildInputs = [ ppx_jane ppx_deriving core_kernel stdint digestif ];
   };
 
-  backoff = buildDunePackage {
-    pname = "backoff";
-    version = "0.1.1";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/backoff/releases/download/0.1.1/backoff-0.1.1.tbz";
-      sha256 = "00wzmhvkg5d6jgqjqkjfgd2dh7wbwgfa97c7al5brc97n88s7gh0";
-    };
-  };
-
   bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/bap" {
     inherit (llvmPackages) llvm;
   };
