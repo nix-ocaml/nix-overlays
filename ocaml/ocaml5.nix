@@ -90,10 +90,10 @@ with oself;
 
   picos = buildDunePackage {
     pname = "picos";
-    version = "0.5.0";
+    version = "0.6.0";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/picos/releases/download/0.5.0/picos-0.5.0.tbz";
-      sha256 = "1gl2w7qf3bm28dww1sdha1ngkh6xs4gzpkzddf3kmy9d7qw62bc6";
+      url = "https://github.com/ocaml-multicore/picos/releases/download/0.6.0/picos-0.6.0.tbz";
+      sha256 = "1ykx11c8jnjf24anwdzmmf7dmwbqf63z6s3x5yp2sp7nkhchhniz";
     };
     propagatedBuildInputs = [ backoff thread-local-storage ];
   };
@@ -107,7 +107,7 @@ with oself;
   picos_std = buildDunePackage {
     pname = "picos_std";
     inherit (picos) src version;
-    propagatedBuildInputs = [ picos backoff multicore-magic ];
+    propagatedBuildInputs = [ picos picos_aux backoff multicore-magic ];
   };
 
   picos_io = buildDunePackage {

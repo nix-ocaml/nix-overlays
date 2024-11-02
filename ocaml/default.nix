@@ -1854,9 +1854,11 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/2.4.3/odoc-2.4.3.tbz";
-      sha256 = "04ibpcxvzyxy21kl8h78rp6kyn5n21hv3dyphzkkr2dl0pn2rfyn";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "2de9dfc32fe4a88b62db6448e89b95a02ff13b02";
+      hash = "sha256-0er3h5smzxbBQJ/zTFh404PuYemybk1V2DjPN3+TgVc=";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
@@ -2336,6 +2338,15 @@ with oself;
       ++ (if lib.versionOlder "5.0" ocaml.version then [ multicore-bench ] else [ ]);
   });
 
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "sedlex";
+      rev = "v3.3";
+      hash = "sha256-33eJKVdoR4mlWdPZUdjQ26w+kuQWoUN68+bxy2o+Pjs=";
+    };
+  });
+
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
@@ -2500,11 +2511,10 @@ with oself;
   timere = callPackage ./timere/default.nix { };
   timere-parse = callPackage ./timere/parse.nix { };
 
-  tls = osuper.tls.overrideAttrs (_: {
+  tls = osuper.tls.overrideAttrs ({
     src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.3/tls-1.0.3.tbz";
-      sha256 = "0l317wzc4bsmcrhh5b2q3v4h4vbcgk2zqw2hlkljdshszif0szxj";
-
+      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.4/tls-1.0.4.tbz";
+      sha256 = "1s22vkhj5gjkkwfvc1pgq2a089nybmcja9vv22bcg9i23qd7qny8";
     };
   });
 
@@ -2725,8 +2735,8 @@ with oself;
 
   x509 = osuper.x509.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.4/x509-1.0.4.tbz";
-      sha256 = "00p7ymc64an859gnzw4xbh67vnwmsl3rpyhbrd09s4ak7scd629y";
+      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.5/x509-1.0.5.tbz";
+      sha256 = "06r9k862g52jzpf588lmx5mvnf8rikrgqd5gm6i1wlhfwnxrvc7g";
     };
     propagatedBuildInputs = [
       asn1-combinators

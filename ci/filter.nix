@@ -95,6 +95,9 @@ let
 
     # flaky?
     "binaryen"
+
+    # not compatible with latest odoc
+    "sherlodoc"
   ];
 
   ocaml5Ignores = [
