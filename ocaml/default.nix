@@ -1320,14 +1320,7 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "lwt";
-      rev = "5.8.0";
-      hash = "sha256-GX5CSJuTajvZJ0TgG95aHeOCBi2B9Aw2URLZRCdp91A=";
-    };
-  });
+  lwt = (osuper.lwt.override { libev = libev-oc; });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1539,13 +1532,6 @@ with oself;
   mongo-lwt-unix = callPackage ./mongo/lwt-unix.nix { };
   ppx_deriving_bson = callPackage ./mongo/ppx.nix { };
   bson = callPackage ./mongo/bson.nix { };
-
-  mtime = osuper.mtime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/mtime/releases/mtime-2.1.0.tbz";
-      sha256 = "122dhf4qmba4kfpzljcllgqf5ii8b8ylh6rfazcyl09p5s0b4z09";
-    };
-  });
 
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
@@ -1776,13 +1762,6 @@ with oself;
       substituteInPlace "menhir-recover/emitter.ml" --replace-fail \
         "String.capitalize" "String.capitalize_ascii"
     '';
-  });
-
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocurrent/ocaml-version/releases/download/v3.6.9/ocaml-version-3.6.9.tbz";
-      sha256 = "11lmfdh1cpzlfarsfcm28a587cfvlsymm7xi7w78lgh34xhabirm";
-    };
   });
 
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: {
@@ -2210,13 +2189,6 @@ with oself;
       ]);
   };
 
-  ptime = osuper.ptime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/ptime/releases/ptime-1.2.0.tbz";
-      sha256 = "1c1swx6h794gcck358nqfzshlfhyw1zb5ji4h1pc63j9vxzp85ln";
-    };
-  });
-
   qrc =
     let
       version = "0.2.0";
@@ -2552,11 +2524,6 @@ with oself;
   });
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/tsdl/releases/tsdl-1.1.0.tbz";
-      sha256 = "0fw78qby010ai8apgwc66ary6zm3a5nw57228i44vccypav3xpk4";
-    };
-
     propagatedBuildInputs =
       o.propagatedBuildInputs
       ++ [ ctypes-foreign ]
