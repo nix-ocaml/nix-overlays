@@ -2018,11 +2018,9 @@ with oself;
   };
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "mmottl";
-      repo = "postgresql-ocaml";
-      rev = "42c42e9cb";
-      sha256 = "sha256-6xo0P3kBjnzddOHGP6PZ1ODIkQoZ7pNlTHLrDcd1EYM=";
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.1.0/postgresql-5.1.0.tbz";
+      sha256 = "12qnn61mgvlsibm5yinrxks5fah1ngmj1hd611hz2a9mhclbg2kz";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
