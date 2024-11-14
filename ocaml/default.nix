@@ -2094,10 +2094,6 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/v6.0.3/ppx_deriving-6.0.3.tbz";
-      sha256 = "0vaar4csqm8l219497k4bcxj3311za5s843qm44irq6569xsjjip";
-    };
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -2133,13 +2129,6 @@ with oself;
     };
     propagatedBuildInputs = [ ppxlib ];
   };
-
-  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppx_deriving_yojson/releases/download/v3.9.0/ppx_deriving_yojson-3.9.0.tbz";
-      sha256 = "0is03hbr8grilnvz22v5p2radh90vbh62q99005qp4awc7vg8ib7";
-    };
-  });
 
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
