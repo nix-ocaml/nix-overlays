@@ -2295,8 +2295,8 @@ in
 
   spawn = janePackage {
     pname = "spawn";
-    version = "0.15.1";
-    hash = "sha256-6vAkRjTZQGiPhYBWX4MBO3GxEDmAE+18vpMWXMcvWJk=";
+    version = "0.17.0";
+    hash = "sha256-IBQWLbG5u2xXd9mmxNgLw472FEExPiOReYFLiKgnt3M=";
     meta.description = "Spawning sub-processes";
     checkInputs = [ ppx_expect ];
     doCheck = ! (lib.versionOlder "5.3" ocaml.version);
