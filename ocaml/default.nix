@@ -2233,8 +2233,6 @@ with oself;
     meta.mainProgram = "refmt";
   });
 
-  rtop = callPackage ./reason/rtop.nix { };
-
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
   });
