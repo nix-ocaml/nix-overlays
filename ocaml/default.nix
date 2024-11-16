@@ -2218,9 +2218,20 @@ with oself;
     nativeBuildInputs = [ cppo ];
   };
 
-  reason = callPackage ./reason { };
+  reason = osuper.reason.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason";
+      rev = "20eb82b7dccbdc8ad3d41c2d0b6dba006d3583c8";
+      hash = "sha256-ZI6U31o48boRMf5PFwsBfoGNSx3GZX8Mzq4INQXkBHI=";
+    };
 
-  rtop = callPackage ./reason/rtop.nix { };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
+
+    patches = [ ./0001-rename-labels.patch ];
+
+    meta.mainProgram = "refmt";
+  });
 
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
