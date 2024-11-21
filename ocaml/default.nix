@@ -517,8 +517,8 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta2/cohttp-v6.0.0_beta2.tbz";
-      sha256 = "05xh4hvjy90mqslwd0q6sa2h99f0p7vb4cf0f911nhc0sn5yrv4h";
+      url = "https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0/cohttp-6.0.0.tbz";
+      sha256 = "1a92xzqmw6isx56hw983spyiyrk61mjnk9h8wr52yd4b2apk9k2l";
     };
     doCheck = false;
   };
@@ -2485,8 +2485,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "janestreet";
       repo = "torch";
-      rev = "v0.17.0";
-      hash = "sha256-zaCL0/8O/saoslTGfCQfiEaivjeDoS9ogJI1Hk8kj4M=";
+      rev = "v0.17.1";
+      hash = "sha256-+oQ1nnDNPTFdUSuOpOihcpZewfUjbMrcQ1tVuj+YLsM=";
     };
     patches = [ ];
     # postPatch = ''
