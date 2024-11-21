@@ -2481,13 +2481,6 @@ with oself;
   timere = callPackage ./timere/default.nix { };
   timere-parse = callPackage ./timere/parse.nix { };
 
-  tls = osuper.tls.overrideAttrs ({
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v1.0.4/tls-1.0.4.tbz";
-      sha256 = "1s22vkhj5gjkkwfvc1pgq2a089nybmcja9vv22bcg9i23qd7qny8";
-    };
-  });
-
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -2695,13 +2688,6 @@ with oself;
       repo = "ohex";
       rev = "v0.2.0";
       hash = "sha256-9lg/IAkVuHFzk92IkuBjfJSwPUZ1AbLklxwFWMTbws8=";
-    };
-  });
-
-  x509 = osuper.x509.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-x509/releases/download/v1.0.5/x509-1.0.5.tbz";
-      sha256 = "06r9k862g52jzpf588lmx5mvnf8rikrgqd5gm6i1wlhfwnxrvc7g";
     };
   });
 
