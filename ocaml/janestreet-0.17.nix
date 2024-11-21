@@ -2433,8 +2433,8 @@ in
 
   typerep = (janePackage {
     pname = "typerep";
-    hash = "sha256-0KwJdWtibgjxghFmOYKyPrcOAfoLpxYGBZm2KpH8tgA=";
-    minimalOCamlVersion = "4.04.2";
+    hash = "sha256-hw03erwLx9IAbkBibyhZxofA5jIi12rFJOHNEVYpLSk=";
+    version = "0.17.1";
     meta.description = "Typerep is a library for runtime types";
     propagatedBuildInputs = [ base ];
   }).overrideAttrs (o: {
