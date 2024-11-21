@@ -1311,6 +1311,7 @@ with oself;
       hash = "sha256-N0rtBuxoHg45BqTf+aR8f6SfCEtiFVAspDgWfSkjH6w=";
       fetchSubmodules = true;
     };
+    patches = [ ];
     doCheck = false;
   });
 
