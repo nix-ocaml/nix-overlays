@@ -329,6 +329,9 @@ with self;
     pname = "cohttp_static_handler";
     hash = "sha256-7NCnJVArudBEvWARQUGlJuEq3kSCjpn5YtsLsL04bf4=";
     meta.description = "A library for easily creating a cohttp handler for static files";
+    postPatch = ''
+      substituteInPlace "src/cohttp_static_handler.ml" --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [ cohttp-async ];
   };
 
