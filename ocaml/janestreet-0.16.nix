@@ -266,6 +266,10 @@ with self;
     meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
     buildInputs = [ ppx_pattern_bind ];
     nativeBuildInputs = [ js_of_ocaml-compiler ocaml-embed-file ppx_css ];
+    postPatch = ''
+      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
+      --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [
       async
       async_durable
