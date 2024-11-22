@@ -746,6 +746,10 @@ with self;
     pname = "memtrace_viewer";
     minimalOCamlVersion = "4.14";
     hash = "sha256-MDpmLCm2buRx/TINcrtzRYHSptuebgIP0JwKurNtWBw=";
+    postPatch = ''
+      substituteInPlace "server/src/memtrace_viewer_native.ml" \
+        --replace-fail "?flush" ""
+    '';
     buildInputs = [ js_of_ocaml-ppx ];
     nativeBuildInputs = [ js_of_ocaml ocaml-embed-file ];
     propagatedBuildInputs = [
