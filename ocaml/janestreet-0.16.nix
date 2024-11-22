@@ -266,6 +266,10 @@ with self;
     meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
     buildInputs = [ ppx_pattern_bind ];
     nativeBuildInputs = [ js_of_ocaml-compiler ocaml-embed-file ppx_css ];
+    postPatch = ''
+      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
+      --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [
       async
       async_durable
@@ -325,6 +329,9 @@ with self;
     pname = "cohttp_static_handler";
     hash = "sha256-7NCnJVArudBEvWARQUGlJuEq3kSCjpn5YtsLsL04bf4=";
     meta.description = "A library for easily creating a cohttp handler for static files";
+    postPatch = ''
+      substituteInPlace "src/cohttp_static_handler.ml" --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [ cohttp-async ];
   };
 
@@ -742,6 +749,10 @@ with self;
     pname = "memtrace_viewer";
     minimalOCamlVersion = "4.14";
     hash = "sha256-MDpmLCm2buRx/TINcrtzRYHSptuebgIP0JwKurNtWBw=";
+    postPatch = ''
+      substituteInPlace "server/src/memtrace_viewer_native.ml" \
+        --replace-fail "?flush" ""
+    '';
     buildInputs = [ js_of_ocaml-ppx ];
     nativeBuildInputs = [ js_of_ocaml ocaml-embed-file ];
     propagatedBuildInputs = [

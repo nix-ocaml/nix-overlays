@@ -383,8 +383,8 @@ with oself;
 
   containers = osuper.containers.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.14/containers-3.14.tbz";
-      sha256 = "0r75yydndv32hga79i9qwkfps6cm0h98a7y345q9nd2lgh6blky9";
+      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.15/containers-3.15.tbz";
+      sha256 = "0n3ycwyds65qzpj9nvjks3m32bgkyswlmazk0y55zbl58zmkq54j";
     };
   });
 
@@ -517,8 +517,8 @@ with oself;
     pname = "http";
     version = "n/a";
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0_beta2/cohttp-v6.0.0_beta2.tbz";
-      sha256 = "05xh4hvjy90mqslwd0q6sa2h99f0p7vb4cf0f911nhc0sn5yrv4h";
+      url = "https://github.com/mirage/ocaml-cohttp/releases/download/v6.0.0/cohttp-6.0.0.tbz";
+      sha256 = "1a92xzqmw6isx56hw983spyiyrk61mjnk9h8wr52yd4b2apk9k2l";
     };
     doCheck = false;
   };
@@ -527,6 +527,11 @@ with oself;
     inherit (http) src version;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ http logs ];
     doCheck = false;
+  });
+  cohttp-async = osuper.cohttp-async.overrideAttrs (_: {
+    postPatch = if lib.versionOlder "5.0" ocaml.version then "" else ''
+      substituteInPlace "cohttp-async/src/client.ml" --replace-fail Ivar.fill_exn Ivar.fill
+    '';
   });
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
   cohttp-top = disableTests osuper.cohttp-top;
@@ -614,6 +619,18 @@ with oself;
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
 
   ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
+    doCheck = false;
+  });
+
+  curly = osuper.curly.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "rgrinberg";
+      repo = "curly";
+      rev = "4494503407c1264455c6e656d53ec853873c2fea";
+      hash = "sha256-46tOtd+pEQ7VT8CuSMbKeWvw8l84wiFk0S4ZVYoCJBo=";
+    };
+    # weird failures on linux
+    #  Exception: Unix.Unix_error(Unix.ENOENT, "create_process", "curl")'
     doCheck = false;
   });
 
@@ -837,7 +854,11 @@ with oself;
     in
     {
       nativeBuildInputs = [ makeWrapper ocaml dune ] ++ runtimeInputs;
+      buildInputs = o.buildInputs ++ [ result ];
       checkInputs = [ alcotest ] ++ runtimeInputs;
+      postPatch = ''
+        substituteInPlace lib/dune --replace-fail "curly" " curly result "
+      '';
       preFixup = ''
         wrapProgram $out/bin/dune-release \
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
@@ -960,6 +981,10 @@ with oself;
   graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
     # https://github.com/NixOS/nixpkgs/pull/170664
     nativeBuildInputs = [ ocaml dune findlib crunch ];
+    postPatch = ''
+      substituteInPlace "graphql-cohttp/src/graphql_websocket.ml" \
+        --replace-fail "~flush:true" ""
+    '';
   });
 
   gstreamer = osuper.gstreamer.overrideAttrs (o: {
@@ -1149,8 +1174,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "95dafb1ad45c6ede3e7ff7ca278b93dd372f466c";
-      hash = "sha256-gB7uE8Kxaoi0n5FH3P5UNM+PrPLc4XQfsuOtFibSPsY=";
+      rev = "5.9.0";
+      hash = "sha256-SAcb3IqIWqyG4/v1ELXqtYBLZFswd6ZkOEbhbirHeuk=";
     };
   });
 
@@ -1321,7 +1346,14 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; });
+  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "lwt";
+      rev = "5.9.0";
+      hash = "sha256-xYF+f489RI/nY0J48qW0jtq5GEnk68QnwxzBV2TLmLk=";
+    };
+  });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2248,7 +2280,8 @@ with oself;
   resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/server.ml --replace-fail \
-        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body"
+        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body" \
+        --replace-fail "Response.make ~flush:true" "Response.make"
 
       substituteInPlace src/server.mli --replace-fail \
         "'d Lwt_io.channel" "Cohttp_lwt_unix.Private.Input_channel.t"
@@ -2485,8 +2518,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "janestreet";
       repo = "torch";
-      rev = "v0.17.0";
-      hash = "sha256-zaCL0/8O/saoslTGfCQfiEaivjeDoS9ogJI1Hk8kj4M=";
+      rev = "v0.17.1";
+      hash = "sha256-+oQ1nnDNPTFdUSuOpOihcpZewfUjbMrcQ1tVuj+YLsM=";
     };
     patches = [ ];
     # postPatch = ''

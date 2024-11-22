@@ -504,6 +504,10 @@ in
     meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
     buildInputs = [ ppx_pattern_bind ];
     nativeBuildInputs = [ js_of_ocaml-compiler ocaml-embed-file ppx_css ];
+    postPatch = ''
+      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
+      --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [
       async
       async_durable
@@ -573,6 +577,9 @@ in
     hash = "sha256-RB/sUq1tL8A3m9YhHHx2LFqoExTX187VeZI9MRb1NeA=";
     meta.description = "A library for easily creating a cohttp handler for static files";
     propagatedBuildInputs = [ cohttp-async ];
+    postPatch = ''
+      substituteInPlace "src/cohttp_static_handler.ml" --replace-fail "?flush" ""
+    '';
   };
 
   command_rpc = janePackage {
@@ -1067,6 +1074,10 @@ in
       virtual_dom
       memtrace
     ];
+    postPatch = ''
+      substituteInPlace "server/src/memtrace_viewer_native.ml" \
+        --replace-fail "?flush" ""
+    '';
     meta.description = ''
       Processes traces produced by the Memtrace library and displays the
       top allocators in a table or flame graph. To help find space leaks,
@@ -2433,8 +2444,8 @@ in
 
   typerep = (janePackage {
     pname = "typerep";
-    hash = "sha256-0KwJdWtibgjxghFmOYKyPrcOAfoLpxYGBZm2KpH8tgA=";
-    minimalOCamlVersion = "4.04.2";
+    hash = "sha256-hw03erwLx9IAbkBibyhZxofA5jIi12rFJOHNEVYpLSk=";
+    version = "0.17.1";
     meta.description = "Typerep is a library for runtime types";
     propagatedBuildInputs = [ base ];
   }).overrideAttrs (o: {
