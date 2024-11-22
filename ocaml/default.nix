@@ -849,7 +849,11 @@ with oself;
     in
     {
       nativeBuildInputs = [ makeWrapper ocaml dune ] ++ runtimeInputs;
+      buildInputs = o.buildInputs ++ [ result ];
       checkInputs = [ alcotest ] ++ runtimeInputs;
+      postPatch = ''
+        substituteInPlace lib/dune --replace-fail "curly" " curly result "
+      '';
       preFixup = ''
         wrapProgram $out/bin/dune-release \
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
