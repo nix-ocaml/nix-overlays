@@ -624,6 +624,9 @@ with oself;
       rev = "4494503407c1264455c6e656d53ec853873c2fea";
       hash = "sha256-46tOtd+pEQ7VT8CuSMbKeWvw8l84wiFk0S4ZVYoCJBo=";
     };
+    # weird failures on linux
+    #  Exception: Unix.Unix_error(Unix.ENOENT, "create_process", "curl")'
+    doCheck = false;
   });
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
