@@ -617,6 +617,15 @@ with oself;
     doCheck = false;
   });
 
+  curly = osuper.curly.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "rgrinberg";
+      repo = "curly";
+      rev = "4494503407c1264455c6e656d53ec853873c2fea";
+      hash = "sha256-46tOtd+pEQ7VT8CuSMbKeWvw8l84wiFk0S4ZVYoCJBo=";
+    };
+  });
+
   crowbar = osuper.crowbar.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "stedolan";
