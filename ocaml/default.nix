@@ -2255,7 +2255,8 @@ with oself;
   resto-cohttp-server = osuper.resto-cohttp-server.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/server.ml --replace-fail \
-        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body"
+        "wseq ic oc body" "wseq (ic.Cohttp_lwt_unix.Private.Input_channel.chan) oc body" \
+        --replace-fail "Response.make ~flush:true" "Response.make"
 
       substituteInPlace src/server.mli --replace-fail \
         "'d Lwt_io.channel" "Cohttp_lwt_unix.Private.Input_channel.t"
