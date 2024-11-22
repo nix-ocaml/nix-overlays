@@ -1321,7 +1321,14 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; });
+  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "lwt";
+      rev = "5.9.0";
+      hash = "sha256-xYF+f489RI/nY0J48qW0jtq5GEnk68QnwxzBV2TLmLk=";
+    };
+  });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
