@@ -24,7 +24,16 @@ buildDunePackage {
   duneVersion = "3";
 
   src =
-    if (lib.versionOlder "5.2" ocaml.version) then
+    if (lib.versionOlder "5.3" ocaml.version) then
+      fetchFromGitHub
+        {
+          owner = "melange-re";
+          repo = "melange";
+          rev = "f6e4491999935132357b3e6d21fbc9380aa9728d";
+          hash = "sha256-0c8cwXVRnt/XWsq30FryzlYoQ/TLOoGOgyQ6gghrvvA=";
+          fetchSubmodules = true;
+        }
+    else if (lib.versionOlder "5.2" ocaml.version) then
       builtins.fetchurl
         {
           url = "https://github.com/melange-re/melange/releases/download/4.0.1-52/melange-4.0.1-52.tbz";

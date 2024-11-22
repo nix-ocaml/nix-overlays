@@ -1813,6 +1813,15 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
+  ocp-index = osuper.ocp-index.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "OCamlPro";
+      repo = "ocp-index";
+      rev = "77cd8eb2ae1ee142ae1344dc9892c49ca4dd7631";
+      hash = "sha256-jIizvs2hCWTOdH1mGHO22VQiRHIPlxy0mNU40Va2r1g=";
+    };
+  });
+
   ocplib-simplex = buildDunePackage {
     pname = "ocplib-simplex";
     version = "0.5.1";
