@@ -528,6 +528,11 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ http logs ];
     doCheck = false;
   });
+  cohttp-async = osuper.cohttp-async.overrideAttrs (_: {
+    postPatch = if lib.versionOlder "5.0" ocaml.version then "" else ''
+      substituteInPlace "cohttp-async/src/client.ml" --replace-fail Ivar.fill_exn Ivar.fill
+    '';
+  });
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
   cohttp-top = disableTests osuper.cohttp-top;
 
