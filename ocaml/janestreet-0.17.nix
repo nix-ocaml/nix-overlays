@@ -498,12 +498,16 @@ in
       else o.src;
   });
 
-  bonsai = (janePackage {
+  bonsai = janePackage {
     pname = "bonsai";
     hash = "sha256-rr87o/w/a6NtCrDIIYmk2a5IZ1WJM/qJUeDqTLN1Gr4=";
     meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
     buildInputs = [ ppx_pattern_bind ];
     nativeBuildInputs = [ js_of_ocaml-compiler ocaml-embed-file ppx_css ];
+    postPatch = ''
+      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
+      --replace-fail "?flush" ""
+    '';
     propagatedBuildInputs = [
       async
       async_durable
@@ -530,12 +534,7 @@ in
       profunctor
       textutils
     ];
-  }).overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
-        --replace-fail "?flush" ""
-    '';
-  });
+  };
 
   capitalization = janePackage {
     pname = "capitalization";
@@ -573,16 +572,15 @@ in
     '';
   };
 
-  cohttp_static_handler = (janePackage {
+  cohttp_static_handler = janePackage {
     pname = "cohttp_static_handler";
     hash = "sha256-RB/sUq1tL8A3m9YhHHx2LFqoExTX187VeZI9MRb1NeA=";
     meta.description = "A library for easily creating a cohttp handler for static files";
     propagatedBuildInputs = [ cohttp-async ];
-  }).overrideAttrs (_: {
     postPatch = ''
       substituteInPlace "src/cohttp_static_handler.ml" --replace-fail "?flush" ""
     '';
-  });
+  };
 
   command_rpc = janePackage {
     pname = "command_rpc";
@@ -1076,6 +1074,10 @@ in
       virtual_dom
       memtrace
     ];
+    postPatch = ''
+      substituteInPlace "server/src/memtrace_viewer_native.ml" \
+        --replace-fail "?flush" ""
+    '';
     meta.description = ''
       Processes traces produced by the Memtrace library and displays the
       top allocators in a table or flame graph. To help find space leaks,
