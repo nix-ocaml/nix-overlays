@@ -383,8 +383,8 @@ with oself;
 
   containers = osuper.containers.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.14/containers-3.14.tbz";
-      sha256 = "0r75yydndv32hga79i9qwkfps6cm0h98a7y345q9nd2lgh6blky9";
+      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.15/containers-3.15.tbz";
+      sha256 = "0n3ycwyds65qzpj9nvjks3m32bgkyswlmazk0y55zbl58zmkq54j";
     };
   });
 
@@ -1174,8 +1174,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "95dafb1ad45c6ede3e7ff7ca278b93dd372f466c";
-      hash = "sha256-gB7uE8Kxaoi0n5FH3P5UNM+PrPLc4XQfsuOtFibSPsY=";
+      rev = "5.9.0";
+      hash = "sha256-SAcb3IqIWqyG4/v1ELXqtYBLZFswd6ZkOEbhbirHeuk=";
     };
   });
 
