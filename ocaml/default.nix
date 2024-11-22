@@ -969,6 +969,10 @@ with oself;
   graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
     # https://github.com/NixOS/nixpkgs/pull/170664
     nativeBuildInputs = [ ocaml dune findlib crunch ];
+    postPatch = ''
+      substituteInPlace "graphql-cohttp/src/graphql_websocket.ml" \
+        --replace-fail "~flush:true" ""
+    '';
   });
 
   gstreamer = osuper.gstreamer.overrideAttrs (o: {
