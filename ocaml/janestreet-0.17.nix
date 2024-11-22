@@ -498,7 +498,7 @@ in
       else o.src;
   });
 
-  bonsai = janePackage {
+  bonsai = (janePackage {
     pname = "bonsai";
     hash = "sha256-rr87o/w/a6NtCrDIIYmk2a5IZ1WJM/qJUeDqTLN1Gr4=";
     meta.description = "A library for building dynamic webapps, using Js_of_ocaml";
@@ -530,7 +530,12 @@ in
       profunctor
       textutils
     ];
-  };
+  }).overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
+        --replace-fail "?flush" ""
+    '';
+  });
 
   capitalization = janePackage {
     pname = "capitalization";
