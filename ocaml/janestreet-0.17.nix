@@ -568,12 +568,16 @@ in
     '';
   };
 
-  cohttp_static_handler = janePackage {
+  cohttp_static_handler = (janePackage {
     pname = "cohttp_static_handler";
     hash = "sha256-RB/sUq1tL8A3m9YhHHx2LFqoExTX187VeZI9MRb1NeA=";
     meta.description = "A library for easily creating a cohttp handler for static files";
     propagatedBuildInputs = [ cohttp-async ];
-  };
+  }).overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "src/cohttp_static_handler.ml" --replace-fail "?flush" ""
+    '';
+  });
 
   command_rpc = janePackage {
     pname = "command_rpc";
