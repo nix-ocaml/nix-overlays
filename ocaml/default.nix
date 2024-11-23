@@ -1506,13 +1506,6 @@ with oself;
     };
   });
 
-  merlin-extend = osuper.merlin-extend.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/let-def/merlin-extend/releases/download/v0.6.2/merlin-extend-0.6.2.tbz";
-      sha256 = "0yfpyjqf0j3qmnv5490ksnhcyfhkhzvvfby8p7r64i5n61zqwma7";
-    };
-  });
-
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
       callPackage ./merlin/lib.nix { }
