@@ -216,6 +216,15 @@ with oself;
     };
   };
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-batteries-team";
+      repo = "batteries-included";
+      rev = "1a4e920ff4e639394ca2d7b84160c08679e4f654";
+      hash = "sha256-1A5Ys28y46TcL6H8AoEGTTBtj7MeTMuGpZYcCGGII/s=";
+    };
+  });
+
   bechamel = buildDunePackage {
     pname = "bechamel";
     version = "0.5.0";
@@ -865,17 +874,24 @@ with oself;
       '';
     });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/eio/releases/download/v1.2/eio-1.2.tbz";
+      sha256 = "0h5wssgslv4nnbqw3whcjyqi5lp44lc0hwwgwfr4njcdpl9fk4ip";
+    };
+  });
+
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
     else null;
 
-  extlib = osuper.extlib.overrideAttrs (_: {
+  extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
       repo = "ocaml-extlib";
-      rev = "1.8.0";
-      hash = "sha256-5GvktCAwYSu9SGU06gR51iVf6i5anIYyP+o4pGoF0Dw=";
+      rev = "99333426030c6d5a1d782a4193dbb9230e8455ee";
+      hash = "sha256-5DcvGuCtGjMILGozlYRvpUSNh6+P6r/j4R8aVUtVlFU=";
     };
   });
 
@@ -1136,6 +1152,14 @@ with oself;
     ];
   };
   irmin-git = disableTests osuper.irmin-git;
+  ppx_irmin = osuper.ppx_irmin.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "irmin";
+      rev = "aa524cbcdb94a78f62e4e943b7ec348edf5df167";
+      hash = "sha256-xCaq/GqSveX0NfmR0kfp1JvzPmK/gMQIgG4Vv1YwV6U=";
+    };
+  });
 
   iostream = buildDunePackage {
     pname = "iostream";
@@ -1385,6 +1409,13 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "realworldocaml";
+      repo = "mdx";
+      rev = "c3b0e077627cf1dd88c01271177c2fb7271a450e";
+      hash = "sha256-y2K9Lj0ro9keFrcBUFck2CtHGXtePJlgjCAJsRj5Hs8=";
+    };
+    doCheck = ! lib.versionOlder "5.3" ocaml.version;
     # Break the attempt to reduce `mdx`'s closure size by adding a different
     # `logs` override, which breaks anything that uses logs (with OCaml package
     # conflicts)
@@ -1799,6 +1830,15 @@ with oself;
     };
   });
 
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocurrent";
+      repo = "ocaml-version";
+      rev = "v3.7.1";
+      hash = "sha256-m7yXdhwNIJBch7+urYxdfOB5EWdSZVAtoggzr4Ag8k0=";
+    };
+  });
+
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace-fail "libraries bytes" "libraries "
@@ -1962,8 +2002,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.3.0-rc1";
-      hash = "sha256-HAr7LOuq9mOfgHGTm+WPJDL7Q1ih9YGSZOs5BWynTpk=";
+      rev = "2.3.0";
+      hash = "sha256-ZU11fWiS4hdbbzYytudTK8M1O6r51HRZ+ASO+VxvekE=";
     };
     version = "2.3.0-alpha1";
     meta = with lib; {
