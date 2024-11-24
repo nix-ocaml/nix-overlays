@@ -46,10 +46,6 @@ buildDunePackage rec {
 
   doCheck = false;
 
-  preBuild = ''
-    rm -rf src/vendor
-  '';
-
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";
     license = lib.licenses.mit;
