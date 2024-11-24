@@ -886,7 +886,7 @@ with oself;
       callPackage ./eio-ssl { }
     else null;
 
-  extlib = osuper.extlib.overrideAttrs (_: {
+  extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
       repo = "ocaml-extlib";
