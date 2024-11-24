@@ -865,6 +865,13 @@ with oself;
       '';
     });
 
+  eio = osuper.eio.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/eio/releases/download/v1.2/eio-1.2.tbz";
+      sha256 = "0h5wssgslv4nnbqw3whcjyqi5lp44lc0hwwgwfr4njcdpl9fk4ip";
+    };
+  });
+
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
