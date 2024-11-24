@@ -289,15 +289,6 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
-  bos = osuper.bos.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "bos";
-      rev = "v0.2.1";
-      sha256 = "sha256-ga7CwQpXntW0wg6tP9/c16wfSGEf07DfZdd7b6cp0r0=";
-    };
-  });
-
   bz2 = stdenv.mkDerivation rec {
     pname = "ocaml${ocaml.version}-bz2";
     version = "0.7.0";
@@ -935,6 +926,15 @@ with oself;
       o.propagatedBuildInputs ++
       lib.optionals stdenv.isDarwin
         (with darwin.apple_sdk.frameworks; [ AVFoundation ]);
+  });
+
+  findlib = osuper.findlib.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "ocamlfind";
+      rev = "findlib-1.9.8";
+      hash = "sha256-cc78SiIlGQFu2EJ1EDuIEnk6zmNbY+yzsYLyOhzvFag=";
+    };
   });
 
   fix = osuper.fix.overrideAttrs (_: {
