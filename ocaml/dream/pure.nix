@@ -20,11 +20,8 @@ buildDunePackage rec {
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "dream";
-    rev = "1.0.0-alpha7";
-    hash = "sha256-Hguol70XNLRge843aFRcVBNucJFF08EdFVtzgA+nnlM=";
-    fetchSubmodules = true;
-    leaveDotGit = false;
-    deepClone = false;
+    rev = "deb4526387f72d3c5bb07f9a93b53ea38315b375";
+    hash = "sha256-ZFwxGr69Nr84KYTGgJnD/2/1cdb7p5Knb0sA82PKwBo=";
   };
 
   propagatedBuildInputs = [

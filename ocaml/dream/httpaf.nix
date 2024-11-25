@@ -5,12 +5,9 @@
 , lwt_ppx
 , lwt_ssl
 , ssl
-, digestif
-, faraday
-, faraday-lwt-unix
-, psq
-, result
-, ke
+, h2-lwt-unix
+, httpun-lwt-unix
+, httpun-ws
 }:
 
 buildDunePackage rec {
@@ -24,12 +21,9 @@ buildDunePackage rec {
     lwt_ssl
     ssl
 
-    faraday
-    faraday-lwt-unix
-    digestif
-    ke
-    psq
-    result
+    httpun-lwt-unix
+    h2-lwt-unix
+    httpun-ws
   ];
 
   doCheck = false;

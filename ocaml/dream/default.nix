@@ -1,8 +1,5 @@
 { lib
-, fetchFromGitHub
 , buildDunePackage
-, bigarray-compat
-, camlp-streams
 , caqti
 , caqti-lwt
 , cstruct
@@ -44,9 +41,17 @@ buildDunePackage rec {
   pname = "dream";
   inherit (dream-pure) src version;
 
+  postPatch = ''
+    substituteInPlace src/http/adapt.ml \
+      --replace-fail \
+      "Httpun.Body.Writer.flush body" \
+      "fun f -> Httpun.Body.Writer.flush body (fun _r -> f ())" \
+       --replace-fail \
+      "H2.Body.Writer.flush body" \
+      "fun f -> H2.Body.Writer.flush body (fun _r -> f ())"
+  '';
+
   propagatedBuildInputs = [
-    bigarray-compat
-    camlp-streams
     caqti
     caqti-lwt
     cstruct
@@ -88,13 +93,7 @@ buildDunePackage rec {
     tyxml-ppx
   ];
 
-  dontDetectOcamlConflicts = true;
   doCheck = !(lib.versionAtLeast ocaml.version "5.0");
-
-  preBuild = ''
-    rm -rf src/vendor
-  '';
-
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";
     license = lib.licenses.mit;

@@ -976,6 +976,10 @@ with oself;
 
   gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
     propagatedBuildInputs = [ camomile ocaml_gettext ];
+    postPatch = ''
+      substituteInPlace "src/lib/gettext-camomile/gettextCamomile.ml" --replace-fail \
+        "CamomileLibraryDefault." ""
+    '';
   });
 
   gluten = callPackage ./gluten { };
@@ -1825,8 +1829,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "gildor478";
       repo = "ocaml-gettext";
-      rev = "9fa474310f383abf3d4349a25c44955ee62410c1";
-      hash = "sha256-QYKWtHJMHVU86aWh9f6zlB4nuzgQYvignA01m3b54Kg=";
+      rev = "e827b7ab392e5cf48dd620537952bff43fbcbdf0";
+      hash = "sha256-13DWCYtKMSq1XzDMBuclKtjtzuBboG63AakZWITqucE=";
     };
   });
 
