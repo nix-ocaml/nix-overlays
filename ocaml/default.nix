@@ -865,13 +865,6 @@ with oself;
       '';
     });
 
-  eio = osuper.eio.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/eio/releases/download/v1.2/eio-1.2.tbz";
-      sha256 = "0h5wssgslv4nnbqw3whcjyqi5lp44lc0hwwgwfr4njcdpl9fk4ip";
-    };
-  });
-
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
@@ -926,15 +919,6 @@ with oself;
       o.propagatedBuildInputs ++
       lib.optionals stdenv.isDarwin
         (with darwin.apple_sdk.frameworks; [ AVFoundation ]);
-  });
-
-  findlib = osuper.findlib.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "ocamlfind";
-      rev = "findlib-1.9.8";
-      hash = "sha256-cc78SiIlGQFu2EJ1EDuIEnk6zmNbY+yzsYLyOhzvFag=";
-    };
   });
 
   fix = osuper.fix.overrideAttrs (_: {
