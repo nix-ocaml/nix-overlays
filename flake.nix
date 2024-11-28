@@ -8,50 +8,46 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?rev=a622540b81692a9ae427e4e9c84b60c1ad2513d8";
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs }:
     let
       overlay = import ./overlay nixpkgs;
     in
-    nixpkgs.lib.recursiveUpdate
-      {
-        lib = nixpkgs.lib;
+    {
+      lib = nixpkgs.lib;
 
-        hydraJobs = builtins.listToAttrs (map
-          (system: {
-            name = system;
-            value = import ./ci/hydra.nix {
-              inherit system;
-              pkgs = self.legacyPackages.${system};
+      hydraJobs = nixpkgs.lib.genAttrs
+        [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]
+        (system: import ./ci/hydra.nix {
+          inherit system;
+          pkgs = self.legacyPackages.${system};
+        });
+
+      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+        let
+          pkgs = import nixpkgs ({
+            inherit system;
+            overlays = [ overlay ];
+            config = {
+              allowUnfree = true;
+            } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
+              config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
             };
-          })
-          [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]);
-
-        makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
-          let
-            pkgs = import nixpkgs ({
-              inherit system;
-              overlays = [ overlay ];
-              config = {
-                allowUnfree = true;
-              } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
-                config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
-              };
-            } // attrs);
-          in
-            /*
+          } // attrs);
+        in
+          /*
             You might read
             https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
             want to change this but because of how we're doing overlays we will
             be overriding any extraOverlays if we don't use `appendOverlays`
             */
-          pkgs.appendOverlays extraOverlays;
+        pkgs.appendOverlays extraOverlays;
 
-        overlays.default = final: prev: overlay final prev;
-      }
-      (flake-utils.lib.eachDefaultSystem (system: {
-        legacyPackages = self.makePkgs { inherit system; };
-      }));
+      overlays.default = final: prev: overlay final prev;
+
+      legacyPackages = nixpkgs.lib.genAttrs
+        nixpkgs.lib.systems.flakeExposed
+        (system: self.makePkgs { inherit system; });
+    };
 }
