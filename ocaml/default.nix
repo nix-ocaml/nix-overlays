@@ -1650,6 +1650,7 @@ with oself;
     (if isFlambda2
     then osuper.ocaml
     else osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
+      depsBuildBuild = lib.optionals (!stdenv.hostPlatform.isDarwin) (o.depsBuildBuild or [ ]);
       buildPhase = if isFlambda2 then (o.buildPhase or null) else ''
         make defaultentry -j$NIX_BUILD_CORES
       '';
