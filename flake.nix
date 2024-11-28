@@ -14,7 +14,7 @@
     let
       overlay = import ./overlay nixpkgs;
     in
-    rec {
+    {
       lib = nixpkgs.lib;
 
       hydraJobs = nixpkgs.lib.genAttrs
