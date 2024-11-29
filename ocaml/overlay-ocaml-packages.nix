@@ -97,13 +97,13 @@ let
       ocamlPackages_5_3 = newOCamlScope {
         major_version = "5";
         minor_version = "3";
-        patch_version = "0~beta1";
+        patch_version = "0~beta2";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "66b424d9ad97aa9567099428c9d99721350bd7dd";
-          hash = "sha256-AXx5hQhgeWD8d50hwelPUj23kPRnpx7FwfOuJNoUELY=";
+          rev = "5.3.0-beta2";
+          hash = "sha256-8ut2qbHNgM210AtG+A7+MSN6Z7Pf4hKahzsRtuYGmWs=";
         };
       };
 

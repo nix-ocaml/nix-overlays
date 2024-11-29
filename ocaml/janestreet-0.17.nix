@@ -1021,7 +1021,7 @@ in
     pname = "jst-config";
     hash = "sha256-xwQ+q2Hsduu2vWMWFcjoj3H8Es00N7Mv9LwIZG4hw7c=";
     meta.description = "Compile-time configuration for Jane Street libraries";
-    buildInputs = [ dune-configurator ppx_assert stdio ];
+    buildInputs = [ dune-configurator base ppx_assert ];
   };
 
   krb = null;
