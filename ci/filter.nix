@@ -98,6 +98,10 @@ let
 
     # not compatible with latest odoc
     "sherlodoc"
+
+    ## Doesn't work with latest lsp on 5.2
+    "linol"
+    "linol-lwt"
   ];
 
   ocaml5Ignores = [
@@ -117,9 +121,6 @@ let
     "ppx_debug"
     "typedppxlib"
 
-    ## Doesn't work with latest lsp on 5.2
-    "linol"
-    "linol-lwt"
   ];
 
   darwinIgnores = [
