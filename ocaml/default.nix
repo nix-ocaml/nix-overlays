@@ -1,5 +1,7 @@
 { nixpkgs
 , autoconf
+, libmysqlclient
+, mariadb
 , autoreconfHook
 , bzip2
 , automake
@@ -64,6 +66,7 @@ oself: osuper:
 let
   nativeCairo = cairo;
   nativeGit = git;
+  nativeMariaDB = mariadb;
   lmdb-pkg = lmdb;
   disableTests = d: d.overrideAttrs (_: { doCheck = false; });
   addBase = p: p.overrideAttrs (o: {
@@ -330,8 +333,8 @@ with oself;
 
   ca-certs-nss = osuper.ca-certs-nss.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ca-certs-nss/releases/download/v3.104/ca-certs-nss-3.104.tbz";
-      sha256 = "02d7jnv73rrnj7g4f38waqm24xy0ydqy994kmrp8j46kl7i5h92s";
+      url = "https://github.com/mirage/ca-certs-nss/releases/download/v3.107/ca-certs-nss-3.107.tbz";
+      sha256 = "0q7wy3sml4078n3lqd5j0277j379x41wpv9jjm86lcdyhrqgk12l";
     };
   });
 
@@ -1390,6 +1393,17 @@ with oself;
     propagatedBuildInputs = [ markup lwt ];
   };
 
+  mariadb = buildDunePackage {
+    pname = "mariadb";
+    version = "1.2.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-community/ocaml-mariadb/releases/download/1.2.0/mariadb-1.2.0.tbz";
+      sha256 = "0sgsljalrvm1hcr8gh58hlqqyzbdsldfm19cq53gpr14i6jl6rm0";
+    };
+    buildInputs = [ dune-configurator nativeMariaDB libmysqlclient ];
+    propagatedBuildInputs = [ ctypes ];
+  };
+
   matrix-common = callPackage ./matrix { };
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
@@ -2211,8 +2225,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "ac7fcfc88d574609b62cc0a38e0de59d03cc96de";
-          hash = "sha256-I+AZfPyUNmHNJ37FTRUMpKlBY3B+haXaS/fmQIH6WG4=";
+          rev = "a4004e2659ce0af93223c5e9e44b5b29b5a217ea";
+          hash = "sha256-sRTNNaSo4h5oLoKLu0uB8zd8LED+bFMjmpCPsL6KGTU=";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
