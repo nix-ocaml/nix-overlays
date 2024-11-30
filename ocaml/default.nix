@@ -2397,15 +2397,6 @@ with oself;
       ++ (if lib.versionOlder "5.0" ocaml.version then [ multicore-bench ] else [ ]);
   });
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "sedlex";
-      rev = "v3.3";
-      hash = "sha256-33eJKVdoR4mlWdPZUdjQ26w+kuQWoUN68+bxy2o+Pjs=";
-    };
-  });
-
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
