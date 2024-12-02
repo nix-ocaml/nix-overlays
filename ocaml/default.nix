@@ -1697,7 +1697,7 @@ with oself;
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.27.0/ocamlformat-0.27.0.tbz";
-      sha256 = "0jzbs8nnn73rp75wif596kd6n3z10k8p2b5s4d7dm6hd12niqmxb";
+      sha256 = "05bdhj73im80ci535lymrf7mq7r3xj8bg17f02agj23d0x64igyx";
     };
   });
   ocamlformat-rpc-lib = buildDunePackage {
