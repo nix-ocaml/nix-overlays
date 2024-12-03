@@ -74,8 +74,11 @@ let
     "rock"
     "subscriptions-transport-ws"
 
-    # takes a long time to build, broken by recent Coq upgrade
+    # long time to build
     "lambdapi"
+    "ocaml_libvirt"
+    "unisim_archisec"
+    "z3"
 
     # Broken on janestreet v0.17
     "camlimages"
@@ -148,7 +151,6 @@ let
     "gapi-ocaml"
     "bz2"
     "curses"
-    "ocaml_libvirt"
     "magic"
     "secp256k1"
     "z3"
