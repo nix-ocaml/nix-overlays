@@ -596,8 +596,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "cppo";
-      rev = "v1.7.0";
-      hash = "sha256-Smd/cV08OuK2p1+K0s6YTDybCEb/0RV6iDL4PO5nvSg=";
+      rev = "v1.8.0";
+      hash = "sha256-+HnAGM+GddYJK0RCvKrs+baZS+1o8Yq+/cVa3U3nFWg=";
     };
   });
 
@@ -858,6 +858,19 @@ with oself;
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
       '';
     });
+
+  eigen = osuper.eigen.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/owlbarn/eigen/releases/download/0.3.3/eigen-0.3.3.tbz";
+      sha256 = "1kiy0pg0a5cnf9zff0137lfgbk7nbs5yc9dimwqdr5lihbi88cd9";
+    };
+    buildInputs = [ dune-configurator ];
+    meta.platforms = lib.platforms.all;
+    postPatch = ''
+      substituteInPlace "eigen/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
+      substituteInPlace "eigen_cpp/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
+    '';
+  });
 
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
@@ -1176,15 +1189,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "5.9.0";
-      hash = "sha256-SAcb3IqIWqyG4/v1ELXqtYBLZFswd6ZkOEbhbirHeuk=";
-    };
-  });
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
@@ -1207,10 +1211,9 @@ with oself;
       then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.0-4.14/lsp-1.20.0-4.14.tbz";
-            sha256 = "11bjzcclc1bq319azgfv9m6vmhhcmsx5i6cyv5m179sp2d664dz5";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.1-4.14/lsp-1.20.1-4.14.tbz";
+            sha256 = "0ndgwq3whva083lwy8yr1abagpnyp0v2x6sidcap2v8y2h06vsdc";
           }
-
       else o.src;
   });
 
@@ -1914,11 +1917,9 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "odoc";
-      rev = "2de9dfc32fe4a88b62db6448e89b95a02ff13b02";
-      hash = "sha256-0er3h5smzxbBQJ/zTFh404PuYemybk1V2DjPN3+TgVc=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/2.4.4/odoc-2.4.4.tbz";
+      sha256 = "1wsikr4k134r1js97bs365ah277jvbn412dlw3wi1xn8nmakl9by";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
@@ -2025,21 +2026,18 @@ with oself;
   opam-state = osuper.opam-state.overrideAttrs (o: {
     inherit (opam-format) src version meta;
   });
+  opam-file-format = osuper.opam-file-format.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ menhir ];
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "opam-file-format";
+      rev = "2.2.0-alpha1";
+      hash = "sha256-jgUqc5/hf0d7YbB9muXq8D/GuvwlNF+YaP/IcviC8M0=";
+    };
+  });
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
-  eigen = osuper.eigen.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/owlbarn/eigen/releases/download/0.3.3/eigen-0.3.3.tbz";
-      sha256 = "1kiy0pg0a5cnf9zff0137lfgbk7nbs5yc9dimwqdr5lihbi88cd9";
-    };
-    buildInputs = [ dune-configurator ];
-    meta.platforms = lib.platforms.all;
-    postPatch = ''
-      substituteInPlace "eigen/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
-      substituteInPlace "eigen_cpp/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
-    '';
-  });
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "owlbarn";
@@ -2232,8 +2230,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "a4004e2659ce0af93223c5e9e44b5b29b5a217ea";
-          hash = "sha256-sRTNNaSo4h5oLoKLu0uB8zd8LED+bFMjmpCPsL6KGTU=";
+          rev = "562a9fa1fb36c3a168315312095cc2a661a2bc59";
+          hash = "sha256-d2WMTPUbmNH6GEfRcgtyZG6J1/98u90luoNJc05HT8A=";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2304,8 +2302,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason";
-      rev = "3.14.0";
-      hash = "sha256-m63aXSq/vjZdVKb8A1SMzmIBo1jhzOutas4aMZtAFPI=";
+      rev = "b07885876e7f176ee002fb878ee9ae6e02e6cf85";
+      hash = "sha256-KfK+6u14VmnTe3tL0EFAxwxFxROPhzsE5huRCZI2MR4=";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
@@ -2376,19 +2374,33 @@ with oself;
     };
   });
 
-  saturn_lockfree = osuper.saturn_lockfree.overrideAttrs (o: {
+  multicore-magic = osuper.multicore-magic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/saturn/releases/download/0.5.0/saturn-0.5.0.tbz";
-      sha256 = "0f9y8kscj0g946sdqvyvpzcyy5ldrrv3hvrp9pc26gmrhz0b2sb6";
+      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.0/multicore-magic-2.3.0.tbz";
+      sha256 = "1vnf4x4clv9p5606i65yvizg8x9h95x5r120rw9kmn4xnfl197dg";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ multicore-magic backoff ];
   });
 
-  saturn = osuper.saturn.overrideAttrs (o: {
-    checkInputs =
-      o.checkInputs
-      ++ (if lib.versionOlder "5.0" ocaml.version then [ multicore-bench ] else [ ]);
-  });
+  # removed in saturn 1.0
+  # saturn_lockfree = null;
+  # saturn = buildDunePackage {
+  # pname = "saturn";
+  # version = "1.0.0";
+  # src = builtins.fetchurl {
+  # url = "https://github.com/ocaml-multicore/saturn/releases/download/1.0.0/saturn-1.0.0.tbz";
+  # sha256 = "021a0yk4sjbjy998r0nc20gk1p2sxg29ay0l7zaym37r2dklz7id";
+  # };
+
+  # propagatedBuildInputs = [ backoff multicore-magic ];
+  # doCheck = false;
+
+  # meta = {
+  # description = "Lock-free data structures for multicore OCaml";
+  # homepage = "https://github.com/ocaml-multicore/saturn";
+  # license = lib.licenses.isc;
+  # maintainers = [ lib.maintainers.vbgl ];
+  # };
+  # };
 
   semver = buildDunePackage {
     pname = "semver";

@@ -86,6 +86,12 @@ with oself;
     checkInputs = [ mdx qcheck-core trace trace-tef ];
   };
 
+  multicore-magic-dscheck = buildDunePackage {
+    pname = "multicore-magic-dscheck";
+    inherit (multicore-magic) src version;
+    propagatedBuildInputs = [ dscheck ];
+  };
+
   carl = callPackage ./piaf/carl.nix { };
 
   picos = buildDunePackage {
