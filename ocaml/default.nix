@@ -596,8 +596,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "cppo";
-      rev = "v1.7.0";
-      hash = "sha256-Smd/cV08OuK2p1+K0s6YTDybCEb/0RV6iDL4PO5nvSg=";
+      rev = "v1.8.0";
+      hash = "sha256-+HnAGM+GddYJK0RCvKrs+baZS+1o8Yq+/cVa3U3nFWg=";
     };
   });
 
@@ -1175,15 +1175,6 @@ with oself;
   };
 
   jose = callPackage ./jose { };
-
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "5.9.0";
-      hash = "sha256-SAcb3IqIWqyG4/v1ELXqtYBLZFswd6ZkOEbhbirHeuk=";
-    };
-  });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
@@ -2025,6 +2016,15 @@ with oself;
   opam-state = osuper.opam-state.overrideAttrs (o: {
     inherit (opam-format) src version meta;
   });
+  opam-file-format = osuper.opam-file-format.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ menhir ];
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "opam-file-format";
+      rev = "2.2.0-alpha1";
+      hash = "sha256-jgUqc5/hf0d7YbB9muXq8D/GuvwlNF+YaP/IcviC8M0=";
+    };
+  });
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
@@ -2232,8 +2232,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "a4004e2659ce0af93223c5e9e44b5b29b5a217ea";
-          hash = "sha256-sRTNNaSo4h5oLoKLu0uB8zd8LED+bFMjmpCPsL6KGTU=";
+          rev = "562a9fa1fb36c3a168315312095cc2a661a2bc59";
+          hash = "sha256-d2WMTPUbmNH6GEfRcgtyZG6J1/98u90luoNJc05HT8A=";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2304,8 +2304,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason";
-      rev = "3.14.0";
-      hash = "sha256-m63aXSq/vjZdVKb8A1SMzmIBo1jhzOutas4aMZtAFPI=";
+      rev = "b07885876e7f176ee002fb878ee9ae6e02e6cf85";
+      hash = "sha256-KfK+6u14VmnTe3tL0EFAxwxFxROPhzsE5huRCZI2MR4=";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
