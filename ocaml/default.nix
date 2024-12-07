@@ -859,6 +859,19 @@ with oself;
       '';
     });
 
+  eigen = osuper.eigen.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/owlbarn/eigen/releases/download/0.3.3/eigen-0.3.3.tbz";
+      sha256 = "1kiy0pg0a5cnf9zff0137lfgbk7nbs5yc9dimwqdr5lihbi88cd9";
+    };
+    buildInputs = [ dune-configurator ];
+    meta.platforms = lib.platforms.all;
+    postPatch = ''
+      substituteInPlace "eigen/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
+      substituteInPlace "eigen_cpp/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
+    '';
+  });
+
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
@@ -1198,10 +1211,9 @@ with oself;
       then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.0-4.14/lsp-1.20.0-4.14.tbz";
-            sha256 = "11bjzcclc1bq319azgfv9m6vmhhcmsx5i6cyv5m179sp2d664dz5";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.1-4.14/lsp-1.20.1-4.14.tbz";
+            sha256 = "0ndgwq3whva083lwy8yr1abagpnyp0v2x6sidcap2v8y2h06vsdc";
           }
-
       else o.src;
   });
 
@@ -1905,11 +1917,9 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "odoc";
-      rev = "2de9dfc32fe4a88b62db6448e89b95a02ff13b02";
-      hash = "sha256-0er3h5smzxbBQJ/zTFh404PuYemybk1V2DjPN3+TgVc=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/2.4.4/odoc-2.4.4.tbz";
+      sha256 = "1wsikr4k134r1js97bs365ah277jvbn412dlw3wi1xn8nmakl9by";
     };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
@@ -2028,18 +2038,6 @@ with oself;
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
-  eigen = osuper.eigen.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/owlbarn/eigen/releases/download/0.3.3/eigen-0.3.3.tbz";
-      sha256 = "1kiy0pg0a5cnf9zff0137lfgbk7nbs5yc9dimwqdr5lihbi88cd9";
-    };
-    buildInputs = [ dune-configurator ];
-    meta.platforms = lib.platforms.all;
-    postPatch = ''
-      substituteInPlace "eigen/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
-      substituteInPlace "eigen_cpp/configure/configure.ml" --replace-fail '-mcpu=apple-m1' ""
-    '';
-  });
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "owlbarn";
@@ -2376,19 +2374,33 @@ with oself;
     };
   });
 
-  saturn_lockfree = osuper.saturn_lockfree.overrideAttrs (o: {
+  multicore-magic = osuper.multicore-magic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/saturn/releases/download/0.5.0/saturn-0.5.0.tbz";
-      sha256 = "0f9y8kscj0g946sdqvyvpzcyy5ldrrv3hvrp9pc26gmrhz0b2sb6";
+      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.0/multicore-magic-2.3.0.tbz";
+      sha256 = "1vnf4x4clv9p5606i65yvizg8x9h95x5r120rw9kmn4xnfl197dg";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ multicore-magic backoff ];
   });
 
-  saturn = osuper.saturn.overrideAttrs (o: {
-    checkInputs =
-      o.checkInputs
-      ++ (if lib.versionOlder "5.0" ocaml.version then [ multicore-bench ] else [ ]);
-  });
+  # removed in saturn 1.0
+  saturn_lockfree = null;
+  saturn = buildDunePackage {
+    pname = "saturn";
+    version = "1.0.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/saturn/releases/download/1.0.0/saturn-1.0.0.tbz";
+      sha256 = "021a0yk4sjbjy998r0nc20gk1p2sxg29ay0l7zaym37r2dklz7id";
+    };
+
+    propagatedBuildInputs = [ backoff multicore-magic ];
+    doCheck = false;
+
+    meta = {
+      description = "Lock-free data structures for multicore OCaml";
+      homepage = "https://github.com/ocaml-multicore/saturn";
+      license = lib.licenses.isc;
+      maintainers = [ lib.maintainers.vbgl ];
+    };
+  };
 
   semver = buildDunePackage {
     pname = "semver";
