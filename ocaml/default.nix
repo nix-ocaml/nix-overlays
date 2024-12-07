@@ -2382,25 +2382,25 @@ with oself;
   });
 
   # removed in saturn 1.0
-  saturn_lockfree = null;
-  saturn = buildDunePackage {
-    pname = "saturn";
-    version = "1.0.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/saturn/releases/download/1.0.0/saturn-1.0.0.tbz";
-      sha256 = "021a0yk4sjbjy998r0nc20gk1p2sxg29ay0l7zaym37r2dklz7id";
-    };
+  # saturn_lockfree = null;
+  # saturn = buildDunePackage {
+  # pname = "saturn";
+  # version = "1.0.0";
+  # src = builtins.fetchurl {
+  # url = "https://github.com/ocaml-multicore/saturn/releases/download/1.0.0/saturn-1.0.0.tbz";
+  # sha256 = "021a0yk4sjbjy998r0nc20gk1p2sxg29ay0l7zaym37r2dklz7id";
+  # };
 
-    propagatedBuildInputs = [ backoff multicore-magic ];
-    doCheck = false;
+  # propagatedBuildInputs = [ backoff multicore-magic ];
+  # doCheck = false;
 
-    meta = {
-      description = "Lock-free data structures for multicore OCaml";
-      homepage = "https://github.com/ocaml-multicore/saturn";
-      license = lib.licenses.isc;
-      maintainers = [ lib.maintainers.vbgl ];
-    };
-  };
+  # meta = {
+  # description = "Lock-free data structures for multicore OCaml";
+  # homepage = "https://github.com/ocaml-multicore/saturn";
+  # license = lib.licenses.isc;
+  # maintainers = [ lib.maintainers.vbgl ];
+  # };
+  # };
 
   semver = buildDunePackage {
     pname = "semver";
