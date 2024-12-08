@@ -1415,13 +1415,10 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "realworldocaml";
-      repo = "mdx";
-      rev = "c3b0e077627cf1dd88c01271177c2fb7271a450e";
-      hash = "sha256-y2K9Lj0ro9keFrcBUFck2CtHGXtePJlgjCAJsRj5Hs8=";
+    src = builtins.fetchurl {
+      url = "https://github.com/realworldocaml/mdx/releases/download/2.5.0/mdx-2.5.0.tbz";
+      sha256 = "0aah6qk1r17lwd4z76fbwwp2sq0n5jq0ncpv8v01abqqspbminn2";
     };
-    doCheck = ! lib.versionOlder "5.3" ocaml.version;
     # Break the attempt to reduce `mdx`'s closure size by adding a different
     # `logs` override, which breaks anything that uses logs (with OCaml package
     # conflicts)
@@ -2053,7 +2050,12 @@ with oself;
     meta = owl-base.meta;
   });
 
-  ocaml_pcre = osuper.ocaml_pcre.override { pcre = pcre-oc; };
+  ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; }).overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/pcre-ocaml/releases/download/7.5.1/pcre-7.5.1.tbz";
+      sha256 = "153r339jql5y72fvqjprlzmyhk3dg8bbf8ip9k4jlyyf7s8kwg6v";
+    };
+  });
 
   otfed = osuper.otfed.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
