@@ -2528,7 +2528,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "juergenhoetzel";
       repo = "ocaml-systemd";
-      rev = "v1.3";
+      rev = "1.3";
       hash = "sha256-/FV+mFhuB3mEZv34XZrA4gO6+QIYssXqurnvkNBTJ2o=";
     };
     minimalOCamlVersion = "4.06";
