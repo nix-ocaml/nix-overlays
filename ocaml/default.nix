@@ -30,6 +30,7 @@
 , nodejs_latest
 , pcre-oc
 , sqlite-oc
+, systemdLibs
 , makeWrapper
 , darwin
 , stdenv
@@ -2519,6 +2520,19 @@ with oself;
       sha256 = "1i43yqg0i304vpiy3sf6kvjpapkdm6spkf83mj9ql1d4f7jg6c58";
     };
     propagatedBuildInputs = [ xmlm uri ptime ];
+  };
+
+  systemd = buildDunePackage {
+    pname = "systemd";
+    version = "1.3";
+    src = fetchFromGitHub {
+      owner = "juergenhoetzel";
+      repo = "ocaml-systemd";
+      rev = "v1.3";
+      hash = "sha256-/FV+mFhuB3mEZv34XZrA4gO6+QIYssXqurnvkNBTJ2o=";
+    };
+    minimalOCamlVersion = "4.06";
+    propagatedBuildInputs = [ systemdLibs ];
   };
 
   taglib = osuper.taglib.overrideAttrs (o: {
