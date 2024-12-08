@@ -2105,6 +2105,7 @@ with oself;
       sha256 = "03k014j2mr67fydaqgfg1sx5n3820x4h58n2v6n94zdsjg70r16a";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
+    patches = [ ./psql.patch ];
 
     postPatch = ''
       substituteInPlace src/dune --replace-fail " bigarray" ""
