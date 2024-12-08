@@ -2533,6 +2533,7 @@ with oself;
     };
     minimalOCamlVersion = "4.06";
     propagatedBuildInputs = [ systemdLibs ];
+    meta.platform = lib.platforms.linux;
   };
 
   taglib = osuper.taglib.overrideAttrs (o: {
