@@ -2101,11 +2101,10 @@ with oself;
 
   postgresql = (osuper.postgresql.override { postgresql = libpq; }).overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.1.2/postgresql-5.1.2.tbz";
-      sha256 = "03k014j2mr67fydaqgfg1sx5n3820x4h58n2v6n94zdsjg70r16a";
+      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.1.3/postgresql-5.1.3.tbz";
+      sha256 = "030kfjgf88x5qwwc532q09jgmkammw259sy27cqddym3r4zmaaj6";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
-    patches = [ ./psql.patch ];
 
     postPatch = ''
       substituteInPlace src/dune --replace-fail " bigarray" ""
