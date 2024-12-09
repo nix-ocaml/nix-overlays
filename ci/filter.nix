@@ -147,6 +147,7 @@ let
     "pam"
     "netsnmp"
     "ocaml-probes"
+    "systemd"
 
     "gapi-ocaml"
     "bz2"
