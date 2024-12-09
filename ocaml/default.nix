@@ -378,13 +378,6 @@ with oself;
     };
   });
 
-  containers = osuper.containers.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-containers/releases/download/v3.15/containers-3.15.tbz";
-      sha256 = "0n3ycwyds65qzpj9nvjks3m32bgkyswlmazk0y55zbl58zmkq54j";
-    };
-  });
-
   cairo2 = osuper.cairo2.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace-fail "bigarray" ""
@@ -1035,13 +1028,6 @@ with oself;
     };
     nativeBuildInputs = [ cppo ];
   };
-
-  happy-eyeballs = osuper.happy-eyeballs.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/robur-coop/happy-eyeballs/releases/download/v1.2.2/happy-eyeballs-1.2.2.tbz";
-      sha256 = "1brfclji1gamana57n8mnvpbj89zgjm7x7d866qbkhhc0ikh4p8a";
-    };
-  });
 
   hdr_histogram = buildDunePackage {
     pname = "hdr_histogram";
@@ -2460,14 +2446,6 @@ with oself;
     };
     propagatedBuildInputs = [ vlq ];
   };
-
-  srt = osuper.srt.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
-    postPatch = ''
-      substituteInPlace "src/dune" "src/stubs/dune" --replace-fail \
-        "ctypes.foreign" "ctypes-foreign"
-    '';
-  });
 
   ssl = (osuper.ssl.override { openssl = openssl-oc.dev; }).overrideAttrs (o: {
     src = fetchFromGitHub {
