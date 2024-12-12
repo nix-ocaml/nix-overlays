@@ -1444,8 +1444,8 @@ with oself;
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
   mirage-crypto-rng-eio =
-    if lib.versionAtLeast ocaml.version "4.14" then
-      osuper.mirage-crypto-rng-eio
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.mirage-crypto-rng-eio
     else null;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
