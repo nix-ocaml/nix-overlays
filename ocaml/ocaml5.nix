@@ -164,12 +164,6 @@ with oself;
     };
   };
 
-  tls-eio = buildDunePackage {
-    pname = "tls-eio";
-    inherit (tls) version src;
-    propagatedBuildInputs = [ tls mirage-crypto-rng mirage-crypto-rng-eio x509 eio ];
-  };
-
   wayland = osuper.wayland.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/talex5/ocaml-wayland/releases/download/v2.0/wayland-2.0.tbz";

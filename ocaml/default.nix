@@ -2561,6 +2561,10 @@ with oself;
   timere = callPackage ./timere/default.nix { };
   timere-parse = callPackage ./timere/parse.nix { };
 
+  tls-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.tls-eio else null;
+
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -2674,15 +2678,6 @@ with oself;
     inherit (uspf) version src;
     propagatedBuildInputs = [ uspf ];
   };
-
-  utop = osuper.utop.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "2.15.0";
-      hash = "sha256-wfsMBx+2XPkgl+V2NCXBZ4X3wZa75bX7QnXsMrqysTw=";
-    };
-  });
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
