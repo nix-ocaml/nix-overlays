@@ -66,12 +66,6 @@ with oself;
 
   lwt_eio = callPackage ./eio/lwt_eio.nix { };
 
-  mirage-crypto-rng-eio = buildDunePackage {
-    pname = "mirage-crypto-rng-eio";
-    inherit (mirage-crypto) src version;
-    propagatedBuildInputs = [ eio mirage-crypto-rng ];
-  };
-
   moonpool = buildDunePackage {
     pname = "moonpool";
     version = "0.7";
