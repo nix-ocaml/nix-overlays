@@ -1849,16 +1849,7 @@ with oself;
     };
   });
 
-  ocplib-simplex = buildDunePackage {
-    pname = "ocplib-simplex";
-    version = "0.5.1";
-    src = builtins.fetchurl {
-      url = "https://github.com/OCamlPro/ocplib-simplex/releases/download/v0.5.1/ocplib-simplex-0.5.1.tbz";
-      sha256 = "1kqkslhka5r07nm53cspghpb818bi0gb5i9pbm90rrhq9nz19j55";
-    };
-
-    propagatedBuildInputs = [ logs ];
-  };
+  ocplib-simplex = disableTests osuper.ocplib-simplex;
 
   ocplib_stuff = buildDunePackage {
     pname = "ocplib_stuff";
