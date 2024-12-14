@@ -44,7 +44,7 @@
             */
         pkgs.appendOverlays extraOverlays;
 
-      overlays.default = final: prev: overlay final prev;
+      overlays.default = final: prev: if (prev ? __nix-ocaml-overlays-applied) then { } else overlay final prev;
 
       legacyPackages = nixpkgs.lib.genAttrs
         nixpkgs.lib.systems.flakeExposed

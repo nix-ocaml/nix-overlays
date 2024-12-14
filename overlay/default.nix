@@ -39,6 +39,9 @@ in
     })
   ];
 }) // {
+  # Place a canary
+  __nix-ocaml-overlays-applied = 1;
+
   # Cross-compilation / static overlays
   pkgsMusl = staticLightExtend super.pkgsMusl;
   pkgsStatic = staticLightExtend super.pkgsStatic;
