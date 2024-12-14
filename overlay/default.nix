@@ -40,7 +40,7 @@ in
   ];
 }) // {
   # Place a canary
-  ocaml-overlay-present = 1;
+  __nix-ocaml-overlays-applied = 1;
 
   # Cross-compilation / static overlays
   pkgsMusl = staticLightExtend super.pkgsMusl;
