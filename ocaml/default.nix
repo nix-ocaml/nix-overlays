@@ -44,7 +44,7 @@
 , python3
 , python3Packages
 , lmdb
-, curl
+, curl-oc
 , libsodium
 , cairo
 , gtk2
@@ -1869,8 +1869,8 @@ with oself;
       '' else "";
   };
 
-  ocurl = osuper.ocurl.overrideAttrs (_: {
-    propagatedBuildInputs = [ curl ];
+  ocurl = (osuper.ocurl.override { curl = curl-oc; }).overrideAttrs (_: {
+    propagatedBuildInputs = [ curl-oc ];
   });
 
   odep = buildDunePackage {
@@ -1968,7 +1968,7 @@ with oself;
   opam = buildDunePackage {
     pname = "opam";
     inherit (opam-format) src version meta;
-    nativeBuildInputs = [ curl ];
+    nativeBuildInputs = [ curl-oc ];
     configureFlags = [ "--disable-checks" ];
     propagatedBuildInputs = [ cmdliner opam-client ];
   };
