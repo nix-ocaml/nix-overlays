@@ -35,9 +35,6 @@ let
     "pgsolver"
     "tcslib"
 
-    # Not compatible with EIO piaf yet
-    "oidc-client"
-
     "biocaml"
     "pythonlib"
     "magic-trace"

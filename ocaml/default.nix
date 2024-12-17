@@ -1906,7 +1906,6 @@ with oself;
   });
 
   oidc = callPackage ./oidc { };
-  oidc-client = callPackage ./oidc/client.nix { };
 
   omd = osuper.omd.overrideAttrs (_: {
     src = builtins.fetchurl {

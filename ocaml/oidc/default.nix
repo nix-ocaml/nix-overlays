@@ -3,12 +3,12 @@
 
 buildDunePackage {
   pname = "oidc";
-  version = "0.2.0-dev";
+  version = "0.2.0";
   src = fetchFromGitHub {
     owner = "ulrikstrid";
     repo = "ocaml-oidc";
-    rev = "212b6f6233bd60c4c2f9289ba0dd3d19e839ffd0";
-    hash = "sha256-MpkS+tmrb3U6HqmXKiNsGZlz0dmaDsX4JGakCjFtwm4=";
+    rev = "v0.2.0";
+    hash = "sha256-j88F76W5KZVYdZHI1Im24fbbOTect7/LlNfh/KY1mU0=";
   };
 
   propagatedBuildInputs = [ jose uri yojson logs ];
