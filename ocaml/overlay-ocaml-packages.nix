@@ -179,6 +179,7 @@ let
                 super.autoconf
                 super.libtool
                 super.rsync
+                super.which
               ];
             buildInputs = o.buildInputs ++ (with ocaml14Scope; [ menhirLib ]);
           };
