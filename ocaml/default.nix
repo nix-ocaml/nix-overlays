@@ -588,15 +588,6 @@ with oself;
 
   cookie = callPackage ./cookie { };
 
-  cppo = osuper.cppo.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "cppo";
-      rev = "v1.8.0";
-      hash = "sha256-+HnAGM+GddYJK0RCvKrs+baZS+1o8Yq+/cVa3U3nFWg=";
-    };
-  });
-
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   cstruct = osuper.cstruct.overrideAttrs (_: {
