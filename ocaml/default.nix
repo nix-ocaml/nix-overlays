@@ -336,6 +336,8 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
+  camlp4 = callPackage ./camlp4 { };
+
   camlp5 = callPackage ./camlp5 { };
 
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
@@ -396,16 +398,16 @@ with oself;
     src = fetchFromGitHub {
       owner = "johnwhitington";
       repo = "cpdf-source";
-      rev = "997b32b44030908e502b5a9c8f8cfc1ea279d452";
-      hash = "sha256-D/ObDD5jHziyqz50HyvboZq8nUI7m/rPxckmjnKOOJY=";
+      rev = "v2.8";
+      hash = "sha256-DvTY5EQcvnL76RlQTcVqBiycqbCdGQCXzarSMH2P/pg=";
     };
   });
   camlpdf = osuper.camlpdf.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "johnwhitington";
       repo = "camlpdf";
-      rev = "v2.7.2";
-      hash = "sha256-ZZVLG2Py6g4MCikzDmclHsAYQO5UgaBVaNBGSXtG3y8=";
+      rev = "v2.8";
+      hash = "sha256-+SFuFqlrP0nwm199y0QFWYvlwD+Cbh0PHA5bmXIWdNk=";
     };
   });
 
