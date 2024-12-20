@@ -766,7 +766,7 @@ with oself;
     version = "3.17.0";
     src = builtins.fetchurl {
       url = "https://github.com/ocaml/dune/releases/download/3.17.1/dune-3.17.1.tbz";
-      sha256 = "6b9ee5ed051379a69ca45173ac6c5deb56b44a1c16e30b7c371343303d835ac6";
+      sha256 = "1ijshcyk0hqk6xy0pqqn3i5b8mpbbmnaqwsiljfacy8k0pnyb7kb";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
