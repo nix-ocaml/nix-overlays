@@ -535,12 +535,6 @@ with oself;
   conan-database = callPackage ./conan/database.nix { };
   conan-cli = callPackage ./conan/cli.nix { };
 
-  conduit = osuper.conduit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-conduit/releases/download/v7.1.0/conduit-7.1.0.tbz";
-      sha256 = "1xspxb5v8hb9f1zx7b2cbgrp1s9k68js1373bl10c5z70y523ljq";
-    };
-  });
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
   });
@@ -1343,14 +1337,7 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "lwt";
-      rev = "5.9.0";
-      hash = "sha256-xYF+f489RI/nY0J48qW0jtq5GEnk68QnwxzBV2TLmLk=";
-    };
-  });
+  lwt = (osuper.lwt.override { libev = libev-oc; });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
