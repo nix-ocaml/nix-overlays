@@ -156,6 +156,9 @@ let
               substituteInPlace "tools/merge_dot_a_files.sh" --replace-fail \
               'exec libtool -static -o $target $archives' \
               'exec ar cr "$target" $archives && exec ranlib "$target"'
+              substituteInPlace Makefile ocaml/Makefile.jst --replace-fail \
+              "SHELL = /usr/bin/env bash" \
+              "SHELL = ${super.bash}/bin/bash"
               cd ocaml && autoconf && cd ..
               autoconf
             '';
@@ -179,6 +182,7 @@ let
                 super.autoconf
                 super.libtool
                 super.rsync
+                super.which
               ];
             buildInputs = o.buildInputs ++ (with ocaml14Scope; [ menhirLib ]);
           };
