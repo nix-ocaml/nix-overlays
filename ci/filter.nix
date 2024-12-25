@@ -102,6 +102,9 @@ let
     ## Doesn't work with latest lsp on 5.2
     "linol"
     "linol-lwt"
+
+    ## Broken on GCC14 or clang19
+    "mopsa"
   ];
 
   ocaml5Ignores = [
@@ -165,6 +168,10 @@ let
     "stog"
     "stog_asy"
     "stog_markdown"
+
+    "eigen"
+    "owl"
+    "owl-base"
   ];
 in
 

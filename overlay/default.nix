@@ -71,88 +71,94 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql_16.override {
+  libpq = (super.postgresql_17.override {
     systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
     lz4 = self.lz4-oc;
     zstd = self.zstd-oc;
-  }).overrideAttrs (o: {
-    doCheck = false;
-    configureFlags = [
-      "--without-ldap"
-      "--without-readline"
-      "--with-openssl"
-      "--with-libxml"
-      "--sysconfdir=/etc"
-      "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
-      "--enable-debug"
-      "--with-icu"
-      "--with-lz4"
-      "--with-zstd"
-      (if stdenv.isDarwin then "--with-uuid=e2fs" else "--with-ossp-uuid")
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
-    ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
-    # This could be removed once the upstream issue is resolved:
-    # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
-    ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
+    zlib = self.zlib-oc;
+  }).overrideAttrs (o:
+    let
+      pg_config = super.writeShellScriptBin "pg_config" (builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh");
+    in
+    {
+      doCheck = false;
+      doInstallCheck = false;
+      configureFlags = [
+        "--without-ldap"
+        "--without-readline"
+        "--with-openssl"
+        "--with-libxml"
+        "--sysconfdir=/etc"
+        "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
+        "--enable-debug"
+        "--with-icu"
+        "--with-lz4"
+        "--with-zstd"
+        "--with-uuid=e2fs"
+      ]
+      ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
+      ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
+      # This could be removed once the upstream issue is resolved:
+      # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
+      ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
 
-    buildInputs = with self; [
-      zlib-oc
-      libxml2
-      icu
-      libxcrypt
-      lz4
-      zstd
-    ]
-    ++ lib.optionals stdenv.isLinux [ linux-pam ]
-    ++ lib.optionals (!stdenv.isDarwin) [ libossp_uuid ];
+      propagatedBuildInputs = with self; [
+        lz4-oc
+        zstd-oc
+        zlib-oc
+        libuuid
+        libxml2
+        icu
+        openssl-oc.dev
+      ]
+      ++ lib.optionals stdenv.isLinux [ linux-pam ];
+      # Use a single output derivation. The upstream PostgreSQL derivation
+      # produces multiple outputs (including "out" and "lib"), and then puts some
+      # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
+      # pkg-config `--libs` flags to be invalid (since it only knows about one
+      # such lib path, not both)
+      outputs = [ "out" "dev" "doc" "man" ];
 
-    propagatedBuildInputs = [ self.openssl-oc.dev ];
-    # Use a single output derivation. The upstream PostgreSQL derivation
-    # produces multiple outputs (including "out" and "lib"), and then puts some
-    # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
-    # pkg-config `--libs` flags to be invalid (since it only knows about one
-    # such lib path, not both)
-    outputs = [ "out" "dev" "doc" "man" ];
-
-    postInstall = ''
-      moveToOutput "bin/ecpg" "$dev"
-      moveToOutput "lib/pgxs" "$dev"
-      # Pretend pg_config is located in $out/bin to return correct paths, but
-      # actually have it in -dev to avoid pulling in all other outputs.
-      moveToOutput "bin/pg_config" "$dev"
-      # To prevent a "pg_config: could not find own program executable" error, we fake
-      # pg_config in the default output.
-      cat << EOF > "$out/bin/pg_config" && chmod +x "$out/bin/pg_config"
-      #!${stdenv.shell}
-      echo The real pg_config can be found in the -dev output.
-      exit 1
-      EOF
-      wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
-      # postgres exposes external symbols get_pkginclude_path and similar. Those
-      # can't be stripped away by --gc-sections/LTO, because they could theoretically
-      # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
-      # references to -dev, -doc and -man are removed here. References to -lib must be kept,
-      # because there is a realistic use-case for extensions to locate the /lib directory to
-      # load other shared modules.
-      remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
-      if [ -z "''${dontDisableStatic:-}" ]; then
-        # Remove static libraries in case dynamic are available.
-        for i in $out/lib/*.a; do
-          name="$(basename "$i")"
-          ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
-          if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
-            rm "$i"
-          fi
-        done
-      fi
-      # The remaining static libraries are libpgcommon.a, libpgport.a and related.
-      # Those are only used when building e.g. extensions, so go to $dev.
-      moveToOutput "lib/*.a" "$dev"
-    '';
-  });
+      postInstall = ''
+        moveToOutput "bin/ecpg" "$dev"
+        moveToOutput "lib/pgxs" "$dev"
+        # Pretend pg_config is located in $out/bin to return correct paths, but
+        # actually have it in -dev to avoid pulling in all other outputs. See the
+        # pg_config.sh script's comments for details.
+        moveToOutput "bin/pg_config" "$dev"
+        install -c -m 755 "${pg_config}"/bin/pg_config "$out/bin/pg_config"
+        wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
+        # postgres exposes external symbols get_pkginclude_path and similar. Those
+        # can't be stripped away by --gc-sections/LTO, because they could theoretically
+        # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
+        # references to -dev, -doc and -man are removed here. References to -lib must be kept,
+        # because there is a realistic use-case for extensions to locate the /lib directory to
+        # load other shared modules.
+        remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
+        if [ -z "''${dontDisableStatic:-}" ]; then
+          # Remove static libraries in case dynamic are available.
+          for i in $out/lib/*.a; do
+            name="$(basename "$i")"
+            ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
+            if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
+              rm "$i"
+            fi
+          done
+        fi
+        # The remaining static libraries are libpgcommon.a, libpgport.a and related.
+        # Those are only used when building e.g. extensions, so go to $dev.
+        moveToOutput "lib/*.a" "$dev"
+      '' +
+      lib.optionalString stdenv.hostPlatform.isDarwin ''
+        # The darwin specific Makefile for PGXS contains a reference to the postgres
+        # binary. Some extensions (here: postgis), which are able to set bindir correctly
+        # to their own output for installation, will then fail to find "postgres" during linking.
+        substituteInPlace "$dev/lib/pgxs/src/Makefile.port" \
+          --replace-fail '-bundle_loader $(bindir)/postgres' "-bundle_loader $out/bin/postgres"
+      '';
+    });
 
   binaryen = super.binaryen.overrideAttrs (_: rec {
     version = "114";
@@ -165,6 +171,14 @@ in
       hash = "sha256-bzHNIQy0AN8mIFGG+638p/MBSqlkWuaOzKGSsMDAPH4=";
     };
   });
+
+  gnome2 = super.gnome2 // {
+    gtksourceview = super.gtksourceview.overrideAttrs (_: {
+      env = lib.optionalAttrs stdenv.cc.isGNU {
+        NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+      };
+    });
+  };
 
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
@@ -293,8 +307,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "75652adf7142bb043eaf11143fffcc557ab8cc68";
-          hash = "sha256-Y0tsePP91M6996JROnWHVD9AZqqPQhdATvxC1aV/6ws=";
+          rev = "670aae168499bc1fe8a876bdeb9f60f25f89160c";
+          hash = "sha256-Eq804+sWG39WIdmAJIiUrUuop38fKAI8C45pqfEV01k=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
@@ -308,7 +322,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-A7rYqZqGiO4X+DH79VWICTpMMDu2uL7LAgaa1+qG3zY=";
+      cargoHash = "sha256-XNhwwMxmCMAJ75aaYW58DP9+6XfeRDUOnl8zbrhrm7I=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.
