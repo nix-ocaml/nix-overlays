@@ -26,7 +26,9 @@ in
   libev-oc = super.libev-oc.override { static = true; };
   libffi-oc = super.libffi-oc.overrideAttrs (_: { dontDisableStatic = true; });
   libpq = super.libpq.overrideAttrs (_: { dontDisableStatic = true; });
-  lz4-oc = super.lz4-oc.override { enableStatic = true; };
+  lz4-oc = super.lz4-oc.overrideAttrs (_: {
+    cmakeFlags = [ "-DBUILD_STATIC_LIBS=TRUE" ];
+  });
   gmp-oc = super.gmp-oc.override { withStatic = true; };
   openssl-oc = super.openssl-oc.override { static = true; };
 
