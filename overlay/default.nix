@@ -307,8 +307,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "75652adf7142bb043eaf11143fffcc557ab8cc68";
-          hash = "sha256-Y0tsePP91M6996JROnWHVD9AZqqPQhdATvxC1aV/6ws=";
+          rev = "670aae168499bc1fe8a876bdeb9f60f25f89160c";
+          hash = "sha256-Eq804+sWG39WIdmAJIiUrUuop38fKAI8C45pqfEV01k=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
@@ -322,7 +322,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-A7rYqZqGiO4X+DH79VWICTpMMDu2uL7LAgaa1+qG3zY=";
+      cargoHash = "sha256-XNhwwMxmCMAJ75aaYW58DP9+6XfeRDUOnl8zbrhrm7I=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.

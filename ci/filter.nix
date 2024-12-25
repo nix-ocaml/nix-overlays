@@ -168,6 +168,10 @@ let
     "stog"
     "stog_asy"
     "stog_markdown"
+
+    "eigen"
+    "owl"
+    "owl-base"
   ];
 in
 
