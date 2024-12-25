@@ -857,6 +857,12 @@ with oself;
     '';
   });
 
+  elina = osuper.elina.overrideAttrs (_: {
+    env = lib.optionalAttrs stdenv.cc.isGNU {
+      NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+    };
+  });
+
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
@@ -1361,6 +1367,15 @@ with oself;
     };
     propagatedBuildInputs = [ dune-configurator ctypes lz4-oc ];
   };
+
+  magic = osuper.magic.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "Chris00";
+      repo = "ocaml-magic";
+      rev = "v0.7.4";
+      hash = "sha256-rsBMx68UDqmVVsyeZCxIS97A/0JCBM/JOgh60ly1uSs=";
+    };
+  });
 
   markup-lwt = buildDunePackage {
     pname = "markup-lwt";
@@ -2362,6 +2377,15 @@ with oself;
   # maintainers = [ lib.maintainers.vbgl ];
   # };
   # };
+
+  secp256k1 = osuper.secp256k1.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "dakk";
+      repo = "secp256k1-ml";
+      rev = "6089b0fb8695ad605799b340fd34c93cebb40c79";
+      hash = "sha256-69GpqRxsj/Zj+KWaAIYZqg2+Gp4rMCOYqg/QtHOzr+g=";
+    };
+  });
 
   semver = buildDunePackage {
     pname = "semver";
