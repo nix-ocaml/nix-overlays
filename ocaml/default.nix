@@ -102,7 +102,8 @@ let
       linuxHeaders
       nixpkgs
       pam
-      net-snmp;
+      net-snmp
+      stdenv;
     zstd = zstd-oc;
   };
   janeStreet_0_17 = import ./janestreet-0.17.nix {
