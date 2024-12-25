@@ -972,13 +972,20 @@ in
     meta.description = "Jane Street C header files";
   };
 
-  janestreet_cpuid = janePackage {
+  janestreet_cpuid = (janePackage {
     pname = "janestreet_cpuid";
     hash = "sha256-3ZwEZQSkJJyFW5/+C9x8nW6+GrfVwccNFPlcs7qNcjQ=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "A library for parsing CPU capabilities out of the `cpuid` instruction.";
     propagatedBuildInputs = [ core core_kernel ppx_jane ];
-  };
+  }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "janestreet";
+      repo = "janestreet_cpuid";
+      rev = "55223d9708388fe990553669d881f78a811979b9";
+      hash = "sha256-XzG/G65W/9hkVPI+MiQV160XpjGgU3tDNBdz39tXvHQ=";
+    };
+  });
 
   janestreet_csv = janePackage {
     pname = "janestreet_csv";
