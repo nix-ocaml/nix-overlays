@@ -166,6 +166,14 @@ in
     };
   });
 
+  gnome2 = super.gnome2 // {
+    gtksourceview = super.gtksourceview.overrideAttrs (_: {
+      env = lib.optionalAttrs stdenv.cc.isGNU {
+        NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+      };
+    });
+  };
+
   opaline = null;
   ott = super.ott.override { opaline = self.ocamlPackages.opaline; };
   esy = callPackage ../ocaml/esy {

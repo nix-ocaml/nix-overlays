@@ -44,6 +44,7 @@
 , python3
 , python3Packages
 , lmdb
+, ncurses
 , curl-oc
 , libsodium
 , cairo
@@ -117,7 +118,8 @@ let
       linuxHeaders
       nixpkgs
       pam
-      net-snmp;
+      net-snmp
+      stdenv;
     zstd = zstd-oc;
   };
 
@@ -293,36 +295,17 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
-  bz2 = stdenv.mkDerivation rec {
-    pname = "ocaml${ocaml.version}-bz2";
-    version = "0.7.0";
-
+  bz2 = buildDunePackage {
+    pname = "bz2";
+    version = "0.7.0-dev";
     src = fetchFromGitLab {
       owner = "irill";
       repo = "camlbz2";
-      rev = version;
-      sha256 = "sha256-jBFEkLN2fbC3LxTu7C0iuhvNg64duuckBHWZoBxrV/U=";
+      rev = "c07b3756f15953daa1b1e13c0beecaeb5cb20813";
+      hash = "sha256-uutrrvEE82h8no3JhtY1JEKyGLVT5suddxR1SYdAB6A=";
     };
 
-    autoreconfFlags = [ "-I" "." ];
-
-    nativeBuildInputs = [
-      autoreconfHook
-      ocaml
-      findlib
-    ];
-
-    propagatedBuildInputs = [
-      bzip2
-    ];
-
-    strictDeps = true;
-
-    preInstall = "mkdir -p $OCAMLFIND_DESTDIR/stublibs";
-    postPatch = ''
-      substituteInPlace bz2.ml --replace-fail "Pervasives" "Stdlib"
-      substituteInPlace bz2.mli --replace-fail "Pervasives" "Stdlib"
-    '';
+    propagatedBuildInputs = [ stdlib-shims bzip2 ];
 
     meta = with lib; {
       description = "OCaml bindings for the libbz2 (AKA, bzip2) (de)compression library";
@@ -582,6 +565,17 @@ with oself;
 
   cookie = callPackage ./cookie { };
 
+  crowbar = osuper.crowbar.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "stedolan";
+      repo = "crowbar";
+      rev = "0cbe3ea7e990a7d233360e6a74b1cb5e712501ad";
+      sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
+    };
+
+    doCheck = lib.versionAtLeast ocaml.version "5.0";
+  });
+
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   cstruct = osuper.cstruct.overrideAttrs (_: {
@@ -611,16 +605,26 @@ with oself;
     doCheck = false;
   });
 
-  crowbar = osuper.crowbar.overrideAttrs (o: {
+  curses = buildDunePackage {
+    pname = "curses";
+    version = "1.0.11";
     src = fetchFromGitHub {
-      owner = "stedolan";
-      repo = "crowbar";
-      rev = "0cbe3ea7e990a7d233360e6a74b1cb5e712501ad";
-      sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
+      owner = "mbacarella";
+      repo = "curses";
+      rev = "1.0.11";
+      hash = "sha256-tjBOv7RARDzBShToNLL9LEaU/Syo95MfwZunFsyN4/Q=";
     };
 
-    doCheck = lib.versionAtLeast ocaml.version "5.0";
-  });
+    nativeBuildInputs = [ pkg-config ];
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [ ncurses ];
+    # Fix build for recent ncurses versions
+    env.NIX_CFLAGS_COMPILE = "-DNCURSES_INTERNALS=1";
+
+    postPatch = ''
+      substituteInPlace _curses.ml --replace-fail "pp gcc" "pp $CC"
+    '';
+  };
 
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];
