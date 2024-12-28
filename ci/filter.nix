@@ -105,6 +105,8 @@ let
 
     ## Broken on GCC14 or clang19
     "mopsa"
+
+    "odds"
   ];
 
   ocaml5Ignores = [
