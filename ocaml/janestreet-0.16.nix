@@ -160,6 +160,9 @@ with self;
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ async ctypes ctypes-foreign openssl ];
+    env = lib.optionalAttrs stdenv.cc.isGNU {
+      NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+    };
   };
 
   async_udp = janePackage {

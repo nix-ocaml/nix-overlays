@@ -858,6 +858,12 @@ with oself;
     '';
   });
 
+  elina = osuper.elina.overrideAttrs (_: {
+    env = lib.optionalAttrs stdenv.cc.isGNU {
+      NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+    };
+  });
+
   eio-ssl =
     if lib.versionAtLeast ocaml.version "5.0" then
       callPackage ./eio-ssl { }
