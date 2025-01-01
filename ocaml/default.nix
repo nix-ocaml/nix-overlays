@@ -227,8 +227,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-batteries-team";
       repo = "batteries-included";
-      rev = "1a4e920ff4e639394ca2d7b84160c08679e4f654";
-      hash = "sha256-1A5Ys28y46TcL6H8AoEGTTBtj7MeTMuGpZYcCGGII/s=";
+      rev = "v3.9.0";
+      hash = "sha256-+PGfExdvp3WyX1s8dLTBYp1SoUOBkzrxyqMUuaW6Bto=";
     };
   });
 
@@ -1179,8 +1179,8 @@ with oself;
           {
             owner = "ocaml";
             repo = "ocaml-lsp";
-            rev = "2d66db71a2870cb79057944f0336a0af257a9874";
-            hash = "sha256-1ghwFPAzy33eRUoh4jZmfGCR29rKTYYix15vRa2Krj0=";
+            rev = "e266e93b8263041a977797c5f230e538a18a4809";
+            hash = "sha256-81A9CBbV67ben/cbOZ5iZ9AQRr0pK17K0ETgnS9f32k=";
           }
       else if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
@@ -1198,6 +1198,13 @@ with oself;
             sha256 = "0ndgwq3whva083lwy8yr1abagpnyp0v2x6sidcap2v8y2h06vsdc";
           }
       else o.src;
+  });
+
+  junit = osuper.junit.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/Khady/ocaml-junit/releases/download/2.2.0/junit-2.2.0.tbz";
+      sha256 = "02nr67ai9ng8z74p405gaawz2j07rzcgzs1ra6ax6mmvww41payh";
+    };
   });
 
   kafka = (osuper.kafka.override {
@@ -1832,8 +1839,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocurrent";
       repo = "ocaml-version";
-      rev = "v3.7.1";
-      hash = "sha256-m7yXdhwNIJBch7+urYxdfOB5EWdSZVAtoggzr4Ag8k0=";
+      rev = "v3.7.2";
+      hash = "sha256-eEw7MBuT2cfJ5+FTebssJIJEH0pFRq9VmREJzJwiUWw=";
     };
   });
 
