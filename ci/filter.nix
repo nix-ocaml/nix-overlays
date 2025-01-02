@@ -107,6 +107,8 @@ let
     "mopsa"
 
     "odds"
+    "raylib"
+    "raygui"
   ];
 
   ocaml5Ignores = [
