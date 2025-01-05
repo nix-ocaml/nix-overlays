@@ -1835,15 +1835,6 @@ with oself;
     };
   });
 
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocurrent";
-      repo = "ocaml-version";
-      rev = "v3.7.2";
-      hash = "sha256-eEw7MBuT2cfJ5+FTebssJIJEH0pFRq9VmREJzJwiUWw=";
-    };
-  });
-
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
     postPatch = ''
       substituteInPlace src/dune --replace-fail "libraries bytes" "libraries "
@@ -1855,8 +1846,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "OCamlPro";
       repo = "ocp-index";
-      rev = "77cd8eb2ae1ee142ae1344dc9892c49ca4dd7631";
-      hash = "sha256-jIizvs2hCWTOdH1mGHO22VQiRHIPlxy0mNU40Va2r1g=";
+      rev = "1.3.7";
+      hash = "sha256-FbkVJRbFNSho/E59QMUoGK+TrdnnacmykJWWG2JVDVA=";
     };
   });
 
