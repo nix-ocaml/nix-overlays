@@ -2031,8 +2031,8 @@ with oself;
 
   ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; }).overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mmottl/pcre-ocaml/releases/download/7.5.1/pcre-7.5.1.tbz";
-      sha256 = "153r339jql5y72fvqjprlzmyhk3dg8bbf8ip9k4jlyyf7s8kwg6v";
+      url = "https://github.com/mmottl/pcre-ocaml/releases/download/8.0.2/pcre-8.0.2.tbz";
+      sha256 = "1zmzd2rfby3cbxzjn356l1igwz7w0gmdf2n5dmmwd6cdp5jx669c";
     };
   });
 
@@ -2208,11 +2208,9 @@ with oself;
             hash = "sha256-EB+i0iMt/u/IRp0U/dS2tvQrSjuSxHaPQ3XaPZI6hAs=";
           }
       else
-        fetchFromGitHub {
-          owner = "ocaml-ppx";
-          repo = "ppxlib";
-          rev = "562a9fa1fb36c3a168315312095cc2a661a2bc59";
-          hash = "sha256-d2WMTPUbmNH6GEfRcgtyZG6J1/98u90luoNJc05HT8A=";
+        builtins.fetchurl {
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.34.0/ppxlib-0.34.0.tbz";
+          sha256 = "19v1crxb2nzvkw1s2z3rgrz7v4p90k6qf0vwdgjpm38mb8b9fzfp";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
