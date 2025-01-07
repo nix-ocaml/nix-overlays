@@ -109,6 +109,9 @@ let
     "odds"
     "raylib"
     "raygui"
+
+    ## host unreachable for download
+    "functory"
   ];
 
   ocaml5Ignores = [
