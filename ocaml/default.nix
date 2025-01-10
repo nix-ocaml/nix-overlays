@@ -223,15 +223,6 @@ with oself;
     };
   };
 
-  batteries = osuper.batteries.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-batteries-team";
-      repo = "batteries-included";
-      rev = "v3.9.0";
-      hash = "sha256-+PGfExdvp3WyX1s8dLTBYp1SoUOBkzrxyqMUuaW6Bto=";
-    };
-  });
-
   bechamel = buildDunePackage {
     pname = "bechamel";
     version = "0.5.0";
