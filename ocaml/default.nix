@@ -1166,18 +1166,16 @@ with oself;
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub
+        builtins.fetchurl
           {
-            owner = "ocaml";
-            repo = "ocaml-lsp";
-            rev = "e266e93b8263041a977797c5f230e538a18a4809";
-            hash = "sha256-81A9CBbV67ben/cbOZ5iZ9AQRr0pK17K0ETgnS9f32k=";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.22.0/lsp-1.22.0.tbz";
+            sha256 = "10dm7whcijqhpf8vd4q6slc92ms3ly0h8n7svq825p0mgmbw77ai";
           }
       else if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.0/lsp-1.20.0.tbz";
-            sha256 = "151cg2qs6ck7709chdnxsdxhz548rgj87j9q09g93infv87x9mli";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.21.0/lsp-1.21.0.tbz";
+            sha256 = "05zprrbhpv80qlnlvnipx9vlkq7xm1cgnjvp8fxd5l13zwvh71v7";
           }
       else if
         lib.versionOlder "4.14" ocaml.version
@@ -2210,6 +2208,12 @@ with oself;
       stdlib-shims
     ];
   });
+
+  ppxlib-tools = buildDunePackage {
+    pname = "ppxlib-tools";
+    inherit (ppxlib) version src;
+    propagatedBuildInputs = [ ppxlib cmdliner ];
+  };
 
   processor = buildDunePackage {
     version = "0.2";
