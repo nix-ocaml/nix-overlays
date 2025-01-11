@@ -32,12 +32,10 @@ buildDunePackage {
         }
     else if lib.versionOlder "5.3" ocaml.version
     then
-      fetchFromGitHub
+      builtins.fetchurl
         {
-          owner = "ocaml";
-          repo = "merlin";
-          rev = "3438e34a77bd1c3c7a10bffa0c45c419ff91286f";
-          hash = "sha256-EZu/9cOtHMO5jIT2RUEC3EZuCcDRyhXHSihxl29sD6s=";
+          url = "https://github.com/ocaml/merlin/releases/download/v5.4-503/merlin-5.4-503.tbz";
+          sha256 = "1g1cmxscpygk2ig76khcmvz3lgd31xzgzrwj6904r9cwk867ir7j";
         }
     else if lib.versionOlder "5.2" ocaml.version
     then
