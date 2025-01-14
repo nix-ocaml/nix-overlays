@@ -311,8 +311,6 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
-  camlp4 = callPackage ./camlp4 { };
-
   camlp5 = callPackage ./camlp5 { };
 
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
