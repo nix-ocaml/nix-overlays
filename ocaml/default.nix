@@ -183,14 +183,6 @@ with oself;
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
 
-  asn1-combinators = osuper.asn1-combinators.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirleft/ocaml-asn1-combinators/releases/download/v0.3.2/asn1-combinators-0.3.2.tbz";
-      sha256 = "0zwa1pxprzq77h5y6j2s7dj14zkmsrdkb14zrlyhf8i7drgrh9ib";
-    };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ohex ];
-  });
-
   atdts = buildDunePackage {
     pname = "atdts";
     inherit (atdgen-codec-runtime) version src;
