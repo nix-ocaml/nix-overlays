@@ -105,6 +105,11 @@ let
           rev = "5.3.0";
           hash = "sha256-OxvfM0OF1XjtAMgAd+4Lm67iMKV7PD1sFmGPYn/yUBY=";
         };
+        postPatch = ''
+          substituteInPlace "runtime/caml/camlatomic.h" \
+            --replace-fail "#ifdef CAML_INTERNALS" "" \
+            --replace-fail "#endif /* CAML_INTERNALS */" ""
+        '';
       };
 
       ocamlPackages_trunk = newOCamlScope {

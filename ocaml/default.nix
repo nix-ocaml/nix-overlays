@@ -2333,9 +2333,10 @@ with oself;
 
   multicore-magic = osuper.multicore-magic.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.0/multicore-magic-2.3.0.tbz";
-      sha256 = "1vnf4x4clv9p5606i65yvizg8x9h95x5r120rw9kmn4xnfl197dg";
+      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.1/multicore-magic-2.3.1.tbz";
+      sha256 = "0pqr3hak7xdhbsmra95sff1k7nipza0x6jmhh5r1h4lzvj5j1mq1";
     };
+    doCheck = false; # Requires js_of_ocaml
   });
 
   # removed in saturn 1.0
