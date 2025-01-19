@@ -30,13 +30,16 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_14, continue-on-error: false }
-          - { ocaml-version: 5_1, continue-on-error: false }
-          - { ocaml-version: 5_2, continue-on-error: false }
-          - { ocaml-version: 5_3, continue-on-error: false }
-          - { ocaml-version: 5_4, continue-on-error: true }
-    name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
-    runs-on: ubuntu-latest
+          - { ocaml-version: 4_14, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_1, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_2, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_3, continue-on-error: true, os: ubuntu-latest }
+          - { ocaml-version: 5_2, continue-on-error: false, os: ubuntu-24.04-arm }
+          - { ocaml-version: 5_3, continue-on-error: true, os: ubuntu-24.04-arm }
+          - { ocaml-version: 5_4, continue-on-error: true, os: ubuntu-latest }
+          - { ocaml-version: 5_4, continue-on-error: true, os: ubuntu-24.04-arm }
+    name: Native packages (${{ matrix.setup.os }}, OCaml ${{ matrix.setup.ocaml-version }})
+    runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -130,16 +133,18 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { ocaml-version: 4_14, continue-on-error: false }
-          - { ocaml-version: 5_1, continue-on-error: false }
-          - { ocaml-version: 5_2, continue-on-error: false }
-          - { ocaml-version: 5_3, continue-on-error: false }
-          # - { ocaml-version: 5_4, continue-on-error: true }
+          - { ocaml-version: 4_14, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_1, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_2, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_3, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_2, continue-on-error: false, os: ubuntu-latest }
+          - { ocaml-version: 5_3, continue-on-error: false, os: ubuntu-24.04-arm }
+          # - { ocaml-version: 5_4, continue-on-error: true, os: ubuntu-latest  }
         target:
           - arm64
           - musl
-    name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }})
-    runs-on: ubuntu-latest
+    name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }}, ${{ matrix.setup.os }})
+    runs-on: ${{ matrix.setup.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
