@@ -3,7 +3,11 @@ let
   inherit (pkgs) lib stdenv;
   filter = pkgs.callPackage ./filter.nix { };
   isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
-  extraIgnores = if isDarwin then filter.darwinIgnores else [ ];
+  extraIgnores =
+    if isDarwin
+    then filter.darwinIgnores
+    else if system == "aarch64-linux" then filter.aarch64LinuxIgnores
+    else [ ];
 in
 
 with filter;
@@ -11,6 +15,7 @@ with filter;
   build_4_14 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "4_14";
+    extraIgnores = extraIgnores;
   };
   build_5_1 = ocamlCandidates {
     inherit pkgs;
