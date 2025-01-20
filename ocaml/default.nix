@@ -1684,8 +1684,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocamlformat-mlx";
-      rev = "922e14b615b14bcaf58544c3f23896756d63dc8c";
-      sha256 = "sha256-8oLIMsvlIIU1v1zgw8sxrk/YFuSJEx/F/by81hY3eMs=";
+      rev = "20eb78e7bc6634145555ae1f478af558c3233cd1";
+      hash = "sha256-psuiZy/+HjlJ+b/EYlNVb0aXqUu6/364L71qVoH9xSs=";
     };
   });
 
