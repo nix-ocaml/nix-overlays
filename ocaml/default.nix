@@ -403,6 +403,19 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
   });
 
+  cachet = buildDunePackage {
+    pname = "cachet";
+    version = "0.0.2";
+    src = builtins.fetchurl {
+      url = "https://github.com/robur-coop/cachet/releases/download/v0.0.2/cachet-0.0.2.tbz";
+      sha256 = "1bfbad68dnc583ps04j44v59v38narki032pwmp534ima84xdwvw";
+    };
+  };
+  cachet-lwt = buildDunePackage {
+    pname = "cachet-lwt";
+    inherit (cachet) src version;
+    propagatedBuildInputs = [ cachet lwt ];
+  };
 
   carton = osuper.carton.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1244,6 +1257,16 @@ with oself;
       if lib.versionAtLeast ocaml.version "5.0" then ''
         substituteInPlace src/dune --replace-fail " bigarray" ""
       '' else "";
+  });
+
+  landmarks = osuper.landmarks.overrideAttrs (_: {
+    version = "1.5";
+    src = fetchFromGitHub {
+      owner = "lexifi";
+      repo = "landmarks";
+      rev = "v1.5";
+      hash = "sha256-Xg6byrixP5hhOzOBlV1gt5oaH8BSeqw06emzz5u98TE=";
+    };
   });
 
   lev = buildDunePackage {
