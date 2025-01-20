@@ -1682,9 +1682,9 @@ with oself;
 
   ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (_: {
     src = fetchFromGitHub {
-      owner = "anmonteiro";
+      owner = "ocaml-mlx";
       repo = "ocamlformat-mlx";
-      rev = "20eb78e7bc6634145555ae1f478af558c3233cd1";
+      rev = "0.27.0.0";
       hash = "sha256-psuiZy/+HjlJ+b/EYlNVb0aXqUu6/364L71qVoH9xSs=";
     };
   });
