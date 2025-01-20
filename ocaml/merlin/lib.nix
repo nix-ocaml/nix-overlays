@@ -34,8 +34,8 @@ buildDunePackage {
     then
       builtins.fetchurl
         {
-          url = "https://github.com/ocaml/merlin/releases/download/v5.4-503/merlin-5.4-503.tbz";
-          sha256 = "1g1cmxscpygk2ig76khcmvz3lgd31xzgzrwj6904r9cwk867ir7j";
+          url = "https://github.com/ocaml/merlin/releases/download/v5.4.1-503/merlin-5.4.1-503.tbz";
+          sha256 = "08ihafi64rcbhga77pa9jzbxa4mkn283grq5fky2a8f1g33v9cs9";
         }
     else if lib.versionOlder "5.2" ocaml.version
     then

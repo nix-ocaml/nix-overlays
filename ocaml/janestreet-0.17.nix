@@ -511,7 +511,45 @@ in
     postPatch = ''
       substituteInPlace examples/open_source/rpc_chat/server/src/bonsai_chat_open_source_native.ml \
       --replace-fail "?flush" ""
-    '';
+    '' + (if lib.versionAtLeast ocaml.version "5.2" then ''
+      substituteInPlace "web/persistent_var.ml" "web/persistent_var.mli" \
+        "web_test/of_bonsai_itself/rpc_effect_tests.ml" \
+        --replace-fail "effect " "\#effect "
+
+      substituteInPlace "web_ui/form/test/bonsai_web_ui_form_automatic_test.ml" \
+        "web_ui/element_size_hooks/src/position_tracker.ml" "src/proc.ml" \
+        "web_ui/element_size_hooks/src/bulk_size_tracker.ml" \
+        "extra/bonsai_extra.ml" "extra/bonsai_extra.mli" \
+        "web_ui/form/src/form_manual.ml" "web/persistent_var.ml" "web/rpc_effect.ml" \
+        "web_ui/form/test/bonsai_web_ui_form_manual_test.ml" \
+        "test/of_bonsai_itself/test_cont_bonsai.ml" "test/of_bonsai_itself/test_one_at_a_time.ml" \
+        --replace-fail " effect" " \#effect"
+
+      substituteInPlace \
+        "test/of_bonsai_itself/test_effect_throttling.ml" \
+        "web_ui/scroll_utilities/bonsai_web_ui_scroll_utilities.ml" \
+        "test/of_bonsai_itself/test_proc_bonsai.ml" \
+        --replace-fail " effect " " \#effect "
+
+      substituteInPlace "src/cont.ml" "src/proc.ml" "web_ui/form/src/form_manual.ml" \
+        "test/of_bonsai_itself/test_cont_bonsai.ml" \
+        "test/of_bonsai_itself/test_proc_bonsai.ml" \
+        --replace-fail "~effect" "~\#effect"
+
+      substituteInPlace "src/cont.mli" "src/proc_intf.ml" \
+        --replace-fail " effect:" " \#effect:"
+
+      substituteInPlace "test/of_bonsai_itself/test_cont_bonsai.ml" \
+        "test/of_bonsai_itself/test_proc_bonsai.ml" \
+        --replace-fail "(effect" "(\#effect"
+
+      substituteInPlace "test/of_bonsai_itself/test_one_at_a_time.ml" \
+        --replace-fail ".effect" ".\#effect" \
+        --replace-fail "(effect," "(\#effect,"
+
+      substituteInPlace "test/of_bonsai_itself/test_proc_bonsai.ml" \
+        --replace-fail " effect)" " \#effect)"
+    '' else "");
     propagatedBuildInputs = [
       async
       async_durable
@@ -1088,7 +1126,10 @@ in
     postPatch = ''
       substituteInPlace "server/src/memtrace_viewer_native.ml" \
         --replace-fail "?flush" ""
-    '';
+    '' + (if lib.versionAtLeast ocaml.version "5.2" then ''
+      substituteInPlace "client/src/after_next_display.ml" \
+        --replace-fail "effect" "\#effect"
+    '' else "");
     meta.description = ''
       Processes traces produced by the Memtrace library and displays the
       top allocators in a table or flame graph. To help find space leaks,
@@ -2553,6 +2594,12 @@ in
     hash = "sha256-5T+/N1fELa1cR9mhWLUgS3Fwr1OQXJ3J6T3YaHT9q7U=";
     meta.description = "OCaml bindings for the virtual-dom library";
     buildInputs = [ js_of_ocaml-ppx ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.2" then ''
+        substituteInPlace ui_effect/ui_effect_intf.ml src/global_listeners.ml \
+        --replace-fail "effect " "\#effect " \
+        --replace-fail " effect" " \#effect"
+      '' else "";
     propagatedBuildInputs = [
       base64
       core_kernel
