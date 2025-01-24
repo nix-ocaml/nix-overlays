@@ -1905,10 +1905,6 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/2.4.4/odoc-2.4.4.tbz";
-      sha256 = "1wsikr4k134r1js97bs365ah277jvbn412dlw3wi1xn8nmakl9by";
-    };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
       substituteInPlace src/parser/dune --replace-fail "result" ""
