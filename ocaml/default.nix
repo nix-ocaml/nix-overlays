@@ -1702,11 +1702,12 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.3.0/sqlite3-5.3.0.tbz";
+      sha256 = "02kqms70i2kny7m2xpkyapm7dg0i3hb4yq63bh6wmrn8igg92yzr";
+    };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
-
-    # https://github.com/mmottl/sqlite3-ocaml/pull/62
-    patches = [ ./sqlite3-pkg-config-env-var.patch ];
   });
 
   ocaml_libvirt = osuper.ocaml_libvirt.override {
@@ -2511,8 +2512,8 @@ with oself;
 
   tar = osuper.tar.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.1.2/tar-3.1.2.tbz";
-      sha256 = "18qnxlmh91cpibjg1c4ffiami1vbwjp2xr6gk15mjg8xlh497iw5";
+      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.2.0/tar-3.2.0.tbz";
+      sha256 = "1ggimmrby5vkjf7gs737j4f90r5p987jpljfxyxj3nmj6mv46l0z";
     };
     propagatedBuildInputs = [ decompress ];
   });
