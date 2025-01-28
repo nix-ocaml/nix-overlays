@@ -1248,7 +1248,7 @@ with oself;
       owner = "lexifi";
       repo = "landmarks";
       rev = "v1.5";
-      hash = "sha256-Xg6byrixP5hhOzOBlV1gt5oaH8BSeqw06emzz5u98TE=";
+      hash = "sha256-eIq02D19OzDOrMDHE1Ecrgk+T6s9vj2X6B2HY+z+K8Q=";
     };
   });
 
