@@ -2372,15 +2372,6 @@ with oself;
   # };
   # };
 
-  secp256k1 = osuper.secp256k1.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dakk";
-      repo = "secp256k1-ml";
-      rev = "6089b0fb8695ad605799b340fd34c93cebb40c79";
-      hash = "sha256-69GpqRxsj/Zj+KWaAIYZqg2+Gp4rMCOYqg/QtHOzr+g=";
-    };
-  });
-
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
