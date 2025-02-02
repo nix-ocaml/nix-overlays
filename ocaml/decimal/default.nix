@@ -2,10 +2,10 @@
 
 buildDunePackage {
   pname = "decimal";
-  version = "1.0.0";
+  version = "1.0.2";
   src = builtins.fetchurl {
-    url = "https://github.com/yawaramin/ocaml-decimal/releases/download/v1.0.1/decimal-1.0.1.tbz";
-    sha256 = "1yagcm207s32cqp9jm3460p1ra1fa7l2zfp65gcsy0bkciyxi5wj";
+    url = "https://github.com/yawaramin/ocaml-decimal/releases/download/v1.0.2/decimal-1.0.2.tbz";
+    sha256 = "0v7y2daqzm4mq7cl16njmkglzan06zm2d2x05i146s8cixdhzfir";
   };
 
   propagatedBuildInputs = [ zarith ];
