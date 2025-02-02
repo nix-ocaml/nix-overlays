@@ -1437,6 +1437,13 @@ with oself;
     };
   };
 
+  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/mirage-crypto/releases/download/v1.2.0/mirage-crypto-1.2.0.tbz";
+      sha256 = "0zp60zp101mcygwhsh62jj61sy61yh2k31d8kgznily1jv6jnm09";
+    };
+  });
+
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
   mirage-crypto-rng-eio =
@@ -1889,6 +1896,11 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
+    version = "3.0.0_beta1";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/3.0.0_beta1/odoc-3.0.0.beta1.tbz";
+      sha256 = "1vq1r999i5q1bymz44k6j0vs95a0vxl94lknsk061djdnp676x13";
+    };
     propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
     postPatch = ''
       substituteInPlace src/parser/dune --replace-fail "result" ""
@@ -2544,7 +2556,7 @@ with oself;
 
   tls-eio =
     if lib.versionAtLeast ocaml.version "5.0"
-    then osuper.tls-eio else null;
+    then disableTests osuper.tls-eio else null;
 
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
