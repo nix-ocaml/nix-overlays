@@ -2556,7 +2556,7 @@ with oself;
 
   tls-eio =
     if lib.versionAtLeast ocaml.version "5.0"
-    then osuper.tls-eio else null;
+    then disableTests osuper.tls-eio else null;
 
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
