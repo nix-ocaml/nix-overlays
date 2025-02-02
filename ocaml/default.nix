@@ -183,14 +183,6 @@ with oself;
     propagatedBuildInputs = [ async_ssl uri uri-sexp ];
   };
 
-  atdgen-codec-runtime = osuper.atdgen-codec-runtime.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ahrefs/atd/releases/download/2.16.0/atd-2.16.0.tbz";
-      sha256 = "1vqd9valrncbwbzdnfjv2bmv1bw3cqrjp10sj3bcnh82c92v9rjr";
-    };
-  });
-  atdgen = disableTests osuper.atdgen;
-
   atdts = buildDunePackage {
     pname = "atdts";
     inherit (atdgen-codec-runtime) version src;
