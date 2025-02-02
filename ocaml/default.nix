@@ -279,6 +279,11 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
+  buildDunePackage = args: osuper.buildDunePackage ({
+    DUNE_CACHE = "disabled";
+  } // args);
+
+
   bz2 = buildDunePackage {
     pname = "bz2";
     version = "0.7.0-dev";
