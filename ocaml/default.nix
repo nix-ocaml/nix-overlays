@@ -189,6 +189,7 @@ with oself;
       sha256 = "1vqd9valrncbwbzdnfjv2bmv1bw3cqrjp10sj3bcnh82c92v9rjr";
     };
   });
+  atdgen = disableTests osuper.atdgen;
 
   atdts = buildDunePackage {
     pname = "atdts";
