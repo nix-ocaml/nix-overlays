@@ -815,8 +815,13 @@ with oself;
         [ opam findlib nativeGit mercurial bzip2 gnutar coreutils ];
     in
     {
+      src = builtins.fetchurl {
+        url = "https://github.com/tarides/dune-release/releases/download/2.1.0/dune-release-2.1.0.tbz";
+        sha256 = "0xhaksc9r562dwmyy4lm756zb1zikdf6z6vqwy0p96ps6vzxy43f";
+      };
       nativeBuildInputs = [ makeWrapper ocaml dune ] ++ runtimeInputs;
       buildInputs = o.buildInputs ++ [ result ];
+      patches = [ ];
       checkInputs = [ alcotest ] ++ runtimeInputs;
       postPatch = ''
         substituteInPlace lib/dune --replace-fail "curly" " curly result "
@@ -2217,8 +2222,8 @@ with oself;
           }
       else
         builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.34.0/ppxlib-0.34.0.tbz";
-          sha256 = "19v1crxb2nzvkw1s2z3rgrz7v4p90k6qf0vwdgjpm38mb8b9fzfp";
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
+          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
