@@ -587,27 +587,6 @@ with oself;
     doCheck = false;
   });
 
-  curses = buildDunePackage {
-    pname = "curses";
-    version = "1.0.11";
-    src = fetchFromGitHub {
-      owner = "mbacarella";
-      repo = "curses";
-      rev = "1.0.11";
-      hash = "sha256-tjBOv7RARDzBShToNLL9LEaU/Syo95MfwZunFsyN4/Q=";
-    };
-
-    nativeBuildInputs = [ pkg-config ];
-    buildInputs = [ dune-configurator ];
-    propagatedBuildInputs = [ ncurses ];
-    # Fix build for recent ncurses versions
-    env.NIX_CFLAGS_COMPILE = "-DNCURSES_INTERNALS=1";
-
-    postPatch = ''
-      substituteInPlace _curses.ml --replace-fail "pp gcc" "pp $CC"
-    '';
-  };
-
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_expect ];
@@ -1853,15 +1832,6 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
-  ocp-index = osuper.ocp-index.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "OCamlPro";
-      repo = "ocp-index";
-      rev = "1.3.7";
-      hash = "sha256-FbkVJRbFNSho/E59QMUoGK+TrdnnacmykJWWG2JVDVA=";
-    };
-  });
-
   ocplib-simplex = disableTests osuper.ocplib-simplex;
 
   ocplib_stuff = buildDunePackage {
@@ -2091,10 +2061,6 @@ with oself;
   };
 
   postgresql = (osuper.postgresql.override { inherit libpq; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.1.3/postgresql-5.1.3.tbz";
-      sha256 = "030kfjgf88x5qwwc532q09jgmkammw259sy27cqddym3r4zmaaj6";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
