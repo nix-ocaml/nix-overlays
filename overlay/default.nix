@@ -322,7 +322,7 @@ in
       pname = "relay";
       version = "n/a";
       src = "${melange-relay-compiler-src}/compiler";
-      cargoHash = "sha256-XNhwwMxmCMAJ75aaYW58DP9+6XfeRDUOnl8zbrhrm7I=";
+      cargoHash = "sha256-JMeuJ7kua8P06fZWO6xr1HKN3bxL+MQPUhKRE8tXBoA=";
 
       nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
       # Needed to get openssl-sys to use pkg-config.
