@@ -2652,7 +2652,7 @@ with oself;
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
   });
 
-  vg = osuper.vg.overrideAttrs (_: {
+  vg = (osuper.vg.override { htmlcBackend = false; }).overrideAttrs (_: {
     propagatedBuildInputs = [
       uchar
       gg
