@@ -1137,13 +1137,6 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.0.1/js_of_ocaml-6.0.1.tbz";
-      sha256 = "0566sa3f4lzsbiw5k67sxcklw96g0pj20fm2kq24259fnvibwgc1";
-    };
-  });
-
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
