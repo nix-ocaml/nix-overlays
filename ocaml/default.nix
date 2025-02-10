@@ -2257,7 +2257,7 @@ with oself;
   reason = osuper.reason.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/reasonml/reason/releases/download/3.15.0/reason-3.15.0.tbz";
-      sha256 = "0pxi2i15y0h8k0sqh8b2923srry7hz89gj8qr573631csh51riid";
+      sha256 = "19k6zc2hws9cwzlj04y5v7fimal5g9i3w1fji0mhs7rryhjj0ggc";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
