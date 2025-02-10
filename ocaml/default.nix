@@ -2661,14 +2661,17 @@ with oself;
     ];
   });
 
-  visitors = osuper.visitors.overrideAttrs (_: {
-    src = fetchFromGitLab {
-      owner = "fpottier";
-      repo = "visitors";
-      rev = "20250207";
-      hash = "sha256-tYlPcVJrXCJ276wo3eHe7WRtpeH+o5prD946eqGkQyY=";
-      domain = "gitlab.inria.fr";
-    };
+  visitors = osuper.visitors.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.0" ocaml.version then
+        fetchFromGitLab
+          {
+            owner = "fpottier";
+            repo = "visitors";
+            rev = "20250207";
+            hash = "sha256-tYlPcVJrXCJ276wo3eHe7WRtpeH+o5prD946eqGkQyY=";
+            domain = "gitlab.inria.fr";
+          } else o.src;
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
