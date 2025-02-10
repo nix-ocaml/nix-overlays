@@ -2255,11 +2255,9 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason";
-      rev = "b07885876e7f176ee002fb878ee9ae6e02e6cf85";
-      hash = "sha256-KfK+6u14VmnTe3tL0EFAxwxFxROPhzsE5huRCZI2MR4=";
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason/releases/download/3.15.0/reason-3.15.0.tbz";
+      sha256 = "0pxi2i15y0h8k0sqh8b2923srry7hz89gj8qr573631csh51riid";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
@@ -2662,7 +2660,18 @@ with oself;
       js_of_ocaml-ppx
     ];
   });
-  visitors = osuper.visitors.overrideAttrs (_: {
+
+  visitors = osuper.visitors.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.0" ocaml.version then
+        fetchFromGitLab
+          {
+            owner = "fpottier";
+            repo = "visitors";
+            rev = "20250207";
+            hash = "sha256-tYlPcVJrXCJ276wo3eHe7WRtpeH+o5prD946eqGkQyY=";
+            domain = "gitlab.inria.fr";
+          } else o.src;
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
