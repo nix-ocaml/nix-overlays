@@ -1137,6 +1137,13 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.0.1/js_of_ocaml-6.0.1.tbz";
+      sha256 = "0566sa3f4lzsbiw5k67sxcklw96g0pj20fm2kq24259fnvibwgc1";
+    };
+  });
+
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
@@ -2255,11 +2262,9 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason";
-      rev = "b07885876e7f176ee002fb878ee9ae6e02e6cf85";
-      hash = "sha256-KfK+6u14VmnTe3tL0EFAxwxFxROPhzsE5huRCZI2MR4=";
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason/releases/download/3.15.0/reason-3.15.0.tbz";
+      sha256 = "0pxi2i15y0h8k0sqh8b2923srry7hz89gj8qr573631csh51riid";
     };
 
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
@@ -2662,7 +2667,15 @@ with oself;
       js_of_ocaml-ppx
     ];
   });
+
   visitors = osuper.visitors.overrideAttrs (_: {
+    src = fetchFromGitLab {
+      owner = "fpottier";
+      repo = "visitors";
+      rev = "20250207";
+      hash = "sha256-tYlPcVJrXCJ276wo3eHe7WRtpeH+o5prD946eqGkQyY=";
+      domain = "gitlab.inria.fr";
+    };
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
