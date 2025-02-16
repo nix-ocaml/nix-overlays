@@ -102,7 +102,7 @@ let
     ## Doesn't work with latest lsp on 5.2
     "linol"
     "linol-lwt"
-    "dolmen-lsp"
+    "dolmen_lsp"
 
     ## Broken on GCC14 or clang19
     "mopsa"
