@@ -2425,7 +2425,7 @@ with oself;
     nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
-  
+
   stdcompat = buildDunePackage {
     pname = "stdcompat";
     version = "19-dev";
