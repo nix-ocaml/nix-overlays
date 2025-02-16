@@ -2668,8 +2668,8 @@ with oself;
           {
             owner = "fpottier";
             repo = "visitors";
-            rev = "20250207";
-            hash = "sha256-tYlPcVJrXCJ276wo3eHe7WRtpeH+o5prD946eqGkQyY=";
+            rev = "20250212";
+            hash = "sha256-AFD4+vriwVGt6lzDyIDuIMadakcgB4j235yty5qqFgQ=";
             domain = "gitlab.inria.fr";
           } else o.src;
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
