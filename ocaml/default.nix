@@ -2219,6 +2219,9 @@ with oself;
       ]);
   };
 
+  pure-html = callPackage ./dream-html/pure.nix { };
+
+
   qrc =
     let
       version = "0.2.0";
@@ -2423,6 +2426,8 @@ with oself;
     nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
   });
+  
+  stringext = callPackage ./stringext { };
 
   stdcompat = buildDunePackage {
     pname = "stdcompat";
@@ -2598,6 +2603,8 @@ with oself;
     };
     propagatedBuildInputs = [ ctypes integers ];
   });
+
+  uri = callPackage ./uri { };
 
   uring = osuper.uring.overrideAttrs (_: {
     postPatch = ''
