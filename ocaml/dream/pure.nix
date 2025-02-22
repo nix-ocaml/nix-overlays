@@ -16,12 +16,12 @@
 
 buildDunePackage rec {
   pname = "dream-pure";
-  version = "1.0.0-alpha7";
+  version = "1.0.0-alpha8";
   src = fetchFromGitHub {
     owner = "aantron";
     repo = "dream";
-    rev = "deb4526387f72d3c5bb07f9a93b53ea38315b375";
-    hash = "sha256-ZFwxGr69Nr84KYTGgJnD/2/1cdb7p5Knb0sA82PKwBo=";
+    rev = "1.0.0-alpha8";
+    hash = "sha256-AJBszLOUVwCXDqryNUkak4UlbmofCkxBIPEm4M0nHEI=";
   };
 
   propagatedBuildInputs = [
