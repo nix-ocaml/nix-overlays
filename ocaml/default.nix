@@ -1425,13 +1425,6 @@ with oself;
     };
   };
 
-  mirage-crypto = osuper.mirage-crypto.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage-crypto/releases/download/v1.2.0/mirage-crypto-1.2.0.tbz";
-      sha256 = "0zp60zp101mcygwhsh62jj61sy61yh2k31d8kgznily1jv6jnm09";
-    };
-  });
-
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
   mirage-crypto-rng-eio =
