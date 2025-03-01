@@ -272,8 +272,6 @@ with oself;
     };
   });
 
-  binaryen = callPackage ./binaryen { };
-
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ ppxlib cmdliner ];

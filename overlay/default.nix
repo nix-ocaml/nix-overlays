@@ -160,18 +160,6 @@ in
       '';
     });
 
-  binaryen = super.binaryen.overrideAttrs (_: rec {
-    version = "114";
-    patches = [ ];
-
-    src = fetchFromGitHub {
-      owner = "WebAssembly";
-      repo = "binaryen";
-      rev = "version_${version}";
-      hash = "sha256-bzHNIQy0AN8mIFGG+638p/MBSqlkWuaOzKGSsMDAPH4=";
-    };
-  });
-
   gnome2 = super.gnome2 // {
     gtksourceview = super.gtksourceview.overrideAttrs (_: {
       env = lib.optionalAttrs stdenv.cc.isGNU {
