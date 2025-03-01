@@ -93,9 +93,6 @@ let
     # incompatible with new ppxlib?
     "metapp"
 
-    # flaky?
-    "binaryen"
-
     # not compatible with latest odoc
     "sherlodoc"
 
