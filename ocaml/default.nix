@@ -1687,15 +1687,6 @@ with oself;
     };
   });
 
-  ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.3.0/sqlite3-5.3.0.tbz";
-      sha256 = "02kqms70i2kny7m2xpkyapm7dg0i3hb4yq63bh6wmrn8igg92yzr";
-    };
-    doCheck = true;
-    checkInputs = [ ppx_inline_test ];
-  });
-
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
   };
