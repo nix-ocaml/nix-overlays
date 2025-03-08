@@ -922,10 +922,6 @@ with oself;
 
   gettext-camomile = osuper.gettext-camomile.overrideAttrs (_: {
     propagatedBuildInputs = [ camomile ocaml_gettext ];
-    postPatch = ''
-      substituteInPlace "src/lib/gettext-camomile/gettextCamomile.ml" --replace-fail \
-        "CamomileLibraryDefault." ""
-    '';
   });
 
   gluten = callPackage ./gluten { };
@@ -1687,6 +1683,15 @@ with oself;
     };
   });
 
+  ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.3.1/sqlite3-5.3.1.tbz";
+      sha256 = "0qgazs1by14mic68bh4ajkdryk5mkyfqppn9hz4zds1b5rjiw7rv";
+    };
+    doCheck = true;
+    checkInputs = [ ppx_inline_test ];
+  });
+
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
   };
@@ -1719,6 +1724,12 @@ with oself;
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "ocamlbuild";
+      rev = "0.16.1";
+      hash = "sha256-RpHVX0o4QduN73j+omlZlycRJaGZWfwHO5kq/WsEGZE=";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     patches =
@@ -1798,13 +1809,12 @@ with oself;
     '';
   });
 
-  ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "gildor478";
-      repo = "ocaml-gettext";
-      rev = "e827b7ab392e5cf48dd620537952bff43fbcbdf0";
-      hash = "sha256-13DWCYtKMSq1XzDMBuclKtjtzuBboG63AakZWITqucE=";
+  ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/gildor478/ocaml-gettext/releases/download/v0.5.0/gettext-0.5.0.tbz";
+      sha256 = "0pagwd88fj14375d1bn232y5sdxl8bllpghj4f787w9abgsrvp88";
     };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-site ];
   });
 
   ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
@@ -1995,8 +2005,8 @@ with oself;
 
   ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; }).overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mmottl/pcre-ocaml/releases/download/8.0.2/pcre-8.0.2.tbz";
-      sha256 = "1zmzd2rfby3cbxzjn356l1igwz7w0gmdf2n5dmmwd6cdp5jx669c";
+      url = "https://github.com/mmottl/pcre-ocaml/releases/download/8.0.3/pcre-8.0.3.tbz";
+      sha256 = "0ybz1plnni2phllnisrawgfrqzbc595b3kd6zzxsq70025w0520l";
     };
   });
 
