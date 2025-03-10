@@ -1724,12 +1724,6 @@ with oself;
   ppx_debug = callPackage ./typedppxlib/ppx_debug.nix { };
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "ocamlbuild";
-      rev = "0.16.1";
-      hash = "sha256-RpHVX0o4QduN73j+omlZlycRJaGZWfwHO5kq/WsEGZE=";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
 
     patches =
@@ -2003,12 +1997,7 @@ with oself;
     meta = owl-base.meta;
   });
 
-  ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; }).overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/pcre-ocaml/releases/download/8.0.3/pcre-8.0.3.tbz";
-      sha256 = "0ybz1plnni2phllnisrawgfrqzbc595b3kd6zzxsq70025w0520l";
-    };
-  });
+  ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; });
 
   otfed = osuper.otfed.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
