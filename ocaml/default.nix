@@ -2532,6 +2532,13 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.0"
     then disableTests osuper.tls-eio else null;
 
+  topkg = osuper.topkg.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/topkg/releases/topkg-1.0.8.tbz";
+      sha256 = "0qfwjcc5572r4fd5i1j7whagbs2fbjzych9xcbnlbh2ja3pr2ap7";
+    };
+  });
+
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "janestreet";
