@@ -896,6 +896,13 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
+  fmt = osuper.fmt.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/fmt/releases/fmt-0.10.0.tbz";
+      sha256 = "15r9bmy4ymqr68bi5c4rclqpg1wrmid2ir1p5wwmzn2nw5riwf3q";
+    };
+  });
+
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
@@ -1278,7 +1285,18 @@ with oself;
 
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (_: {
     pname = "logs";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/logs/releases/logs-0.8.0.tbz";
+      sha256 = "1n1nh8wc73kz2w6nljwhx9xl4pb0imn3nqij4c0z6hpsjm052qcs";
+    };
     propagatedBuildInputs = [ ];
+    buildPhase = ''
+      ${topkg.run} build \
+        --with-lwt true \
+        --with-cmdliner true \
+        --with-fmt true \
+        --with-js_of_ocaml-compiler false
+    '';
   });
 
   logs-ppx = callPackage ./logs-ppx { };
@@ -2628,8 +2646,19 @@ with oself;
     propagatedBuildInputs = [ uspf ];
   };
 
+  uuidm = osuper.uuidm.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.10.tbz";
+      sha256 = "0mz9fyrdpqbh5yhldabnlqq71n64fn4ccbkhwqr2jcynhx55jrci";
+    };
+  });
+
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uutf/releases/uutf-1.0.4.tbz";
+      sha256 = "1a4wc6209gqblgksrjf6d5x96rc5kisv9qqq9s4shjcimzk7i9d7";
+    };
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
   });
 
