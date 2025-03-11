@@ -31,7 +31,7 @@ with filter;
   build_top-level-packages =
     { inherit (pkgs) melange-relay-compiler hermes; } //
     (if stdenv.isLinux then {
-      inherit (pkgs) esy kubernetes;
+      inherit (pkgs) kubernetes;
       # disabled after musl 1.2.5 upgrade. should be easy to find / replace
       # lseek{64,} but likely not worth it as we'd like to move to the static
       # branch in the future.
