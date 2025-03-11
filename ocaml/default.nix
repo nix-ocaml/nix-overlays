@@ -1036,6 +1036,12 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
+  index = osuper.index.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace test/unix/dune --replace-fail "logs.fmt" "logs.fmt logs.threaded"
+    '';
+  });
+
   inotify = osuper.inotify.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/whitequark/ocaml-inotify/releases/download/v2.6/inotify-2.6.tbz";
