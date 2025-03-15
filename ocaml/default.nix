@@ -2027,15 +2027,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
   });
 
-  paf = osuper.paf.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "dinosaure";
-      repo = "paf-le-chien";
-      rev = "0.7.0";
-      hash = "sha256-1syLjF30a7xd7VOtSCbNaWAAum+2ewFo+hoH40xyLew=";
-    };
-  });
-
   patch = buildDunePackage {
     pname = "patch";
     version = "2.0.0";
