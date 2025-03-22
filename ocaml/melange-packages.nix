@@ -60,9 +60,11 @@ with oself;
   melange-jest = buildDunePackage {
     pname = "melange-jest";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-jest/releases/download/0.1.1/melange-jest-0.1.1.tbz";
-      sha256 = "1vnn19bz5sqnvrpl6wma50q8a75diyb9ddl19061halga3a410y6";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-jest";
+      rev = "b26885f193ed97ef9ab47447d21a1ddaa75d924a";
+      hash = "sha256-PD22f/ySEwEtom5d9LNQoRQBQcCbyFIClj1wLnqk2oA=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange reason-react ];
