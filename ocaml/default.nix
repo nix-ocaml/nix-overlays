@@ -1291,10 +1291,6 @@ with oself;
 
   logs = (osuper.logs.override { jsooSupport = false; }).overrideAttrs (_: {
     pname = "logs";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/logs/releases/logs-0.8.0.tbz";
-      sha256 = "1n1nh8wc73kz2w6nljwhx9xl4pb0imn3nqij4c0z6hpsjm052qcs";
-    };
     propagatedBuildInputs = [ ];
     buildPhase = ''
       ${topkg.run} build \
