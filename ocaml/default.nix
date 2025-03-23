@@ -1704,10 +1704,6 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.3.1/sqlite3-5.3.1.tbz";
-      sha256 = "0qgazs1by14mic68bh4ajkdryk5mkyfqppn9hz4zds1b5rjiw7rv";
-    };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
   });
@@ -2249,11 +2245,6 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/reasonml/reason/releases/download/3.15.0/reason-3.15.0.tbz";
-      sha256 = "19k6zc2hws9cwzlj04y5v7fimal5g9i3w1fji0mhs7rryhjj0ggc";
-    };
-
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
 
     patches = [ ./0001-rename-labels.patch ];
@@ -2645,13 +2636,6 @@ with oself;
     inherit (uspf) version src;
     propagatedBuildInputs = [ uspf ];
   };
-
-  uuidm = osuper.uuidm.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uuidm/releases/uuidm-0.9.10.tbz";
-      sha256 = "0mz9fyrdpqbh5yhldabnlqq71n64fn4ccbkhwqr2jcynhx55jrci";
-    };
-  });
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
