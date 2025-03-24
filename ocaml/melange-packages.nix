@@ -7,8 +7,8 @@ with oself;
     pname = "melange-atdgen-codec-runtime";
     version = "n/a";
     src = builtins.fetchurl {
-      url = "https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.0/melange-atdgen-codec-runtime-3.0.0.tbz";
-      sha256 = "1fkw1ynqzmpf9h6jkqzcfv2i2cw4a16wmvbmc8hmgw0wymb99m2n";
+      url = "https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.1/melange-atdgen-codec-runtime-3.0.1.tbz";
+      sha256 = "1g5axhl8cqnhwky4nnsdpk4n3vxv95fr44k71kfi3zngvl9rrpya";
     };
 
     nativeBuildInputs = [ melange ];

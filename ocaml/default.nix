@@ -366,7 +366,7 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.1.2";
+    version = "2.2.1";
     src = builtins.fetchurl {
       url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.1/caqti-v2.2.1.tbz";
       sha256 = "1pihcjyx978a4gydq93klwnws55a6jhq0gw7j9m6yxlp45cramwl";
