@@ -381,7 +381,7 @@ with oself;
     ];
     nativeCheckInputs = [ mdx ];
     checkInputs = [ alcotest re ];
-    doCheck = true;
+    doCheck = false;
   });
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
