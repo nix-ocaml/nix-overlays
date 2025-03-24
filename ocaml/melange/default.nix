@@ -40,12 +40,12 @@ buildDunePackage {
       builtins.fetchurl
         {
           url = "https://github.com/melange-re/melange/releases/download/5.1.0-51/melange-5.1.0-51.tbz";
-          sha256 = "0vpw28qn8rvpb06dcgxgq7z0s8y7lxmwjwgc2336mp7jfindllvp";
+          sha256 = "14mhw78gwzv8ncicl35i48gs6fpbsdgrfvbfx9gw2an4jaypr08c";
         }
     else
       builtins.fetchurl {
         url = "https://github.com/melange-re/melange/releases/download/5.0.1-414/melange-5.0.1-414.tbz";
-        sha256 = "14mhw78gwzv8ncicl35i48gs6fpbsdgrfvbfx9gw2an4jaypr08c";
+        sha256 = "10n2ds6b9ajq7ccazp0sffx9jnxlazlbkd38vyz0s2zg0la72vgh";
       };
 
   doCheck = false;
