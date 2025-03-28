@@ -896,13 +896,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  fmt = osuper.fmt.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/fmt/releases/fmt-0.10.0.tbz";
-      sha256 = "15r9bmy4ymqr68bi5c4rclqpg1wrmid2ir1p5wwmzn2nw5riwf3q";
-    };
-  });
-
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
@@ -1170,12 +1163,13 @@ with oself;
       else o.src;
   });
 
-  junit = osuper.junit.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/Khady/ocaml-junit/releases/download/2.2.0/junit-2.2.0.tbz";
-      sha256 = "02nr67ai9ng8z74p405gaawz2j07rzcgzs1ra6ax6mmvww41payh";
-    };
-  });
+  # https://github.com/Khady/ocaml-junit/issues/13
+  # junit = osuper.junit.overrideAttrs (_: {
+  # src = builtins.fetchurl {
+  # url = "https://github.com/Khady/ocaml-junit/releases/download/2.2.0/junit-2.2.0.tbz";
+  # sha256 = "02nr67ai9ng8z74p405gaawz2j07rzcgzs1ra6ax6mmvww41payh";
+  # };
+  # });
 
   kafka = (osuper.kafka.override {
     rdkafka = rdkafka-oc;
