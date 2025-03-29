@@ -371,7 +371,6 @@ with oself;
       url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.4/caqti-v2.2.4.tbz";
       sha256 = "1fzq1brw9na4p22m20xjw19qbk869cj7nkrc2faw0khm40l47smq";
     };
-    buildInputs = [ mdx ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       ipaddr
       mtime
@@ -380,8 +379,8 @@ with oself;
       lwt-dllist
     ];
     nativeCheckInputs = [ mdx ];
-    checkInputs = [ alcotest re ];
-    doCheck = false;
+    checkInputs = [ mdx alcotest re ];
+    doCheck = true;
   });
 
   caqti-async = osuper.caqti-async.overrideAttrs (o: {
