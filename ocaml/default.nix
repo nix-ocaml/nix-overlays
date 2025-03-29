@@ -366,10 +366,10 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.2.1";
+    version = "2.2.4";
     src = builtins.fetchurl {
-      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.1/caqti-v2.2.1.tbz";
-      sha256 = "1pihcjyx978a4gydq93klwnws55a6jhq0gw7j9m6yxlp45cramwl";
+      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.4/caqti-v2.2.4.tbz";
+      sha256 = "1fzq1brw9na4p22m20xjw19qbk869cj7nkrc2faw0khm40l47smq";
     };
     buildInputs = [ mdx ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
@@ -2343,6 +2343,15 @@ with oself;
   # maintainers = [ lib.maintainers.vbgl ];
   # };
   # };
+
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "sedlex";
+      rev = "v3.4";
+      hash = "sha256-mJMv2zl1UfFJjYdwv68hi7TWP+/oZB9tKHXt13r1SlA=";
+    };
+  });
 
   semver = buildDunePackage {
     pname = "semver";
