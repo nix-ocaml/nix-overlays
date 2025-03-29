@@ -364,13 +364,20 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.1.2";
+    version = "2.2.4";
     src = builtins.fetchurl {
-      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.1.2/caqti-v2.1.2.tbz";
-      sha256 = "0nw9gvhc4wbnzrwkc9d0p85jqf9vgc5l30pn0ghbaxj3z5gzskds";
+      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.4/caqti-v2.2.4.tbz";
+      sha256 = "1fzq1brw9na4p22m20xjw19qbk869cj7nkrc2faw0khm40l47smq";
     };
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ipaddr mtime dune-site lwt-dllist ];
-    checkInputs = [ alcotest re ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      ipaddr
+      mtime
+      dune-site
+      lru
+      lwt-dllist
+    ];
+    nativeCheckInputs = [ mdx ];
+    checkInputs = [ mdx alcotest re ];
     doCheck = true;
   });
 
@@ -1403,8 +1410,8 @@ with oself;
     pname = "melange-json-native";
     version = "1.3.0";
     src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-json/releases/download/1.3.0/melange-json-1.3.0.tbz";
-      sha256 = "1iasna813gdm3aa4xpl5vqgjsh3yrvhz1253m3w3dickjzhpdlwy";
+      url = "https://github.com/melange-community/melange-json/releases/download/2.0.0/melange-json-2.0.0.tbz";
+      sha256 = "1n1avcplidrigkch4y8lnh136g5q06d0xhgzvgips3y399lw2jah";
     };
     propagatedBuildInputs = [ ppxlib yojson ];
   };
@@ -2333,6 +2340,15 @@ with oself;
   # maintainers = [ lib.maintainers.vbgl ];
   # };
   # };
+
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "sedlex";
+      rev = "v3.4";
+      hash = "sha256-mJMv2zl1UfFJjYdwv68hi7TWP+/oZB9tKHXt13r1SlA=";
+    };
+  });
 
   semver = buildDunePackage {
     pname = "semver";

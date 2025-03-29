@@ -7,8 +7,8 @@ with oself;
     pname = "melange-atdgen-codec-runtime";
     version = "n/a";
     src = builtins.fetchurl {
-      url = "https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.0/melange-atdgen-codec-runtime-3.0.0.tbz";
-      sha256 = "1fkw1ynqzmpf9h6jkqzcfv2i2cw4a16wmvbmc8hmgw0wymb99m2n";
+      url = "https://github.com/ahrefs/melange-atdgen-codec-runtime/releases/download/3.0.1/melange-atdgen-codec-runtime-3.0.1.tbz";
+      sha256 = "1g5axhl8cqnhwky4nnsdpk4n3vxv95fr44k71kfi3zngvl9rrpya";
     };
 
     nativeBuildInputs = [ melange ];
@@ -18,9 +18,11 @@ with oself;
   melange-fetch = buildDunePackage {
     pname = "melange-fetch";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-fetch/releases/download/0.1.0/melange-fetch-0.1.0.tbz";
-      sha256 = "0y7z8jrwjgim2wgwg1ajjc1g365wgppgl3wza6b3955ahghjgyl8";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-fetch";
+      rev = "a876cc42c2f1c3b0cbf370f1d15bbc788a62d785";
+      hash = "sha256-has7M1qi5AjBLHQxH2wNg4JvLBV7jHXFQAAhs0OZoLw=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange ];
@@ -32,8 +34,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ahrefs";
       repo = "melange-recharts";
-      rev = "fda583ba97148e09d5c3961d8278c189ce261b81";
-      hash = "sha256-ejuXTLhMiRzyC6yJLd5xPzGUoj1fDP2/TaELlFKJJVM=";
+      rev = "2ff880588550897f8e2752f71d63aed9eae67d35";
+      hash = "sha256-+YIC5JZGEAiTufZxbA3NTy65WqS77/YROLg0Hez9LUo=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange reason-react ];
@@ -42,9 +44,11 @@ with oself;
   melange-testing-library = buildDunePackage {
     pname = "melange-testing-library";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-testing-library/releases/download/0.1.0/melange-testing-library-0.1.0.tbz";
-      sha256 = "1mhir158zwpfigb75plgzz93i8jfnfjibdii2vh19vr3gcly7k23";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-testing-library";
+      rev = "45e0bc95270a66d9b6dd77c3ddf1ae72f36f7a19";
+      hash = "sha256-xr8LTJwCX6IgkycKC1FBRn+YiA/HZDUmNJNsw8MM7N4=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange reason-react ];
@@ -60,9 +64,11 @@ with oself;
   melange-jest = buildDunePackage {
     pname = "melange-jest";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-jest/releases/download/0.1.1/melange-jest-0.1.1.tbz";
-      sha256 = "1vnn19bz5sqnvrpl6wma50q8a75diyb9ddl19061halga3a410y6";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-jest";
+      rev = "b26885f193ed97ef9ab47447d21a1ddaa75d924a";
+      hash = "sha256-PD22f/ySEwEtom5d9LNQoRQBQcCbyFIClj1wLnqk2oA=";
     };
     nativeBuildInputs = [ melange ];
     propagatedBuildInputs = [ melange reason-react ];
@@ -82,9 +88,11 @@ with oself;
   melange-webapi = buildDunePackage {
     pname = "melange-webapi";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-webapi/releases/download/0.21.0/melange-webapi-0.21.0.tbz";
-      sha256 = "1h8j3fy6d0shxv9wjhgmm85ac7f69waz9ay3khw8impiv6h5w00k";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-webapi";
+      rev = "0040e288bc47706e530ed7100d6e7bd80199c6c9";
+      hash = "sha256-S2q+8ri6jDDwOkY3IUmFMZzx1tNZWl34XdYtmI5W6eQ=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange melange-fetch ];
@@ -119,9 +127,11 @@ with oself;
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/reasonml/reason-react/releases/download/0.15.0/reason-react-0.15.0.tbz";
-      sha256 = "1ka3zi9p8kh6f5lmq9s398xpjw1c6l1cmgq0liwgmlprysiwk4zs";
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason-react";
+      rev = "2452ff8b970cdbc8d31ae9549472a07a85a7093e";
+      hash = "sha256-N8IjA0kQiY06W8ZuEPof7tZ6re9TlChrAQ1i5AqR4BY=";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
