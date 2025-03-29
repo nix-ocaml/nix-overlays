@@ -305,8 +305,6 @@ with oself;
     buildInputs = o.buildInputs ++ [ findlib ];
   });
 
-  camlp5 = callPackage ./camlp5 { };
-
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "xavierleroy";
@@ -2633,10 +2631,6 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uutf/releases/uutf-1.0.4.tbz";
-      sha256 = "1a4wc6209gqblgksrjf6d5x96rc5kisv9qqq9s4shjcimzk7i9d7";
-    };
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
   });
 
