@@ -1687,15 +1687,6 @@ with oself;
     propagatedBuildInputs = [ csexp ];
   };
 
-  ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "anmonteiro";
-      repo = "ocamlformat-mlx";
-      rev = "20eb78e7bc6634145555ae1f478af558c3233cd1";
-      hash = "sha256-psuiZy/+HjlJ+b/EYlNVb0aXqUu6/364L71qVoH9xSs=";
-    };
-  });
-
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
     meta = {
       platforms = lib.platforms.all;
