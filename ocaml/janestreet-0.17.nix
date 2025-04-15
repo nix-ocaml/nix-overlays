@@ -718,7 +718,8 @@ in
 
   core_unix = (janePackage {
     pname = "core_unix";
-    hash = "sha256-eqBMiEJ5xUrgFJTMZoEDxqkhedQxxbbf0DedZKHprww=";
+    version = "0.17.1";
+    hash = "sha256-xJoBW6TBBnzR5n38E5LHBFYO2CRIsME7OTdEZKn8EqU=";
     meta.description = "Unix-specific portions of Core";
     buildInputs = [ jst-config ];
     propagatedBuildInputs = [
