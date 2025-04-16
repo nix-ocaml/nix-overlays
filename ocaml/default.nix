@@ -2332,15 +2332,6 @@ with oself;
   # };
   # };
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "sedlex";
-      rev = "v3.4";
-      hash = "sha256-mJMv2zl1UfFJjYdwv68hi7TWP+/oZB9tKHXt13r1SlA=";
-    };
-  });
-
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
