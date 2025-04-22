@@ -1176,10 +1176,10 @@ with oself;
   # };
   # });
 
-  kafka = (osuper.kafka.override {
-    rdkafka = rdkafka-oc;
-    zlib = zlib-oc;
-  }).overrideAttrs (o: {
+  kafka = buildDunePackage {
+    pname = "kafka";
+    version = "0.5";
+
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "ocaml-kafka";
@@ -1187,10 +1187,19 @@ with oself;
       rev = "b3497434003a63be349fd413b3f4a7bd9613e33b";
       hash = "sha256-vinwVYDCHdPXvQ4z4nMnaV/9q8fboF6qKp7XHtV3Ow8=";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-configurator ];
+
+
+    nativeBuildInputs = [ pkg-config ];
     hardeningDisable = [ "strictoverflow" ];
-  });
+    propagatedBuildInputs = [ rdkafka-oc zlib-oc dune-configurator ];
+
+    meta = with lib; {
+      homepage = "https://github.com/didier-wenzek/ocaml-kafka";
+      description = "OCaml bindings for Kafka";
+      license = licenses.mit;
+      maintainers = [ maintainers.vbgl ];
+    };
+  };
 
   kafka_async = buildDunePackage {
     pname = "kafka_async";
