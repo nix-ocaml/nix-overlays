@@ -206,8 +206,10 @@ in
 
   base = janePackage {
     pname = "base";
-    version = "0.16.4";
-    hash = "sha256-1kwHf3SWUNadw0J6L0X6H17Xqh8YtxpMO7Jm5Q0KoQc=";
+    version = "0.16.3";
+    hash = "sha256-PA7nhGud/gCv22cow+KrSgNKgi2NYq/zGsCEAgVRBac=";
+    # version = "0.16.4";
+    # hash = "sha256-1kwHf3SWUNadw0J6L0X6H17Xqh8YtxpMO7Jm5Q0KoQc=";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ sexplib0 ];
