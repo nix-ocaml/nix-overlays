@@ -10,6 +10,7 @@ let
     "5_1"
     "5_2"
     "5_3"
+    "5_4"
     "trunk"
     "flambda2"
     "jst"
@@ -112,9 +113,27 @@ let
         '';
       };
 
-      ocamlPackages_trunk = newOCamlScope {
+      ocamlPackages_5_4 = newOCamlScope {
         major_version = "5";
         minor_version = "4";
+        patch_version = "0+trunk";
+        hardeningDisable = [ "strictoverflow" ];
+        src = super.fetchFromGitHub {
+          owner = "ocaml";
+          repo = "ocaml";
+          rev = "3e872717d3691511f4d409f5173455fde1e63ff2";
+          hash = "sha256-R63NP7B2f2kQSlvxM1qtJhykA973ZQcUwq69YpDCOFk=";
+        };
+        postPatch = ''
+          substituteInPlace "runtime/caml/camlatomic.h" \
+            --replace-fail "#ifdef CAML_INTERNALS" "" \
+            --replace-fail "#endif /* CAML_INTERNALS */" ""
+        '';
+      };
+
+      ocamlPackages_trunk = newOCamlScope {
+        major_version = "5";
+        minor_version = "5";
         patch_version = "0+trunk";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {

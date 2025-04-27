@@ -719,9 +719,11 @@ with oself;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
     version = "3.18.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.18.1/dune-3.18.1.tbz";
-      sha256 = "17paxvy1nlkdfpv0ic6fg1qchr40fq7zzklkxpafw96by14f78az";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "d2745311bbcc76d880c01f7030f97a13b0e699c2";
+      hash = "sha256-V2hfnZTrLpc5SBrbKZ8na70m+sXeb63Z89hQW4tXsuM=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -2171,6 +2173,14 @@ with oself;
             repo = "ppxlib";
             rev = "e5ae762556a59c25a7356fe2282adbf51f93e25e";
             hash = "sha256-EB+i0iMt/u/IRp0U/dS2tvQrSjuSxHaPQ3XaPZI6hAs=";
+          }
+      else if lib.versionOlder "5.4" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppxlib";
+            rev = "dbb5f50494273cd10b426af6d2ee7fe1cadf82e2";
+            hash = "sha256-afQAwHKIB5htPfbAUCwXSKPxSvAvSgj1OCdnfbM89Mk=";
           }
       else
         builtins.fetchurl {
