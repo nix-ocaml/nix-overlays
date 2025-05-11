@@ -75,6 +75,7 @@ in
     systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
+    jitSupport = false;
     lz4 = self.lz4-oc;
     zstd = self.zstd-oc;
     zlib = self.zlib-oc;
