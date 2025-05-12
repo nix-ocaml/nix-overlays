@@ -119,6 +119,7 @@ let
     "ffmpeg-avutil"
     "ffmpeg-swresample"
     "ffmpeg-swscale"
+    "frei0r"
   ];
 
   ocaml5Ignores = [
