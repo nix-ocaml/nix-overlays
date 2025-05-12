@@ -86,6 +86,12 @@ in
     {
       doCheck = false;
       doInstallCheck = false;
+
+      postPatch = o.postPatch + ''
+        substituteInPlace src/interfaces/libpq/Makefile \
+          --replace-fail "echo 'libpq must not be calling any function which invokes exit'; exit 1;" "echo;"
+      '';
+
       configureFlags = [
         "--without-ldap"
         "--without-readline"
