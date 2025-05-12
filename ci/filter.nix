@@ -110,6 +110,15 @@ let
 
     ## host unreachable for download
     "functory"
+
+    "ffmpeg"
+    "ffmpeg-av"
+    "ffmpeg-avcodec"
+    "ffmpeg-avdevice"
+    "ffmpeg-avfilter"
+    "ffmpeg-avutil"
+    "ffmpeg-swresample"
+    "ffmpeg-swscale"
   ];
 
   ocaml5Ignores = [
