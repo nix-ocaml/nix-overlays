@@ -120,6 +120,10 @@ let
     "ffmpeg-swresample"
     "ffmpeg-swscale"
     "frei0r"
+    "tsdl"
+    "tsdl-mixer"
+    "tsdl-image"
+    "tsdl-ttf"
   ];
 
   ocaml5Ignores = [
