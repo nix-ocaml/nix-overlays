@@ -306,6 +306,7 @@ with oself;
   });
 
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
+    createFindlibDestdir = true;
     src = fetchFromGitHub {
       owner = "xavierleroy";
       repo = "camlzip";
