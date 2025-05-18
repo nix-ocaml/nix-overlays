@@ -1688,6 +1688,13 @@ with oself;
     propagatedBuildInputs = [ csexp ];
   };
 
+  ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-mlx/ocamlformat-mlx/releases/download/0.27.0/ocamlformat-mlx-0.27.0.tbz";
+      sha256 = "1lc61fvvih1j007fzx70c3hihy7rwyvqf8y95grmbvpshahzlh3a";
+    };
+  });
+
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
     meta = {
       platforms = lib.platforms.all;
