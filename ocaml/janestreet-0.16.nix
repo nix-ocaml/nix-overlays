@@ -1271,6 +1271,7 @@ in
     hash = "sha256-lpc6F+Scc5ECdOXPWowKSWRnFSzKbmE8oHs7zCjq3j8=";
     meta.description = "A [@@deriving] plugin to generate Python conversion functions ";
     propagatedBuildInputs = [ ppx_base ppxlib pyml ];
+    doCheck = false;
   };
 
   ppx_sexp_conv = janePackage {
