@@ -276,6 +276,9 @@ in
     {
       camlzip = osuper.camlzip.overrideAttrs (_: {
         OCAMLFIND_TOOLCHAIN = "${crossName}";
+        preInstall = ''
+          mkdir -p $OCAMLFIND_DESTDIR/stublibs
+        '';
         postInstall = ''
           ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
         '';
