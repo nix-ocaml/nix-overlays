@@ -2208,6 +2208,8 @@ with oself;
 
   pure-html = callPackage ./dream-html/pure.nix { };
 
+  pyml = disableTests osuper.pyml;
+
   qrc =
     let
       version = "0.2.0";
