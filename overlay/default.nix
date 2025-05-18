@@ -72,7 +72,6 @@ in
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq = (super.postgresql_17.override {
-    inherit self;
     # a new change does some shenanigans to get llvmStdenv + lld which breaks
     # our cross-compilation
     overrideCC = _: _: super.stdenv;
@@ -92,7 +91,6 @@ in
       pg_config = super.writeShellScriptBin "pg_config" (builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh");
     in
     {
-      # stdenv = super.stdenv;
       env = {
         CFLAGS = "-fdata-sections -ffunction-sections"
         + (if stdenv.cc.isClang then " -flto" else " -fmerge-constants -Wl,--gc-sections");
@@ -101,10 +99,11 @@ in
       doCheck = false;
       doInstallCheck = false;
 
-      postPatch = o.postPatch + ''
-        substituteInPlace src/interfaces/libpq/Makefile \
+      postPatch =
+        o.postPatch + lib.optionalString (o.dontDisableStatic or false) ''
+          substituteInPlace src/interfaces/libpq/Makefile \
           --replace-fail "echo 'libpq must not be calling any function which invokes exit'; exit 1;" "echo;"
-      '';
+        '';
 
       configureFlags = [
         "--without-ldap"
