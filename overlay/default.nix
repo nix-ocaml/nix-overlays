@@ -72,10 +72,18 @@ in
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq = (super.postgresql_17.override {
+    inherit self;
+    # a new change does some shenanigans to get llvmStdenv + lld which breaks
+    # our cross-compilation
+    overrideCC = _: _: super.stdenv;
     systemdSupport = false;
     gssSupport = false;
     openssl = self.openssl-oc;
     jitSupport = false;
+    pamSupport = false;
+    perlSupport = false;
+    pythonSupport = false;
+    tclSupport = false;
     lz4 = self.lz4-oc;
     zstd = self.zstd-oc;
     zlib = self.zlib-oc;
@@ -84,6 +92,12 @@ in
       pg_config = super.writeShellScriptBin "pg_config" (builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh");
     in
     {
+      # stdenv = super.stdenv;
+      env = {
+        CFLAGS = "-fdata-sections -ffunction-sections"
+        + (if stdenv.cc.isClang then " -flto" else " -fmerge-constants -Wl,--gc-sections");
+        NIX_CFLAGS_COMPILE = "-UUSE_PRIVATE_ENCODING_FUNCS";
+      };
       doCheck = false;
       doInstallCheck = false;
 
