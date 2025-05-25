@@ -2176,8 +2176,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "31e5638445edb2904b329bade19e359f88f93c82";
-            hash = "sha256-/s//giM9nT5Lp9cXAgXnWDVFsi32IhBWmXnaYxTF6Bk=";
+            rev = "757f6c284b1fe748d5027eef3bbef924b6bbd7ce";
+            hash = "sha256-6pJGlRknukWH0wr6GhMiQRs43dwx1EkvuW/05ZcEyh0=";
           }
       else
         builtins.fetchurl {
