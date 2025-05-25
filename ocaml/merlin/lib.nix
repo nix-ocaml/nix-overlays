@@ -30,6 +30,14 @@ buildDunePackage {
           rev = "65b4861209ab76f065a88b59ed3fdc44b7a03f5a";
           hash = "sha256-+wuVILkh8xJAIdGVDwi/IjubhzBcTRcWkE8v2euaUgQ=";
         }
+    else if lib.versionOlder "5.4" ocaml.version then
+      fetchFromGitHub
+        {
+          owner = "ocaml";
+          repo = "merlin";
+          rev = "0e8190c4b7e0bcf44c6682f342416f6ad58f3db4";
+          hash = "sha256-LuRWHRScJw2LWOhgkaDlmWsxn3A6E0ItVNAuTBBgAv0=";
+        }
     else if lib.versionOlder "5.3" ocaml.version
     then
       builtins.fetchurl
