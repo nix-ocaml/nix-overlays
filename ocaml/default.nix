@@ -1137,6 +1137,14 @@ with oself;
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml";
+            repo = "ocaml-lsp";
+            rev = "ce8357b4e3f3af77305612640b74ede59638a16f";
+            hash = "sha256-/uCxi0pUOEw38BbcHuu3Na2BuTkSqnWze72SQjRn+fA=";
+          }
+      else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl
           {
             url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.22.0/lsp-1.22.0.tbz";
