@@ -602,22 +602,6 @@ with oself;
 
   decimal = callPackage ./decimal { };
 
-  decoders = buildDunePackage {
-    pname = "decoders";
-    version = "n/a";
-    src = fetchFromGitHub {
-      owner = "mattjbray";
-      repo = "ocaml-decoders";
-      rev = "00d930";
-      sha256 = "sha256-LK2CZHvs9itx51EVi/MonrvnGOlPtLDXdMhAFX9O8Uc=";
-    };
-  };
-  decoders-yojson = buildDunePackage {
-    pname = "decoders-yojson";
-    inherit (oself.decoders) src version;
-    propagatedBuildInputs = [ decoders yojson ];
-  };
-
   domain-local-await = disableTests osuper.domain-local-await;
   thread-table = disableTests osuper.thread-table;
 
