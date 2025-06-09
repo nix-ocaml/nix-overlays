@@ -35,8 +35,8 @@ buildDunePackage {
         {
           owner = "ocaml";
           repo = "merlin";
-          rev = "0e8190c4b7e0bcf44c6682f342416f6ad58f3db4";
-          hash = "sha256-LuRWHRScJw2LWOhgkaDlmWsxn3A6E0ItVNAuTBBgAv0=";
+          rev = "9cd9e4870d5bca509f0f40ee8532ad206a2721a5";
+          hash = "sha256-ky5wSXhwklcnYD27GTCVhUP/+8soPeU/7BIMPgJXL2g=";
         }
     else if lib.versionOlder "5.3" ocaml.version
     then

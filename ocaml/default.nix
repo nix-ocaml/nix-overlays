@@ -2342,6 +2342,15 @@ with oself;
   # };
   # };
 
+  # sedlex = osuper.sedlex.overrideAttrs (_: {
+  # src = fetchFromGitHub {
+  # owner = "ocaml-community";
+  # repo = "sedlex";
+  # rev = "v3.5";
+  # hash = "sha256-TtxrlJtoKn7i2w8OVD3YDJ96MsmsFs4MA1CuNKpqSuU=";
+  # };
+  # });
+
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
