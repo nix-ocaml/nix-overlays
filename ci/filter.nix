@@ -129,6 +129,7 @@ let
     "virtual_dom_toplayer"
     "ppx_css"
     "bonsai"
+    "memtrace_viewer"
   ];
 
   ocaml5Ignores = [
