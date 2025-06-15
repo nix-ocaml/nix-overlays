@@ -2647,8 +2647,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "f76da55340bd5c23ec5cf001b3f092124349c84f";
-      hash = "sha256-KE8qAUmvaImCJ7gzmb66khDQB95RJC4l82eu7Dyxjf4=";
+      rev = "4c36b2e4837d6ece8e051f9c3af2114811ebb89b";
+      hash = "sha256-C8T97gMVgQYpsdV/BwPL8/0CfQ9ZIRSAMsj35fvL5Mo=";
     };
   });
 
