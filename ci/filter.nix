@@ -149,6 +149,13 @@ let
     "ppx_debug"
     "typedppxlib"
 
+    # broken on 5.3
+    "ppx_cstubs"
+    "reanalyze"
+    "stdcompat"
+    "ppx_show"
+    "ppx_python"
+    "pyml"
   ];
 
   darwinIgnores = [
