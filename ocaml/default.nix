@@ -1433,10 +1433,6 @@ with oself;
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
-  mirage-crypto-rng-eio =
-    if lib.versionAtLeast ocaml.version "5.0"
-    then disableTests osuper.mirage-crypto-rng-eio
-    else null;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2342,6 +2338,7 @@ with oself;
   # };
   # };
 
+  sedlex = disableTests osuper.sedlex;
   # sedlex = osuper.sedlex.overrideAttrs (_: {
   # src = fetchFromGitHub {
   # owner = "ocaml-community";

@@ -3,6 +3,7 @@
 , caqti
 , caqti-lwt
 , cstruct
+, digestif
 , dream-httpaf
 , dream-pure
 , fmt
@@ -17,7 +18,7 @@
 , markup
 , mirage-clock
 , mirage-crypto
-, mirage-crypto-rng-lwt
+, mirage-crypto-rng
 , multipart_form
 , multipart_form-lwt
 , ptime
@@ -49,6 +50,10 @@ buildDunePackage rec {
        --replace-fail \
       "H2.Body.Writer.flush body" \
       "fun f -> H2.Body.Writer.flush body (fun _r -> f ())"
+    substituteInPlace src/dune \
+      --replace-fail mirage-crypto-rng-lwt mirage-crypto-rng.unix
+    substituteInPlace src/dream.ml \
+      --replace-fail Mirage_crypto_rng_lwt.initialize Mirage_crypto_rng_unix.initialize
   '';
 
   propagatedBuildInputs = [
@@ -57,6 +62,7 @@ buildDunePackage rec {
     cstruct
     dream-httpaf
     dream-pure
+    digestif
     fmt
     graphql_parser
     graphql-lwt
@@ -67,7 +73,7 @@ buildDunePackage rec {
     magic-mime
     mirage-clock
     mirage-crypto
-    mirage-crypto-rng-lwt
+    mirage-crypto-rng
     multipart_form
     multipart_form-lwt
     ptime
