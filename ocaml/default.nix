@@ -1120,7 +1120,7 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.3" ocaml.version then
+      if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub
           {
             owner = "ocaml";
