@@ -125,6 +125,10 @@ let
     "tsdl-ttf"
     "miou"
     "mirage-crypto-rng-miou-unix"
+
+    "virtual_dom_toplayer"
+    "ppx_css"
+    "bonsai"
   ];
 
   ocaml5Ignores = [
