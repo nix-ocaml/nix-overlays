@@ -35,7 +35,6 @@ let
     "pgsolver"
     "tcslib"
 
-    "biocaml"
     "pythonlib"
     "magic-trace"
 
