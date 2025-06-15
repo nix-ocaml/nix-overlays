@@ -1622,8 +1622,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "num";
-      rev = "v1.5";
-      hash = "sha256-60yT7BN+E93LJWKlO3v55Lbb11pNLPzdf1wrNXkLtmk=";
+      rev = "658973145aa76b7dc93752ded81080e36f9d14ef";
+      hash = "sha256-Vm6A4Q2LYN+euszIIaIzA8JvWRKavD8bfTH0JjPSEFc=";
     };
     buildFlags = [ "opam-modern" ];
     patches = [ ];
