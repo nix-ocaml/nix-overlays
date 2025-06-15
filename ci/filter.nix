@@ -124,6 +124,8 @@ let
     "tsdl-mixer"
     "tsdl-image"
     "tsdl-ttf"
+    "miou"
+    "mirage-crypto-rng-miou-unix"
   ];
 
   ocaml5Ignores = [
