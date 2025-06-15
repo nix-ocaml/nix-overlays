@@ -2643,6 +2643,15 @@ with oself;
     propagatedBuildInputs = [ uspf ];
   };
 
+  utop = osuper.utop.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "utop";
+      rev = "f76da55340bd5c23ec5cf001b3f092124349c84f";
+      hash = "sha256-KE8qAUmvaImCJ7gzmb66khDQB95RJC4l82eu7Dyxjf4=";
+    };
+  });
+
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
     patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
