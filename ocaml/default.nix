@@ -2658,14 +2658,6 @@ with oself;
       js_of_ocaml-ppx
     ];
   });
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "ae754850c7c79ebed2349d24347967a1e3233a4f";
-      hash = "sha256-gV5H/ghjT5ot9p1WAx+Tlecq+/h8fNcu9cPGkgm7iYw=";
-    };
-  });
 
   visitors = osuper.visitors.overrideAttrs (o: {
     src =
