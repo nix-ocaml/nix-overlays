@@ -2107,6 +2107,10 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/v6.1.0/ppx_deriving-6.1.0.tbz";
+      sha256 = "0mjbgn02f51lfrryickl97fnp9pqqr52b40f1fjpf3v3xa45cykl";
+    };
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
