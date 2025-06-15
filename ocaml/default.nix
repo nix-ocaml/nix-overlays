@@ -2658,7 +2658,7 @@ with oself;
       js_of_ocaml-ppx
     ];
   });
-  js_of_ocaml = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
