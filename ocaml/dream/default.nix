@@ -17,7 +17,6 @@
 , markup
 , mirage-clock
 , mirage-crypto
-, mirage-crypto-rng-lwt
 , multipart_form
 , multipart_form-lwt
 , ptime
@@ -67,7 +66,6 @@ buildDunePackage rec {
     magic-mime
     mirage-clock
     mirage-crypto
-    mirage-crypto-rng-lwt
     multipart_form
     multipart_form-lwt
     ptime
