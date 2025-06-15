@@ -27,6 +27,11 @@ with filter;
     ocamlVersion = "5_3";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+  build_5_4 = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_4";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_top-level-packages =
     { inherit (pkgs) melange-relay-compiler hermes; } //
@@ -78,6 +83,17 @@ with filter;
 
   musl_5_3 = (if system == "x86_64-linux" then
     crossTarget pkgs.pkgsCross.musl64 "5_3"
+  else
+    { }
+  );
+
+  arm64_5_4 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_4"
+  else
+    { });
+
+  musl_5_4 = (if system == "x86_64-linux" then
+    crossTarget pkgs.pkgsCross.musl64 "5_4"
   else
     { }
   );
