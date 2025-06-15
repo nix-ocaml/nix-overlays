@@ -2169,8 +2169,8 @@ with oself;
           }
       else
         builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
-          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.36.0/ppxlib-0.36.0.tbz";
+          sha256 = "0d54j19vi1khzmw0ffngs8xzjjq07n20q49h85hhhcf52k71pfjs";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2241,6 +2241,10 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason/releases/download/3.16.0/reason-3.16.0.tbz";
+      sha256 = "0kinqmc1al8n30f8mv7k9zyvkfsgbbn4pasq0s2jm3ilglxf9c27";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
 
     patches = [ ./0001-rename-labels.patch ];
