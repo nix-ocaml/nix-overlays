@@ -382,13 +382,26 @@ with oself;
     doCheck = true;
   });
 
-  caqti-async = osuper.caqti-async.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ conduit-async ];
+  caqti-async = buildDunePackage {
+    pname = "caqti-async";
+    inherit (caqti) version src;
+
     postPatch = ''
       substituteInPlace caqti-async/lib/caqti_async.ml --replace-fail \
         "Ivar.fill_exn" "Ivar.fill"
     '';
-  });
+    propagatedBuildInputs = [
+      async_kernel
+      async_unix
+      caqti
+      core_kernel
+      conduit-async
+    ];
+
+    meta = caqti.meta // {
+      description = "Async support for Caqti";
+    };
+  };
 
   caqti-dynload = osuper.caqti-dynload.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ findlib ];
