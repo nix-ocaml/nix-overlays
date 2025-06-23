@@ -1786,6 +1786,10 @@ in
             hash = "sha256-nkd84j0Jw5MvNVcQi95ZdFFzb7IBaA25Eg9gpSwVxOE=";
           }
       else o.src;
+    postPatch =
+      if lib.versionOlder "5.4" ocaml.version then ''
+        substituteInPlace expander/ppx_let_expander.ml --replace-fail 'pexp_function' 'pexp_function_cases'
+      '' else "";
   });
 
   ppx_log = janePackage {

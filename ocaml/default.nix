@@ -712,10 +712,12 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    version = "3.19.1";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.19.1/dune-3.19.1.tbz";
-      sha256 = "0n0iajhv1vgfgw7nml5rjfffyanxa3nnnik52iyl3afdh3wqc0x1";
+    version = "3.19.1+scu";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "dune";
+      rev = "f33fdbfe830e1087511958b55def560b148ff464";
+      hash = "sha256-y9iRwVNS5U5lKNA73Kw+Y129E2v9FG4Cgg/zWUO/atY=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -1017,6 +1019,10 @@ with oself;
     else null;
 
   hxd = osuper.hxd.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/dinosaure/hxd/releases/download/v0.3.4/hxd-0.3.4.tbz";
+      sha256 = "0qhfms51nbqv2335rgcyhhhqrxq7a5r8grxhvwnsh7ignllgr2lf";
+    };
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
   });
