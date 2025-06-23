@@ -2094,6 +2094,14 @@ in
             rev = "5793adbe30e2294d351a8145289cf2a220d0714f";
             hash = "sha256-KEQMDIN/AMfEbFGlRrFt/tcShuKe9P0QIxA5RdM8Wuo=";
           }
+      else if lib.versionOlder "5.4" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "janestreet";
+            repo = "ppxlib_jane";
+            rev = "7614fc7d9bef1b69a74c417c3df5eb3a9ed61719";
+            hash = "sha256-cqF7aT0ubutRxsSTD5aHnHx4zvlPDkTzdBqONU6EgO0=";
+          }
       else if lib.versionOlder "5.3" ocaml.version then
         fetchFromGitHub
           {

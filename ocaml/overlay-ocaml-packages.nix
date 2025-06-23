@@ -121,8 +121,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "a344acf2378e613a82d5e8bd5defe0b2eb7cf482";
-          hash = "sha256-a/G3X7Aq3o45L2sfoqIDKX4ThgvJv7ONMZTMrVTh3YY=";
+          rev = "e5a0e1b84e60c50dec4456934b42147d80b08809";
+          hash = "sha256-iHrROwlvkN59gtSHVmh0QTVJVa6eDoakuYfVSP+gFrI=";
         };
         postPatch = ''
           substituteInPlace "runtime/caml/camlatomic.h" \

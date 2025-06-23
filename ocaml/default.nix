@@ -1552,6 +1552,14 @@ with oself;
     '';
   });
 
+  mlx = osuper.mlx.overrideAttrs (_: {
+    patches = [ ];
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-mlx/mlx/releases/download/0.10/mlx-0.10.tbz";
+      sha256 = "131pkg7qqsbfgymmp9004l1s0fh8zvp9f6ycf9wxdc34ab3vnqip";
+    };
+  });
+
   mmap = osuper.mmap.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "mirage";
@@ -1635,8 +1643,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "num";
-      rev = "658973145aa76b7dc93752ded81080e36f9d14ef";
-      hash = "sha256-Vm6A4Q2LYN+euszIIaIzA8JvWRKavD8bfTH0JjPSEFc=";
+      rev = "v1.6";
+      hash = "sha256-JWn0WBsbKpiUlxRDaXmwXVbL2WhqQIDrXiZk1aXeEtQ=";
     };
     buildFlags = [ "opam-modern" ];
     patches = [ ];
@@ -1674,9 +1682,11 @@ with oself;
     inherit (ocamlformat-lib) src;
   });
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.27.0/ocamlformat-0.27.0.tbz";
-      sha256 = "05bdhj73im80ci535lymrf7mq7r3xj8bg17f02agj23d0x64igyx";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ocamlformat";
+      hash = "sha256-zycvhaoPd3nD6kIZAzWpW2YBT1Raf4ruxuXmnbcotjI=";
+      rev = "1851bc47e2ba3ff79b66f967986a853c23bed445";
     };
   });
   ocamlformat-rpc-lib = buildDunePackage {
@@ -1691,8 +1701,8 @@ with oself;
 
   ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-mlx/ocamlformat-mlx/releases/download/0.27.0/ocamlformat-mlx-0.27.0.tbz";
-      sha256 = "1lc61fvvih1j007fzx70c3hihy7rwyvqf8y95grmbvpshahzlh3a";
+      url = "https://github.com/ocaml-mlx/ocamlformat-mlx/releases/download/0.27.0.1/ocamlformat-mlx-0.27.0.1.tbz";
+      sha256 = "0xzcq1q0vlq9nb067qs5dvj87v8v5al88sh4gg9vdlib7p5bqms5";
     };
   });
 
