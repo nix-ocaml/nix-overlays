@@ -74,6 +74,7 @@ let
     "lambdapi"
     "ocaml_libvirt"
     "unisim_archisec"
+    "smtml"
     "z3"
 
     # Broken on janestreet v0.17
@@ -186,7 +187,6 @@ let
     "curses"
     "magic"
     "secp256k1"
-    "z3"
     "zelus"
     "zelus-gtk"
     "ocamlfuse"
