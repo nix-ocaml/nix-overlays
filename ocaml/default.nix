@@ -1288,6 +1288,11 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
+  linol-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.linol-eio
+    else null;
+
   lo = osuper.lo.overrideAttrs (_: {
     env = lib.optionalAttrs stdenv.cc.isGNU {
       NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
