@@ -1710,13 +1710,6 @@ with oself;
     propagatedBuildInputs = [ csexp ];
   };
 
-  ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-mlx/ocamlformat-mlx/releases/download/0.27.0.1/ocamlformat-mlx-0.27.0.1.tbz";
-      sha256 = "0xzcq1q0vlq9nb067qs5dvj87v8v5al88sh4gg9vdlib7p5bqms5";
-    };
-  });
-
   ocamlfuse = osuper.ocamlfuse.overrideAttrs (_: {
     meta = {
       platforms = lib.platforms.all;
@@ -2072,7 +2065,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
-      substituteInPlace src/dune --replace-fail " bigarray" ""
+      substituteInPlace lib/dune --replace-fail " bigarray" ""
     '';
   });
 
