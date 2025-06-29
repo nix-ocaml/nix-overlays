@@ -1171,14 +1171,15 @@ with oself;
       else o.src;
   });
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "6.1.0+beta1";
-      hash = "sha256-wP0wlcLYSIvyaXS0Zka16iTyqmryeEs9Ljvx6EQjaqk=";
-    };
-  });
+  # not ready for jane street 0.17 packages
+  # js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+  # src = fetchFromGitHub {
+  # owner = "ocsigen";
+  # repo = "js_of_ocaml";
+  # rev = "6.1.0+beta1";
+  # hash = "sha256-wP0wlcLYSIvyaXS0Zka16iTyqmryeEs9Ljvx6EQjaqk=";
+  # };
+  # });
 
   # https://github.com/Khady/ocaml-junit/issues/13
   # junit = osuper.junit.overrideAttrs (_: {
