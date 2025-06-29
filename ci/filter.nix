@@ -204,6 +204,8 @@ let
     "eigen"
     "owl"
     "owl-base"
+
+    "ocaml-r"
   ];
 in
 
