@@ -1150,8 +1150,8 @@ with oself;
       else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.22.0/lsp-1.22.0.tbz";
-            sha256 = "10dm7whcijqhpf8vd4q6slc92ms3ly0h8n7svq825p0mgmbw77ai";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.23.0/lsp-1.23.0.tbz";
+            sha256 = "0z8f6jawvad832cr6b058s4pcq0k3j4jhv982v7fm02anlix0avz";
           }
       else if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
@@ -1165,10 +1165,19 @@ with oself;
       then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.20.1-4.14/lsp-1.20.1-4.14.tbz";
-            sha256 = "0ndgwq3whva083lwy8yr1abagpnyp0v2x6sidcap2v8y2h06vsdc";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.21.0-4.14/lsp-1.21.0-4.14.tbz";
+            sha256 = "1v1pjrixy5h65bwrlg1i03h0j6p6xcl8q8718r3ns4bj5dvr3ppj";
           }
       else o.src;
+  });
+
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "6.1.0+beta1";
+      hash = "sha256-wP0wlcLYSIvyaXS0Zka16iTyqmryeEs9Ljvx6EQjaqk=";
+    };
   });
 
   # https://github.com/Khady/ocaml-junit/issues/13
@@ -2674,8 +2683,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "4c36b2e4837d6ece8e051f9c3af2114811ebb89b";
-      hash = "sha256-C8T97gMVgQYpsdV/BwPL8/0CfQ9ZIRSAMsj35fvL5Mo=";
+      rev = "8f18dd7a5fb25f6a6040d0876c704829c240860f";
+      hash = "sha256-SOWCRMuPzkPOp9NV/8zRuwhbGnYimsTHjoUtsexCz2M=";
     };
   });
 

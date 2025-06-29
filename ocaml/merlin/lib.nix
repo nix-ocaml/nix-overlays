@@ -42,8 +42,8 @@ buildDunePackage {
     then
       builtins.fetchurl
         {
-          url = "https://github.com/ocaml/merlin/releases/download/v5.4.1-503/merlin-5.4.1-503.tbz";
-          sha256 = "08ihafi64rcbhga77pa9jzbxa4mkn283grq5fky2a8f1g33v9cs9";
+          url = "https://github.com/ocaml/merlin/releases/download/v5.5-503/merlin-5.5-503.tbz";
+          sha256 = "1wcs4vc0zlxqanbca3fyk21g1im2lhfzc2bk4rw7d87yy8s3pnk7";
         }
     else if lib.versionOlder "5.2" ocaml.version
     then
@@ -68,8 +68,8 @@ buildDunePackage {
         }
     else
       builtins.fetchurl {
-        url = "https://github.com/ocaml/merlin/releases/download/v4.18-414/merlin-4.18-414.tbz";
-        sha256 = "1h8cwdzvcyxdr6jkpsj7sn2r31aw2g4155l63a63a7hlcsiggmpn";
+        url = "https://github.com/ocaml/merlin/releases/download/v4.19-414/merlin-4.19-414.tbz";
+        sha256 = "113kcp9bca7348li0f3gmh6rcicr4c7lvw558xqcxa83jbsk19k0";
       };
 
   postPatch =
