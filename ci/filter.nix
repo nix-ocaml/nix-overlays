@@ -207,10 +207,14 @@ let
 
     "ocaml-r"
   ];
+
+  aarch64LinuxIgnores = [
+    "elina"
+  ];
 in
 
 rec {
-  inherit ocaml5Ignores darwinIgnores;
+  inherit ocaml5Ignores darwinIgnores aarch64LinuxIgnores;
   ocamlCandidates =
     { pkgs
     , ocamlVersion
