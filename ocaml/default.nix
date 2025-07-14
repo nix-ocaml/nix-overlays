@@ -2787,6 +2787,10 @@ with oself;
     };
   });
 
+  wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
+    dontStrip = stdenv.isDarwin;
+  });
+
   webauthn = buildDunePackage {
     pname = "webauthn";
     version = "0.2.0";
