@@ -1693,8 +1693,11 @@ with oself;
     doCheck = false;
   });
 
-  ocamlformat = osuper.ocamlformat.overrideAttrs (_: {
-    inherit (ocamlformat-lib) src;
+  ocamlformat = osuper.ocamlformat.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.4" then
+        ocamlformat-lib.src
+      else o.src;
   });
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (o: {
     src =
