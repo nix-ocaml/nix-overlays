@@ -1167,11 +1167,9 @@ with oself;
 
   # not ready for jane street 0.17 packages
   # js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-  # src = fetchFromGitHub {
-  # owner = "ocsigen";
-  # repo = "js_of_ocaml";
-  # rev = "6.1.0+beta1";
-  # hash = "sha256-wP0wlcLYSIvyaXS0Zka16iTyqmryeEs9Ljvx6EQjaqk=";
+  # src = builtins.fetchurl {
+  # url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
+  # sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
   # };
   # });
 
@@ -2201,8 +2199,8 @@ with oself;
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "757f6c284b1fe748d5027eef3bbef924b6bbd7ce";
-            hash = "sha256-6pJGlRknukWH0wr6GhMiQRs43dwx1EkvuW/05ZcEyh0=";
+            rev = "ff6e906f45b878e8e38e7ab8e2a4583323a81d94";
+            hash = "sha256-KLGl5dMf03OKjCvzchBgIzAou+n/IQ2CYcXIRNmORLE=";
           }
       else
         builtins.fetchurl {
