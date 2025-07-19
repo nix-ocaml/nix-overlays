@@ -1916,15 +1916,12 @@ with oself;
   };
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    version = "3.0.0_beta1";
+    version = "3.1.0";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/3.0.0_beta1/odoc-3.0.0.beta1.tbz";
-      sha256 = "1vq1r999i5q1bymz44k6j0vs95a0vxl94lknsk061djdnp676x13";
+      url = "https://github.com/ocaml/odoc/releases/download/3.1.0/odoc-3.1.0.tbz";
+      sha256 = "0559zx12v7qa42a048rdjc4qcgikbviirdfqmv5h6jckykzkqnrm";
     };
-    propagatedBuildInputs = [ astring camlp-streams ppx_expect ];
-    postPatch = ''
-      substituteInPlace src/parser/dune --replace-fail "result" ""
-    '';
+    propagatedBuildInputs = [ astring camlp-streams ];
   });
 
   odoc = osuper.odoc.overrideAttrs (o: {
