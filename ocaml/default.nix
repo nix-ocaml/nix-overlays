@@ -66,6 +66,24 @@
 oself: osuper:
 
 let
+  opamAttrs = {
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "opam";
+      rev = "2.4.0";
+      hash = "sha256-H+LbD6xVtIeXANhRmEwGL18arYvpnhY/y5kGfvOlJhQ=";
+    };
+    version = "2.4.0";
+    meta = with lib; {
+      description = "A package manager for OCaml";
+      homepage = "https://opam.ocaml.org/";
+      changelog = "https://github.com/ocaml/opam/raw/${version}/CHANGES";
+      maintainers = [ maintainers.henrytill maintainers.marsam ];
+      license = licenses.lgpl21Only;
+      platforms = platforms.all;
+    };
+  };
+
   nativeCairo = cairo;
   nativeGit = git;
   nativeMariaDB = mariadb;
@@ -1965,48 +1983,27 @@ with oself;
     propagatedBuildInputs = [ cudf x0install-solver ];
   };
 
-  opam-client = buildDunePackage {
+  opam-client = buildDunePackage (opamAttrs // {
     pname = "opam-client";
-    inherit (opam-format) src version meta;
     configureFlags = [ "--disable-checks" ];
     propagatedBuildInputs = [ cmdliner base64 re opam-repository opam-solver opam-state ];
-  };
-  opam = buildDunePackage {
+  });
+  opam = buildDunePackage (opamAttrs // {
     pname = "opam";
-    inherit (opam-format) src version meta;
     nativeBuildInputs = [ curl-oc ];
     configureFlags = [ "--disable-checks" ];
     propagatedBuildInputs = [ cmdliner opam-client ];
-  };
-  opam-core = osuper.opam-core.overrideAttrs (o: {
-    inherit (opam-format) src version meta;
   });
-  opam-solver = buildDunePackage {
+  opam-core = osuper.opam-core.overrideAttrs (o: opamAttrs // {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ patch ];
+  });
+  opam-solver = buildDunePackage (opamAttrs // {
     pname = "opam-solver";
-    inherit (opam-format) src version meta;
     configureFlags = [ "--disable-checks" ];
     propagatedBuildInputs = [ opam-0install-cudf re dose3 opam-format ];
-  };
-  opam-format = osuper.opam-format.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "opam";
-      rev = "2.3.0";
-      hash = "sha256-ZU11fWiS4hdbbzYytudTK8M1O6r51HRZ+ASO+VxvekE=";
-    };
-    version = "2.3.0-alpha1";
-    meta = with lib; {
-      description = "A package manager for OCaml";
-      homepage = "https://opam.ocaml.org/";
-      changelog = "https://github.com/ocaml/opam/raw/${version}/CHANGES";
-      maintainers = [ maintainers.henrytill maintainers.marsam ];
-      license = licenses.lgpl21Only;
-      platforms = platforms.all;
-    };
   });
-  opam-state = osuper.opam-state.overrideAttrs (o: {
-    inherit (opam-format) src version meta;
-  });
+  opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
+  opam-state = osuper.opam-state.overrideAttrs (o: opamAttrs);
   opam-file-format = osuper.opam-file-format.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ menhir ];
     src = fetchFromGitHub {
@@ -2042,10 +2039,12 @@ with oself;
 
   patch = buildDunePackage {
     pname = "patch";
-    version = "2.0.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/hannesm/patch/releases/download/v2.0.0/patch-2.0.0.tbz";
-      sha256 = "0n75k3pjj4a9a8y7rxjlscjv15sy3chkibaqfdalr7fpr59lprdh";
+    version = "3.0.0";
+    src = fetchFromGitHub {
+      owner = "hannesm";
+      repo = "patch";
+      rev = "v3.0.0";
+      hash = "sha256-WIleUxfGp8cvQHYAyRRI6S/MSP4u0BbEyAqlRxCb/To=";
     };
     doCheck = true;
     checkInputs = [ alcotest ];
