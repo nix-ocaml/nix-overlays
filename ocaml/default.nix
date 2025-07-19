@@ -999,7 +999,7 @@ with oself;
     version = "0.5.0";
     src = builtins.fetchurl {
       url = "https://github.com/patricoferris/hilite/releases/download/v0.5.0/hilite-0.5.0.tbz";
-      sha256 = "092q0lbpjjbv9szhp9lv0jczf5rr1gqv0wfynv3w9gqhpw5mb2j9";
+      sha256 = "059sw64ida4l3zdz7f3x2a3bv1zgfp5rsjck6rahhn59wjmh232m";
     };
 
     propagatedBuildInputs = [ cmarkit textmate-language ];
