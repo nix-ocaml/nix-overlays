@@ -62,6 +62,9 @@ in
           [ cross-overlay static-overlay ]);
 
       riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
+
+      #mingw32 = super.pkgsCross.mingw32.extend cross-overlay;
+      mingwW64 = super.pkgsCross.mingwW64.extend cross-overlay;
     };
 
   # Override `pkgs.nix` to the unstable channel
