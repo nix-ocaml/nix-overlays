@@ -31,6 +31,7 @@
             overlays = [ overlay ];
             config = {
               allowUnfree = true;
+              allowUnsupportedSystem = true;
             } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
               config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
             };
@@ -49,5 +50,16 @@
       legacyPackages = nixpkgs.lib.genAttrs
         nixpkgs.lib.systems.flakeExposed
         (system: self.makePkgs { inherit system; });
+
+      packages.x86_64-linux.of =
+        let pkgs =
+        self.makePkgs
+        {
+          system = "x86_64-linux";
+          config.allowUnsupportedSystem = true;
+        };
+        xpkgs = pkgs.pkgsCross.mingwW64;
+        in
+        xpkgs.ocaml-ng.ocamlPackages_5_4.ocamlformat;
     };
 }

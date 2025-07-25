@@ -8,7 +8,7 @@
 # build time (e.g. OMP / ppxlib, etc that are possible to allow in the other
 # overlays).
 
-{ lib, buildPackages, writeText, writeScriptBin, makeWrapper, stdenv }:
+{ lib, buildPackages, writeText, writeScriptBin, makeWrapper, stdenv, fetchpatch, windows }:
 let
   __mergeInputs = acc: names: attrs:
     let
@@ -165,7 +165,7 @@ in
       ocaml = import ./ocaml-compiler.nix {
         inherit
           lib buildPackages writeScriptBin
-          natocamlPackages osuper stdenv;
+          natocamlPackages osuper stdenv windows;
       };
 
       findlib = osuper.findlib.overrideAttrs (o: {
