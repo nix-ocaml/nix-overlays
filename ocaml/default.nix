@@ -621,10 +621,6 @@ with oself;
 
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
 
-  ctypes_stubs_js = osuper.ctypes_stubs_js.overrideAttrs (_: {
-    doCheck = false;
-  });
-
   curly = osuper.curly.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "rgrinberg";
