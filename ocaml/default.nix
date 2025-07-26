@@ -299,6 +299,21 @@ with oself;
     DUNE_CACHE = "disabled";
   } // args);
 
+  brisk-reconciler = buildDunePackage {
+    pname = "brisk-reconciler";
+    version = "1.0.0-alpha1";
+    src = fetchFromGitHub {
+      owner = "briskml";
+      repo = "brisk-reconciler";
+      tag = "v1.0.0-alpha1";
+      hash = "sha256-Xj6GGsod3lnEEjrzPrlHwQAowq66uz8comlhpWK888k=";
+    };
+    propagatedBuildInputs = [ ppxlib ];
+    postPatch = ''
+      substituteInPlace src/hooks.ml{,i} --replace-fail "effect" "effect_"
+    '';
+  };
+
   bz2 = buildDunePackage {
     pname = "bz2";
     version = "0.7.0-dev";
