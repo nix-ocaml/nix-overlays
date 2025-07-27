@@ -165,6 +165,7 @@ with oself;
       rev = "3173a5eb564f0f087db94b206460df02ac394281";
       hash = "sha256-l0HdDOZL8p72u6KzMkIVrZxUSVlo2GIcpgb6nQU6eTk=";
     };
+    doCheck = !lib.versionAtLeast ocaml.version "5.4";
     propagatedBuildInputs = [ bigstringaf ];
   });
 
