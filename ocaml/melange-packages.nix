@@ -127,11 +127,9 @@ with oself;
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "n/a";
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason-react";
-      rev = "2452ff8b970cdbc8d31ae9549472a07a85a7093e";
-      hash = "sha256-N8IjA0kQiY06W8ZuEPof7tZ6re9TlChrAQ1i5AqR4BY=";
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason-react/releases/download/0.16.0/reason-react-0.16.0.tbz";
+      sha256 = "0p23iw1j6capg2jwa8j32hkhphcc1swjw226k4vk87f7dgxc3hvs";
     };
     propagatedBuildInputs = [ ppxlib ];
   };
