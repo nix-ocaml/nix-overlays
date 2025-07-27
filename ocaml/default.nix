@@ -70,14 +70,14 @@ let
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.4.0";
-      hash = "sha256-H+LbD6xVtIeXANhRmEwGL18arYvpnhY/y5kGfvOlJhQ=";
+      rev = "2.4.1";
+      hash = "sha256-VWPbk1P3W9+ImusyOweFnHyP0VzqHKIbXMpzFsYCF14=";
     };
-    version = "2.4.0";
+    version = "2.4.1";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
-      changelog = "https://github.com/ocaml/opam/raw/${version}/CHANGES";
+      changelog = "https://github.com/ocaml/opam/raw/2.4.1/CHANGES";
       maintainers = [ maintainers.henrytill maintainers.marsam ];
       license = licenses.lgpl21Only;
       platforms = platforms.all;
@@ -918,6 +918,13 @@ with oself;
   });
 
   flow_parser = callPackage ./flow_parser { };
+
+  fmt = osuper.fmt.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/fmt/releases/fmt-0.11.0.tbz";
+      sha256 = "06va6zalm61g2zkyqns37fyx2g0p8ig6dqmkv6f44ljblm3zsz45";
+    };
+  });
 
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
@@ -2686,11 +2693,9 @@ with oself;
   };
 
   utop = osuper.utop.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "8f18dd7a5fb25f6a6040d0876c704829c240860f";
-      hash = "sha256-SOWCRMuPzkPOp9NV/8zRuwhbGnYimsTHjoUtsexCz2M=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-community/utop/releases/download/2.16.0/utop-2.16.0.tbz";
+      sha256 = "0qy7p10caf1y8jhbhql0pg3lrmfhrx0rk25y3hhznci1bl9pk7qb";
     };
   });
 
