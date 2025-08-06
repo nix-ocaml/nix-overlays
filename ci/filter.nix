@@ -25,6 +25,7 @@ let
     "ocsipersist"
     "ocsipersist-pgsql"
     "ocsipersist-sqlite"
+    "ocsipersist-sqlite-config"
 
     "dream-serve"
 
