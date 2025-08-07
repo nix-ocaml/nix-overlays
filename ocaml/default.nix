@@ -920,13 +920,6 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
-  fmt = osuper.fmt.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/fmt/releases/fmt-0.11.0.tbz";
-      sha256 = "06va6zalm61g2zkyqns37fyx2g0p8ig6dqmkv6f44ljblm3zsz45";
-    };
-  });
-
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
