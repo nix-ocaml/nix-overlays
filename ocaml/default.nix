@@ -900,13 +900,6 @@ with oself;
     patches = [ ];
   });
 
-  ffmpeg-avdevice = osuper.ffmpeg-avdevice.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs ++
-      lib.optionals stdenv.isDarwin
-        (with darwin.apple_sdk.frameworks; [ AVFoundation ]);
-  });
-
   fix = osuper.fix.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/fix-20230505.tar.gz";
@@ -924,7 +917,7 @@ with oself;
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
     src = builtins.fetchurl {
-      url = "https://www.lri.fr/~filliatr/functory/download/functory-0.6.tar.gz";
+      url = "https://github.com/backtracking/functory/releases/download/v-0-6/functory-0.6.tar.gz";
       sha256 = "18wpyxblz9jh5bfp0hpffnd0q8cq1b0dqp0f36vhqydfknlnpx8y";
     };
 
@@ -2607,16 +2600,7 @@ with oself;
   });
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
-    propagatedBuildInputs =
-      o.propagatedBuildInputs
-      ++ [ ctypes-foreign ]
-      ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Cocoa
-        CoreAudio
-        CoreVideo
-        AudioToolbox
-        ForceFeedback
-      ]);
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
   tuntap = osuper.tuntap.overrideAttrs (_: {
