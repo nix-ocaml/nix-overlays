@@ -121,8 +121,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "5.4.0-beta1";
-          hash = "sha256-oWPjZ8EV7igStGiqXDOodokEo+KlbRRyd3D7JjpQG/U=";
+          rev = "bb79e342aa260595b0cc251ac1cd7e16324bcb04";
+          hash = "sha256-kOvDBD4sEETKO6Ha96MkRMeY7pDptBea5gGAbQgIfNA=";
         };
         postPatch = ''
           substituteInPlace "runtime/caml/camlatomic.h" \
@@ -139,8 +139,8 @@ let
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "b89105698ccbc794e9c6db1f871b493d93929624";
-          hash = "sha256-eQjmsTzoRrclG5wYW/+TosX/6FX6X3aA0pbs+yV4eho=";
+          rev = "b386fd53a7c6c198b8ef45b564040a48723c5b9e";
+          hash = "sha256-CT1UNdsw6KzMiuerPdPcWKz36E+Cbit3XrQMjokCXl4=";
         };
       };
 
