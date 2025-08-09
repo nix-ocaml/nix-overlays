@@ -133,6 +133,9 @@ let
     "ppx_css"
     "bonsai"
     "memtrace_viewer"
+
+    "ppx_python"
+    "pyml"
   ];
 
   ocaml5Ignores = [
@@ -155,10 +158,7 @@ let
     # broken on 5.3
     "ppx_cstubs"
     "reanalyze"
-    "stdcompat"
     "ppx_show"
-    "ppx_python"
-    "pyml"
   ];
 
   darwinIgnores = [

@@ -2460,14 +2460,14 @@ with oself;
 
   stdcompat = buildDunePackage {
     pname = "stdcompat";
-    version = "19-dev";
+    version = "21";
 
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "stdcompat";
       # https://github.com/thierry-martinez/stdcompat/pull/33
-      rev = "58b6d90fc53333f5e8112d42f96093802678c030";
-      hash = "sha256-7xfcCVOOMaZ5dwgTtSn0YAkZg9tdqvn1tNMqsIL4ZfA=";
+      rev = "21.0";
+      hash = "sha256-Ks8m2QicIEohSADiMeijCz0WTPsTSgPifrGTn7FVcV0=";
     };
 
     dontConfigure = true;
