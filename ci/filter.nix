@@ -80,7 +80,6 @@ let
     "z3"
 
     # Broken on janestreet v0.17
-    "camlimages"
     "multiformats"
 
     # cstruct -> string
@@ -98,34 +97,10 @@ let
     # not compatible with latest odoc
     "sherlodoc"
 
-    ## Doesn't work with latest lsp on 5.2
-    "linol"
-    "linol-lwt"
-    "dolmen_lsp"
-
-    ## Broken on GCC14 or clang19
-    "mopsa"
-
     "odds"
     "raylib"
     "raygui"
 
-    ## host unreachable for download
-    "functory"
-
-    "ffmpeg"
-    "ffmpeg-av"
-    "ffmpeg-avcodec"
-    "ffmpeg-avdevice"
-    "ffmpeg-avfilter"
-    "ffmpeg-avutil"
-    "ffmpeg-swresample"
-    "ffmpeg-swscale"
-    "frei0r"
-    "tsdl"
-    "tsdl-mixer"
-    "tsdl-image"
-    "tsdl-ttf"
     "miou"
     "mirage-crypto-rng-miou-unix"
 
@@ -158,13 +133,13 @@ let
     # broken on 5.3
     "ppx_cstubs"
     "reanalyze"
-    "ppx_show"
   ];
 
   darwinIgnores = [
     "dssi"
     "elina"
     "augeas"
+    "gapi-ocaml"
     "nbd"
 
     # broken on macOS?
@@ -180,19 +155,12 @@ let
     "async_inotify"
     "async_smtp"
     "pam"
-    "netsnmp"
     "ocaml-probes"
     "systemd"
 
-    "gapi-ocaml"
-    "bz2"
-    "curses"
-    "magic"
-    "secp256k1"
     "zelus"
     "zelus-gtk"
     "ocamlfuse"
-    "wayland"
 
     # Broken on janestreet v0.17
     "ecaml"
@@ -206,8 +174,6 @@ let
     "eigen"
     "owl"
     "owl-base"
-
-    "ocaml-r"
   ];
 in
 
