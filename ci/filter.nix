@@ -139,6 +139,7 @@ let
     "dssi"
     "elina"
     "augeas"
+    "gapi-ocaml"
     "nbd"
 
     # broken on macOS?
