@@ -966,11 +966,6 @@ with oself;
     '';
   });
 
-  gstreamer = osuper.gstreamer.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++
-    lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
-  });
-
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./dune --replace-fail "libraries " "libraries ctypes.stubs "
@@ -1817,13 +1812,7 @@ with oself;
       libxcb
       xorg.xcbutilkeysyms
       xorg.xcbutilimage
-    ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-      AppKit
-      Foundation
-      Carbon
-      Cocoa
-      CoreGraphics
-    ]);
+    ];
 
     propagatedBuildInputs = [ dune-configurator react ];
   };
