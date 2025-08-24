@@ -432,7 +432,8 @@ in
 
   base_quickcheck = (janePackage {
     pname = "base_quickcheck";
-    hash = "sha256-jDxO+/9Qnntt6ZNX1xvaWvoJ0JpnPqeq8X8nsYpeqsY=";
+    version = "0.17.1";
+    hash = "sha256-0s40sGu2FvaUjvC5JSvHlRhbyQV1bVPrVTTWdHtTQ+k=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Randomized testing framework, designed for compatibility with Base";
     propagatedBuildInputs = [ ppx_base ppx_fields_conv ppx_let ppx_sexp_value splittable_random ];
@@ -1438,7 +1439,8 @@ in
 
   ppx_bench = janePackage {
     pname = "ppx_bench";
-    hash = "sha256-y4nL/wwjJUL2Fa7Ne0f7SR5flCjT1ra9M1uBHOUZWCg=";
+    version = "0.17.1";
+    hash = "sha256-nHqZSyJ5mZ86SGu9WtoVNfYTnd5kslyI8Zm/LJ7b/Fo=";
     minimalOCamlVersion = "4.14";
     meta.description = "Syntax extension for writing in-line benchmarks in ocaml code";
     propagatedBuildInputs = [ ppx_inline_test ];
@@ -1446,7 +1448,8 @@ in
 
   ppx_bin_prot = (janePackage {
     pname = "ppx_bin_prot";
-    hash = "sha256-nQps/+Csx3+6H6KBzIm/dLCGWJ9fcRD7JxB4P2lky0o=";
+    version = "0.17.1";
+    hash = "sha256-9TNtRwieITJMZs+7RT7tOf1GwVlxuGeKZktVon9B7g4=";
     minimalOCamlVersion = "4.14";
     meta.description = "Generation of bin_prot readers and writers from types";
     propagatedBuildInputs = [ bin_prot ppx_here ];
@@ -1558,7 +1561,8 @@ in
 
   ppx_diff = (janePackage {
     pname = "ppx_diff";
-    hash = "sha256-MAn+vcU6vLR8g16Wq1sORyLcLgWxLsazMQY1syY6HsA=";
+    version = "0.17.1";
+    hash = "sha256-eWzlEIPjNcxhz2Q5+y7fv9mJDJzauOpJ993CXoy8nh4=";
     meta.description = ''
       A PPX rewriter that generates the implementation of [Ldiffable.S].
       Generates diffs and update functions for OCaml types.
@@ -1610,8 +1614,8 @@ in
 
   ppx_expect = (janePackage {
     pname = "ppx_expect";
-    version = "0.17.2";
-    hash = "sha256-na9n/+shkiHIIUQ2ZitybQ6NNsSS9gWFNAFxij+JNVo=";
+    version = "0.17.3";
+    hash = "sha256-eYZ3p3FYjHd15pj79TKyHSHNKRSWj80iHJFxBZN40s4=";
     minimalOCamlVersion = "4.14";
     meta.description = "Cram like framework for OCaml";
     propagatedBuildInputs = [ base ppx_here ppx_inline_test stdio re ppx_compare ];
@@ -1649,7 +1653,8 @@ in
   ppx_globalize = (janePackage {
     pname = "ppx_globalize";
     minimalOCamlVersion = "4.14";
-    hash = "sha256-LKV5zfaf6AXn3NzOhN2ka8NtjItPTIsfmoJVBw5bYi8=";
+    version = "0.17.2";
+    hash = "sha256-5pHqyv94DXpSG69TEATcnJwFh5YurxVCM5ZPtrlbXSo=";
     meta.description = "A ppx rewriter that generates functions to copy local values to the global heap";
     propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
   }).overrideAttrs (o: {
@@ -1706,7 +1711,8 @@ in
 
   ppx_inline_test = janePackage {
     pname = "ppx_inline_test";
-    hash = "sha256-pNdrmAlT3MUbuPUcMmCRcUIXv4fZ/o/IofJmnUKf8Cs=";
+    version = "0.17.1";
+    hash = "sha256-wNDDdNUeWTW87HRKbRSuOXaCPQnDWx7/RXuCDISc9Pg=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Syntax extension for writing in-line tests in ocaml code";
     propagatedBuildInputs = [ ppxlib time_now ];
@@ -1770,7 +1776,8 @@ in
 
   ppx_let = (janePackage {
     pname = "ppx_let";
-    hash = "sha256-JkNQgbPHVDH659m4Xy9ipcZ/iqGtj5q1qQn1P+O7TUY=";
+    version = "0.17.1";
+    hash = "sha256-41C60UcMpERZs2eAPprg63uPnmjj33n7cd5s5IFZBGE=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Monadic let-bindings";
     propagatedBuildInputs = [ ppxlib ppx_here ppxlib_jane ];
@@ -1821,7 +1828,8 @@ in
 
   ppx_optcomp = (janePackage {
     pname = "ppx_optcomp";
-    hash = "sha256-H9oTzhJx9IGRkcwY2YEvcvNgeJ8ETNO95qKcjTXJBwk=";
+    version = "0.17.1";
+    hash = "sha256-mi9YM0WGkc4sI1GF2YGTFwmPdF+4s5Ou2l7i07ys9nw=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Optional compilation for OCaml";
     propagatedBuildInputs = [ stdio ppxlib ppxlib_jane ];
@@ -1894,7 +1902,8 @@ in
   ppx_sexp_conv = (janePackage {
     pname = "ppx_sexp_conv";
     minimalOCamlVersion = "4.14";
-    hash = "sha256-hUi0I50SODK1MpL86xy8eM8yn8f4q1Hv4LP9zFnnr70=";
+    version = "0.17.1";
+    hash = "sha256-yQJluA/NSzCAID/ydBgRuc1sFHyjbXare9vxen6f1iw=";
     meta.description = "[@@deriving] plugin to generate S-expression conversion functions";
     propagatedBuildInputs = [ ppxlib sexplib0 base ppxlib_jane ];
   }).overrideAttrs (o: {
@@ -1929,7 +1938,8 @@ in
 
   ppx_stable = (janePackage {
     pname = "ppx_stable";
-    hash = "sha256-N5oPjjQcLgiO9liX8Z0vg0IbQXaGZ4BqOgwvuIKSKaA=";
+    version = "0.17.1";
+    hash = "sha256-iVAgRVSOdLzajuUT8Yz+YMiMeChIx5DT8lBf104QMuE=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "Stable types conversions generator";
     propagatedBuildInputs = [ base ppxlib ppxlib_jane ];
@@ -2001,7 +2011,8 @@ in
 
   ppx_tydi = janePackage {
     pname = "ppx_tydi";
-    hash = "sha256-PM89fP6Rb6M99HgEzQ7LfpW1W5adw6J/E1LFQJtdd0U=";
+    version = "0.17.1";
+    hash = "sha256-dkZwu4Ujj7GKb4qo76f/ef5dvGrYSkk9B3y+Rg72CAM=";
     minimalOCamlVersion = "4.14";
     meta.description = "Let expressions, inferring pattern type from expression.";
     propagatedBuildInputs = [ base ppxlib ];
@@ -2017,7 +2028,8 @@ in
   ppx_typerep_conv = (janePackage {
     pname = "ppx_typerep_conv";
     minimalOCamlVersion = "4.04.2";
-    hash = "sha256-V9yOSy3cj5/bz9PvpO3J+aeFu1G+qGQ8AR3gSczUZbY=";
+    version = "0.17.1";
+    hash = "sha256-rxqL2v5vqjc7MgKUSkJEyIhm9GO5YqvxEYSM/uXdeBc=";
     meta.description = "Generation of runtime types from type declarations";
     propagatedBuildInputs = [ ppxlib typerep ppxlib_jane ];
   }).overrideAttrs (o: {
@@ -2037,7 +2049,8 @@ in
   ppx_variants_conv = (janePackage {
     pname = "ppx_variants_conv";
     minimalOCamlVersion = "4.04.2";
-    hash = "sha256-Av2F699LzVCpwcdji6qG0jt5DVxCnIY4eBLaPK1JC10=";
+    version = "0.17.1";
+    hash = "sha256-4v9sXtu7rDM+W3phPloizeMczRbBhku5dsCG4NqhdfU=";
     meta.description = "Generation of accessor and iteration functions for ocaml variant types";
     propagatedBuildInputs = [ variantslib ppxlib ppxlib_jane ];
   }).overrideAttrs (o: {
@@ -2080,7 +2093,8 @@ in
 
   ppxlib_jane = (janePackage {
     pname = "ppxlib_jane";
-    hash = "sha256-8NC8CHh3pSdFuRDQCuuhc2xxU+84UAsGFJbbJoKwd0U=";
+    version = "0.17.4";
+    hash = "sha256-cqF7aT0ubutRxsSTD5aHnHx4zvlPDkTzdBqONU6EgO0=";
     meta.description = "Utilities for working with Jane Street AST constructs";
     propagatedBuildInputs = [ ppxlib ];
   }).overrideAttrs (o: {
@@ -2094,22 +2108,22 @@ in
             rev = "5793adbe30e2294d351a8145289cf2a220d0714f";
             hash = "sha256-KEQMDIN/AMfEbFGlRrFt/tcShuKe9P0QIxA5RdM8Wuo=";
           }
-      else if lib.versionOlder "5.4" ocaml.version then
-        fetchFromGitHub
-          {
-            owner = "janestreet";
-            repo = "ppxlib_jane";
-            rev = "7614fc7d9bef1b69a74c417c3df5eb3a9ed61719";
-            hash = "sha256-cqF7aT0ubutRxsSTD5aHnHx4zvlPDkTzdBqONU6EgO0=";
-          }
-      else if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub
-          {
-            owner = "janestreet";
-            repo = "ppxlib_jane";
-            rev = "v0.17.2";
-            hash = "sha256-AQJSdKtF6p/aG5Lx8VHVEOsisH8ep+iiml6DtW+Hdik=";
-          }
+      # else if lib.versionOlder "5.4" ocaml.version then
+      # fetchFromGitHub
+      # {
+      # owner = "janestreet";
+      # repo = "ppxlib_jane";
+      # rev = "7614fc7d9bef1b69a74c417c3df5eb3a9ed61719";
+      # hash = "sha256-cqF7aT0ubutRxsSTD5aHnHx4zvlPDkTzdBqONU6EgO0=";
+      # }
+      # else if lib.versionOlder "5.3" ocaml.version then
+      # fetchFromGitHub
+      # {
+      # owner = "janestreet";
+      # repo = "ppxlib_jane";
+      # rev = "v0.17.2";
+      # hash = "sha256-AQJSdKtF6p/aG5Lx8VHVEOsisH8ep+iiml6DtW+Hdik=";
+      # }
       else o.src;
   });
 
