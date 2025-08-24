@@ -38,7 +38,6 @@
 , gmp-oc
 , openssl-oc
 , oniguruma-lib
-, overrideSDK
 , pam
 , pkg-config
 , python3
@@ -2827,7 +2826,7 @@ with oself;
     (import ./ocaml5.nix {
       inherit
         oself osuper
-        darwin stdenv overrideSDK
+        darwin stdenv
         fetchFromGitHub nodejs_latest nixpkgs;
     })
   else { }
