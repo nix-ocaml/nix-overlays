@@ -1183,12 +1183,12 @@ with oself;
   });
 
   # not ready for jane street 0.17 packages
-  # js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
-  # sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
-  # };
-  # });
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
+      sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
+    };
+  });
 
   # https://github.com/Khady/ocaml-junit/issues/13
   # junit = osuper.junit.overrideAttrs (_: {
@@ -2131,6 +2131,12 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving";
+      rev = "v6.1.1";
+      hash = "sha256-NIYJxNjwsEKbhQIKswU9KNGvw7menu5jAxry2//w/8M=";
+    };
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -2167,6 +2173,16 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
+  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving_yojson";
+      rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
+      hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
+    };
+    patches = [ ];
+  });
+
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
     then null
@@ -2191,10 +2207,11 @@ with oself;
             rev = "ff6e906f45b878e8e38e7ab8e2a4583323a81d94";
             hash = "sha256-KLGl5dMf03OKjCvzchBgIzAou+n/IQ2CYcXIRNmORLE=";
           }
+
       else
         builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
-          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.36.1/ppxlib-0.36.1.tbz";
+          sha256 = "1czgf474himz3wj3qqmy8zrsn0m40yj2z9imlhb491d1xv1vllk1";
         };
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2261,7 +2278,11 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason/releases/download/3.17.0/reason-3.17.0.tbz";
+      sha256 = "1sx5z269sry2xbca3d9sw7mh9ag773k02r9cgrz5n8gxx6f83j42";
+    };
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info cmdliner ];
 
     patches = [ ./0001-rename-labels.patch ];
 
