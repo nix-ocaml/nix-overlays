@@ -5,7 +5,6 @@
 , osuper
 , nixpkgs
 , stdenv
-, overrideSDK
 }:
 
 with oself;
@@ -26,23 +25,15 @@ with oself;
     propagatedBuildInputs = [ cohttp eio_main ptime ];
   };
 
-  eio-trace =
-    let
-      stdenv' =
-        if stdenv.isDarwin && !stdenv.isAarch64
-        then overrideSDK stdenv "11.0"
-        else stdenv;
-    in
-    buildDunePackage {
-      stdenv = stdenv';
-      pname = "eio-trace";
-      version = "0.4";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
-        sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
-      };
-      propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
+  eio-trace = buildDunePackage {
+    pname = "eio-trace";
+    version = "0.4";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
+      sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
     };
+    propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
+  };
 
   graphql-eio = buildDunePackage {
     pname = "graphql-eio";

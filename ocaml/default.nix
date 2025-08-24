@@ -38,7 +38,6 @@
 , gmp-oc
 , openssl-oc
 , oniguruma-lib
-, overrideSDK
 , pam
 , pkg-config
 , python3
@@ -966,11 +965,6 @@ with oself;
     '';
   });
 
-  gstreamer = osuper.gstreamer.overrideAttrs (o: {
-    buildInputs = o.buildInputs ++
-    lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
-  });
-
   hacl-star = osuper.hacl-star.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./dune --replace-fail "libraries " "libraries ctypes.stubs "
@@ -1817,13 +1811,7 @@ with oself;
       libxcb
       xorg.xcbutilkeysyms
       xorg.xcbutilimage
-    ] ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-      AppKit
-      Foundation
-      Carbon
-      Cocoa
-      CoreGraphics
-    ]);
+    ];
 
     propagatedBuildInputs = [ dune-configurator react ];
   };
@@ -2231,10 +2219,6 @@ with oself;
       rev = "0.2";
       hash = "sha256-0jxi3Qz1nlnClPQ6Za0vFBig4ahrkyezicyqmErx1QE=";
     };
-    propagatedBuildInputs =
-      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Foundation
-      ]);
   };
 
   pure-html = callPackage ./dream-html/pure.nix { };
@@ -2842,7 +2826,7 @@ with oself;
     (import ./ocaml5.nix {
       inherit
         oself osuper
-        darwin stdenv overrideSDK
+        darwin stdenv
         fetchFromGitHub nodejs_latest nixpkgs;
     })
   else { }
