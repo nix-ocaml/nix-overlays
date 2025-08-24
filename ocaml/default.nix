@@ -2220,10 +2220,6 @@ with oself;
       rev = "0.2";
       hash = "sha256-0jxi3Qz1nlnClPQ6Za0vFBig4ahrkyezicyqmErx1QE=";
     };
-    propagatedBuildInputs =
-      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-        Foundation
-      ]);
   };
 
   pure-html = callPackage ./dream-html/pure.nix { };
