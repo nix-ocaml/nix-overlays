@@ -306,7 +306,7 @@ in
 
   melange-relay-compiler =
     let
-      inherit (super) rustPlatform darwin pkg-config openssl;
+      inherit (super) rustPlatform pkg-config openssl;
       melange-relay-compiler-src = stdenv.mkDerivation {
         name = "melange-relay-compiler-src";
         src = fetchFromGitHub {
@@ -335,9 +335,6 @@ in
       OPENSSL_NO_VENDOR = 1;
 
       buildInputs = lib.optionals stdenv.isLinux [ openssl ];
-      propagatedBuildInputs = lib.optionals stdenv.isDarwin [
-        darwin.apple_sdk.frameworks.Security
-      ];
 
       postInstall = ''
         mv $out/bin/relay $out/bin/melange-relay-compiler
