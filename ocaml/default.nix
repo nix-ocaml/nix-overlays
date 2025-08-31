@@ -2207,14 +2207,6 @@ with oself;
     ];
   });
 
-    propagatedBuildInputs = [
-      ocaml-compiler-libs
-      ppx_derivers
-      sexplib0
-      stdlib-shims
-    ];
-  });
-
   ppxlib-tools = buildDunePackage {
     pname = "ppxlib-tools";
     inherit (ppxlib) version src;
