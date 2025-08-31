@@ -2117,12 +2117,15 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_deriving";
-      rev = "v6.1.1";
-      hash = "sha256-NIYJxNjwsEKbhQIKswU9KNGvw7menu5jAxry2//w/8M=";
-    };
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppx_deriving";
+            rev = "v6.1.1";
+            hash = "sha256-NIYJxNjwsEKbhQIKswU9KNGvw7menu5jAxry2//w/8M=";
+          } else o.src;
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
