@@ -2172,6 +2172,8 @@ with oself;
     patches = [ ];
   });
 
+  ppx_repr = disableTests osuper.ppx_repr;
+
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
     then null
