@@ -114,7 +114,10 @@ in
   async_js = janePackage {
     pname = "async_js";
     hash = "sha256-4t7dJ04lTQ0b6clf8AvtyC8ip43vIcEBXgHJLiRbuGM=";
-    meta.description = "A small library that provide Async support for JavaScript platforms";
+    meta = {
+      description = "A small library that provide Async support for JavaScript platforms";
+      meta.broken = true;
+    };
     buildInputs = [ js_of_ocaml-ppx ];
     propagatedBuildInputs = [ async_rpc_kernel js_of_ocaml uri-sexp ];
   };
@@ -788,7 +791,10 @@ in
   js_of_ocaml_patches = janePackage {
     pname = "js_of_ocaml_patches";
     hash = "sha256-N61IEZLGfCU3ZX+sw35DAUqUh3u8RaCFcNlXxU1dvL8=";
-    meta.description = "Additions to js_of_ocaml's standard library that are required by Jane Street libraries.";
+    meta = {
+      description = "Additions to js_of_ocaml's standard library that are required by Jane Street libraries.";
+      broken = true;
+    };
     propagatedBuildInputs = [ js_of_ocaml js_of_ocaml-ppx ];
     # Compat with jsoo 3.8.2
     postPatch = ''
@@ -1232,7 +1238,10 @@ in
   ppx_derive_at_runtime = janePackage {
     pname = "ppx_derive_at_runtime";
     hash = "sha256-Y/z4BKFRt3z1lUGdc7SznIv/ys//dZHoPSnsouj1GtI=";
-    meta.description = "Define a new ppx deriver by naming a runtime module.";
+    meta = {
+      description = "Define a new ppx deriver by naming a runtime module.";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ base expect_test_helpers_core ppx_jane ppxlib ];
   };
 
@@ -1410,8 +1419,10 @@ in
     pname = "ppx_jsonaf_conv";
     hash = "sha256-v7CYOJ1g4LkqIv5De5tQjjkBWXqKHbvqfSr0X5jBUuM=";
     minimalOCamlVersion = "4.14";
-    meta.description =
-      "[@@deriving] plugin to generate Jsonaf conversion functions";
+    meta = {
+      description = "[@@deriving] plugin to generate Jsonaf conversion functions";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ base jsonaf ppx_jane ppxlib ];
   };
 
@@ -1419,7 +1430,10 @@ in
     pname = "ppx_js_style";
     hash = "sha256-7jRzxe4bLyZ2vnHeqWiLlCUvOlNUAk0dwCfBFhrykUU=";
     minimalOCamlVersion = "4.14";
-    meta.description = "Code style checker for Jane Street Packages";
+    meta = {
+      description = "Code style checker for Jane Street Packages";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ octavius base ppxlib ];
   };
 
@@ -1503,7 +1517,10 @@ in
     pname = "ppx_pattern_bind";
     hash = "sha256-IVDvFU9ERB2YFJOgP/glYcO4KhEH5VdQ7wCCfreboqA=";
     minimalOCamlVersion = "4.14";
-    meta.description = "A ppx for writing fast incremental bind nodes in a pattern match";
+    meta = {
+      description = "A ppx for writing fast incremental bind nodes in a pattern match";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ ppx_let ];
   };
 
@@ -1526,10 +1543,13 @@ in
   ppx_quick_test = janePackage {
     pname = "ppx_quick_test";
     hash = "sha256-Kxb0IJcosC4eYlUjEfZE9FhY8o1/gDHHLWD5Cby5hXY=";
-    meta.description = ''
-      Spiritual equivalent of let%expect_test, but for property based tests as
-      an ergonomic wrapper to write quickcheck tests.
-    '';
+    meta = {
+      broken = lib.versionOlder "5.3" ocaml.version;
+      description = ''
+        Spiritual equivalent of let%expect_test, but for property based tests as
+        an ergonomic wrapper to write quickcheck tests.
+      '';
+    };
     propagatedBuildInputs = [
       async
       async_kernel
@@ -1646,7 +1666,10 @@ in
   ppx_typed_fields = janePackage {
     pname = "ppx_typed_fields";
     hash = "sha256-aTPEBBc1zniZkEmzubGkU064bwGnefBOjVDqTdPm2w8=";
-    meta.description = "GADT-based field accessors and utilities";
+    meta = {
+      description = "GADT-based field accessors and utilities";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ core ppx_jane ppxlib ];
   };
 
@@ -1980,7 +2003,10 @@ in
     pname = "streamable";
     hash = "sha256-FtrAX4nsacCO5HTVxwLgwwT8R2sASJ05qu4gT2ZVSDg=";
     minimalOCamlVersion = "4.14";
-    meta.description = "A collection of types suitable for incremental serialization.";
+    meta = {
+      description = "A collection of types suitable for incremental serialization.";
+      broken = lib.versionOlder "5.3" ocaml.version;
+    };
     propagatedBuildInputs = [ async_kernel async_rpc_kernel base core core_kernel ppx_jane ppxlib ];
   };
 
