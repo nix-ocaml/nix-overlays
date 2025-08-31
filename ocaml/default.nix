@@ -1429,6 +1429,12 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "realworldocaml";
+      repo = "mdx";
+      rev = "34d5a1b7b12e08dbaf57ec23f5b6009bfeecc8e0";
+      hash = "sha256-9mgsxOAjnB0ulT8L9rQxj7GPta4JvBgq0rupG+y89lA=";
+    };
     # Break the attempt to reduce `mdx`'s closure size by adding a different
     # `logs` override, which breaks anything that uses logs (with OCaml package
     # conflicts)
@@ -2162,13 +2168,16 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
-  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppx_deriving_yojson";
-      rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
-      hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
-    };
+  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppx_deriving_yojson";
+            rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
+            hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
+          } else o.src;
     patches = [ ];
   });
 

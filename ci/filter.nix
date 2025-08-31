@@ -131,6 +131,8 @@ let
     "diffable"
     "legacy_diffable"
     "ocaml_openapi_generator"
+
+    "flow_parser"
   ];
 
   ocaml5Ignores = [
