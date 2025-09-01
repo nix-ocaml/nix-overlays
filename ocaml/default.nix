@@ -643,12 +643,11 @@ with oself;
   thread-table = disableTests osuper.thread-table;
 
   domainslib = osuper.domainslib.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-multicore";
-      repo = "domainslib";
-      rev = "731f08891c87e788f2cc95f2a600328f6682a5e2";
-      hash = "sha256-32rk+gUeqFbZWFAjDVPezxnInUM9lPSDiNitMdpPyM4=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/domainslib/releases/download/0.5.2/domainslib-0.5.2.tbz";
+      sha256 = "1bqwmzwpbwnh8s6jw4dmnzl76mfdkvds4i0smn8sbcj1rgifq857";
     };
+    doCheck = false;
     meta.broken = false;
   });
 
@@ -726,9 +725,17 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  multicore-magic-dscheck =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.multicore-magic-dscheck
+    else null;
   dscheck =
     if lib.versionAtLeast ocaml.version "5.0"
     then osuper.dscheck
+    else null;
+  saturn =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then disableTests osuper.saturn
     else null;
 
   dune_1 = dune;
@@ -2365,36 +2372,7 @@ with oself;
     doCheck = false; # Requires js_of_ocaml
   });
 
-  # removed in saturn 1.0
-  # saturn_lockfree = null;
-  # saturn = buildDunePackage {
-  # pname = "saturn";
-  # version = "1.0.0";
-  # src = builtins.fetchurl {
-  # url = "https://github.com/ocaml-multicore/saturn/releases/download/1.0.0/saturn-1.0.0.tbz";
-  # sha256 = "021a0yk4sjbjy998r0nc20gk1p2sxg29ay0l7zaym37r2dklz7id";
-  # };
-
-  # propagatedBuildInputs = [ backoff multicore-magic ];
-  # doCheck = false;
-
-  # meta = {
-  # description = "Lock-free data structures for multicore OCaml";
-  # homepage = "https://github.com/ocaml-multicore/saturn";
-  # license = lib.licenses.isc;
-  # maintainers = [ lib.maintainers.vbgl ];
-  # };
-  # };
-
   sedlex = disableTests osuper.sedlex;
-  # sedlex = osuper.sedlex.overrideAttrs (_: {
-  # src = fetchFromGitHub {
-  # owner = "ocaml-community";
-  # repo = "sedlex";
-  # rev = "v3.5";
-  # hash = "sha256-TtxrlJtoKn7i2w8OVD3YDJ96MsmsFs4MA1CuNKpqSuU=";
-  # };
-  # });
 
   semver = buildDunePackage {
     pname = "semver";
