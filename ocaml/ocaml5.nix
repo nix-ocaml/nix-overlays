@@ -79,6 +79,22 @@ with oself;
 
   carl = callPackage ./piaf/carl.nix { };
 
+  nix-ci-build = buildDunePackage {
+    pname = "nix-ci-build";
+    version = "n/a";
+    src = fetchFromGitHub {
+      owner = "nix-ocaml";
+      repo = "nix-ci-build";
+      rev = "f664baec3344cb983464ff2c384a3de0e1a516a6";
+      hash = "sha256-ss4fmvYCE6WK97xUS2ZdbjJD06PNSNKeLcpfahEb/kY=";
+    };
+    propagatedBuildInputs = [
+      ppx_deriving_yojson
+      eio_main
+      cmdliner
+    ];
+  };
+
   picos = buildDunePackage {
     pname = "picos";
     version = "0.6.0";

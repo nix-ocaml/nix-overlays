@@ -1582,14 +1582,6 @@ with oself;
     '';
   });
 
-  mlx = osuper.mlx.overrideAttrs (_: {
-    patches = [ ];
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-mlx/mlx/releases/download/0.10/mlx-0.10.tbz";
-      sha256 = "131pkg7qqsbfgymmp9004l1s0fh8zvp9f6ycf9wxdc34ab3vnqip";
-    };
-  });
-
   mmap = osuper.mmap.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "mirage";
