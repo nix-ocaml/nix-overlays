@@ -1,9 +1,9 @@
-diff --git a/src/reason-parser/reason_syntax_util.ml b/src/reason-parser/reason_syntax_util.ml
-index dede6d09..f14bbf32 100644
---- a/src/reason-parser/reason_syntax_util.ml
-+++ b/src/reason-parser/reason_syntax_util.ml
-@@ -1,7 +1,7 @@
- open Ppxlib
+diff --git a/src/reason-parser/reason_syntax_util.cppo.ml b/src/reason-parser/reason_syntax_util.cppo.ml
+index 3394652..32964bd 100644
+--- a/src/reason-parser/reason_syntax_util.cppo.ml
++++ b/src/reason-parser/reason_syntax_util.cppo.ml
+@@ -25,7 +25,7 @@ open Parsetree
+ open Longident
  
  (* Rename labels in function definition/application and records *)
 -let rename_labels = ref false

@@ -1,0 +1,13 @@
+diff --git a/src/reason-parser/reason_syntax_util.ml b/src/reason-parser/reason_syntax_util.ml
+index dede6d09..f14bbf32 100644
+--- a/src/reason-parser/reason_syntax_util.ml
++++ b/src/reason-parser/reason_syntax_util.ml
+@@ -1,7 +1,7 @@
+ open Ppxlib
+ 
+ (* Rename labels in function definition/application and records *)
+-let rename_labels = ref false
++let rename_labels = ref true
+ 
+ (** Check to see if the string `s` is made up of `keyword` and zero or more
+     trailing `_` characters. *)

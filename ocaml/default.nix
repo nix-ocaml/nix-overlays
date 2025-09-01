@@ -2278,13 +2278,22 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/reasonml/reason/releases/download/3.17.0/reason-3.17.0.tbz";
-      sha256 = "1sx5z269sry2xbca3d9sw7mh9ag773k02r9cgrz5n8gxx6f83j42";
-    };
+
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        builtins.fetchurl
+          {
+            url = "https://github.com/reasonml/reason/releases/download/3.17.0/reason-3.17.0.tbz";
+            sha256 = "1sx5z269sry2xbca3d9sw7mh9ag773k02r9cgrz5n8gxx6f83j42";
+          } else o.src;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info cmdliner ];
 
-    patches = [ ./0001-rename-labels.patch ];
+
+    patches = [
+      (if lib.versionOlder "5.3" ocaml.version
+      then ./0001-rename-labels-ppxlib-0.36.patch
+      else ./0001-rename-labels.patch)
+    ];
 
     meta.mainProgram = "refmt";
   });
@@ -2615,6 +2624,17 @@ with oself;
     };
   });
 
+  tyxml = osuper.tyxml.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocsigen";
+            repo = "tyxml";
+            rev = "2de24f181cc627f78b7526d39b9c2cd55500e755";
+            hash = "sha256-GJSrqC53wrnvZlswjs8W7sZHypVhBuHLLWMPVu6xNGc=";
+          } else o.src;
+  });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
