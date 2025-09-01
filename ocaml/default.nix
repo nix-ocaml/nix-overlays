@@ -726,6 +726,11 @@ with oself;
 
   dream-serve = callPackage ./dream-serve { };
 
+  dscheck =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.dscheck
+    else null;
+
   dune_1 = dune;
 
   dune =
