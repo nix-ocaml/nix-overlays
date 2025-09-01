@@ -116,7 +116,7 @@ in
     hash = "sha256-4t7dJ04lTQ0b6clf8AvtyC8ip43vIcEBXgHJLiRbuGM=";
     meta = {
       description = "A small library that provide Async support for JavaScript platforms";
-      meta.broken = true;
+      broken = true;
     };
     buildInputs = [ js_of_ocaml-ppx ];
     propagatedBuildInputs = [ async_rpc_kernel js_of_ocaml uri-sexp ];
