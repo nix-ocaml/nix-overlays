@@ -133,6 +133,9 @@ let
     "ocaml_openapi_generator"
 
     "flow_parser"
+    "ppx_jsx_embed"
+    "ppx_deriving_bson"
+    "elpi"
   ];
 
   ocaml5Ignores = [
