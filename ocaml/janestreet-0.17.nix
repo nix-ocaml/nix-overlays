@@ -1725,13 +1725,17 @@ in
     propagatedBuildInputs = [ yojson ];
   };
 
-  ppx_yojson_conv = janePackage {
+  ppx_yojson_conv = (janePackage {
     pname = "ppx_yojson_conv";
     minimalOCamlVersion = "4.14";
     hash = "sha256-O7t6Bq23C4avBD1ef1DFL+QopZt3ZzHYAcdapF16cGY=";
     meta.description = "A PPX syntax extension that generates code for converting OCaml types to and from Yojson";
-    propagatedBuildInputs = [ base ppx_js_style ppx_yojson_conv_lib ppxlib ];
-  };
+    propagatedBuildInputs = [ base ppx_yojson_conv_lib ppxlib ];
+  }).overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace "src/dune" --replace-fail '(pps ppx_js_style)' "no_preprocessing"
+    '';
+  });
 
   ppxlib_jane = janePackage
     ({
