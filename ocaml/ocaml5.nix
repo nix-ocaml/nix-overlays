@@ -85,8 +85,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "edc5506d4edef3ad8e6830e39f390c98c7853416";
-      hash = "sha256-BuvvAeLUecD8WTHvgXs5KoKLwHLCPRAs8ncW/c5Jbrc=";
+      rev = "f664baec3344cb983464ff2c384a3de0e1a516a6";
+      hash = "sha256-ss4fmvYCE6WK97xUS2ZdbjJD06PNSNKeLcpfahEb/kY=";
     };
     propagatedBuildInputs = [
       ppx_deriving_yojson
