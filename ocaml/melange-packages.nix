@@ -1,4 +1,7 @@
-{ oself, fetchFromGitHub }:
+{ oself
+, fetchFromGitHub
+, lib
+}:
 
 with oself;
 
@@ -127,10 +130,22 @@ with oself;
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "n/a";
-    src = builtins.fetchurl {
-      url = "https://github.com/reasonml/reason-react/releases/download/0.16.0/reason-react-0.16.0.tbz";
-      sha256 = "0p23iw1j6capg2jwa8j32hkhphcc1swjw226k4vk87f7dgxc3hvs";
-    };
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "reasonml";
+            repo = "reason-react";
+            rev = "8454c63ee56afc7e7dce439eaff395aba0577d68";
+            hash = "sha256-8Wkk6Aav1zk9me1UGz8D3z3bDdIc/MDt9E4YNS6zK1U=";
+          }
+      else
+        fetchFromGitHub {
+          owner = "reasonml";
+          repo = "reason-react";
+          rev = "db1b32369dd7c33c948c3fd14797ab0236fba82e";
+          hash = "sha256-iQ7y+B601kWRzHW+AjrYX882ABJDNggC/sne/TC0AA8=";
+        };
     propagatedBuildInputs = [ ppxlib ];
   };
 }

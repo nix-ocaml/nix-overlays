@@ -115,7 +115,10 @@ in
   async_js = janePackage {
     pname = "async_js";
     hash = "sha256-JyF1busOv9JWxp55oaxBozIQyCKlmAY3csBA4/98qy0=";
-    meta.description = "A small library that provide Async support for JavaScript platforms";
+    meta = {
+      description = "A small library that provide Async support for JavaScript platforms";
+      broken = true;
+    };
     buildInputs = [ js_of_ocaml-ppx ];
     propagatedBuildInputs = [ async_rpc_kernel js_of_ocaml uri-sexp ];
   };

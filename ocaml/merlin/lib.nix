@@ -15,22 +15,13 @@ let
     (lib.take 2 (lib.splitVersion ocaml.version));
 
   version = "${merlinVersion}-${ocamlVersionShorthand}";
-  isFlambda2 = lib.hasSuffix "flambda2" ocaml.version;
 in
 
 buildDunePackage {
   pname = "merlin-lib";
   version = version;
   src =
-    if isFlambda2 then
-      fetchFromGitHub
-        {
-          owner = "janestreet";
-          repo = "merlin-jst";
-          rev = "65b4861209ab76f065a88b59ed3fdc44b7a03f5a";
-          hash = "sha256-+wuVILkh8xJAIdGVDwi/IjubhzBcTRcWkE8v2euaUgQ=";
-        }
-    else if lib.versionOlder "5.4" ocaml.version then
+    if lib.versionOlder "5.4" ocaml.version then
       fetchFromGitHub
         {
           owner = "ocaml";
@@ -72,14 +63,5 @@ buildDunePackage {
         sha256 = "113kcp9bca7348li0f3gmh6rcicr4c7lvw558xqcxa83jbsk19k0";
       };
 
-  postPatch =
-    if isFlambda2 then ''
-      # not sure what this file is doing, but it causes a duplicate symbol
-      # linking error
-      truncate --size=0 src/runtime/float32.c
-
-      substituteInPlace src/frontend/dune --replace-fail \
-        "merlin_specific" "merlin_specific merlin_extend"
-    '' else "";
   buildInputs = [ yojson csexp result ];
 }

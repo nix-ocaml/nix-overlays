@@ -141,8 +141,6 @@ let
     zstd = zstd-oc;
   };
 
-  isFlambda2 = lib.hasSuffix "flambda2" osuper.ocaml.version;
-
 in
 
 with oself;
@@ -161,10 +159,10 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "angstrom";
-      rev = "3173a5eb564f0f087db94b206460df02ac394281";
-      hash = "sha256-l0HdDOZL8p72u6KzMkIVrZxUSVlo2GIcpgb6nQU6eTk=";
+      rev = "8239888a57111fdff10e15e16bdf194d5524a3a9";
+      hash = "sha256-SQJs2GE7t0jL2jF1vNF8rbK1hN0Bhgn2WfS6//me6Ww=";
     };
-    doCheck = !lib.versionAtLeast ocaml.version "5.4";
+    checkInputs = [ alcotest ];
     propagatedBuildInputs = [ bigstringaf ];
   });
 
@@ -609,10 +607,6 @@ with oself;
   });
 
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
-
-  cstruct = osuper.cstruct.overrideAttrs (_: {
-    doCheck = !isFlambda2;
-  });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
@@ -1183,12 +1177,12 @@ with oself;
   });
 
   # not ready for jane street 0.17 packages
-  # js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
-  # sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
-  # };
-  # });
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
+      sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
+    };
+  });
 
   # https://github.com/Khady/ocaml-junit/issues/13
   # junit = osuper.junit.overrideAttrs (_: {
@@ -1435,6 +1429,12 @@ with oself;
   matrix-stos = callPackage ./matrix/stos.nix { };
 
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "realworldocaml";
+      repo = "mdx";
+      rev = "34d5a1b7b12e08dbaf57ec23f5b6009bfeecc8e0";
+      hash = "sha256-9mgsxOAjnB0ulT8L9rQxj7GPta4JvBgq0rupG+y89lA=";
+    };
     # Break the attempt to reduce `mdx`'s closure size by adding a different
     # `logs` override, which breaks anything that uses logs (with OCaml package
     # conflicts)
@@ -1685,14 +1685,11 @@ with oself;
     '';
   });
 
-  ocaml =
-    (if isFlambda2
-    then osuper.ocaml
-    else osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
-      buildPhase = if isFlambda2 then (o.buildPhase or null) else ''
-        make defaultentry -j$NIX_BUILD_CORES
-      '';
-    });
+  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
+    buildPhase = ''
+      make defaultentry -j$NIX_BUILD_CORES
+    '';
+  });
 
   ocaml-index =
     if lib.versionAtLeast ocaml.version "5.2" then
@@ -1779,11 +1776,6 @@ with oself;
 
   ocamlbuild = osuper.ocamlbuild.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
-
-    patches =
-      if isFlambda2
-      then [ ./flambda2-ocamlbuild.patch ]
-      else [ ];
 
     # OCamlbuild needs to find the native toolchain when cross compiling (to
     # link myocamlbuild programs)
@@ -2131,6 +2123,15 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppx_deriving";
+            rev = "v6.1.1";
+            hash = "sha256-NIYJxNjwsEKbhQIKswU9KNGvw7menu5jAxry2//w/8M=";
+          } else o.src;
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -2167,6 +2168,21 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
+  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocaml-ppx";
+            repo = "ppx_deriving_yojson";
+            rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
+            hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
+          } else o.src;
+    patches = [ ];
+  });
+
+  ppx_repr = disableTests osuper.ppx_repr;
+
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
     then null
@@ -2174,28 +2190,29 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src =
-      if isFlambda2
-      then
-        fetchFromGitHub
-          {
-            owner = "janestreet";
-            repo = "ppxlib";
-            rev = "e5ae762556a59c25a7356fe2282adbf51f93e25e";
-            hash = "sha256-EB+i0iMt/u/IRp0U/dS2tvQrSjuSxHaPQ3XaPZI6hAs=";
-          }
-      else if lib.versionOlder "5.4" ocaml.version then
+      if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub
           {
             owner = "ocaml-ppx";
             repo = "ppxlib";
-            rev = "ff6e906f45b878e8e38e7ab8e2a4583323a81d94";
-            hash = "sha256-KLGl5dMf03OKjCvzchBgIzAou+n/IQ2CYcXIRNmORLE=";
+            # rev = "ff6e906f45b878e8e38e7ab8e2a4583323a81d94";
+            # hash = "sha256-KLGl5dMf03OKjCvzchBgIzAou+n/IQ2CYcXIRNmORLE=";
+            rev = "de5caee011edba1900a1f0507d55c2da59be721e";
+            hash = "sha256-Y6tZokbTXzVRZT60F+Jb9arRB3g4QW5dGanfU2qa7BE=";
           }
+      else if lib.versionOlder "5.3" ocaml.version then
+        builtins.fetchurl
+          {
+            url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.36.1/ppxlib-0.36.1.tbz";
+            sha256 = "1czgf474himz3wj3qqmy8zrsn0m40yj2z9imlhb491d1xv1vllk1";
+          }
+
       else
         builtins.fetchurl {
           url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
           sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
         };
+
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -2261,9 +2278,22 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info ];
 
-    patches = [ ./0001-rename-labels.patch ];
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        builtins.fetchurl
+          {
+            url = "https://github.com/reasonml/reason/releases/download/3.17.0/reason-3.17.0.tbz";
+            sha256 = "1sx5z269sry2xbca3d9sw7mh9ag773k02r9cgrz5n8gxx6f83j42";
+          } else o.src;
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info cmdliner ];
+
+
+    patches = [
+      (if lib.versionOlder "5.3" ocaml.version
+      then ./0001-rename-labels-ppxlib-0.36.patch
+      else ./0001-rename-labels.patch)
+    ];
 
     meta.mainProgram = "refmt";
   });
@@ -2594,6 +2624,17 @@ with oself;
     };
   });
 
+  tyxml = osuper.tyxml.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub
+          {
+            owner = "ocsigen";
+            repo = "tyxml";
+            rev = "2de24f181cc627f78b7526d39b9c2cd55500e755";
+            hash = "sha256-GJSrqC53wrnvZlswjs8W7sZHypVhBuHLLWMPVu6xNGc=";
+          } else o.src;
+  });
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
@@ -2663,7 +2704,6 @@ with oself;
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
-    patches = if isFlambda2 then [ ./uutf-locals.patch ] else [ ];
   });
 
   vg = (osuper.vg.override { htmlcBackend = false; }).overrideAttrs (_: {
@@ -2834,6 +2874,6 @@ with oself;
   if # No version supported on 5.0
     (lib.versionAtLeast osuper.ocaml.version "4.14" && !(lib.versionAtLeast osuper.ocaml.version "5.0"))
     || lib.versionAtLeast osuper.ocaml.version "5.1"
-  then (import ./melange-packages.nix { inherit oself fetchFromGitHub; })
+  then (import ./melange-packages.nix { inherit oself fetchFromGitHub lib; })
   else { }
 )

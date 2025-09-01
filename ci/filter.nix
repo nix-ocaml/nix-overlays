@@ -111,6 +111,33 @@ let
 
     "ppx_python"
     "pyml"
+
+    # Broken with JSOO 6.1
+    "incr_dom"
+    "incr_dom_interactive"
+    "incr_dom_sexp_form"
+    "incr_map"
+    "parsexp_io"
+    "codicons"
+    "js_of_ocaml_patches"
+    "virtual_dom"
+    "incr_dom_partial_render"
+    "ppx_yojson_conv"
+    "get-activity"
+    "get-activity-lib"
+    "babel"
+    "polling_state_rpc"
+    "versioned_polling_state_rpc"
+    "diffable"
+    "legacy_diffable"
+    "ocaml_openapi_generator"
+
+    "flow_parser"
+    "ppx_jsx_embed"
+    "ppx_deriving_bson"
+    "elpi"
+    "brisk-reconciler"
+    "bistro"
   ];
 
   ocaml5Ignores = [

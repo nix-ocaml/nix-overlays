@@ -5,6 +5,7 @@
 , fetchFromGitHub
 , jq
 , lib
+, fetchpatch
 , makeWrapper
 , menhir
 , menhirLib
@@ -47,6 +48,15 @@ buildDunePackage {
         url = "https://github.com/melange-re/melange/releases/download/5.0.1-414/melange-5.0.1-414.tbz";
         sha256 = "10n2ds6b9ajq7ccazp0sffx9jnxlazlbkd38vyz0s2zg0la72vgh";
       };
+
+  patches = lib.optional (lib.versionAtLeast ppxlib.version "0.36") (fetchpatch {
+    url = "https://patch-diff.githubusercontent.com/raw/melange-re/melange/pull/1352.patch";
+    hash = "sha256-PMf66nB743nzW4/xblHjNZFv1BS8xC9maD+eCDDUWAY=";
+    excludes = [
+      "*.opam"
+      "*.template"
+    ];
+  });
 
   doCheck = false;
 
