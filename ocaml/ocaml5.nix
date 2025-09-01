@@ -1,10 +1,13 @@
 { darwin
+, lib
 , fetchFromGitHub
 , nodejs_latest
 , oself
 , osuper
 , nixpkgs
 , stdenv
+, makeWrapper
+, nix-eval-jobs
 }:
 
 with oself;
@@ -88,11 +91,23 @@ with oself;
       rev = "f664baec3344cb983464ff2c384a3de0e1a516a6";
       hash = "sha256-ss4fmvYCE6WK97xUS2ZdbjJD06PNSNKeLcpfahEb/kY=";
     };
+
+    nativeBuildInputs = [ makeWrapper ];
+    buildInputs = [ nix-eval-jobs ];
     propagatedBuildInputs = [
-      ppx_deriving_yojson
-      eio_main
       cmdliner
+      eio_main
+      logs
+      fmt
+      ppx_deriving_yojson
     ];
+    postInstall =
+      let
+        path = lib.makeBinPath [ nix-eval-jobs ];
+      in
+      ''
+        wrapProgram "$out/bin/nix-ci-build" --prefix PATH : ${path}
+      '';
   };
 
   picos = buildDunePackage {

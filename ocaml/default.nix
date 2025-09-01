@@ -27,6 +27,7 @@
 , llvmPackages
 , lz4-oc
 , net-snmp
+, nix-eval-jobs
 , nodejs_latest
 , pcre-oc
 , sqlite-oc
@@ -2857,8 +2858,8 @@ with oself;
   then
     (import ./ocaml5.nix {
       inherit
-        oself osuper
-        darwin stdenv
+        oself osuper lib
+        darwin makeWrapper nix-eval-jobs stdenv
         fetchFromGitHub nodejs_latest nixpkgs;
     })
   else { }
