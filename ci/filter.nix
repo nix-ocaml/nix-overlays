@@ -136,6 +136,8 @@ let
     "ppx_jsx_embed"
     "ppx_deriving_bson"
     "elpi"
+    "brisk-reconciler"
+    "bistro"
   ];
 
   ocaml5Ignores = [
