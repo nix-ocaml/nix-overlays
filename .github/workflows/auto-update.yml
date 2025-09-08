@@ -21,7 +21,7 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: "Update sources"
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         id: update-sources
         with:
           result-encoding: string
