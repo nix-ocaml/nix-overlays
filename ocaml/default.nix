@@ -748,10 +748,10 @@ with oself;
   dune_2 = dune_3;
 
   dune_3 = osuper.dune_3.overrideAttrs (o: {
-    version = "3.19.1";
+    version = "3.20.2";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.19.1/dune-3.19.1.tbz";
-      sha256 = "0n0iajhv1vgfgw7nml5rjfffyanxa3nnnik52iyl3afdh3wqc0x1";
+      url = "https://github.com/ocaml/dune/releases/download/3.20.2/dune-3.20.2.tbz";
+      sha256 = "0jd5kkpvkkpcmy0wwcyqnmy6x2pjz7rbsqb8pfwsid5xc0nnpa5i";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
     postFixup =
@@ -774,7 +774,7 @@ with oself;
   });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
-    propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+    propagatedBuildInputs = [ stdune ordering pp xdg dyn ocamlc-loc ];
     inherit (dyn) preBuild;
   });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
@@ -807,6 +807,10 @@ with oself;
     inherit (fiber) version src;
     propagatedBuildInputs = [ pp fiber lwt stdune ];
   };
+  # fs-io = buildDunePackage {
+  # pname = "fs-io";
+  # inherit (dune_3) src version;
+  # };
 
   pp = osuper.pp.overrideAttrs (_: {
     doCheck = ! (lib.versionOlder "5.3" ocaml.version);
