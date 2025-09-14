@@ -1562,12 +1562,6 @@ with oself;
   menhir = osuper.menhir.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ menhirCST ];
   });
-  menhirLib = osuper.menhirLib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20240715.tar.gz";
-      sha256 = "0c60kby2b1zmr0ypqaclakhk3kk4km4qvw7blynzmjxam928cj7g";
-    };
-  });
 
   merlin-lib =
     if lib.versionAtLeast ocaml.version "4.14" then
@@ -1675,12 +1669,6 @@ with oself;
   };
 
   num = (osuper.num.override { withStatic = true; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "num";
-      rev = "v1.6";
-      hash = "sha256-JWn0WBsbKpiUlxRDaXmwXVbL2WhqQIDrXiZk1aXeEtQ=";
-    };
     buildFlags = [ "opam-modern" ];
     patches = [ ];
     installPhase = ''
