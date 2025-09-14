@@ -774,7 +774,7 @@ with oself;
   });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
-    propagatedBuildInputs = [ stdune ordering pp xdg dyn ];
+    propagatedBuildInputs = [ stdune ordering pp xdg dyn ocamlc-loc ];
     inherit (dyn) preBuild;
   });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
@@ -807,6 +807,10 @@ with oself;
     inherit (fiber) version src;
     propagatedBuildInputs = [ pp fiber lwt stdune ];
   };
+  # fs-io = buildDunePackage {
+  # pname = "fs-io";
+  # inherit (dune_3) src version;
+  # };
 
   pp = osuper.pp.overrideAttrs (_: {
     doCheck = ! (lib.versionOlder "5.3" ocaml.version);
