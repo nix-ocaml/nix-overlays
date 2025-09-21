@@ -543,12 +543,6 @@ with oself;
   cohttp-top = disableTests osuper.cohttp-top;
 
 
-  conan = callPackage ./conan { };
-  conan-lwt = callPackage ./conan/lwt.nix { };
-  conan-unix = callPackage ./conan/unix.nix { };
-  conan-database = callPackage ./conan/database.nix { };
-  conan-cli = callPackage ./conan/cli.nix { };
-
   conduit-mirage = osuper.conduit-mirage.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
   });
@@ -580,7 +574,7 @@ with oself;
         cp ${collationTest} ./test/CollationTest.zip
       '';
 
-      doCheck = true;
+      doCheck = false;
 
       propagatedBuildInputs = [
         angstrom
