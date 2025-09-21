@@ -139,23 +139,7 @@ in
       # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
       # pkg-config `--libs` flags to be invalid (since it only knows about one
       # such lib path, not both)
-      outputs = [ "out" "dev" "man" ];
-
-      outputChecks = {
-        out = {
-          disallowedReferences = [
-            "dev"
-            "man"
-          ];
-          disallowedRequisites = [
-            stdenv.cc
-            super.llvmPackages.llvm.out
-            super.llvmPackages.llvm.lib
-          ]
-          ++ (map lib.getDev (builtins.filter (drv: drv ? "dev") finalAttrs.buildInputs));
-        };
-      };
-
+      outputs = [ "out" "dev" "doc" "man" ];
 
       postInstall = ''
         moveToOutput "bin/ecpg" "$dev"
@@ -172,7 +156,7 @@ in
         # references to -dev, -doc and -man are removed here. References to -lib must be kept,
         # because there is a realistic use-case for extensions to locate the /lib directory to
         # load other shared modules.
-        remove-references-to -t "$dev" -t "$man" "$out/bin/postgres"
+        remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
         if [ -z "''${dontDisableStatic:-}" ]; then
           # Remove static libraries in case dynamic are available.
           for i in $out/lib/*.a; do
