@@ -1864,13 +1864,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-site ];
   });
 
-  ocp-indent = osuper.ocp-indent.overrideAttrs (o: {
-    postPatch = ''
-      substituteInPlace src/dune --replace-fail "libraries bytes" "libraries "
-    '';
-    buildInputs = o.buildInputs ++ [ findlib ];
-  });
-
   ocplib-simplex = disableTests osuper.ocplib-simplex;
 
   ocplib_stuff = buildDunePackage {
