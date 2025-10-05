@@ -2126,15 +2126,6 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub
-          {
-            owner = "ocaml-ppx";
-            repo = "ppx_deriving";
-            rev = "v6.1.1";
-            hash = "sha256-NIYJxNjwsEKbhQIKswU9KNGvw7menu5jAxry2//w/8M=";
-          } else o.src;
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
@@ -2281,14 +2272,6 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        builtins.fetchurl
-          {
-            url = "https://github.com/reasonml/reason/releases/download/3.17.0/reason-3.17.0.tbz";
-            sha256 = "1sx5z269sry2xbca3d9sw7mh9ag773k02r9cgrz5n8gxx6f83j42";
-          } else o.src;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-build-info cmdliner ];
 
 
@@ -2535,13 +2518,6 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.0"
     then disableTests osuper.tls-eio else null;
 
-  topkg = osuper.topkg.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/topkg/releases/topkg-1.0.8.tbz";
-      sha256 = "0qfwjcc5572r4fd5i1j7whagbs2fbjzych9xcbnlbh2ja3pr2ap7";
-    };
-  });
-
   torch = osuper.torch.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "janestreet";
@@ -2657,13 +2633,6 @@ with oself;
     inherit (uspf) version src;
     propagatedBuildInputs = [ uspf ];
   };
-
-  utop = osuper.utop.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-community/utop/releases/download/2.16.0/utop-2.16.0.tbz";
-      sha256 = "0qy7p10caf1y8jhbhql0pg3lrmfhrx0rk25y3hhznci1bl9pk7qb";
-    };
-  });
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
