@@ -222,26 +222,36 @@ in
       ocamlbuild = natocamlPackages.ocamlbuild;
       opaline = natocamlPackages.opaline;
 
-      buildDunePackage = args: (osuper.buildDunePackage ({
-        buildPhase = ''
-          runHook preBuild
-          dune build -p ${args.pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
-          runHook postBuild
-        '';
+      buildDunePackage = arg:
+        let
+          add = attrs:
+            let
+              # We need pname at eval-time to splice it into the scripts.
+              pname = attrs.pname or (throw "buildDunePackage: missing pname");
+            in
+            attrs // {
+              buildPhase = ''
+                runHook preBuild
+                dune build -p ${pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
+                runHook postBuild
+              '';
 
-        installPhase =
-          ''
-            runHook preInstall
-            dune install ${args.pname} -x ${crossName} \
-              --prefix $out --libdir $(dirname $OCAMLFIND_DESTDIR) \
-              --docdir $out/share/doc --man $out/share/man
-            runHook postInstall
-          '';
-      } // args
-      )).overrideAttrs (o: {
-        nativeBuildInputs =
-          (o.nativeBuildInputs or [ ]) ++ [ buildPackages.stdenv.cc ];
-      });
+              installPhase = ''
+                runHook preInstall
+                dune install ${pname} -x ${crossName} \
+                  --prefix $out --libdir $(dirname $OCAMLFIND_DESTDIR) \
+                  --docdir $out/share/doc --man $out/share/man
+                runHook postInstall
+              '';
+            };
+        in
+        (osuper.buildDunePackage (
+          if builtins.isFunction arg
+          then (final: add (arg final))
+          else add arg
+        )).overrideAttrs (o: {
+          nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ buildPackages.stdenv.cc ];
+        });
 
       topkg = natocamlPackages.topkg.overrideAttrs (o:
         let
