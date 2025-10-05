@@ -294,9 +294,15 @@ with oself;
     propagatedBuildInputs = [ ppxlib cmdliner ];
   });
 
-  buildDunePackage = args: osuper.buildDunePackage ({
-    DUNE_CACHE = "disabled";
-  } // args);
+  buildDunePackage = arg:
+    let
+      add = attrs: attrs // { DUNE_CACHE = "disabled"; };
+    in
+    osuper.buildDunePackage (
+      if builtins.isFunction arg
+      then (final: add (arg final))
+      else add arg
+    );
 
   brisk-reconciler = buildDunePackage {
     pname = "brisk-reconciler";
