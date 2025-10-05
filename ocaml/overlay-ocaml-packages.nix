@@ -115,13 +115,13 @@ let
       ocamlPackages_5_4 = newOCamlScope {
         major_version = "5";
         minor_version = "4";
-        patch_version = "0+beta2";
+        patch_version = "0+rc1";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml";
-          rev = "5.4.0-beta2";
-          hash = "sha256-DAggO0liHhnTor30I3tfmLay96OztibNa0e0NDrwHCM=";
+          rev = "5.4.0-rc1";
+          hash = "sha256-6DckD9wIuHyGTJSajerxgSXmSi+g/J/EG0CvPkqahzQ=";
         };
         postPatch = ''
           substituteInPlace "runtime/caml/camlatomic.h" \
