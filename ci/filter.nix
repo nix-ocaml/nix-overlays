@@ -102,6 +102,7 @@ let
     "raygui"
 
     "miou"
+    "multipart_form-miou"
     "mirage-crypto-rng-miou-unix"
 
     "virtual_dom_toplayer"

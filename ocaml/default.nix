@@ -1628,6 +1628,10 @@ with oself;
 
   multipart_form = callPackage ./multipart_form { };
   multipart_form-lwt = callPackage ./multipart_form/lwt.nix { };
+  multipart_form-eio =
+    if lib.versionAtLeast ocaml.version "5.0"
+    then osuper.multipart_form-eio
+    else null;
 
   multicore-bench =
     if lib.versionAtLeast ocaml.version "5.0"
