@@ -115,7 +115,7 @@ let
       ocamlPackages_5_4 = newOCamlScope {
         major_version = "5";
         minor_version = "4";
-        patch_version = "0+beta2";
+        patch_version = "0+rc1";
         hardeningDisable = [ "strictoverflow" ];
         src = super.fetchFromGitHub {
           owner = "ocaml";
