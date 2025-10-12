@@ -137,13 +137,8 @@ let
     "flow_parser"
     "ppx_jsx_embed"
     "ppx_deriving_bson"
-    "elpi"
     "brisk-reconciler"
     "bistro"
-
-    # some transitive deps are on cmake < 3.5
-    "mopsa"
-    "phylogenetics"
   ];
 
   ocaml5Ignores = [
