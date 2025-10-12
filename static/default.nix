@@ -8,14 +8,6 @@ let
 in
 
 {
-  hermes = super.hermes.overrideAttrs (o: {
-    cmakeFlags = o.cmakeFlags ++ [
-      "-DHERMES_STATIC_LINK=true"
-      "-DCMAKE_CROSSCOMPILING=false"
-      "-DHERMES_USE_STATIC_ICU=true"
-      "-DBUILD_SHARED_LIBS:BOOL=OFF"
-    ];
-  });
   icu = super.icu.overrideAttrs (o: {
     configureFlags = o.configureFlags ++ [ "--enable-static" ];
   });

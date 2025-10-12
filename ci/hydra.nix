@@ -34,13 +34,12 @@ with filter;
   };
 
   build_top-level-packages =
-    { inherit (pkgs) melange-relay-compiler hermes; } //
+    { inherit (pkgs) melange-relay-compiler; } //
     (if stdenv.isLinux then {
       inherit (pkgs) kubernetes;
       # disabled after musl 1.2.5 upgrade. should be easy to find / replace
       # lseek{64,} but likely not worth it as we'd like to move to the static
       # branch in the future.
-      # hermes-musl64 = pkgs.pkgsCross.musl64.hermes;
     } else { });
 
   arm64_4_14 = (if system == "x86_64-linux" then
