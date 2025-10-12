@@ -140,10 +140,6 @@ let
     "elpi"
     "brisk-reconciler"
     "bistro"
-
-    # some transitive deps are on cmake < 3.5
-    "mopsa"
-    "phylogenetics"
   ];
 
   ocaml5Ignores = [
