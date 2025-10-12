@@ -642,14 +642,7 @@ with oself;
   domain-local-await = disableTests osuper.domain-local-await;
   thread-table = disableTests osuper.thread-table;
 
-  domainslib = osuper.domainslib.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/domainslib/releases/download/0.5.2/domainslib-0.5.2.tbz";
-      sha256 = "1bqwmzwpbwnh8s6jw4dmnzl76mfdkvds4i0smn8sbcj1rgifq857";
-    };
-    doCheck = false;
-    meta.broken = false;
-  });
+  domainslib = disableTests osuper.domainslib;
 
   rfc1951 = buildDunePackage {
     pname = "rfc1951";
