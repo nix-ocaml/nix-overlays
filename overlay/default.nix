@@ -353,7 +353,7 @@ in
     {
       inherit (super) gmp libev lz4 pcre rdkafka sqlite zlib zstd readline;
       libffi = super.libffi.overrideAttrs (_: { doCheck = false; });
-      openssl = super.openssl_3;
+      openssl = super.openssl;
       curl = super.curl.override { openssl = self.openssl-oc; };
     }
 )
