@@ -71,7 +71,7 @@ in
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
-  libpq = (super.postgresql_17.override {
+  libpq = (super.postgresql_18.override {
     # a new change does some shenanigans to get llvmStdenv + lld which breaks
     # our cross-compilation
     overrideCC = _: _: super.stdenv;

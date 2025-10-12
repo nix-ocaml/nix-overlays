@@ -1155,18 +1155,16 @@ with oself;
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.4" ocaml.version then
-        fetchFromGitHub
+        builtins.fetchurl
           {
-            owner = "ocaml";
-            repo = "ocaml-lsp";
-            rev = "ce8357b4e3f3af77305612640b74ede59638a16f";
-            hash = "sha256-/uCxi0pUOEw38BbcHuu3Na2BuTkSqnWze72SQjRn+fA=";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.24.0/lsp-1.24.0.tbz";
+            sha256 = "0mrpggmyqv6blp7cblxd4cdzi9dcvsbqv0wg5p0gc4pnawhilnjd";
           }
       else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.23.0/lsp-1.23.0.tbz";
-            sha256 = "0z8f6jawvad832cr6b058s4pcq0k3j4jhv982v7fm02anlix0avz";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.23.1/lsp-1.23.1.tbz";
+            sha256 = "0wbmdp2rf61arc6phkzlvdc9k3pajgg5ks378hhflfb60aaf6iy7";
           }
       else if lib.versionOlder "5.2" ocaml.version then
         builtins.fetchurl
@@ -1711,6 +1709,13 @@ with oself;
     doCheck = false;
   });
 
+  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocurrent/ocaml-version/releases/download/v4.0.3/ocaml-version-4.0.3.tbz";
+      sha256 = "1cwvj1iaibz1vvgnd1hn0vrz4rsvbprwaz92nmx1qnnayknmxkhq";
+    };
+  });
+
   ocamlformat = osuper.ocamlformat.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.4" then
@@ -2050,6 +2055,10 @@ with oself;
   };
 
   postgresql = (osuper.postgresql.override { inherit libpq; }).overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.3.2/postgresql-5.3.2.tbz";
+      sha256 = "1bspn767p05vyxi8367ks7q3qapzi1fmfl3k7pr8z4zqf8kx4iqw";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
@@ -2180,23 +2189,12 @@ with oself;
 
   ppxlib = osuper.ppxlib.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.4" ocaml.version then
-        fetchFromGitHub
-          {
-            owner = "ocaml-ppx";
-            repo = "ppxlib";
-            # rev = "ff6e906f45b878e8e38e7ab8e2a4583323a81d94";
-            # hash = "sha256-KLGl5dMf03OKjCvzchBgIzAou+n/IQ2CYcXIRNmORLE=";
-            rev = "de5caee011edba1900a1f0507d55c2da59be721e";
-            hash = "sha256-Y6tZokbTXzVRZT60F+Jb9arRB3g4QW5dGanfU2qa7BE=";
-          }
-      else if lib.versionOlder "5.3" ocaml.version then
+      if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.36.1/ppxlib-0.36.1.tbz";
-            sha256 = "1czgf474himz3wj3qqmy8zrsn0m40yj2z9imlhb491d1xv1vllk1";
+            url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.37.0/ppxlib-0.37.0.tbz";
+            sha256 = "1cxhbnw6s59gfwrrqp0nx5diskiglz0349239b43pk6fwwvkh8if";
           }
-
       else
         builtins.fetchurl {
           url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
@@ -2338,7 +2336,14 @@ with oself;
     doCheck = false; # Requires js_of_ocaml
   });
 
-  sedlex = disableTests osuper.sedlex;
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "sedlex";
+      rev = "v3.7";
+      hash = "sha256-ucqrJkzS6cVogGUf1vU8oBpSryneMBqTjzxwsOi6Egs=";
+    };
+  });
 
   semver = buildDunePackage {
     pname = "semver";
