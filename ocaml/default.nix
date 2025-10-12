@@ -2055,10 +2055,15 @@ with oself;
   };
 
   postgresql = (osuper.postgresql.override { inherit libpq; }).overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.3.2/postgresql-5.3.2.tbz";
-      sha256 = "1bspn767p05vyxi8367ks7q3qapzi1fmfl3k7pr8z4zqf8kx4iqw";
-    };
+    src =
+      if lib.versionAtLeast ocaml.version "5.0" then
+        builtins.fetchurl
+          {
+            url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.3.2/postgresql-5.3.2.tbz";
+            sha256 = "1bspn767p05vyxi8367ks7q3qapzi1fmfl3k7pr8z4zqf8kx4iqw";
+          }
+      else o.src;
+
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
 
     postPatch = ''
