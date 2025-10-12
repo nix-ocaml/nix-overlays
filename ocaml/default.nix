@@ -2559,13 +2559,6 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
-  tuntap = osuper.tuntap.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-tuntap/releases/download/v2.0.1/tuntap-2.0.1.tbz";
-      sha256 = "1p8c9j32vzy59yavsis1rsb8i86wyhn5wzxb1rl5ki1vrjbh3ii7";
-    };
-  });
-
   tyxml = osuper.tyxml.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.3" ocaml.version then
