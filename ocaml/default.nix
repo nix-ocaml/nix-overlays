@@ -2217,7 +2217,7 @@ with oself;
   ppxlib-tools = buildDunePackage {
     pname = "ppxlib-tools";
     inherit (ppxlib) version src;
-    propagatedBuildInputs = [ ppxlib cmdliner ];
+    propagatedBuildInputs = [ ppxlib cmdliner yojson ];
   };
 
   processor = buildDunePackage {
