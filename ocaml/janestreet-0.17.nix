@@ -1224,10 +1224,10 @@ in
     propagatedBuildInputs = [ base expect_test_helpers_core ppx_jane ppxlib ];
   } // (if lib.versionAtLeast ppxlib.version "0.36" then {
     version = "0.17.1";
-    hash = "";
+    hash = "sha256-bbUV2t8MhqDCHDJp7fqJTnRrfZdYO8DLnygqQF0+ouY=";
   } else {
     version = "0.17.0";
-    hash = "";
+    hash = "sha256-Y/z4BKFRt3z1lUGdc7SznIv/ys//dZHoPSnsouj1GtI=";
   }));
 
   ppx_disable_unused_warnings = janePackage {
