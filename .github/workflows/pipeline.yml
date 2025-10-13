@@ -64,7 +64,7 @@ jobs:
       matrix:
         setup:
           - { os: ubuntu-latest, target: x86_64-linux }
-          - { os: macos-13, target: x86_64-darwin }
+          - { os: macos-15-intel, target: x86_64-darwin }
           - { os: macos-14, target: aarch64-darwin }
     name: Native (Top-level) packages (${{ matrix.setup.os }})
     runs-on: ${{ matrix.setup.os }}
@@ -93,9 +93,9 @@ jobs:
       fail-fast: false
       matrix:
         setup:
-          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_2, continue-on-error: false }
-          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_3, continue-on-error: false }
-          - { os: macos-13, target: x86_64-darwin, ocaml-version: 5_4, continue-on-error: true }
+          - { os: macos-15-intel, target: x86_64-darwin, ocaml-version: 5_2, continue-on-error: false }
+          - { os: macos-15-intel, target: x86_64-darwin, ocaml-version: 5_3, continue-on-error: false }
+          - { os: macos-15-intel, target: x86_64-darwin, ocaml-version: 5_4, continue-on-error: true }
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 4_14, continue-on-error: false }
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_2, continue-on-error: false }
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_3, continue-on-error: false }
