@@ -1949,31 +1949,6 @@ with oself;
     };
 
   });
-  x0install-solver = buildDunePackage {
-    pname = "0install-solver";
-    version = "2.18";
-    src = builtins.fetchurl {
-      url = "https://github.com/0install/0install/releases/download/v2.18/0install-2.18.tbz";
-      sha256 = "1hr0k47cxqcsycxhmn2ajaakfwnap1m24p068k5xy9hsihqlp334";
-    };
-  };
-  opam-0install-cudf = buildDunePackage {
-    pname = "opam-0install-cudf";
-    version = "0.5.0";
-    src = fetchFromGitHub {
-      owner = "ocaml-opam";
-      repo = "opam-0install-cudf";
-      rev = "v0.5.0";
-      hash = "sha256-TETfvR1Di4c8CylsKnMal/GfQcqMSr36o7511u1bYYs=";
-    };
-    propagatedBuildInputs = [ cudf x0install-solver ];
-  };
-
-  opam-client = buildDunePackage (opamAttrs // {
-    pname = "opam-client";
-    configureFlags = [ "--disable-checks" ];
-    propagatedBuildInputs = [ cmdliner base64 re opam-repository opam-solver opam-state ];
-  });
   opam = buildDunePackage (opamAttrs // {
     pname = "opam";
     nativeBuildInputs = [ curl-oc ];
@@ -1983,9 +1958,7 @@ with oself;
   opam-core = osuper.opam-core.overrideAttrs (o: opamAttrs // {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ patch ];
   });
-  opam-solver = buildDunePackage (opamAttrs // {
-    pname = "opam-solver";
-    configureFlags = [ "--disable-checks" ];
+  opam-solver = osuper.opam-solver.overrideAttrs (_: {
     propagatedBuildInputs = [ opam-0install-cudf re dose3 opam-format ];
   });
   opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
@@ -2649,16 +2622,6 @@ with oself;
   });
 
   visitors = osuper.visitors.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.0" ocaml.version then
-        fetchFromGitLab
-          {
-            owner = "fpottier";
-            repo = "visitors";
-            rev = "20250212";
-            hash = "sha256-AFD4+vriwVGt6lzDyIDuIMadakcgB4j235yty5qqFgQ=";
-            domain = "gitlab.inria.fr";
-          } else o.src;
     propagatedBuildInputs = [ ppxlib ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
