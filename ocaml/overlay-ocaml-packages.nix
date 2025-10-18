@@ -94,41 +94,39 @@ let
         });
       });
 
-      ocamlPackages_5_3 = newOCamlScope {
-        major_version = "5";
-        minor_version = "3";
-        patch_version = "0";
-        hardeningDisable = [ "strictoverflow" ];
-        src = super.fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml";
-          rev = "5.3.0";
-          hash = "sha256-OxvfM0OF1XjtAMgAd+4Lm67iMKV7PD1sFmGPYn/yUBY=";
-        };
-        postPatch = ''
-          substituteInPlace "runtime/caml/camlatomic.h" \
-            --replace-fail "#ifdef CAML_INTERNALS" "" \
-            --replace-fail "#endif /* CAML_INTERNALS */" ""
-        '';
-      };
+      ocamlPackages_5_3 = ocaml-ng.ocamlPackages_5_3.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          hardeningDisable = [ "strictoverflow" ];
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.3.0";
+            hash = "sha256-OxvfM0OF1XjtAMgAd+4Lm67iMKV7PD1sFmGPYn/yUBY=";
+          };
+          postPatch = ''
+            substituteInPlace "runtime/caml/camlatomic.h" \
+              --replace-fail "#ifdef CAML_INTERNALS" "" \
+              --replace-fail "#endif /* CAML_INTERNALS */" ""
+          '';
+        });
+      });
 
-      ocamlPackages_5_4 = newOCamlScope {
-        major_version = "5";
-        minor_version = "4";
-        patch_version = "0";
-        hardeningDisable = [ "strictoverflow" ];
-        src = super.fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml";
-          rev = "5.4.0";
-          hash = "sha256-Pj/2HqcBn466BthjqQ2HqB+NKer4+MOM75PNQzDwyvU=";
-        };
-        postPatch = ''
-          substituteInPlace "runtime/caml/camlatomic.h" \
-            --replace-fail "#ifdef CAML_INTERNALS" "" \
-            --replace-fail "#endif /* CAML_INTERNALS */" ""
-        '';
-      };
+      ocamlPackages_5_4 = ocaml-ng.ocamlPackages_5_4.overrideScope (oself: osuper: {
+        ocaml = osuper.ocaml.overrideAttrs (_: {
+          hardeningDisable = [ "strictoverflow" ];
+          src = super.fetchFromGitHub {
+            owner = "ocaml";
+            repo = "ocaml";
+            rev = "5.4.0";
+            hash = "sha256-Pj/2HqcBn466BthjqQ2HqB+NKer4+MOM75PNQzDwyvU=";
+          };
+          postPatch = ''
+            substituteInPlace "runtime/caml/camlatomic.h" \
+              --replace-fail "#ifdef CAML_INTERNALS" "" \
+              --replace-fail "#endif /* CAML_INTERNALS */" ""
+          '';
+        });
+      });
 
       ocamlPackages_trunk = newOCamlScope {
         major_version = "5";
