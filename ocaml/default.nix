@@ -2314,15 +2314,6 @@ with oself;
     doCheck = false; # Requires js_of_ocaml
   });
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "sedlex";
-      rev = "v3.7";
-      hash = "sha256-ucqrJkzS6cVogGUf1vU8oBpSryneMBqTjzxwsOi6Egs=";
-    };
-  });
-
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
