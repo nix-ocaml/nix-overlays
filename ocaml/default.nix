@@ -369,13 +369,18 @@ with oself;
     '';
   };
 
-  camlp5 = osuper.camlp5.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "camlp5";
-      repo = "camlp5";
-      rev = "8.04.00";
-      hash = "sha256-5IQVGm/tqEzXmZmSYGbGqX+KN9nQLQgw+sBP+F2keXo=";
-    };
+  camlp5 = osuper.camlp5.overrideAttrs (o: {
+    src =
+      if lib.versionAtLeast ocaml.version "5.3"
+      then
+        fetchFromGitHub
+          {
+            owner = "camlp5";
+            repo = "camlp5";
+            rev = "8.04.00";
+            hash = "sha256-5IQVGm/tqEzXmZmSYGbGqX+KN9nQLQgw+sBP+F2keXo=";
+          }
+      else o.src;
   });
 
   camomile = osuper.camomile.overrideAttrs (o: {
@@ -968,7 +973,6 @@ with oself;
   graphql-lwt = callPackage ./graphql/lwt.nix { };
   graphql-async = callPackage ./graphql/async.nix { };
 
-  graphql_ppx = callPackage ./graphql_ppx { };
   graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
     # https://github.com/NixOS/nixpkgs/pull/170664
     nativeBuildInputs = [ ocaml dune findlib crunch ];
@@ -1856,10 +1860,21 @@ with oself;
   });
 
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/gildor478/ocaml-gettext/releases/download/v0.5.0/gettext-0.5.0.tbz";
-      sha256 = "0pagwd88fj14375d1bn232y5sdxl8bllpghj4f787w9abgsrvp88";
-    };
+    src =
+      if lib.versionAtLeast ocaml.version "5.4"
+      then
+        fetchFromGitHub
+          {
+            owner = "gildor478";
+            repo = "ocaml-gettext";
+            rev = "5d521981e39dcaeada6bbe7b15c5432d6de5d33c";
+            hash = "sha256-A1vab/YdtOu23YqxwPeIZV5d0DlHjjsQS2yucTzhSgQ=";
+          }
+      else
+        builtins.fetchurl {
+          url = "https://github.com/gildor478/ocaml-gettext/releases/download/v0.5.0/gettext-0.5.0.tbz";
+          sha256 = "0pagwd88fj14375d1bn232y5sdxl8bllpghj4f787w9abgsrvp88";
+        };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-site ];
   });
 
