@@ -369,6 +369,15 @@ with oself;
     '';
   };
 
+  camlp5 = osuper.camlp5.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "camlp5";
+      repo = "camlp5";
+      rev = "8.04.00";
+      hash = "sha256-5IQVGm/tqEzXmZmSYGbGqX+KN9nQLQgw+sBP+F2keXo=";
+    };
+  });
+
   camomile = osuper.camomile.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams dune-site ];
     checkInputs = [ stdlib-random ];
@@ -1436,19 +1445,11 @@ with oself;
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
 
-  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "realworldocaml";
-      repo = "mdx";
-      rev = "34d5a1b7b12e08dbaf57ec23f5b6009bfeecc8e0";
-      hash = "sha256-9mgsxOAjnB0ulT8L9rQxj7GPta4JvBgq0rupG+y89lA=";
-    };
-    # Break the attempt to reduce `mdx`'s closure size by adding a different
-    # `logs` override, which breaks anything that uses logs (with OCaml package
-    # conflicts)
-    # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
-  });
+  # Break the attempt to reduce `mdx`'s closure size by adding a different
+  # `logs` override, which breaks anything that uses logs (with OCaml package
+  # conflicts)
+  # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
+  mdx = (osuper.mdx.override { inherit logs; });
 
   melange-json-native = buildDunePackage {
     pname = "melange-json-native";
