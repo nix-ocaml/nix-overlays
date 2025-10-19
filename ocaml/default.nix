@@ -959,7 +959,6 @@ with oself;
   graphql-lwt = callPackage ./graphql/lwt.nix { };
   graphql-async = callPackage ./graphql/async.nix { };
 
-  graphql_ppx = callPackage ./graphql_ppx { };
   graphql-cohttp = osuper.graphql-cohttp.overrideAttrs (o: {
     # https://github.com/NixOS/nixpkgs/pull/170664
     nativeBuildInputs = [ ocaml dune findlib crunch ];
@@ -1436,19 +1435,11 @@ with oself;
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
 
-  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "realworldocaml";
-      repo = "mdx";
-      rev = "34d5a1b7b12e08dbaf57ec23f5b6009bfeecc8e0";
-      hash = "sha256-9mgsxOAjnB0ulT8L9rQxj7GPta4JvBgq0rupG+y89lA=";
-    };
-    # Break the attempt to reduce `mdx`'s closure size by adding a different
-    # `logs` override, which breaks anything that uses logs (with OCaml package
-    # conflicts)
-    # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result cmdliner ];
-  });
+  # Break the attempt to reduce `mdx`'s closure size by adding a different
+  # `logs` override, which breaks anything that uses logs (with OCaml package
+  # conflicts)
+  # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
+  mdx = (osuper.mdx.override { inherit logs; });
 
   melange-json-native = buildDunePackage {
     pname = "melange-json-native";
@@ -1855,10 +1846,21 @@ with oself;
   });
 
   ocaml_gettext = osuper.ocaml_gettext.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/gildor478/ocaml-gettext/releases/download/v0.5.0/gettext-0.5.0.tbz";
-      sha256 = "0pagwd88fj14375d1bn232y5sdxl8bllpghj4f787w9abgsrvp88";
-    };
+    src =
+      if lib.versionAtLeast ocaml.version "5.4"
+      then
+        fetchFromGitHub
+          {
+            owner = "gildor478";
+            repo = "ocaml-gettext";
+            rev = "5d521981e39dcaeada6bbe7b15c5432d6de5d33c";
+            hash = "sha256-A1vab/YdtOu23YqxwPeIZV5d0DlHjjsQS2yucTzhSgQ=";
+          }
+      else
+        builtins.fetchurl {
+          url = "https://github.com/gildor478/ocaml-gettext/releases/download/v0.5.0/gettext-0.5.0.tbz";
+          sha256 = "0pagwd88fj14375d1bn232y5sdxl8bllpghj4f787w9abgsrvp88";
+        };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dune-site ];
   });
 
@@ -2388,9 +2390,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "stdcompat";
-      # https://github.com/thierry-martinez/stdcompat/pull/33
-      rev = "21.0";
-      hash = "sha256-Ks8m2QicIEohSADiMeijCz0WTPsTSgPifrGTn7FVcV0=";
+      rev = "21.1";
+      hash = "sha256-ptqky7DMc8ggaFr1U8bikQ2eNp5uGcvXNqInHigzY5U=";
     };
 
     dontConfigure = true;

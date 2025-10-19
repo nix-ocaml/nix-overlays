@@ -25,7 +25,16 @@ buildDunePackage {
   duneVersion = "3";
 
   src =
-    if lib.versionOlder "5.3" ocaml.version then
+    if lib.versionOlder "5.4" ocaml.version then
+      fetchFromGitHub
+        {
+          owner = "melange-re";
+          repo = "melange";
+          rev = "abe0ba63ad35ffe2a2bb96a02e67fbad85e895c7";
+          fetchSubmodules = true;
+          hash = "sha256-QF4lAAWh+PMS8eVkGNM/jYXywO6c7dLJbI4oPaDSeHY=";
+        }
+    else if lib.versionOlder "5.3" ocaml.version then
       builtins.fetchurl
         {
           url = "https://github.com/melange-re/melange/releases/download/5.1.0-53/melange-5.1.0-53.tbz";
@@ -49,14 +58,17 @@ buildDunePackage {
         sha256 = "10n2ds6b9ajq7ccazp0sffx9jnxlazlbkd38vyz0s2zg0la72vgh";
       };
 
-  patches = lib.optional (lib.versionAtLeast ppxlib.version "0.36") (fetchpatch {
-    url = "https://patch-diff.githubusercontent.com/raw/melange-re/melange/pull/1352.patch";
-    hash = "sha256-PMf66nB743nzW4/xblHjNZFv1BS8xC9maD+eCDDUWAY=";
-    excludes = [
-      "*.opam"
-      "*.template"
-    ];
-  });
+  patches =
+    lib.optional
+      ((lib.versionAtLeast ppxlib.version "0.36") && !(lib.versionAtLeast ocaml.version "5.4"))
+      (fetchpatch {
+        url = "https://patch-diff.githubusercontent.com/raw/melange-re/melange/pull/1352.patch";
+        hash = "sha256-PMf66nB743nzW4/xblHjNZFv1BS8xC9maD+eCDDUWAY=";
+        excludes = [
+          "*.opam"
+          "*.template"
+        ];
+      });
 
   doCheck = false;
 
