@@ -369,20 +369,6 @@ with oself;
     '';
   };
 
-  camlp5 = osuper.camlp5.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.3"
-      then
-        fetchFromGitHub
-          {
-            owner = "camlp5";
-            repo = "camlp5";
-            rev = "8.04.00";
-            hash = "sha256-5IQVGm/tqEzXmZmSYGbGqX+KN9nQLQgw+sBP+F2keXo=";
-          }
-      else o.src;
-  });
-
   camomile = osuper.camomile.overrideAttrs (o: {
     propagatedBuildInputs = [ camlp-streams dune-site ];
     checkInputs = [ stdlib-random ];
@@ -2404,9 +2390,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "thierry-martinez";
       repo = "stdcompat";
-      # https://github.com/thierry-martinez/stdcompat/pull/33
-      rev = "21.0";
-      hash = "sha256-Ks8m2QicIEohSADiMeijCz0WTPsTSgPifrGTn7FVcV0=";
+      rev = "21.1";
+      hash = "sha256-ptqky7DMc8ggaFr1U8bikQ2eNp5uGcvXNqInHigzY5U=";
     };
 
     dontConfigure = true;
