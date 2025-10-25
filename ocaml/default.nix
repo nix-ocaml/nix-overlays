@@ -377,6 +377,10 @@ with oself;
     postInstall = null;
   });
 
+  camlp5 = osuper.camlp5.overrideAttrs (_: {
+    meta.broken = false;
+  });
+
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz";
