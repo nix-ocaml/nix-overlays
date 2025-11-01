@@ -1704,13 +1704,6 @@ with oself;
     doCheck = false;
   });
 
-  ocaml-version = osuper.ocaml-version.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocurrent/ocaml-version/releases/download/v4.0.3/ocaml-version-4.0.3.tbz";
-      sha256 = "1cwvj1iaibz1vvgnd1hn0vrz4rsvbprwaz92nmx1qnnayknmxkhq";
-    };
-  });
-
   ocamlformat = osuper.ocamlformat.overrideAttrs (o: {
     src =
       if lib.versionAtLeast ocaml.version "5.4" then
