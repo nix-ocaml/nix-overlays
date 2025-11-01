@@ -82,19 +82,13 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "f664baec3344cb983464ff2c384a3de0e1a516a6";
-      hash = "sha256-ss4fmvYCE6WK97xUS2ZdbjJD06PNSNKeLcpfahEb/kY=";
+      rev = "2e4bb779edb8699630982b49f6da018d2e02aff1";
+      hash = "sha256-zoM/UD6akruvTDHrTgMgigQlqDhKVNbHuRg1VugECu0=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
     buildInputs = [ nix-eval-jobs ];
-    propagatedBuildInputs = [
-      cmdliner
-      eio_main
-      logs
-      fmt
-      ppx_deriving_yojson
-    ];
+    propagatedBuildInputs = [ cmdliner eio_main logs fmt ppx_yojson_conv ];
     postInstall =
       let
         path = lib.makeBinPath [ nix-eval-jobs ];
