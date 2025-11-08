@@ -49,6 +49,7 @@ let
     "ocamlformat_0_23_0"
     "ocamlformat_0_24_1"
     "ocamlformat_0_25_1"
+    "ocamlformat_0_26_1"
     "ocamlformat_0_26_2"
 
     # Incompatible with omd 2.0
