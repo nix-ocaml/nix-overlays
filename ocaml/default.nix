@@ -1704,22 +1704,11 @@ with oself;
     doCheck = false;
   });
 
-  ocamlformat = osuper.ocamlformat.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.4" then
-        ocamlformat-lib.src
-      else o.src;
-  });
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (o: {
-    src =
-      if lib.versionAtLeast ocaml.version "5.4" then
-        fetchFromGitHub
-          {
-            owner = "ocaml-ppx";
-            repo = "ocamlformat";
-            hash = "sha256-zycvhaoPd3nD6kIZAzWpW2YBT1Raf4ruxuXmnbcotjI=";
-            rev = "1851bc47e2ba3ff79b66f967986a853c23bed445";
-          } else o.src;
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.28.1/ocamlformat-0.28.1.tbz";
+      sha256 = "1ys1zyrr9jqcv0av1a2h8x245xgf5s5ikddxj7nn3ndys0vs1gbh";
+    };
   });
   ocamlformat-rpc-lib = buildDunePackage {
     pname = "ocamlformat-rpc-lib";
