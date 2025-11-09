@@ -1564,7 +1564,10 @@ with oself;
     if (lib.versionAtLeast ocaml.version "4.14" && !(lib.versionAtLeast ocaml.version "5.0"))
     || lib.versionAtLeast ocaml.version "5.1"
     then
-      callPackage ./melange { }
+      callPackage ./melange
+        {
+          ppxlib = ppxlib_gt_0_37;
+        }
     else null;
 
   menhirCST = buildDunePackage {
@@ -2184,19 +2187,11 @@ with oself;
     then null
     else osuper.ppx_tools;
 
-  ppxlib = osuper.ppxlib.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        builtins.fetchurl
-          {
-            url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.37.0/ppxlib-0.37.0.tbz";
-            sha256 = "1cxhbnw6s59gfwrrqp0nx5diskiglz0349239b43pk6fwwvkh8if";
-          }
-      else
-        builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
-          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
-        };
+  ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.37.0/ppxlib-0.37.0.tbz";
+      sha256 = "1cxhbnw6s59gfwrrqp0nx5diskiglz0349239b43pk6fwwvkh8if";
+    };
 
     propagatedBuildInputs = [
       ocaml-compiler-libs
@@ -2205,6 +2200,24 @@ with oself;
       stdlib-shims
     ];
   });
+
+  ppxlib =
+    if lib.versionOlder "5.3" ocaml.version then
+      ppxlib_gt_0_37
+    else
+      osuper.ppxlib.overrideAttrs (o: {
+        src = builtins.fetchurl {
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
+          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
+        };
+
+        propagatedBuildInputs = [
+          ocaml-compiler-libs
+          ppx_derivers
+          sexplib0
+          stdlib-shims
+        ];
+      });
 
   ppxlib-tools = buildDunePackage {
     pname = "ppxlib-tools";

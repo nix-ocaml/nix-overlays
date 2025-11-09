@@ -61,7 +61,7 @@ with oself;
     inherit (melange-json-native) version src;
     pname = "melange-json";
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange ppxlib ];
+    propagatedBuildInputs = [ melange ppxlib_gt_0_37 ];
   };
 
   melange-jest = buildDunePackage {
@@ -130,22 +130,12 @@ with oself;
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "n/a";
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub
-          {
-            owner = "reasonml";
-            repo = "reason-react";
-            rev = "8454c63ee56afc7e7dce439eaff395aba0577d68";
-            hash = "sha256-8Wkk6Aav1zk9me1UGz8D3z3bDdIc/MDt9E4YNS6zK1U=";
-          }
-      else
-        fetchFromGitHub {
-          owner = "reasonml";
-          repo = "reason-react";
-          rev = "db1b32369dd7c33c948c3fd14797ab0236fba82e";
-          hash = "sha256-iQ7y+B601kWRzHW+AjrYX882ABJDNggC/sne/TC0AA8=";
-        };
-    propagatedBuildInputs = [ ppxlib ];
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason-react";
+      rev = "3cbac2c73590355667f7ee67cf6fc82dba95ff02";
+      hash = "sha256-4X7vqPb6CNhqhasNxkp6yrXaKQtCBF47yvC8iwCuuno=";
+    };
+    propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
 }
