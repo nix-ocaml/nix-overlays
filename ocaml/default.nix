@@ -289,9 +289,18 @@ with oself;
     };
   });
 
-  bisect_ppx = osuper.bisect_ppx.overrideAttrs (_: {
+  bisect_ppx = osuper.bisect_ppx.overrideAttrs (o: {
+    # melange support
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "bisect_ppx";
+      rev = "04b34efa9236d2e771dcdd7b75a3804a2d3f3710";
+      hash = "sha256-OYtrPIAYHvom5C1WsaM1DdxH34srPe0un3HNPIslBdg=";
+    };
+    patches = [ ];
     buildInputs = [ ];
-    propagatedBuildInputs = [ ppxlib cmdliner ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ melange ];
+    propagatedBuildInputs = [ ppxlib_gt_0_37 cmdliner melange ];
   });
 
   buildDunePackage = arg:
