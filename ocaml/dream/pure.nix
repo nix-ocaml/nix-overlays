@@ -42,6 +42,7 @@ buildDunePackage rec {
   ];
 
   doCheck = false;
+  dontDetectOcamlConflicts = true;
 
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";

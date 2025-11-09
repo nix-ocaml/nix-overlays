@@ -84,10 +84,6 @@ buildDunePackage rec {
     markup
   ];
 
-  buildInputs = [
-    bisect_ppx
-  ];
-
   checkInputs = [
     alcotest
     crunch

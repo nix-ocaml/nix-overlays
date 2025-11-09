@@ -37,8 +37,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ahrefs";
       repo = "melange-recharts";
-      rev = "2ff880588550897f8e2752f71d63aed9eae67d35";
-      hash = "sha256-+YIC5JZGEAiTufZxbA3NTy65WqS77/YROLg0Hez9LUo=";
+      rev = "e986b2c764881842d6920fc0bcaf01c3076acb51";
+      hash = "sha256-EvBPTCTeSAYXlFr3dSt9zeAoKRx5rxkdR+O2VzEADts=";
     };
     nativeBuildInputs = [ melange reason ];
     propagatedBuildInputs = [ melange reason-react ];
