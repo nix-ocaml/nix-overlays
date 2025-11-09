@@ -46,6 +46,7 @@ stdenv.mkDerivation {
   preConfigure = ''
     configureFlagsArray=(--strict --libdir $out/lib/ocaml/${ocaml.version}/site-lib)
     patchShebangs ./config/find_stuffversion.pl etc/META.pl
+    patchShebangs tools/camlp5_comm.sh
   '';
 
   buildFlags = [ "world.opt" ];
