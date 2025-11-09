@@ -377,9 +377,7 @@ with oself;
     postInstall = null;
   });
 
-  camlp5 = osuper.camlp5.overrideAttrs (_: {
-    meta.broken = false;
-  });
+  camlp5 = callPackage ./camlp5 { };
 
   coin = osuper.coin.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2172,6 +2170,15 @@ with oself;
 
   ppx_repr = disableTests osuper.ppx_repr;
 
+  ppx_show = osuper.ppx_show.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "anmonteiro";
+      repo = "ppx_show";
+      rev = "fc4030fd613d95fc9776a2757dc18544923ac190";
+      hash = "sha256-1LRLXv5NNkgwMDdNEiV1dheZJDR6WiyclCeW9sUdpQc=";
+    };
+  });
+
   ppx_tools =
     if lib.versionOlder "5.2" ocaml.version
     then null
@@ -2398,10 +2405,10 @@ with oself;
     version = "21";
 
     src = fetchFromGitHub {
-      owner = "thierry-martinez";
+      owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "21.1";
-      hash = "sha256-ptqky7DMc8ggaFr1U8bikQ2eNp5uGcvXNqInHigzY5U=";
+      rev = "88b0118ad4a778d8e0e2e10413a4ab83de486d8c";
+      hash = "sha256-3xrzzD2hyPqN9t3We6e+opmjMFc4JnK+XxpU5owbk9g=";
     };
 
     dontConfigure = true;

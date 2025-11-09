@@ -142,6 +142,9 @@ let
     "ppx_deriving_bson"
     "brisk-reconciler"
     "bistro"
+
+    # broken with latest camlp5
+    "hol_light"
   ];
 
   ocaml5Ignores = [
