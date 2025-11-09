@@ -45,8 +45,13 @@ stdenv.mkDerivation {
 
   preConfigure = ''
     configureFlagsArray=(--strict --libdir $out/lib/ocaml/${ocaml.version}/site-lib)
-    patchShebangs ./config/find_stuffversion.pl etc/META.pl
-    patchShebangs tools/camlp5_comm.sh
+    patchShebangs \
+      ./config/find_stuffversion.pl etc/META.pl \
+      tools/camlp5_comm.sh ocaml_src/tools/camlp5_comm.sh \
+      ocaml_src/tools/ocamlc.sh ocaml_src/tools/ocamlopt.sh \
+      tools/apply.sh tools/conv.sh tools/depend.sh tools/ocamlc.sh \
+      tools/ocamlopt.sh compile/compile.sh configure etc/mkcamlp5.opt.sh.tpl \
+      main/mkreloc.sh meta/mk_q_MLast.sh meta/mk_q_ast.sh
   '';
 
   buildFlags = [ "world.opt" ];
