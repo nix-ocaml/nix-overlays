@@ -614,6 +614,12 @@ with oself;
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "yallop";
+      repo = "ocaml-ctypes";
+      rev = "0.24.0";
+      hash = "sha256-Wlpk+/MSWmnIRsJfVQMTCYDRixuqLzDpdFNpkQyscA8=";
+    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
   });
@@ -1520,6 +1526,24 @@ with oself;
     doCheck = true;
     checkInputs = [ dscheck fmt ];
   };
+
+  mlx = osuper.mlx.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-mlx";
+      repo = "mlx";
+      rev = "cda3b7e9321c8bbe862856b12be4957b4e3901fc";
+      hash = "sha256-SGvkCKKtjfEQVNC8kRCN/9dKdB9Jp8OhN++Ra87xHa8=";
+    };
+  });
+
+  ocamlformat-mlx = osuper.ocamlformat-mlx.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-mlx";
+      repo = "ocamlformat-mlx";
+      rev = "e3ea889892ec3bb3f564621ba1511e8501bd0898";
+      hash = "sha256-uYAS69sEBLD2NbgQ9dPKaydgHhHr9TVDHdoAviPOrjU=";
+    };
+  });
 
   mustache = osuper.mustache.overrideAttrs (o: {
     src = fetchFromGitHub {
