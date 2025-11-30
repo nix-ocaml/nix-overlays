@@ -490,6 +490,8 @@ with oself;
     propagatedBuildInputs = [ ocplib-endian ];
   };
 
+  class_group_vdf = disableTests osuper.class_group_vdf;
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
@@ -621,12 +623,6 @@ with oself;
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "yallop";
-      repo = "ocaml-ctypes";
-      rev = "0.24.0";
-      hash = "sha256-Wlpk+/MSWmnIRsJfVQMTCYDRixuqLzDpdFNpkQyscA8=";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
   });
