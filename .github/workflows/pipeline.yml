@@ -15,7 +15,7 @@ jobs:
   nix-fmt-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
@@ -40,7 +40,7 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
@@ -71,7 +71,7 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
@@ -105,7 +105,7 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
@@ -143,7 +143,7 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
