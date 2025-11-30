@@ -208,6 +208,10 @@ let
     "eigen"
     "owl"
     "owl-base"
+
+    # Broken on latest SDK update?
+    "soundtouch"
+    "taglib"
   ];
 in
 

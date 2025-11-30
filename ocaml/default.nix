@@ -621,12 +621,6 @@ with oself;
   cryptokit = (osuper.cryptokit.override { zlib = zlib-oc; });
 
   ctypes = osuper.ctypes.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "yallop";
-      repo = "ocaml-ctypes";
-      rev = "0.24.0";
-      hash = "sha256-Wlpk+/MSWmnIRsJfVQMTCYDRixuqLzDpdFNpkQyscA8=";
-    };
     nativeBuildInputs = o.nativeBuildInputs ++ [ pkg-config ];
     buildInputs = [ dune-configurator ];
   });
