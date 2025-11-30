@@ -490,6 +490,8 @@ with oself;
     propagatedBuildInputs = [ ocplib-endian ];
   };
 
+  class_group_vdf = disableTests osuper.class_group_vdf;
+
   clz = buildDunePackage {
     pname = "clz";
     version = "0.1.0";
