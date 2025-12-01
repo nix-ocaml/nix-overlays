@@ -566,46 +566,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ dns-client-mirage ];
   });
 
-  confero =
-    let
-      allkeys_txt = builtins.fetchurl {
-        url = "https://www.unicode.org/Public/UCA/15.0.0/allkeys.txt";
-        sha256 = "0xvmfw9sgcmaqs33w31vcmgqabkb2ls146pb9hvidbfl4isj49qq";
-      };
-      collationTest = builtins.fetchurl {
-        url = "https://www.unicode.org/Public/UCA/15.0.0/CollationTest.zip";
-        sha256 = "013w1s3nwalyid9n092my9ri1j0kzc35bphzbrdcaz6l22ph81f3";
-      };
-    in
-    buildDunePackage {
-      pname = "confero";
-      version = "0.1.1";
-      src = fetchFromGitHub {
-        owner = "paurkedal";
-        repo = "confero";
-        rev = "252cf3e";
-        sha256 = "sha256-YJyyT4uimLJQH0/bIMe/FCPk0ZYemgHYxV4uaQXVE6w=";
-      };
-
-      nativeBuildInputs = [ unzip ];
-      postPatch = ''
-        cp ${allkeys_txt} ./lib/ducet/allkeys.txt
-        cp ${collationTest} ./test/CollationTest.zip
-      '';
-
-      doCheck = false;
-
-      propagatedBuildInputs = [
-        angstrom
-        angstrom-unix
-        cmdliner
-        fmt
-        iso639
-        uucp
-        uunf
-        uutf
-      ];
-    };
+  confero = callPackage ./confero { };
 
   cookie = callPackage ./cookie { };
 
