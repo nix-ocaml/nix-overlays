@@ -773,10 +773,12 @@ with oself;
       };
     in
     dune_pkg.overrideAttrs (o: {
-      version = "3.20.2";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.20.2/dune-3.20.2.tbz";
-        sha256 = "0jd5kkpvkkpcmy0wwcyqnmy6x2pjz7rbsqb8pfwsid5xc0nnpa5i";
+      version = "3.21.0";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "3.21.0";
+        hash = "sha256-7l5WNXyCcMJfNw39xxIAhVGeQkR5KzthmGnbH0iQxos=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -825,7 +827,10 @@ with oself;
     inherit (dyn) preBuild;
   });
   dune-glob = osuper.dune-glob.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      pp
+      re
+    ];
     inherit (dyn) preBuild;
   });
   dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
@@ -853,17 +858,24 @@ with oself;
       stdune
     ];
   };
-  # fs-io = buildDunePackage {
-  # pname = "fs-io";
-  # inherit (dune_3) src version;
-  # };
-
+  fs-io = buildDunePackage {
+    pname = "fs-io";
+    inherit (dune_3) src version;
+  };
+  top-closure = buildDunePackage {
+    pname = "top-closure";
+    inherit (dune_3) src version;
+  };
   pp = osuper.pp.overrideAttrs (_: {
     doCheck = !(lib.versionOlder "5.3" ocaml.version);
   });
 
   stdune = osuper.stdune.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      pp
+      fs-io
+      top-closure
+    ];
     inherit (dyn) preBuild;
   });
   xdg = osuper.xdg.overrideAttrs (o: {
