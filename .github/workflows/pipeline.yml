@@ -57,7 +57,7 @@ jobs:
       - name: Build nix packages
         run: |
           cat > ~/.aws/config << EOF
-          [profile default]
+          [default]
           region = auto
           EOF
           ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
