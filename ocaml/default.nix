@@ -70,14 +70,14 @@ let
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.4.1";
-      hash = "sha256-VWPbk1P3W9+ImusyOweFnHyP0VzqHKIbXMpzFsYCF14=";
+      rev = "2.5.0";
+      hash = "sha256-sev4xp5/7mGh0cZ2waFB7EXfYXO043k29AOxFXJ9qjg=";
     };
-    version = "2.4.1";
+    version = "2.5.0";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
-      changelog = "https://github.com/ocaml/opam/raw/2.4.1/CHANGES";
+      changelog = "https://github.com/ocaml/opam/raw/2.5.0/CHANGES";
       maintainers = [ maintainers.henrytill maintainers.marsam ];
       license = licenses.lgpl21Only;
       platforms = platforms.all;
