@@ -55,12 +55,7 @@ jobs:
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: Build nix packages
-        run: |
-          cat > ~/.aws/config << EOF
-          [default]
-          region = auto
-          EOF
-          ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
+        run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   top-level-packages:
