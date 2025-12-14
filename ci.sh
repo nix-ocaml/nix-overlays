@@ -14,8 +14,4 @@ args=(
   # --quiet-build
 )
 
-
-echo "== Nix effective config (substituters) =="
-nix show-config
-
 OCAMLRUNPARAM=b nix run .#ocaml-ng.ocamlPackages_5_4.nix-ci-build -- "${args[@]}"
