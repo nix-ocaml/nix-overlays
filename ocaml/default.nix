@@ -571,13 +571,6 @@ with oself;
   cookie = callPackage ./cookie { };
 
   crowbar = osuper.crowbar.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "stedolan";
-      repo = "crowbar";
-      rev = "0cbe3ea7e990a7d233360e6a74b1cb5e712501ad";
-      sha256 = "+92SFFI24HEZe2By990wQKGaR6McggSR711tQHTpiis=";
-    };
-
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
 
@@ -1942,15 +1935,6 @@ with oself;
   });
   opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
   opam-state = osuper.opam-state.overrideAttrs (o: opamAttrs);
-  opam-file-format = osuper.opam-file-format.overrideAttrs (o: {
-    nativeBuildInputs = o.nativeBuildInputs ++ [ menhir ];
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "opam-file-format";
-      rev = "2.2.0-alpha1";
-      hash = "sha256-jgUqc5/hf0d7YbB9muXq8D/GuvwlNF+YaP/IcviC8M0=";
-    };
-  });
 
   opaline = super-opaline.override { ocamlPackages = oself; };
 
