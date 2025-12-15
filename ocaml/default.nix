@@ -1411,9 +1411,11 @@ with oself;
   melange-json-native = buildDunePackage {
     pname = "melange-json-native";
     version = "1.3.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-json/releases/download/2.0.0/melange-json-2.0.0.tbz";
-      sha256 = "1n1avcplidrigkch4y8lnh136g5q06d0xhgzvgips3y399lw2jah";
+    src = fetchFromGitHub {
+      owner = "melange-community";
+      repo = "melange-json";
+      rev = "d6ca192bc6885933fe75fb200810687d820c4c04";
+      hash = "sha256-n60dljIfXIXrUtDZZ9oa58e0HwyEK92cfIodqfQvXHA=";
     };
     propagatedBuildInputs = [ ppxlib yojson ];
   };
