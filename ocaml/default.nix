@@ -1417,7 +1417,7 @@ with oself;
       rev = "d6ca192bc6885933fe75fb200810687d820c4c04";
       hash = "sha256-n60dljIfXIXrUtDZZ9oa58e0HwyEK92cfIodqfQvXHA=";
     };
-    propagatedBuildInputs = [ ppxlib yojson ];
+    propagatedBuildInputs = [ ppxlib_gt_0_37 yojson ];
   };
 
   mirage-channel = buildDunePackage rec {
