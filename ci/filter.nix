@@ -81,6 +81,8 @@ let
     "unisim_archisec"
     "smtml"
     "z3"
+    "frama-c"
+    "frama-c-lannotate"
 
     # Broken on janestreet v0.17
     "multiformats"
