@@ -853,15 +853,46 @@ with oself;
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip ];
   };
 
-  extunix = osuper.extunix.overrideAttrs (o: {
+  extunix = buildDunePackage {
+    pname = "extunix";
+    version = "0.4.4";
+
     src =
       if lib.versionOlder "5.3" ocaml.version then
-        o.src else
+        builtins.fetchurl
+          {
+            url = "https://github.com/ygrek/extunix/releases/download/v0.4.4/extunix-0.4.4.tbz";
+            sha256 = "0za9s59s0djy0f5l2zv41bn4x7a25lmsfp3rxy5fc8v2669chd4k";
+          }
+      else
         builtins.fetchurl {
           url = "https://github.com/ygrek/extunix/releases/download/v0.4.3/extunix-0.4.3.tbz";
           sha256 = "1i79wal5nddkfdyaj5bl05v8ypp4w9lvjsay552x0sxqjn2n6q0l";
         };
-  });
+
+    postPatch = ''
+      substituteInPlace src/dune --replace-fail 'libraries unix bigarray bytes' 'libraries unix bigarray'
+    '';
+
+    buildInputs = [
+      dune-configurator
+    ];
+
+    propagatedBuildInputs = [
+      ppxlib
+    ];
+
+    # need absolute paths outside from sandbox
+    doCheck = false;
+
+    meta = {
+      description = "Collection of thin bindings to various low-level system API";
+      homepage = "https://github.com/ygrek/extunix";
+      changelog = "https://github.com/ygrek/extunix/releases/tag/v${finalAttrs.version}";
+      license = lib.licenses.lgpl21Only;
+      maintainers = with lib.maintainers; [ redianthus ];
+    };
+  };
 
   facile = buildDunePackage rec {
     pname = "facile";
