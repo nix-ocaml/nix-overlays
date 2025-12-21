@@ -855,7 +855,7 @@ with oself;
 
   extunix = osuper.extunix.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.4" ocaml.version then
+      if lib.versionOlder "5.3" ocaml.version then
         o.src else
         builtins.fetchurl {
           url = "https://github.com/ygrek/extunix/releases/download/v0.4.3/extunix-0.4.3.tbz";
