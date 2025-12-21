@@ -710,7 +710,7 @@ with oself;
   dune_3 =
     let
       dune_pkg =
-        oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {};
+        oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" { };
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.20.2";
@@ -721,8 +721,8 @@ with oself;
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
         if stdenv.isDarwin then ''
-        wrapProgram $out/bin/dune \
-        --suffix PATH : "${darwin.sigtool}/bin"
+          wrapProgram $out/bin/dune \
+          --suffix PATH : "${darwin.sigtool}/bin"
         '' else "";
     });
 
@@ -852,6 +852,16 @@ with oself;
 
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip ];
   };
+
+  extunix = osuper.extunix.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.4" ocaml.version then
+        o.src else
+        builtins.fetchurl {
+          url = "https://github.com/ygrek/extunix/releases/download/v0.4.3/extunix-0.4.3.tbz";
+          sha256 = "1i79wal5nddkfdyaj5bl05v8ypp4w9lvjsay552x0sxqjn2n6q0l";
+        };
+  });
 
   facile = buildDunePackage rec {
     pname = "facile";
