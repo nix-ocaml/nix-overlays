@@ -98,13 +98,9 @@ let
 
   # Jane Street
   janePackage_0_16 =
-    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix" {
-      defaultVersion = "0.16.0";
-    };
+    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix" { };
   janePackage_0_17 =
-    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_15.nix" {
-      defaultVersion = "0.17.0";
-    };
+    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_17.nix" { };
 
   janeStreet_0_16 = import ./janestreet-0.16.nix {
     self = oself;
@@ -1123,8 +1119,8 @@ with oself;
       if lib.versionOlder "5.4" ocaml.version then
         builtins.fetchurl
           {
-            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.24.0/lsp-1.24.0.tbz";
-            sha256 = "0mrpggmyqv6blp7cblxd4cdzi9dcvsbqv0wg5p0gc4pnawhilnjd";
+            url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.25.0/lsp-1.25.0.tbz";
+            sha256 = "087h47pprfbah64129ffmy6zym3fk4knk13h4nnhk5zqyfzd45g3";
           }
       else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl
