@@ -11,12 +11,13 @@ buildDunePackage {
 
   src =
     if lib.versionOlder "5.3" ocaml.version then
-      fetchFromGitHub {
-        owner = "yawaramin";
-        repo = "dream-html";
-        rev = "v3.11.2";
-        hash = "sha256-/I233A86T+QEb2qbSHucgzRzYEjS08eKezSXOwz2ml0=";
-      }
+      fetchFromGitHub
+        {
+          owner = "yawaramin";
+          repo = "dream-html";
+          rev = "v3.11.2";
+          hash = "sha256-/I233A86T+QEb2qbSHucgzRzYEjS08eKezSXOwz2ml0=";
+        }
     else
       fetchFromGitHub {
         owner = "yawaramin";
