@@ -1369,14 +1369,6 @@ in
     propagatedBuildInputs = [ base csvfields ppx_conv_func ppx_fields_conv ];
   };
 
-  ppx_yojson_conv_lib = janePackage {
-    pname = "ppx_yojson_conv_lib";
-    minimalOCamlVersion = "4.14";
-    hash = "sha256-TOf6DKyvc+RsSWsLi//LXW+J0sd5uJtF/HFQllcL7No=";
-    meta.description = "Runtime lib for ppx_yojson_conv";
-    propagatedBuildInputs = [ yojson ];
-  };
-
   ppx_yojson_conv = janePackage {
     pname = "ppx_yojson_conv";
     minimalOCamlVersion = "4.14";
