@@ -134,7 +134,7 @@ jobs:
           - { ocaml-version: 5_1, continue-on-error: false }
           - { ocaml-version: 5_2, continue-on-error: false }
           - { ocaml-version: 5_3, continue-on-error: false }
-          # - { ocaml-version: 5_4, continue-on-error: true }
+          - { ocaml-version: 5_4, continue-on-error: false }
         target:
           - arm64
           - musl
