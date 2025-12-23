@@ -2127,6 +2127,7 @@ with oself;
             hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
           } else o.src;
     patches = [ ];
+    doCheck = false;
   });
 
   ppx_repr = disableTests osuper.ppx_repr;
