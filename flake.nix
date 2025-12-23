@@ -10,44 +10,56 @@
     nixpkgs.url = "github:NixOS/nixpkgs?rev=6dd5b55337d892a8a441aaad31bf1a4165b453bc";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       overlay = import ./overlay nixpkgs;
     in
     {
       lib = nixpkgs.lib;
 
-      hydraJobs = nixpkgs.lib.genAttrs
-        [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ]
-        (system: import ./ci/hydra.nix {
+      hydraJobs = nixpkgs.lib.genAttrs [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ] (
+        system:
+        import ./ci/hydra.nix {
           inherit system;
           pkgs = self.legacyPackages.${system};
-        });
+        }
+      );
 
-      makePkgs = { system, extraOverlays ? [ ], ... }@attrs:
+      makePkgs =
+        {
+          system,
+          extraOverlays ? [ ],
+          ...
+        }@attrs:
         let
-          pkgs = import nixpkgs ({
-            inherit system;
-            overlays = [ overlay ];
-            config = {
-              allowUnfree = true;
-            } // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
-              config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
-            };
-          } // attrs);
+          pkgs = import nixpkgs (
+            {
+              inherit system;
+              overlays = [ overlay ];
+              config = {
+                allowUnfree = true;
+              }
+              // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
+                config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
+              };
+            }
+            // attrs
+          );
         in
-          /*
-            You might read
-            https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
-            want to change this but because of how we're doing overlays we will
-            be overriding any extraOverlays if we don't use `appendOverlays`
-            */
+        /*
+          You might read
+          https://nixos.org/manual/nixpkgs/stable/#sec-overlays-argument and
+          want to change this but because of how we're doing overlays we will
+          be overriding any extraOverlays if we don't use `appendOverlays`
+        */
         pkgs.appendOverlays extraOverlays;
 
-      overlays.default = final: prev: if (prev ? __nix-ocaml-overlays-applied) then { } else overlay final prev;
+      overlays.default =
+        final: prev: if (prev ? __nix-ocaml-overlays-applied) then { } else overlay final prev;
 
-      legacyPackages = nixpkgs.lib.genAttrs
-        nixpkgs.lib.systems.flakeExposed
-        (system: self.makePkgs { inherit system; });
+      legacyPackages = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (
+        system: self.makePkgs { inherit system; }
+      );
     };
 }

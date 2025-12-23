@@ -1,6 +1,7 @@
-{ oself
-, fetchFromGitHub
-, lib
+{
+  oself,
+  fetchFromGitHub,
+  lib,
 }:
 
 with oself;
@@ -15,7 +16,10 @@ with oself;
     };
 
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange melange-json ];
+    propagatedBuildInputs = [
+      melange
+      melange-json
+    ];
   };
 
   melange-fetch = buildDunePackage {
@@ -38,8 +42,14 @@ with oself;
       rev = "e986b2c764881842d6920fc0bcaf01c3076acb51";
       hash = "sha256-EvBPTCTeSAYXlFr3dSt9zeAoKRx5rxkdR+O2VzEADts=";
     };
-    nativeBuildInputs = [ melange reason ];
-    propagatedBuildInputs = [ melange reason-react ];
+    nativeBuildInputs = [
+      melange
+      reason
+    ];
+    propagatedBuildInputs = [
+      melange
+      reason-react
+    ];
   };
 
   melange-testing-library = buildDunePackage {
@@ -49,15 +59,24 @@ with oself;
       url = "https://github.com/melange-community/melange-testing-library/releases/download/0.2.0/melange-testing-library-0.2.0.tbz";
       sha256 = "0kargnsn42yxcfqr8j5yx8jbb36m5liqzcbr1riqbygfkbi2s690";
     };
-    nativeBuildInputs = [ melange reason ];
-    propagatedBuildInputs = [ melange reason-react ];
+    nativeBuildInputs = [
+      melange
+      reason
+    ];
+    propagatedBuildInputs = [
+      melange
+      reason-react
+    ];
   };
 
   melange-json = buildDunePackage {
     inherit (melange-json-native) version src;
     pname = "melange-json";
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange ppxlib_gt_0_37 ];
+    propagatedBuildInputs = [
+      melange
+      ppxlib_gt_0_37
+    ];
   };
 
   melange-jest = buildDunePackage {
@@ -68,7 +87,10 @@ with oself;
       sha256 = "05w0hbwacv588qn7c751jyyhy1prrkcic6gnxpqzs23wqfy15v64";
     };
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [ melange reason-react ];
+    propagatedBuildInputs = [
+      melange
+      reason-react
+    ];
   };
 
   melange-numeral = buildDunePackage {
@@ -78,7 +100,10 @@ with oself;
       url = "https://github.com/ahrefs/melange-numeral/releases/download/0.0.1/melange-numeral-0.0.1.tbz";
       sha256 = "1a16j014ps835xqks7mgybqqq34rpvhnzbibrh1pypcqa7hhcdnd";
     };
-    nativeBuildInputs = [ melange reason ];
+    nativeBuildInputs = [
+      melange
+      reason
+    ];
     propagatedBuildInputs = [ melange ];
   };
 
@@ -89,8 +114,14 @@ with oself;
       url = "https://github.com/melange-community/melange-webapi/releases/download/0.22.0/melange-webapi-0.22.0.tbz";
       sha256 = "01xy8xz1wl00v8ny4g83czv3hspiv6qi7hym5kmv5v4xc4g6gv27";
     };
-    nativeBuildInputs = [ melange reason ];
-    propagatedBuildInputs = [ melange melange-fetch ];
+    nativeBuildInputs = [
+      melange
+      reason
+    ];
+    propagatedBuildInputs = [
+      melange
+      melange-fetch
+    ];
   };
 
   melange-relay = buildDunePackage {
@@ -115,8 +146,14 @@ with oself;
     pname = "reason-react";
     version = "n/a";
     inherit (reason-react-ppx) src;
-    nativeBuildInputs = [ reason melange ];
-    propagatedBuildInputs = [ reason-react-ppx melange ];
+    nativeBuildInputs = [
+      reason
+      melange
+    ];
+    propagatedBuildInputs = [
+      reason-react-ppx
+      melange
+    ];
   };
 
   reason-react-ppx = buildDunePackage {

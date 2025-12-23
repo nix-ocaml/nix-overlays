@@ -1,4 +1,8 @@
-{ fetchFromGitHub, buildDunePackage, faraday }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  faraday,
+}:
 
 buildDunePackage {
   version = "0.2.0";

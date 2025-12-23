@@ -1,4 +1,15 @@
-{ lib, fetchFromGitHub, buildDunePackage, matrix-common, ezjsonm, fmt, logs, mirage-crypto-ec, x509, ppxlib }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  matrix-common,
+  ezjsonm,
+  fmt,
+  logs,
+  mirage-crypto-ec,
+  x509,
+  ppxlib,
+}:
 
 buildDunePackage {
   pname = "matrix-stos";

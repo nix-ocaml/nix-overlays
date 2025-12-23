@@ -1,8 +1,8 @@
-{ lib
-, binutils
-, stdenv
-, writeScriptBin
-,
+{
+  lib,
+  binutils,
+  stdenv,
+  writeScriptBin,
 }:
 
 let
@@ -28,7 +28,7 @@ in
 oself: osuper:
 
 lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper
-  // {
+// {
   ocaml = fixOCaml osuper.ocaml;
 
   kafka = osuper.kafka.overrideAttrs (o: {

@@ -1,8 +1,9 @@
-{ backoff
-, buildDunePackage
-, domain-local-await
-, domain-local-timeout
-, multicore-magic
+{
+  backoff,
+  buildDunePackage,
+  domain-local-await,
+  domain-local-timeout,
+  multicore-magic,
 }:
 
 buildDunePackage {

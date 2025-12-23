@@ -1,4 +1,9 @@
-{ fetchFromGitHub, buildDunePackage, angstrom, faraday }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  angstrom,
+  faraday,
+}:
 
 buildDunePackage {
   pname = "bson";
@@ -10,5 +15,8 @@ buildDunePackage {
   };
   version = "0.0.1-dev";
 
-  propagatedBuildInputs = [ angstrom faraday ];
+  propagatedBuildInputs = [
+    angstrom
+    faraday
+  ];
 }

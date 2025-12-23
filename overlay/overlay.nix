@@ -76,109 +76,109 @@ in
     }).overrideAttrs
       (
         finalAttrs: o:
-          let
-            pg_config = super.writeShellScriptBin "pg_config" (
-              builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh"
-            );
-          in
-          {
-            env = {
-              CFLAGS =
-                "-fdata-sections -ffunction-sections"
-                + (if stdenv.cc.isClang then " -flto" else " -fmerge-constants -Wl,--gc-sections");
-              NIX_CFLAGS_COMPILE = "-UUSE_PRIVATE_ENCODING_FUNCS";
-            };
-            doCheck = false;
-            doInstallCheck = false;
+        let
+          pg_config = super.writeShellScriptBin "pg_config" (
+            builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh"
+          );
+        in
+        {
+          env = {
+            CFLAGS =
+              "-fdata-sections -ffunction-sections"
+              + (if stdenv.cc.isClang then " -flto" else " -fmerge-constants -Wl,--gc-sections");
+            NIX_CFLAGS_COMPILE = "-UUSE_PRIVATE_ENCODING_FUNCS";
+          };
+          doCheck = false;
+          doInstallCheck = false;
 
-            postPatch =
-              o.postPatch
-              + lib.optionalString (o.dontDisableStatic or false) ''
-                substituteInPlace src/interfaces/libpq/Makefile \
-                --replace-fail "echo 'libpq must not be calling any function which invokes exit'; exit 1;" "echo;"
-              '';
-
-            configureFlags = [
-              "--without-ldap"
-              "--without-readline"
-              "--with-openssl"
-              "--with-libxml"
-              "--sysconfdir=/etc"
-              "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
-              "--enable-debug"
-              "--with-icu"
-              "--with-lz4"
-              "--with-zstd"
-              "--with-uuid=e2fs"
-            ]
-            ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
-            ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
-            # This could be removed once the upstream issue is resolved:
-            # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
-            ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
-
-            propagatedBuildInputs =
-              with self;
-              [
-                lz4-oc
-                zstd-oc
-                zlib-oc
-                libuuid
-                libxml2
-                icu
-                openssl-oc.dev
-              ]
-              ++ lib.optionals stdenv.isLinux [ linux-pam ];
-            # Use a single output derivation. The upstream PostgreSQL derivation
-            # produces multiple outputs (including "out" and "lib"), and then puts some
-            # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
-            # pkg-config `--libs` flags to be invalid (since it only knows about one
-            # such lib path, not both)
-            outputs = [
-              "out"
-              "dev"
-              "doc"
-              "man"
-            ];
-
-            postInstall = ''
-              moveToOutput "bin/ecpg" "$dev"
-              moveToOutput "lib/pgxs" "$dev"
-              # Pretend pg_config is located in $out/bin to return correct paths, but
-              # actually have it in -dev to avoid pulling in all other outputs. See the
-              # pg_config.sh script's comments for details.
-              moveToOutput "bin/pg_config" "$dev"
-              install -c -m 755 "${pg_config}"/bin/pg_config "$out/bin/pg_config"
-              wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
-              # postgres exposes external symbols get_pkginclude_path and similar. Those
-              # can't be stripped away by --gc-sections/LTO, because they could theoretically
-              # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
-              # references to -dev, -doc and -man are removed here. References to -lib must be kept,
-              # because there is a realistic use-case for extensions to locate the /lib directory to
-              # load other shared modules.
-              remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
-              if [ -z "''${dontDisableStatic:-}" ]; then
-                # Remove static libraries in case dynamic are available.
-                for i in $out/lib/*.a; do
-                  name="$(basename "$i")"
-                  ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
-                  if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
-                    rm "$i"
-                  fi
-                done
-              fi
-              # The remaining static libraries are libpgcommon.a, libpgport.a and related.
-              # Those are only used when building e.g. extensions, so go to $dev.
-              moveToOutput "lib/*.a" "$dev"
-            ''
-            + lib.optionalString stdenv.hostPlatform.isDarwin ''
-              # The darwin specific Makefile for PGXS contains a reference to the postgres
-              # binary. Some extensions (here: postgis), which are able to set bindir correctly
-              # to their own output for installation, will then fail to find "postgres" during linking.
-              substituteInPlace "$dev/lib/pgxs/src/Makefile.port" \
-                --replace-fail '-bundle_loader $(bindir)/postgres' "-bundle_loader $out/bin/postgres"
+          postPatch =
+            o.postPatch
+            + lib.optionalString (o.dontDisableStatic or false) ''
+              substituteInPlace src/interfaces/libpq/Makefile \
+              --replace-fail "echo 'libpq must not be calling any function which invokes exit'; exit 1;" "echo;"
             '';
-          }
+
+          configureFlags = [
+            "--without-ldap"
+            "--without-readline"
+            "--with-openssl"
+            "--with-libxml"
+            "--sysconfdir=/etc"
+            "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
+            "--enable-debug"
+            "--with-icu"
+            "--with-lz4"
+            "--with-zstd"
+            "--with-uuid=e2fs"
+          ]
+          ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
+          ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
+          # This could be removed once the upstream issue is resolved:
+          # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
+          ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
+
+          propagatedBuildInputs =
+            with self;
+            [
+              lz4-oc
+              zstd-oc
+              zlib-oc
+              libuuid
+              libxml2
+              icu
+              openssl-oc.dev
+            ]
+            ++ lib.optionals stdenv.isLinux [ linux-pam ];
+          # Use a single output derivation. The upstream PostgreSQL derivation
+          # produces multiple outputs (including "out" and "lib"), and then puts some
+          # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
+          # pkg-config `--libs` flags to be invalid (since it only knows about one
+          # such lib path, not both)
+          outputs = [
+            "out"
+            "dev"
+            "doc"
+            "man"
+          ];
+
+          postInstall = ''
+            moveToOutput "bin/ecpg" "$dev"
+            moveToOutput "lib/pgxs" "$dev"
+            # Pretend pg_config is located in $out/bin to return correct paths, but
+            # actually have it in -dev to avoid pulling in all other outputs. See the
+            # pg_config.sh script's comments for details.
+            moveToOutput "bin/pg_config" "$dev"
+            install -c -m 755 "${pg_config}"/bin/pg_config "$out/bin/pg_config"
+            wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
+            # postgres exposes external symbols get_pkginclude_path and similar. Those
+            # can't be stripped away by --gc-sections/LTO, because they could theoretically
+            # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
+            # references to -dev, -doc and -man are removed here. References to -lib must be kept,
+            # because there is a realistic use-case for extensions to locate the /lib directory to
+            # load other shared modules.
+            remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
+            if [ -z "''${dontDisableStatic:-}" ]; then
+              # Remove static libraries in case dynamic are available.
+              for i in $out/lib/*.a; do
+                name="$(basename "$i")"
+                ext="${stdenv.hostPlatform.extensions.sharedLibrary}"
+                if [ -e "$out/lib/''${name%.a}$ext" ] || [ -e "''${i%.a}$ext" ]; then
+                  rm "$i"
+                fi
+              done
+            fi
+            # The remaining static libraries are libpgcommon.a, libpgport.a and related.
+            # Those are only used when building e.g. extensions, so go to $dev.
+            moveToOutput "lib/*.a" "$dev"
+          ''
+          + lib.optionalString stdenv.hostPlatform.isDarwin ''
+            # The darwin specific Makefile for PGXS contains a reference to the postgres
+            # binary. Some extensions (here: postgis), which are able to set bindir correctly
+            # to their own output for installation, will then fail to find "postgres" during linking.
+            substituteInPlace "$dev/lib/pgxs/src/Makefile.port" \
+              --replace-fail '-bundle_loader $(bindir)/postgres' "-bundle_loader $out/bin/postgres"
+          '';
+        }
       );
 
   gnome2 = super.gnome2 // {
@@ -206,50 +206,48 @@ in
   };
 
   h3spec = haskell.lib.compose.justStaticExecutables (
-    haskellPackages.callPackage
-      (
-        { mkDerivation
-        , base
-        , bytestring
-        , hspec
-        , hspec-core
-        , http-types
-        , http3
-        , network
-        , quic
-        , tls
-        , unliftio
-        ,
-        }:
-        mkDerivation rec {
-          pname = "h3spec";
-          version = "0.1.8";
-          src = fetchFromGitHub {
-            owner = "kazu-yamamoto";
-            repo = "h3spec";
-            rev = "b44e487b143a45536206773b06eb2c80cbbae28e";
-            sha256 = "sha256-nH4NaxHdnf4kaCCUnJXSkjt5Wkb8qGv3d0+sVjyatXA==";
-          };
+    haskellPackages.callPackage (
+      {
+        mkDerivation,
+        base,
+        bytestring,
+        hspec,
+        hspec-core,
+        http-types,
+        http3,
+        network,
+        quic,
+        tls,
+        unliftio,
+      }:
+      mkDerivation rec {
+        pname = "h3spec";
+        version = "0.1.8";
+        src = fetchFromGitHub {
+          owner = "kazu-yamamoto";
+          repo = "h3spec";
+          rev = "b44e487b143a45536206773b06eb2c80cbbae28e";
+          sha256 = "sha256-nH4NaxHdnf4kaCCUnJXSkjt5Wkb8qGv3d0+sVjyatXA==";
+        };
 
-          isExecutable = true;
-          libraryHaskellDepends = [
-            base
-            bytestring
-            hspec
-            hspec-core
-            http-types
-            http3
-            network
-            quic
-            tls
-            unliftio
-          ];
-          executableHaskellDepends = libraryHaskellDepends;
-          mainProgram = "h3spec";
-          license = lib.licenses.mit;
-        }
-      )
-      { }
+        isExecutable = true;
+        libraryHaskellDepends = [
+          base
+          bytestring
+          hspec
+          hspec-core
+          http-types
+          http3
+          network
+          quic
+          tls
+          unliftio
+        ];
+        executableHaskellDepends = libraryHaskellDepends;
+        mainProgram = "h3spec";
+        license = lib.licenses.mit;
+      }
+    ) { }
   );
 
   lib = lib // {
@@ -338,7 +336,7 @@ in
       };
     };
 }
-  // (lib.mapAttrs' (n: p: lib.nameValuePair "${n}-oc" p) {
+// (lib.mapAttrs' (n: p: lib.nameValuePair "${n}-oc" p) {
   inherit (super)
     gmp
     libev

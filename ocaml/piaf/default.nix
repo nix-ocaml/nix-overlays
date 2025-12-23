@@ -1,23 +1,24 @@
-{ stdenv
-, lib
-, fetchFromGitHub
-, buildDunePackage
-, eio
-, eio_main
-, eio-ssl
-, h2-eio
-, httpun-eio
-, ipaddr
-, magic-mime
-, pecu
-, prettym
-, uri
-, uutf
-, unstrctrd
-, httpun-ws
-, alcotest
-, dune-site
-, ocaml
+{
+  stdenv,
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  eio,
+  eio_main,
+  eio-ssl,
+  h2-eio,
+  httpun-eio,
+  ipaddr,
+  magic-mime,
+  pecu,
+  prettym,
+  uri,
+  uutf,
+  unstrctrd,
+  httpun-ws,
+  alcotest,
+  dune-site,
+  ocaml,
 }:
 
 buildDunePackage {

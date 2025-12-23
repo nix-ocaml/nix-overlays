@@ -1,10 +1,11 @@
-{ buildDunePackage
-, lambda-runtime
-, piaf
-, yojson
-, ppx_deriving_yojson
-, lwt
-, base64
+{
+  buildDunePackage,
+  lambda-runtime,
+  piaf,
+  yojson,
+  ppx_deriving_yojson,
+  lwt,
+  base64,
 
 }:
 

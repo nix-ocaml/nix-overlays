@@ -1,4 +1,9 @@
-{ buildDunePackage, dream, lambdasoup, lwt_ppx }:
+{
+  buildDunePackage,
+  dream,
+  lambdasoup,
+  lwt_ppx,
+}:
 
 buildDunePackage rec {
   pname = "dream-livereload";
@@ -8,5 +13,9 @@ buildDunePackage rec {
     sha256 = "1ppq4j823p57w7bmzclmlb035i1mhjwz86alwjr44bjv493h6rgr";
   };
 
-  propagatedBuildInputs = [ dream lambdasoup lwt_ppx ];
+  propagatedBuildInputs = [
+    dream
+    lambdasoup
+    lwt_ppx
+  ];
 }

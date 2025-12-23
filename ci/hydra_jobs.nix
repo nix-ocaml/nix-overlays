@@ -1,9 +1,12 @@
 # Heavily inspired by https://github.com/cleverca22/hydra-configs
-{ pulls ? ./simple-pr-dummy.json }:
+{
+  pulls ? ./simple-pr-dummy.json,
+}:
 
 let
   pkgs = import <nixpkgs> { };
-  makeSpec = contents:
+  makeSpec =
+    contents:
     builtins.derivation {
       name = "spec.json";
       system = "x86_64-linux";
@@ -51,4 +54,6 @@ let
   pull_requests = listToAttrs (mapAttrsToList makePr pr_data);
   jobsetsAttrs = pull_requests // primary_jobsets;
 in
-{ jobsets = makeSpec jobsetsAttrs; }
+{
+  jobsets = makeSpec jobsetsAttrs;
+}

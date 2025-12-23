@@ -1,4 +1,9 @@
-{ fetchFromGitHub, buildDunePackage, reason, ppxlib }:
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  reason,
+  ppxlib,
+}:
 
 buildDunePackage {
   pname = "ppx_jsx_embed";
@@ -10,5 +15,8 @@ buildDunePackage {
     hash = "sha256-7dPvSmpT+hU6+GlZoa/SpHVi7zRHwX/SZR7Jsk2aJ3A=";
   };
   doCheck = true;
-  propagatedBuildInputs = [ reason ppxlib ];
+  propagatedBuildInputs = [
+    reason
+    ppxlib
+  ];
 }

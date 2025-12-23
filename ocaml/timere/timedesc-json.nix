@@ -1,4 +1,8 @@
-{ buildDunePackage, timedesc, yojson }:
+{
+  buildDunePackage,
+  timedesc,
+  yojson,
+}:
 
 buildDunePackage {
   pname = "timedesc-json";

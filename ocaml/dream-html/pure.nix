@@ -1,8 +1,9 @@
-{ lib
-, buildDunePackage
-, fetchFromGitHub
-, uri
-, ocaml
+{
+  lib,
+  buildDunePackage,
+  fetchFromGitHub,
+  uri,
+  ocaml,
 }:
 
 buildDunePackage {
@@ -11,13 +12,12 @@ buildDunePackage {
 
   src =
     if lib.versionOlder "5.3" ocaml.version then
-      fetchFromGitHub
-        {
-          owner = "yawaramin";
-          repo = "dream-html";
-          rev = "v3.11.2";
-          hash = "sha256-/I233A86T+QEb2qbSHucgzRzYEjS08eKezSXOwz2ml0=";
-        }
+      fetchFromGitHub {
+        owner = "yawaramin";
+        repo = "dream-html";
+        rev = "v3.11.2";
+        hash = "sha256-/I233A86T+QEb2qbSHucgzRzYEjS08eKezSXOwz2ml0=";
+      }
     else
       fetchFromGitHub {
         owner = "yawaramin";
@@ -29,8 +29,7 @@ buildDunePackage {
   propagatedBuildInputs = [ uri ];
 
   meta = {
-    description =
-      "Write HTML directly in your OCaml source files with editor support.";
+    description = "Write HTML directly in your OCaml source files with editor support.";
     license = lib.licenses.gpl3;
   };
 }

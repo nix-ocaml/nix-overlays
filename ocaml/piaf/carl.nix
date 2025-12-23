@@ -1,14 +1,15 @@
-{ lib
-, stdenv
-, static ? false
-, piaf
-, ocaml
-, dune
-, findlib
-, cmdliner
-, camlzip
-, ezgzip
-, fmt
+{
+  lib,
+  stdenv,
+  static ? false,
+  piaf,
+  ocaml,
+  dune,
+  findlib,
+  cmdliner,
+  camlzip,
+  ezgzip,
+  fmt,
 }:
 
 stdenv.mkDerivation {

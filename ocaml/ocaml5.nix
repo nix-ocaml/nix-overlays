@@ -1,13 +1,14 @@
-{ darwin
-, lib
-, fetchFromGitHub
-, nodejs_latest
-, oself
-, osuper
-, nixpkgs
-, stdenv
-, makeWrapper
-, nix-eval-jobs
+{
+  darwin,
+  lib,
+  fetchFromGitHub,
+  nodejs_latest,
+  oself,
+  osuper,
+  nixpkgs,
+  stdenv,
+  makeWrapper,
+  nix-eval-jobs,
 }:
 
 with oself;
@@ -18,14 +19,22 @@ with oself;
   caqti-eio = buildDunePackage {
     inherit (caqti) version src;
     pname = "caqti-eio";
-    propagatedBuildInputs = [ eio eio_main caqti ];
+    propagatedBuildInputs = [
+      eio
+      eio_main
+      caqti
+    ];
   };
 
   cohttp-eio = buildDunePackage {
     pname = "cohttp-eio";
     inherit (http) src version;
     doCheck = false;
-    propagatedBuildInputs = [ cohttp eio_main ptime ];
+    propagatedBuildInputs = [
+      cohttp
+      eio_main
+      ptime
+    ];
   };
 
   eio-trace = buildDunePackage {
@@ -35,19 +44,30 @@ with oself;
       url = "https://github.com/ocaml-multicore/eio-trace/releases/download/v0.4/eio-trace-0.4.tbz";
       sha256 = "1bry9v9c0izz5slhq11q7jgzg6myajfsvx3sg9h2zmcj9irr1xg5";
     };
-    propagatedBuildInputs = [ eio_main lablgtk3 processor cmdliner ];
+    propagatedBuildInputs = [
+      eio_main
+      lablgtk3
+      processor
+      cmdliner
+    ];
   };
 
   graphql-eio = buildDunePackage {
     pname = "graphql-eio";
     inherit (graphql_parser) src version;
-    propagatedBuildInputs = [ eio_main graphql ];
+    propagatedBuildInputs = [
+      eio_main
+      graphql
+    ];
   };
 
   kafka-eio = buildDunePackage {
     pname = "kafka-eio";
     inherit (kafka) hardeningDisable version src;
-    propagatedBuildInputs = [ eio kafka ];
+    propagatedBuildInputs = [
+      eio
+      kafka
+    ];
   };
 
   kcas = callPackage ./kcas { };
@@ -68,10 +88,18 @@ with oself;
       sha256 = "058vqpza66z5687n90s18pzn1cnvkwv3mphlc1zsnc0541sgk8f4";
     };
 
-    propagatedBuildInputs = [ either picos_std ];
+    propagatedBuildInputs = [
+      either
+      picos_std
+    ];
     doCheck = false;
     nativeCheckInputs = [ mdx ];
-    checkInputs = [ mdx qcheck-core trace trace-tef ];
+    checkInputs = [
+      mdx
+      qcheck-core
+      trace
+      trace-tef
+    ];
   };
 
   carl = callPackage ./piaf/carl.nix { };
@@ -88,7 +116,13 @@ with oself;
 
     nativeBuildInputs = [ makeWrapper ];
     buildInputs = [ nix-eval-jobs ];
-    propagatedBuildInputs = [ cmdliner eio_main logs fmt ppx_yojson_conv ];
+    propagatedBuildInputs = [
+      cmdliner
+      eio_main
+      logs
+      fmt
+      ppx_yojson_conv
+    ];
     postInstall =
       let
         path = lib.makeBinPath [ nix-eval-jobs ];
@@ -105,19 +139,30 @@ with oself;
       url = "https://github.com/ocaml-multicore/picos/releases/download/0.6.0/picos-0.6.0.tbz";
       sha256 = "1ykx11c8jnjf24anwdzmmf7dmwbqf63z6s3x5yp2sp7nkhchhniz";
     };
-    propagatedBuildInputs = [ backoff thread-local-storage ];
+    propagatedBuildInputs = [
+      backoff
+      thread-local-storage
+    ];
   };
 
   picos_aux = buildDunePackage {
     pname = "picos_aux";
     inherit (picos) src version;
-    propagatedBuildInputs = [ backoff multicore-magic ];
+    propagatedBuildInputs = [
+      backoff
+      multicore-magic
+    ];
   };
 
   picos_std = buildDunePackage {
     pname = "picos_std";
     inherit (picos) src version;
-    propagatedBuildInputs = [ picos picos_aux backoff multicore-magic ];
+    propagatedBuildInputs = [
+      picos
+      picos_aux
+      backoff
+      multicore-magic
+    ];
   };
 
   picos_io = buildDunePackage {
@@ -136,13 +181,22 @@ with oself;
   picos_lwt = buildDunePackage {
     pname = "picos_lwt";
     inherit (picos) src version;
-    propagatedBuildInputs = [ picos_aux picos_std lwt ];
+    propagatedBuildInputs = [
+      picos_aux
+      picos_std
+      lwt
+    ];
   };
 
   picos_mux = buildDunePackage {
     pname = "picos_mux";
     inherit (picos) src version;
-    propagatedBuildInputs = [ picos_aux picos_std multicore-magic backoff ];
+    propagatedBuildInputs = [
+      picos_aux
+      picos_std
+      multicore-magic
+      backoff
+    ];
   };
 
   ppx_rapper_eio = callPackage ./ppx_rapper/eio.nix { };
@@ -156,13 +210,20 @@ with oself;
       sha256 = "0r35cpbmj17ldpfkf4dzk4bs1knfy4hyjz6ax0ayrck25rm397dh";
     };
 
-    propagatedBuildInputs = [ tracing cmdliner hdr_histogram ];
+    propagatedBuildInputs = [
+      tracing
+      cmdliner
+      hdr_histogram
+    ];
   };
 
   tar-eio = buildDunePackage {
     pname = "tar-eio";
     inherit (tar) version src;
-    propagatedBuildInputs = [ tar eio ];
+    propagatedBuildInputs = [
+      tar
+      eio
+    ];
   };
 
   thread-local-storage = buildDunePackage {
