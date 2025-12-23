@@ -694,28 +694,28 @@ with oself;
     then disableTests osuper.saturn
     else null;
 
-  dune_1 = dune;
-
-  dune =
-    if lib.versionOlder "4.06" ocaml.version
-    then oself.dune_2
-    else osuper.dune_1;
-
-  dune_2 = dune_3;
-
-  dune_3 = osuper.dune_3.overrideAttrs (o: {
-    version = "3.20.2";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/dune/releases/download/3.20.2/dune-3.20.2.tbz";
-      sha256 = "0jd5kkpvkkpcmy0wwcyqnmy6x2pjz7rbsqb8pfwsid5xc0nnpa5i";
-    };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
-    postFixup =
-      if stdenv.isDarwin then ''
-        wrapProgram $out/bin/dune \
+  dune = oself.dune_3;
+  dune_2 = oself.dune_3;
+  dune_3 =
+    let
+      dune_pkg =
+        oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
+          ocamlPackages = oself;
+        };
+    in
+    dune_pkg.overrideAttrs (o: {
+      version = "3.20.2";
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/3.20.2/dune-3.20.2.tbz";
+        sha256 = "0jd5kkpvkkpcmy0wwcyqnmy6x2pjz7rbsqb8pfwsid5xc0nnpa5i";
+      };
+      nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
+      postFixup =
+        if stdenv.isDarwin then ''
+          wrapProgram $out/bin/dune \
           --suffix PATH : "${darwin.sigtool}/bin"
-      '' else "";
-  });
+        '' else "";
+    });
 
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
     buildInputs = [ ];
@@ -843,6 +843,16 @@ with oself;
 
     propagatedBuildInputs = [ rresult astring ocplib-endian camlzip ];
   };
+
+  extunix = osuper.extunix.overrideAttrs (o: {
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        o.src else
+        builtins.fetchurl {
+          url = "https://github.com/ygrek/extunix/releases/download/v0.4.3/extunix-0.4.3.tbz";
+          sha256 = "1i79wal5nddkfdyaj5bl05v8ypp4w9lvjsay552x0sxqjn2n6q0l";
+        };
+  });
 
   facile = buildDunePackage rec {
     pname = "facile";
@@ -2117,6 +2127,7 @@ with oself;
             hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
           } else o.src;
     patches = [ ];
+    doCheck = false;
   });
 
   ppx_repr = disableTests osuper.ppx_repr;
