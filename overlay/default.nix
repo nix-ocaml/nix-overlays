@@ -7,25 +7,19 @@ final: prev:
 
 let
   overlay = import ./overlay.nix nixpkgs;
-  self = overlay final prev;
-  super = self;
 in
 
-self
+overlay final prev
 // {
 
   # Cross-compilation / static overlays
-  # pkgsMusl = prev.pkgsMusl.appendOverlays [
-  # overlay
-  # # (import ../static)
-  # # (prev.pkgsMusl.callPackage ../static/ocaml.nix { })
-  # ];
+
   pkgsStatic = prev.pkgsStatic.extend (
     self: super:
     super.lib.overlayOCamlPackages {
       inherit self super;
-      overlays = [ ];
-      # overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
+      # overlays = [ ];
+      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
       updateOCamlPackages = true;
     }
   );
@@ -41,6 +35,7 @@ self
           cross-overlay = (prev.callPackage ../cross { });
         in
         prev.pkgsCross.aarch64-multiplatform.extend cross-overlay;
+
       aarch64-multiplatform-musl =
         let
           cross-overlay = (prev.pkgsMusl.callPackage ../cross { });
@@ -49,8 +44,18 @@ self
           cross-overlay
           static-overlay
         ];
-      musl64 = prev.pkgsCross.musl64.extend static-overlay;
-      riscv64 = prev.pkgsCross.riscv64.extend (super.callPackage ../cross { });
-    };
 
+      musl64 = prev.pkgsCross.musl64.extend static-overlay;
+
+      riscv64 = prev.pkgsCross.riscv64.extend (prev.callPackage ../cross { });
+      riscv64-musl =
+        let
+          cross-overlay = (prev.pkgsMusl.callPackage ../cross { });
+        in
+        prev.pkgsCross.riscv64-musl.appendOverlays [
+          cross-overlay
+          static-overlay
+        ];
+
+    };
 }

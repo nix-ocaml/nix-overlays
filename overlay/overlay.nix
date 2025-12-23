@@ -61,12 +61,12 @@ in
     (super.postgresql_18.override {
       # a new change does some shenanigans to get llvmStdenv + lld which breaks
       # our cross-compilation
-      overrideCC = _: _: super.stdenv;
+      overrideCC = _: _: stdenv;
       systemdSupport = false;
       gssSupport = false;
       openssl = self.openssl-oc;
       jitSupport = false;
-      pamSupport = true;
+      pamSupport = stdenv.isLinux;
       perlSupport = false;
       pythonSupport = false;
       tclSupport = false;
