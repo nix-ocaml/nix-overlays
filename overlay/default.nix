@@ -16,15 +16,21 @@ let
     haskell
     haskellPackages;
 
-  overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix (attrs // {
-    inherit nixpkgs;
-  });
-  staticLightExtend = pkgSet: pkgSet.extend (self: super:
+  overlayOCamlPackages =
+    attrs:
+    import ../ocaml/overlay-ocaml-packages.nix (
+      attrs
+      // {
+        inherit nixpkgs;
+      }
+    );
+  staticLightExtend =
+    self: super:
     super.lib.overlayOCamlPackages {
       inherit self super;
       overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
       updateOCamlPackages = true;
-    });
+    };
 
 in
 
@@ -38,30 +44,36 @@ in
       libgsl = super.gsl;
     })
   ];
-}) // {
+})
+// {
   # Place a canary
   __nix-ocaml-overlays-applied = 1;
 
   # Cross-compilation / static overlays
-  pkgsMusl = staticLightExtend super.pkgsMusl;
-  pkgsStatic = staticLightExtend super.pkgsStatic;
+  pkgsMusl = super.pkgsMusl.extend staticLightExtend;
+  pkgsStatic = super.pkgsStatic.extend staticLightExtend;
 
   pkgsCross =
     let
       static-overlay = import ../static;
-      cross-overlay = callPackage ../cross { };
     in
-    super.pkgsCross // {
-      musl64 = super.pkgsCross.musl64.extend static-overlay;
-
+    super.pkgsCross
+    // {
       aarch64-multiplatform =
+        let
+          cross-overlay = (super.callPackage ../cross { });
+        in
         super.pkgsCross.aarch64-multiplatform.extend cross-overlay;
-
       aarch64-multiplatform-musl =
-        (super.pkgsCross.aarch64-multiplatform-musl.appendOverlays
-          [ cross-overlay static-overlay ]);
-
-      riscv64 = super.pkgsCross.riscv64.extend cross-overlay;
+        let
+          cross-overlay = (self.pkgsMusl.callPackage ../cross { });
+        in
+        super.pkgsCross.aarch64-multiplatform-musl.appendOverlays [
+          cross-overlay
+          static-overlay
+        ];
+      musl64 = super.pkgsCross.musl64.extend static-overlay;
+      riscv64 = super.pkgsCross.riscv64.extend (super.callPackage ../cross { });
     };
 
   # Override `pkgs.nix` to the unstable channel
