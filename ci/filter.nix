@@ -261,10 +261,10 @@ rec {
       # packages
       inherit
         ppx_deriving
-        base tls core utop irmin;
+        base tls utop;
     } // (if lib.hasPrefix "5_" ocamlVersion then {
-      inherit piaf carl;
-      static-carl = carl.override { static = true; };
+      # inherit piaf carl;
+      # static-carl = carl.override { static = true; };
     } else { }));
 
   crossTargetList = pkgs: ocamlVersion:
