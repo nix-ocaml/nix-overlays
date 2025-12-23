@@ -10,18 +10,18 @@ let
 in
 
 overlay final prev
-// {
+  // {
 
   # Cross-compilation / static overlays
 
   pkgsStatic = prev.pkgsStatic.extend (
     self: super:
-    super.lib.overlayOCamlPackages {
-      inherit self super;
-      # overlays = [ ];
-      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
-      updateOCamlPackages = true;
-    }
+      super.lib.overlayOCamlPackages {
+        inherit self super;
+        # overlays = [ ];
+        overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
+        updateOCamlPackages = true;
+      }
   );
 
   pkgsCross =

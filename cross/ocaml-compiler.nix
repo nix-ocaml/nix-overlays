@@ -1,10 +1,10 @@
-{
-  stdenv,
-  lib,
-  buildPackages,
-  natocamlPackages,
-  writeScriptBin,
-  osuper,
+{ stdenv
+, lib
+, buildPackages
+, natocamlPackages
+, writeScriptBin
+, osuper
+,
 }:
 
 let
@@ -26,29 +26,30 @@ let
 
 in
 if lib.versionOlder "5.4" osuper.ocaml.version then
-  osuper.ocaml.overrideAttrs (o: {
-    depsBuildBuild = [
-      buildPackages.stdenv.cc
-      natocaml
-    ];
-    configurePlatforms = [ ];
-    preConfigure = ''
-      configureFlagsArray+=("--host=${stdenv.buildPlatform.config}" "--target=${stdenv.targetPlatform.config}" "PARTIALLD=$LD -r" "ASPP=$CC -c")
-    '';
-    buildPhase = ''
-      runHook preBuild
-      make crossopt -j500
-      runHook postBuild
-    '';
-    installTargets = [ "installcross" ];
-    postInstall = ''
-      ls -lah $out/bin
-      cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
-      cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
-      cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
-      cp ${natocaml}/bin/ocaml $out/bin/ocaml
-    '';
-  })
+  osuper.ocaml.overrideAttrs
+    (o: {
+      depsBuildBuild = [
+        buildPackages.stdenv.cc
+        natocaml
+      ];
+      configurePlatforms = [ ];
+      preConfigure = ''
+        configureFlagsArray+=("--host=${stdenv.buildPlatform.config}" "--target=${stdenv.targetPlatform.config}" "PARTIALLD=$LD -r" "ASPP=$CC -c")
+      '';
+      buildPhase = ''
+        runHook preBuild
+        make crossopt -j500
+        runHook postBuild
+      '';
+      installTargets = [ "installcross" ];
+      postInstall = ''
+        ls -lah $out/bin
+        cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
+        cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
+        cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
+        cp ${natocaml}/bin/ocaml $out/bin/ocaml
+      '';
+    })
 else
   osuper.ocaml.overrideAttrs (
     o:
