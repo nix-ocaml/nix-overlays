@@ -179,21 +179,12 @@ in
         };
 
         findlib = osuper.findlib.overrideAttrs (o: {
-          # configurePhase = ''
-          # runHook preConfigure
-          # ./configure ${lib.concatStringsSep " " o.configureFlags} || true
-          # ls -lah
-          # cat ocargs.log
-          # runHook postConfigure
-          # '';
           postInstall = ''
             rm -rf $out/bin/ocamlfind
             cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
           '';
 
           passthru = { inherit makeFindlibConf; };
-          # nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ buildPackages.stdenv.cc ];
-
           setupHook = writeText "setupHook.sh" ''
             addOCamlPath () {
                 if test -d "''$1/lib/ocaml/${oself.ocaml.version}/site-lib"; then
