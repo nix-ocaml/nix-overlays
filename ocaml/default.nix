@@ -701,7 +701,7 @@ with oself;
       dune_pkg =
         oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
           ocamlPackages = oself;
-      };
+        };
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.20.2";
