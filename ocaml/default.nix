@@ -694,19 +694,14 @@ with oself;
     then disableTests osuper.saturn
     else null;
 
-  dune_1 = dune;
-
-  dune =
-    if lib.versionOlder "4.06" ocaml.version
-    then oself.dune_3
-    else osuper.dune_1;
-
-  dune_2 = dune_3;
-
+  dune = oself.dune_3;
+  dune_2 = oself.dune_3;
   dune_3 =
     let
       dune_pkg =
-        oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" { };
+        oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
+          ocamlPackages = oself;
+      };
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.20.2";
