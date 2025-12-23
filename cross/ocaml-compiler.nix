@@ -4,7 +4,6 @@
 , natocamlPackages
 , writeScriptBin
 , osuper
-,
 }:
 
 let
@@ -25,6 +24,7 @@ let
   ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
 
 in
+
 if lib.versionOlder "5.4" osuper.ocaml.version then
   osuper.ocaml.overrideAttrs
     (o: {
@@ -43,11 +43,7 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
       '';
       installTargets = [ "installcross" ];
       postInstall = ''
-        ls -lah $out/bin
-        cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
-        cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
         cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
-        cp ${natocaml}/bin/ocaml $out/bin/ocaml
       '';
     })
 else
