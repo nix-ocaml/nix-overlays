@@ -82,8 +82,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "62fc09b1c81f981943fe1012613b29c086f876c4";
-      hash = "sha256-7biGmvtoc9BYtn779xoufRgA6UDVEYwZWKkrdYmZ6NY=";
+      rev = "29b091a26af6060e623644a9736b2a88d47802bb";
+      hash = "sha256-HkIE4/SivMq0uuUhZ+RqDTouPF//e3p2CHhhd48/OF8=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
