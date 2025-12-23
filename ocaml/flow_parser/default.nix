@@ -1,12 +1,13 @@
-{ fetchFromGitHub
-, buildDunePackage
-, ocaml
-, base
-, ppx_deriving
-, ppx_gen_rec
-, sedlex
-, wtf8
-, lib
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  ocaml,
+  base,
+  ppx_deriving,
+  ppx_gen_rec,
+  sedlex,
+  wtf8,
+  lib,
 }:
 
 buildDunePackage {
@@ -20,11 +21,16 @@ buildDunePackage {
   };
 
   postPatch =
-    (if (lib.versionAtLeast ocaml.version "4.14" && !(lib.versionAtLeast ocaml.version "5.0")) then
-      ''
-        substituteInPlace "src/parser/parser_common.ml" --replace-fail \
-        'List.is_empty arguments' 'arguments = []'
-      '' else "") + ''
+    (
+      if (lib.versionAtLeast ocaml.version "4.14" && !(lib.versionAtLeast ocaml.version "5.0")) then
+        ''
+          substituteInPlace "src/parser/parser_common.ml" --replace-fail \
+          'List.is_empty arguments' 'arguments = []'
+        ''
+      else
+        ""
+    )
+    + ''
       substituteInPlace "src/parser/dune" \
         --replace-fail \
           'public_name flow_parser)' \

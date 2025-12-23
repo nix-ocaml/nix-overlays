@@ -1,4 +1,12 @@
-{ lib, buildDunePackage, dream, lambdasoup, luv, lwt, lwt_ppx }:
+{
+  lib,
+  buildDunePackage,
+  dream,
+  lambdasoup,
+  luv,
+  lwt,
+  lwt_ppx,
+}:
 
 buildDunePackage rec {
   pname = "dream-serve";
@@ -9,7 +17,13 @@ buildDunePackage rec {
     sha256 = "0sqmy3jjy00laxh1skq69i7mn2lg14sa2ilap8yvjpz2bhgc7cvp";
   };
 
-  propagatedBuildInputs = [ dream lambdasoup luv lwt lwt_ppx ];
+  propagatedBuildInputs = [
+    dream
+    lambdasoup
+    luv
+    lwt
+    lwt_ppx
+  ];
 
   meta = {
     description = "Static site server with live reload";

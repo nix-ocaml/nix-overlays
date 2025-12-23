@@ -1,13 +1,14 @@
-{ lib
-, buildDunePackage
-, dream-pure
-, lwt
-, lwt_ppx
-, lwt_ssl
-, ssl
-, h2-lwt-unix
-, httpun-lwt-unix
-, httpun-ws
+{
+  lib,
+  buildDunePackage,
+  dream-pure,
+  lwt,
+  lwt_ppx,
+  lwt_ssl,
+  ssl,
+  h2-lwt-unix,
+  httpun-lwt-unix,
+  httpun-ws,
 }:
 
 buildDunePackage rec {

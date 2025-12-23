@@ -20,8 +20,7 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: fmt
-        run: |
-          find . -iname '*.nix' | xargs nix shell -f ./ nixpkgs-fmt -c nixpkgs-fmt --check
+        run: find . -iname '*.nix' -exec nix run .#nixfmt -- --check {} +
       - name: check
         run: nix flake check
 

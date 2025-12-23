@@ -1,8 +1,9 @@
-{ buildDunePackage
-, httpun-ws
-, httpun-ws-lwt
-, faraday-lwt-unix
-, gluten-lwt-unix
+{
+  buildDunePackage,
+  httpun-ws,
+  httpun-ws-lwt,
+  faraday-lwt-unix,
+  gluten-lwt-unix,
 }:
 
 buildDunePackage {

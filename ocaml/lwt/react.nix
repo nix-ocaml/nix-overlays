@@ -1,4 +1,10 @@
-{ lib, buildDunePackage, cppo, lwt, react }:
+{
+  lib,
+  buildDunePackage,
+  cppo,
+  lwt,
+  react,
+}:
 
 buildDunePackage {
   pname = "lwt_react";
@@ -7,7 +13,10 @@ buildDunePackage {
 
   buildInputs = [ cppo ];
 
-  propagatedBuildInputs = [ lwt react ];
+  propagatedBuildInputs = [
+    lwt
+    react
+  ];
 
   meta = {
     description = "Helpers for using React with Lwt";

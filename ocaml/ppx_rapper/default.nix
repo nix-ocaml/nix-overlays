@@ -1,10 +1,11 @@
-{ fetchFromGitHub
-, buildDunePackage
-, base
-, caqti
-, pg_query
-, lib
-, ocaml
+{
+  fetchFromGitHub,
+  buildDunePackage,
+  base,
+  caqti,
+  pg_query,
+  lib,
+  ocaml,
 }:
 
 buildDunePackage rec {
@@ -12,15 +13,14 @@ buildDunePackage rec {
   version = "3.0.0";
 
   src =
-    if lib.versionOlder "5.3" ocaml.version
-    then
-      fetchFromGitHub
-        {
-          owner = "roddyyaga";
-          repo = "ppx_rapper";
-          rev = "ac71881c7ef1c40c4996c0080365bf2f12d275d1";
-          hash = "sha256-2XTpk1kUakxddcR7ZBiv4hynV6dznDy//G7914azJKU=";
-        } else
+    if lib.versionOlder "5.3" ocaml.version then
+      fetchFromGitHub {
+        owner = "roddyyaga";
+        repo = "ppx_rapper";
+        rev = "ac71881c7ef1c40c4996c0080365bf2f12d275d1";
+        hash = "sha256-2XTpk1kUakxddcR7ZBiv4hynV6dznDy//G7914azJKU=";
+      }
+    else
       fetchFromGitHub {
         owner = "roddyyaga";
         repo = "ppx_rapper";
@@ -28,5 +28,9 @@ buildDunePackage rec {
         hash = "sha256-Fn13E8H5+ciEIF5wIA6qzEGX5GLe0SYz7i/TSdk1g1M=";
       };
 
-  propagatedBuildInputs = [ caqti pg_query base ];
+  propagatedBuildInputs = [
+    caqti
+    pg_query
+    base
+  ];
 }

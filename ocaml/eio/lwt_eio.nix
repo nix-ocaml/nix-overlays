@@ -1,4 +1,10 @@
-{ fetchFromGitHub, lib, buildDunePackage, lwt, eio }:
+{
+  fetchFromGitHub,
+  lib,
+  buildDunePackage,
+  lwt,
+  eio,
+}:
 
 buildDunePackage {
   pname = "lwt_eio";
@@ -8,5 +14,8 @@ buildDunePackage {
     sha256 = "08bc9yxdzjll0ig1fnkr3wyk0bqx6nkncjfns2xd6m3qg226flkn";
   };
 
-  propagatedBuildInputs = [ lwt eio ];
+  propagatedBuildInputs = [
+    lwt
+    eio
+  ];
 }

@@ -1,4 +1,10 @@
-{ lib, fetchFromGitHub, buildDunePackage, httpun-ws, graphql }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  httpun-ws,
+  graphql,
+}:
 
 buildDunePackage {
   pname = "subscriptions-transport-ws";
@@ -11,7 +17,10 @@ buildDunePackage {
     sha256 = "sha256-15zAWaYOM8ufYc6Ad5esXbqFHNGXZXBX2WrRZhsi0wI=";
   };
 
-  propagatedBuildInputs = [ httpun-ws graphql ];
+  propagatedBuildInputs = [
+    httpun-ws
+    graphql
+  ];
 
   meta = {
     license = lib.licenses.bsd3;

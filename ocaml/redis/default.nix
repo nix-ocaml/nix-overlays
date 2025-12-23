@@ -1,4 +1,11 @@
-{ lib, fetchFromGitHub, buildDunePackage, uuidm, re, stdlib-shims }:
+{
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  uuidm,
+  re,
+  stdlib-shims,
+}:
 
 buildDunePackage rec {
   pname = "redis";
@@ -8,7 +15,11 @@ buildDunePackage rec {
     sha256 = "02llmcfjh8dplc456y8y3vvvslsdib1r679pn8baphfm8xn1zxqf";
   };
 
-  propagatedBuildInputs = [ uuidm re stdlib-shims ];
+  propagatedBuildInputs = [
+    uuidm
+    re
+    stdlib-shims
+  ];
 
   meta = {
     description = "Redis client";

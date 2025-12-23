@@ -1,14 +1,15 @@
-{ buildDunePackage
-, fetchFromGitHub
-, unzip
-, angstrom
-, angstrom-unix
-, cmdliner
-, fmt
-, iso639
-, uucp
-, uunf
-, uutf
+{
+  buildDunePackage,
+  fetchFromGitHub,
+  unzip,
+  angstrom,
+  angstrom-unix,
+  cmdliner,
+  fmt,
+  iso639,
+  uucp,
+  uunf,
+  uutf,
 }:
 
 buildDunePackage {

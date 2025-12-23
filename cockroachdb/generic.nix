@@ -1,21 +1,22 @@
-{ lib
-, src
-, stdenv
-, buildGoModule
-, fetchurl
-, fetchFromGitHub
-, cmake
-, xz
-, which
-, autoconf
-, ncurses6
-, libedit
-, libunwind
-, installShellFiles
-, removeReferencesTo
-, go
-, version
-, patches ? [ ]
+{
+  lib,
+  src,
+  stdenv,
+  buildGoModule,
+  fetchurl,
+  fetchFromGitHub,
+  cmake,
+  xz,
+  which,
+  autoconf,
+  ncurses6,
+  libedit,
+  libunwind,
+  installShellFiles,
+  removeReferencesTo,
+  go,
+  version,
+  patches ? [ ],
 }:
 
 buildGoModule rec {
@@ -30,8 +31,21 @@ buildGoModule rec {
     "-Wno-error=pessimizing-move"
   ];
 
-  nativeBuildInputs = [ installShellFiles cmake xz which autoconf ];
-  buildInputs = if stdenv.isDarwin then [ libunwind libedit ] else [ ncurses6 ];
+  nativeBuildInputs = [
+    installShellFiles
+    cmake
+    xz
+    which
+    autoconf
+  ];
+  buildInputs =
+    if stdenv.isDarwin then
+      [
+        libunwind
+        libedit
+      ]
+    else
+      [ ncurses6 ];
 
   inherit patches;
 
@@ -60,7 +74,10 @@ buildGoModule rec {
     runHook postInstall
   '';
 
-  outputs = [ "out" "man" ];
+  outputs = [
+    "out"
+    "man"
+  ];
 
   # fails with `GOFLAGS=-trimpath`
   allowGoReference = true;
@@ -73,6 +90,10 @@ buildGoModule rec {
     description = "A scalable, survivable, strongly-consistent SQL database";
     license = licenses.bsl11;
     # platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
-    maintainers = with maintainers; [ rushmorem thoughtpolice turion ];
+    maintainers = with maintainers; [
+      rushmorem
+      thoughtpolice
+      turion
+    ];
   };
 }

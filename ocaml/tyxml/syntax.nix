@@ -1,10 +1,22 @@
-{ lib, buildDunePackage, ppxlib, uutf, re, tyxml, alcotest }:
+{
+  lib,
+  buildDunePackage,
+  ppxlib,
+  uutf,
+  re,
+  tyxml,
+  alcotest,
+}:
 
 buildDunePackage {
   pname = "tyxml-syntax";
   inherit (tyxml) src version;
 
-  propagatedBuildInputs = [ ppxlib uutf re ];
+  propagatedBuildInputs = [
+    ppxlib
+    uutf
+    re
+  ];
   checkInputs = [ alcotest ];
   doCheck = true;
 

@@ -1,9 +1,10 @@
-{ buildDunePackage
-, httpun
-, async
-, gluten-async
-, faraday-async
-, async_ssl
+{
+  buildDunePackage,
+  httpun,
+  async,
+  gluten-async,
+  faraday-async,
+  async_ssl,
 }:
 
 buildDunePackage {

@@ -1,24 +1,25 @@
-{ upstream ? false
-, lib
-, fetchFromGitHub
-, buildDunePackage
-, unstrctrd
-, lwt
-, ocaml
-, prettym
-, logs
-, ke
-, bigstringaf
-, astring
-, faraday
-, base64
-, pecu
-, rosetta
-, rresult
-, uutf
-, fmt
-, angstrom
-, alcotest
+{
+  upstream ? false,
+  lib,
+  fetchFromGitHub,
+  buildDunePackage,
+  unstrctrd,
+  lwt,
+  ocaml,
+  prettym,
+  logs,
+  ke,
+  bigstringaf,
+  astring,
+  faraday,
+  base64,
+  pecu,
+  rosetta,
+  rresult,
+  uutf,
+  fmt,
+  angstrom,
+  alcotest,
 }:
 
 let
@@ -63,5 +64,8 @@ buildDunePackage {
 
   doCheck = !upstream;
 
-  checkInputs = [ alcotest rosetta ];
+  checkInputs = [
+    alcotest
+    rosetta
+  ];
 }
