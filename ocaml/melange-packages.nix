@@ -144,8 +144,7 @@ with oself;
 
   reason-react = buildDunePackage {
     pname = "reason-react";
-    version = "n/a";
-    inherit (reason-react-ppx) src;
+    inherit (reason-react-ppx) src version;
     nativeBuildInputs = [
       reason
       melange
@@ -158,12 +157,10 @@ with oself;
 
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
-    version = "n/a";
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason-react";
-      rev = "3cbac2c73590355667f7ee67cf6fc82dba95ff02";
-      hash = "sha256-4X7vqPb6CNhqhasNxkp6yrXaKQtCBF47yvC8iwCuuno=";
+    version = "0.17.0";
+    src = builtins.fetchurl {
+      url = "https://github.com/reasonml/reason-react/releases/download/0.17.0/reason-react-0.17.0.tbz";
+      sha256 = "131izysadis4k3y78kwhx7mva1pd2zs9xihv7jcc33alpl47mdh2";
     };
     propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
