@@ -43,6 +43,8 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
     '';
     installTargets = [ "installcross" ];
     postInstall = ''
+      cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
+      cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
       cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
     '';
   })
