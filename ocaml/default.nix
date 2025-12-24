@@ -2631,6 +2631,8 @@ with oself;
 
   subscriptions-transport-ws = callPackage ./subscriptions-transport-ws { };
 
+  synchronizer = if lib.versionOlder "5.2" ocaml.version then osuper.synchronizer else null;
+
   syndic = buildDunePackage rec {
     pname = "syndic";
     version = "1.6.1";
