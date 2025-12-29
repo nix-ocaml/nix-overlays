@@ -2,12 +2,13 @@
 set -euo pipefail
 
 nix_ci_build() {
-  local flake_ref="$1"
+  local flake_ref="${1:-}"
 
   if [[ -z "$flake_ref" ]]; then
-    echo "usage: nix_ci_build <flake-ref>"
+    echo "usage: nix_ci_build <flake-ref> [extra nix-ci-build args...]" >&2
     return 1
   fi
+  shift
 
   local args=(
     --flake "$flake_ref"
@@ -21,6 +22,7 @@ nix_ci_build() {
     # --eval-max-memory-size "12000"
     # --quiet-build
   )
+  args+=( "$@" )
 
   OCAMLRUNPARAM=b nix run \
     github:nix-ocaml/nix-ci-build \
@@ -31,7 +33,7 @@ SYSTEM="${1}"
 PKG_SET="${2}"
 
 # Build self first (to keep the cache warm)
-nix_ci_build "github:nix-ocaml/nix-ci-build#packages.${SYSTEM}"
+nix_ci_build "github:nix-ocaml/nix-ci-build#packages.${SYSTEM}" --force-upload
 
 # Then build the package set
 nix_ci_build ".#hydraJobs.${SYSTEM}.${PKG_SET}"
