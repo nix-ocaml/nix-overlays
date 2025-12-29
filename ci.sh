@@ -14,4 +14,6 @@ args=(
   # --quiet-build
 )
 
-OCAMLRUNPARAM=b nix run .#ocaml-ng.ocamlPackages_5_4.nix-ci-build -- "${args[@]}"
+OCAMLRUNPARAM=b nix run \
+  github:nix-ocaml/nix-ci-build \
+  --override-input nixpkgs path:$(dirname "$PWD") -- "${args[@]}"
