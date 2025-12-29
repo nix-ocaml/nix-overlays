@@ -31,7 +31,7 @@ SYSTEM="${1}"
 PKG_SET="${2}"
 
 # Build self first (to keep the cache warm)
-nix-ci-build "github:nix-ocaml/nix-ci-build#packages.${SYSTEM}"
+nix_ci_build "github:nix-ocaml/nix-ci-build#packages.${SYSTEM}"
 
 # Then build the package set
-nix-ci-build ".#hydraJobs.${SYSTEM}.${PKG_SET}"
+nix_ci_build ".#hydraJobs.${SYSTEM}.${PKG_SET}"
