@@ -34,6 +34,7 @@ jobs:
           - { ocaml-version: 5_2, continue-on-error: false }
           - { ocaml-version: 5_3, continue-on-error: false }
           - { ocaml-version: 5_4, continue-on-error: false }
+          - { ocaml-version: 5_4_fp, continue-on-error: false }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
@@ -99,6 +100,7 @@ jobs:
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_2, continue-on-error: false }
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_3, continue-on-error: false }
           - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_4, continue-on-error: false }
+          - { os: macos-14, target: aarch64-darwin, ocaml-version: 5_4_fp, continue-on-error: false }
     name: Native packages (macOS (${{ matrix.setup.os }}), OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ${{ matrix.setup.os }}
     env:
