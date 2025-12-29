@@ -32,6 +32,29 @@ with filter;
     ocamlVersion = "5_4";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+  build_5_4_fp =
+    let
+      pkgs' = pkgs.extend (
+        self: super: {
+          ocamlPackages = self.ocaml-ng.ocamlPackages_5_4;
+          ocaml-ng = super.ocaml-ng // {
+            ocamlPackages_5_4 = super.ocaml-ng.ocamlPackages_5_4.overrideScope (
+              oself: osuper: {
+                ocaml = osuper.ocaml.override {
+                  flambdaSupport = false;
+                  framePointerSupport = true;
+                };
+              }
+            );
+          };
+        }
+      );
+    in
+    ocamlCandidates {
+      pkgs = pkgs';
+      ocamlVersion = "5_4";
+      extraIgnores = extraIgnores ++ ocaml5Ignores;
+    };
 
   build_top-level-packages = {
     inherit (pkgs) melange-relay-compiler;
