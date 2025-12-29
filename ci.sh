@@ -16,4 +16,4 @@ args=(
 
 OCAMLRUNPARAM=b nix run \
   github:nix-ocaml/nix-ci-build \
-  --override-input nixpkgs path:$(dirname "$PWD") -- "${args[@]}"
+  --override-input nixpkgs path:"$PWD" -- "${args[@]}"
