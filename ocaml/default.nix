@@ -341,7 +341,11 @@ with oself;
     let
       add = attrs: attrs // { DUNE_CACHE = "disabled"; };
     in
-    osuper.buildDunePackage (if builtins.isFunction arg then (final: add (arg final)) else add arg);
+    (osuper.buildDunePackage.override {
+      dune_2 = dune;
+      dune_3 = dune;
+    })
+      (if builtins.isFunction arg then (final: add (arg final)) else add arg);
 
   brisk-reconciler = buildDunePackage {
     pname = "brisk-reconciler";

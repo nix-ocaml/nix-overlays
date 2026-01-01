@@ -83,6 +83,7 @@ let
     "z3"
     "frama-c"
     "frama-c-lannotate"
+    "eigen"
 
     # Broken on janestreet v0.17
     "multiformats"
@@ -207,7 +208,6 @@ let
     "stog_asy"
     "stog_markdown"
 
-    "eigen"
     "owl"
     "owl-base"
 
