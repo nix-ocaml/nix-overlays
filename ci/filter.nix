@@ -84,6 +84,8 @@ let
     "frama-c"
     "frama-c-lannotate"
     "eigen"
+    "owl"
+    "owl-base"
 
     # Broken on janestreet v0.17
     "multiformats"
@@ -207,9 +209,6 @@ let
     "stog"
     "stog_asy"
     "stog_markdown"
-
-    "owl"
-    "owl-base"
 
     # Broken on latest SDK update?
     "soundtouch"
