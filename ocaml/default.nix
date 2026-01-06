@@ -835,7 +835,10 @@ with oself;
     inherit (dyn) preBuild;
   });
   dune-glob = osuper.dune-glob.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      pp
+      re
+    ];
     inherit (dyn) preBuild;
   });
   dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
