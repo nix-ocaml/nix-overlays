@@ -43,6 +43,11 @@ overlay final prev
         prev.pkgsCross.aarch64-multiplatform-musl.appendOverlays [
           cross-overlay
           static-overlay
+          (self: super: {
+            which = super.which.overrideAttrs (_: {
+              NIX_CFLAGS_COMPILE = "-std=gnu17";
+            });
+          })
         ];
 
       musl64 = prev.pkgsCross.musl64.extend static-overlay;
