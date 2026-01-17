@@ -83,6 +83,7 @@ let
     "z3"
     "frama-c"
     "frama-c-lannotate"
+    "frama-c-luncov"
     "eigen"
     "owl"
     "owl-base"
