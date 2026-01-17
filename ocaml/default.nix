@@ -667,18 +667,6 @@ with oself;
 
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
 
-  curly = osuper.curly.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "rgrinberg";
-      repo = "curly";
-      rev = "4494503407c1264455c6e656d53ec853873c2fea";
-      hash = "sha256-46tOtd+pEQ7VT8CuSMbKeWvw8l84wiFk0S4ZVYoCJBo=";
-    };
-    # weird failures on linux
-    #  Exception: Unix.Unix_error(Unix.ENOENT, "create_process", "curl")'
-    doCheck = false;
-  });
-
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_expect ];
