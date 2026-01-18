@@ -184,6 +184,7 @@ let
 
     # broken on macOS?
     "llvm"
+    "mopsa"
 
     "alsa"
     "mm"
