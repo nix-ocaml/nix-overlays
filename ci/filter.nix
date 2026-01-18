@@ -83,6 +83,10 @@ let
     "z3"
     "frama-c"
     "frama-c-lannotate"
+    "frama-c-luncov"
+    "eigen"
+    "owl"
+    "owl-base"
 
     # Broken on janestreet v0.17
     "multiformats"
@@ -180,6 +184,7 @@ let
 
     # broken on macOS?
     "llvm"
+    "mopsa"
 
     "alsa"
     "mm"
@@ -206,10 +211,6 @@ let
     "stog"
     "stog_asy"
     "stog_markdown"
-
-    "eigen"
-    "owl"
-    "owl-base"
 
     # Broken on latest SDK update?
     "soundtouch"

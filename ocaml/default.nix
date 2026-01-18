@@ -341,7 +341,11 @@ with oself;
     let
       add = attrs: attrs // { DUNE_CACHE = "disabled"; };
     in
-    osuper.buildDunePackage (if builtins.isFunction arg then (final: add (arg final)) else add arg);
+    (osuper.buildDunePackage.override {
+      dune_2 = dune;
+      dune_3 = dune;
+    })
+      (if builtins.isFunction arg then (final: add (arg final)) else add arg);
 
   brisk-reconciler = buildDunePackage {
     pname = "brisk-reconciler";
@@ -662,18 +666,6 @@ with oself;
   });
 
   ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
-
-  curly = osuper.curly.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "rgrinberg";
-      repo = "curly";
-      rev = "4494503407c1264455c6e656d53ec853873c2fea";
-      hash = "sha256-46tOtd+pEQ7VT8CuSMbKeWvw8l84wiFk0S4ZVYoCJBo=";
-    };
-    # weird failures on linux
-    #  Exception: Unix.Unix_error(Unix.ENOENT, "create_process", "curl")'
-    doCheck = false;
-  });
 
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];
@@ -2605,8 +2597,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "88b0118ad4a778d8e0e2e10413a4ab83de486d8c";
-      hash = "sha256-3xrzzD2hyPqN9t3We6e+opmjMFc4JnK+XxpU5owbk9g=";
+      rev = "8baed199292b71fac26c64897b18419aa4e0fa40";
+      hash = "sha256-efq/16xvKmA48SdFMIvNKm+foXm/pwNptMJI36roLaY=";
     };
 
     dontConfigure = true;
