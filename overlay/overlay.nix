@@ -300,8 +300,8 @@ in
         src = fetchFromGitHub {
           owner = "anmonteiro";
           repo = "relay";
-          rev = "670aae168499bc1fe8a876bdeb9f60f25f89160c";
-          hash = "sha256-Eq804+sWG39WIdmAJIiUrUuop38fKAI8C45pqfEV01k=";
+          rev = "a181e3adaf8849d033d0f3ea3b75723ed13e2691";
+          hash = "sha256-H8KBg9PJKY2DXrCzRa3fyXN3AfmYAfitJnj8inbNcnI=";
           sparseCheckout = [ "compiler" ];
         };
         dontBuild = true;
