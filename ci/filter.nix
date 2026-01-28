@@ -116,6 +116,8 @@ let
     "mirage-crypto-rng-miou-unix"
     "tls-miou-unix"
     "happy-eyeballs-miou-unix"
+    "httpcats"
+    "dns-client-miou-unix"
 
     "virtual_dom_toplayer"
     "ppx_css"
