@@ -1659,15 +1659,6 @@ with oself;
     ];
   };
 
-  mlx = osuper.mlx.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-mlx";
-      repo = "mlx";
-      rev = "cda3b7e9321c8bbe862856b12be4957b4e3901fc";
-      hash = "sha256-SGvkCKKtjfEQVNC8kRCN/9dKdB9Jp8OhN++Ra87xHa8=";
-    };
-  });
-
   ocamlformat-mlx = osuper.ocamlformat-mlx.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ocaml-mlx";
