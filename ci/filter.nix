@@ -115,6 +115,7 @@ let
     "multipart_form-eio"
     "mirage-crypto-rng-miou-unix"
     "tls-miou-unix"
+    "happy-eyeballs-miou-unix"
 
     "virtual_dom_toplayer"
     "ppx_css"
