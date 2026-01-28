@@ -2503,13 +2503,7 @@ with oself;
     };
   });
 
-  multicore-magic = osuper.multicore-magic.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/multicore-magic/releases/download/2.3.1/multicore-magic-2.3.1.tbz";
-      sha256 = "0pqr3hak7xdhbsmra95sff1k7nipza0x6jmhh5r1h4lzvj5j1mq1";
-    };
-    doCheck = false; # Requires js_of_ocaml
-  });
+  multicore-magic = disableTests osuper.multicore-magic;
 
   semver = buildDunePackage {
     pname = "semver";
