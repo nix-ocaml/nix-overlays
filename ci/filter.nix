@@ -177,6 +177,11 @@ let
     # broken on 5.3
     "ppx_cstubs"
     "reanalyze"
+
+    # website down?
+    "lutils"
+    "lustre-v6"
+    "rdbg"
   ];
 
   darwinIgnores = [
