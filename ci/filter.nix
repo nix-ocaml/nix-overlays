@@ -219,6 +219,9 @@ let
     # Broken on latest SDK update?
     "soundtouch"
     "taglib"
+
+    # temporarily broken in nixpkgs?
+    "netsnmp"
   ];
 in
 
