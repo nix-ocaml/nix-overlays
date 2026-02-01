@@ -2,6 +2,7 @@
   oself,
   fetchFromGitHub,
   lib,
+  jq,
 }:
 
 with oself;
@@ -163,15 +164,34 @@ with oself;
       reason-react-ppx
       melange
     ];
+    nativeCheckInputs = [
+      reason
+      merlin
+      jq
+    ];
+    doCheck = true;
   };
 
   reason-react-ppx = buildDunePackage {
     pname = "reason-react-ppx";
     version = "0.17.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/reasonml/reason-react/releases/download/0.17.0/reason-react-0.17.0.tbz";
-      sha256 = "131izysadis4k3y78kwhx7mva1pd2zs9xihv7jcc33alpl47mdh2";
+
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason-react";
+      rev = "2d8df21a2e592e5d62a4190dd5a556e6717cd539";
+      hash = "sha256-4LwE2hjacaNhqoqQdgyO4MC+5wvui4gmuv8h3iWod5I=";
     };
+    # remove after https://github.com/ocaml/dune/pull/13522 is released
+    postPatch = ''
+      rm -rf test/
+    '';
+    nativeCheckInputs = [
+      merlin
+      jq
+      reason
+    ];
+    doCheck = true;
     propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
 }

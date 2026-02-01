@@ -15,6 +15,7 @@
   fetchFromGitLab,
   fzf,
   git,
+  jq,
   libgsl,
   krb5,
   lib,
@@ -3010,7 +3011,14 @@ with oself;
     (lib.versionAtLeast osuper.ocaml.version "4.14" && !(lib.versionAtLeast osuper.ocaml.version "5.0"))
     || lib.versionAtLeast osuper.ocaml.version "5.1"
   then
-    (import ./melange-packages.nix { inherit oself fetchFromGitHub lib; })
+    (import ./melange-packages.nix {
+      inherit
+        oself
+        fetchFromGitHub
+        lib
+        jq
+        ;
+    })
   else
     { }
 )
