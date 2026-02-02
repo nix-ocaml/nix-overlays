@@ -169,7 +169,7 @@ with oself;
       merlin
       jq
     ];
-    doCheck = true;
+    doCheck = lib.versionAtLeast ocaml.version "5.4";
   };
 
   reason-react-ppx = buildDunePackage {
@@ -191,7 +191,7 @@ with oself;
       jq
       reason
     ];
-    doCheck = true;
+    doCheck = lib.versionAtLeast ocaml.version "5.4";
     propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
 }
