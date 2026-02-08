@@ -429,13 +429,6 @@ with oself;
 
   camlp5 = callPackage ./camlp5 { };
 
-  coin = osuper.coin.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/coin/releases/download/v0.1.4/coin-0.1.4.tbz";
-      sha256 = "0069qqswd1ik5ay3d5q1v1pz0ql31kblfsnv0ax0z8jwvacp3ack";
-    };
-  });
-
   cairo2 = osuper.cairo2.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace ./src/dune --replace-fail "bigarray" ""
@@ -565,20 +558,6 @@ with oself;
     ];
   };
 
-  colombe = buildDunePackage {
-    pname = "colombe";
-    version = "0.11.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/colombe/releases/download/v0.11.0/colombe-0.11.0.tbz";
-      sha256 = "0pksl4gfx39y7qlm6q7yni2gzcjlisn1rphijwh6j1v4bqkcgjha";
-    };
-    propagatedBuildInputs = [
-      ipaddr
-      fmt
-      angstrom
-      emile
-    ];
-  };
   sendmail = buildDunePackage {
     pname = "sendmail";
     inherit (colombe) version src;
