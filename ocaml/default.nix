@@ -2373,6 +2373,13 @@ with oself;
     ];
   };
 
+  ppx_lun = osuper.ppx_lun.overrideAttrs (_: {
+    propagatedBuildInputs = [
+      lun
+      ppxlib_gt_0_37
+    ];
+  });
+
   processor = buildDunePackage {
     version = "0.2";
     pname = "processor";
