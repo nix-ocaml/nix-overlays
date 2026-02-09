@@ -87,6 +87,7 @@ let
     "eigen"
     "owl"
     "owl-base"
+    "symex"
 
     # Broken on janestreet v0.17
     "multiformats"
