@@ -58,22 +58,28 @@ in
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq =
-    (super.postgresql_18.override {
-      # a new change does some shenanigans to get llvmStdenv + lld which breaks
-      # our cross-compilation
-      overrideCC = _: _: stdenv;
-      systemdSupport = false;
-      gssSupport = false;
-      openssl = self.openssl-oc;
-      jitSupport = false;
-      pamSupport = stdenv.isLinux;
-      perlSupport = false;
-      pythonSupport = false;
-      tclSupport = false;
-      lz4 = self.lz4-oc;
-      zstd = self.zstd-oc;
-      zlib = self.zlib-oc;
-    }).overrideAttrs
+    ((
+      (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" {
+        inherit self;
+      }).override
+      {
+        # a new change does some shenanigans to get llvmStdenv + lld which breaks
+        # our cross-compilation
+        overrideCC = _: _: stdenv;
+        systemdSupport = false;
+        gssSupport = false;
+        openssl = self.openssl-oc;
+        jitSupport = false;
+        pamSupport = stdenv.isLinux;
+        perlSupport = false;
+        pythonSupport = false;
+        tclSupport = false;
+        lz4 = self.lz4-oc;
+        zstd = self.zstd-oc;
+        zlib = self.zlib-oc;
+      }
+    ).withoutJIT
+    ).overrideAttrs
       (
         finalAttrs: o:
         let
