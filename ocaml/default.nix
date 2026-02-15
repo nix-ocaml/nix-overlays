@@ -1484,7 +1484,23 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = (osuper.lwt.override { libev = libev-oc; });
+  lwt = (osuper.lwt.override { libev = libev-oc; }).overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "lwt";
+      rev = "6.1.0";
+      hash = "sha256-ILW3GbYZU3g2wqHJRIdQVWXGJGgrUo7YNhOo8zBhD8E=";
+    };
+    patches = [ ./lwt.patch ];
+  });
+
+  lwt_log = osuper.lwt_log.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/unix/lwt_daemon.ml --replace-fail \
+        'Lwt_sequence.iter_node_l Lwt_sequence.remove Lwt_main.exit_hooks [@ocaml.warning "-3"];' \
+        'Lwt_main.Exit_hooks.remove_all ();'
+    '';
+  });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -2332,9 +2348,11 @@ with oself;
   ppx_tools = if lib.versionOlder "5.2" ocaml.version then null else osuper.ppx_tools;
 
   ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.37.0/ppxlib-0.37.0.tbz";
-      sha256 = "1cxhbnw6s59gfwrrqp0nx5diskiglz0349239b43pk6fwwvkh8if";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppxlib";
+      rev = "2cd397da41a09b8ea196d777c06e107c71b5d030";
+      hash = "sha256-ND3F7Fqh21rwXtTEbIiFFrgGd5Qr7YX/JIJrLgPb508=";
     };
 
     propagatedBuildInputs = [
@@ -2435,6 +2453,12 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason";
+      rev = "138e42ef131c603c37ff4df733549b419761d089";
+      hash = "sha256-yUqhrmvP6Gj2e3HEhJjXVebUzuI64VlyOa9fWacchgQ=";
+    };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       dune-build-info
       cmdliner
@@ -2802,6 +2826,15 @@ with oself;
     inherit (uspf) version src;
     propagatedBuildInputs = [ uspf ];
   };
+
+  utop = osuper.utop.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "utop";
+      rev = "629b067279e2dc15bf1e14e5d6dd1ad3314482b7";
+      hash = "sha256-ZzZle4x7pwdYsrj9Q/mvnolj2vR3tXcyNxANVAuZqko=";
+    };
+  });
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
