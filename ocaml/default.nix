@@ -1491,7 +1491,7 @@ with oself;
       rev = "6.1.0";
       hash = "sha256-ILW3GbYZU3g2wqHJRIdQVWXGJGgrUo7YNhOo8zBhD8E=";
     };
-    patches = [ ./lwt.patch ];
+    patches = if lib.versionAtLeast ocaml.version "5.0" then [ ./lwt.patch ] else [ ];
   });
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
