@@ -12,7 +12,6 @@
   graphql-lwt,
   lambdasoup,
   lwt,
-  lwt_ppx,
   lwt_ssl,
   logs,
   magic-mime,
@@ -68,7 +67,6 @@ buildDunePackage rec {
     graphql_parser
     graphql-lwt
     lwt
-    lwt_ppx
     lwt_ssl
     logs
     magic-mime
