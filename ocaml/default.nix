@@ -1494,6 +1494,13 @@ with oself;
     patches = if lib.versionAtLeast ocaml.version "5.0" then [ ./lwt.patch ] else [ ];
   });
 
+  lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
+    propagatedBuildInputs = [
+      lwt
+      ppxlib_gt_0_37
+    ];
+  });
+
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/unix/lwt_daemon.ml --replace-fail \

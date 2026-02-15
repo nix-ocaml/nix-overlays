@@ -159,6 +159,7 @@ let
 
     # broken on 5.5 / lwt > 6.0
     "tezt"
+    "dap"
   ];
 
   ocaml5Ignores = [
