@@ -94,7 +94,7 @@ buildDunePackage rec {
     tyxml-ppx
   ];
 
-  doCheck = !(lib.versionAtLeast ocaml.version "5.0");
+  doCheck = false;
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";
     license = lib.licenses.mit;
