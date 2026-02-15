@@ -156,6 +156,9 @@ let
 
     # broken with latest camlp5
     "hol_light"
+
+    # broken on 5.5 / lwt > 6.0
+    "tezt"
   ];
 
   ocaml5Ignores = [
