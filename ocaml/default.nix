@@ -2453,12 +2453,16 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "reasonml";
-      repo = "reason";
-      rev = "138e42ef131c603c37ff4df733549b419761d089";
-      hash = "sha256-yUqhrmvP6Gj2e3HEhJjXVebUzuI64VlyOa9fWacchgQ=";
-    };
+    src =
+      if lib.versionOlder "5.3" ocaml.version then
+        fetchFromGitHub {
+          owner = "reasonml";
+          repo = "reason";
+          rev = "138e42ef131c603c37ff4df733549b419761d089";
+          hash = "sha256-yUqhrmvP6Gj2e3HEhJjXVebUzuI64VlyOa9fWacchgQ=";
+        }
+      else
+        o.src;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       dune-build-info
       cmdliner
