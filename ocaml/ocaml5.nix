@@ -135,10 +135,13 @@ with oself;
   picos = buildDunePackage {
     pname = "picos";
     version = "0.6.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/picos/releases/download/0.6.0/picos-0.6.0.tbz";
-      sha256 = "1ykx11c8jnjf24anwdzmmf7dmwbqf63z6s3x5yp2sp7nkhchhniz";
+    src = fetchFromGitHub {
+      owner = "ocaml-multicore";
+      repo = "picos";
+      rev = "aef7c03874104b2604ffe4e9c764f44328374907";
+      hash = "sha256-4q+dOa8YY8ZSQSAVzCaBYRo0mQP8oqfp56aqPxR9kPU=";
     };
+
     propagatedBuildInputs = [
       backoff
       thread-local-storage
