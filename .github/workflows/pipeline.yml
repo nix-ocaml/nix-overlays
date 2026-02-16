@@ -56,10 +56,13 @@ jobs:
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
       - name: X
         run: |
+          set -x
           mkdir -p ~/.aws/
           cat > ~/.aws/config <<EOF
           [default]
           EOF
+          cat ~/.aws/config
+          cat ~/.aws/credentials
       - name: Build nix packages
         run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
