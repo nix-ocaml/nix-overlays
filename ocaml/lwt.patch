@@ -1,0 +1,102 @@
+From 67a62d8ce75919ae552eead2a737bfb387410046 Mon Sep 17 00:00:00 2001
+From: Kate <kit-ty-kate@exn.st>
+Date: Tue, 3 Feb 2026 15:19:59 +0000
+Subject: [PATCH] Use caml_unix_get_sockaddr instead of its legacy name
+ get_sockaddr
+
+Add support for OCaml 5.5
+---
+ src/unix/unix_c/unix_bind_job.c        | 2 +-
+ src/unix/unix_c/unix_bytes_sendto.c    | 2 +-
+ src/unix/unix_c/unix_getnameinfo_job.c | 2 +-
+ src/unix/unix_c/unix_recv_send_utils.c | 2 +-
+ src/unix/unix_c/unix_recv_send_utils.h | 3 +--
+ src/unix/unix_c/unix_sendto.c          | 2 +-
+ 6 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/src/unix/unix_c/unix_bind_job.c b/src/unix/unix_c/unix_bind_job.c
+index b4023f14f7..c34c24fcb4 100644
+--- a/src/unix/unix_c/unix_bind_job.c
++++ b/src/unix/unix_c/unix_bind_job.c
+@@ -42,7 +42,7 @@ CAMLprim value lwt_unix_bind_job(value fd, value address)
+ {
+     LWT_UNIX_INIT_JOB(job, bind, 0);
+     job->fd = Int_val(fd);
+-    get_sockaddr(address, &job->addr, &job->addr_len);
++    caml_unix_get_sockaddr(address, &job->addr, &job->addr_len);
+ 
+     return lwt_unix_alloc_job(&job->job);
+ }
+diff --git a/src/unix/unix_c/unix_bytes_sendto.c b/src/unix/unix_c/unix_bytes_sendto.c
+index a555b534fd..487669c3f8 100644
+--- a/src/unix/unix_c/unix_bytes_sendto.c
++++ b/src/unix/unix_c/unix_bytes_sendto.c
+@@ -24,7 +24,7 @@ value lwt_unix_bytes_sendto(value fd, value buf, value ofs, value len,
+     union sock_addr_union addr;
+     socklen_t addr_len;
+     int ret;
+-    get_sockaddr(dest, &addr, &addr_len);
++    caml_unix_get_sockaddr(dest, &addr, &addr_len);
+     ret = sendto(Int_val(fd), (char *)Caml_ba_data_val(buf) + Long_val(ofs),
+                  Long_val(len), lwt_convert_flag_list(flags, msg_flag_table),
+                  &addr.s_gen, addr_len);
+diff --git a/src/unix/unix_c/unix_getnameinfo_job.c b/src/unix/unix_c/unix_getnameinfo_job.c
+index 608dcd3bbd..ccc37322aa 100644
+--- a/src/unix/unix_c/unix_getnameinfo_job.c
++++ b/src/unix/unix_c/unix_getnameinfo_job.c
+@@ -59,7 +59,7 @@ static value result_getnameinfo(struct job_getnameinfo *job)
+ CAMLprim value lwt_unix_getnameinfo_job(value sockaddr, value opts)
+ {
+     LWT_UNIX_INIT_JOB(job, getnameinfo, 0);
+-    get_sockaddr(sockaddr, &job->addr, &job->addr_len);
++    caml_unix_get_sockaddr(sockaddr, &job->addr, &job->addr_len);
+     job->opts = lwt_convert_flag_list(opts, getnameinfo_flag_table);
+     return lwt_unix_alloc_job(&job->job);
+ }
+diff --git a/src/unix/unix_c/unix_recv_send_utils.c b/src/unix/unix_c/unix_recv_send_utils.c
+index bbb3d9c1f5..abac6ecf03 100644
+--- a/src/unix/unix_c/unix_recv_send_utils.c
++++ b/src/unix/unix_c/unix_recv_send_utils.c
+@@ -76,7 +76,7 @@ value wrapper_send_msg(int fd, int n_iovs, struct iovec *iovs,
+     if (Is_some(dest)) {
+       union sock_addr_union addr;
+       socklen_t addr_len;
+-      get_sockaddr(Some_val(dest), &addr, &addr_len);
++      caml_unix_get_sockaddr(Some_val(dest), &addr, &addr_len);
+ 
+       msg.msg_name = &addr.s_gen;
+       msg.msg_namelen = addr_len;
+diff --git a/src/unix/unix_c/unix_recv_send_utils.h b/src/unix/unix_c/unix_recv_send_utils.h
+index 407091f6e2..e8a8e7e619 100644
+--- a/src/unix/unix_c/unix_recv_send_utils.h
++++ b/src/unix/unix_c/unix_recv_send_utils.h
+@@ -34,6 +34,7 @@
+ #if OCAML_VERSION_MAJOR < 5
+ #define caml_unix_socket_domain_table socket_domain_table
+ #define caml_unix_socket_type_table socket_type_table
++#define caml_unix_get_sockaddr get_sockaddr
+ #endif
+ 
+ #if OCAML_VERSION < 50300
+@@ -45,8 +46,6 @@ extern const int caml_unix_socket_type_table[];
+ #endif
+ 
+ extern const int msg_flag_table[];
+-extern void get_sockaddr(value mladdr, union sock_addr_union *addr /*out*/,
+-                         socklen_t *addr_len /*out*/);
+ value wrapper_recv_msg(int fd, int n_iovs, struct iovec *iovs);
+ value wrapper_send_msg(int fd, int n_iovs, struct iovec *iovs,
+                        value val_n_fds, value val_fds, value dest);
+diff --git a/src/unix/unix_c/unix_sendto.c b/src/unix/unix_c/unix_sendto.c
+index 845f7edd01..9da5e771e0 100644
+--- a/src/unix/unix_c/unix_sendto.c
++++ b/src/unix/unix_c/unix_sendto.c
+@@ -23,7 +23,7 @@ value lwt_unix_sendto(value fd, value buf, value ofs, value len, value flags,
+     union sock_addr_union addr;
+     socklen_t addr_len;
+     int ret;
+-    get_sockaddr(dest, &addr, &addr_len);
++    caml_unix_get_sockaddr(dest, &addr, &addr_len);
+     ret = sendto(Int_val(fd), &Byte(String_val(buf), Long_val(ofs)),
+                  Long_val(len), lwt_convert_flag_list(flags, msg_flag_table),
+                  &addr.s_gen, addr_len);

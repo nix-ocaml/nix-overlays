@@ -156,6 +156,14 @@ let
 
     # broken with latest camlp5
     "hol_light"
+
+    # broken on 5.5 / lwt > 6.0
+    "tezt"
+    "dap"
+    "earlybird"
+    "stog"
+    "stog_asy"
+    "stog_markdown"
   ];
 
   ocaml5Ignores = [
@@ -218,9 +226,6 @@ let
 
     # broken on aarch64-darwin
     "janestreet_cpuid"
-    "stog"
-    "stog_asy"
-    "stog_markdown"
 
     # Broken on latest SDK update?
     "soundtouch"

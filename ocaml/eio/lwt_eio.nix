@@ -14,6 +14,16 @@ buildDunePackage {
     sha256 = "08bc9yxdzjll0ig1fnkr3wyk0bqx6nkncjfns2xd6m3qg226flkn";
   };
 
+  postPatch = ''
+    substituteInPlace lib/lwt_eio.ml --replace-fail \
+      "let make_engine ~sw ~clock = object" \
+      "type Lwt_engine.engine_id += Engine_id__eio;; let make_engine ~sw ~clock = object" \
+      --replace-fail \
+      "inherit Lwt_engine.abstract" \
+      "inherit Lwt_engine.abstract method id = Engine_id__eio"
+
+  '';
+
   propagatedBuildInputs = [
     lwt
     eio

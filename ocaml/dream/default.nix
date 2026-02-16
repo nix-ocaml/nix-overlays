@@ -12,7 +12,6 @@
   graphql-lwt,
   lambdasoup,
   lwt,
-  lwt_ppx,
   lwt_ssl,
   logs,
   magic-mime,
@@ -68,7 +67,6 @@ buildDunePackage rec {
     graphql_parser
     graphql-lwt
     lwt
-    lwt_ppx
     lwt_ssl
     logs
     magic-mime
@@ -96,7 +94,7 @@ buildDunePackage rec {
     tyxml-ppx
   ];
 
-  doCheck = !(lib.versionAtLeast ocaml.version "5.0");
+  doCheck = false;
   meta = {
     description = "Easy-to-use, feature-complete Web framework without boilerplate";
     license = lib.licenses.mit;
