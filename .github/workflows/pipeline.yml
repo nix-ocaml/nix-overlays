@@ -59,7 +59,8 @@ jobs:
           set -x
           mkdir -p ~/.aws/
           cat > ~/.aws/config <<EOF
-          [default]
+          [profile default]
+          region = auto
           EOF
           cat ~/.aws/config
           cat ~/.aws/credentials
