@@ -50,7 +50,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -59,11 +59,9 @@ jobs:
           set -x
           mkdir -p ~/.aws/
           cat > ~/.aws/config <<EOF
-          [profile default]
+          [default]
           region = auto
           EOF
-          cat ~/.aws/config
-          cat ~/.aws/credentials
       - name: Build nix packages
         run: ./ci.sh x86_64-linux build_${{ matrix.setup.ocaml-version }}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
@@ -91,7 +89,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -127,7 +125,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -164,7 +162,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
