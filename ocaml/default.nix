@@ -2873,8 +2873,6 @@ with oself;
       gg
       uutf
       otfm
-      js_of_ocaml
-      js_of_ocaml-ppx
     ];
   });
 
@@ -2961,6 +2959,12 @@ with oself;
 
   wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
     dontStrip = stdenv.isDarwin;
+    buildInputs = [ cmdliner_2 ];
+  });
+  jsont = osuper.jsont.override { withCmdliner = false; };
+  mldoc = osuper.mldoc.override { cmdliner = cmdliner_2; };
+  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];
   });
 
   webauthn = buildDunePackage {
