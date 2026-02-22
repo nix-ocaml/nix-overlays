@@ -1277,7 +1277,7 @@ with oself;
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner_2 ];
     buildInputs = [
       cmdliner_2
-      ppxlib_gt_0_37
+      ppxlib
     ];
   });
 
