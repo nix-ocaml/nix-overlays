@@ -1275,21 +1275,11 @@ with oself;
       sha256 = "1h5bdh8czwkbfx2n0b5imh49bswb7b7xrq5w3xq68d7cajbgqfm9";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner_2 ];
-    buildInputs = [ ];
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+    buildInputs = [
       cmdliner_2
-      ppxlib
+      ppxlib_gt_0_37
     ];
-
   });
-
-  # https://github.com/Khady/ocaml-junit/issues/13
-  # junit = osuper.junit.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = "https://github.com/Khady/ocaml-junit/releases/download/2.2.0/junit-2.2.0.tbz";
-  # sha256 = "02nr67ai9ng8z74p405gaawz2j07rzcgzs1ra6ax6mmvww41payh";
-  # };
-  # });
 
   kafka = buildDunePackage {
     pname = "kafka";
@@ -2961,8 +2951,6 @@ with oself;
     dontStrip = stdenv.isDarwin;
     buildInputs = [ cmdliner_2 ];
   });
-  jsont = osuper.jsont.override { withCmdliner = false; };
-  mldoc = osuper.mldoc.override { cmdliner = cmdliner_2; };
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];
   });
