@@ -35,6 +35,7 @@ jobs:
           - { ocaml-version: 5_3, continue-on-error: false }
           - { ocaml-version: 5_4, continue-on-error: false }
           - { ocaml-version: 5_4_fp, continue-on-error: false }
+          - { ocaml-version: 5_5, continue-on-error: true }
     name: Native packages (Linux, OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
@@ -50,7 +51,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -81,7 +82,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -117,7 +118,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -136,6 +137,7 @@ jobs:
           - { ocaml-version: 5_2, continue-on-error: false }
           - { ocaml-version: 5_3, continue-on-error: false }
           - { ocaml-version: 5_4, continue-on-error: false }
+          - { ocaml-version: 5_5, continue-on-error: false }
         target:
           - arm64
           - musl
@@ -154,7 +156,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
