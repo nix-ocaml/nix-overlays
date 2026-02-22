@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v31.9.1
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: fmt
@@ -41,7 +41,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v31.9.1
         with:
           extra_nix_config: |
             system-features = nixos-test benchmark big-parallel kvm
@@ -50,7 +50,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -72,7 +72,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v31.9.1
         with:
           extra_nix_config: |
             system-features = nixos-test benchmark big-parallel kvm
@@ -81,7 +81,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -107,7 +107,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v31.9.1
         with:
           extra_nix_config: |
             system-features = nixos-test benchmark big-parallel kvm
@@ -117,7 +117,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
@@ -145,7 +145,7 @@ jobs:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
       - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v31.9.1
         with:
           extra_nix_config: |
             system-features = nixos-test benchmark big-parallel kvm
@@ -154,7 +154,7 @@ jobs:
       - uses: nix-ocaml/nix-s3-action@fork
         with:
           skipPush: true
-          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto"
           signingKey: ${{ secrets.R2_SIGNING_KEY }}
           awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
           awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}

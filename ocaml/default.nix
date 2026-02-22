@@ -58,7 +58,8 @@
   fontconfig,
   libxkbcommon,
   libxcb,
-  xorg,
+  libxcb-image,
+  libxcb-keysyms,
   zstd-oc,
   mercurial,
   gnutar,
@@ -1957,8 +1958,8 @@ with oself;
       fontconfig
       libxkbcommon
       libxcb
-      xorg.xcbutilkeysyms
-      xorg.xcbutilimage
+      libxcb-image
+      libxcb-keysyms
     ];
 
     propagatedBuildInputs = [
