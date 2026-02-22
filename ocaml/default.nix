@@ -396,8 +396,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "xavierleroy";
       repo = "camlzip";
-      rev = "rel113";
-      hash = "sha256-hUHMJBfe0G0faa21kDFErkzJ1njHWNbHtWUF7QTJ8x0=";
+      rev = "v1.14";
+      hash = "sha256-vSLAbUKHX3m7UFKBOP3vOeuNNVQgmK3k75gWpGlsNEw=";
     };
   });
 
@@ -1260,21 +1260,26 @@ with oself;
         o.src;
   });
 
-  # not ready for jane street 0.17 packages
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.1.1/js_of_ocaml-6.1.1.tbz";
-      sha256 = "05307nqfspmcnixs10fd0g9k6lkhjd74wl2difm2mh31mqda87fk";
+  cmdliner_2 = osuper.cmdliner.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "dbuenzli";
+      repo = "cmdliner";
+      rev = "v2.1.0";
+      hash = "sha256-ebe5I77zEKoehJ55ZszV0dQP4ZDfVpGXqDsEb2qEE24=";
     };
   });
 
-  # https://github.com/Khady/ocaml-junit/issues/13
-  # junit = osuper.junit.overrideAttrs (_: {
-  # src = builtins.fetchurl {
-  # url = "https://github.com/Khady/ocaml-junit/releases/download/2.2.0/junit-2.2.0.tbz";
-  # sha256 = "02nr67ai9ng8z74p405gaawz2j07rzcgzs1ra6ax6mmvww41payh";
-  # };
-  # });
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.3.2/js_of_ocaml-6.3.2.tbz";
+      sha256 = "1h5bdh8czwkbfx2n0b5imh49bswb7b7xrq5w3xq68d7cajbgqfm9";
+    };
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner_2 ];
+    buildInputs = [
+      cmdliner_2
+      ppxlib
+    ];
+  });
 
   kafka = buildDunePackage {
     pname = "kafka";
@@ -2617,8 +2622,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "8baed199292b71fac26c64897b18419aa4e0fa40";
-      hash = "sha256-efq/16xvKmA48SdFMIvNKm+foXm/pwNptMJI36roLaY=";
+      rev = "156f69a876765dc482f0e85fa4481ca90fe0c04e";
+      hash = "sha256-WvtOJPU+AOXJOSZu3AeXUuCJtjJ7fFhOAOxkZ46553c=";
     };
 
     dontConfigure = true;
@@ -2858,8 +2863,6 @@ with oself;
       gg
       uutf
       otfm
-      js_of_ocaml
-      js_of_ocaml-ppx
     ];
   });
 
@@ -2946,6 +2949,10 @@ with oself;
 
   wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
     dontStrip = stdenv.isDarwin;
+    buildInputs = [ cmdliner_2 ];
+  });
+  phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];
   });
 
   webauthn = buildDunePackage {
