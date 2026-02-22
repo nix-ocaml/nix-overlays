@@ -572,6 +572,23 @@ in
     version = "0.17.1";
     hash = "sha256-XkABcvglVJLVnWJmvfr5eVywyclPSDqanVOLQNqdNtQ=";
     buildInputs = [ jst-config ];
+    postPatch =
+      if lib.versionAtLeast ocaml.version "5.5" then
+        ''
+          substituteInPlace "core/src/gc.mli" \
+          --replace-fail \
+            "; forced_major_collections : int" \
+            "; forced_major_collections : int; live_stacks_words: int"
+          substituteInPlace "core/src/gc.ml" \
+          --replace-fail \
+            "; forced_major_collections : int" \
+            "; forced_major_collections : int; live_stacks_words: int" \
+          --replace-fail \
+            "; stack_size = int_f first.stack_size second.stack_size" \
+            "; stack_size = int_f first.stack_size second.stack_size; live_stacks_words = int_f first.live_stacks_words second.live_stacks_words "
+        ''
+      else
+        "";
     propagatedBuildInputs = [
       base
       base_bigstring
