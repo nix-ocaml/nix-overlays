@@ -2502,8 +2502,6 @@ with oself;
   redis-lwt = callPackage ./redis/lwt.nix { };
   redis-sync = callPackage ./redis/sync.nix { };
 
-  reenv = callPackage ./reenv { };
-
   rfc7748 = osuper.rfc7748.overrideAttrs (o: {
     patches = [ ];
     src = fetchFromGitHub {
