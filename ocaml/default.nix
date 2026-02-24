@@ -1628,8 +1628,8 @@ with oself;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage/releases/download/v4.5.1/mirage-4.5.1.tbz";
-      sha256 = "033yhprafg792c3adlr9na3yb08nzv0j3xvb4ky740y0mbj0pq41";
+      url = "https://github.com/mirage/mirage/releases/download/v4.10.4/mirage-4.10.4.tbz";
+      sha256 = "0zmlz58v1ra1rmss93yhrlpnpi9k1iwmvlc7yijy2ksj6nc0bszm";
     };
   });
 
