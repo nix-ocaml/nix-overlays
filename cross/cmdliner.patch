@@ -1,0 +1,22 @@
+diff --git a/Makefile b/Makefile
+index 1216082..e6510dd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -30,7 +30,7 @@ INSTALL=install
+ B=_build
+ BASE=$(B)/src/cmdliner
+ TOOLBDIR=$(B)/src/tool
+-TOOL=$(TOOLBDIR)/cmdliner
++TOOL=@cmdliner_tool@
+ 
+ ifeq ($(NATIVE),true)
+ 	BUILD-EXE=build-native-exe
+@@ -81,7 +81,7 @@ build-completions: $(BUILD-EXE)
+ 	$(TOOL) tool-completion pwsh cmdliner > $(TOOLBDIR)/pwsh-cmdliner.ps1
+ 
+ build-man: $(BUILD-EXE)
+-	$(TOOL) install tool-manpages $(TOOLBDIR)/cmdliner $(TOOLBDIR)/man
++	$(TOOL) install tool-manpages $(TOOL) $(TOOLBDIR)/man
+ 
+ prepare-prefix:
+ 	$(INSTALL) -d "$(BINDIR)" "$(LIBDIR)"

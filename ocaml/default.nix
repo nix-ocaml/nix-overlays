@@ -1195,9 +1195,11 @@ with oself;
   };
   irmin-git = disableTests osuper.irmin-git;
   ppx_irmin = osuper.ppx_irmin.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/irmin/releases/download/3.10.0/irmin-3.10.0.tbz";
-      sha256 = "05b7sab9549zpzp68lfiq30j9pzhn43ahd8cpbzc4d9a19xdxacj";
+    src = fetchFromGitHub {
+      owner = "mirage";
+      repo = "irmin";
+      rev = "7a09a06fff67bc4981faca36a332c51fc16e819e";
+      hash = "sha256-bnmecOgf6wBjgxtlaDc4K5JF30tZNlIo5QkUFZG1ROY=";
     };
   });
 
@@ -1260,23 +1262,14 @@ with oself;
         o.src;
   });
 
-  cmdliner_2 = osuper.cmdliner.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "cmdliner";
-      rev = "v2.1.0";
-      hash = "sha256-ebe5I77zEKoehJ55ZszV0dQP4ZDfVpGXqDsEb2qEE24=";
-    };
-  });
-
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.3.2/js_of_ocaml-6.3.2.tbz";
       sha256 = "1h5bdh8czwkbfx2n0b5imh49bswb7b7xrq5w3xq68d7cajbgqfm9";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner_2 ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
-      cmdliner_2
+      cmdliner
       ppxlib
     ];
   });
@@ -1635,8 +1628,8 @@ with oself;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/mirage/mirage/releases/download/v4.5.1/mirage-4.5.1.tbz";
-      sha256 = "033yhprafg792c3adlr9na3yb08nzv0j3xvb4ky740y0mbj0pq41";
+      url = "https://github.com/mirage/mirage/releases/download/v4.10.4/mirage-4.10.4.tbz";
+      sha256 = "0zmlz58v1ra1rmss93yhrlpnpi9k1iwmvlc7yijy2ksj6nc0bszm";
     };
   });
 
@@ -1933,7 +1926,7 @@ with oself;
       sha256 = "sha256-l1JQrMxZsk+CuTDNmoKvzDO/8kGJOY3C8WGetprgR1M=";
     };
     propagatedBuildInputs = [
-      cmdliner
+      cmdliner_1
       ez_subst
       ocplib_stuff
     ];
@@ -2509,8 +2502,6 @@ with oself;
   redis-lwt = callPackage ./redis/lwt.nix { };
   redis-sync = callPackage ./redis/sync.nix { };
 
-  reenv = callPackage ./reenv { };
-
   rfc7748 = osuper.rfc7748.overrideAttrs (o: {
     patches = [ ];
     src = fetchFromGitHub {
@@ -2760,11 +2751,19 @@ with oself;
 
   trace = osuper.trace.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-trace/releases/download/v0.8/trace-0.8.tbz";
-      sha256 = "1hvq13kwgbai5y45w44w6l5vkvh5wqg17f0gdwj1w7315dkabkrl";
+      url = "https://github.com/ocaml-tracing/ocaml-trace/releases/download/v0.11/trace-0.11.tbz";
+      sha256 = "1g2qy78w9kfrx58rzi9wnwaykqfr1qq5rh16xnzrh6hrzgy2k4x2";
     };
     propagatedBuildInputs = [ mtime ];
   });
+  trace-fuchsia = buildDunePackage {
+    pname = "trace-fuchsia";
+    inherit (trace) version src;
+    propagatedBuildInputs = [
+      trace
+      mtime
+    ];
+  };
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
@@ -2956,7 +2955,7 @@ with oself;
 
   wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
     dontStrip = stdenv.isDarwin;
-    buildInputs = [ cmdliner_2 ];
+    buildInputs = [ cmdliner ];
   });
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];

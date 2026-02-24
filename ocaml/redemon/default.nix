@@ -3,7 +3,7 @@
   fetchFromGitHub,
   buildDunePackage,
   luv,
-  cmdliner,
+  cmdliner_1,
   logs,
   fmt,
 }:
@@ -20,7 +20,7 @@ buildDunePackage {
 
   propagatedBuildInputs = [
     luv
-    cmdliner
+    cmdliner_1
     logs
     fmt
   ];

@@ -10,6 +10,7 @@
 
 {
   lib,
+  replaceVars,
   buildPackages,
   writeText,
   writeScriptBin,
@@ -310,8 +311,22 @@ in
         '';
       });
 
+      cmdliner_1 = osuper.cmdliner_1.overrideAttrs (o: {
+        patches = [ ];
+      });
+
       cmdliner = osuper.cmdliner.overrideAttrs (o: {
-        nativeBuildInputs = o.nativeBuildInputs ++ [ oself.findlib ];
+        OCAMLFIND_TOOLCHAIN = "${crossName}";
+        patches = [
+          (replaceVars ./cmdliner.patch {
+            cmdliner_tool = "${natocamlPackages.cmdliner}/bin/cmdliner";
+          })
+        ];
+
+        nativeBuildInputs = o.nativeBuildInputs ++ [
+          oself.findlib
+          natocamlPackages.cmdliner
+        ];
 
         installFlags = [
           "LIBDIR=$(OCAMLFIND_DESTDIR)/${o.pname}"

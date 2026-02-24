@@ -208,13 +208,16 @@ with oself;
     pname = "runtime_events_tools";
     version = "0.5.0";
 
-    src = builtins.fetchurl {
-      url = "https://github.com/tarides/runtime_events_tools/releases/download/0.5.1/runtime_events_tools-0.5.1.tbz";
-      sha256 = "0r35cpbmj17ldpfkf4dzk4bs1knfy4hyjz6ax0ayrck25rm397dh";
+    src = fetchFromGitHub {
+      owner = "tarides";
+      repo = "runtime_events_tools";
+      rev = "92f44392005793218038d2d56d0cc27743fd3e14";
+      hash = "sha256-YVBHPikXx9Giuk//bBqWNE358jlDfEW7hhUWcSd7k8s=";
     };
 
     propagatedBuildInputs = [
       tracing
+      trace-fuchsia
       cmdliner
       hdr_histogram
     ];
