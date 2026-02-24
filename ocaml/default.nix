@@ -2753,11 +2753,19 @@ with oself;
 
   trace = osuper.trace.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/c-cube/ocaml-trace/releases/download/v0.8/trace-0.8.tbz";
-      sha256 = "1hvq13kwgbai5y45w44w6l5vkvh5wqg17f0gdwj1w7315dkabkrl";
+      url = "https://github.com/ocaml-tracing/ocaml-trace/releases/download/v0.11/trace-0.11.tbz";
+      sha256 = "1g2qy78w9kfrx58rzi9wnwaykqfr1qq5rh16xnzrh6hrzgy2k4x2";
     };
     propagatedBuildInputs = [ mtime ];
   });
+  trace-fuchsia = buildDunePackage {
+    pname = "trace-fuchsia";
+    inherit (trace) version src;
+    propagatedBuildInputs = [
+      trace
+      mtime
+    ];
+  };
 
   tsdl = osuper.tsdl.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
