@@ -1260,23 +1260,14 @@ with oself;
         o.src;
   });
 
-  cmdliner_2 = osuper.cmdliner.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "dbuenzli";
-      repo = "cmdliner";
-      rev = "v2.1.0";
-      hash = "sha256-ebe5I77zEKoehJ55ZszV0dQP4ZDfVpGXqDsEb2qEE24=";
-    };
-  });
-
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.3.2/js_of_ocaml-6.3.2.tbz";
       sha256 = "1h5bdh8czwkbfx2n0b5imh49bswb7b7xrq5w3xq68d7cajbgqfm9";
     };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner_2 ];
+    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
-      cmdliner_2
+      cmdliner
       ppxlib
     ];
   });
@@ -2956,7 +2947,7 @@ with oself;
 
   wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
     dontStrip = stdenv.isDarwin;
-    buildInputs = [ cmdliner_2 ];
+    buildInputs = [ cmdliner ];
   });
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];
