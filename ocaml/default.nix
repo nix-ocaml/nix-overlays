@@ -2191,6 +2191,7 @@ with oself;
   };
 
   pg_query = callPackage ./pg_query { };
+  pgx_eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.pgx_eio else null;
 
   piaf = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./piaf { } else null;
 
