@@ -1487,10 +1487,9 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "lwt";
-      rev = "6.1.0";
-      hash = "sha256-ILW3GbYZU3g2wqHJRIdQVWXGJGgrUo7YNhOo8zBhD8E=";
+      rev = "6.1.1";
+      hash = "sha256-EMlA+mh66bfVNqDcmuaW7GoEEu6xQhCRjZx7t7pHuGo=";
     };
-    patches = if lib.versionAtLeast ocaml.version "5.0" then [ ./lwt.patch ] else [ ];
   });
 
   lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
@@ -1897,6 +1896,10 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.0/sqlite3-5.4.0.tbz";
+      sha256 = "1zz9qinabx6z87jhmy4b3x4d0lj98c0syqljswb4zhlaywr9a1ph";
+    };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
   });
@@ -2649,19 +2652,19 @@ with oself;
 
   synchronizer = if lib.versionOlder "5.2" ocaml.version then osuper.synchronizer else null;
 
-  syndic = buildDunePackage rec {
+  syndic = buildDunePackage (finalAttrs: {
     pname = "syndic";
-    version = "1.6.1";
+    version = "1.8.0";
     src = builtins.fetchurl {
-      url = "https://github.com/Cumulus/${pname}/releases/download/v${version}/syndic-v${version}.tbz";
-      sha256 = "1i43yqg0i304vpiy3sf6kvjpapkdm6spkf83mj9ql1d4f7jg6c58";
+      url = "https://github.com/Cumulus/${finalAttrs.pname}/releases/download/v${finalAttrs.version}/syndic-${finalAttrs.version}.tbz";
+      sha256 = "1981j7jpjji7614282r74w62s7fyrm32a10mccq5j3dr23rp7871";
     };
     propagatedBuildInputs = [
       xmlm
       uri
       ptime
     ];
-  };
+  });
 
   systemd = buildDunePackage {
     pname = "systemd";
@@ -2752,8 +2755,8 @@ with oself;
 
   trace = osuper.trace.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-tracing/ocaml-trace/releases/download/v0.11/trace-0.11.tbz";
-      sha256 = "1g2qy78w9kfrx58rzi9wnwaykqfr1qq5rh16xnzrh6hrzgy2k4x2";
+      url = "https://github.com/ocaml-tracing/ocaml-trace/releases/download/v0.12/trace-0.12.tbz";
+      sha256 = "1ag4c564jvg60gdnpflzhxvhdripj5wp6f5wi0asszs2qxfkqzvy";
     };
     propagatedBuildInputs = [ mtime ];
   });
