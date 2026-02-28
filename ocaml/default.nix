@@ -2756,7 +2756,7 @@ with oself;
   trace = osuper.trace.overrideAttrs (_: {
     src = builtins.fetchurl {
       url = "https://github.com/ocaml-tracing/ocaml-trace/releases/download/v0.12/trace-0.12.tbz";
-      sha256 = "1ag4c564jvg60gdnpflzhxvhdripj5wp6f5wi0asszs2qxfkqzvy";
+      sha256 = "1n4zpn5bxwxzg2xxqhaqhr2ksdwnl8ba3pdx3fsfxs9kjjzxcwy1";
     };
     propagatedBuildInputs = [ mtime ];
   });
