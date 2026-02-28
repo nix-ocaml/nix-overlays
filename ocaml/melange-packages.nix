@@ -194,4 +194,16 @@ with oself;
     doCheck = lib.versionAtLeast ocaml.version "5.4";
     propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
+
+  melange-str = buildDunePackage {
+    pname = "melange-str";
+    version = "0.1.0";
+
+    src = builtins.fetchurl {
+      url = "https://github.com/davesnx/melange-str/releases/download/0.1.0/melange-str-0.1.0.tbz";
+      sha256 = "1vhkf7q0lw46czrc2j7sj3rq59n3kr8qh7qbgyzk0xqg4yayghx4";
+    };
+    nativeBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange ];
+  };
 }
