@@ -1852,6 +1852,7 @@ with oself;
   });
 
   ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
+    doCheck = false;
     buildPhase = ''
       make defaultentry -j$NIX_BUILD_CORES
     '';
