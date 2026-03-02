@@ -775,13 +775,13 @@ with oself;
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ pp ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   ordering = osuper.ordering.overrideAttrs (_: {
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
@@ -793,34 +793,34 @@ with oself;
       dyn
       ocamlc-loc
     ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-rpc-lwt = callPackage ./dune/rpc-lwt.nix { };
   dyn = osuper.dyn.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
-    preBuild = "rm -rf vendor/csexp vendor/pp";
+    preBuild = "";
   });
   dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       pp
       dune-rpc
     ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-glob = osuper.dune-glob.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       pp
       re
     ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   dune-site = osuper.dune-site.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   fiber = osuper.fiber.overrideAttrs (o: {
     propagatedBuildInputs = [
@@ -857,10 +857,10 @@ with oself;
       fs-io
       top-closure
     ];
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
   xdg = osuper.xdg.overrideAttrs (o: {
-    inherit (dyn) preBuild;
+    preBuild = "";
   });
 
   dune-release = osuper.dune-release.overrideAttrs (
