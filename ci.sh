@@ -14,4 +14,4 @@ args=(
   # --quiet-build
 )
 
-OCAMLRUNPARAM=b nix run .#ocaml-ng.ocamlPackages_5_4.nix-ci-build -- "${args[@]}"
+OCAMLRUNPARAM=b nix run .#ocaml-ng.ocamlPackages_5_5.nix-ci-build -- "${args[@]}"
