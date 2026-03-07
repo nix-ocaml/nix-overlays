@@ -1263,9 +1263,11 @@ with oself;
   });
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.3.2/js_of_ocaml-6.3.2.tbz";
-      sha256 = "1h5bdh8czwkbfx2n0b5imh49bswb7b7xrq5w3xq68d7cajbgqfm9";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "d5383e1361ad109463d2b59afaf65a032c1b8f79";
+      hash = "sha256-Gd1bdp/dXmM/UJRGypYN10RbIjE76D5wkJhF2NPeIPs=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
@@ -2369,8 +2371,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-ppx";
       repo = "ppxlib";
-      rev = "2cd397da41a09b8ea196d777c06e107c71b5d030";
-      hash = "sha256-ND3F7Fqh21rwXtTEbIiFFrgGd5Qr7YX/JIJrLgPb508=";
+      rev = "547c6cfd69671e147767e0937d069c5b9eb2aa4a";
+      hash = "sha256-nsf0wPqHScs/1NPzwlw7PqFPmP3vd/TZ9p05lcZQRjo=";
     };
 
     propagatedBuildInputs = [
@@ -2859,7 +2861,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "629b067279e2dc15bf1e14e5d6dd1ad3314482b7";
+      rev = "ce32aa476c40ffe442844c05d570901126bfa5f4";
       hash = "sha256-ZzZle4x7pwdYsrj9Q/mvnolj2vR3tXcyNxANVAuZqko=";
     };
   });
