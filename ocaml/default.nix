@@ -758,8 +758,8 @@ with oself;
       src = fetchFromGitHub {
         owner = "ocaml";
         repo = "dune";
-        rev = "3.21.0";
-        hash = "sha256-7l5WNXyCcMJfNw39xxIAhVGeQkR5KzthmGnbH0iQxos=";
+        rev = "9c1dbfd2c54a5cff626694808e1f765bdd59fe57";
+        hash = "sha256-miG+oo9lrK1I47W6ILtg7+HemU31lWTXrDTG0TRGIVw=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -772,6 +772,11 @@ with oself;
           "";
     });
 
+  dune-action-trace = buildDunePackage {
+    pname = "dune-action-trace";
+    inherit (dune_3) src version;
+    propagatedBuildInputs = [ csexp ];
+  };
   dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [ pp ];
@@ -1266,8 +1271,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "d5383e1361ad109463d2b59afaf65a032c1b8f79";
-      hash = "sha256-Gd1bdp/dXmM/UJRGypYN10RbIjE76D5wkJhF2NPeIPs=";
+      rev = "0db94667a9373a54ce5f4d0b59443a89a0f73d09";
+      hash = "sha256-sRbsL/Ipe6kGxZ1Mu6ANV6NJZIz6eZHiiDsvaEQ5KFE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
