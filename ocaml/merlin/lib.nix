@@ -27,9 +27,11 @@ buildDunePackage {
         sha256 = "1rqvqr70pr0dw63y2ygq7290a78gz1kypjwaxr8y5035s037c153";
       }
     else if lib.versionOlder "5.4" ocaml.version then
-      builtins.fetchurl {
-        url = "https://github.com/ocaml/merlin/releases/download/v5.6.1-504/merlin-5.6.1-504.tbz";
-        sha256 = "1dcznki8h56nby4il04za5111q13h19kk2mwysb4qicsy40pqg6c";
+      fetchFromGitHub {
+        owner = "ocaml";
+        repo = "merlin";
+        rev = "809b7cf4ca6e0d97f4d07b63db82851d6001fd78";
+        hash = "sha256-vfdQMx8YkMj3JOqlpL5+FIHmff7Xk7OawROf1RVhNBM=";
       }
     else if lib.versionOlder "5.3" ocaml.version then
       builtins.fetchurl {

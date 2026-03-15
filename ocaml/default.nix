@@ -1244,9 +1244,11 @@ with oself;
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.4" ocaml.version then
-        builtins.fetchurl {
-          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.25.0/lsp-1.25.0.tbz";
-          sha256 = "087h47pprfbah64129ffmy6zym3fk4knk13h4nnhk5zqyfzd45g3";
+        fetchFromGitHub {
+          owner = "ocaml";
+          repo = "ocaml-lsp";
+          rev = "4a01ba655e80af13e8a4ffdc7169fdc5f4a0ba22";
+          hash = "sha256-3NvDK6dM5dtD7U1oNN4An+lrtFQExK2smjg9aVpSMR4=";
         }
       else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl {
@@ -1987,30 +1989,57 @@ with oself;
   ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ base ];
 
-    postPatch =
-      if
-        lib.versionOlder "5.2" ocaml.version
-        || (lib.versionOlder "4.14" ocaml.version && !(lib.versionOlder "5.0" ocaml.version))
-      then
-        ""
+    patches =
+      if lib.versionOlder "5.1" ocaml.version && !(lib.versionOlder "5.2" ocaml.version) then
+        [ ./ocaml-lsp-1.21.patch ]
+      else if (lib.versionOlder "4.14" ocaml.version && !lib.versionOlder "5.4" ocaml.version) then
+        [ ./ocaml-lsp.patch ]
       else
-        ''
-          substituteInPlace ocaml-lsp-server/src/merlin_config.ml --replace-fail \
-            '| `ERROR_MSG' '| `SOURCE_ROOT _ | `UNIT_NAME _ | `WRAPPING_PREFIX _ -> assert false | `ERROR_MSG'
+        [ ];
+    postPatch = ''
+      ${
+        if lib.versionOlder "5.1" ocaml.version && !(lib.versionOlder "5.3" ocaml.version) then
+          ''
+            substituteInPlace \
+              "ocaml-lsp-server/src/compl.ml" \
+                --replace-fail String.is_suffix String.ends_with
+            substituteInPlace \
+              "ocaml-lsp-server/src/dune.ml" \
+              "ocaml-lsp-server/src/code_actions/action_add_rec.ml" \
+              "ocaml-lsp-server/src/compl.ml" \
+              "ocaml-lsp-server/src/diagnostics.ml" \
+              "ocaml-lsp-server/src/code_actions/diagnostic_util.ml" \
+                --replace-fail String.is_prefix String.starts_with
+          ''
+        else
+          ""
+      }
+      ${
+        if
+          lib.versionOlder "5.2" ocaml.version
+          || (lib.versionOlder "4.14" ocaml.version && !(lib.versionOlder "5.0" ocaml.version))
+        then
+          ""
+        else
+          ''
+            substituteInPlace ocaml-lsp-server/src/merlin_config.ml --replace-fail \
+              '| `ERROR_MSG' '| `SOURCE_ROOT _ | `UNIT_NAME _ | `WRAPPING_PREFIX _ -> assert false | `ERROR_MSG'
 
-          substituteInPlace \
-            "ocaml-lsp-server/src/rename.ml" \
-            "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
-            'List.map locs' 'List.map (fst locs)'
+            substituteInPlace \
+              "ocaml-lsp-server/src/rename.ml" \
+              "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+              'List.map locs' 'List.map (fst locs)'
 
-          substituteInPlace \
-            "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
-            'List.filter_map locs' 'List.filter_map (fst locs)'
+            substituteInPlace \
+              "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+              'List.filter_map locs' 'List.filter_map (fst locs)'
 
-          substituteInPlace \
-            "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
-            'List.find_opt locs' 'List.find_opt (fst locs)'
-        '';
+            substituteInPlace \
+              "ocaml-lsp-server/src/ocaml_lsp_server.ml" --replace-fail \
+              'List.find_opt locs' 'List.find_opt (fst locs)'
+          ''
+      }
+    '';
   });
 
   ocaml-recovery-parser = osuper.ocaml-recovery-parser.overrideAttrs (o: {
