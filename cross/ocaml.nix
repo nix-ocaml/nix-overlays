@@ -16,6 +16,7 @@
   writeScriptBin,
   makeWrapper,
   stdenv,
+  windows ? null,
 }:
 let
   __mergeInputs =
@@ -173,6 +174,7 @@ in
           natocamlPackages
           osuper
           stdenv
+          windows
           ;
       };
 
