@@ -59,7 +59,8 @@ in
   (
     oself: osuper:
     let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
+      crossName =
+        if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
@@ -291,7 +292,8 @@ in
   (
     oself: osuper:
     let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
+      crossName =
+        if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
     in
     {
