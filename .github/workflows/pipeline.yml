@@ -160,3 +160,34 @@ jobs:
       - name: Build nix packages
         run : ./ci.sh x86_64-linux ${{matrix.target}}_${{matrix.setup.ocaml-version}}
         continue-on-error: ${{ matrix.setup.continue-on-error }}
+
+  cross-compilers-mingw:
+    strategy:
+      fail-fast: false
+      matrix:
+        setup:
+          # mingw cross-compilation only supported on OCaml 5.4+
+          - { ocaml-version: 5_4, continue-on-error: false }
+          - { ocaml-version: 5_5, continue-on-error: true }
+    name: mingw packages (OCaml ${{ matrix.setup.ocaml-version }})
+    runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            system-features = nixos-test benchmark big-parallel kvm
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
+      - uses: nix-ocaml/nix-s3-action@fork
+        with:
+          skipPush: true
+          endpoint: "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com"
+          signingKey: ${{ secrets.R2_SIGNING_KEY }}
+          awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
+          awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
+      - name: Build nix packages
+        run : ./ci.sh x86_64-linux mingw_${{matrix.setup.ocaml-version}}
+        continue-on-error: ${{ matrix.setup.continue-on-error }}
