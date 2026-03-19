@@ -5,6 +5,7 @@
   natocamlPackages,
   writeScriptBin,
   osuper,
+  windows ? null,
 }:
 
 let
@@ -32,10 +33,35 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
       buildPackages.stdenv.cc
       natocaml
     ];
+
+    # mingw needs pthreads for threading support
+    buildInputs = lib.optionals stdenv.hostPlatform.isMinGW [
+      windows.pthreads
+    ];
+
     configurePlatforms = [ ];
     preConfigure = ''
       configureFlagsArray+=("--host=${stdenv.buildPlatform.config}" "--target=${stdenv.targetPlatform.config}" "PARTIALLD=$LD -r" "ASPP=$CC -c")
     '';
+
+    # mingw: add pthreads path to flexlink, remove -lgcc_eh, add -nocygpath
+    postConfigure = lib.optionalString stdenv.hostPlatform.isMinGW ''
+      # Add -nocygpath to prevent flexlink from trying to use cygpath
+      # Add -L path for pthreads to all flexlink invocations
+      substituteInPlace Makefile.config --replace-fail \
+        'MKEXE=flexlink' \
+        'MKEXE=flexlink -nocygpath -L${windows.pthreads}/lib'
+      substituteInPlace Makefile.config --replace-fail \
+        'MKDLL=flexlink' \
+        'MKDLL=flexlink -nocygpath -L${windows.pthreads}/lib'
+      substituteInPlace Makefile.config --replace-fail \
+        'MKMAINDLL=flexlink' \
+        'MKMAINDLL=flexlink -nocygpath -L${windows.pthreads}/lib'
+      substituteInPlace Makefile.config --replace-fail \
+        '-lgcc_eh' \
+        ""
+    '';
+
     buildPhase = ''
       runHook preBuild
       make crossopt ''${enableParallelBuilding:+-j $NIX_BUILD_CORES}
@@ -46,6 +72,32 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
       cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
       cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
       cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
+    ''
+    + lib.optionalString stdenv.hostPlatform.isMinGW ''
+            # Remove Windows PE versions of tools that need to run on build machine
+            # The cross-compiler .exe files are actually ELF binaries (run on Linux)
+            # but ocamlyacc.exe and ocamlrun.exe are Windows PE (compiled with mingw gcc)
+            rm -f $out/bin/ocamlyacc.exe $out/bin/ocamlrun.exe $out/bin/ocamlrund.exe
+
+            # Create symlinks for .exe files (mingw adds .exe extension)
+            for f in $out/bin/*.exe; do
+              ln -sf "$(basename "$f")" "''${f%.exe}"
+            done
+
+            # Wrap flexlink to always add -nocygpath and library paths
+            # The compiler has flexlink settings compiled-in that don't include these
+            # Link mcfgthread which is needed by libgcc_eh
+            mv $out/bin/flexlink.opt.exe $out/bin/.flexlink.opt.exe.real
+            cat > $out/bin/flexlink.opt.exe << 'EOF'
+      #!/bin/sh
+      exec "$(dirname "$0")/.flexlink.opt.exe.real" -nocygpath -L${windows.pthreads}/lib -L${windows.mcfgthreads}/lib "$@" -lmcfgthread
+      EOF
+            chmod +x $out/bin/flexlink.opt.exe
+
+            # Update symlinks to point to the wrapper
+            ln -sf flexlink.opt.exe $out/bin/flexlink.exe
+            ln -sf flexlink.opt.exe $out/bin/flexlink.opt
+            ln -sf flexlink.opt.exe $out/bin/flexlink
     '';
   })
 else
