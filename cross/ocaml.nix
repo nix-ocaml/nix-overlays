@@ -71,19 +71,23 @@ in
         if p ? pname then
           let
             pname = p.pname or (throw "`p.pname' not found: ${p.name}");
+            prefix1 = "ocaml${osuper.ocaml.version}-";
+            prefix2 = "ocaml-";
+            # For packages like ocaml-lsp-server, try stripping -server suffix
+            withoutServer = lib.removeSuffix "-server" pname;
           in
           natocamlPackages."${pname}" or
           # Some legacy packages are called `ocaml_X`, e.g. extlib and
           # sqlite3
-          natocamlPackages."ocaml_${pname}" or (
-            let
-              prefix1 = "ocaml${osuper.ocaml.version}-";
-              prefix2 = "ocaml-";
-            in
+          natocamlPackages."ocaml_${pname}" or
+          # Try without -server suffix (e.g., ocaml-lsp-server -> ocaml-lsp)
+          natocamlPackages."${withoutServer}" or (
             if lib.hasPrefix prefix1 p.pname then
               natocamlPackages."${(lib.removePrefix prefix1 pname)}"
             else if lib.hasPrefix prefix2 p.pname then
-              natocamlPackages."${(lib.removePrefix prefix2 pname)}"
+              natocamlPackages."${(lib.removePrefix prefix2 pname)}" or
+              # Also try the stripped version without ocaml- prefix
+              natocamlPackages."${(lib.removePrefix prefix2 withoutServer)}"
             else
               throw "Unsupported cross-pkg parsing for `${p.pname}'"
           )
