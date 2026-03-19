@@ -129,4 +129,8 @@ with filter;
   );
 
   musl_5_5 = (if system == "x86_64-linux" then crossTarget pkgs.pkgsCross.musl64 "5_5" else { });
+
+  # mingw cross-compilation (Windows) - only OCaml 5.4+ supported
+  mingw_5_4 = (if system == "x86_64-linux" then crossTarget pkgs.pkgsCross.mingwW64 "5_4" else { });
+  mingw_5_5 = (if system == "x86_64-linux" then crossTarget pkgs.pkgsCross.mingwW64 "5_5" else { });
 }
