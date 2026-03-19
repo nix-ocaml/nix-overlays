@@ -57,5 +57,6 @@ overlay final prev
           static-overlay
         ];
 
+      mingwW64 = prev.pkgsCross.mingwW64.extend (prev.callPackage ../cross { });
     };
 }
