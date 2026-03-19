@@ -436,6 +436,14 @@ in
           "DOCDIR=$(out)/share/doc/${o.pname}"
         ];
 
+        # For mingw: the binary is cmdliner.exe but install looks for cmdliner
+        # Create a symlink to fix the install, or just skip the binary
+        preInstall = lib.optionalString stdenv.hostPlatform.isMinGW ''
+          if [ -f _build/src/tool/cmdliner.exe ]; then
+            ln -sf cmdliner.exe _build/src/tool/cmdliner
+          fi
+        '';
+
         postInstall = ''
           mv $OCAMLFIND_DESTDIR/${o.pname}/{opam,${o.pname}.opam}
         '';
