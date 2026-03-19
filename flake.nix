@@ -39,6 +39,7 @@
               overlays = [ overlay ];
               config = {
                 allowUnfree = true;
+                allowUnsupportedSystem = true;
               }
               // nixpkgs.lib.optionalAttrs (system == "x86_64-darwin") {
                 config.replaceStdenv = { pkgs, ... }: pkgs.clang11Stdenv;
