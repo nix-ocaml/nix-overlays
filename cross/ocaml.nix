@@ -179,6 +179,75 @@ in
       };
 
       findlib = osuper.findlib.overrideAttrs (o: {
+        # For mingw cross-compilation, we need to skip configure entirely
+        # and provide a pre-made Makefile.config, similar to opam-cross-windows
+        dontConfigure = stdenv.hostPlatform.isMinGW;
+
+        # Need native ocamlfind in PATH for OCAMLFIND_TOOLCHAIN to work
+        nativeBuildInputs =
+          (o.nativeBuildInputs or [ ]) ++ lib.optionals stdenv.hostPlatform.isMinGW [ natfindlib ];
+
+        preBuild = lib.optionalString stdenv.hostPlatform.isMinGW ''
+          # Create Makefile.config for mingw cross-compilation
+          # Skip configure which tries to run Windows binaries
+          cat > Makefile.config << EOF
+          OCAML_CORE_STDLIB=$out/lib/ocaml
+          OCAML_CORE_BIN=$out/bin
+          OCAML_CORE_MAN=$out/share/man
+          OCAML_SITELIB=$out/lib/ocaml/${oself.ocaml.version}/site-lib
+          OCAML_THREADS=posix
+          OCAMLFIND_BIN=$out/bin
+          OCAMLFIND_MAN=$out/share/man
+          OCAMLFIND_CONF=$out/etc/findlib.conf
+          OCAML_AUTOLINK=true
+          OCAML_REMOVE_DIRECTORY=1
+          EXEC_SUFFIX=.exe
+          LIB_SUFFIX=.a
+          CUSTOM=-custom
+          PARTS=findlib
+          INSTALL_TOPFIND=0
+          RELATIVE_PATHS=false
+          USE_CYGPATH=0
+          HAVE_NATDYNLINK=1
+          VERSION=${o.version}
+          ENABLE_TOPFIND_PPXOPT=true
+          SYSTEM=mingw64
+          NUMTOP=
+          OPAQUE=-opaque
+          CHECK_BEFORE_INSTALL=0
+          INSTALLFILE=install -c
+          INSTALLDIR=install -d
+          SH=sh
+          CP=cp
+          OCAMLOPT_G=-g
+          EOF
+
+          # Patch Makefile to use ocamlfind (for OCAMLFIND_TOOLCHAIN support)
+          # and to not build/install ocamlfind binary (we use native one)
+          substituteInPlace src/findlib/Makefile \
+            --replace-fail 'OCAMLC = ocamlc' 'OCAMLC = ocamlfind ocamlc' \
+            --replace-fail 'OCAMLOPT = ocamlopt' 'OCAMLOPT = ocamlfind ocamlopt' \
+            --replace-fail 'OCAMLDEP = ocamldep' 'OCAMLDEP = ocamlfind ocamldep' \
+            --replace-fail 'all: ocamlfind$(EXEC_SUFFIX)' 'all:'  \
+            --replace-fail 'opt: ocamlfind_opt$(EXEC_SUFFIX)' 'opt:'
+
+          # Remove the lines that install ocamlfind binary
+          sed -i '/f="ocamlfind/,/ocamlfind\$(EXEC_SUFFIX)"/d' src/findlib/Makefile
+
+          # Generate META files from templates (like opam-cross-windows gen_META.sh)
+          # This is needed so the findlib library can be found by other packages
+          for part in src/*; do
+            if [ -f "$part/META.in" ]; then
+              sed -e "s/@VERSION@/${o.version}/g" \
+                  -e "s/@REQUIRES@//g" \
+                  "$part/META.in" > "$part/META"
+            fi
+          done
+        '';
+
+        # For mingw: use native ocamlfind with OCAMLFIND_TOOLCHAIN
+        OCAMLFIND_TOOLCHAIN = lib.optionalString stdenv.hostPlatform.isMinGW crossName;
+
         postInstall = ''
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
@@ -336,6 +405,7 @@ in
           "LIBDIR=$(OCAMLFIND_DESTDIR)/${o.pname}"
           "DOCDIR=$(out)/share/doc/${o.pname}"
         ];
+
         postInstall = ''
           mv $OCAMLFIND_DESTDIR/${o.pname}/{opam,${o.pname}.opam}
         '';
