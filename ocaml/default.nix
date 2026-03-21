@@ -1497,7 +1497,7 @@ with oself;
   lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
     propagatedBuildInputs = [
       lwt
-      ppxlib_gt_0_37
+      ppxlib
     ];
   });
 
