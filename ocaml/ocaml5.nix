@@ -138,8 +138,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-multicore";
       repo = "picos";
-      rev = "aef7c03874104b2604ffe4e9c764f44328374907";
-      hash = "sha256-4q+dOa8YY8ZSQSAVzCaBYRo0mQP8oqfp56aqPxR9kPU=";
+      rev = "5d7e5581462babc241d577eddc84aeceecbb2073";
+      hash = "sha256-1t8wGgAfv4MpZSQSza2y5EUPvKAkcADuYdEE5NeUr9w=";
     };
 
     propagatedBuildInputs = [
