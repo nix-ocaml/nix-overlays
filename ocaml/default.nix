@@ -759,11 +759,9 @@ with oself;
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.21.0";
-      src = fetchFromGitHub {
-        owner = "ocaml";
-        repo = "dune";
-        rev = "9c1dbfd2c54a5cff626694808e1f765bdd59fe57";
-        hash = "sha256-miG+oo9lrK1I47W6ILtg7+HemU31lWTXrDTG0TRGIVw=";
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/3.22.0/dune-3.22.0.tbz";
+        sha256 = "08ppmkdqlyznrxm4gjqils6ab5dxhw9g0cq1d3mcd9iccwp6p0fb";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -1247,7 +1245,12 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.4" ocaml.version then
+      if lib.versionOlder "5.5" ocaml.version then
+        builtins.fetchurl {
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.26.0-5.5_preview/lsp-1.26.0-5.5.preview.tbz";
+          sha256 = "0i7plg0aggjj426p0kfyv5skssxk27jryc13rlrb47pvhb98farq";
+        }
+      else if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml";
           repo = "ocaml-lsp";
@@ -1890,8 +1893,8 @@ with oself;
 
   ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.28.1/ocamlformat-0.28.1.tbz";
-      sha256 = "1ys1zyrr9jqcv0av1a2h8x245xgf5s5ikddxj7nn3ndys0vs1gbh";
+      url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.29.0/ocamlformat-0.29.0.tbz";
+      sha256 = "1dcx7ii1plj23f8fisn1z0s2m1rsh2whg6w69fxq5rvsjl57ziys";
     };
   });
   ocamlformat-rpc-lib = buildDunePackage {
@@ -2413,12 +2416,20 @@ with oself;
   ppx_tools = if lib.versionOlder "5.2" ocaml.version then null else osuper.ppx_tools;
 
   ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocaml-ppx";
-      repo = "ppxlib";
-      rev = "547c6cfd69671e147767e0937d069c5b9eb2aa4a";
-      hash = "sha256-nsf0wPqHScs/1NPzwlw7PqFPmP3vd/TZ9p05lcZQRjo=";
-    };
+    src =
+      if lib.versionOlder "5.5" ocaml.version then
+        fetchFromGitHub {
+          owner = "ocaml-ppx";
+          repo = "ppxlib";
+          rev = "547c6cfd69671e147767e0937d069c5b9eb2aa4a";
+          hash = "sha256-nsf0wPqHScs/1NPzwlw7PqFPmP3vd/TZ9p05lcZQRjo=";
+        }
+
+      else
+        builtins.fetchurl {
+          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.38.0/ppxlib-0.38.0.tbz";
+          sha256 = "18r96h331f4d3qd2z7cmm0qca3xblcp80kfk2fi70rig22rlkq49";
+        };
 
     propagatedBuildInputs = [
       ocaml-compiler-libs
