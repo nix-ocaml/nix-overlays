@@ -57,7 +57,6 @@ in
   });
 
   zlib-oc = super.zlib-oc.override {
-    static = true;
     splitStaticOutput = false;
   };
 

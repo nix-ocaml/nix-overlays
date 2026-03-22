@@ -750,7 +750,11 @@ with oself;
   dune_3 =
     let
       dune_pkg = oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
-        ocamlPackages = oself;
+        buildPackages = buildPackages // {
+          buildPackages = {
+            ocamlPackages = oself;
+          };
+        };
       };
     in
     dune_pkg.overrideAttrs (o: {
@@ -1735,8 +1739,8 @@ with oself;
   });
   menhirLib = osuper.menhirLib.overrideAttrs (_: {
     src = builtins.fetchurl {
-      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20240715.tar.gz";
-      sha256 = "0c60kby2b1zmr0ypqaclakhk3kk4km4qvw7blynzmjxam928cj7g";
+      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/menhir-20260209-0c6d021629bafa2fa32302d01d9594d2a026ec75.tar.gz";
+      sha256 = "1wz4bp1b5ba75f8xwlgzplqd8q4a6b6pg0pb0wsmn7bx0i5l3w39";
     };
   });
 
@@ -2195,7 +2199,13 @@ with oself;
   opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
   opam-state = osuper.opam-state.overrideAttrs (o: opamAttrs);
 
-  opaline = super-opaline.override { ocamlPackages = oself; };
+  opaline = super-opaline.override {
+    buildPackages = buildPackages // {
+      buildPackages = {
+        ocamlPackages = oself;
+      };
+    };
+  };
 
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
