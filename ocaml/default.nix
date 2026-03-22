@@ -1509,6 +1509,7 @@ with oself;
   });
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
+    meta.broken = false;
     postPatch = ''
       substituteInPlace src/unix/lwt_daemon.ml --replace-fail \
         'Lwt_sequence.iter_node_l Lwt_sequence.remove Lwt_main.exit_hooks [@ocaml.warning "-3"];' \
