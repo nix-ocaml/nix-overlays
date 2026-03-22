@@ -2193,8 +2193,6 @@ with oself;
   opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
   opam-state = osuper.opam-state.overrideAttrs (o: opamAttrs);
 
-  opaline = super-opaline.override { ocamlPackages = oself; };
-
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "owlbarn";
