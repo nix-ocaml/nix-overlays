@@ -749,7 +749,13 @@ with oself;
   dune_2 = oself.dune_3;
   dune_3 =
     let
-      dune_pkg = oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" { };
+      dune_pkg = oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
+        buildPackages = buildPackages // {
+          buildPackages = {
+            ocamlPackages = oself;
+          };
+        };
+      };
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.21.0";
@@ -2193,7 +2199,13 @@ with oself;
   opam-format = osuper.opam-format.overrideAttrs (_: opamAttrs);
   opam-state = osuper.opam-state.overrideAttrs (o: opamAttrs);
 
-  opaline = super-opaline;
+  opaline = super-opaline.override {
+    buildPackages = buildPackages // {
+      buildPackages = {
+        ocamlPackages = oself;
+      };
+    };
+  };
 
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
