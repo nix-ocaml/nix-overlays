@@ -159,9 +159,35 @@ in
 
       fixOCamlPackage =
         b:
-        b.overrideAttrs (o: {
-          OCAMLFIND_CONF = makeFindlibConf (findNativePackage b) b;
-        });
+        b.overrideAttrs (
+          o:
+          {
+            OCAMLFIND_CONF = makeFindlibConf (findNativePackage b) b;
+          }
+          // lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+            # Remove makeWrapper - shell wrappers don't work on Windows
+            nativeBuildInputs = lib.filter (p: !(p ? pname && p.pname == "make-shell-wrapper-hook")) (
+              o.nativeBuildInputs or [ ]
+            );
+            # caml/platform.h includes <pthread.h>; on mingw this comes from
+            # windows.pthreads. We need it in buildInputs for the headers, but
+            # its PE libraries in NIX_LDFLAGS break native build-time tools
+            # (nixpkgs#139966). Strip the -L flag; flexlink already has it baked in.
+            # OCaml 5.5+ uses native Windows threads and won't need this.
+            buildInputs =
+              (o.buildInputs or [ ])
+              ++ lib.optionals (lib.versionOlder osuper.ocaml.version "5.5") [ windows.pthreads ];
+            preConfigurePhases = (o.preConfigurePhases or [ ]) ++ [ "removeMingwPthreadsFromLdFlags" ];
+            removeMingwPthreadsFromLdFlags = lib.optionalString (lib.versionOlder osuper.ocaml.version "5.5") ''
+              NIX_LDFLAGS=$(echo "$NIX_LDFLAGS" | sed "s|-L${windows.pthreads}/lib||g")
+              export NIX_LDFLAGS
+            '';
+            # Clear postInstall if it uses wrapProgram (common pattern)
+            postInstall = lib.optionalString (!(lib.hasInfix "wrapProgram" (o.postInstall or ""))) (
+              o.postInstall or ""
+            );
+          }
+        );
     in
 
     (lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper)
