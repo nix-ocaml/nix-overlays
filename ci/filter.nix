@@ -203,6 +203,7 @@ let
     # broken on macOS?
     "llvm"
     "mopsa"
+    "gdal"
 
     "alsa"
     "mm"
