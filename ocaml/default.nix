@@ -870,8 +870,7 @@ with oself;
     preBuild = "";
   });
 
-  dune-release = osuper.dune-release.overrideAttrs (
-    o:
+  dune-release =
     let
       runtimeInputs = [
         opam
@@ -883,7 +882,13 @@ with oself;
         coreutils
       ];
     in
-    {
+    osuper.dune-release.overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "tarides";
+        repo = "dune-release";
+        rev = "2.2.1";
+        hash = "sha256-ixRKiQGkIBVAYD8ni7k/XUmp/LqobrcA6mZ/FBWTyAI=";
+      };
       nativeBuildInputs = [
         makeWrapper
         ocaml
@@ -899,8 +904,7 @@ with oself;
         wrapProgram $out/bin/dune-release \
           --prefix PATH : "${lib.makeBinPath runtimeInputs}"
       '';
-    }
-  );
+    });
 
   eigen = osuper.eigen.overrideAttrs (_: {
     src = builtins.fetchurl {
@@ -1280,8 +1284,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "0db94667a9373a54ce5f4d0b59443a89a0f73d09";
-      hash = "sha256-sRbsL/Ipe6kGxZ1Mu6ANV6NJZIz6eZHiiDsvaEQ5KFE=";
+      rev = "29334dfe1d4843e689d2f54d49528eb966c58a92";
+      hash = "sha256-QCMKPMF8qtnSTNZnj82WTouZEsvwmDVR9coBnwPipbg=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
@@ -2904,8 +2908,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "ce32aa476c40ffe442844c05d570901126bfa5f4";
-      hash = "sha256-ZzZle4x7pwdYsrj9Q/mvnolj2vR3tXcyNxANVAuZqko=";
+      rev = "2.17.0";
+      hash = "sha256-acYVqDV/EaIZbyarAZsxB/SVYd0Y62HWhvACH8TgALs=";
     };
   });
 
