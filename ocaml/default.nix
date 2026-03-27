@@ -1891,12 +1891,6 @@ with oself;
     doCheck = false;
   });
 
-  ocamlformat-lib = osuper.ocamlformat-lib.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.29.0/ocamlformat-0.29.0.tbz";
-      sha256 = "1dcx7ii1plj23f8fisn1z0s2m1rsh2whg6w69fxq5rvsjl57ziys";
-    };
-  });
   ocamlformat-rpc-lib = buildDunePackage {
     pname = "ocamlformat-rpc-lib";
     inherit (ocamlformat-lib) src version;
