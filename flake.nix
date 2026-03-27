@@ -7,7 +7,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=5a48933708565662eb1309c018d6a9810016ae2a";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=b55b0e0c856ac73c7f507336780f97aa7a9746e2";
   };
 
   outputs =
