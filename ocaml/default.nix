@@ -1284,8 +1284,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "29334dfe1d4843e689d2f54d49528eb966c58a92";
-      hash = "sha256-QCMKPMF8qtnSTNZnj82WTouZEsvwmDVR9coBnwPipbg=";
+      rev = "8df204bc6982ae2e1d20f07f02af8c5b0ea7aff5";
+      hash = "sha256-Z30NLi3akYvLl+YardOBY8tkMqzSbsj3ime+ajlVqPM=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [

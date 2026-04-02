@@ -88,6 +88,7 @@ let
     "owl"
     "owl-base"
     "symex"
+    "gdal"
 
     # Broken on janestreet v0.17
     "multiformats"
@@ -203,7 +204,6 @@ let
     # broken on macOS?
     "llvm"
     "mopsa"
-    "gdal"
 
     "alsa"
     "mm"
