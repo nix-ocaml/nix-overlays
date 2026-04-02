@@ -156,6 +156,22 @@ in
             moveToOutput "bin/pg_config" "$dev"
             install -c -m 755 "${pg_config}"/bin/pg_config "$out/bin/pg_config"
             wrapProgram "$dev/bin/pg_config" --argv0 "$out/bin/pg_config"
+
+            rm "$out/bin/pg_config"
+            make -C src/common pg_config.env
+            substituteInPlace src/common/pg_config.env \
+              --replace-fail "$out" "@out@" \
+              --replace-fail "$man" "@man@"
+            install -D src/common/pg_config.env "$dev/nix-support/pg_config.env"
+
+            # postgres exposes external symbols get_pkginclude_path and similar. Those
+            # can't be stripped away by --gc-sections/LTO, because they could theoretically
+            # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
+            # references to -dev, -doc and -man are removed here. References to -lib must be kept,
+            # because there is a realistic use-case for extensions to locate the /lib directory to
+            # load other shared modules.
+            remove-references-to -t "$dev" -t "$doc" -t "$man" "$out/bin/postgres"
+
             # postgres exposes external symbols get_pkginclude_path and similar. Those
             # can't be stripped away by --gc-sections/LTO, because they could theoretically
             # be used by dynamically loaded modules / extensions. To avoid circular dependencies,
