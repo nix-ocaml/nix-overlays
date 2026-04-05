@@ -12,6 +12,7 @@ let
     fetchFromGitHub
     callPackage
     fetchpatch
+    substitute
     buildGoModule
     haskell
     haskellPackages
@@ -52,6 +53,92 @@ in
 
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.latest;
+
+  tree-sitter = super.tree-sitter.overrideAttrs (
+    old:
+    let
+      version = "0.26.8";
+      webUISupport = old.webUISupport or false;
+      src = fetchFromGitHub {
+        owner = "tree-sitter";
+        repo = "tree-sitter";
+        tag = "v${version}";
+        hash = "sha256-fcFEfoALrbpBD6rWogxJ7FNVlvDQgswoX9ylRgko+8Q=";
+        fetchSubmodules = true;
+      };
+    in
+    {
+      inherit version;
+      inherit src;
+      cargoHash = "sha256-9FeWnWWPUWmMF15Psmul8GxGv2JceHWc2WZPmOr81gw=";
+      cargoDeps = super.rustPlatform.fetchCargoVendor {
+        inherit src;
+        name = "${old.pname or "tree-sitter"}-${version}";
+        hash = "sha256-9FeWnWWPUWmMF15Psmul8GxGv2JceHWc2WZPmOr81gw=";
+      };
+
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ super.rustPlatform.bindgenHook ];
+
+      patches =
+        if webUISupport then
+          old.patches or [ ]
+        else
+          [
+            (substitute {
+              src = builtins.toFile "tree-sitter-remove-web-interface.patch" ''
+                diff --git a/crates/cli/src/main.rs b/crates/cli/src/main.rs
+                index c6d845fc..d1aa1b1c 100644
+                --- a/crates/cli/src/main.rs
+                +++ b/crates/cli/src/main.rs
+                @@ -24,7 +24,6 @@ use tree_sitter_cli::{
+                     input::{get_input, get_tmp_source_file, CliInput},
+                     logger,
+                     parse::{self, ParseDebugType, ParseFileOptions, ParseOutput, ParseTheme},
+                -    playground,
+                     query::{self, QueryFileOptions},
+                     tags::{self, TagsOptions},
+                     test::{self, TestOptions, TestStats, TestSummary},
+                @@ -1933,16 +1932,8 @@ impl Tags {
+
+                 impl Playground {
+                     fn run(self, current_dir: &Path) -> Result<()> {
+                -        let grammar_path = self.grammar_path.as_deref().map_or(current_dir, Path::new);
+                -
+                -        if let Some(export_path) = self.export {
+                -            playground::export(grammar_path, &export_path)?;
+                -        } else {
+                -            let open_in_browser = !self.quiet;
+                -            playground::serve(grammar_path, open_in_browser)?;
+                -        }
+                -
+                -        Ok(())
+                +        println!("ERROR: web-ui is not available in this nixpkgs build; enable the webUISupport");
+                +        std::process::exit(1);
+                     }
+                 }
+
+                diff --git a/crates/cli/src/tree_sitter_cli.rs b/crates/cli/src/tree_sitter_cli.rs
+                index 3960d961..55f8e2e4 100644
+                --- a/crates/cli/src/tree_sitter_cli.rs
+                +++ b/crates/cli/src/tree_sitter_cli.rs
+                @@ -6,7 +6,6 @@ pub mod init;
+                 pub mod input;
+                 pub mod logger;
+                 pub mod parse;
+                -pub mod playground;
+                 pub mod query;
+                 pub mod query_testing;
+                 pub mod tags;
+              '';
+            })
+            (fetchpatch {
+              name = "feat: allow `-` in grammar names";
+              url = "https://github.com/tree-sitter/tree-sitter/commit/7d3c32125379c1dc02f47277bcd4eceaac299bdb.diff";
+              hash = "sha256-ZNjdNateHVHDy0/txlAW8TUdz+DVxLKXpw8ojZbIQS8=";
+            })
+          ];
+    }
+  );
 
   # Other packages
 

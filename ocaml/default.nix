@@ -1,11 +1,8 @@
 {
   nixpkgs,
-  autoconf,
   libmysqlclient,
   mariadb,
-  autoreconfHook,
   bzip2,
-  automake,
   bash,
   buildPackages,
   cmake,
@@ -16,7 +13,6 @@
   fzf,
   git,
   jq,
-  libgsl,
   krb5,
   lib,
   libargon2,
@@ -43,17 +39,13 @@
   oniguruma-lib,
   pam,
   pkg-config,
-  python3,
-  python3Packages,
   lmdb,
-  ncurses,
   curl-oc,
   libsodium,
   cairo,
   gtk2,
   rdkafka-oc,
   zlib-oc,
-  unzip,
   freetype,
   fontconfig,
   libxkbcommon,
@@ -98,16 +90,6 @@ let
     d:
     d.overrideAttrs (_: {
       doCheck = false;
-    });
-  addBase =
-    p:
-    p.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.base ];
-    });
-  addStdio =
-    p:
-    p.overrideAttrs (o: {
-      propagatedBuildInputs = o.propagatedBuildInputs ++ [ oself.stdio ];
     });
 
   # Jane Street
@@ -383,7 +365,7 @@ with oself;
       description = "OCaml bindings for the libbz2 (AKA, bzip2) (de)compression library";
       downloadPage = "https://gitlab.com/irill/camlbz2";
       license = licenses.lgpl21;
-      maintainers = with maintainers; [ ];
+      maintainers = [ ];
     };
   };
 
@@ -1332,7 +1314,7 @@ with oself;
     hardeningDisable = [ "strictoverflow" ];
   };
 
-  kafka_lwt = buildDunePackage rec {
+  kafka_lwt = buildDunePackage {
     pname = "kafka_lwt";
     hardeningDisable = [ "strictoverflow" ];
 
@@ -1825,7 +1807,7 @@ with oself;
     '';
   });
 
-  nonstd = buildDunePackage rec {
+  nonstd = buildDunePackage {
     pname = "nonstd";
     version = "0.0.3";
 
