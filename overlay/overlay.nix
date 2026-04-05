@@ -43,7 +43,6 @@ in
       inherit nixpkgs;
       super-opaline = super.opaline;
       oniguruma-lib = super.oniguruma;
-      libgsl = super.gsl;
     })
   ];
 })
