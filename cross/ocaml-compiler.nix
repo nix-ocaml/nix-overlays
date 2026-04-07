@@ -38,7 +38,7 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
     '';
     buildPhase = ''
       runHook preBuild
-      make crossopt -j500
+      make crossopt ''${enableParallelBuilding:+-j $NIX_BUILD_CORES}
       runHook postBuild
     '';
     installTargets = [ "installcross" ];

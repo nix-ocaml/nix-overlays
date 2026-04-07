@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr view:*)",
+      "Bash(jj commit:*)",
+      "Bash(nix build:*)",
+      "Bash(xxd:*)",
+      "Bash(PATH=\"/tmp/mingw-cc/bin:/tmp/cross-ocaml/bin:$PATH\" )",
+      "Bash(LIBRARY_PATH=\"/tmp/mingw-pthreads/lib:$LIBRARY_PATH\":*)",
+      "Bash(/tmp/cross-ocaml/bin/ocamlopt.opt:*)",
+      "Bash(jj show:*)",
+      "Bash(curl:*)",
+      "Bash(jj log:*)",
+      "Bash(git -C /home/ali/repos/nix-overlays log --oneline --all)"
+    ]
+  }
+}
