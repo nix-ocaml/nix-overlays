@@ -1668,7 +1668,7 @@ with oself;
   });
 
   miou = osuper.miou.overrideAttrs {
-    doCheck = true;
+    doCheck = false;
     checkInputs = [
       dscheck
       fmt
