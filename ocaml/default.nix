@@ -1467,18 +1467,6 @@ with oself;
     '';
   };
 
-  luv = osuper.luv.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "aantron";
-      repo = "luv";
-      rev = "0.5.14";
-      hash = "sha256-N0rtBuxoHg45BqTf+aR8f6SfCEtiFVAspDgWfSkjH6w=";
-      fetchSubmodules = true;
-    };
-    patches = [ ];
-    doCheck = false;
-  });
-
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
