@@ -75,7 +75,6 @@ let
       changelog = "https://github.com/ocaml/opam/raw/2.5.0/CHANGES";
       maintainers = [
         maintainers.henrytill
-        maintainers.marsam
       ];
       license = licenses.lgpl21Only;
       platforms = platforms.all;
