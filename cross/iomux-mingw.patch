@@ -1,0 +1,65 @@
+diff -ruN a/lib/include/discover.ml b/lib/include/discover.ml
+--- a/lib/include/discover.ml	2026-04-19 20:08:32.901410113 +0200
++++ b/lib/include/discover.ml	2026-04-19 20:17:45.013219847 +0200
+@@ -19,17 +19,25 @@
+ }
+ |}
+ 
++let has_poll_h = {|
++#include <poll.h>
++int main(void) { return 0; }
++|}
++
+ let () =
+   C.main ~name:"discover" @@ fun c ->
+ 
+-  (* check for ppoll(2) *)
+-  let has_ppoll = C.c_test c has_ppoll_code in
++  let is_windows = not (C.c_test c ~link_flags:["-c"] has_poll_h) in
++  let poll_header = if is_windows then "winsock2.h" else "poll.h" in
++
++  (* check for ppoll(2) — not available on Windows *)
++  let has_ppoll = (not is_windows) && C.c_test c has_ppoll_code in
+   C.C_define.gen_header_file c ~fname:"config.h" [ "HAS_PPOLL", Switch has_ppoll ];
+   let has_list = [ Printf.sprintf "let has_ppoll = %b" has_ppoll ] in
+ 
+   (* general poll(2) definitions *)
+   let defs =
+-    C.C_define.import c ~includes:["poll.h"]
++    C.C_define.import c ~includes:[poll_header]
+       C.C_define.Type.[
+         "POLLIN", Int;
+         "POLLPRI", Int;
+diff -ruN a/lib/iomux_stubs.c b/lib/iomux_stubs.c
+--- a/lib/iomux_stubs.c	2026-04-19 20:08:32.901569733 +0200
++++ b/lib/iomux_stubs.c	2026-04-19 20:09:12.727744144 +0200
+@@ -1,8 +1,14 @@
+ #define _GNU_SOURCE
+ 
+ #include <errno.h>
++#ifdef __MINGW32__
++#include <winsock2.h>
++#define poll WSAPoll
++typedef ULONG nfds_t;
++#else
+ #include <poll.h>
+ #include <signal.h>
++#endif
+ 
+ #include <caml/bigarray.h>
+ #include <caml/memory.h>
+@@ -154,10 +160,14 @@
+ caml_iomux_poll_max_open_files(value v_unit)
+ {
+         CAMLparam1(v_unit);
++#ifdef __MINGW32__
++        long r = 8192;
++#else
+         long r = sysconf(_SC_OPEN_MAX);
+         if (r == -1) /* this allocs */
+                 uerror("poll_max_open_files", Nothing);
+         else if (r > 524288)
+                 r = 524288;
++#endif
+ 	CAMLreturn (Val_int(r));
+ }
