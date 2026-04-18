@@ -488,6 +488,14 @@ in
         }
       );
 
+      # memmem is a GNU extension not available on mingw
+      base_bigstring = osuper.base_bigstring.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          patches = (o.patches or [ ]) ++ [ ./base_bigstring-memmem.patch ];
+        }
+      );
+
       carl =
         if lib.versionAtLeast osuper.ocaml.version "5.0" then
           osuper.carl.overrideAttrs (o: {
