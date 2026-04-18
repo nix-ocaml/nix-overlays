@@ -471,6 +471,23 @@ in
         '';
       });
 
+      # ptime/mtime use `uname -s` to detect the OS and add -lrt on Linux.
+      # In cross-compilation, uname returns the build machine OS, not the
+      # target. Set the env var so -lrt is skipped — the C stubs already
+      # have native Windows support via _WIN32.
+      ptime = osuper.ptime.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          PTIME_OS = "Win32";
+        }
+      );
+      mtime = osuper.mtime.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          MTIME_OS = "Win32";
+        }
+      );
+
       carl =
         if lib.versionAtLeast osuper.ocaml.version "5.0" then
           osuper.carl.overrideAttrs (o: {
