@@ -502,6 +502,7 @@ in
         configureFlags = [
         ];
         configurePhase = ''
+          ${lib.optionalString stdenv.hostPlatform.isMinGW ''export LDFLAGS="$NIX_LDFLAGS"''}
           ./configure -prefixnonocaml ${stdenv.cc.targetPrefix} -installdir $OCAMLFIND_DESTDIR
         '';
         preBuild = ''
