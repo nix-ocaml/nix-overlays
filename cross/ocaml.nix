@@ -398,15 +398,23 @@ in
       natocamlPackages = getNativeOCamlPackages osuper;
     in
     {
-      camlzip = osuper.camlzip.overrideAttrs (_: {
-        OCAMLFIND_TOOLCHAIN = "${crossName}";
-        preInstall = ''
-          mkdir -p $OCAMLFIND_DESTDIR/stublibs
-        '';
-        postInstall = ''
-          ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
-        '';
-      });
+      camlzip =
+        let
+          zlib = builtins.head osuper.camlzip.propagatedBuildInputs;
+        in
+        osuper.camlzip.overrideAttrs (o: {
+          OCAMLFIND_TOOLCHAIN = "${crossName}";
+          makeFlags = (o.makeFlags or [ ]) ++ [
+            "ZLIB_LIBDIR=${zlib.out}/lib"
+            "ZLIB_INCLUDE=${zlib.dev}/include"
+          ];
+          preInstall = ''
+            mkdir -p $OCAMLFIND_DESTDIR/stublibs
+          '';
+          postInstall = ''
+            ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
+          '';
+        });
 
       ctypes = osuper.ctypes.overrideAttrs (o: {
         postInstall = ''
