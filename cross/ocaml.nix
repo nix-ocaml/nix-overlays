@@ -323,6 +323,12 @@ in
         '';
       });
 
+      eio_main =
+        if stdenv.hostPlatform.isMinGW && osuper ? eio_main then
+          fixOCamlPackage (osuper.eio_main.override { eio_posix = oself.eio_windows; })
+        else
+          fixOCamlPackage osuper.eio_main;
+
       cppo = natocamlPackages.cppo;
       dune_2 = natocamlPackages.dune;
       dune_3 = natocamlPackages.dune;
