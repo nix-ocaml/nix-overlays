@@ -522,6 +522,14 @@ with oself;
     propagatedBuildInputs = [ ocplib-endian ];
   };
 
+  checkseum = osuper.checkseum.overrideAttrs (_: rec {
+    version = "0.5.2";
+    src = builtins.fetchurl {
+      url = "https://github.com/mirage/checkseum/releases/download/v${version}/checkseum-${version}.tbz";
+      sha256 = "1j5g1pgq59fvp3645vwrcj5f0cqq4m1pb1q0vysaid2w83a4yply";
+    };
+  });
+
   class_group_vdf = disableTests osuper.class_group_vdf;
 
   clz = buildDunePackage {
@@ -720,6 +728,14 @@ with oself;
   dream-livereload = callPackage ./dream-livereload { };
 
   dream-serve = callPackage ./dream-serve { };
+
+  duration = osuper.duration.overrideAttrs (_: rec {
+    version = "0.3.1";
+    src = builtins.fetchurl {
+      url = "https://github.com/hannesm/duration/releases/download/v${version}/duration-${version}.tbz";
+      sha256 = "04wcwrfdfcjbcnhdsanfm4wmmsb7ywbww91ym0p23qai75lxm26d";
+    };
+  });
 
   multicore-magic-dscheck =
     if lib.versionAtLeast ocaml.version "5.0" then osuper.multicore-magic-dscheck else null;
@@ -1875,8 +1891,8 @@ with oself;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.0/sqlite3-5.4.0.tbz";
-      sha256 = "1zz9qinabx6z87jhmy4b3x4d0lj98c0syqljswb4zhlaywr9a1ph";
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.1/sqlite3-5.4.1.tbz";
+      sha256 = "0db1l9imckgq2nvqq76l8pdmpal2pjnkcryf5cdbp4hrzf9w37kj";
     };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
@@ -2230,8 +2246,8 @@ with oself;
     src =
       if lib.versionAtLeast ocaml.version "5.0" then
         builtins.fetchurl {
-          url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.3.2/postgresql-5.3.2.tbz";
-          sha256 = "1bspn767p05vyxi8367ks7q3qapzi1fmfl3k7pr8z4zqf8kx4iqw";
+          url = "https://github.com/mmottl/postgresql-ocaml/releases/download/5.4.0/postgresql-5.4.0.tbz";
+          sha256 = "1h66bw2faln2bdssaawsxjbfk7k9kh0gd7m0dd5a19h9kfz4hhnf";
         }
       else
         o.src;
