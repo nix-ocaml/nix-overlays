@@ -124,12 +124,10 @@ let
     postgresql = libpq;
     inherit
       bash
-      fetchpatch
       fetchFromGitHub
       fzf
       lib
       linuxHeaders
-      nixpkgs
       pam
       net-snmp
       stdenv
@@ -266,6 +264,15 @@ with oself;
       sha256 = "sha256-10KoyCLzY+uv0lCVrXD6YccLFmoknDa58cF9+aRrGzQ=";
     };
   };
+
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-batteries-team";
+      repo = "batteries-included";
+      rev = "676ce86afac07051d50133c488c1c486a9d85211";
+      hash = "sha256-pDfL4NgfVVrSdJJqf79qPof0GszVFyNB0JfquMT7TSk=";
+    };
+  });
 
   bencode = buildDunePackage {
     pname = "bencode";
@@ -756,9 +763,11 @@ with oself;
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.21.0";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.22.0/dune-3.22.0.tbz";
-        sha256 = "08ppmkdqlyznrxm4gjqils6ab5dxhw9g0cq1d3mcd9iccwp6p0fb";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "e509b5499a67217c661c2cc8d73fd5f55aa220a0";
+        hash = "sha256-LhNNeOcrmlgzSHBYeEyLdFddPj28hc41Dgdi1QTrrdU=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -1981,6 +1990,7 @@ with oself;
       else
         [ ];
     postPatch = ''
+      ${o.postPatch or ""}
       ${
         if lib.versionOlder "5.1" ocaml.version && !(lib.versionOlder "5.3" ocaml.version) then
           ''
@@ -2023,6 +2033,11 @@ with oself;
               'List.find_opt locs' 'List.find_opt (fst locs)'
           ''
       }
+      if grep -Fq '| s -> Ok (`Mtime s.st_mtime)' ocaml-lsp-server/src/dune.ml; then
+        substituteInPlace ocaml-lsp-server/src/dune.ml \
+          --replace-fail '| s -> Ok (`Mtime s.st_mtime)' \
+                         '| s -> Ok (`Mtime (Stdune.Time.of_epoch_secs s.st_mtime))'
+      fi
     '';
   });
 
@@ -2097,9 +2112,11 @@ with oself;
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     version = "3.1.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/3.1.0/odoc-3.1.0.tbz";
-      sha256 = "0559zx12v7qa42a048rdjc4qcgikbviirdfqmv5h6jckykzkqnrm";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "4fa086b11d14962f41d9717f03a9d8413a8c20dd";
+      hash = "sha256-D/7wOw0Ht3MZ/UiG2EvF9m6hXNf6BkCyWaG6OrpY/yQ=";
     };
     propagatedBuildInputs = [
       astring
@@ -2308,6 +2325,17 @@ with oself;
   };
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
+
+  ppx_import = osuper.ppx_import.overrideAttrs (o: {
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
+        substituteInPlace src_test/ppx_deriving/dune \
+          --replace-fail "(name test_ppx_import)" $'(name test_ppx_import)\n (enabled_if false)'
+        substituteInPlace src_test/ppx_deriving_sexp/dune \
+          --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
+      '';
+  });
 
   ppx_optint = buildDunePackage {
     pname = "ppx_optint";
@@ -2659,8 +2687,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "156f69a876765dc482f0e85fa4481ca90fe0c04e";
-      hash = "sha256-WvtOJPU+AOXJOSZu3AeXUuCJtjJ7fFhOAOxkZ46553c=";
+      rev = "e4a597b176acdd1b0e5ba295569b54a0a30de18d";
+      hash = "sha256-EPyxoV2II3eUIg+Di4p1l7Z11FN/nDX/fQk1wm3ilHc=";
     };
 
     dontConfigure = true;

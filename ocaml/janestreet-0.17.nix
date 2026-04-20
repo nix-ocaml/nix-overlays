@@ -2,12 +2,10 @@
   self,
   stdenv,
   bash,
-  fetchpatch,
   fetchFromGitHub,
   fzf,
   lib,
   linuxHeaders,
-  nixpkgs,
   pam,
   net-snmp,
   openssl,
@@ -73,6 +71,12 @@ in
     pname = "accessor_core";
     hash = "sha256-ku83ZfLtVI8FvQhrKcnJmhmoNlYcVMKx1tor5N8Nq7M=";
     meta.description = "Accessors for Core types, for use with the Accessor library";
+    postPatch = lib.optionalString (lib.versionAtLeast self.ocaml.version "5.5") ''
+      substituteInPlace src/accessor_gc.ml \
+        --replace-fail "    ; forced_major_collections : int" $'    ; forced_major_collections : int\n    ; live_stacks_words : int'
+      substituteInPlace src/accessor_gc.mli \
+        --replace-fail "    ; forced_major_collections : int" $'    ; forced_major_collections : int\n    ; live_stacks_words : int'
+    '';
     propagatedBuildInputs = [
       accessor_base
       core_kernel

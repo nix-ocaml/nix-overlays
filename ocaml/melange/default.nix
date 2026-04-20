@@ -24,7 +24,15 @@ buildDunePackage {
   pname = "melange";
   version = "6.0.1";
   src =
-    if lib.versionOlder "5.4" ocaml.version then
+    if lib.versionAtLeast ocaml.version "5.5" then
+      fetchFromGitHub {
+        owner = "melange-re";
+        repo = "melange";
+        rev = "834be3dfe22122fec82ee2805ebdebcd3eb6b095";
+        fetchSubmodules = true;
+        hash = "sha256-p+GO31Q4MIsjBlCAXIvXbmFuZpiL9Ed7MpN6FEEKCh0=";
+      }
+    else if lib.versionOlder "5.4" ocaml.version then
       builtins.fetchurl {
         url = "https://github.com/melange-re/melange/releases/download/6.0.1-54/melange-6.0.1-54.tbz";
         sha256 = "0rqn05xp5b0839bx4g9zb8ac2c44y925pgfr87qdwbm5r87m6pkd";
