@@ -267,6 +267,15 @@ with oself;
     };
   };
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-batteries-team";
+      repo = "batteries-included";
+      rev = "676ce86afac07051d50133c488c1c486a9d85211";
+      hash = "sha256-pDfL4NgfVVrSdJJqf79qPof0GszVFyNB0JfquMT7TSk=";
+    };
+  });
+
   bencode = buildDunePackage {
     pname = "bencode";
     version = "2.0";
@@ -2099,9 +2108,11 @@ with oself;
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     version = "3.1.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/3.1.0/odoc-3.1.0.tbz";
-      sha256 = "0559zx12v7qa42a048rdjc4qcgikbviirdfqmv5h6jckykzkqnrm";
+    src = fetchFromGitHub {
+      owner = "ocaml";
+      repo = "odoc";
+      rev = "4fa086b11d14962f41d9717f03a9d8413a8c20dd";
+      hash = "sha256-D/7wOw0Ht3MZ/UiG2EvF9m6hXNf6BkCyWaG6OrpY/yQ=";
     };
     propagatedBuildInputs = [
       astring
@@ -2312,12 +2323,14 @@ with oself;
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
   ppx_import = osuper.ppx_import.overrideAttrs (o: {
-    postPatch = (o.postPatch or "") + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
-      substituteInPlace src_test/ppx_deriving/dune \
-        --replace-fail "(name test_ppx_import)" $'(name test_ppx_import)\n (enabled_if false)'
-      substituteInPlace src_test/ppx_deriving_sexp/dune \
-        --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
-    '';
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
+        substituteInPlace src_test/ppx_deriving/dune \
+          --replace-fail "(name test_ppx_import)" $'(name test_ppx_import)\n (enabled_if false)'
+        substituteInPlace src_test/ppx_deriving_sexp/dune \
+          --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
+      '';
   });
 
   ppx_optint = buildDunePackage {
