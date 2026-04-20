@@ -509,6 +509,17 @@ in
         }
       );
 
+      piaf =
+        if osuper.piaf == null then
+          null
+        else
+          osuper.piaf.overrideAttrs (
+            o:
+            lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+              patches = (o.patches or [ ]) ++ [ ./piaf-mingw.patch ];
+            }
+          );
+
       carl =
         if lib.versionAtLeast osuper.ocaml.version "5.0" then
           osuper.carl.overrideAttrs (o: {
