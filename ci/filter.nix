@@ -195,6 +195,7 @@ let
 
     # not yet available on 5.5
     "camlp5"
+    "camlp5_strict"
   ];
 
   darwinIgnores = [
