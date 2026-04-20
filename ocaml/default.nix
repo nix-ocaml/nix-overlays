@@ -124,12 +124,10 @@ let
     postgresql = libpq;
     inherit
       bash
-      fetchpatch
       fetchFromGitHub
       fzf
       lib
       linuxHeaders
-      nixpkgs
       pam
       net-snmp
       stdenv
