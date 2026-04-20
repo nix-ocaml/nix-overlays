@@ -192,6 +192,9 @@ let
     "lutils"
     "lustre-v6"
     "rdbg"
+
+    # not yet available on 5.5
+    "camlp5"
   ];
 
   darwinIgnores = [
