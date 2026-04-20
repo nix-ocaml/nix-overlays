@@ -756,9 +756,11 @@ with oself;
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.21.0";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.22.0/dune-3.22.0.tbz";
-        sha256 = "08ppmkdqlyznrxm4gjqils6ab5dxhw9g0cq1d3mcd9iccwp6p0fb";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "e509b5499a67217c661c2cc8d73fd5f55aa220a0";
+        hash = "sha256-LhNNeOcrmlgzSHBYeEyLdFddPj28hc41Dgdi1QTrrdU=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -2308,6 +2310,15 @@ with oself;
   };
 
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
+
+  ppx_import = osuper.ppx_import.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
+      substituteInPlace src_test/ppx_deriving/dune \
+        --replace-fail "(name test_ppx_import)" $'(name test_ppx_import)\n (enabled_if false)'
+      substituteInPlace src_test/ppx_deriving_sexp/dune \
+        --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
+    '';
+  });
 
   ppx_optint = buildDunePackage {
     pname = "ppx_optint";
