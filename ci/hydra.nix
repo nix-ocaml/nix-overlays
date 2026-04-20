@@ -4,10 +4,12 @@ let
   filter = pkgs.callPackage ./filter.nix { };
   isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
   extraIgnores =
-    if isDarwin
-    then filter.darwinIgnores
-    else if system == "aarch64-linux" then filter.aarch64LinuxIgnores
-    else [ ];
+    if isDarwin then
+      filter.darwinIgnores
+    else if system == "aarch64-linux" then
+      filter.aarch64LinuxIgnores
+    else
+      [ ];
 in
 
 with filter;
