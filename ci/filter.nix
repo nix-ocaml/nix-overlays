@@ -286,7 +286,6 @@ rec {
         # just build a subset of the static overlay, with the most commonly used
         # packages
         inherit
-          caqti-driver-postgresql
           ppx_deriving
           base
           cohttp-lwt-unix
@@ -296,10 +295,16 @@ rec {
           irmin
           ;
       }
+      // lib.optionalAttrs (!pkgs.stdenv.hostPlatform.isMinGW) {
+        # postgresql can't cross-compile for mingw (needs glibc)
+        inherit caqti-driver-postgresql;
+      }
       // (
         if lib.hasPrefix "5_" ocamlVersion then
           {
             inherit piaf carl;
+          }
+          // lib.optionalAttrs (!pkgs.stdenv.hostPlatform.isMinGW) {
             static-carl = carl.override { static = true; };
           }
         else
