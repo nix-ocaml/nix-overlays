@@ -13,8 +13,30 @@ let
       dontDisableStatic = true;
       preConfigure = ''
         ${o.preConfigure or null}
-        configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "LIBS=-static" "STRIP=''${STRIP:strip}")
-      '';
+        configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c" "STRIP=''${STRIP:-strip}")
+      ''
+      + (
+        if stdenv.hostPlatform.isMinGW then
+          ''
+            # For mingw/flexlink, use -static flag
+            configureFlagsArray+=("MKEXE=flexlink -static" "MKDLL=flexlink -static" "MKMAINDLL=flexlink -static")
+          ''
+        else
+          ''
+            configureFlagsArray+=("LIBS=-static")
+          ''
+      );
+
+      # For mingw static builds, modify the flexlink wrapper to use static mcfgthread
+      postInstall =
+        (o.postInstall or "")
+        + lib.optionalString stdenv.hostPlatform.isMinGW ''
+          # Replace dynamic -lmcfgthread with static -l:libmcfgthread.a in flexlink wrapper
+          # Also add -lntdll which mcfgthread needs for NT kernel functions
+          if [ -f $out/bin/flexlink.opt.exe ]; then
+            sed -i 's/-lmcfgthread/-l:libmcfgthread.a -lntdll/g' $out/bin/flexlink.opt.exe
+          fi
+        '';
     });
 
   fixOCamlPackage =

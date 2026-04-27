@@ -9,6 +9,7 @@
   h2-eio,
   httpun-eio,
   ipaddr,
+  logs,
   magic-mime,
   pecu,
   prettym,
@@ -39,6 +40,7 @@ buildDunePackage {
     httpun-eio
     h2-eio
     ipaddr
+    logs
     magic-mime
     pecu
     prettym
