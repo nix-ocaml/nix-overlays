@@ -1290,8 +1290,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "8df204bc6982ae2e1d20f07f02af8c5b0ea7aff5";
-      hash = "sha256-Z30NLi3akYvLl+YardOBY8tkMqzSbsj3ime+ajlVqPM=";
+      rev = "e1170e9bc5d175f723a1c6abe6476fa0b2dfd5ad";
+      hash = "sha256-mkumBjdp1jOJsYSqRPDQ4RQkMIUU3OyvwrMpnWQX2ro=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
@@ -2112,11 +2112,9 @@ with oself;
 
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     version = "3.1.0";
-    src = fetchFromGitHub {
-      owner = "ocaml";
-      repo = "odoc";
-      rev = "4fa086b11d14962f41d9717f03a9d8413a8c20dd";
-      hash = "sha256-D/7wOw0Ht3MZ/UiG2EvF9m6hXNf6BkCyWaG6OrpY/yQ=";
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/3.2.0/odoc-3.2.0.tbz";
+      sha256 = "0c47653pmq8lkvfxvwrlhy6n7q8lgdk65d4k7fx0xw1xcj8hfck6";
     };
     propagatedBuildInputs = [
       astring

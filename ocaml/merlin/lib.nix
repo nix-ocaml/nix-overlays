@@ -1,12 +1,10 @@
 {
-  fetchFromGitHub,
   lib,
   ocaml,
   buildDunePackage,
   yojson,
   csexp,
   result,
-  merlin,
 }:
 
 let
@@ -28,8 +26,8 @@ buildDunePackage {
       }
     else if lib.versionOlder "5.4" ocaml.version then
       builtins.fetchurl {
-        url = "https://github.com/ocaml/merlin/releases/download/v5.7.0-504/merlin-5.7.0-504.tbz";
-        sha256 = "157bywlwbqm2ilpwapbd111ja5i49rx2ni9q1hk9s8a215mcik3l";
+        url = "https://github.com/ocaml/merlin/releases/download/v5.7.1-504/merlin-5.7.1-504.tbz";
+        sha256 = "1mbhi4mg07w3za6bm96hk0s4qr9gcj5mpxslbir8pcqlz4y0g6qk";
       }
     else if lib.versionOlder "5.3" ocaml.version then
       builtins.fetchurl {

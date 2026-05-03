@@ -185,9 +185,10 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "28608ad18db80a8cbebef893cfdda43d60e21c69";
-              hash = "sha256-dJ1oZaM6WmlduwULGQ14OBDkZ/5KCU3081XVqSLl0oo=";
+              rev = "dc18e7018f81fcbe47c2c81d8f463432c49fcb1b";
+              hash = "sha256-Iulvf91cY3zLITKKmen9sSAtw5O82jRrET9no033a8w=";
             };
+            postPatch = "";
           };
 
           ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (
