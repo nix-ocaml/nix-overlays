@@ -1,12 +1,9 @@
 {
-  lib,
-  fetchpatch,
   buildDunePackage,
   dot-merlin-reader,
   yojson,
   csexp,
   result,
-  merlin-lib,
   camlp-streams,
 }:
 
