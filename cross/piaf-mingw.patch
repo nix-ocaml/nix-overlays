@@ -1,0 +1,26 @@
+--- a/lib/stubs/piaf_fdutils.c	2026-04-20 11:09:24.478223354 +0200
++++ b/lib/stubs/piaf_fdutils.c	2026-04-20 11:10:05.021371414 +0200
+@@ -30,6 +30,18 @@
+  *---------------------------------------------------------------------------*/
+ 
+ #include <caml/mlvalues.h>
++
++#ifdef __MINGW32__
++#include <io.h>
++#include <windows.h>
++
++CAMLprim value piaf_is_fd_valid(value val_fd) {
++  intptr_t h = _get_osfhandle(Int_val(val_fd));
++  if (h == -1 || h == (intptr_t)INVALID_HANDLE_VALUE)
++    return Val_bool(0);
++  return Val_bool(1);
++}
++#else
+ #include <fcntl.h>
+ 
+ CAMLprim value piaf_is_fd_valid(value val_fd) {
+@@ -39,3 +51,4 @@
+     return Val_bool(0);
+   return Val_bool(1);
+ }
++#endif
