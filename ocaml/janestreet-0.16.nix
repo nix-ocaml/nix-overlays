@@ -1093,7 +1093,7 @@ in
     propagatedBuildInputs = [
       async
       ppx_jane
-      notty
+      notty-community
     ];
     meta.description = "An Async driver for Notty";
   };

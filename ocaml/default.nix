@@ -1206,7 +1206,7 @@ with oself;
       ptime
       irmin-pack
       hex
-      notty
+      notty-community
       irmin-tezos
     ];
   };
