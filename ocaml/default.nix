@@ -1206,9 +1206,13 @@ with oself;
       ptime
       irmin-pack
       hex
-      notty
+      notty-community
       irmin-tezos
     ];
+    postPatch = ''
+      substituteInPlace "src/irmin-pack-tools/tezos_explorer/dune" \
+        --replace-fail notty notty-community
+    '';
   };
   irmin-git = disableTests osuper.irmin-git;
   ppx_irmin = osuper.ppx_irmin.overrideAttrs (_: {
@@ -2423,8 +2427,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "547c6cfd69671e147767e0937d069c5b9eb2aa4a";
-          hash = "sha256-nsf0wPqHScs/1NPzwlw7PqFPmP3vd/TZ9p05lcZQRjo=";
+          rev = "49d2639fade7f05eb9556731ac2313984353eb75";
+          hash = "sha256-0iNOw7uJqVyI+T9EVZyxXGOtPt2RveL5ex+vxdr7eXk=";
         }
 
       else

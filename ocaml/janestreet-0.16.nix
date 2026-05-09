@@ -1090,10 +1090,13 @@ in
     pname = "notty_async";
     minimalOCamlVersion = "4.14";
     hash = "sha256-/nfpgCJOUjLi+eKBRMMZAPem/lO59h+s2lnAgSp6wFU=";
+    postPatch = ''
+      substituteInPlace "src/dune" --replace-fail notty.unix notty-community.unix
+    '';
     propagatedBuildInputs = [
       async
       ppx_jane
-      notty
+      notty-community
     ];
     meta.description = "An Async driver for Notty";
   };
