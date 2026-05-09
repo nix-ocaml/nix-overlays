@@ -2423,7 +2423,14 @@ with oself;
 
   ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.5" ocaml.version then
+      if lib.versionOlder "5.6" ocaml.version then
+        fetchFromGitHub {
+          owner = "ocaml-ppx";
+          repo = "ppxlib";
+          rev = "31435b7565a955975e78ede0af58df2c6d668b14";
+          hash = "sha256-u3wvLJQVNQuc20/GPXqccRR/rurPMl4D7mVUqLus5yQ=";
+        }
+      else if lib.versionOlder "5.5" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";

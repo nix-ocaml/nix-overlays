@@ -18,6 +18,7 @@ let
     "5_3"
     "5_4"
     "5_5"
+    "5_6"
     "trunk"
     "jst"
   ];
@@ -177,6 +178,20 @@ let
             };
           };
 
+          ocamlPackages_5_6 = newOCamlScope {
+            major_version = "5";
+            minor_version = "6";
+            patch_version = "0+trunk";
+            hardeningDisable = [ "strictoverflow" ];
+            src = super.fetchFromGitHub {
+              owner = "ocaml";
+              repo = "ocaml";
+              rev = "e451baeed3f31ae76af3116c84d76aa32a62a762";
+              hash = "sha256-XvqKlp9y+k4W0q3+/ZQbyTBO1pIS4Nf7L1zCysaOuig=";
+            };
+            postPatch = "";
+          };
+
           ocamlPackages_trunk = newOCamlScope {
             major_version = "5";
             minor_version = "6";
@@ -185,8 +200,8 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "dc18e7018f81fcbe47c2c81d8f463432c49fcb1b";
-              hash = "sha256-Iulvf91cY3zLITKKmen9sSAtw5O82jRrET9no033a8w=";
+              rev = "e451baeed3f31ae76af3116c84d76aa32a62a762";
+              hash = "sha256-XvqKlp9y+k4W0q3+/ZQbyTBO1pIS4Nf7L1zCysaOuig=";
             };
             postPatch = "";
           };
