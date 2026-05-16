@@ -1,0 +1,29 @@
+--- a/src/base_bigstring_stubs.c
++++ b/src/base_bigstring_stubs.c
+@@ -64,6 +64,26 @@
+ #define bswap_64 bswap64
+ #endif
+ 
++/* memmem is a GNU extension not available on mingw */
++#ifdef __MINGW32__
++static void *memmem(const void *haystack, size_t haystack_len,
++    const void * const needle, const size_t needle_len)
++{
++    if (haystack == NULL) return NULL;
++    if (haystack_len == 0) return NULL;
++    if (needle == NULL) return NULL;
++    if (needle_len == 0) return NULL;
++    for (const char *h = haystack;
++            haystack_len >= needle_len;
++            ++h, --haystack_len) {
++        if (!memcmp(h, needle, needle_len)) {
++            return (void *)h;
++        }
++    }
++    return NULL;
++}
++#endif
++
+ #include <caml/alloc.h>
+ #include <caml/memory.h>
+ #include <caml/fail.h>

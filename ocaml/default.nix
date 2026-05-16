@@ -933,6 +933,20 @@ with oself;
 
   eio-ssl = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./eio-ssl { } else null;
 
+  eio_windows =
+    if lib.versionAtLeast ocaml.version "5.0" then
+      buildDunePackage {
+        pname = "eio_windows";
+        inherit (eio) src version;
+        buildInputs = [ dune-configurator ];
+        propagatedBuildInputs = [
+          eio
+          fmt
+        ];
+      }
+    else
+      null;
+
   extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";

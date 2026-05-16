@@ -16,6 +16,7 @@
   writeScriptBin,
   makeWrapper,
   stdenv,
+  windows ? null,
 }:
 let
   __mergeInputs =
@@ -59,7 +60,8 @@ in
   (
     oself: osuper:
     let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
+      crossName =
+        if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
@@ -69,19 +71,23 @@ in
         if p ? pname then
           let
             pname = p.pname or (throw "`p.pname' not found: ${p.name}");
+            prefix1 = "ocaml${osuper.ocaml.version}-";
+            prefix2 = "ocaml-";
+            # For packages like ocaml-lsp-server, try stripping -server suffix
+            withoutServer = lib.removeSuffix "-server" pname;
           in
           natocamlPackages."${pname}" or
           # Some legacy packages are called `ocaml_X`, e.g. extlib and
           # sqlite3
-          natocamlPackages."ocaml_${pname}" or (
-            let
-              prefix1 = "ocaml${osuper.ocaml.version}-";
-              prefix2 = "ocaml-";
-            in
+          natocamlPackages."ocaml_${pname}" or
+          # Try without -server suffix (e.g., ocaml-lsp-server -> ocaml-lsp)
+          natocamlPackages."${withoutServer}" or (
             if lib.hasPrefix prefix1 p.pname then
               natocamlPackages."${(lib.removePrefix prefix1 pname)}"
             else if lib.hasPrefix prefix2 p.pname then
-              natocamlPackages."${(lib.removePrefix prefix2 pname)}"
+              natocamlPackages."${(lib.removePrefix prefix2 pname)}" or
+              # Also try the stripped version without ocaml- prefix
+              natocamlPackages."${(lib.removePrefix prefix2 withoutServer)}"
             else
               throw "Unsupported cross-pkg parsing for `${p.pname}'"
           )
@@ -157,9 +163,35 @@ in
 
       fixOCamlPackage =
         b:
-        b.overrideAttrs (o: {
-          OCAMLFIND_CONF = makeFindlibConf (findNativePackage b) b;
-        });
+        b.overrideAttrs (
+          o:
+          {
+            OCAMLFIND_CONF = makeFindlibConf (findNativePackage b) b;
+          }
+          // lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+            # Remove makeWrapper - shell wrappers don't work on Windows
+            nativeBuildInputs = lib.filter (p: !(p ? pname && p.pname == "make-shell-wrapper-hook")) (
+              o.nativeBuildInputs or [ ]
+            );
+            # caml/platform.h includes <pthread.h>; on mingw this comes from
+            # windows.pthreads. We need it in buildInputs for the headers, but
+            # its PE libraries in NIX_LDFLAGS break native build-time tools
+            # (nixpkgs#139966). Strip the -L flag; flexlink already has it baked in.
+            # OCaml 5.5+ uses native Windows threads and won't need this.
+            buildInputs =
+              (o.buildInputs or [ ])
+              ++ lib.optionals (lib.versionOlder osuper.ocaml.version "5.5") [ windows.pthreads ];
+            preConfigurePhases = (o.preConfigurePhases or [ ]) ++ [ "removeMingwPthreadsFromLdFlags" ];
+            removeMingwPthreadsFromLdFlags = lib.optionalString (lib.versionOlder osuper.ocaml.version "5.5") ''
+              NIX_LDFLAGS=$(echo "$NIX_LDFLAGS" | sed "s|-L${windows.pthreads}/lib||g")
+              export NIX_LDFLAGS
+            '';
+            # Clear postInstall if it uses wrapProgram (common pattern)
+            postInstall = lib.optionalString (!(lib.hasInfix "wrapProgram" (o.postInstall or ""))) (
+              o.postInstall or ""
+            );
+          }
+        );
     in
 
     (lib.mapAttrs (_: p: if p ? overrideAttrs then fixOCamlPackage p else p) osuper)
@@ -172,10 +204,80 @@ in
           natocamlPackages
           osuper
           stdenv
+          windows
           ;
       };
 
       findlib = osuper.findlib.overrideAttrs (o: {
+        # For mingw cross-compilation, we need to skip configure entirely
+        # and provide a pre-made Makefile.config, similar to opam-cross-windows
+        dontConfigure = stdenv.hostPlatform.isMinGW;
+
+        # Need native ocamlfind in PATH for OCAMLFIND_TOOLCHAIN to work
+        nativeBuildInputs =
+          (o.nativeBuildInputs or [ ]) ++ lib.optionals stdenv.hostPlatform.isMinGW [ natfindlib ];
+
+        preBuild = lib.optionalString stdenv.hostPlatform.isMinGW ''
+          # Create Makefile.config for mingw cross-compilation
+          # Skip configure which tries to run Windows binaries
+          cat > Makefile.config << EOF
+          OCAML_CORE_STDLIB=$out/lib/ocaml
+          OCAML_CORE_BIN=$out/bin
+          OCAML_CORE_MAN=$out/share/man
+          OCAML_SITELIB=$out/lib/ocaml/${oself.ocaml.version}/site-lib
+          OCAML_THREADS=posix
+          OCAMLFIND_BIN=$out/bin
+          OCAMLFIND_MAN=$out/share/man
+          OCAMLFIND_CONF=$out/etc/findlib.conf
+          OCAML_AUTOLINK=true
+          OCAML_REMOVE_DIRECTORY=1
+          EXEC_SUFFIX=.exe
+          LIB_SUFFIX=.a
+          CUSTOM=-custom
+          PARTS=findlib
+          INSTALL_TOPFIND=0
+          RELATIVE_PATHS=false
+          USE_CYGPATH=0
+          HAVE_NATDYNLINK=1
+          VERSION=${o.version}
+          ENABLE_TOPFIND_PPXOPT=true
+          SYSTEM=mingw64
+          NUMTOP=
+          OPAQUE=-opaque
+          CHECK_BEFORE_INSTALL=0
+          INSTALLFILE=install -c
+          INSTALLDIR=install -d
+          SH=sh
+          CP=cp
+          OCAMLOPT_G=-g
+          EOF
+
+          # Patch Makefile to use ocamlfind (for OCAMLFIND_TOOLCHAIN support)
+          # and to not build/install ocamlfind binary (we use native one)
+          substituteInPlace src/findlib/Makefile \
+            --replace-fail 'OCAMLC = ocamlc' 'OCAMLC = ocamlfind ocamlc' \
+            --replace-fail 'OCAMLOPT = ocamlopt' 'OCAMLOPT = ocamlfind ocamlopt' \
+            --replace-fail 'OCAMLDEP = ocamldep' 'OCAMLDEP = ocamlfind ocamldep' \
+            --replace-fail 'all: ocamlfind$(EXEC_SUFFIX)' 'all:'  \
+            --replace-fail 'opt: ocamlfind_opt$(EXEC_SUFFIX)' 'opt:'
+
+          # Remove the lines that install ocamlfind binary
+          sed -i '/f="ocamlfind/,/ocamlfind\$(EXEC_SUFFIX)"/d' src/findlib/Makefile
+
+          # Generate META files from templates (like opam-cross-windows gen_META.sh)
+          # This is needed so the findlib library can be found by other packages
+          for part in src/*; do
+            if [ -f "$part/META.in" ]; then
+              sed -e "s/@VERSION@/${o.version}/g" \
+                  -e "s/@REQUIRES@//g" \
+                  "$part/META.in" > "$part/META"
+            fi
+          done
+        '';
+
+        # For mingw: use native ocamlfind with OCAMLFIND_TOOLCHAIN
+        OCAMLFIND_TOOLCHAIN = lib.optionalString stdenv.hostPlatform.isMinGW crossName;
+
         postInstall = ''
           rm -rf $out/bin/ocamlfind
           cp ${natfindlib}/bin/ocamlfind $out/bin/ocamlfind
@@ -220,6 +322,12 @@ in
           fi
         '';
       });
+
+      eio_main =
+        if stdenv.hostPlatform.isMinGW && osuper ? eio_main then
+          fixOCamlPackage (osuper.eio_main.override { eio_posix = oself.eio_windows; })
+        else
+          fixOCamlPackage osuper.eio_main;
 
       cppo = natocamlPackages.cppo;
       dune_2 = natocamlPackages.dune;
@@ -291,19 +399,28 @@ in
   (
     oself: osuper:
     let
-      crossName = lib.head (lib.splitString "-" stdenv.system);
+      crossName =
+        if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
       natocamlPackages = getNativeOCamlPackages osuper;
     in
     {
-      camlzip = osuper.camlzip.overrideAttrs (_: {
-        OCAMLFIND_TOOLCHAIN = "${crossName}";
-        preInstall = ''
-          mkdir -p $OCAMLFIND_DESTDIR/stublibs
-        '';
-        postInstall = ''
-          ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
-        '';
-      });
+      camlzip =
+        let
+          zlib = builtins.head osuper.camlzip.propagatedBuildInputs;
+        in
+        osuper.camlzip.overrideAttrs (o: {
+          OCAMLFIND_TOOLCHAIN = "${crossName}";
+          makeFlags = (o.makeFlags or [ ]) ++ [
+            "ZLIB_LIBDIR=${zlib.out}/lib"
+            "ZLIB_INCLUDE=${zlib.dev}/include"
+          ];
+          preInstall = ''
+            mkdir -p $OCAMLFIND_DESTDIR/stublibs
+          '';
+          postInstall = ''
+            ln -sfn $OCAMLFIND_DESTDIR/{,caml}zip
+          '';
+        });
 
       ctypes = osuper.ctypes.overrideAttrs (o: {
         postInstall = ''
@@ -332,6 +449,15 @@ in
           "LIBDIR=$(OCAMLFIND_DESTDIR)/${o.pname}"
           "DOCDIR=$(out)/share/doc/${o.pname}"
         ];
+
+        # For mingw: the binary is cmdliner.exe but install looks for cmdliner
+        # Create a symlink to fix the install, or just skip the binary
+        preInstall = lib.optionalString stdenv.hostPlatform.isMinGW ''
+          if [ -f _build/src/tool/cmdliner.exe ]; then
+            ln -sf cmdliner.exe _build/src/tool/cmdliner
+          fi
+        '';
+
         postInstall = ''
           mv $OCAMLFIND_DESTDIR/${o.pname}/{opam,${o.pname}.opam}
         '';
@@ -350,6 +476,49 @@ in
           ${oself.opaline}/bin/opaline -prefix $out -libdir $OCAMLFIND_DESTDIR ${o.pname}.install
         '';
       });
+
+      # ptime/mtime use `uname -s` to detect the OS and add -lrt on Linux.
+      # In cross-compilation, uname returns the build machine OS, not the
+      # target. Set the env var so -lrt is skipped — the C stubs already
+      # have native Windows support via _WIN32.
+      ptime = osuper.ptime.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          PTIME_OS = "Win32";
+        }
+      );
+      mtime = osuper.mtime.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          MTIME_OS = "Win32";
+        }
+      );
+
+      # memmem is a GNU extension not available on mingw
+      base_bigstring = osuper.base_bigstring.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          patches = (o.patches or [ ]) ++ [ ./base_bigstring-memmem.patch ];
+        }
+      );
+
+      iomux = osuper.iomux.overrideAttrs (
+        o:
+        lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+          patches = (o.patches or [ ]) ++ [ ./iomux-mingw.patch ];
+        }
+      );
+
+      piaf =
+        if osuper.piaf == null then
+          null
+        else
+          osuper.piaf.overrideAttrs (
+            o:
+            lib.optionalAttrs stdenv.hostPlatform.isMinGW {
+              patches = (o.patches or [ ]) ++ [ ./piaf-mingw.patch ];
+            }
+          );
 
       carl =
         if lib.versionAtLeast osuper.ocaml.version "5.0" then
@@ -390,6 +559,7 @@ in
         configureFlags = [
         ];
         configurePhase = ''
+          ${lib.optionalString stdenv.hostPlatform.isMinGW ''export LDFLAGS="$NIX_LDFLAGS"''}
           ./configure -prefixnonocaml ${stdenv.cc.targetPrefix} -installdir $OCAMLFIND_DESTDIR
         '';
         preBuild = ''

@@ -57,5 +57,15 @@ overlay final prev
           static-overlay
         ];
 
+      mingwW64 = prev.pkgsCross.mingwW64.extend (prev.callPackage ../cross { });
+
+      mingwW64Static =
+        let
+          cross-overlay = (prev.callPackage ../cross { });
+        in
+        prev.pkgsCross.mingwW64.appendOverlays [
+          cross-overlay
+          static-overlay
+        ];
     };
 }

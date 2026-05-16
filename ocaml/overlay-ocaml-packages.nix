@@ -153,7 +153,8 @@ let
                   owner = "ocaml";
                   repo = "ocaml";
                   rev = "5.4.1";
-                  hash = "sha256-I7NuUvZMzm1B6krINX9nEyogW7dmZXXKgqPIw1zj7i4=";
+                  hash = "sha256-AGvdzJyn//Q7pc1SfoKQjX68EROSUE84bfkLCtMxq1k=";
+                  fetchSubmodules = true;
                 };
                 postPatch = ''
                   substituteInPlace "runtime/caml/camlatomic.h" \
@@ -174,7 +175,8 @@ let
               owner = "ocaml";
               repo = "ocaml";
               rev = "5.5.0-beta1";
-              hash = "sha256-sdO5UhltZUCll/6m3HwUIpudXj/SccdfEMRTuIpeMs0=";
+              hash = "sha256-1kVLOJVCgrw+vmTzag7T0oZWbNFrRelLQZ4cgP0VXZI=";
+              fetchSubmodules = true;
             };
           };
 
