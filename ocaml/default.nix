@@ -1405,6 +1405,9 @@ with oself;
       hash = "sha256-XAzg11Y9bT4sLGNqWb7i8N+0hV+mG6QqhJauR5HjfOY=";
     };
   });
+  landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
+    patches = [ ];
+  });
 
   lev = buildDunePackage {
     pname = "lev";
