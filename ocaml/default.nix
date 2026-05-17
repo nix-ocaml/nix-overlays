@@ -1397,13 +1397,17 @@ with oself;
   });
 
   landmarks = osuper.landmarks.overrideAttrs (_: {
-    version = "1.5";
+    version = "1.6";
     src = fetchFromGitHub {
       owner = "lexifi";
       repo = "landmarks";
-      rev = "v1.5";
-      hash = "sha256-eIq02D19OzDOrMDHE1Ecrgk+T6s9vj2X6B2HY+z+K8Q=";
+      rev = "v1.6";
+      hash = "sha256-XAzg11Y9bT4sLGNqWb7i8N+0hV+mG6QqhJauR5HjfOY=";
     };
+  });
+  landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
+    patches = [ ];
+    buildInputs = [ ppxlib_gt_0_37 ];
   });
 
   lev = buildDunePackage {
@@ -2124,8 +2128,8 @@ with oself;
   odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
     version = "3.1.0";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/3.2.0/odoc-3.2.0.tbz";
-      sha256 = "0c47653pmq8lkvfxvwrlhy6n7q8lgdk65d4k7fx0xw1xcj8hfck6";
+      url = "https://github.com/ocaml/odoc/releases/download/3.2.1/odoc-3.2.1.tbz";
+      sha256 = "1z5g8mr0dskkjsmid6wfjyvg7d6i714vn0kpqadgsfa8a4jv2pnl";
     };
     propagatedBuildInputs = [
       astring
