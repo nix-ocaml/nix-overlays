@@ -2049,11 +2049,6 @@ with oself;
               'List.find_opt locs' 'List.find_opt (fst locs)'
           ''
       }
-      if grep -Fq '| s -> Ok (`Mtime s.st_mtime)' ocaml-lsp-server/src/dune.ml; then
-        substituteInPlace ocaml-lsp-server/src/dune.ml \
-          --replace-fail '| s -> Ok (`Mtime s.st_mtime)' \
-                         '| s -> Ok (`Mtime (Stdune.Time.of_epoch_secs s.st_mtime))'
-      fi
     '';
   });
 
