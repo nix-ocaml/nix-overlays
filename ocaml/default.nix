@@ -1407,6 +1407,7 @@ with oself;
   });
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     patches = [ ];
+    buildInputs = [ ppxlib_gt_0_37 ];
   });
 
   lev = buildDunePackage {
