@@ -139,6 +139,15 @@ in
     }
   );
 
+  nix-eval-jobs = super.nix-eval-jobs.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "nixos";
+      repo = "nix-eval-jobs";
+      rev = "ed28134795a4bf67ffe3d2d42858fcda93be8102";
+      hash = "sha256-vd3yqc0hvVTsQhyCJhfQQZFWKL8sNxStcP6xcAk1u+w=";
+    };
+  });
+
   # Other packages
 
   # Stripped down postgres without the `bin` part, to allow static linking
