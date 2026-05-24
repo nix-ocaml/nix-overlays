@@ -765,9 +765,11 @@ with oself;
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.23.1";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.23.1/dune-3.23.1.tbz";
-        sha256 = "13rl683g7axlj9yh32m7gc1mjb7xiq08cpzw3jvgxa3bgwaygd4k";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "56e0b9a0c27029ab4f3c9d257a2be1ac2f2d38d8";
+        hash = "sha256-iA0gxAKfbccCORxzWU4IgVPzARwwLfPlFnpPiBJYCrM=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
