@@ -854,14 +854,19 @@ with oself;
       stdune
     ];
   };
-  farith = osuper.farith.overrideAttrs (o: lib.optionalAttrs (lib.versionAtLeast dune.version "3.23") {
-    postPatch = (o.postPatch or "") + ''
-      # The OCaml library is built from checked-in extracted sources.
-      substituteInPlace dune-project \
-        --replace-fail "(using coq 0.3)" ""
-      rm thry/dune extract/dune extracted/dune
-    '';
-  });
+
+  farith = osuper.farith.overrideAttrs (
+    o:
+    lib.optionalAttrs (lib.versionAtLeast dune.version "3.23") {
+      postPatch = (o.postPatch or "") + ''
+        # The OCaml library is built from checked-in extracted sources.
+        substituteInPlace dune-project \
+          --replace-fail "(using coq 0.3)" ""
+        rm thry/dune extract/dune extracted/dune
+      '';
+    }
+  );
+
   fs-io = buildDunePackage {
     pname = "fs-io";
     inherit (dune_3) src version;
