@@ -169,7 +169,7 @@ with oself;
       merlin
       jq
     ];
-    doCheck = false;
+    doCheck = lib.versionAtLeast ocaml.version "5.4";
   };
 
   reason-react-ppx = buildDunePackage {
