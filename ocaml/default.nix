@@ -39,6 +39,7 @@
   oniguruma-lib,
   pam,
   pkg-config,
+  rocq-core,
   lmdb,
   curl-oc,
   libsodium,
@@ -855,17 +856,19 @@ with oself;
     ];
   };
 
-  farith = osuper.farith.overrideAttrs (
-    o:
-    lib.optionalAttrs (lib.versionAtLeast dune.version "3.23") {
-      postPatch = (o.postPatch or "") + ''
-        # The OCaml library is built from checked-in extracted sources.
-        substituteInPlace dune-project \
-          --replace-fail "(using coq 0.3)" ""
-        rm thry/dune extract/dune extracted/dune
-      '';
-    }
-  );
+  farith = osuper.farith.overrideAttrs (o: {
+    nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ rocq-core ];
+    postPatch = ''
+      substituteInPlace dune-project \
+        --replace-fail "(lang dune 3.0)" "(lang dune 3.21)"
+      substituteInPlace dune-project \
+        --replace-fail "(using coq 0.3)" "(using rocq 0.11)"
+      substituteInPlace thry/dune \
+        --replace-fail "(coq.theory" "(rocq.theory"
+      substituteInPlace extract/dune \
+        --replace-fail "(coq.extraction" "(rocq.extraction"
+    '';
+  });
 
   fs-io = buildDunePackage {
     pname = "fs-io";
