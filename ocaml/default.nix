@@ -2425,6 +2425,15 @@ with oself;
     '';
   });
 
+  ppx_deriving_yaml = osuper.ppx_deriving_yaml.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace src/yaml/dune \
+        --replace-fail \
+          $'(mdx\n (files index.mld)\n (package ppx_deriving_yaml)\n (libraries ppxlib ppx_deriving_yaml yaml))' \
+          $'(mdx\n (files index.mld)\n (package ppx_deriving_yaml)\n (deps (package ppx_deriving_yaml))\n (libraries ppxlib ppx_deriving_yaml yaml))'
+    '';
+  });
+
   ppx_deriving_variant_string = buildDunePackage {
     pname = "ppx_deriving_variant_string";
     version = "1.0.0";
