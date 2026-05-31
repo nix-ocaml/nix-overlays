@@ -1186,6 +1186,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
+  irmin-graphql = disableTests osuper.irmin-graphql;
   irmin-server = buildDunePackage {
     pname = "irmin-server";
     inherit (irmin) src version;
