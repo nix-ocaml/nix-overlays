@@ -229,6 +229,11 @@ in
     postPatch = ''
       substituteInPlace bindings/ffi_bindings.ml \
         --replace-fail 'foreign "ASN1_STRING_data"' 'foreign "ASN1_STRING_get0_data"'
+      ${lib.optionalString (lib.versionAtLeast openssl.version "3") ''
+        substituteInPlace bindings/ffi_bindings.ml \
+          --replace-fail 'foreign "ENGINE_load_builtin_engines" Ctypes.(void @-> returning void)' '(fun () -> ())' \
+          --replace-fail 'foreign "ENGINE_register_all_complete" Ctypes.(void @-> returning void)' '(fun () -> ())'
+      ''}
     '';
     propagatedBuildInputs = [
       async
