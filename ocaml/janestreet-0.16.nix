@@ -226,6 +226,10 @@ in
     hash = "sha256-83YKxvVb/JwBnQG4R/R1Ztik9T/hO4cbiNTfFnErpG4=";
     meta.description = "Async wrappers for SSL";
     buildInputs = [ dune-configurator ];
+    postPatch = ''
+      substituteInPlace bindings/ffi_bindings.ml \
+        --replace-fail 'foreign "ASN1_STRING_data"' 'foreign "ASN1_STRING_get0_data"'
+    '';
     propagatedBuildInputs = [
       async
       ctypes
