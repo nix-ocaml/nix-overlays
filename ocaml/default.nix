@@ -1733,13 +1733,11 @@ with oself;
   });
 
   msat = osuper.msat.overrideAttrs (o: {
-    postPatch =
-      (o.postPatch or "")
-      + ''
-        substituteInPlace dune \
-          --replace-fail '(deps README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))' \
-            '(deps (package msat) README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))'
-      '';
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace dune \
+        --replace-fail '(deps README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))' \
+          '(deps (package msat) README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))'
+    '';
   });
 
   miou = osuper.miou.overrideAttrs {
