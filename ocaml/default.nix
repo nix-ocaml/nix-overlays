@@ -769,8 +769,8 @@ with oself;
       src = fetchFromGitHub {
         owner = "ocaml";
         repo = "dune";
-        rev = "c4cbefcde27e0fcb10228b73c8aa9d67c8f04ac0";
-        hash = "sha256-WAQTU7ybqTCxcOgWH83jcTPSgZXQncABoozHGU0UBd0=";
+        rev = "9862a8e871f0dde23ef5341d0380c7c16cd8d9f3";
+        hash = "sha256-VswL8Mi3WCG8zmE1Xgs2Y0h8FUJn4EoBGOubhgRQ1Vo=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
