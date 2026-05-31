@@ -555,6 +555,8 @@ with oself;
     ];
   };
 
+  curly = disableTests osuper.curly;
+
   sendmail = buildDunePackage {
     pname = "sendmail";
     inherit (colombe) version src;
@@ -1052,6 +1054,8 @@ with oself;
     ];
   });
 
+  gitlab-unix = disableTests osuper.gitlab-unix;
+
   gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
@@ -1186,6 +1190,7 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppx_sexp_conv ];
   });
 
+  irmin-graphql = disableTests osuper.irmin-graphql;
   irmin-server = buildDunePackage {
     pname = "irmin-server";
     inherit (irmin) src version;
@@ -2598,6 +2603,21 @@ with oself;
       hash = "sha256-26w6YcjBgfe2Fz/Z0RvCdU0MR4MAxIk2HGQ0ri0rrqU=";
     };
     checkInputs = o.checkInputs ++ [ hex ];
+  });
+
+  ppx_deriving_rpc = osuper.ppx_deriving_rpc.overrideAttrs (o: {
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast ppxlib.version "0.36") ''
+        substituteInPlace ppx/dune \
+          --replace-fail '(< %{version:ppxlib} 0.36)' 'false' \
+          --replace-fail '(>= %{version:ppxlib} 0.36)' 'true'
+      '';
+    propagatedBuildInputs = [
+      ppxlib
+      rpclib
+      ppx_deriving
+    ];
   });
 
   rock = osuper.rock.overrideAttrs (_: {

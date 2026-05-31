@@ -468,6 +468,6 @@ in
   libffi = super.libffi.overrideAttrs (_: {
     doCheck = false;
   });
-  openssl = super.openssl;
+  openssl = super.openssl_4_0;
   curl = super.curl.override { openssl = self.openssl-oc; };
 })
