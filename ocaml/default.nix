@@ -1290,6 +1290,14 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   };
 
+  iter = osuper.iter.overrideAttrs (o: {
+    # https://github.com/c-cube/iter/pull/46
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace dune \
+        --replace-fail '(:dep README.md)' '(package iter) (:dep README.md)'
+    '';
+  });
+
   jose = callPackage ./jose { };
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
