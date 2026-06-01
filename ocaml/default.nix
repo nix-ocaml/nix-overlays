@@ -39,6 +39,7 @@
   oniguruma-lib,
   pam,
   pkg-config,
+  rocq-core,
   lmdb,
   curl-oc,
   libsodium,
@@ -765,9 +766,11 @@ with oself;
     in
     dune_pkg.overrideAttrs (o: {
       version = "3.23.1";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.23.1/dune-3.23.1.tbz";
-        sha256 = "13rl683g7axlj9yh32m7gc1mjb7xiq08cpzw3jvgxa3bgwaygd4k";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "9215798416e3c86d68900705261e80f84ecf20b8";
+        hash = "sha256-jPJPuGNjTEIn/hR7mzLh3V4/bd0BxIBGjklU7jK3dY4=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -852,6 +855,21 @@ with oself;
       stdune
     ];
   };
+
+  farith = osuper.farith.overrideAttrs (o: {
+    nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ rocq-core ];
+    postPatch = ''
+      substituteInPlace dune-project \
+        --replace-fail "(lang dune 3.0)" "(lang dune 3.21)"
+      substituteInPlace dune-project \
+        --replace-fail "(using coq 0.3)" "(using rocq 0.11)"
+      substituteInPlace thry/dune \
+        --replace-fail "(coq.theory" "(rocq.theory"
+      substituteInPlace extract/dune \
+        --replace-fail "(coq.extraction" "(rocq.extraction"
+    '';
+  });
+
   fs-io = buildDunePackage {
     pname = "fs-io";
     inherit (dune_3) src version;
@@ -1272,6 +1290,14 @@ with oself;
     propagatedBuildInputs = [ camlp-streams ];
   };
 
+  iter = osuper.iter.overrideAttrs (o: {
+    # https://github.com/c-cube/iter/pull/46
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace dune \
+        --replace-fail '(:dep README.md)' '(package iter) (:dep README.md)'
+    '';
+  });
+
   jose = callPackage ./jose { };
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
@@ -1611,7 +1637,9 @@ with oself;
   # `logs` override, which breaks anything that uses logs (with OCaml package
   # conflicts)
   # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
-  mdx = (osuper.mdx.override { inherit logs; });
+  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    doCheck = false;
+  });
 
   melange-json-native = buildDunePackage {
     pname = "melange-json-native";
@@ -1702,6 +1730,14 @@ with oself;
       url = "https://github.com/mirage/mirage-logs/releases/download/v2.1.0/mirage-logs-2.1.0.tbz";
       sha256 = "1fww8q0an84wiqfwycqlv9chc52a9apf6swbiqk28h1v1jrc52mf";
     };
+  });
+
+  msat = osuper.msat.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace dune \
+        --replace-fail '(deps README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))' \
+          '(deps (package msat) README.md src/core/msat.cma src/sat/msat_sat.cma (source_tree src))'
+    '';
   });
 
   miou = osuper.miou.overrideAttrs {
@@ -2386,6 +2422,15 @@ with oself;
     postPatch = ''
       substituteInPlace src/dune --replace-fail "runtime result" "runtime"
       substituteInPlace test/dune --replace-fail "alcotest result" "alcotest"
+    '';
+  });
+
+  ppx_deriving_yaml = osuper.ppx_deriving_yaml.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace src/yaml/dune \
+        --replace-fail \
+          $'(mdx\n (files index.mld)\n (package ppx_deriving_yaml)\n (libraries ppxlib ppx_deriving_yaml yaml))' \
+          $'(mdx\n (files index.mld)\n (package ppx_deriving_yaml)\n (deps (package ppx_deriving_yaml))\n (libraries ppxlib ppx_deriving_yaml yaml))'
     '';
   });
 
