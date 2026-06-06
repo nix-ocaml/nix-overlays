@@ -165,6 +165,9 @@ let
     "stog"
     "stog_asy"
     "stog_markdown"
+
+    # Not compatible with R 4.6.0
+    "ocaml-r"
   ];
 
   ocaml5Ignores = [
