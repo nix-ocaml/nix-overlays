@@ -894,6 +894,13 @@ with oself;
     preBuild = "";
   });
 
+  aeneas = osuper.aeneas.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ result ];
+    postPatch = ''
+      substituteInPlace dune --replace-fail "charon" " charon result"
+    '';
+  });
+
   dune-release =
     let
       runtimeInputs = [
