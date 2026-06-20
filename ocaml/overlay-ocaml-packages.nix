@@ -168,7 +168,7 @@ let
           ocamlPackages_5_5 = newOCamlScope {
             major_version = "5";
             minor_version = "5";
-            patch_version = "0-beta1";
+            patch_version = "0";
             hardeningDisable = [ "strictoverflow" ];
             postPatch = "";
             src = super.fetchFromGitHub {
