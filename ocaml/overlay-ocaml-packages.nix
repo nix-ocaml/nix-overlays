@@ -174,8 +174,8 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "5.5.0-beta1";
-              hash = "sha256-1kVLOJVCgrw+vmTzag7T0oZWbNFrRelLQZ4cgP0VXZI=";
+              rev = "5.5.0";
+              hash = "sha256-1ZaY+u3SM66pg7aJi1viLyDjCcXoJBHm3oBzYqjJVmY=";
               fetchSubmodules = true;
             };
           };
@@ -188,8 +188,9 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "e451baeed3f31ae76af3116c84d76aa32a62a762";
-              hash = "sha256-XvqKlp9y+k4W0q3+/ZQbyTBO1pIS4Nf7L1zCysaOuig=";
+              rev = "c5f30f146682043d1267ecd0ae26f131b8941d51";
+              hash = "sha256-WMIBfvyeq4xZAPqiMjao4I/iwk3stNRh3OrtnGZCkX4=";
+              fetchSubmodules = true;
             };
             postPatch = "";
           };
@@ -202,8 +203,8 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "e451baeed3f31ae76af3116c84d76aa32a62a762";
-              hash = "sha256-XvqKlp9y+k4W0q3+/ZQbyTBO1pIS4Nf7L1zCysaOuig=";
+              rev = "c5f30f146682043d1267ecd0ae26f131b8941d51";
+              hash = "sha256-WMIBfvyeq4xZAPqiMjao4I/iwk3stNRh3OrtnGZCkX4=";
             };
             postPatch = "";
           };
