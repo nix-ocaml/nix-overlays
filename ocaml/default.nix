@@ -1344,8 +1344,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "e1170e9bc5d175f723a1c6abe6476fa0b2dfd5ad";
-      hash = "sha256-mkumBjdp1jOJsYSqRPDQ4RQkMIUU3OyvwrMpnWQX2ro=";
+      rev = "6.4.0";
+      hash = "sha256-xAHxJ0VxME9mbkQdy/KA4gJ3giW4XymftbW5fMXLjmE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
     buildInputs = [
@@ -2491,21 +2491,13 @@ with oself;
 
   ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.6" ocaml.version then
+      if lib.versionOlder "5.5" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "31435b7565a955975e78ede0af58df2c6d668b14";
-          hash = "sha256-u3wvLJQVNQuc20/GPXqccRR/rurPMl4D7mVUqLus5yQ=";
+          rev = "df9d10b5163b35d646b75dc412237280e43273d0";
+          hash = "sha256-164Vn3y4i69152Ii5MKsCDravLbdrXMFDDlp2oPFnf4=";
         }
-      else if lib.versionOlder "5.5" ocaml.version then
-        fetchFromGitHub {
-          owner = "ocaml-ppx";
-          repo = "ppxlib";
-          rev = "49d2639fade7f05eb9556731ac2313984353eb75";
-          hash = "sha256-0iNOw7uJqVyI+T9EVZyxXGOtPt2RveL5ex+vxdr7eXk=";
-        }
-
       else
         builtins.fetchurl {
           url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.38.0/ppxlib-0.38.0.tbz";
