@@ -2779,8 +2779,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "e4a597b176acdd1b0e5ba295569b54a0a30de18d";
-      hash = "sha256-EPyxoV2II3eUIg+Di4p1l7Z11FN/nDX/fQk1wm3ilHc=";
+      rev = "3dd0fb4fabac461fe54a431071aafa45d06ae5f0";
+      hash = "sha256-79UFPvgy3Z+OnhWf7cEkvmlU9mcWA2dmPiXz/B2eui4=";
     };
 
     dontConfigure = true;

@@ -80,8 +80,8 @@ let
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
                   repo = "ocaml";
-                  rev = "4.14.3";
-                  hash = "sha256-PynpmDU2jgd6Wy7s9OyVoGXHZraYknp2b1ipR8AhSeY=";
+                  rev = "4.14.4";
+                  hash = "sha256-13E+TnS7hf+YZGG6Uh6yaFiAlDKJuGICRVARNBV9D7s=";
                 };
                 hardeningDisable = [ "strictoverflow" ];
               });
