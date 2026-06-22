@@ -1927,12 +1927,23 @@ with oself;
     '';
   });
 
-  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (o: {
-    doCheck = false;
-    buildPhase = ''
-      make defaultentry -j$NIX_BUILD_CORES
-    '';
-  });
+  ocaml = (osuper.ocaml.override { flambdaSupport = true; }).overrideAttrs (
+    o:
+    {
+      doCheck = false;
+      buildPhase = ''
+        make defaultentry -j$NIX_BUILD_CORES
+      '';
+      configurePlatforms =
+        if stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isAarch64 then
+          # nixpkgs avoids host/target here because OCaml then looks for
+          # aarch64-apple-darwin-clang. Still pass build so config.guess does not
+          # bake the Darwin kernel version into compiler-libs' Config module.
+          [ "build" ]
+        else
+          o.configurePlatforms;
+    }
+  );
 
   ocaml-index =
     if lib.versionAtLeast ocaml.version "5.2" then callPackage ./ocaml-index { } else null;
