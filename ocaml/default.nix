@@ -2181,23 +2181,6 @@ with oself;
     ];
   };
 
-  odoc-parser = osuper.odoc-parser.overrideAttrs (_: {
-    version = "3.1.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml/odoc/releases/download/3.2.1/odoc-3.2.1.tbz";
-      sha256 = "1z5g8mr0dskkjsmid6wfjyvg7d6i714vn0kpqadgsfa8a4jv2pnl";
-    };
-    propagatedBuildInputs = [
-      astring
-      camlp-streams
-    ];
-  });
-
-  odoc = osuper.odoc.overrideAttrs (o: {
-    inherit (odoc-parser) src;
-    nativeBuildInputs = o.nativeBuildInputs ++ [ crunch.bin ];
-  });
-
   oidc = callPackage ./oidc { };
 
   omd = osuper.omd.overrideAttrs (_: {
