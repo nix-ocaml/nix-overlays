@@ -2594,8 +2594,8 @@ with oself;
         fetchFromGitHub {
           owner = "reasonml";
           repo = "reason";
-          rev = "138e42ef131c603c37ff4df733549b419761d089";
-          hash = "sha256-yUqhrmvP6Gj2e3HEhJjXVebUzuI64VlyOa9fWacchgQ=";
+          rev = "3.18.0";
+          hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
         }
       else
         o.src;
