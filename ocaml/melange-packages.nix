@@ -195,15 +195,15 @@ with oself;
     propagatedBuildInputs = [ ppxlib_gt_0_37 ];
   };
 
-  # melange-str = buildDunePackage {
-  # pname = "melange-str";
-  # version = "0.1.0";
+  melange-str = buildDunePackage {
+    pname = "melange-str";
+    version = "0.1.0";
 
-  # src = builtins.fetchurl {
-  # url = "https://github.com/davesnx/melange-str/releases/download/0.1.0/melange-str-0.1.0.tbz";
-  # sha256 = "1vhkf7q0lw46czrc2j7sj3rq59n3kr8qh7qbgyzk0xqg4yayghx4";
-  # };
-  # nativeBuildInputs = [ melange ];
-  # propagatedBuildInputs = [ melange ];
-  # };
+    src = builtins.fetchurl {
+      url = "https://github.com/davesnx/melange-str/releases/download/0.1.0/melange-str-0.1.0.tbz";
+      sha256 = "17l6lgv60wcw4frz2ja6a9qvnvp6q4rkd19by1fa82a0n9p83xlq";
+    };
+    nativeBuildInputs = [ melange ];
+    propagatedBuildInputs = [ melange ];
+  };
 }
