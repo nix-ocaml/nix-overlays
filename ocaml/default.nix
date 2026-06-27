@@ -1348,14 +1348,6 @@ with oself;
       hash = "sha256-xAHxJ0VxME9mbkQdy/KA4gJ3giW4XymftbW5fMXLjmE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
-    buildInputs = [
-      cmdliner
-      ppxlib_gt_0_37
-    ];
-  });
-
-  js_of_ocaml = osuper.js_of_ocaml.overrideAttrs (_: {
-    buildInputs = [ ppxlib_gt_0_37 ];
   });
 
   kafka = buildDunePackage {
@@ -2701,10 +2693,6 @@ with oself;
   sedlex = osuper.sedlex.overrideAttrs (_: {
     doCheck = false;
     buildInputs = [ ];
-    propagatedBuildInputs = [
-      gen
-      ppxlib_gt_0_37
-    ];
   });
 
   sendfile = callPackage ./sendfile { };
