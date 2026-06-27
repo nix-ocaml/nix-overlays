@@ -1348,10 +1348,6 @@ with oself;
       hash = "sha256-xAHxJ0VxME9mbkQdy/KA4gJ3giW4XymftbW5fMXLjmE=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
-    buildInputs = [
-      cmdliner
-      ppxlib
-    ];
   });
 
   kafka = buildDunePackage {
@@ -2693,6 +2689,11 @@ with oself;
       sha256 = "1f4qyrzh8y72k96dyh8l8m2sb2sl5bhny9ijxgnppr0yv99c6g0a";
     };
   };
+
+  sedlex = osuper.sedlex.overrideAttrs (_: {
+    doCheck = false;
+    buildInputs = [ ];
+  });
 
   sendfile = callPackage ./sendfile { };
 
