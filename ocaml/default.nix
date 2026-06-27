@@ -266,15 +266,6 @@ with oself;
     };
   };
 
-  batteries = osuper.batteries.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-batteries-team";
-      repo = "batteries-included";
-      rev = "676ce86afac07051d50133c488c1c486a9d85211";
-      hash = "sha256-pDfL4NgfVVrSdJJqf79qPof0GszVFyNB0JfquMT7TSk=";
-    };
-  });
-
   bencode = buildDunePackage {
     pname = "bencode";
     version = "2.0";
@@ -1430,15 +1421,6 @@ with oself;
         "";
   });
 
-  landmarks = osuper.landmarks.overrideAttrs (_: {
-    version = "1.6";
-    src = fetchFromGitHub {
-      owner = "lexifi";
-      repo = "landmarks";
-      rev = "v1.6";
-      hash = "sha256-XAzg11Y9bT4sLGNqWb7i8N+0hV+mG6QqhJauR5HjfOY=";
-    };
-  });
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     patches = [ ];
     buildInputs = [ ppxlib_gt_0_37 ];
