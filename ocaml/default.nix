@@ -1952,6 +1952,11 @@ with oself;
     };
   });
 
+  ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (o: {
+    buildInputs = [ ];
+    nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ lwt_ppx ];
+  });
+
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.1/sqlite3-5.4.1.tbz";
