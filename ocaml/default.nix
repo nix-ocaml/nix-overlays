@@ -1302,8 +1302,8 @@ with oself;
     src =
       if lib.versionOlder "5.5" ocaml.version then
         builtins.fetchurl {
-          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.26.0-5.5_preview/lsp-1.26.0-5.5.preview.tbz";
-          sha256 = "0i7plg0aggjj426p0kfyv5skssxk27jryc13rlrb47pvhb98farq";
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.27.0/lsp-1.27.0.tbz";
+          sha256 = "0597g5ixs4rjansy567nxsx76fdi19bj6i8mv6mcp9gq4dlwsfh4";
         }
       else if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub {
