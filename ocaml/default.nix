@@ -2576,30 +2576,20 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub {
-          owner = "reasonml";
-          repo = "reason";
-          rev = "3.18.0";
-          hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
-        }
-      else
-        o.src;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason";
+      rev = "3.18.0";
+      hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
+    };
+    propagatedBuildInputs = [
       dune-build-info
       cmdliner
+      menhirLib
+      ppxlib_gt_0_37
     ];
 
-    patches = [
-      (
-        if lib.versionOlder "5.3" ocaml.version then
-          ./0001-rename-labels-ppxlib-0.36.patch
-        else
-          ./0001-rename-labels.patch
-      )
-    ];
-
+    patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
     meta.mainProgram = "refmt";
   });
 
