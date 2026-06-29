@@ -1423,7 +1423,6 @@ with oself;
 
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     patches = [ ];
-    buildInputs = [ ppxlib ];
   });
 
   lev = buildDunePackage {
@@ -2489,7 +2488,9 @@ with oself;
   });
 
   ppxlib =
-    if lib.versionOlder ocaml.version "5.3" then
+    if lib.versionAtLeast ocaml.version "5.3" then
+      ppxlib_gt_0_37
+    else
       osuper.ppxlib.overrideAttrs (_: {
         version = "0.35.0";
         name = "ocaml${ocaml.version}-ppxlib-0.35.0";
@@ -2497,9 +2498,7 @@ with oself;
           url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
           sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
         };
-      })
-    else
-      ppxlib_gt_0_37;
+      });
 
   ppxlib-tools = buildDunePackage {
     pname = "ppxlib-tools";
