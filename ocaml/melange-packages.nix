@@ -74,10 +74,7 @@ with oself;
     inherit (melange-json-native) version src;
     pname = "melange-json";
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [
-      melange
-      ppxlib
-    ];
+    propagatedBuildInputs = [ melange ];
   };
 
   melange-jest = buildDunePackage {
