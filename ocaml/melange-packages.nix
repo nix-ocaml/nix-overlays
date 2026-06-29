@@ -74,10 +74,7 @@ with oself;
     inherit (melange-json-native) version src;
     pname = "melange-json";
     nativeBuildInputs = [ melange ];
-    propagatedBuildInputs = [
-      melange
-      ppxlib_gt_0_37
-    ];
+    propagatedBuildInputs = [ melange ];
   };
 
   melange-jest = buildDunePackage {
@@ -150,7 +147,7 @@ with oself;
       url = "https://github.com/ml-in-barcelona/react-rules-of-hooks-ppx/releases/download/1.0.0/react-rules-of-hooks-ppx-1.0.0.tbz";
       sha256 = "12413bab8wa0982kcw9xxnqws9h7bswa1d8d93qhabrcyfhdqzvb";
     };
-    propagatedBuildInputs = [ ppxlib_gt_0_37 ];
+    buildInputs = [ ppxlib_gt_0_37 ];
   };
 
   reason-react = buildDunePackage {

@@ -1423,7 +1423,6 @@ with oself;
 
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     patches = [ ];
-    buildInputs = [ ppxlib_gt_0_37 ];
   });
 
   lev = buildDunePackage {
@@ -2464,13 +2463,15 @@ with oself;
   ppx_tools = if lib.versionOlder "5.2" ocaml.version then null else osuper.ppx_tools;
 
   ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
+    version = "0.38.0";
+    name = "ocaml${ocaml.version}-ppxlib-0.38.0";
     src =
       if lib.versionOlder "5.5" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "df9d10b5163b35d646b75dc412237280e43273d0";
-          hash = "sha256-164Vn3y4i69152Ii5MKsCDravLbdrXMFDDlp2oPFnf4=";
+          rev = "fd1434be1987a25a7a4db9038571466572f82e3f";
+          hash = "sha256-LxPpVn0ETHyaToXIwp5UuLTx6J8LWZLEUFMys4DncIQ=";
         }
       else
         builtins.fetchurl {
@@ -2487,21 +2488,16 @@ with oself;
   });
 
   ppxlib =
-    if lib.versionOlder "5.3" ocaml.version then
+    if lib.versionAtLeast ocaml.version "5.3" then
       ppxlib_gt_0_37
     else
-      osuper.ppxlib.overrideAttrs (o: {
+      osuper.ppxlib.overrideAttrs (_: {
+        version = "0.35.0";
+        name = "ocaml${ocaml.version}-ppxlib-0.35.0";
         src = builtins.fetchurl {
           url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
           sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
         };
-
-        propagatedBuildInputs = [
-          ocaml-compiler-libs
-          ppx_derivers
-          sexplib0
-          stdlib-shims
-        ];
       });
 
   ppxlib-tools = buildDunePackage {
@@ -2576,31 +2572,26 @@ with oself;
   };
 
   reason = osuper.reason.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub {
-          owner = "reasonml";
-          repo = "reason";
-          rev = "3.18.0";
-          hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
-        }
-      else
-        o.src;
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+    version = "3.18.0";
+    name = "ocaml${ocaml.version}-reason-3.18.0";
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason";
+      rev = "3.18.0";
+      hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
+    };
+    buildInputs = o.buildInputs ++ [ ppxlib_gt_0_37 ];
+    propagatedBuildInputs = [
       dune-build-info
       cmdliner
+      menhirLib
     ];
 
-    patches = [
-      (
-        if lib.versionOlder "5.3" ocaml.version then
-          ./0001-rename-labels-ppxlib-0.36.patch
-        else
-          ./0001-rename-labels.patch
-      )
-    ];
-
+    patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
     meta.mainProgram = "refmt";
+  });
+  rtop = osuper.rtop.overrideAttrs (o: {
+    buildInputs = (o.buildInputs or [ ]) ++ [ ppxlib_gt_0_37 ];
   });
 
   react = osuper.react.overrideAttrs (o: {
