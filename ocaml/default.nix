@@ -117,6 +117,7 @@ let
       net-snmp
       stdenv
       ;
+    ppxlib = if lib.versionAtLeast oself.ocaml.version "5.3" then oself.ppxlib else osuper.ppxlib;
     zstd = zstd-oc;
   };
   janeStreet_0_17 = import ./janestreet-0.17.nix {
@@ -133,6 +134,7 @@ let
       net-snmp
       stdenv
       ;
+    ppxlib = if lib.versionAtLeast oself.ocaml.version "5.3" then oself.ppxlib else osuper.ppxlib;
     zstd = zstd-oc;
   };
 
@@ -312,7 +314,7 @@ with oself;
     buildInputs = [ ];
     nativeBuildInputs = o.nativeBuildInputs ++ [ melange ];
     propagatedBuildInputs = [
-      ppxlib_gt_0_37
+      ppxlib
       cmdliner
       melange
     ];
@@ -1423,7 +1425,7 @@ with oself;
 
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     patches = [ ];
-    buildInputs = [ ppxlib_gt_0_37 ];
+    buildInputs = [ ppxlib ];
   });
 
   lev = buildDunePackage {
@@ -1545,7 +1547,7 @@ with oself;
   lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
     propagatedBuildInputs = [
       lwt
-      ppxlib_gt_0_37
+      ppxlib
     ];
   });
 
@@ -1636,7 +1638,7 @@ with oself;
       hash = "sha256-n60dljIfXIXrUtDZZ9oa58e0HwyEK92cfIodqfQvXHA=";
     };
     propagatedBuildInputs = [
-      ppxlib_gt_0_37
+      ppxlib
       yojson
     ];
   };
@@ -1765,7 +1767,7 @@ with oself;
       || lib.versionAtLeast ocaml.version "5.1"
     then
       callPackage ./melange {
-        ppxlib = ppxlib_gt_0_37;
+        inherit ppxlib;
       }
     else
       null;
@@ -2463,14 +2465,16 @@ with oself;
 
   ppx_tools = if lib.versionOlder "5.2" ocaml.version then null else osuper.ppx_tools;
 
-  ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
+  ppxlib = osuper.ppxlib.overrideAttrs (o: {
+    version = "0.38.0";
+    name = "ocaml${ocaml.version}-ppxlib-0.38.0";
     src =
       if lib.versionOlder "5.5" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "df9d10b5163b35d646b75dc412237280e43273d0";
-          hash = "sha256-164Vn3y4i69152Ii5MKsCDravLbdrXMFDDlp2oPFnf4=";
+          rev = "fd1434be1987a25a7a4db9038571466572f82e3f";
+          hash = "sha256-LxPpVn0ETHyaToXIwp5UuLTx6J8LWZLEUFMys4DncIQ=";
         }
       else
         builtins.fetchurl {
@@ -2486,24 +2490,6 @@ with oself;
     ];
   });
 
-  ppxlib =
-    if lib.versionOlder "5.3" ocaml.version then
-      ppxlib_gt_0_37
-    else
-      osuper.ppxlib.overrideAttrs (o: {
-        src = builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.35.0/ppxlib-0.35.0.tbz";
-          sha256 = "09dr5n1j2pf6rbssfqbba32jzacq31sdr12nwj3h89l4kzy5knfr";
-        };
-
-        propagatedBuildInputs = [
-          ocaml-compiler-libs
-          ppx_derivers
-          sexplib0
-          stdlib-shims
-        ];
-      });
-
   ppxlib-tools = buildDunePackage {
     pname = "ppxlib-tools";
     inherit (ppxlib) version src;
@@ -2517,7 +2503,7 @@ with oself;
   ppx_lun = osuper.ppx_lun.overrideAttrs (_: {
     propagatedBuildInputs = [
       lun
-      ppxlib_gt_0_37
+      ppxlib
     ];
   });
 
@@ -2586,7 +2572,7 @@ with oself;
       dune-build-info
       cmdliner
       menhirLib
-      ppxlib_gt_0_37
+      ppxlib
     ];
 
     patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
