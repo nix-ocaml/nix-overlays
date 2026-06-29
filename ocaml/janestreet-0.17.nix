@@ -10,7 +10,6 @@
   net-snmp,
   openssl,
   postgresql,
-  ppxlib ? self.ppxlib,
   zstd,
 }:
 
