@@ -2591,6 +2591,9 @@ with oself;
     patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
     meta.mainProgram = "refmt";
   });
+  rtop = osuper.rtop.overrideAttrs (o: {
+    buildInputs = (o.buildInputs or [ ]) ++ [ ppxlib_gt_0_37 ];
+  });
 
   react = osuper.react.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ topkg ];
