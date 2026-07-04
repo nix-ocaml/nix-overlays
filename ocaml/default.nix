@@ -614,6 +614,7 @@ with oself;
           substituteInPlace "cohttp-async/src/client.ml" --replace-fail Ivar.fill_exn Ivar.fill
         '';
   });
+  cohttp-server-lwt-unix = disableTests osuper.cohttp-server-lwt-unix;
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
   cohttp-top = disableTests osuper.cohttp-top;
 
@@ -1335,8 +1336,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "6.4.0";
-      hash = "sha256-xAHxJ0VxME9mbkQdy/KA4gJ3giW4XymftbW5fMXLjmE=";
+      rev = "6.4.1";
+      hash = "sha256-mQDMTjV0jo3DWozGlO2lAh1s7k4ibxXz5N2FOJnkP6o=";
     };
     nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
   });
