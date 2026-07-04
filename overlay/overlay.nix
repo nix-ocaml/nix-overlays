@@ -153,7 +153,7 @@ in
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq =
-    ((
+    (
       (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" {
         inherit self;
       }).override
@@ -173,7 +173,6 @@ in
         zstd = self.zstd-oc;
         zlib = self.zlib-oc;
       }
-    ).withoutJIT
     ).overrideAttrs
       (
         finalAttrs: o:
