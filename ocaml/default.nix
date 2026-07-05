@@ -2532,18 +2532,19 @@ with oself;
   };
 
   ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub {
-          owner = "ocaml-ppx";
-          repo = "ppx_deriving_yojson";
-          rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
-          hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
-        }
-      else
-        o.src;
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppx_deriving_yojson";
+      rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
+      hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
+    };
     patches = [ ];
     doCheck = false;
+    buildInputs = [ ppxlib_gt_0_37 ];
+    propagatedBuildInputs = [
+      ppx_deriving
+      yojson
+    ];
   });
 
   ppx_repr = disableTests osuper.ppx_repr;
