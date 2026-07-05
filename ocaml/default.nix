@@ -2133,10 +2133,7 @@ with oself;
               --replace-fail "Lev_fiber.waitpid ~pid:(Pid.to_int pid)" \
                 "Lev_fiber.waitpid ~pid"
             ${
-              if
-                lib.versionOlder "5.1" ocaml.version
-                && lib.versionOlder ocaml.version "5.2"
-              then
+              if lib.versionOlder "5.1" ocaml.version && lib.versionOlder ocaml.version "5.2" then
                 ''
                   substituteInPlace ocaml-lsp-server/src/ocamlformat.ml \
                     --replace-fail "Unix.kill (Pid.to_int pid) Sys.sigint" \
