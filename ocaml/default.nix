@@ -1660,8 +1660,8 @@ with oself;
       rev = "d6ca192bc6885933fe75fb200810687d820c4c04";
       hash = "sha256-n60dljIfXIXrUtDZZ9oa58e0HwyEK92cfIodqfQvXHA=";
     };
+    buildInputs = [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
-      ppxlib_gt_0_37
       yojson
     ];
   };
@@ -2483,6 +2483,10 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.2/ppx_deriving-6.1.2.tbz";
+      sha256 = "1zskc9a8h3a1gk2dif32sp0kvasc7nscrcxb3cglnhykd3kbz5am";
+    };
     buildInputs = [ ];
     propagatedBuildInputs = [
       findlib
