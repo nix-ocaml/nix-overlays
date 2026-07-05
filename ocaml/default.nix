@@ -1466,6 +1466,14 @@ with oself;
           stdune
         ];
         checkInputs = [ ppx_expect ];
+        postPatch = ''
+          substituteInPlace lev-fiber/src/lev_fiber.ml \
+            --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
+            --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
+            --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
+            --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
+            --replace-fail "  let pid = Pid.of_int pid in" ""
+        '';
       }
     else
       null;
@@ -1474,6 +1482,14 @@ with oself;
       buildDunePackage {
         pname = "lev-fiber";
         inherit (lev) version src;
+        postPatch = ''
+          substituteInPlace lev-fiber/src/lev_fiber.ml \
+            --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
+            --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
+            --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
+            --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
+            --replace-fail "  let pid = Pid.of_int pid in" ""
+        '';
         propagatedBuildInputs = [
           lev-fiber
           csexp
@@ -1940,6 +1956,7 @@ with oself;
   ocaml-index =
     if lib.versionAtLeast ocaml.version "5.2" then callPackage ./ocaml-index { } else null;
 
+  ocaml-protoc = disableTests osuper.ocaml-protoc;
   ocaml-protoc-plugin = osuper.ocaml-protoc-plugin.overrideAttrs (o: {
     src = builtins.fetchurl {
       url = "https://github.com/andersfugmann/ocaml-protoc-plugin/releases/download/6.1.0/ocaml-protoc-plugin-6.1.0.tbz";
