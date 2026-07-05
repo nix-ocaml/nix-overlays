@@ -1422,8 +1422,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "garrigue";
       repo = "lablgtk";
-      rev = "a9b64b9ed8a13855c672cde0a2d9f78687f4214b";
-      hash = "sha256-CRUIuZ4ILJ0GegrIVHkOg9migQz/OUEGWoN0V0Nb7vc=";
+      rev = "e0cd3a721b385623fe1c42e08e72f914ae64d1a4";
+      hash = "sha256-yOsKaXbbgLnMHKFbvFtnydymJC9wi4+I5aY75mpe/Lc=";
     };
     patches = [ ];
   });
