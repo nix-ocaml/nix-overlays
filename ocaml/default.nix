@@ -2921,6 +2921,9 @@ with oself;
 
   tcpip = disableTests osuper.tcpip;
 
+  testo-diff = osuper.testo-diff.overrideAttrs (o: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
   textmate-language = buildDunePackage {
     pname = "textmate-language";
     version = "0.3.4";
