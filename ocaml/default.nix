@@ -1449,8 +1449,8 @@ with oself;
     src = fetchFromGitHub {
       "owner" = "rgrinberg";
       repo = "lev";
-      rev = "2c98545efbc2a485b836294627ad78ca9f562c7d";
-      hash = "sha256-kvQIV/b0rlnCmJtQJeqhEsfEQfWS7XWwKGhMYxKHFL8=";
+      rev = "af36565cd76abe351b0be978c20c2768b1a334bb";
+      hash = "sha256-BnCx7AbvtgahCjIomumyewNmDrHaCZ6Qdwk3/qUdG3M=";
     };
     buildInputs = [ libev-oc ];
   };
@@ -1464,26 +1464,10 @@ with oself;
       stdune
     ];
     checkInputs = [ ppx_expect ];
-    postPatch = ''
-      substituteInPlace lev-fiber/src/lev_fiber.ml \
-        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-        --replace-fail "  let pid = Pid.of_int pid in" ""
-    '';
   };
   lev-fiber-csexp = buildDunePackage {
     pname = "lev-fiber";
     inherit (lev) version src;
-    postPatch = ''
-      substituteInPlace lev-fiber/src/lev_fiber.ml \
-        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-        --replace-fail "  let pid = Pid.of_int pid in" ""
-    '';
     propagatedBuildInputs = [
       lev-fiber
       csexp
