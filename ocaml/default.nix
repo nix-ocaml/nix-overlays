@@ -1678,6 +1678,18 @@ with oself;
   };
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+  mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
+    checkInputs = [
+      ppxlib_gt_0_37
+      alcotest
+      asn1-combinators
+      ohex
+      ounit2
+      ppx_deriving_yojson
+      ppx_deriving
+      yojson
+    ];
+  });
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
