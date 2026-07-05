@@ -2924,6 +2924,9 @@ with oself;
   testo-diff = osuper.testo-diff.overrideAttrs (o: {
     buildInputs = [ ppxlib_gt_0_37 ];
   });
+  testo-util = osuper.testo-util.overrideAttrs (o: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
   textmate-language = buildDunePackage {
     pname = "textmate-language";
     version = "0.3.4";

@@ -4,11 +4,12 @@
   base,
   caqti,
   pg_query,
+  ppxlib_gt_0_37,
   lib,
   ocaml,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "ppx_rapper";
   version = "3.0.0";
 
@@ -28,6 +29,7 @@ buildDunePackage rec {
         hash = "sha256-Fn13E8H5+ciEIF5wIA6qzEGX5GLe0SYz7i/TSdk1g1M=";
       };
 
+  buildInputs = [ ppxlib_gt_0_37 ];
   propagatedBuildInputs = [
     caqti
     pg_query
