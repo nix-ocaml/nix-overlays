@@ -2102,6 +2102,62 @@ with oself;
           ""
       }
       ${
+        if lib.versionOlder "5.1" ocaml.version && lib.versionOlder ocaml.version "5.5" then
+          ''
+            substituteInPlace ocaml-lsp-server/src/import.ml \
+              --replace-fail "  module Pid = Pid" ""
+
+            substituteInPlace ocaml-lsp-server/src/diagnostics.ml \
+              --replace-fail "{ pid : Pid.t" "{ pid : int" \
+              --replace-fail 'sprintf "dune (pid=%d)" (Pid.to_int pid)' \
+                'sprintf "dune (pid=%d)" pid'
+
+            substituteInPlace ocaml-lsp-server/src/diagnostics.mli \
+              --replace-fail "val gen : Pid.t -> t" "val gen : int -> t"
+
+            substituteInPlace ocaml-lsp-server/src/dune.ml \
+              --replace-fail \
+                "Diagnostics.Dune.gen (Pid.of_int (Registry.Dune.pid source))" \
+                "Diagnostics.Dune.gen (Registry.Dune.pid source)"
+
+            substituteInPlace ocaml-lsp-server/src/merlin_config.ml \
+              --replace-fail "{ pid : Pid.t" "{ pid : int" \
+              --replace-fail '"pid", Pid.to_dyn pid' '"pid", int pid' \
+              --replace-fail "Lev_fiber.waitpid ~pid:(Pid.to_int t.pid)" \
+                "Lev_fiber.waitpid ~pid:t.pid" \
+              --replace-fail "Pid.of_int" "" \
+              --replace-fail "Pid.to_int running.process.pid" "running.process.pid"
+
+            substituteInPlace ocaml-lsp-server/src/ocamlformat.ml \
+              --replace-fail "      |> Stdune.Pid.of_int" "" \
+              --replace-fail "Unix.kill (Pid.to_int pid) Sys.sigterm" \
+                "Unix.kill pid Sys.sigterm" \
+              --replace-fail "Lev_fiber.waitpid ~pid:(Pid.to_int pid)" \
+                "Lev_fiber.waitpid ~pid"
+
+            substituteInPlace ocaml-lsp-server/src/ocamlformat_rpc.ml \
+              --replace-fail "val pid : t -> Pid.t" "val pid : t -> int" \
+              --replace-fail "{ pid : Pid.t" "{ pid : int" \
+              --replace-fail "{ pid = Pid.of_int pid; session; client }" \
+                "{ pid; session; client }" \
+              --replace-fail "Lev_fiber.waitpid ~pid:(Pid.to_int pid)" \
+                "Lev_fiber.waitpid ~pid" \
+              --replace-fail "Pid.to_int (Process.pid process)" "Process.pid process"
+
+            substituteInPlace submodules/lev/lev-fiber/src/lev_fiber.ml \
+              --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" \
+                "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
+              --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" \
+                "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
+              --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
+              --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" \
+                "Unix.waitpid [ WNOHANG ] pid" \
+              --replace-fail "  let pid = Pid.of_int pid in" ""
+          ''
+        else
+          ""
+      }
+      ${
         if
           lib.versionOlder "5.2" ocaml.version
           || (lib.versionOlder "4.14" ocaml.version && !(lib.versionOlder "5.0" ocaml.version))
