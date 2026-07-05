@@ -1454,49 +1454,41 @@ with oself;
     };
     buildInputs = [ libev-oc ];
   };
-  lev-fiber =
-    if lib.versionAtLeast osuper.ocaml.version "4.14" then
-      buildDunePackage {
-        pname = "lev-fiber";
-        inherit (lev) version src;
-        propagatedBuildInputs = [
-          lev
-          dyn
-          fiber
-          stdune
-        ];
-        checkInputs = [ ppx_expect ];
-        postPatch = ''
-          substituteInPlace lev-fiber/src/lev_fiber.ml \
-            --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-            --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-            --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-            --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-            --replace-fail "  let pid = Pid.of_int pid in" ""
-        '';
-      }
-    else
-      null;
-  lev-fiber-csexp =
-    if lib.versionAtLeast osuper.ocaml.version "4.14" then
-      buildDunePackage {
-        pname = "lev-fiber";
-        inherit (lev) version src;
-        postPatch = ''
-          substituteInPlace lev-fiber/src/lev_fiber.ml \
-            --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-            --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-            --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-            --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-            --replace-fail "  let pid = Pid.of_int pid in" ""
-        '';
-        propagatedBuildInputs = [
-          lev-fiber
-          csexp
-        ];
-      }
-    else
-      null;
+  lev-fiber = buildDunePackage {
+    pname = "lev-fiber";
+    inherit (lev) version src;
+    propagatedBuildInputs = [
+      lev
+      dyn
+      fiber
+      stdune
+    ];
+    checkInputs = [ ppx_expect ];
+    postPatch = ''
+      substituteInPlace lev-fiber/src/lev_fiber.ml \
+        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
+        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
+        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
+        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
+        --replace-fail "  let pid = Pid.of_int pid in" ""
+    '';
+  };
+  lev-fiber-csexp = buildDunePackage {
+    pname = "lev-fiber";
+    inherit (lev) version src;
+    postPatch = ''
+      substituteInPlace lev-fiber/src/lev_fiber.ml \
+        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
+        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
+        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
+        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
+        --replace-fail "  let pid = Pid.of_int pid in" ""
+    '';
+    propagatedBuildInputs = [
+      lev-fiber
+      csexp
+    ];
+  };
 
   lilv = osuper.lilv.overrideAttrs (o: {
     postPatch = ''
@@ -1817,8 +1809,7 @@ with oself;
     };
   });
 
-  merlin-lib =
-    if lib.versionAtLeast ocaml.version "4.14" then callPackage ./merlin/lib.nix { } else null;
+  merlin-lib = callPackage ./merlin/lib.nix { };
   dot-merlin-reader = callPackage ./merlin/dot-merlin.nix { };
   merlin = callPackage ./merlin { };
 

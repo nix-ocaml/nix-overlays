@@ -11,7 +11,7 @@
 
 buildDunePackage {
   pname = "dot-merlin-reader";
-  version = if lib.versionAtLeast ocaml.version "4.14" then merlin-lib.version else "n/a";
+  version = merlin-lib.version;
 
   src =
     if lib.versionAtLeast ocaml.version "4.14" then
