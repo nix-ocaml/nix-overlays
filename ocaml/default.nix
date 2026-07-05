@@ -626,6 +626,15 @@ with oself;
 
   cookie = callPackage ./cookie { };
 
+  cppo = osuper.cppo.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "cppo";
+      rev = "fe1e27112d34fd9a7f68f268508663d436d41ac6";
+      hash = "sha256-BMYjsAKshiRGPHERF0/kP0heb8ZHlq5eCpMDQQJ+F4U=";
+    };
+  });
+
   crowbar = osuper.crowbar.overrideAttrs (o: {
     doCheck = lib.versionAtLeast ocaml.version "5.0";
   });
@@ -757,12 +766,12 @@ with oself;
       };
     in
     dune_pkg.overrideAttrs (o: {
-      version = "3.23.1";
+      version = "3.24.1";
       src = fetchFromGitHub {
         owner = "ocaml";
         repo = "dune";
-        rev = "9215798416e3c86d68900705261e80f84ecf20b8";
-        hash = "sha256-jPJPuGNjTEIn/hR7mzLh3V4/bd0BxIBGjklU7jK3dY4=";
+        rev = "eac1b1290fd59d2f68734e3c5166ef8116432188";
+        hash = "sha256-digFV4RYLYVJWpPYnguzvMPJrDsjbu2SdurprO075a8=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
