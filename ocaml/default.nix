@@ -2130,10 +2130,22 @@ with oself;
 
             substituteInPlace ocaml-lsp-server/src/ocamlformat.ml \
               --replace-fail "      |> Stdune.Pid.of_int" "" \
-              --replace-fail "Unix.kill (Pid.to_int pid) Sys.sigterm" \
-                "Unix.kill pid Sys.sigterm" \
               --replace-fail "Lev_fiber.waitpid ~pid:(Pid.to_int pid)" \
                 "Lev_fiber.waitpid ~pid"
+            ${
+              if lib.versionOlder ocaml.version "5.2" then
+                ''
+                  substituteInPlace ocaml-lsp-server/src/ocamlformat.ml \
+                    --replace-fail "Unix.kill (Pid.to_int pid) Sys.sigint" \
+                      "Unix.kill pid Sys.sigint"
+                ''
+              else
+                ''
+                  substituteInPlace ocaml-lsp-server/src/ocamlformat.ml \
+                    --replace-fail "Unix.kill (Pid.to_int pid) Sys.sigterm" \
+                      "Unix.kill pid Sys.sigterm"
+                ''
+            }
 
             substituteInPlace ocaml-lsp-server/src/ocamlformat_rpc.ml \
               --replace-fail "val pid : t -> Pid.t" "val pid : t -> int" \
