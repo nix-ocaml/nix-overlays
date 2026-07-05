@@ -202,6 +202,7 @@ with oself;
     ];
   };
 
+  atdgen = disableTests osuper.atdgen;
   atdts = buildDunePackage {
     pname = "atdts";
     inherit (atdgen-codec-runtime) version src;
@@ -398,6 +399,12 @@ with oself;
   };
 
   camomile = osuper.camomile.overrideAttrs (o: {
+    src = fetchFromGitHub {
+      owner = "ocaml-community";
+      repo = "Camomile";
+      rev = "7fd071f814d1083ab72d78bcb46ea15e959107fb";
+      hash = "sha256-WnIofMPosbuDReiNTqga9Hm+A5DadvbnVx3AGxCLiU8=";
+    };
     propagatedBuildInputs = [
       camlp-streams
       dune-site

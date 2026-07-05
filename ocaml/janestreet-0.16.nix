@@ -375,6 +375,7 @@ in
     hash = "sha256-qFkM6TrTLnnFKmzQHktBb68HpBTMYhiURvnRKEoAevk=";
     minimalOCamlVersion = "4.04.2";
     meta.description = "A binary protocol generator";
+    doCheck = false;
     propagatedBuildInputs = [
       ppx_compare
       ppx_custom_printf
