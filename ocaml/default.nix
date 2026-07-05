@@ -2487,10 +2487,9 @@ with oself;
       url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.2/ppx_deriving-6.1.2.tbz";
       sha256 = "1zskc9a8h3a1gk2dif32sp0kvasc7nscrcxb3cglnhykd3kbz5am";
     };
-    buildInputs = [ ];
+    buildInputs = [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
       findlib
-      ppxlib
       ppx_derivers
     ];
   });
