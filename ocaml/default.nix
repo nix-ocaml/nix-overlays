@@ -2921,6 +2921,9 @@ with oself;
 
   tcpip = disableTests osuper.tcpip;
 
+  testo = osuper.testo.overrideAttrs (o: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
   testo-diff = osuper.testo-diff.overrideAttrs (o: {
     buildInputs = [ ppxlib_gt_0_37 ];
   });
@@ -3217,6 +3220,10 @@ with oself;
       url = "https://github.com/avsm/ocaml-yaml/releases/download/v3.2.0/yaml-3.2.0.tbz";
       sha256 = "09w2l2inc0ymzd9l8gpx9pd4xlp5a4rn1qbi5dwndydr5352l3f5";
     };
+  });
+
+  yamlx = osuper.yamlx.overrideAttrs (o: {
+    buildInputs = [ ppxlib_gt_0_37 ];
   });
 
   yuscii = disableTests osuper.yuscii;
