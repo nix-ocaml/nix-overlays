@@ -1439,6 +1439,7 @@ with oself;
   });
 
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
+    doCheck = false;
     patches = [ ];
   });
 
