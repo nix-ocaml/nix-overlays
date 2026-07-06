@@ -2495,8 +2495,6 @@ with oself;
   pgocaml = osuper.pgocaml.overrideAttrs (o: {
     buildInputs = [
       ppxlib
-      ppx_deriving
-      ppx_sexp_conv
     ];
     propagatedBuildInputs = [
       calendar
@@ -2506,6 +2504,8 @@ with oself;
       rresult
       sexplib
       camlp-streams
+      ppx_deriving
+      ppx_sexp_conv
     ];
   });
   pgx_eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.pgx_eio else null;

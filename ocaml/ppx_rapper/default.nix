@@ -4,9 +4,8 @@
   base,
   caqti,
   pg_query,
-  ppxlib_gt_0_37,
+  ppxlib,
   lib,
-  ocaml,
 }:
 
 buildDunePackage {
@@ -20,7 +19,12 @@ buildDunePackage {
     hash = "sha256-2XTpk1kUakxddcR7ZBiv4hynV6dznDy//G7914azJKU=";
   };
 
-  buildInputs = [ ppxlib_gt_0_37 ];
+  postPatch = lib.optionalString (lib.versionOlder ppxlib.version "0.36") ''
+    substituteInPlace ppx/ppx_rapper.ml \
+      --replace-fail "       ~constraint_:drop" ""
+  '';
+
+  buildInputs = [ ppxlib ];
   propagatedBuildInputs = [
     caqti
     pg_query
