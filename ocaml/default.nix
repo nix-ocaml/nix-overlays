@@ -3198,6 +3198,7 @@ with oself;
       rev = "ea5fc357da2d6bf1f1a35cc89af26d281f5c6521";
       hash = "sha256-85Aoep+/qxr3qkRIte5QgyitvzDdGsPG4kR3xa0Gq4E=";
     };
+    buildInputs = [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
       ppx_deriving_yojson
       cbor
