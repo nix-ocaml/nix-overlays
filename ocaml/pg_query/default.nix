@@ -1,9 +1,9 @@
 {
-  fetchFromGitHub,
   buildDunePackage,
   alcotest,
   cmdliner,
   ppx_deriving,
+  ppxlib,
   ctypes,
   ctypes-foreign,
 }:
@@ -17,6 +17,7 @@ buildDunePackage {
     sha256 = "11c31a10g44m487anwdqfnbxxjl9jlaj277845wmv1zprhcl5lmi";
   };
 
+  buildInputs = [ ppxlib ];
   propagatedBuildInputs = [
     ppx_deriving
     ctypes

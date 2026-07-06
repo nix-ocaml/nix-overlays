@@ -12,12 +12,12 @@
 
 buildDunePackage {
   pname = "flow_parser";
-  version = "0.273.1";
+  version = "0.320.0";
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "flow";
-    rev = "v0.273.1";
-    hash = "sha256-rXFckFY/QtDls1jYrwDDbJE5lpIttBTzs70+U6igAZo=";
+    rev = "v0.320.0";
+    hash = "sha256-omofSh2P2IyyEVF6I4nf/5/45K58IEsbTSo1O1mIL64=";
   };
 
   postPatch =
@@ -34,7 +34,14 @@ buildDunePackage {
       substituteInPlace "src/parser/dune" \
         --replace-fail \
           'public_name flow_parser)' \
-          'public_name flow_parser) (flags :standard -warn-error -53)'
+          'public_name flow_parser) (flags :standard -warn-error -53)' \
+        --replace-fail \
+          'ppx_gen_rec ppx_deriving.std flow_sedlexing_ppx' \
+          'ppx_gen_rec ppx_deriving.std sedlex.ppx'
+      substituteInPlace "src/third-party/sedlex-ppx/dune" \
+        --replace-fail \
+          ' (package flow_parser)' \
+          ""
     '';
 
   propagatedBuildInputs = [

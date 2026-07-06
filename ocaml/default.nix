@@ -301,6 +301,34 @@ with oself;
     };
   });
 
+  biotk = osuper.biotk.overrideAttrs (o: {
+    buildInputs = [
+      ppxlib
+      ppx_compare
+      ppx_csv_conv
+      ppx_deriving
+      ppx_expect
+      ppx_fields_conv
+      ppx_inline_test
+      ppx_let
+      ppx_sexp_conv
+    ];
+    propagatedBuildInputs = [
+      angstrom-unix
+      binning
+      camlzip
+      core_kernel
+      core_unix
+      csvfields
+      fmt
+      gsl
+      rresult
+      tyxml
+      uri
+      vg
+    ];
+  });
+
   bisect_ppx = osuper.bisect_ppx.overrideAttrs (o: {
     # melange support
     src = fetchFromGitHub {
@@ -382,22 +410,6 @@ with oself;
     };
   });
 
-  charInfo_width = buildDunePackage {
-    pname = "charInfo_width";
-    version = "2.0.0";
-    src = fetchFromGitHub {
-      owner = "kandu";
-      repo = "charInfo_width";
-      rev = "2.0.0";
-      hash = "sha256-JYAa3awHqW5lS4a+TSyK3+xQSi123PhfWwNUt5iOmjg=";
-    };
-    propagatedBuildInputs = [ camomile ];
-    postPatch = ''
-      substituteInPlace src/dune --replace-fail "result" ""
-      substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
-    '';
-  };
-
   camomile = osuper.camomile.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml-community";
@@ -439,6 +451,26 @@ with oself;
       lablgtk
     ];
   };
+
+  charInfo_width = buildDunePackage {
+    pname = "charInfo_width";
+    version = "2.0.0";
+    src = fetchFromGitHub {
+      owner = "kandu";
+      repo = "charInfo_width";
+      rev = "2.0.0";
+      hash = "sha256-JYAa3awHqW5lS4a+TSyK3+xQSi123PhfWwNUt5iOmjg=";
+    };
+    propagatedBuildInputs = [ camomile ];
+    postPatch = ''
+      substituteInPlace src/dune --replace-fail "result" ""
+      substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
+    '';
+  };
+
+  charon = osuper.charon.overrideAttrs (_: {
+    buildInputs = [ ppxlib ];
+  });
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
@@ -1348,15 +1380,26 @@ with oself;
         o.src;
   });
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (o: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "6.4.1";
-      hash = "sha256-mQDMTjV0jo3DWozGlO2lAh1s7k4ibxXz5N2FOJnkP6o=";
-    };
-    nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
-  });
+  js_of_ocaml = osuper.js_of_ocaml.override {
+    inherit js_of_ocaml-compiler;
+    inherit ppxlib;
+  };
+
+  js_of_ocaml-compiler =
+    (osuper.js_of_ocaml-compiler.override { inherit ppxlib; }).overrideAttrs
+      (o: {
+        src = fetchFromGitHub {
+          owner = "ocsigen";
+          repo = "js_of_ocaml";
+          rev = "6.4.1";
+          hash = "sha256-mQDMTjV0jo3DWozGlO2lAh1s7k4ibxXz5N2FOJnkP6o=";
+        };
+        nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
+      });
+
+  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.override {
+    inherit ppxlib;
+  };
 
   kafka = buildDunePackage {
     pname = "kafka";
@@ -1449,8 +1492,8 @@ with oself;
     src = fetchFromGitHub {
       "owner" = "rgrinberg";
       repo = "lev";
-      rev = "2c98545efbc2a485b836294627ad78ca9f562c7d";
-      hash = "sha256-kvQIV/b0rlnCmJtQJeqhEsfEQfWS7XWwKGhMYxKHFL8=";
+      rev = "af36565cd76abe351b0be978c20c2768b1a334bb";
+      hash = "sha256-BnCx7AbvtgahCjIomumyewNmDrHaCZ6Qdwk3/qUdG3M=";
     };
     buildInputs = [ libev-oc ];
   };
@@ -1464,26 +1507,10 @@ with oself;
       stdune
     ];
     checkInputs = [ ppx_expect ];
-    postPatch = ''
-      substituteInPlace lev-fiber/src/lev_fiber.ml \
-        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-        --replace-fail "  let pid = Pid.of_int pid in" ""
-    '';
   };
   lev-fiber-csexp = buildDunePackage {
     pname = "lev-fiber";
     inherit (lev) version src;
-    postPatch = ''
-      substituteInPlace lev-fiber/src/lev_fiber.ml \
-        --replace-fail "type process = { pid : Pid.t; ivar : Unix.process_status Fiber.Ivar.t }" "type process = { pid : int; ivar : Unix.process_status Fiber.Ivar.t }" \
-        --replace-fail "type t = { loop : Lev.Loop.t; active : (Pid.t, process) Table.t }" "type t = { loop : Lev.Loop.t; active : (int, process) Table.t }" \
-        --replace-fail "Table.create (module Pid) 16" "Table.create (module Int) 16" \
-        --replace-fail "Unix.waitpid [ WNOHANG ] (Pid.to_int pid)" "Unix.waitpid [ WNOHANG ] pid" \
-        --replace-fail "  let pid = Pid.of_int pid in" ""
-    '';
     propagatedBuildInputs = [
       lev-fiber
       csexp
@@ -1660,8 +1687,8 @@ with oself;
       rev = "d6ca192bc6885933fe75fb200810687d820c4c04";
       hash = "sha256-n60dljIfXIXrUtDZZ9oa58e0HwyEK92cfIodqfQvXHA=";
     };
+    buildInputs = [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
-      ppxlib_gt_0_37
       yojson
     ];
   };
@@ -1694,6 +1721,18 @@ with oself;
   };
 
   mirage-crypto-pk = osuper.mirage-crypto-pk.override { gmp = gmp-oc; };
+  mirage-crypto-ec = osuper.mirage-crypto-ec.overrideAttrs (o: {
+    checkInputs = [
+      ppxlib
+      alcotest
+      asn1-combinators
+      ohex
+      ounit2
+      ppx_deriving_yojson
+      ppx_deriving
+      yojson
+    ];
+  });
   mirage-crypto-rng = disableTests osuper.mirage-crypto-rng;
 
   mirage-runtime = osuper.mirage-runtime.overrideAttrs (_: {
@@ -1845,6 +1884,37 @@ with oself;
     };
   });
 
+  mldoc =
+    let
+      angstrom' = angstrom.overrideAttrs (attrs: {
+        patches = (attrs.patches or [ ]) ++ [
+          (fetchpatch {
+            url = "https://github.com/logseq/angstrom/commit/bbe36c99c13678937d4c983a427e02a733d6cc24.patch";
+            sha256 = "sha256-RapY1QJ8U0HOqJ9TFDnCYB4tFLFuThESzdBZqjYuDUA=";
+          })
+        ];
+      });
+      uri' = uri.override { angstrom = angstrom'; };
+    in
+    osuper.mldoc.overrideAttrs (o: {
+      buildInputs = [
+        cmdliner
+        core
+        core_bench
+        core_unix
+        js_of_ocaml
+        js_of_ocaml-ppx
+        lwt
+      ];
+      propagatedBuildInputs = [
+        angstrom'
+        uri'
+        yojson
+        ppx_deriving_yojson
+        xmlm
+      ];
+    });
+
   minisat = osuper.minisat.overrideAttrs (_: {
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
@@ -1854,6 +1924,13 @@ with oself;
       substituteInPlace src/jsonHelpers.ml --replace-fail \
         "Ppx_deriving_yojson_runtime.Result." ""
     '';
+    buildInputs = [ ppxlib ];
+    meta = (osuper.morbig.meta or { }) // {
+      broken = lib.versionAtLeast ocaml.version "5.2";
+    };
+  });
+  name_matcher_parser = osuper.name_matcher_parser.overrideAttrs (_: {
+    buildInputs = [ ppxlib ];
   });
 
   mongo = callPackage ./mongo { };
@@ -2246,13 +2323,17 @@ with oself;
       url = "https://github.com/sim642/odep/releases/download/0.2.1/odep-0.2.1.tbz";
       sha256 = "0snwz7fg46bab9xhg19lfdmw57zcc06q939zih1qjq97rrcyiqgs";
     };
+    buildInputs = [
+      ppxlib
+      ppx_deriving
+      ppx_sexp_conv
+    ];
     propagatedBuildInputs = [
       bos
+      findlib
       opam-state
       parsexp
-      ppx_deriving
       sexplib
-      ppx_sexp_conv
       cmdliner
     ];
   };
@@ -2331,6 +2412,10 @@ with oself;
     };
   };
 
+  oui = osuper.oui.overrideAttrs (_: {
+    buildInputs = [ ppxlib ];
+  });
+
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "owlbarn";
@@ -2349,7 +2434,16 @@ with oself;
   ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; });
 
   otfed = osuper.otfed.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ stdio ];
+    buildInputs = [
+      uutf
+      ppxlib
+      ppx_deriving
+      ppx_inline_test
+    ];
+    propagatedBuildInputs = [
+      base
+      stdio
+    ];
   });
 
   patch = buildDunePackage {
@@ -2366,6 +2460,22 @@ with oself;
   };
 
   pg_query = callPackage ./pg_query { };
+  pgocaml = osuper.pgocaml.overrideAttrs (o: {
+    buildInputs = [
+      ppxlib
+    ];
+    propagatedBuildInputs = [
+      calendar
+      csv
+      hex
+      re
+      rresult
+      sexplib
+      camlp-streams
+      ppx_deriving
+      ppx_sexp_conv
+    ];
+  });
   pgx_eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.pgx_eio else null;
 
   piaf = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./piaf { } else null;
@@ -2455,6 +2565,13 @@ with oself;
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
   ppx_import = osuper.ppx_import.overrideAttrs (o: {
+    buildInputs = [ ppxlib ];
+    checkInputs = [
+      ounit
+      ppx_deriving
+      ppx_sexp_conv
+    ];
+    propagatedBuildInputs = [ ];
     postPatch =
       (o.postPatch or "")
       + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
@@ -2482,24 +2599,50 @@ with oself;
   ppx_rapper_async = callPackage ./ppx_rapper/async.nix { };
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
-  ppx_deriving = osuper.ppx_deriving.overrideAttrs (o: {
-    buildInputs = [ ];
-    propagatedBuildInputs = [
-      findlib
-      ppxlib
-      ppx_derivers
-    ];
-  });
+  ppx_deriving =
+    if lib.versionAtLeast ocaml.version "5.3" then
+      osuper.ppx_deriving.overrideAttrs (o: {
+        version = "6.1.2";
+        src = builtins.fetchurl {
+          url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.2/ppx_deriving-6.1.2.tbz";
+          sha256 = "1zskc9a8h3a1gk2dif32sp0kvasc7nscrcxb3cglnhykd3kbz5am";
+        };
+        buildInputs = [ ppxlib ];
+        propagatedBuildInputs = [
+          findlib
+          ppx_derivers
+        ];
+      })
+    else
+      osuper.ppx_deriving;
 
   ppx_deriving_cmdliner = osuper.ppx_deriving_cmdliner.overrideAttrs (o: {
     patches = o.patches ++ [ ./ppx_deriving_cmdliner.patch ];
+    buildInputs = [ ppxlib ];
+    checkInputs = [
+      (alcotest.override { cmdliner = cmdliner_1; })
+    ];
     postPatch = ''
       substituteInPlace src/dune --replace-fail "runtime result" "runtime"
       substituteInPlace test/dune --replace-fail "alcotest result" "alcotest"
     '';
+    propagatedBuildInputs = [
+      cmdliner_1
+      ppx_deriving
+      result
+    ];
+  });
+
+  ppx_deriving_protobuf = osuper.ppx_deriving_protobuf.overrideAttrs (o: {
+    buildInputs = [
+      dune-configurator
+      ppxlib
+    ];
+    propagatedBuildInputs = [ ppx_deriving ];
   });
 
   ppx_deriving_yaml = osuper.ppx_deriving_yaml.overrideAttrs (o: {
+    doCheck = false;
     postPatch = (o.postPatch or "") + ''
       substituteInPlace src/yaml/dune \
         --replace-fail \
@@ -2528,20 +2671,25 @@ with oself;
     propagatedBuildInputs = [ ppxlib ];
   };
 
-  ppx_deriving_yojson = osuper.ppx_deriving_yojson.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub {
+  ppx_deriving_yojson =
+    if lib.versionAtLeast ocaml.version "5.3" then
+      osuper.ppx_deriving_yojson.overrideAttrs (o: {
+        src = fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppx_deriving_yojson";
           rev = "1a4b06d2045ed91f30d72cdd8cce7d002c3c2503";
           hash = "sha256-94qdFL6mvbBCs9d/mEAlC3TbKAHZTakPvJn9DRzogdc=";
-        }
-      else
-        o.src;
-    patches = [ ];
-    doCheck = false;
-  });
+        };
+        patches = [ ];
+        doCheck = false;
+        buildInputs = [ ppxlib ];
+        propagatedBuildInputs = [
+          ppx_deriving
+          yojson
+        ];
+      })
+    else
+      osuper.ppx_deriving_yojson;
 
   ppx_repr = disableTests osuper.ppx_repr;
 
@@ -2762,7 +2910,7 @@ with oself;
     };
   };
 
-  sedlex = osuper.sedlex.overrideAttrs (_: {
+  sedlex = (osuper.sedlex.override { inherit ppxlib; }).overrideAttrs (_: {
     doCheck = false;
     buildInputs = [ ];
   });
@@ -2918,6 +3066,15 @@ with oself;
 
   tcpip = disableTests osuper.tcpip;
 
+  testo = osuper.testo.overrideAttrs (o: {
+    buildInputs = [ ppxlib ];
+  });
+  testo-diff = osuper.testo-diff.overrideAttrs (o: {
+    buildInputs = [ ppxlib ];
+  });
+  testo-util = osuper.testo-util.overrideAttrs (o: {
+    buildInputs = [ ppxlib ];
+  });
   textmate-language = buildDunePackage {
     pname = "textmate-language";
     version = "0.3.4";
@@ -3088,10 +3245,8 @@ with oself;
   });
 
   visitors = osuper.visitors.overrideAttrs (o: {
-    propagatedBuildInputs = [
-      ppxlib
-      ppx_deriving
-    ];
+    buildInputs = [ ppxlib ];
+    propagatedBuildInputs = [ ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
       substituteInPlace src/dune --replace-fail '(libraries result' "(libraries "
@@ -3173,6 +3328,11 @@ with oself;
     buildInputs = [ cmdliner ];
   });
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
+    buildInputs = (o.buildInputs or [ ]) ++ [
+      ppxlib
+      ppx_deriving
+      ppx_inline_test
+    ];
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ yojson ];
   });
 
@@ -3185,6 +3345,7 @@ with oself;
       rev = "ea5fc357da2d6bf1f1a35cc89af26d281f5c6521";
       hash = "sha256-85Aoep+/qxr3qkRIte5QgyitvzDdGsPG4kR3xa0Gq4E=";
     };
+    buildInputs = [ ppxlib ];
     propagatedBuildInputs = [
       ppx_deriving_yojson
       cbor
@@ -3208,6 +3369,10 @@ with oself;
       url = "https://github.com/avsm/ocaml-yaml/releases/download/v3.2.0/yaml-3.2.0.tbz";
       sha256 = "09w2l2inc0ymzd9l8gpx9pd4xlp5a4rn1qbi5dwndydr5352l3f5";
     };
+  });
+
+  yamlx = osuper.yamlx.overrideAttrs (o: {
+    buildInputs = [ ppxlib ];
   });
 
   yuscii = disableTests osuper.yuscii;

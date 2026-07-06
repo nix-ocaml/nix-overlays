@@ -3,6 +3,7 @@
   fetchFromGitHub,
   yojson,
   ppx_deriving_yojson,
+  ppxlib,
   piaf,
   uri,
   logs,
@@ -23,6 +24,7 @@ buildDunePackage {
       --replace-fail "Eio.Stdenv.t" "Eio_unix.Stdenv.base"
   '';
 
+  buildInputs = [ ppxlib ];
   propagatedBuildInputs = [
     yojson
     ppx_deriving_yojson
