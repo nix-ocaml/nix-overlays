@@ -382,22 +382,6 @@ with oself;
     };
   });
 
-  charInfo_width = buildDunePackage {
-    pname = "charInfo_width";
-    version = "2.0.0";
-    src = fetchFromGitHub {
-      owner = "kandu";
-      repo = "charInfo_width";
-      rev = "2.0.0";
-      hash = "sha256-JYAa3awHqW5lS4a+TSyK3+xQSi123PhfWwNUt5iOmjg=";
-    };
-    propagatedBuildInputs = [ camomile ];
-    postPatch = ''
-      substituteInPlace src/dune --replace-fail "result" ""
-      substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
-    '';
-  };
-
   camomile = osuper.camomile.overrideAttrs (o: {
     src = fetchFromGitHub {
       owner = "ocaml-community";
@@ -439,6 +423,26 @@ with oself;
       lablgtk
     ];
   };
+
+  charInfo_width = buildDunePackage {
+    pname = "charInfo_width";
+    version = "2.0.0";
+    src = fetchFromGitHub {
+      owner = "kandu";
+      repo = "charInfo_width";
+      rev = "2.0.0";
+      hash = "sha256-JYAa3awHqW5lS4a+TSyK3+xQSi123PhfWwNUt5iOmjg=";
+    };
+    propagatedBuildInputs = [ camomile ];
+    postPatch = ''
+      substituteInPlace src/dune --replace-fail "result" ""
+      substituteInPlace src/cfg.mli --replace-fail "Result.result" "result"
+    '';
+  };
+
+  charon = osuper.charon.overrideAttrs (_: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
