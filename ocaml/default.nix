@@ -2327,6 +2327,10 @@ with oself;
     };
   };
 
+  oui = osuper.oui.overrideAttrs (_: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
+
   owl-base = osuper.owl-base.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "owlbarn";
