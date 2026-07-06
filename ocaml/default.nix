@@ -1380,24 +1380,13 @@ with oself;
         o.src;
   });
 
-  js_of_ocaml =
-    if lib.versionAtLeast ocaml.version "5.2" then
-      osuper.js_of_ocaml.override {
-        inherit js_of_ocaml-compiler;
-        inherit ppxlib;
-      }
-    else
-      osuper.js_of_ocaml;
+  js_of_ocaml = osuper.js_of_ocaml.override {
+    inherit js_of_ocaml-compiler;
+    inherit ppxlib;
+  };
 
   js_of_ocaml-compiler =
-    (
-      if lib.versionAtLeast ocaml.version "5.2" then
-        osuper.js_of_ocaml-compiler.override {
-          inherit ppxlib;
-        }
-      else
-        osuper.js_of_ocaml-compiler
-    ).overrideAttrs
+    (osuper.js_of_ocaml-compiler.override { inherit ppxlib; }).overrideAttrs
       (o: {
         src = fetchFromGitHub {
           owner = "ocsigen";
@@ -1408,13 +1397,9 @@ with oself;
         nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
       });
 
-  js_of_ocaml-ppx =
-    if lib.versionAtLeast ocaml.version "5.2" then
-      osuper.js_of_ocaml-ppx.override {
-        inherit ppxlib;
-      }
-    else
-      osuper.js_of_ocaml-ppx;
+  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.override {
+    inherit ppxlib;
+  };
 
   kafka = buildDunePackage {
     pname = "kafka";
@@ -1920,13 +1905,12 @@ with oself;
         js_of_ocaml
         js_of_ocaml-ppx
         lwt
-        ppxlib
-        ppx_deriving_yojson
       ];
       propagatedBuildInputs = [
         angstrom'
         uri'
         yojson
+        ppx_deriving_yojson
         xmlm
       ];
     });
@@ -2616,7 +2600,7 @@ with oself;
   ppx_rapper_lwt = callPackage ./ppx_rapper/lwt.nix { };
 
   ppx_deriving =
-    if lib.versionAtLeast ppxlib.version "0.36" then
+    if lib.versionAtLeast ocaml.version "5.3" then
       osuper.ppx_deriving.overrideAttrs (o: {
         version = "6.1.2";
         src = builtins.fetchurl {
@@ -2688,7 +2672,7 @@ with oself;
   };
 
   ppx_deriving_yojson =
-    if lib.versionAtLeast ppxlib.version "0.36" then
+    if lib.versionAtLeast ocaml.version "5.3" then
       osuper.ppx_deriving_yojson.overrideAttrs (o: {
         src = fetchFromGitHub {
           owner = "ocaml-ppx";
@@ -2926,19 +2910,10 @@ with oself;
     };
   };
 
-  sedlex =
-    (
-      if lib.versionAtLeast ocaml.version "5.2" then
-        osuper.sedlex.override {
-          inherit ppxlib;
-        }
-      else
-        osuper.sedlex
-    ).overrideAttrs
-      (_: {
-        doCheck = false;
-        buildInputs = [ ];
-      });
+  sedlex = (osuper.sedlex.override { inherit ppxlib; }).overrideAttrs (_: {
+    doCheck = false;
+    buildInputs = [ ];
+  });
 
   sendfile = callPackage ./sendfile { };
 
