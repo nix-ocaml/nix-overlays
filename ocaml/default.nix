@@ -1846,9 +1846,15 @@ with oself;
   });
 
   morbig = osuper.morbig.overrideAttrs (_: {
+    buildInputs = [ ppxlib_gt_0_37 ];
     postPatch = ''
       substituteInPlace src/jsonHelpers.ml --replace-fail \
         "Ppx_deriving_yojson_runtime.Result." ""
+
+      substituteInPlace src/jsonHelpers.ml \
+        --replace-fail '  | `Tuple jl -> `Tuple (List.map json_filter_positions jl)' "" \
+        --replace-fail '  | `Variant (s, None) -> `Variant (s, None)' "" \
+        --replace-fail '  | `Variant (s, Some j) -> `Variant (s, Some (json_filter_positions j))' ""
     '';
   });
 
@@ -3101,10 +3107,8 @@ with oself;
   });
 
   visitors = osuper.visitors.overrideAttrs (o: {
-    propagatedBuildInputs = [
-      ppxlib
-      ppx_deriving
-    ];
+    buildInputs = [ ppxlib_gt_0_37 ];
+    propagatedBuildInputs = [ ppx_deriving ];
     postPatch = ''
       substituteInPlace runtime/dune --replace-fail '(libraries result)' ""
       substituteInPlace src/dune --replace-fail '(libraries result' "(libraries "
