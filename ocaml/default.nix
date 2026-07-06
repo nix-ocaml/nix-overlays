@@ -1950,11 +1950,6 @@ with oself;
     postPatch = ''
       substituteInPlace src/jsonHelpers.ml --replace-fail \
         "Ppx_deriving_yojson_runtime.Result." ""
-
-      substituteInPlace src/jsonHelpers.ml \
-        --replace-fail '  | `Tuple jl -> `Tuple (List.map json_filter_positions jl)' "" \
-        --replace-fail '  | `Variant (s, None) -> `Variant (s, None)' "" \
-        --replace-fail '  | `Variant (s, Some j) -> `Variant (s, Some (json_filter_positions j))' ""
     '';
     buildInputs = [ ppxlib ];
     meta = (osuper.morbig.meta or { }) // {
