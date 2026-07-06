@@ -13,7 +13,6 @@ let
     callPackage
     fetchpatch
     substitute
-    buildGoModule
     haskell
     haskellPackages
     ;
@@ -26,14 +25,6 @@ let
         inherit nixpkgs;
       }
     );
-  staticLightExtend =
-    self: super:
-    super.lib.overlayOCamlPackages {
-      inherit self super;
-      overlays = [ (super.callPackage ../static/ocaml.nix { }) ];
-      updateOCamlPackages = true;
-    };
-
 in
 
 (overlayOCamlPackages {
