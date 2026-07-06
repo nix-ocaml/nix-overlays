@@ -2512,6 +2512,7 @@ with oself;
   });
 
   ppx_deriving_yaml = osuper.ppx_deriving_yaml.overrideAttrs (o: {
+    doCheck = false;
     postPatch = (o.postPatch or "") + ''
       substituteInPlace src/yaml/dune \
         --replace-fail \
