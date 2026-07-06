@@ -1857,6 +1857,9 @@ with oself;
         --replace-fail '  | `Variant (s, Some j) -> `Variant (s, Some (json_filter_positions j))' ""
     '';
   });
+  name_matcher_parser = osuper.name_matcher_parser.overrideAttrs (_: {
+    buildInputs = [ ppxlib_gt_0_37 ];
+  });
 
   mongo = callPackage ./mongo { };
   mongo-lwt = callPackage ./mongo/lwt.nix { };
