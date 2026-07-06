@@ -1048,17 +1048,6 @@ with oself;
           url = "https://github.com/ygrek/extunix/releases/download/v0.4.3/extunix-0.4.3.tbz";
           sha256 = "1i79wal5nddkfdyaj5bl05v8ypp4w9lvjsay552x0sxqjn2n6q0l";
         };
-    buildInputs =
-      if lib.versionAtLeast ppxlib.version "0.36" then
-        [
-          dune-configurator
-          ppxlib
-        ]
-      else
-        o.buildInputs or [ ];
-    propagatedBuildInputs =
-      if lib.versionAtLeast ppxlib.version "0.36" then [ ] else o.propagatedBuildInputs or [ ];
-    postPatch = o.postPatch or "";
   });
 
   facile = buildDunePackage rec {
