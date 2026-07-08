@@ -181,7 +181,11 @@ in
             buildInputs =
               (o.buildInputs or [ ])
               ++ lib.optionals (lib.versionOlder osuper.ocaml.version "5.5") [ windows.pthreads ];
-            preConfigurePhases = (o.preConfigurePhases or [ ]) ++ [ "removeMingwPthreadsFromLdFlags" ];
+            preConfigurePhases =
+              (o.preConfigurePhases or [ ])
+              ++ lib.optionals (lib.versionOlder osuper.ocaml.version "5.5") [
+                "removeMingwPthreadsFromLdFlags"
+              ];
             removeMingwPthreadsFromLdFlags = lib.optionalString (lib.versionOlder osuper.ocaml.version "5.5") ''
               NIX_LDFLAGS=$(echo "$NIX_LDFLAGS" | sed "s|-L${windows.pthreads}/lib||g")
               export NIX_LDFLAGS
