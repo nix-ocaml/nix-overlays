@@ -168,7 +168,7 @@ jobs:
         setup:
           # mingw cross-compilation only supported on OCaml 5.4+
           - { ocaml-version: 5_4, continue-on-error: false }
-          - { ocaml-version: 5_5, continue-on-error: true }
+          - { ocaml-version: 5_5, continue-on-error: false }
     name: mingw packages (OCaml ${{ matrix.setup.ocaml-version }})
     runs-on: ubuntu-latest
     env:
