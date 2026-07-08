@@ -61,6 +61,7 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
         '-lgcc_eh' \
         ""
     '';
+    dontStrip = lib.versionAtLeast o.version "5.5";
 
     buildPhase = ''
       runHook preBuild
