@@ -2365,6 +2365,31 @@ with oself;
     propagatedBuildInputs = [ oniguruma-lib ];
   };
 
+  parseff =
+    if lib.versionAtLeast ocaml.version "5.3" then
+      buildDunePackage rec {
+        pname = "parseff";
+        version = "0.3.0";
+        src = fetchFromGitHub {
+          owner = "davesnx";
+          repo = "parseff";
+          rev = version;
+          hash = "sha256-hx5q4sOGo2bqIfZdXYfDSMYY+BIi107Q4nWPM4IOidw=";
+        };
+        propagatedBuildInputs = [
+          re
+          uucp
+        ];
+        meta = {
+          description = "Direct-style parser combinator library for OCaml 5 powered by algebraic effects";
+          homepage = "https://github.com/davesnx/parseff";
+          license = lib.licenses.mit;
+          maintainers = [ ];
+        };
+      }
+    else
+      null;
+
   spdx_licenses = osuper.spdx_licenses.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "kit-ty-kate";
