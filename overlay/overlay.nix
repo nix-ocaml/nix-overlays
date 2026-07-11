@@ -145,9 +145,9 @@ in
   # with musl.
   libpq =
     (
-      (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" {
-        inherit self;
-      }).override
+      (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/generic.nix" (
+        import "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" // { inherit self; }
+      )).override
       {
         # a new change does some shenanigans to get llvmStdenv + lld which breaks
         # our cross-compilation
