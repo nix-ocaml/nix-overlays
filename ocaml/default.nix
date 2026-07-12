@@ -2076,32 +2076,6 @@ with oself;
     '';
   });
 
-  ocaml-canvas = buildDunePackage {
-    pname = "ocaml-canvas";
-    version = "n/a";
-    hardeningDisable = [ "strictoverflow" ];
-    src = fetchFromGitHub {
-      owner = "OCamlPro";
-      repo = "ocaml-canvas";
-      rev = "962dedd98";
-      sha256 = "sha256-PghULCfekMhs88a2F+RJtJFoBJxi80ieDiKzhWukJw4=";
-    };
-
-    buildInputs = lib.optionals (!stdenv.isDarwin) [
-      freetype
-      fontconfig
-      libxkbcommon
-      libxcb
-      libxcb-image
-      libxcb-keysyms
-    ];
-
-    propagatedBuildInputs = [
-      dune-configurator
-      react
-    ];
-  };
-
   ocaml-lsp = osuper.ocaml-lsp.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ base ];
 
