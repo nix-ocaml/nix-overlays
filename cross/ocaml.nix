@@ -12,6 +12,9 @@
   lib,
   replaceVars,
   buildPackages,
+  nativeCC ? buildPackages.stdenv.cc,
+  nativeOCamlPackageSets ? null,
+  runCommand,
   writeText,
   writeScriptBin,
   makeWrapper,
@@ -37,14 +40,15 @@ let
     in
     lib.attrValues acc;
 
-  getNativeOCamlPackages =
-    osuper:
+  getOCamlPackages =
+    packageSets: osuper:
     let
       version = lib.stringAsChars (x: if x == "." then "_" else x) (
         builtins.substring 0 (if lib.hasPrefix "5." osuper.ocaml.version then 3 else 4) osuper.ocaml.version
       );
     in
-    buildPackages.ocaml-ng."ocamlPackages_${version}";
+    packageSets."ocamlPackages_${version}";
+
 in
 [
   # This currently needs to be split into 2 functions, to a) avoid infinite
@@ -62,7 +66,12 @@ in
     let
       crossName =
         if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
-      natocamlPackages = getNativeOCamlPackages osuper;
+      natocamlPackages = getOCamlPackages buildPackages.ocaml-ng osuper;
+      nativeOCamlRuntime =
+        if nativeOCamlPackageSets == null then
+          null
+        else
+          (getOCamlPackages nativeOCamlPackageSets osuper).ocaml;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
       natdune = natocamlPackages.dune;
@@ -204,6 +213,9 @@ in
         inherit
           lib
           buildPackages
+          nativeCC
+          nativeOCamlRuntime
+          runCommand
           writeScriptBin
           natocamlPackages
           osuper
@@ -405,7 +417,7 @@ in
     let
       crossName =
         if stdenv.hostPlatform.isMinGW then "windows" else lib.head (lib.splitString "-" stdenv.system);
-      natocamlPackages = getNativeOCamlPackages osuper;
+      natocamlPackages = getOCamlPackages buildPackages.ocaml-ng osuper;
     in
     {
       camlzip =
