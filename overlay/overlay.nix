@@ -156,7 +156,7 @@ in
         gssSupport = false;
         openssl = self.openssl-oc;
         jitSupport = false;
-        pamSupport = stdenv.isLinux;
+        pamSupport = false;
         perlSupport = false;
         pythonSupport = false;
         tclSupport = false;
@@ -203,23 +203,19 @@ in
             "--with-uuid=e2fs"
           ]
           ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
-          ++ lib.optionals stdenv.isLinux [ "--with-pam" ]
           # This could be removed once the upstream issue is resolved:
           # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
           ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
 
-          propagatedBuildInputs =
-            with self;
-            [
-              lz4-oc
-              zstd-oc
-              zlib-oc
-              libuuid
-              libxml2
-              icu
-              openssl-oc.dev
-            ]
-            ++ lib.optionals stdenv.isLinux [ linux-pam ];
+          propagatedBuildInputs = with self; [
+            lz4-oc
+            zstd-oc
+            zlib-oc
+            libuuid
+            libxml2
+            icu
+            openssl-oc.dev
+          ];
           # Use a single output derivation. The upstream PostgreSQL derivation
           # produces multiple outputs (including "out" and "lib"), and then puts some
           # lib/ artifacts in `$lib/lib` and some in `$out/lib`. This causes the
