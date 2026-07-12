@@ -1380,27 +1380,6 @@ with oself;
         o.src;
   });
 
-  js_of_ocaml = osuper.js_of_ocaml.override {
-    inherit js_of_ocaml-compiler;
-    inherit ppxlib;
-  };
-
-  js_of_ocaml-compiler =
-    (osuper.js_of_ocaml-compiler.override { inherit ppxlib; }).overrideAttrs
-      (o: {
-        src = fetchFromGitHub {
-          owner = "ocsigen";
-          repo = "js_of_ocaml";
-          rev = "6.4.1";
-          hash = "sha256-mQDMTjV0jo3DWozGlO2lAh1s7k4ibxXz5N2FOJnkP6o=";
-        };
-        nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
-      });
-
-  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.override {
-    inherit ppxlib;
-  };
-
   kafka = buildDunePackage {
     pname = "kafka";
     version = "0.5";
@@ -1560,23 +1539,6 @@ with oself;
       dune-configurator
     ];
     propagatedBuildInputs = [ bigstringaf ];
-  };
-
-  lutils = buildDunePackage {
-    pname = "lutils";
-    version = "1.51.3";
-    src = builtins.fetchurl {
-      url = "https://gricad-gitlab.univ-grenoble-alpes.fr/verimag/synchrone/lutils/-/archive/1.51.3/lutils-1.51.3.tar.gz";
-      sha256 = "0brbv0hzddac8v9kfm97i81d0x9nnlfpmwgk0mzc2vpy3p3vd315";
-    };
-    propagatedBuildInputs = [
-      num
-      camlp-streams
-    ];
-
-    postPatch = ''
-      substituteInPlace lib/dune --replace-fail "(libraries " "(libraries camlp-streams "
-    '';
   };
 
   luv_unix = buildDunePackage {
@@ -2605,6 +2567,7 @@ with oself;
         substituteInPlace src_test/ppx_deriving_sexp/dune \
           --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
       '';
+    meta.broken = false;
   });
 
   ppx_optint = buildDunePackage {
@@ -3348,9 +3311,17 @@ with oself;
     };
   });
 
-  wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
+  wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (o: {
     dontStrip = stdenv.isDarwin;
-    buildInputs = [ cmdliner ];
+    buildInputs = (o.buildInputs or [ ]) ++ [ cmdliner ];
+    postPatch = (o.postPatch or "") + ''
+        substituteInPlace runtime/wasm/args.ml \
+          --replace-fail \
+            'Format.printf "%s:%s@." (Filename.chop_suffix Sys.argv.(i) ".wat") Sys.argv.(i)' \
+            'let file = Sys.argv.(i) in
+      let module_name = Filename.basename (Filename.chop_suffix file ".wat") in
+      Format.printf "%s:%s@." module_name file'
+    '';
   });
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     buildInputs = (o.buildInputs or [ ]) ++ [
