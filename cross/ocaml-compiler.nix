@@ -2,7 +2,10 @@
   stdenv,
   lib,
   buildPackages,
+  nativeCC ? buildPackages.stdenv.cc,
+  nativeOCamlRuntime ? null,
   natocamlPackages,
+  runCommand,
   writeScriptBin,
   osuper,
   windows ? null,
@@ -10,28 +13,70 @@
 
 let
   natocaml = natocamlPackages.ocaml;
+  usesUpstreamCross = lib.versionAtLeast osuper.ocaml.version "5.4";
+  unsplicedNativeOCamlRuntime =
+    if nativeOCamlRuntime == null then
+      null
+    else
+      builtins.removeAttrs nativeOCamlRuntime [ "__spliced" ];
+  mkLegacyHostOCaml =
+    {
+      tools,
+      runtime,
+    }:
+    runCommand "${tools.name}-with-musl-runtime" { } ''
+      mkdir -p $out
+      cp -rs ${tools}/* $out/
+      chmod u+w $out/lib/ocaml
+
+      replace_runtime_family() {
+        family="$1"
+        shift
+
+        for runtime_library in "$@"; do
+          if [ ! -e "$runtime_library" ]; then
+            echo "missing $family runtime libraries in ${runtime}/lib/ocaml" >&2
+            exit 1
+          fi
+
+          name="''${runtime_library##*/}"
+          rm -f "$out/lib/ocaml/$name"
+          ln -s "$runtime_library" "$out/lib/ocaml/$name"
+        done
+      }
+
+      replace_runtime_family libasmrun ${runtime}/lib/ocaml/libasmrun*
+      replace_runtime_family libcamlrun ${runtime}/lib/ocaml/libcamlrun*
+    '';
+  buildOCaml =
+    if unsplicedNativeOCamlRuntime == null then
+      natocaml
+    else if usesUpstreamCross then
+      unsplicedNativeOCamlRuntime
+    else
+      mkLegacyHostOCaml {
+        tools = natocaml;
+        runtime = unsplicedNativeOCamlRuntime;
+      };
   genWrapper =
     name: camlBin:
     writeScriptBin name ''
       #!${buildPackages.stdenv.shell}
-      NEW_ARGS=""
-
-      for ARG in "$@"; do NEW_ARGS="$NEW_ARGS \"$ARG\""; done
-      eval "${camlBin} $NEW_ARGS"
+      exec ${camlBin} "$@"
     '';
-  ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${natocaml}/bin/ocamlc.opt -I ${natocaml}/lib/ocaml -I ${natocaml}/lib/ocaml/stublibs -I +unix -nostdlib ";
-  ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${natocaml}/bin/ocamlopt.opt -I ${natocaml}/lib/ocaml -I +unix -nostdlib ";
+  ocamlcHostWrapper = genWrapper "ocamlcHost.wrapper" "${buildOCaml}/bin/ocamlc.opt -I ${buildOCaml}/lib/ocaml -I ${buildOCaml}/lib/ocaml/stublibs -I +unix -nostdlib ";
+  ocamloptHostWrapper = genWrapper "ocamloptHost.wrapper" "${buildOCaml}/bin/ocamlopt.opt -I ${buildOCaml}/lib/ocaml -I +unix -nostdlib ";
 
-  ocamlcTargetWrapper = genWrapper "ocamlcTarget.wrapper" "$BUILD_ROOT/ocamlc.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -I ${natocaml}/lib/ocaml/stublibs -nostdlib ";
+  ocamlcTargetWrapper = genWrapper "ocamlcTarget.wrapper" "$BUILD_ROOT/ocamlc.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -I ${buildOCaml}/lib/ocaml/stublibs -nostdlib ";
   ocamloptTargetWrapper = genWrapper "ocamloptTarget.wrapper" "$BUILD_ROOT/ocamlopt.opt -I $BUILD_ROOT/stdlib -I $BUILD_ROOT/otherlibs/unix -nostdlib ";
 
 in
 
-if lib.versionOlder "5.4" osuper.ocaml.version then
+if usesUpstreamCross then
   osuper.ocaml.overrideAttrs (o: {
     depsBuildBuild = [
-      buildPackages.stdenv.cc
-      natocaml
+      (builtins.removeAttrs nativeCC [ "__spliced" ])
+      buildOCaml
     ];
 
     # mingw needs pthreads for threading support
@@ -70,9 +115,9 @@ if lib.versionOlder "5.4" osuper.ocaml.version then
     '';
     installTargets = [ "installcross" ];
     postInstall = ''
-      cp ${natocaml}/bin/ocamllex $out/bin/ocamllex
-      cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc
-      cp ${natocaml}/bin/ocamlrun $out/bin/ocamlrun
+      cp ${buildOCaml}/bin/ocamllex $out/bin/ocamllex
+      cp ${buildOCaml}/bin/ocamlyacc $out/bin/ocamlyacc
+      cp ${buildOCaml}/bin/ocamlrun $out/bin/ocamlrun
     ''
     + lib.optionalString stdenv.hostPlatform.isMinGW ''
             # Remove Windows PE versions of tools that need to run on build machine
@@ -108,15 +153,15 @@ else
       isOCaml5 = lib.versionOlder "5.0" o.version;
     in
     {
-      depsBuildBuild = [ buildPackages.stdenv.cc ];
+      depsBuildBuild = [ nativeCC ];
       preConfigure = ''
         configureFlagsArray+=("PARTIALLD=$LD -r" "ASPP=$CC -c")
-        installFlagsArray+=("OCAMLRUN=${natocaml}/bin/ocamlrun")
+        installFlagsArray+=("OCAMLRUN=${buildOCaml}/bin/ocamlrun")
       '';
       configureFlags = o.configureFlags ++ [ "--disable-ocamldoc" ];
       postConfigure = ''
         cp Makefile.config Makefile.config.bak
-        echo 'SAK_CC=${buildPackages.stdenv.cc}/bin/gcc' >> Makefile.config
+        echo 'SAK_CC=${nativeCC}/bin/gcc' >> Makefile.config
         echo 'SAK_CFLAGS=$(OC_CFLAGS) $(OC_CPPFLAGS)' >> Makefile.config
         echo 'SAK_LINK=$(SAK_CC) $(SAK_CFLAGS) $(OUTPUTEXE)$(1) $(2)' >> Makefile.config
       '';
@@ -124,7 +169,7 @@ else
       buildPhase = ''
         runHook preBuild
 
-        OCAML_HOST=${natocaml}
+        OCAML_HOST=${buildOCaml}
         OCAMLRUN="$OCAML_HOST/bin/ocamlrun"
         OCAMLLEX="$OCAML_HOST/bin/ocamllex"
         OCAMLYACC="$OCAML_HOST/bin/ocamlyacc"
@@ -197,7 +242,7 @@ else
         runHook postBuild
       '';
       installTargets = o.installTargets ++ [ "installoptopt" ];
-      postInstall = "cp ${natocaml}/bin/ocamlyacc $out/bin/ocamlyacc";
+      postInstall = "cp ${buildOCaml}/bin/ocamlyacc $out/bin/ocamlyacc";
       patches = [
         (
           if lib.versionOlder "5.3" o.version then
