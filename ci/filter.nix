@@ -227,6 +227,7 @@ let
 
     "zelus"
     "zelus-gtk"
+    "fuse3"
     "ocamlfuse"
 
     # Broken on janestreet v0.17
