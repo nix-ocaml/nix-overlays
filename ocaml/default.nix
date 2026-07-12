@@ -1541,23 +1541,6 @@ with oself;
     propagatedBuildInputs = [ bigstringaf ];
   };
 
-  lutils = buildDunePackage {
-    pname = "lutils";
-    version = "1.51.3";
-    src = builtins.fetchurl {
-      url = "https://gricad-gitlab.univ-grenoble-alpes.fr/verimag/synchrone/lutils/-/archive/1.51.3/lutils-1.51.3.tar.gz";
-      sha256 = "0brbv0hzddac8v9kfm97i81d0x9nnlfpmwgk0mzc2vpy3p3vd315";
-    };
-    propagatedBuildInputs = [
-      num
-      camlp-streams
-    ];
-
-    postPatch = ''
-      substituteInPlace lib/dune --replace-fail "(libraries " "(libraries camlp-streams "
-    '';
-  };
-
   luv_unix = buildDunePackage {
     pname = "luv_unix";
     inherit (luv) version src;
