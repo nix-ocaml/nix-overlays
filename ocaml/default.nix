@@ -1380,27 +1380,6 @@ with oself;
         o.src;
   });
 
-  js_of_ocaml = osuper.js_of_ocaml.override {
-    inherit js_of_ocaml-compiler;
-    inherit ppxlib;
-  };
-
-  js_of_ocaml-compiler =
-    (osuper.js_of_ocaml-compiler.override { inherit ppxlib; }).overrideAttrs
-      (o: {
-        src = fetchFromGitHub {
-          owner = "ocsigen";
-          repo = "js_of_ocaml";
-          rev = "6.4.1";
-          hash = "sha256-mQDMTjV0jo3DWozGlO2lAh1s7k4ibxXz5N2FOJnkP6o=";
-        };
-        nativeBuildInputs = o.nativeBuildInputs ++ [ cmdliner ];
-      });
-
-  js_of_ocaml-ppx = osuper.js_of_ocaml-ppx.override {
-    inherit ppxlib;
-  };
-
   kafka = buildDunePackage {
     pname = "kafka";
     version = "0.5";
@@ -2605,6 +2584,7 @@ with oself;
         substituteInPlace src_test/ppx_deriving_sexp/dune \
           --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
       '';
+    meta.broken = false;
   });
 
   ppx_optint = buildDunePackage {
