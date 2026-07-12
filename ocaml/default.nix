@@ -3311,9 +3311,17 @@ with oself;
     };
   });
 
-  wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (_: {
+  wasm_of_ocaml-compiler = osuper.wasm_of_ocaml-compiler.overrideAttrs (o: {
     dontStrip = stdenv.isDarwin;
-    buildInputs = [ cmdliner ];
+    buildInputs = (o.buildInputs or [ ]) ++ [ cmdliner ];
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace runtime/wasm/args.ml \
+        --replace-fail \
+          'Format.printf "%s:%s@." (Filename.chop_suffix Sys.argv.(i) ".wat") Sys.argv.(i)' \
+          'let file = Sys.argv.(i) in
+    let module_name = Filename.basename (Filename.chop_suffix file ".wat") in
+    Format.printf "%s:%s@." module_name file'
+    '';
   });
   phylogenetics = osuper.phylogenetics.overrideAttrs (o: {
     buildInputs = (o.buildInputs or [ ]) ++ [
