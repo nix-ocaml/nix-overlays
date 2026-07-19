@@ -139,8 +139,8 @@ in
         src = fetchFromGitHub {
           owner = "nixos";
           repo = "nix-eval-jobs";
-          rev = "v2.35.0";
-          hash = "sha256-/C5wyGYe4uMKKH26vy3knpwP/hvjOHO/58cySL8ADC4=";
+          rev = "107406ac3b572c7fa07656d98ffa886d3be742c7";
+          hash = "sha256-4dw2GfbPbHgfUVCor2JiBbtU5wJF/S4iRHij+LNtXjw=";
         };
       });
 
