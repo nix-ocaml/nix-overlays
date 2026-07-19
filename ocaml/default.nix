@@ -1638,6 +1638,9 @@ with oself;
   # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
     doCheck = false;
+    postInstall = (o.postInstall or "") + ''
+      mkdir -p $bin $lib
+    '';
   });
 
   melange-json-native = buildDunePackage {
