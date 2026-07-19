@@ -243,10 +243,18 @@ let
     # temporarily broken in nixpkgs?
     "netsnmp"
   ];
+
+  aarch64LinuxIgnores = [
+    "elina"
+
+    # x86-only
+    "janestreet_cpuid"
+    "ocaml_intrinsics"
+  ];
 in
 
 rec {
-  inherit ocaml5Ignores darwinIgnores;
+  inherit ocaml5Ignores darwinIgnores aarch64LinuxIgnores;
   ocamlCandidates =
     {
       pkgs,
