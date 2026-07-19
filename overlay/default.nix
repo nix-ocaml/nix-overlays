@@ -28,9 +28,14 @@ overlay final prev
     let
       static-overlay = import ../static;
       musl64 = prev.pkgsCross.musl64.extend static-overlay;
+      native-musl =
+        if prev.stdenv.buildPlatform.isAarch64 then
+          prev.pkgsCross.aarch64-multiplatform-musl.extend static-overlay
+        else
+          musl64;
       native-musl-cc =
         let
-          cc = musl64.stdenv.cc;
+          cc = native-musl.stdenv.cc;
         in
         prev.runCommand "native-musl-cc-wrapper" { } ''
           mkdir -p $out/bin
@@ -43,7 +48,7 @@ overlay final prev
       musl-cross-overlay = prev.callPackage ../cross {
         buildPackages = prev.buildPackages;
         nativeCC = native-musl-cc;
-        nativeOCamlPackageSets = musl64.ocaml-ng;
+        nativeOCamlPackageSets = native-musl.ocaml-ng;
       };
     in
     prev.pkgsCross
