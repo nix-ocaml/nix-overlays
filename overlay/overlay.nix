@@ -137,10 +137,10 @@ in
       (_: {
         version = "2.35.0";
         src = fetchFromGitHub {
-          owner = "nixos";
+          owner = "anmonteiro";
           repo = "nix-eval-jobs";
-          rev = "107406ac3b572c7fa07656d98ffa886d3be742c7";
-          hash = "sha256-4dw2GfbPbHgfUVCor2JiBbtU5wJF/S4iRHij+LNtXjw=";
+          rev = "ff3b82d0895b68e2a802aa0ab6f726f269c785d8";
+          hash = "sha256-Qt9DoSrIeqhLddUuTT9B9doANM2kKrCRPVsO8PX+SR0=";
         };
       });
 
