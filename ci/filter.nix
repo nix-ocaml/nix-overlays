@@ -246,6 +246,10 @@ let
 
   aarch64LinuxIgnores = [
     "elina"
+
+    # x86-only
+    "janestreet_cpuid"
+    "ocaml_intrinsics"
   ];
 in
 
