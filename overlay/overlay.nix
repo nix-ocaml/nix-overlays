@@ -130,14 +130,19 @@ in
     }
   );
 
-  nix-eval-jobs = super.nix-eval-jobs.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "nixos";
-      repo = "nix-eval-jobs";
-      rev = "v2.34.3";
-      hash = "sha256-YaVQAgBxWbUBFHXLBLzdUyVvuA/DDw80SEnn9iq0Veo=";
-    };
-  });
+  nix-eval-jobs =
+    (super.nix-eval-jobs.override {
+      nixComponents = super.nixVersions.nixComponents_2_35;
+    }).overrideAttrs
+      (_: {
+        version = "2.35.0";
+        src = fetchFromGitHub {
+          owner = "nixos";
+          repo = "nix-eval-jobs";
+          rev = "v2.35.0";
+          hash = "sha256-/C5wyGYe4uMKKH26vy3knpwP/hvjOHO/58cySL8ADC4=";
+        };
+      });
 
   # Other packages
 
