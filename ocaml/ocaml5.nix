@@ -60,8 +60,6 @@ with oself;
     ];
   };
 
-  eio-ssl = callPackage ./eio-ssl { };
-
   eio-trace = buildDunePackage {
     pname = "eio-trace";
     version = "0.4";

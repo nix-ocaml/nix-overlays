@@ -996,6 +996,8 @@ with oself;
     };
   });
 
+  eio-ssl = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./eio-ssl { } else null;
+
   extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
