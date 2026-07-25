@@ -996,7 +996,13 @@ with oself;
     };
   });
 
-  eio-ssl = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./eio-ssl { } else null;
+  eio-ssl =
+    if lib.versionAtLeast ocaml.version "5.2" then
+      callPackage ./eio-ssl { }
+    else if lib.versionAtLeast ocaml.version "5.0" then
+      osuper.eio-ssl
+    else
+      null;
 
   extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
@@ -3121,18 +3127,23 @@ with oself;
     ];
   });
 
-  uring = osuper.uring.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.0/uring-2.15.0.tbz";
-      sha256 = "11ii3laq5iqh11qifmrwibwzhy7sphysz6ac6bwr9gfvskk4bb9h";
-    };
-
-    postPatch = ''
-      patchShebangs vendor/liburing/configure
-      substituteInPlace lib/uring/dune --replace-fail \
-        '(run ./configure)' '(bash "./configure")'
-    '';
-  });
+  uring = osuper.uring.overrideAttrs (
+    _:
+    {
+      postPatch = ''
+        patchShebangs vendor/liburing/configure
+        substituteInPlace lib/uring/dune --replace-fail \
+          '(run ./configure)' '(bash "./configure")'
+      '';
+    }
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.2") {
+      version = "2.15.0";
+      src = builtins.fetchurl {
+        url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.0/uring-2.15.0.tbz";
+        sha256 = "11ii3laq5iqh11qifmrwibwzhy7sphysz6ac6bwr9gfvskk4bb9h";
+      };
+    }
+  );
 
   uspf = buildDunePackage {
     pname = "uspf";
