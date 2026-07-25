@@ -38,10 +38,15 @@ with oself;
   };
 
   eio = osuper.eio.overrideAttrs (o: {
+    version = "1.4";
     src = builtins.fetchurl {
       url = "https://github.com/ocaml-multicore/eio/releases/download/v1.4/eio-1.4.tbz";
       sha256 = "19da8r1lx8z9hvgnv00n03ql6mlhqjyv7wl6nkdk08a9dx4as4ds";
     };
+    buildInputs = (o.buildInputs or [ ]) ++ [ dune-configurator ];
+  });
+
+  eio_linux = osuper.eio_linux.overrideAttrs (o: {
     buildInputs = (o.buildInputs or [ ]) ++ [ dune-configurator ];
   });
 
