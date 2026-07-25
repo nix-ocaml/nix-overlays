@@ -3,6 +3,7 @@
   lib,
   fetchFromGitHub,
   buildDunePackage,
+  dune-configurator,
   eio,
   eio_main,
   eio-ssl,
@@ -28,10 +29,12 @@ buildDunePackage {
   src = fetchFromGitHub {
     owner = "anmonteiro";
     repo = "piaf";
-    rev = "c27b38e4493e81b0a7c895c620976bf155f14d8b";
-    hash = "sha256-3IUxX3Zax5ddMTKJufMCeRvZoFWbTYMvfHFFpN15PuA=";
+    rev = "b8f5e94deea6e653025c37131bbf6833dc4c4c85";
+    hash = "sha256-XnyJXkp0WCUsZO67rUNMjEdhZZgAJAUOfxha7V2OvuI=";
     fetchSubmodules = true;
   };
+
+  buildInputs = [ dune-configurator ];
 
   propagatedBuildInputs = [
     eio
