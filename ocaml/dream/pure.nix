@@ -15,7 +15,7 @@
   bisect_ppx,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "dream-pure";
   version = "1.0.0-alpha8";
   src = fetchFromGitHub {

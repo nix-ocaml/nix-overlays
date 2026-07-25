@@ -2,11 +2,6 @@
 
 self: super:
 
-let
-  inherit (super) stdenv lib;
-
-in
-
 {
   icu = super.icu.overrideAttrs (o: {
     configureFlags = o.configureFlags ++ [ "--enable-static" ];

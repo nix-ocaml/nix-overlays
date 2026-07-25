@@ -7,7 +7,7 @@
   uri,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "hyper";
   version = "1.0.0-alpha1";
 

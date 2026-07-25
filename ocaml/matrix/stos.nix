@@ -1,6 +1,4 @@
 {
-  lib,
-  fetchFromGitHub,
   buildDunePackage,
   matrix-common,
   ezjsonm,

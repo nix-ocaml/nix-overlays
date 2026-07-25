@@ -17,7 +17,6 @@
   runCommand,
   writeText,
   writeScriptBin,
-  makeWrapper,
   stdenv,
   windows ? null,
 }:
@@ -74,7 +73,6 @@ in
           (getOCamlPackages nativeOCamlPackageSets osuper).ocaml;
       natocaml = natocamlPackages.ocaml;
       natfindlib = natocamlPackages.findlib;
-      natdune = natocamlPackages.dune;
       findNativePackage =
         p:
         if p ? pname then
@@ -118,10 +116,10 @@ in
           ] nativePackage;
 
           path = builtins.concatStringsSep ":" (
-            builtins.map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/${crossName}-sysroot/lib") inputs
+            map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/${crossName}-sysroot/lib") inputs
           );
           natPath = builtins.concatStringsSep ":" (
-            builtins.map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/site-lib") natInputs
+            map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/site-lib") natInputs
           );
 
           native_findlib_conf = writeText "${package.name or package.pname}-findlib.conf" ''

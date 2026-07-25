@@ -3,8 +3,6 @@
   src,
   stdenv,
   buildGoModule,
-  fetchurl,
-  fetchFromGitHub,
   cmake,
   xz,
   which,
@@ -19,7 +17,7 @@
   patches ? [ ],
 }:
 
-buildGoModule rec {
+buildGoModule {
   pname = "cockroach";
   inherit src version;
 

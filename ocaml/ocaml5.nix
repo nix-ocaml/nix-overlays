@@ -1,12 +1,8 @@
 {
-  darwin,
   lib,
   fetchFromGitHub,
-  nodejs_latest,
   oself,
   osuper,
-  nixpkgs,
-  stdenv,
   makeWrapper,
   nix-eval-jobs,
 }:

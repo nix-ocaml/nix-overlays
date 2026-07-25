@@ -1,5 +1,4 @@
 {
-  lib,
   buildDunePackage,
   dune,
   dune-rpc,

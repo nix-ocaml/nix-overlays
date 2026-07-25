@@ -1,13 +1,12 @@
 {
   lib,
-  fetchFromGitHub,
   buildDunePackage,
   uuidm,
   re,
   stdlib-shims,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "redis";
   version = "0.7";
   src = builtins.fetchurl {

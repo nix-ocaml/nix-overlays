@@ -3,7 +3,6 @@
   cppo,
   cmdliner,
   dune-build-info,
-  fetchFromGitHub,
   jq,
   lib,
   makeWrapper,

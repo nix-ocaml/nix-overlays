@@ -3,7 +3,6 @@
   buildDunePackage,
   fetchFromGitHub,
   uri,
-  ocaml,
 }:
 
 buildDunePackage {

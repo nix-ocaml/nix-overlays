@@ -26,7 +26,6 @@
   uri,
   yojson,
   # test-inputs
-  bisect_ppx,
   alcotest,
   crunch,
   ppx_expect,
@@ -35,10 +34,9 @@
   tyxml,
   tyxml-jsx,
   tyxml-ppx,
-  ocaml,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "dream";
   inherit (dream-pure) src version;
 

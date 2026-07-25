@@ -2,7 +2,7 @@
   system ? builtins.currentSystem,
   extraOverlays ? [ ],
   ...
-}@args:
+}:
 
 # `git ls-remote https://github.com/nixos/nixpkgs-channels nixos-unstable`
 

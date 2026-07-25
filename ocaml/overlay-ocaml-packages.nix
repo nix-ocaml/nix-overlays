@@ -2,8 +2,8 @@
   nixpkgs,
   overlays,
   super,
-  self,
   updateOCamlPackages ? false,
+  ...
 }:
 
 let
@@ -251,7 +251,7 @@ let
       overlaySinglePackageSet custom-ocaml-ng."ocamlPackages_${version}"
     );
 
-  oPs = lib.listToAttrs (builtins.map overlayOCamlPackages ocamlVersions);
+  oPs = lib.listToAttrs (map overlayOCamlPackages ocamlVersions);
 
 in
 

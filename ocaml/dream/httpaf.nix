@@ -11,7 +11,7 @@
   httpun-ws,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "dream-httpaf";
   inherit (dream-pure) src version;
 

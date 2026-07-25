@@ -1,6 +1,6 @@
 { pkgs, system }:
 let
-  inherit (pkgs) lib stdenv;
+  inherit (pkgs) stdenv;
   filter = pkgs.callPackage ./filter.nix { };
   isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
   extraIgnores =

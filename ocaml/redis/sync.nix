@@ -2,8 +2,6 @@
   lib,
   buildDunePackage,
   redis,
-  ounit,
-  containers,
   camlp-streams,
 }:
 

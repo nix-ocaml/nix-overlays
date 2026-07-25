@@ -26,7 +26,6 @@
   lz4-oc,
   net-snmp,
   nix-eval-jobs,
-  nodejs_latest,
   pcre-oc,
   sqlite-oc,
   systemdLibs,
@@ -47,12 +46,6 @@
   gtk2,
   rdkafka-oc,
   zlib-oc,
-  freetype,
-  fontconfig,
-  libxkbcommon,
-  libxcb,
-  libxcb-image,
-  libxcb-keysyms,
   zstd-oc,
   mercurial,
   gnutar,
@@ -107,7 +100,6 @@ let
     inherit
       bash
       fetchpatch
-      fetchFromGitHub
       fzf
       lib
       krb5
@@ -3384,13 +3376,9 @@ with oself;
         oself
         osuper
         lib
-        darwin
         makeWrapper
         nix-eval-jobs
-        stdenv
         fetchFromGitHub
-        nodejs_latest
-        nixpkgs
         ;
     })
   else
