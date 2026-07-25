@@ -3134,6 +3134,10 @@ with oself;
         patchShebangs vendor/liburing/configure
         substituteInPlace lib/uring/dune --replace-fail \
           '(run ./configure)' '(bash "./configure")'
+        ${lib.optionalString (lib.versionAtLeast ocaml.version "5.2" && stdenv.hostPlatform.isMusl) ''
+          substituteInPlace lib/uring/uring_stubs.c --replace-fail \
+            's->stx_dio_offset_align' 's->stx_dio_offet_align'
+        ''}
       '';
     }
     // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.2") {
