@@ -1,8 +1,6 @@
 {
   lib,
-  binutils,
   stdenv,
-  writeScriptBin,
 }:
 
 let

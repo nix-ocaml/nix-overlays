@@ -1,6 +1,4 @@
 {
-  fetchFromGitHub,
-  lib,
   buildDunePackage,
   lwt,
   eio,

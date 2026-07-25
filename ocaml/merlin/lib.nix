@@ -5,7 +5,6 @@
   yojson,
   csexp,
   result,
-  merlin ? null,
 }:
 
 let

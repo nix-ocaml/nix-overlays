@@ -5,7 +5,7 @@
   lwt_ppx,
 }:
 
-buildDunePackage rec {
+buildDunePackage {
   pname = "dream-livereload";
   version = "0.2.0";
   src = builtins.fetchurl {

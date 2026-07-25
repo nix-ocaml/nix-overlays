@@ -1,5 +1,4 @@
 {
-  stdenv,
   lib,
   fetchFromGitHub,
   buildDunePackage,
@@ -20,8 +19,6 @@
   uutf,
   unstrctrd,
   httpun-ws,
-  alcotest,
-  dune-site,
   ocaml,
 }:
 let

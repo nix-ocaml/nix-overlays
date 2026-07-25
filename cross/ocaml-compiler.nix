@@ -15,10 +15,7 @@ let
   natocaml = natocamlPackages.ocaml;
   usesUpstreamCross = lib.versionAtLeast osuper.ocaml.version "5.4";
   unsplicedNativeOCamlRuntime =
-    if nativeOCamlRuntime == null then
-      null
-    else
-      builtins.removeAttrs nativeOCamlRuntime [ "__spliced" ];
+    if nativeOCamlRuntime == null then null else removeAttrs nativeOCamlRuntime [ "__spliced" ];
   mkLegacyHostOCaml =
     {
       tools,
@@ -75,7 +72,7 @@ in
 if usesUpstreamCross then
   osuper.ocaml.overrideAttrs (o: {
     depsBuildBuild = [
-      (builtins.removeAttrs nativeCC [ "__spliced" ])
+      (removeAttrs nativeCC [ "__spliced" ])
       buildOCaml
     ];
 

@@ -1,5 +1,4 @@
 {
-  fetchFromGitHub,
   buildDunePackage,
   angstrom,
   faraday,

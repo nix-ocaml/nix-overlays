@@ -6,7 +6,6 @@
   mirage-crypto-pk,
   mirage-crypto-ec,
   x509,
-  cstruct,
   astring,
   yojson,
   zarith,

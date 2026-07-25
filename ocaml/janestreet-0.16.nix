@@ -3,7 +3,6 @@
   stdenv,
   bash,
   fetchpatch,
-  fetchFromGitHub,
   fzf,
   lib,
   linuxHeaders,
