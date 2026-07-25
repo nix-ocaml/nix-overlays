@@ -3120,6 +3120,11 @@ with oself;
   });
 
   uring = osuper.uring.overrideAttrs (_: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.0/uring-2.15.0.tbz";
+      sha256 = "11ii3laq5iqh11qifmrwibwzhy7sphysz6ac6bwr9gfvskk4bb9h";
+    };
+
     postPatch = ''
       patchShebangs vendor/liburing/configure
       substituteInPlace lib/uring/dune --replace-fail \
