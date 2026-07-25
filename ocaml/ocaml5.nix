@@ -37,6 +37,26 @@ with oself;
     ];
   };
 
+  eio = osuper.eio.overrideAttrs (o: {
+    src = builtins.fetchurl {
+      url = "https://github.com/ocaml-multicore/eio/releases/download/v1.4/eio-1.4.tbz";
+      sha256 = "19da8r1lx8z9hvgnv00n03ql6mlhqjyv7wl6nkdk08a9dx4as4ds";
+    };
+    buildInputs = (o.buildInputs or [ ]) ++ [ dune-configurator ];
+  });
+
+  eio_windows = buildDunePackage {
+    pname = "eio_windows";
+    inherit (eio) src version;
+    buildInputs = [ dune-configurator ];
+    propagatedBuildInputs = [
+      eio
+      fmt
+    ];
+  };
+
+  eio-ssl = callPackage ./eio-ssl { };
+
   eio-trace = buildDunePackage {
     pname = "eio-trace";
     version = "0.4";

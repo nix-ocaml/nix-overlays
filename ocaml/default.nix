@@ -996,22 +996,6 @@ with oself;
     };
   });
 
-  eio-ssl = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./eio-ssl { } else null;
-
-  eio_windows =
-    if lib.versionAtLeast ocaml.version "5.0" then
-      buildDunePackage {
-        pname = "eio_windows";
-        inherit (eio) src version;
-        buildInputs = [ dune-configurator ];
-        propagatedBuildInputs = [
-          eio
-          fmt
-        ];
-      }
-    else
-      null;
-
   extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
@@ -2567,10 +2551,10 @@ with oself;
   ppx_deriving =
     if lib.versionAtLeast ocaml.version "5.3" then
       osuper.ppx_deriving.overrideAttrs (o: {
-        version = "6.1.2";
+        version = "6.1.3";
         src = builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.2/ppx_deriving-6.1.2.tbz";
-          sha256 = "1zskc9a8h3a1gk2dif32sp0kvasc7nscrcxb3cglnhykd3kbz5am";
+          url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.3/ppx_deriving-6.1.3.tbz";
+          sha256 = "02lxmv15spf5mwzxhirlig53wrli47b82b80sbagzczy5fd26m56";
         };
         buildInputs = [ ppxlib ];
         propagatedBuildInputs = [
