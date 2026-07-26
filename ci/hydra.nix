@@ -19,54 +19,64 @@ with filter;
     ocamlVersion = "4_14";
     extraIgnores = extraIgnores;
   };
+
   build_5_1 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_1";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_2 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_2";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_3 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_3";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_4 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_4";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_5 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_5";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
-  build_5_4_fp =
-    let
-      pkgs' = pkgs.extend (
-        self: super: {
-          ocamlPackages = self.ocaml-ng.ocamlPackages_5_4;
-          ocaml-ng = super.ocaml-ng // {
-            ocamlPackages_5_4 = super.ocaml-ng.ocamlPackages_5_4.overrideScope (
-              oself: osuper: {
-                ocaml = osuper.ocaml.override {
-                  flambdaSupport = false;
-                  framePointerSupport = true;
-                };
-              }
-            );
-          };
-        }
-      );
-    in
-    ocamlCandidates {
-      pkgs = pkgs';
-      ocamlVersion = "5_4";
-      extraIgnores = extraIgnores ++ ocaml5Ignores;
-    };
+
+  build_5_4_fp = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_4";
+    ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_4.overrideScope (
+      _: osuper: {
+        ocaml = osuper.ocaml.override {
+          flambdaSupport = false;
+          framePointerSupport = true;
+        };
+      }
+    );
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
+
+  build_5_5_fp = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_5";
+    ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_5.overrideScope (
+      _: osuper: {
+        ocaml = osuper.ocaml.override {
+          flambdaSupport = false;
+          framePointerSupport = true;
+        };
+      }
+    );
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_top-level-packages = {
     inherit (pkgs) melange-relay-compiler;

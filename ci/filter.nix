@@ -259,11 +259,10 @@ rec {
     {
       pkgs,
       ocamlVersion,
+      ocamlPackages ? pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}",
       extraIgnores ? if lib.hasPrefix "5_" ocamlVersion then ocaml5Ignores else [ ],
     }:
     let
-      ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
-
       ignoredPackages =
         baseIgnoredPackages ++ lib.optionals stdenv.isDarwin darwinIgnores ++ extraIgnores;
     in
