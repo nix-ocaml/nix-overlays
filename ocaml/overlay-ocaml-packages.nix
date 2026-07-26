@@ -261,13 +261,13 @@ rec {
     // oPs
     // {
       ocamlPackages = overlaySinglePackageSet custom-ocaml-ng.ocamlPackages;
-      ocamlPackages_latest = oPs.ocamlPackages_5_2;
+      ocamlPackages_latest = oPs.ocamlPackages_5_5;
     };
   ocamlPackages =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackages
     else
-      ocaml-ng.ocamlPackages_5_2;
+      ocaml-ng.ocamlPackages_5_5;
   ocamlPackages_latest =
     if updateOCamlPackages then
       overlaySinglePackageSet super.ocamlPackage_latest
