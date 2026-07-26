@@ -647,6 +647,7 @@ with oself;
         '';
   });
   cohttp-async_5_3 = cohttp-async;
+  cohttp-lwt_5_3 = cohttp-lwt;
   cohttp-server-lwt-unix = disableTests osuper.cohttp-server-lwt-unix;
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
   cohttp-top = disableTests osuper.cohttp-top;
