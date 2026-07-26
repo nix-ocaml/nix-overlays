@@ -188,8 +188,8 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "c5f30f146682043d1267ecd0ae26f131b8941d51";
-              hash = "sha256-WMIBfvyeq4xZAPqiMjao4I/iwk3stNRh3OrtnGZCkX4=";
+              rev = "63b0c81c38e8affcda002e125fad805efbb709a1";
+              hash = "sha256-/daKjZvfSxprpGlZebmonahju4mXBuwbCgd/g83z8/8=";
               fetchSubmodules = true;
             };
             postPatch = "";
@@ -203,8 +203,8 @@ let
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
-              rev = "c5f30f146682043d1267ecd0ae26f131b8941d51";
-              hash = "sha256-WMIBfvyeq4xZAPqiMjao4I/iwk3stNRh3OrtnGZCkX4=";
+              rev = "63b0c81c38e8affcda002e125fad805efbb709a1";
+              hash = "sha256-/daKjZvfSxprpGlZebmonahju4mXBuwbCgd/g83z8/8=";
             };
             postPatch = "";
           };
