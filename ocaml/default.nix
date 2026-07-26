@@ -636,6 +636,7 @@ with oself;
     ];
     doCheck = false;
   });
+  cohttp_5_3 = cohttp;
   cohttp-async = osuper.cohttp-async.overrideAttrs (_: {
     postPatch =
       if lib.versionOlder "5.0" ocaml.version then
@@ -645,6 +646,7 @@ with oself;
           substituteInPlace "cohttp-async/src/client.ml" --replace-fail Ivar.fill_exn Ivar.fill
         '';
   });
+  cohttp-async_5_3 = cohttp-async;
   cohttp-server-lwt-unix = disableTests osuper.cohttp-server-lwt-unix;
   cohttp-lwt-jsoo = disableTests osuper.cohttp-lwt-jsoo;
   cohttp-top = disableTests osuper.cohttp-top;
