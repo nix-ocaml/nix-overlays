@@ -10,6 +10,28 @@ let
       filter.aarch64LinuxIgnores
     else
       [ ];
+  framePointerPkgs =
+    ocamlVersion:
+    let
+      packageSet = "ocamlPackages_${ocamlVersion}";
+    in
+    pkgs.extend (
+      self: super: {
+        # Some packages refer to pkgs.ocamlPackages directly. Keep it in the
+        # same fixpoint as the versioned scope to avoid mixing OCaml versions.
+        ocamlPackages = self.ocaml-ng.${packageSet};
+        ocaml-ng = super.ocaml-ng // {
+          "${packageSet}" = super.ocaml-ng.${packageSet}.overrideScope (
+            _: osuper: {
+              ocaml = osuper.ocaml.override {
+                flambdaSupport = false;
+                framePointerSupport = true;
+              };
+            }
+          );
+        };
+      }
+    );
 in
 
 with filter;
@@ -51,30 +73,14 @@ with filter;
   };
 
   build_5_4_fp = ocamlCandidates {
-    inherit pkgs;
+    pkgs = framePointerPkgs "5_4";
     ocamlVersion = "5_4";
-    ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_4.overrideScope (
-      _: osuper: {
-        ocaml = osuper.ocaml.override {
-          flambdaSupport = false;
-          framePointerSupport = true;
-        };
-      }
-    );
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
 
   build_5_5_fp = ocamlCandidates {
-    inherit pkgs;
+    pkgs = framePointerPkgs "5_5";
     ocamlVersion = "5_5";
-    ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_5.overrideScope (
-      _: osuper: {
-        ocaml = osuper.ocaml.override {
-          flambdaSupport = false;
-          framePointerSupport = true;
-        };
-      }
-    );
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
 
