@@ -71,6 +71,11 @@ with filter;
     ocamlVersion = "5_5";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+  build_5_6 = ocamlCandidates {
+    inherit pkgs;
+    ocamlVersion = "5_6";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_5_4_fp = ocamlCandidates {
     pkgs = framePointerPkgs "5_4";
@@ -156,6 +161,21 @@ with filter;
       crossTarget pkgs.pkgsCross.musl64 "5_5"
     else if system == "aarch64-linux" then
       crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_5"
+    else
+      { };
+
+  arm64_5_6 = (
+    if system == "x86_64-linux" then
+      crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_6"
+    else
+      { }
+  );
+
+  musl_5_6 =
+    if system == "x86_64-linux" then
+      crossTarget pkgs.pkgsCross.musl64 "5_6"
+    else if system == "aarch64-linux" then
+      crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_6"
     else
       { };
 
