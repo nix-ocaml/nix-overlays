@@ -141,9 +141,9 @@ jobs:
           - { ocaml-version: 5_3, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_4, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
-          - { ocaml-version: 5_6, continue-on-error: true, os: ubuntu-latest, platform: x86_64-linux }
+          - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
-          - { ocaml-version: 5_6, continue-on-error: true, os: ubuntu-24.04-arm, platform: aarch64-linux }
+          - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
         target:
           - arm64
           - musl
