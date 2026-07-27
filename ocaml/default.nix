@@ -3190,9 +3190,11 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "utop";
-      rev = "2.17.0";
-      hash = "sha256-acYVqDV/EaIZbyarAZsxB/SVYd0Y62HWhvACH8TgALs=";
+      rev = "62c9037c3ba262004f622ebd41cf3c6a1e087015";
+      hash = "sha256-AjzPSRArA2oMluG1HiJWCGZhWnA3d0+pY2ejd6kqlkA=";
     };
+    doCheck = true;
+    checkInputs = [ alcotest ];
   });
 
   uutf = osuper.uutf.overrideAttrs (_: {
