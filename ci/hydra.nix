@@ -10,6 +10,28 @@ let
       filter.aarch64LinuxIgnores
     else
       [ ];
+  framePointerPkgs =
+    ocamlVersion:
+    let
+      packageSet = "ocamlPackages_${ocamlVersion}";
+    in
+    pkgs.extend (
+      self: super: {
+        # Some packages refer to pkgs.ocamlPackages directly. Keep it in the
+        # same fixpoint as the versioned scope to avoid mixing OCaml versions.
+        ocamlPackages = self.ocaml-ng.${packageSet};
+        ocaml-ng = super.ocaml-ng // {
+          "${packageSet}" = super.ocaml-ng.${packageSet}.overrideScope (
+            _: osuper: {
+              ocaml = osuper.ocaml.override {
+                flambdaSupport = false;
+                framePointerSupport = true;
+              };
+            }
+          );
+        };
+      }
+    );
 in
 
 with filter;
@@ -19,54 +41,48 @@ with filter;
     ocamlVersion = "4_14";
     extraIgnores = extraIgnores;
   };
+
   build_5_1 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_1";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_2 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_2";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_3 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_3";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_4 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_4";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
+
   build_5_5 = ocamlCandidates {
     inherit pkgs;
     ocamlVersion = "5_5";
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
-  build_5_4_fp =
-    let
-      pkgs' = pkgs.extend (
-        self: super: {
-          ocamlPackages = self.ocaml-ng.ocamlPackages_5_4;
-          ocaml-ng = super.ocaml-ng // {
-            ocamlPackages_5_4 = super.ocaml-ng.ocamlPackages_5_4.overrideScope (
-              oself: osuper: {
-                ocaml = osuper.ocaml.override {
-                  flambdaSupport = false;
-                  framePointerSupport = true;
-                };
-              }
-            );
-          };
-        }
-      );
-    in
-    ocamlCandidates {
-      pkgs = pkgs';
-      ocamlVersion = "5_4";
-      extraIgnores = extraIgnores ++ ocaml5Ignores;
-    };
+
+  build_5_4_fp = ocamlCandidates {
+    pkgs = framePointerPkgs "5_4";
+    ocamlVersion = "5_4";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
+
+  build_5_5_fp = ocamlCandidates {
+    pkgs = framePointerPkgs "5_5";
+    ocamlVersion = "5_5";
+    extraIgnores = extraIgnores ++ ocaml5Ignores;
+  };
 
   build_top-level-packages = {
     inherit (pkgs) melange-relay-compiler;
