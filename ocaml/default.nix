@@ -1394,6 +1394,19 @@ with oself;
 
   jose = callPackage ./jose { };
 
+  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "js_of_ocaml";
+      rev = "8b46f0628091b73513141a010c3ac3914a872395";
+      hash = "sha256-h51yGnafwhhmz7Lk66pphlWsf6i1l+woyYfwP+voUVA=";
+    };
+  });
+
+  js_of_ocaml-toplevel = osuper.js_of_ocaml-toplevel.overrideAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ js_of_ocaml ];
+  });
+
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
       if lib.versionOlder "5.6" ocaml.version then
