@@ -236,6 +236,55 @@ with oself;
     };
   };
 
+  batteries = osuper.batteries.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace src/batArray.mli \
+        --replace-fail \
+          "val modify : ('a -> 'a) -> 'a array -> unit" \
+          $'##V>=5.6##val fold_left2 : (\'acc -> \'a -> \'b -> \'acc) -> \'acc -> \'a array -> \'b array -> \'acc\n##V>=5.6##val fold_right2 : (\'a -> \'b -> \'acc -> \'acc) -> \'a array -> \'b array -> \'acc -> \'acc\n\nval modify : (\'a -> \'a) -> \'a array -> unit'
+      substituteInPlace src/batList.ml \
+        --replace-fail \
+          '##V>=4.10##let concat_map = List.concat_map' \
+          $'##V>=4.10##let concat_map = List.concat_map\n##V>=5.6##let append_map = List.append_map\n##V>=5.6##let rev_append_map = List.rev_append_map'
+      substituteInPlace src/batList.mli \
+        --replace-fail \
+          "val concat : 'a list list -> 'a list" \
+          $'##V>=5.6##val append_map : (\'a -> \'b) -> \'a list -> \'b list -> \'b list\n##V>=5.6##val rev_append_map : (\'a -> \'b) -> \'a list -> \'b list -> \'b list\n\nval concat : \'a list list -> \'a list'
+      substituteInPlace src/batSeq.ml \
+        --replace-fail \
+          '##V>=4.14##let ints                   = Stdlib.Seq.ints' \
+          $'##V>=4.14##let ints                   = Stdlib.Seq.ints\n##V>=5.6##let ints_in_range          = Stdlib.Seq.ints_in_range'
+      substituteInPlace src/batSeq.mli \
+        --replace-fail \
+          "##V>=5.1##val find_index : ('a -> bool) -> 'a t -> int option" \
+          $'##V>=5.6##val ints_in_range : first:int -> last:int -> int t\n\n##V>=5.1##val find_index : (\'a -> bool) -> \'a t -> int option'
+      substituteInPlace src/batString.mli \
+        --replace-fail \
+          '##V>=5.5##val drop_last : int -> string -> string' \
+          $'##V>=5.5##val drop_last : int -> string -> string\n##V>=5.6##val drop_prefix : prefix:string -> string -> string option\n##V>=5.6##val drop_suffix : suffix:string -> string -> string option'
+      substituteInPlace src/batResult.ml \
+        --replace-fail \
+          '##V>=5.4##let retract = Stdlib.Result.retract' \
+          $'##V>=5.4##let retract = Stdlib.Result.retract\n##V>=5.6##let try_value = Stdlib.Result.try_value'
+      substituteInPlace src/batResult.mli \
+        --replace-fail \
+          "##V>=5.4##val retract : ('a, 'a) result -> 'a" \
+          $'##V>=5.4##val retract : (\'a, \'a) result -> \'a\n##V>=5.6##val try_value : (\'a, \'e) result -> (\'e -> (\'a, \'e) result) -> (\'a, \'e) result'
+      substituteInPlace src/batMap.ml src/batMap.mli \
+        --replace-fail \
+          "##V>=5.5##val is_singleton : 'a t -> bool" \
+          $'##V>=5.5##val is_singleton : \'a t -> bool\n##V>=5.6##val singleton_to_binding : \'a t -> (key * \'a) option'
+      substituteInPlace src/batSet.ml src/batSet.mli \
+        --replace-fail \
+          '  val is_singleton: t -> bool' \
+          $'  val is_singleton: t -> bool\n##V>=5.6##  val singleton_to_elt: t -> elt option'
+      substituteInPlace src/batSplay.ml \
+        --replace-fail \
+          '  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)' \
+          $'##V>=5.6##  let singleton_to_binding m =\n##V>=5.6##    match sget m with\n##V>=5.6##    | Node (Empty, binding, Empty) -> Some binding\n##V>=5.6##    | Empty | Node _ -> None\n\n  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)'
+    '';
+  });
+
   bechamel = buildDunePackage {
     pname = "bechamel";
     version = "0.5.0";
@@ -1113,6 +1162,19 @@ with oself;
   gluten-async = callPackage ./gluten/async.nix { };
   gluten-eio =
     if lib.versionAtLeast ocaml.version "5.0" then callPackage ./gluten/eio.nix { } else null;
+
+  grenier = osuper.grenier.overrideAttrs (_: {
+    postPatch = ''
+      substituteInPlace balmap/set.ml \
+        --replace-fail \
+          '  let is_singleton = function Node (_, Leaf, _, Leaf) -> true | Leaf | Node _ -> false' \
+          $'  let is_singleton = function Node (_, Leaf, _, Leaf) -> true | Leaf | Node _ -> false\n\n  let singleton_to_elt = function\n    | Node (_, Leaf, elt, Leaf) -> Some elt\n    | Leaf | Node _ -> None'
+      substituteInPlace balmap/map.ml \
+        --replace-fail \
+          '  let is_singleton = function Node (_, Leaf, _, _, Leaf) -> true | Leaf | Node _ -> false' \
+          $'  let is_singleton = function Node (_, Leaf, _, _, Leaf) -> true | Leaf | Node _ -> false\n\n  let singleton_to_binding = function\n    | Node (_, Leaf, key, value, Leaf) -> Some (key, value)\n    | Leaf | Node _ -> None'
+    '';
+  });
 
   graphql_parser = callPackage ./graphql/parser.nix { };
   graphql = callPackage ./graphql { };
@@ -2266,6 +2328,13 @@ with oself;
       cmdliner
     ];
   };
+
+  odoc = osuper.odoc.overrideAttrs (old: {
+    doCheck = if lib.versionAtLeast ocaml.version "5.6" then false else old.doCheck or true;
+    patches =
+      (old.patches or [ ])
+      ++ lib.optionals (lib.versionAtLeast ocaml.version "5.6") [ ./odoc-ocaml-5.6.patch ];
+  });
 
   oidc = callPackage ./oidc { };
 
