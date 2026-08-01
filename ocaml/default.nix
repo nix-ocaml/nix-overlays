@@ -1334,7 +1334,12 @@ with oself;
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
     src =
-      if lib.versionOlder "5.5" ocaml.version then
+      if lib.versionOlder "5.6" ocaml.version then
+        builtins.fetchurl {
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.28.0-506_preview/lsp-1.28.0-506.preview.tbz";
+          sha256 = "0f82rnhx4ig7n1vsyrvpjjn2mq271nnzq2v07cdnbq4q35qh63wf";
+        }
+      else if lib.versionOlder "5.5" ocaml.version then
         builtins.fetchurl {
           url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.27.0/lsp-1.27.0.tbz";
           sha256 = "0597g5ixs4rjansy567nxsx76fdi19bj6i8mv6mcp9gq4dlwsfh4";
