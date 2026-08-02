@@ -2867,6 +2867,14 @@ with oself;
     ];
 
     patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast ocaml.version "5.6") ''
+        substituteInPlace src/vendored-omp/src/config/gen.ml \
+          --replace-fail '     | (5, 5) -> "55"' \
+            '     | (5, 5) -> "55"
+             | (5, 6) -> "55"'
+      '';
     meta.mainProgram = "refmt";
   });
   rtop = osuper.rtop.overrideAttrs (o: {
