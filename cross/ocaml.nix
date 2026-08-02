@@ -347,6 +347,7 @@ in
       dune_2 = natocamlPackages.dune;
       dune_3 = natocamlPackages.dune;
       dune = natocamlPackages.dune;
+      ocaml-crunch = natocamlPackages.crunch.bin;
       ocamlbuild = natocamlPackages.ocamlbuild;
       opaline = natocamlPackages.opaline;
 
