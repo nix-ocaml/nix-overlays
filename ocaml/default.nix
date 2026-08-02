@@ -3114,10 +3114,10 @@ with oself;
   });
   textmate-language = buildDunePackage {
     pname = "textmate-language";
-    version = "0.3.4";
+    version = "0.6.0";
     src = builtins.fetchurl {
-      url = "https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/0.3.4/textmate-language-0.3.4.tbz";
-      sha256 = "17c540ddzqzl8c72rzpm3id6ixi91cq5r8dmjvf0kzj6kjdgrg63";
+      url = "https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/0.6.0/textmate-language-0.6.0.tbz";
+      sha256 = "00pv9g2did3lymkyjws6m902fdk9985hf93sghpxvnj4my405wdn";
     };
     propagatedBuildInputs = [ oniguruma ];
   };
