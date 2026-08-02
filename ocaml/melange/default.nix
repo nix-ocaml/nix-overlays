@@ -3,6 +3,7 @@
   cppo,
   cmdliner,
   dune-build-info,
+  fetchFromGitHub,
   jq,
   lib,
   makeWrapper,
@@ -21,7 +22,15 @@ buildDunePackage {
   pname = "melange";
   version = "7.0.1";
   src =
-    if lib.versionAtLeast ocaml.version "5.5" then
+    if lib.versionAtLeast ocaml.version "5.6" then
+      fetchFromGitHub {
+        owner = "melange-re";
+        repo = "melange";
+        rev = "3504c285a7cfd29664fb45d9fb514a5ee829d65a";
+        hash = "sha256-TnskmHJ5AFWgTP42aa2CEGUSj65cNl79084z870p29U=";
+        fetchSubmodules = true;
+      }
+    else if lib.versionAtLeast ocaml.version "5.5" then
       builtins.fetchurl {
         url = "https://github.com/melange-re/melange/releases/download/7.0.1-55/melange-7.0.1-55.tbz";
         sha256 = "1yvs183qgywcpm5x8sq36pg066hc4wzi780nvvmjh9d81n3c0xw3";
