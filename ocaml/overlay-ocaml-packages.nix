@@ -180,6 +180,22 @@ let
             };
           };
 
+          ocamlPackages_5_5_introcaml = newOCamlScope {
+            major_version = "5";
+            minor_version = "5";
+            patch_version = "0";
+            hardeningDisable = [ "strictoverflow" ];
+            postPatch = "";
+            src = super.fetchFromGitHub {
+              owner = "let-def";
+              repo = "ocaml";
+              rev = "introcaml0";
+              hash = "sha256-1ZaY+u3SM66pg7aJi1viLyDjCcXoJBHm3oBzYqjJVmY=";
+              fetchSubmodules = true;
+            };
+            doCheck = false;
+          };
+
           ocamlPackages_5_6 = newOCamlScope {
             major_version = "5";
             minor_version = "6";
