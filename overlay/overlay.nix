@@ -44,6 +44,23 @@ in
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.latest;
 
+  timidity = super.timidity.overrideAttrs (
+    old:
+    lib.optionalAttrs stdenv.hostPlatform.isDarwin {
+      postInstall = (old.postInstall or "") + ''
+        # The instrument archive contains symlinks with mode 000. Darwin
+        # preserves and enforces symlink permissions, which prevents Nix from
+        # serializing the output after it becomes root-owned in the store.
+        find "$out/share/timidity" -type l -print0 |
+          while IFS= read -r -d "" link; do
+            target="$(readlink "$link")"
+            rm "$link"
+            ln -s "$target" "$link"
+          done
+      '';
+    }
+  );
+
   tree-sitter = super.tree-sitter.overrideAttrs (
     old:
     let
