@@ -233,13 +233,13 @@ with oself;
 
   runtime_events_tools = buildDunePackage {
     pname = "runtime_events_tools";
-    version = "0.5.0";
+    version = "0.5.4";
 
     src = fetchFromGitHub {
       owner = "tarides";
       repo = "runtime_events_tools";
-      rev = "92f44392005793218038d2d56d0cc27743fd3e14";
-      hash = "sha256-YVBHPikXx9Giuk//bBqWNE358jlDfEW7hhUWcSd7k8s=";
+      rev = "0.5.4";
+      hash = "sha256-sheKhmvPq9g2nvmG15EYNApybCPDH/xanFGgLQ/3fgM=";
     };
 
     propagatedBuildInputs = [
