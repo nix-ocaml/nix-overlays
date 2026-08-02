@@ -2809,6 +2809,7 @@ in
   topological_sort = janePackage {
     pname = "topological_sort";
     hash = "sha256-jLkJnh5lasrphI6BUKv7oVPrKyGqNm6VIGYthNs04iU=";
+    patches = lib.optional (lib.versionAtLeast ocaml.version "5.6") ./topological_sort-ocaml-5.6.patch;
     meta.description = "Topological sort algorithm";
     propagatedBuildInputs = [
       ppx_jane
