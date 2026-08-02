@@ -3020,8 +3020,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "3dd0fb4fabac461fe54a431071aafa45d06ae5f0";
-      hash = "sha256-79UFPvgy3Z+OnhWf7cEkvmlU9mcWA2dmPiXz/B2eui4=";
+      rev = "2a2f6ecee24b3f97acc6be4f23050f98506f08dd";
+      hash = "sha256-Dwjq+bMg1wBvbsJOXtTAQbX0COvx3vChNRLRHYjLRUc=";
     };
 
     dontConfigure = true;

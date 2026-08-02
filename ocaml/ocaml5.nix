@@ -268,13 +268,22 @@ with oself;
     };
   };
 
-  wayland = osuper.wayland.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/talex5/ocaml-wayland/releases/download/v2.0/wayland-2.0.tbz";
-      sha256 = "0jw3x66yscl77w17pp31s4vhsba2xk6z2yvb30fvh0vd9p7ba8c8";
-    };
-    propagatedBuildInputs = [ eio ];
-    checkInputs = o.checkInputs ++ [ eio_main ];
+  wayland = osuper.wayland.overrideAttrs (old: {
+    postPatch =
+      (old.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast ocaml.version "5.6") ''
+        substituteInPlace lib/wayland.ml \
+          --replace-fail \
+            'let callback fn = object
+          inherit [_] Wayland_client.Wl_callback.v1
+          method on_done ~callback_data = fn callback_data
+        end' \
+            'let callback fn =
+          (object
+            inherit [[`V1]] Wayland_client.Wl_callback.v1
+            method on_done ~callback_data = fn callback_data
+          end :> [`V1] Wayland_client.Wl_callback.v1)'
+      '';
   });
 
   httpun-ws-eio = callPackage ./httpun-ws/eio.nix { };
