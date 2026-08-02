@@ -2745,7 +2745,7 @@ with oself;
     version = "0.38.0";
     name = "ocaml${ocaml.version}-ppxlib-0.38.0";
     src =
-      if lib.versionOlder "5.5" ocaml.version then
+      if lib.versionOlder "5.6" ocaml.version then
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
