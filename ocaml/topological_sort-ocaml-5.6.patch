@@ -1,0 +1,15 @@
+diff --git a/src/topological_sort.ml b/src/topological_sort.ml
+--- a/src/topological_sort.ml
++++ b/src/topological_sort.ml
+@@ -30,8 +30,8 @@ let check_result
+   (type node)
+   (module Node : Node with type t = node)
+-  nodes
+-  (edges : Node.t Edge.t list)
+-  result
++  (nodes : node list)
++  (edges : node Edge.t list)
++  (result : (node list, node list) Result.t)
+   =
+   try
+     match result with
