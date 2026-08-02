@@ -1831,8 +1831,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-mlx";
       repo = "ocamlformat-mlx";
-      rev = "e3ea889892ec3bb3f564621ba1511e8501bd0898";
-      hash = "sha256-uYAS69sEBLD2NbgQ9dPKaydgHhHr9TVDHdoAviPOrjU=";
+      rev = "0.29.0.0";
+      hash = "sha256-GjPWDs8kXvSvRCA4qqzMpoa2h9aA9LEvgdw+y0Y4ofo=";
     };
   });
 
@@ -2369,8 +2369,8 @@ with oself;
     pname = "oniguruma";
     version = "0.1.2";
     src = builtins.fetchurl {
-      url = "https://github.com/alan-j-hu/ocaml-oniguruma/releases/download/0.1.2/oniguruma-0.1.2.tbz";
-      sha256 = "0rc70nwgx4bqm3h7rar2pmnh543np67rw5m8f6gwzhrwvbykzxp3";
+      url = "https://github.com/alan-j-hu/ocaml-oniguruma/releases/download/0.2.0/oniguruma-0.2.0.tbz";
+      sha256 = "1ry5jkvbnmc3k7kl9p7a6pzjjyby9g83krs6scbbwvijmb660di6";
     };
     buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ oniguruma-lib ];
