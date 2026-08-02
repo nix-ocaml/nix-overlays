@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+      - anmonteiro/melange-ocaml-5.6
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
