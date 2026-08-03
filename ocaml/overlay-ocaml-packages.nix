@@ -171,6 +171,7 @@ let
             patch_version = "0";
             hardeningDisable = [ "strictoverflow" ];
             postPatch = "";
+            patches = [ ./ocaml-14933.patch ];
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
@@ -186,6 +187,7 @@ let
             patch_version = "0";
             hardeningDisable = [ "strictoverflow" ];
             postPatch = "";
+            patches = [ ./ocaml-14933.patch ];
             src = super.fetchFromGitHub {
               owner = "let-def";
               repo = "ocaml";
@@ -201,6 +203,8 @@ let
             minor_version = "6";
             patch_version = "0+trunk";
             hardeningDisable = [ "strictoverflow" ];
+            postPatch = "";
+            patches = [ ./ocaml-14933.patch ];
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
@@ -208,7 +212,6 @@ let
               hash = "sha256-VOAHcRvscmQBi6ic5j1VubqVbSLTDvXS0e4BuTfOMZI=";
               fetchSubmodules = true;
             };
-            postPatch = "";
           };
 
           ocamlPackages_trunk = newOCamlScope {
@@ -216,13 +219,14 @@ let
             minor_version = "6";
             patch_version = "0+trunk";
             hardeningDisable = [ "strictoverflow" ];
+            postPatch = "";
+            patches = [ ./ocaml-14933.patch ];
             src = super.fetchFromGitHub {
               owner = "ocaml";
               repo = "ocaml";
               rev = "7486b022dcae1fb434767bca1dc79f39e94e2478";
               hash = "sha256-VOAHcRvscmQBi6ic5j1VubqVbSLTDvXS0e4BuTfOMZI=";
             };
-            postPatch = "";
           };
 
           ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (

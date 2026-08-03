@@ -1,0 +1,109 @@
+From 7804e42b3a206521c60495bb7b15e1cea89b24eb Mon Sep 17 00:00:00 2001
+From: Nat Mote <nat@semgrep.com>
+Date: Fri, 31 Jul 2026 12:17:51 -0700
+Subject: [PATCH] runtime: Fix sigaltstack call with musl on certain Intel CPUs
+
+---
+ Changes           |  5 +++++
+ runtime/signals.c | 39 +++++++++++++++++++++++++++++++++++----
+ 2 files changed, 40 insertions(+), 4 deletions(-)
+
+diff --git a/Changes b/Changes
+index 55e862263844..137497d5c9bc 100644
+--- a/Changes
++++ b/Changes
+@@ -118,6 +118,11 @@ Working version
+ - #14506: Add frame pointers support for RISC-V Linux.
+   (Miod Vallat and Tim McGilchrist, review by Zane Hambly)
+ 
++- #14933: Respect `sysconf(_SC_SIGSTKSZ)` when choosing the size for the
++  alternate signal stack, avoiding fatal errors when linked against musl libc on
++  some Intel CPUs.
++  (Nat Mote, review by Florian Angeletti and Miod Vallat)
++
+ ### Type system:
+ 
+ * #11648, #14766, #14768, #14776, #14801, #14842, #14845: Keep expansion and
+diff --git a/runtime/signals.c b/runtime/signals.c
+index a30be247754d..26cc592a4d51 100644
+--- a/runtime/signals.c
++++ b/runtime/signals.c
+@@ -21,6 +21,9 @@
+ #include <errno.h>
+ #include <stdbool.h>
+ #include "caml/config.h"
++#ifndef _WIN32
++#include <unistd.h>
++#endif
+ #ifdef USE_MMAP_MAP_STACK
+ #include <sys/mman.h>
+ #endif
+@@ -545,12 +548,40 @@ CAMLprim value caml_sys_rev_convert_signal_number(value signo)
+   return Val_int(caml_rev_convert_signal_number(Int_val(signo)));
+ }
+ 
++#ifdef POSIX_SIGNALS
++/* On Linux, the minimum signal stack size is architecture-dependent, whereas
++ * SIGSTKSZ can be a build-time constant and may be smaller than the run-time
++ * minimum (e.g. on musl with certain Intel CPUs). Thus, we call sysconf for the
++ * run-time value ourselves. */
++Caml_inline size_t caml_sigstksz(void)
++{
++  /* Compute the recommended signal stack size only once. Atomic due to benign
++   * concurrent reads during domain init. */
++  static _Atomic size_t cache = 0;
++  size_t size = atomic_load_relaxed(&cache);
++  if (size == 0) {
++    long sz;
++#ifdef _SC_SIGSTKSZ
++    /* glibc/musl only */
++    sz = sysconf(_SC_SIGSTKSZ);
++    if (sz <= 0)
++      sz = SIGSTKSZ;
++#else
++    sz = SIGSTKSZ;
++#endif
++    size = (size_t) sz;
++    atomic_store_relaxed(&cache, size);
++  }
++  return size;
++}
++#endif /* POSIX_SIGNALS */
++
+ void * caml_init_signal_stack(void)
+ {
+ #ifdef POSIX_SIGNALS
+   stack_t stk;
+   stk.ss_flags = 0;
+-  stk.ss_size = SIGSTKSZ;
++  stk.ss_size = caml_sigstksz();
+   /* The memory used for the alternate signal stack must not free'd before
+      calling sigaltstack with SS_DISABLE. malloc/mmap is therefore used rather
+      than caml_stat_alloc_noexc so that if a shutdown path erroneously fails
+@@ -563,7 +594,7 @@ void * caml_init_signal_stack(void)
+   if (stk.ss_sp == MAP_FAILED)
+     return NULL;
+   if (sigaltstack(&stk, NULL) < 0) {
+-    munmap(stk.ss_sp, SIGSTKSZ);
++    munmap(stk.ss_sp, stk.ss_size);
+     return NULL;
+   }
+ #else
+@@ -587,7 +618,7 @@ void caml_free_signal_stack(void * signal_stack)
+   stack_t stk, disable;
+   disable.ss_flags = SS_DISABLE;
+   disable.ss_sp = NULL;  /* not required but avoids a valgrind false alarm */
+-  disable.ss_size = SIGSTKSZ; /* macOS wants a valid size here */
++  disable.ss_size = caml_sigstksz(); /* macOS wants a valid size here */
+   if (sigaltstack(&disable, &stk) < 0) {
+     caml_fatal_error("Failed to reset signal stack (err %d)", errno);
+   }
+@@ -599,7 +630,7 @@ void caml_free_signal_stack(void * signal_stack)
+   /* Memory was allocated with malloc/mmap directly (see
+      caml_init_signal_stack) */
+ #ifdef USE_MMAP_MAP_STACK
+-  munmap(signal_stack, SIGSTKSZ);
++  munmap(signal_stack, caml_sigstksz());
+ #else
+   free(signal_stack);
+ #endif /* USE_MMAP_MAP_STACK */
