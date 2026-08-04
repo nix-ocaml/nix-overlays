@@ -2614,15 +2614,6 @@ with oself;
       ppx_sexp_conv
     ];
     propagatedBuildInputs = [ ];
-    postPatch =
-      (o.postPatch or "")
-      + lib.optionalString (lib.versionAtLeast ocaml.version "5.5") ''
-        substituteInPlace src_test/ppx_deriving/dune \
-          --replace-fail "(name test_ppx_import)" $'(name test_ppx_import)\n (enabled_if false)'
-        substituteInPlace src_test/ppx_deriving_sexp/dune \
-          --replace-fail '(>= %{ocaml_version} "4.10.0")' "false"
-      '';
-    meta.broken = false;
   });
 
   ppx_optint = buildDunePackage {
