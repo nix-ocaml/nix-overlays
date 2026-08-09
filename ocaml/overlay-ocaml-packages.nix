@@ -191,8 +191,8 @@ let
             src = super.fetchFromGitHub {
               owner = "let-def";
               repo = "ocaml";
-              rev = "introcaml0";
-              hash = "sha256-1ZaY+u3SM66pg7aJi1viLyDjCcXoJBHm3oBzYqjJVmY=";
+              rev = "introcaml1";
+              hash = "sha256-eRI/STs0IrNp8S3IN8KgDBGvg1s07FV6fU+AiDRCi0g=";
               fetchSubmodules = true;
             };
             doCheck = false;
