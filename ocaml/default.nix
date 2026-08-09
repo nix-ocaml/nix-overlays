@@ -3266,16 +3266,26 @@ with oself;
     propagatedBuildInputs = [ uspf ];
   };
 
-  utop = osuper.utop.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-community";
-      repo = "utop";
-      rev = "62c9037c3ba262004f622ebd41cf3c6a1e087015";
-      hash = "sha256-AjzPSRArA2oMluG1HiJWCGZhWnA3d0+pY2ejd6kqlkA=";
-    };
-    doCheck = true;
-    checkInputs = [ alcotest ];
-  });
+  utop = osuper.utop.overrideAttrs (
+    _:
+    {
+      src = fetchFromGitHub {
+        owner = "ocaml-community";
+        repo = "utop";
+        rev = "64f4486318c128f531f95fddd1f19fa5b0c95191";
+        hash = "sha256-HcMMkOBgLakBfCzF1SzTqwoZkpimasVPUmRs++J4qV4=";
+      };
+      doCheck = true;
+      checkInputs = [ alcotest ];
+    }
+    //
+      lib.optionalAttrs
+        (stdenv.cc.isGNU && lib.versionAtLeast ocaml.version "5.0" && lib.versionOlder ocaml.version "5.1")
+        {
+          # OCaml 5.0 emits old-style C declarations that conflict under GCC 15's C23 default.
+          NIX_CFLAGS_COMPILE = "-std=gnu17";
+        }
+  );
 
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
