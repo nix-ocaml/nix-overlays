@@ -3213,6 +3213,15 @@ with oself;
           '(run ./configure)' '(bash "./configure")'
       '';
     }
+    //
+      lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.1" && lib.versionOlder ocaml.version "5.2")
+        {
+          version = "2.7.0";
+          src = builtins.fetchurl {
+            url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.7.0/uring-2.7.0.tbz";
+            sha256 = "sha256-mePi6/TXtxgtLYLyHRAdnRcgeldCVgUaPY+MZXSzC6U=";
+          };
+        }
     // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.2") {
       version = "2.15.0";
       src = builtins.fetchurl {
