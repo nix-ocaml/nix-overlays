@@ -52,7 +52,24 @@ with oself;
         buildInputs = (o.buildInputs or [ ]) ++ [ dune-configurator ];
       })
     else
-      osuper.eio_linux;
+      # Eio 0.12 supports OCaml 5.0, and Eio 1.2 supports OCaml 5.1.
+      buildDunePackage {
+        pname = "eio_linux";
+        inherit (eio)
+          meta
+          patches
+          src
+          version
+          ;
+        minimalOCamlVersion = "5.0";
+        dontStrip = true;
+        propagatedBuildInputs = [
+          eio
+          fmt
+          logs
+          uring
+        ];
+      };
 
   eio_windows = buildDunePackage {
     pname = "eio_windows";
