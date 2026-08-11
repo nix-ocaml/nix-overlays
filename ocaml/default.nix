@@ -730,7 +730,7 @@ with oself;
     buildInputs = [ dune-configurator ];
   });
 
-  ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
+  ctypes-foreign = osuper.ctypes-foreign.override { libffi = libffi-oc.dev; };
 
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];

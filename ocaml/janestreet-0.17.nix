@@ -544,6 +544,8 @@ in
         --replace-fail "read_websocket_response request reader" \
           'read_websocket_response request (Cohttp_async__Input_channel.create reader)'
     '';
+    __darwinAllowLocalNetworking = true;
+    doCheck = true;
   };
 
   cohttp_static_handler = janePackage {
