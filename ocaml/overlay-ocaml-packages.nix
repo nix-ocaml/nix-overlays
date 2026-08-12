@@ -102,7 +102,8 @@ let
           );
           ocamlPackages_5_1 = ocaml-ng.ocamlPackages_5_1.overrideScope (
             oself: osuper: {
-              ocaml = osuper.ocaml.overrideAttrs (_: {
+              ocaml = osuper.ocaml.overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [ ./ocaml-14933.patch ];
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
                   repo = "ocaml";
@@ -115,7 +116,8 @@ let
 
           ocamlPackages_5_2 = ocaml-ng.ocamlPackages_5_2.overrideScope (
             oself: osuper: {
-              ocaml = osuper.ocaml.overrideAttrs (_: {
+              ocaml = osuper.ocaml.overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [ ./ocaml-14933.patch ];
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
                   repo = "ocaml";
@@ -128,7 +130,8 @@ let
 
           ocamlPackages_5_3 = ocaml-ng.ocamlPackages_5_3.overrideScope (
             oself: osuper: {
-              ocaml = osuper.ocaml.overrideAttrs (_: {
+              ocaml = osuper.ocaml.overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [ ./ocaml-14933.patch ];
                 hardeningDisable = [ "strictoverflow" ];
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
@@ -147,7 +150,8 @@ let
 
           ocamlPackages_5_4 = ocaml-ng.ocamlPackages_5_4.overrideScope (
             oself: osuper: {
-              ocaml = osuper.ocaml.overrideAttrs (_: {
+              ocaml = osuper.ocaml.overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [ ./ocaml-14933.patch ];
                 hardeningDisable = [ "strictoverflow" ];
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
