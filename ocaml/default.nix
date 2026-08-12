@@ -730,7 +730,7 @@ with oself;
     buildInputs = [ dune-configurator ];
   });
 
-  ctypes-foreign = disableTests (osuper.ctypes-foreign.override { libffi = libffi-oc.dev; });
+  ctypes-foreign = osuper.ctypes-foreign.override { libffi = libffi-oc.dev; };
 
   data-encoding = osuper.data-encoding.overrideAttrs (o: {
     buildInputs = [ ];
@@ -1391,6 +1391,10 @@ with oself;
       substituteInPlace dune \
         --replace-fail '(:dep README.md)' '(package iter) (:dep README.md)'
     '';
+  });
+
+  jingoo = osuper.jingoo.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppxlib ];
   });
 
   jose = callPackage ./jose { };

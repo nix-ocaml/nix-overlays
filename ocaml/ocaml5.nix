@@ -22,16 +22,11 @@ with oself;
     ];
   };
 
-  cohttp-eio = buildDunePackage {
-    pname = "cohttp-eio";
-    inherit (http) src version;
-    doCheck = false;
-    propagatedBuildInputs = [
-      cohttp
-      eio_main
-      ptime
-    ];
-  };
+  cohttp-eio = osuper.cohttp-eio.overrideAttrs (_: {
+    postPatch = ''
+      rm -rf cohttp-eio/examples
+    '';
+  });
 
   eio =
     if lib.versionAtLeast ocaml.version "5.2" then
