@@ -1393,6 +1393,10 @@ with oself;
     '';
   });
 
+  jingoo = osuper.jingoo.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppxlib ];
+  });
+
   jose = callPackage ./jose { };
 
   js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
