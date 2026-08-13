@@ -456,8 +456,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocaml-community";
       repo = "Camomile";
-      rev = "7fd071f814d1083ab72d78bcb46ea15e959107fb";
-      hash = "sha256-WnIofMPosbuDReiNTqga9Hm+A5DadvbnVx3AGxCLiU8=";
+      rev = "v2.1.0";
+      hash = "sha256-nGOSYaNIRXMEWIuzC0OwU2dwNjUZo8fGahBLG4pR7ME=";
     };
     propagatedBuildInputs = [
       camlp-streams
@@ -2101,8 +2101,8 @@ with oself;
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
     src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.1/sqlite3-5.4.1.tbz";
-      sha256 = "0db1l9imckgq2nvqq76l8pdmpal2pjnkcryf5cdbp4hrzf9w37kj";
+      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.2/sqlite3-5.4.2.tbz";
+      sha256 = "07320br031i1aplrziznikcmy825c7sgwyf2xd8yvsjbiw3qzxij";
     };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
