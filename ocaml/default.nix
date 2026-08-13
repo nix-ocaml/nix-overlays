@@ -2857,8 +2857,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason";
-      rev = "cc2034989e5d652fb730f1c7d0b86035b61ccad2";
-      hash = "sha256-OjJpQ1ro8MZ1v1989j2pZdSIVQSD1W7OfWZTyiGaN8I=";
+      rev = "1a47c6813417f6cd384c2f2cbde1b75fe3144098";
+      hash = "sha256-TJWCW+Y2vqpaFKcafXxgrymbgV6PtTc7ATGn9qXQ9/g=";
     };
     buildInputs = o.buildInputs ++ [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
