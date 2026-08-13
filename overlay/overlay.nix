@@ -227,7 +227,7 @@ in
           ++ lib.optionals stdenv.hostPlatform.isRiscV [ "--disable-spinlocks" ]
           # This could be removed once the upstream issue is resolved:
           # https://postgr.es/m/flat/427c7c25-e8e1-4fc5-a1fb-01ceff185e5b%40technowledgy.de
-          ++ lib.optionals stdenv.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
+          ++ lib.optionals stdenv.hostPlatform.isDarwin [ "LDFLAGS_EX_BE=-Wl,-export_dynamic" ];
 
           propagatedBuildInputs = with self; [
             lz4-oc
