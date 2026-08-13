@@ -857,7 +857,7 @@ with oself;
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
-        if stdenv.isDarwin then
+        if stdenv.hostPlatform.isDarwin then
           ''
             wrapProgram $out/bin/dune \
             --suffix PATH : "${darwin.sigtool}/bin"
@@ -1956,7 +1956,7 @@ with oself;
     });
 
   minisat = osuper.minisat.overrideAttrs (_: {
-    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.hostPlatform.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
   morbig = osuper.morbig.overrideAttrs (_: {
@@ -2988,7 +2988,7 @@ with oself;
   };
 
   soundtouch = osuper.soundtouch.overrideAttrs (o: {
-    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.hostPlatform.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
   sourcemaps = buildDunePackage {
@@ -3078,7 +3078,7 @@ with oself;
   };
 
   taglib = osuper.taglib.overrideAttrs (o: {
-    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.hostPlatform.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   });
 
   tar = osuper.tar.overrideAttrs (_: {
@@ -3144,7 +3144,7 @@ with oself;
     # postPatch = ''
     # substituteInPlace src/wrapper/dune --replace-fail "ctypes.foreign" "ctypes-foreign"
     # '';
-    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
+    NIX_CFLAGS_COMPILE = lib.optionalString stdenv.hostPlatform.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
     propagatedBuildInputs = [
       ppx_jane
       ppx_string
@@ -3154,8 +3154,8 @@ with oself;
     ];
     # o.propagatedBuildInputs ++
     # [  ] ++
-    # lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
-    doCheck = !stdenv.isDarwin;
+    # lib.optionals stdenv.hostPlatform.isDarwin [ darwin.apple_sdk.frameworks.Accelerate ];
+    doCheck = !stdenv.hostPlatform.isDarwin;
     checkPhase = "dune runtest --profile=release";
   });
 

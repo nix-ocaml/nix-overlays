@@ -265,7 +265,7 @@ rec {
       ocamlPackages = pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}";
 
       ignoredPackages =
-        baseIgnoredPackages ++ lib.optionals stdenv.isDarwin darwinIgnores ++ extraIgnores;
+        baseIgnoredPackages ++ lib.optionals stdenv.hostPlatform.isDarwin darwinIgnores ++ extraIgnores;
     in
     lib.filterAttrs (
       n: v':
