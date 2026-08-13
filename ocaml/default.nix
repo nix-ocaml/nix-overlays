@@ -457,7 +457,7 @@ with oself;
       owner = "ocaml-community";
       repo = "Camomile";
       rev = "v2.1.0";
-      hash = "sha256-nGOSYaNIRXMEWIuzC0OwU2dwNjUZo8fGahBLG4pR7ME=";
+      hash = "sha256-jTWJSLNQwna1NgQ/X5bkHNtXsaEPcJPDuVHxUcVSdno=";
     };
     propagatedBuildInputs = [
       camlp-streams
