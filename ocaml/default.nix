@@ -519,10 +519,10 @@ with oself;
   });
 
   caqti = osuper.caqti.overrideAttrs (o: {
-    version = "2.2.4";
+    version = "3.0.1";
     src = builtins.fetchurl {
-      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v2.2.4/caqti-v2.2.4.tbz";
-      sha256 = "1fzq1brw9na4p22m20xjw19qbk869cj7nkrc2faw0khm40l47smq";
+      url = "https://github.com/paurkedal/ocaml-caqti/releases/download/v3.0.1/caqti-v3.0.1.tbz";
+      sha256 = "sha256-2jlrKg560pk5U1pUTAg6rK77FKcb+EcZYAS2C+lP2ys=";
     };
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       ipaddr
@@ -530,6 +530,7 @@ with oself;
       dune-site
       lru
       lwt-dllist
+      x509
     ];
     nativeCheckInputs = [ mdx ];
     checkInputs = [
@@ -1685,10 +1686,10 @@ with oself;
 
   mariadb = buildDunePackage {
     pname = "mariadb";
-    version = "1.2.0";
+    version = "2.0.0";
     src = builtins.fetchurl {
-      url = "https://github.com/ocaml-community/ocaml-mariadb/releases/download/1.2.0/mariadb-1.2.0.tbz";
-      sha256 = "0sgsljalrvm1hcr8gh58hlqqyzbdsldfm19cq53gpr14i6jl6rm0";
+      url = "https://github.com/ocaml-community/ocaml-mariadb/releases/download/2.0.0/mariadb-2.0.0.tbz";
+      sha256 = "sha256-MnsGPH4gAs401Y8/uvrvRx21stQSVrU9RYpC2T8TEcw=";
     };
     buildInputs = [
       dune-configurator
