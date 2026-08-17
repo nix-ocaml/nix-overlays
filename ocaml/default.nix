@@ -2096,11 +2096,10 @@ with oself;
   });
 
   oxenstored =
-    let
-      xen' = xen.override { ocamlPackages = oself; };
-    in
-    if lib.meta.availableOn stdenv.hostPlatform xen' then
-      osuper.oxenstored.override { xen = xen'; }
+    if
+      lib.meta.availableOn stdenv.hostPlatform xen && lib.elem ocaml (xen.nativeBuildInputs or [ ])
+    then
+      osuper.oxenstored
     else
       null;
 
