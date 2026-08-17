@@ -44,6 +44,7 @@
   libsodium,
   cairo,
   gtk2,
+  xen,
   rdkafka-oc,
   zlib-oc,
   zstd-oc,
@@ -2093,6 +2094,16 @@ with oself;
       platforms = lib.platforms.all;
     };
   });
+
+  oxenstored =
+    let
+      xen' = xen.override { ocamlPackages = oself; };
+    in
+    (osuper.oxenstored.override { xen = xen'; }).overrideAttrs (o: {
+      meta = (o.meta or { }) // {
+        inherit (xen'.meta) platforms badPlatforms;
+      };
+    });
 
   ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (o: {
     buildInputs = [ ];
