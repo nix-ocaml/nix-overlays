@@ -2101,7 +2101,9 @@ with oself;
     in
     (osuper.oxenstored.override { xen = xen'; }).overrideAttrs (o: {
       meta = (o.meta or { }) // {
-        inherit (xen'.meta) platforms badPlatforms;
+        platforms = lib.filter (
+          system: lib.meta.availableOn (lib.systems.elaborate system) xen'
+        ) lib.systems.flakeExposed;
       };
     });
 
