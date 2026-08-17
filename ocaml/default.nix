@@ -2099,13 +2099,10 @@ with oself;
     let
       xen' = xen.override { ocamlPackages = oself; };
     in
-    (osuper.oxenstored.override { xen = xen'; }).overrideAttrs (o: {
-      meta = (o.meta or { }) // {
-        platforms = lib.filter (
-          system: lib.meta.availableOn (lib.systems.elaborate system) xen'
-        ) lib.systems.flakeExposed;
-      };
-    });
+    if lib.meta.availableOn stdenv.hostPlatform xen' then
+      osuper.oxenstored.override { xen = xen'; }
+    else
+      null;
 
   ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (o: {
     buildInputs = [ ];
