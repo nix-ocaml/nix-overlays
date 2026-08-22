@@ -2102,10 +2102,6 @@ with oself;
   });
 
   ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mmottl/sqlite3-ocaml/releases/download/5.4.2/sqlite3-5.4.2.tbz";
-      sha256 = "07320br031i1aplrziznikcmy825c7sgwyf2xd8yvsjbiw3qzxij";
-    };
     doCheck = true;
     checkInputs = [ ppx_inline_test ];
   });
