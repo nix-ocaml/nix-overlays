@@ -851,10 +851,12 @@ with oself;
       };
     in
     dune_pkg.overrideAttrs (o: {
-      version = "3.24.2";
-      src = builtins.fetchurl {
-        url = "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz";
-        sha256 = "0akn9nxam2q6js86r1nh9br7wqdk0d3hz7vh73sxl5h23dlrh9s7";
+      version = "3.25-dev";
+      src = fetchFromGitHub {
+        owner = "ocaml";
+        repo = "dune";
+        rev = "ab02ae0d95df25b4118047a421d955df0579cf58";
+        hash = "sha256-Sjh12lyuXopNU0sU6fX1E0cdR17qbOFkPZJDfsn1I1I=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -1421,9 +1423,11 @@ with oself;
           sha256 = "0f82rnhx4ig7n1vsyrvpjjn2mq271nnzq2v07cdnbq4q35qh63wf";
         }
       else if lib.versionOlder "5.5" ocaml.version then
-        builtins.fetchurl {
-          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.27.0/lsp-1.27.0.tbz";
-          sha256 = "0597g5ixs4rjansy567nxsx76fdi19bj6i8mv6mcp9gq4dlwsfh4";
+        fetchFromGitHub {
+          owner = "ocaml";
+          repo = "ocaml-lsp";
+          rev = "446443286e2653eaffc428693a4ad26fc1b64d12";
+          hash = "sha256-LeM2qVxwifmCmluIZ1ENZsVOYflbkYudq69wcHqLehA=";
         }
       else if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub {
@@ -2160,6 +2164,8 @@ with oself;
         [ ./ocaml-lsp-1.21.patch ]
       else if (lib.versionOlder "4.14" ocaml.version && !lib.versionOlder "5.4" ocaml.version) then
         [ ./ocaml-lsp.patch ]
+      else if lib.versionAtLeast ocaml.version "5.4" && lib.versionOlder ocaml.version "5.5" then
+        [ ./ocaml-lsp-1.26-no-stdune-env.patch ]
       else
         [ ];
     postPatch = ''
@@ -3278,7 +3284,7 @@ with oself;
   };
 
   utop = osuper.utop.overrideAttrs (
-    _:
+    o:
     {
       src = fetchFromGitHub {
         owner = "ocaml-community";
@@ -3286,6 +3292,7 @@ with oself;
         rev = "64f4486318c128f531f95fddd1f19fa5b0c95191";
         hash = "sha256-HcMMkOBgLakBfCzF1SzTqwoZkpimasVPUmRs++J4qV4=";
       };
+      patches = (o.patches or [ ]) ++ [ ./utop-declare-test-package.patch ];
       doCheck = true;
       checkInputs = [ alcotest ];
     }

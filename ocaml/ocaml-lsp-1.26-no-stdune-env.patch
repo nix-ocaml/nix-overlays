@@ -1,0 +1,7 @@
+diff --git a/ocaml-lsp-server/src/bin.ml b/ocaml-lsp-server/src/bin.ml
+index 53a9f1e..98d9288 100644
+--- a/ocaml-lsp-server/src/bin.ml
++++ b/ocaml-lsp-server/src/bin.ml
+@@ -5 +5 @@ let _PATH =
+-  lazy (Bin.parse_path (Option.value ~default:"" (Unix_env.get Unix_env.initial "PATH")))
++  lazy (Bin.parse_path (Option.value ~default:"" (Sys.getenv_opt "PATH")))
