@@ -2105,11 +2105,6 @@ with oself;
     nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ lwt_ppx ];
   });
 
-  ocaml_sqlite3 = osuper.ocaml_sqlite3.overrideAttrs (o: {
-    doCheck = true;
-    checkInputs = [ ppx_inline_test ];
-  });
-
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
   };
