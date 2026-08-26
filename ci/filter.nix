@@ -291,7 +291,7 @@ rec {
               v = eval_result.value;
               broken = (v ? meta && v.meta ? broken && v.meta.broken);
             in
-            (lib.isDerivation v) && !broken && lib.meta.availableOn stdenv.hostPlatform v
+            (lib.isDerivation v) && !broken
           )
     ) ocamlPackages;
 
