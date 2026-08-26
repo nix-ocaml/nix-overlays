@@ -108,6 +108,13 @@ let
     # not compatible with latest odoc
     "sherlodoc"
 
+    # Broken after upstream package updates
+    "drom"
+    "goblint-cil"
+    "ocaml-solo5"
+    "ppx_protocol_conv"
+    "superbol-studio-oss"
+
     "odds"
     "raylib"
     "raygui"
@@ -284,7 +291,7 @@ rec {
               v = eval_result.value;
               broken = (v ? meta && v.meta ? broken && v.meta.broken);
             in
-            (lib.isDerivation v) && !broken
+            (lib.isDerivation v) && !broken && lib.meta.availableOn stdenv.hostPlatform v
           )
     ) ocamlPackages;
 
