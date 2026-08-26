@@ -108,6 +108,13 @@ let
     # not compatible with latest odoc
     "sherlodoc"
 
+    # Broken after upstream package updates
+    "drom"
+    "goblint-cil"
+    "ocaml-solo5"
+    "ppx_protocol_conv"
+    "superbol-studio-oss"
+
     "odds"
     "raylib"
     "raygui"
