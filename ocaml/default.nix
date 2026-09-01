@@ -229,15 +229,6 @@ with oself;
   };
   ppx_bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/ppx_bap" { };
 
-  base32 = buildDunePackage {
-    pname = "base32";
-    version = "dev";
-    src = builtins.fetchurl {
-      url = "https://gitlab.com/public.dream/dromedar/ocaml-base32/-/archive/main/ocaml-base32-main.tar.gz";
-      sha256 = "0babid89q3vpgvq10cw233k9xzblsk89vh02ymviblgfjhm92lk5";
-    };
-  };
-
   batteries = osuper.batteries.overrideAttrs (_: {
     postPatch = ''
       substituteInPlace src/batArray.mli \
@@ -1510,6 +1501,8 @@ with oself;
       description = "OCaml bindings for Kafka, Lwt bindings";
     };
   };
+
+  kapla = if lib.versionAtLeast ocaml.version "5.2" then osuper.kapla else null;
 
   # Added by the ocaml5.nix
   kcas = null;
