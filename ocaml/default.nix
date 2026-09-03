@@ -825,9 +825,7 @@ with oself;
   });
 
   multicore-magic-dscheck =
-    if lib.versionAtLeast ocaml.version "5.0" then osuper.multicore-magic-dscheck else null;
-  dscheck = if lib.versionAtLeast ocaml.version "5.0" then osuper.dscheck else null;
-  saturn = if lib.versionAtLeast ocaml.version "5.0" then disableTests osuper.saturn else null;
+    if lib.versionAtLeast ocaml.version "5.2" then osuper.multicore-magic-dscheck else null;
 
   dune = oself.dune_3;
   dune_2 = oself.dune_3;
