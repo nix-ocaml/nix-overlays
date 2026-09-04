@@ -3169,19 +3169,21 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ctypes-foreign ];
   });
 
-  tyxml = osuper.tyxml.overrideAttrs (o: {
-    src =
-      if lib.versionOlder "5.3" ocaml.version then
-        fetchFromGitHub {
+  tyxml =
+    if lib.versionAtLeast ocaml.version "5.3" then
+      osuper.tyxml.overrideAttrs (_: {
+        version = "5.0.0";
+        src = fetchFromGitHub {
           owner = "ocsigen";
           repo = "tyxml";
-          rev = "2de24f181cc627f78b7526d39b9c2cd55500e755";
-          hash = "sha256-GJSrqC53wrnvZlswjs8W7sZHypVhBuHLLWMPVu6xNGc=";
-        }
-      else
-        o.src;
-  });
+          rev = "309ba6d2bea1212c884a98b95b3b1bc6f4b4fd38";
+          hash = "sha256-zQ6T4nQVqmZVwEQjsdZl9NgsSyPO+5oPB1IXzXGqOj0=";
+        };
+      })
+    else
+      osuper.tyxml;
   tyxml-jsx = callPackage ./tyxml/jsx.nix { };
+  tyxml-lwd = if lib.versionOlder tyxml.version "5.0" then osuper.tyxml-lwd else null;
   tyxml-ppx = callPackage ./tyxml/ppx.nix { };
   tyxml-syntax = callPackage ./tyxml/syntax.nix { };
 
