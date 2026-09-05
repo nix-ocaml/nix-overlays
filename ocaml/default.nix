@@ -3173,11 +3173,9 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.3" then
       osuper.tyxml.overrideAttrs (_: {
         version = "5.0.0";
-        src = fetchFromGitHub {
-          owner = "ocsigen";
-          repo = "tyxml";
-          rev = "309ba6d2bea1212c884a98b95b3b1bc6f4b4fd38";
-          hash = "sha256-zQ6T4nQVqmZVwEQjsdZl9NgsSyPO+5oPB1IXzXGqOj0=";
+        src = builtins.fetchurl {
+          url = "https://github.com/ocsigen/tyxml/releases/download/5.0.0/tyxml-5.0.0.tbz";
+          sha256 = "sha256-xyW7iRj/G2AeeSa3trR5n49Ktw9fup8JcNplfLgsB/I=";
         };
       })
     else
