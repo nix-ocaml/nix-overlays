@@ -1,0 +1,12 @@
+diff --git a/src/sql/dune b/src/sql/dune
+index 7d01018..820991a 100644
+--- a/src/sql/dune
++++ b/src/sql/dune
+@@ -3,6 +3,7 @@
+  (name dream__sql)
+  (libraries
+   caqti
++  caqti.classic
+   caqti-lwt
+   caqti-lwt.unix
+   dream.cipher
