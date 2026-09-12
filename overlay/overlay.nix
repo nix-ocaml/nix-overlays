@@ -170,22 +170,22 @@ in
       (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/generic.nix" (
         import "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" // { inherit self; }
       )).override
-      {
-        # a new change does some shenanigans to get llvmStdenv + lld which breaks
-        # our cross-compilation
-        overrideCC = _: _: stdenv;
-        systemdSupport = false;
-        gssSupport = false;
-        openssl = self.openssl-oc;
-        jitSupport = false;
-        pamSupport = false;
-        perlSupport = false;
-        pythonSupport = false;
-        tclSupport = false;
-        lz4 = self.lz4-oc;
-        zstd = self.zstd-oc;
-        zlib = self.zlib-oc;
-      }
+        {
+          # a new change does some shenanigans to get llvmStdenv + lld which breaks
+          # our cross-compilation
+          overrideCC = _: _: stdenv;
+          systemdSupport = false;
+          gssSupport = false;
+          openssl = self.openssl-oc;
+          jitSupport = false;
+          pamSupport = false;
+          perlSupport = false;
+          pythonSupport = false;
+          tclSupport = false;
+          lz4 = self.lz4-oc;
+          zstd = self.zstd-oc;
+          zlib = self.zlib-oc;
+        }
     ).overrideAttrs
       (
         finalAttrs: o:
