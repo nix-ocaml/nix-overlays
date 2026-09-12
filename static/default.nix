@@ -47,6 +47,12 @@ self: super:
         propagatedBuildInputs = o.buildInputs;
       });
 
+  # SQLite's devtest target creates fresh builds without preserving the
+  # original cross-compilation configuration.
+  sqlite = super.sqlite.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   sqlite-oc = (super.sqlite-oc.override { zlib = self.zlib-oc; }).overrideAttrs (o: {
     dontDisableStatic = true;
   });
