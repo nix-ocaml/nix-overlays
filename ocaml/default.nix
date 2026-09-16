@@ -60,14 +60,14 @@ let
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.5.0";
-      hash = "sha256-sev4xp5/7mGh0cZ2waFB7EXfYXO043k29AOxFXJ9qjg=";
+      rev = "2.6.0";
+      hash = "sha256-ZlwtUCWms8S08RL4isvfS2ZrW1gc8pSwehltqGDPwYs=";
     };
-    version = "2.5.0";
+    version = "2.6.0";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
-      changelog = "https://github.com/ocaml/opam/raw/2.5.0/CHANGES";
+      changelog = "https://github.com/ocaml/opam/raw/2.6.0/CHANGES";
       maintainers = [
         maintainers.henrytill
       ];
@@ -2418,8 +2418,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "kit-ty-kate";
       repo = "spdx_licenses";
-      rev = "v1.2.0";
-      hash = "sha256-GRadJmX+ddzYa8XwX1Nxe7iYIkcumI94fuTCq6FHAGA=";
+      rev = "v1.6.0";
+      hash = "sha256-BLJIok8MgRW12hhepVqermhmpamy+WbLwJtRLICRjZ4=";
     };
 
   });
@@ -2435,6 +2435,12 @@ with oself;
       ];
     }
   );
+  opam-repository = osuper.opam-repository.overrideAttrs (o: {
+    propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      decompress
+      tar
+    ];
+  });
   opam-core = osuper.opam-core.overrideAttrs (
     o:
     opamAttrs
@@ -2643,10 +2649,10 @@ with oself;
   ppx_deriving =
     if lib.versionAtLeast ocaml.version "5.3" then
       osuper.ppx_deriving.overrideAttrs (o: {
-        version = "6.1.3";
+        version = "6.2.0";
         src = builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.1.3/ppx_deriving-6.1.3.tbz";
-          sha256 = "02lxmv15spf5mwzxhirlig53wrli47b82b80sbagzczy5fd26m56";
+          url = "https://github.com/ocaml-ppx/ppx_deriving/releases/download/6.2.0/ppx_deriving-6.2.0.tbz";
+          sha256 = "1cgr1p3idf9fcr7dp0arzkd5ggh8g01vfkwdv870vfsjmkalizck";
         };
         buildInputs = [ ppxlib ];
         propagatedBuildInputs = [
@@ -3082,14 +3088,6 @@ with oself;
 
   taglib = osuper.taglib.overrideAttrs (o: {
     NIX_CFLAGS_COMPILE = lib.optionalString stdenv.hostPlatform.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
-  });
-
-  tar = osuper.tar.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://github.com/mirage/ocaml-tar/releases/download/v3.2.0/tar-3.2.0.tbz";
-      sha256 = "1ggimmrby5vkjf7gs737j4f90r5p987jpljfxyxj3nmj6mv46l0z";
-    };
-    propagatedBuildInputs = [ decompress ];
   });
 
   tar-mirage = buildDunePackage {
