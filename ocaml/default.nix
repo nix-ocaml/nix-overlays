@@ -1820,26 +1820,16 @@ with oself;
 
   miou =
     if lib.versionOlder ocaml.version "5.2" then
-      buildDunePackage (finalAttrs: {
+      buildDunePackage {
         pname = "miou";
         version = "0.9.0";
-
         minimalOCamlVersion = "5.1";
-
         src = builtins.fetchurl {
-          url = "https://github.com/robur-coop/miou/releases/download/v${finalAttrs.version}/miou-${finalAttrs.version}.tbz";
+          url = "https://github.com/robur-coop/miou/releases/download/v0.9.0/miou-0.9.0.tbz";
           sha256 = "sha256-/rmbvYOm/zmbXxquCQfP195dVVAzAa3d5etlPMkcOKE=";
         };
-
         buildInputs = [ dune-configurator ];
-
-        meta = {
-          description = "Composable concurrency primitives for OCaml";
-          homepage = "https://git.robur.coop/robur/miou";
-          changelog = "https://git.robur.coop/robur/miou/src/tag/v${finalAttrs.version}/CHANGES.md";
-          license = lib.licenses.mit;
-        };
-      })
+      }
     else
       osuper.miou.overrideAttrs {
         doCheck = false;
