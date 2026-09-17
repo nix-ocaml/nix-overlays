@@ -3099,6 +3099,7 @@ with oself;
       mirage-clock
       mirage-kv
       ptime
+      mirage-ptime
       tar
     ];
   };
