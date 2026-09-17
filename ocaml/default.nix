@@ -1818,13 +1818,26 @@ with oself;
     '';
   });
 
-  miou = osuper.miou.overrideAttrs {
-    doCheck = false;
-    checkInputs = [
-      dscheck
-      fmt
-    ];
-  };
+  miou =
+    if lib.versionOlder ocaml.version "5.2" then
+      buildDunePackage {
+        pname = "miou";
+        version = "0.9.0";
+        minimalOCamlVersion = "5.1";
+        src = builtins.fetchurl {
+          url = "https://github.com/robur-coop/miou/releases/download/v0.9.0/miou-0.9.0.tbz";
+          sha256 = "sha256-/rmbvYOm/zmbXxquCQfP195dVVAzAa3d5etlPMkcOKE=";
+        };
+        buildInputs = [ dune-configurator ];
+      }
+    else
+      osuper.miou.overrideAttrs {
+        doCheck = false;
+        checkInputs = [
+          dscheck
+          fmt
+        ];
+      };
 
   ocamlformat-mlx = osuper.ocamlformat-mlx.overrideAttrs (_: {
     src = fetchFromGitHub {
