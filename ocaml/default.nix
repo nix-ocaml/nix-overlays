@@ -2417,15 +2417,6 @@ with oself;
     else
       null;
 
-  spdx_licenses = osuper.spdx_licenses.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "kit-ty-kate";
-      repo = "spdx_licenses";
-      rev = "v1.6.0";
-      hash = "sha256-BLJIok8MgRW12hhepVqermhmpamy+WbLwJtRLICRjZ4=";
-    };
-
-  });
   opam = buildDunePackage (
     opamAttrs
     // {
