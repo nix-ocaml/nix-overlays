@@ -1005,6 +1005,9 @@ with oself;
       checkInputs = [ alcotest ] ++ runtimeInputs;
       postPatch = ''
         substituteInPlace lib/dune --replace-fail "curly" " curly result "
+        substituteInPlace bin/opam.ml \
+          --replace-fail "OpamFile.Descr.read_from_string" \
+          "OpamFile.Descr.of_legacy @@ OpamFile.Descr_legacy.read_from_string"
       '';
       preFixup = ''
         wrapProgram $out/bin/dune-release \
