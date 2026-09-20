@@ -2753,8 +2753,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "2e150834476230e99e48dfdf34c5e4a1ea6e749b";
-          hash = "sha256-st1AobEIdE/i5aAjnPAx8YKtG8W792b2wBVOxvjto0M=";
+          rev = "377fee7793ee12d82772c619efee7985ea31f53f";
+          hash = "sha256-k/Z+yZVWVhXm5mF7loslb0KKX6jb3Y6d6LSKBVFb+50=";
         }
       else
         builtins.fetchurl {
