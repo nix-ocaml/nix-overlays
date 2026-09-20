@@ -3281,10 +3281,9 @@ with oself;
       src = fetchFromGitHub {
         owner = "ocaml-community";
         repo = "utop";
-        rev = "1d484405bf14ccb97e72b50859c185a8609675f9";
-        hash = "sha256-EsLdfUL2dPNZG6pZTNCdqVJc/qESyc6zwJyjyYTOphM=";
+        rev = "4c1559fd702fedc315fa9d8fb972411a12d93f7c";
+        hash = "sha256-PhunXce0+cZBlxknmQ9VUKDIK+9n2JW6q8ReTdYAM6w=";
       };
-      patches = (o.patches or [ ]) ++ [ ./utop-ocaml-5.6.patch ];
       doCheck = true;
       checkInputs = [ alcotest ];
     }
