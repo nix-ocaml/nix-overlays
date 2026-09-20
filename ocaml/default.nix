@@ -3297,6 +3297,38 @@ with oself;
         }
   );
 
+  uucd = osuper.uucd.overrideAttrs (_: {
+    version = "18.0.0";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uucd/releases/uucd-18.0.0.tbz";
+      sha256 = "sha256-6HSF72EBD7VUAJ+PMrvFWxp7DF1p771LjM7JNRRfYHQ=";
+    };
+  });
+
+  uucp = osuper.uucp.overrideAttrs (_: {
+    version = "18.0.0";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uucp/releases/uucp-18.0.0.tbz";
+      sha256 = "sha256-ut7cfFg6entCN2O625f5/UuWmQa5NFyFQifDje1jI/w=";
+    };
+  });
+
+  uunf = osuper.uunf.overrideAttrs (_: {
+    version = "18.0.0";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uunf/releases/uunf-18.0.0.tbz";
+      sha256 = "sha256-PigyC3vjIFWo2pNa3yUJBv3qgcpZXWf6ytGIOoaiHiM=";
+    };
+  });
+
+  uuseg = osuper.uuseg.overrideAttrs (_: {
+    version = "18.0.0";
+    src = builtins.fetchurl {
+      url = "https://erratique.ch/software/uuseg/releases/uuseg-18.0.0.tbz";
+      sha256 = "sha256-bXzGAF6U+HH6B0TEzvPuB25fC+TlMcSu7wy4budLvRA=";
+    };
+  });
+
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
   });
