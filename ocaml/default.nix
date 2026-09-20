@@ -3281,10 +3281,10 @@ with oself;
       src = fetchFromGitHub {
         owner = "ocaml-community";
         repo = "utop";
-        rev = "64f4486318c128f531f95fddd1f19fa5b0c95191";
-        hash = "sha256-HcMMkOBgLakBfCzF1SzTqwoZkpimasVPUmRs++J4qV4=";
+        rev = "1d484405bf14ccb97e72b50859c185a8609675f9";
+        hash = "sha256-EsLdfUL2dPNZG6pZTNCdqVJc/qESyc6zwJyjyYTOphM=";
       };
-      patches = (o.patches or [ ]) ++ [ ./utop-declare-test-package.patch ];
+      patches = (o.patches or [ ]) ++ [ ./utop-ocaml-5.6.patch ];
       doCheck = true;
       checkInputs = [ alcotest ];
     }
