@@ -250,6 +250,18 @@ in
             "man"
           ];
 
+          # Nix cannot resolve sibling-output checks when those outputs are already valid.
+          # Remove this workaround once https://github.com/NixOS/nix/issues/16485 is fixed.
+          outputChecks = lib.mapAttrs (
+            _: checks:
+            checks
+            // {
+              disallowedReferences = lib.filter (ref: !(lib.elem ref finalAttrs.outputs)) (
+                checks.disallowedReferences or [ ]
+              );
+            }
+          ) o.outputChecks;
+
           postInstall = ''
             moveToOutput "bin/ecpg" "$dev"
             moveToOutput "lib/pgxs" "$dev"

@@ -2753,8 +2753,8 @@ with oself;
         fetchFromGitHub {
           owner = "ocaml-ppx";
           repo = "ppxlib";
-          rev = "2e150834476230e99e48dfdf34c5e4a1ea6e749b";
-          hash = "sha256-st1AobEIdE/i5aAjnPAx8YKtG8W792b2wBVOxvjto0M=";
+          rev = "377fee7793ee12d82772c619efee7985ea31f53f";
+          hash = "sha256-k/Z+yZVWVhXm5mF7loslb0KKX6jb3Y6d6LSKBVFb+50=";
         }
       else
         builtins.fetchurl {
@@ -3281,10 +3281,10 @@ with oself;
       src = fetchFromGitHub {
         owner = "ocaml-community";
         repo = "utop";
-        rev = "64f4486318c128f531f95fddd1f19fa5b0c95191";
-        hash = "sha256-HcMMkOBgLakBfCzF1SzTqwoZkpimasVPUmRs++J4qV4=";
+        rev = "1d484405bf14ccb97e72b50859c185a8609675f9";
+        hash = "sha256-EsLdfUL2dPNZG6pZTNCdqVJc/qESyc6zwJyjyYTOphM=";
       };
-      patches = (o.patches or [ ]) ++ [ ./utop-declare-test-package.patch ];
+      patches = (o.patches or [ ]) ++ [ ./utop-ocaml-5.6.patch ];
       doCheck = true;
       checkInputs = [ alcotest ];
     }
