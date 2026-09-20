@@ -255,6 +255,10 @@ with oself;
         --replace-fail \
           '##V>=5.5##val drop_last : int -> string -> string' \
           $'##V>=5.5##val drop_last : int -> string -> string\n##V>=5.6##val drop_prefix : prefix:string -> string -> string option\n##V>=5.6##val drop_suffix : suffix:string -> string -> string option'
+      substituteInPlace src/batSys.mli \
+        --replace-fail \
+          'external is_directory : string -> bool = "caml_sys_is_directory"' \
+          $'##V>=5.6##external filepath_exists : string -> bool = "caml_sys_filepath_exists"\n\nexternal is_directory : string -> bool = "caml_sys_is_directory"'
       substituteInPlace src/batResult.ml \
         --replace-fail \
           '##V>=5.4##let retract = Stdlib.Result.retract' \
