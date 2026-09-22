@@ -3300,22 +3300,6 @@ with oself;
         }
   );
 
-  uucp = osuper.uucp.overrideAttrs (_: {
-    version = "18.0.0";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uucp/releases/uucp-18.0.0.tbz";
-      sha256 = "sha256-ut7cfFg6entCN2O625f5/UuWmQa5NFyFQifDje1jI/w=";
-    };
-  });
-
-  uunf = osuper.uunf.overrideAttrs (_: {
-    version = "18.0.0";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uunf/releases/uunf-18.0.0.tbz";
-      sha256 = "sha256-PigyC3vjIFWo2pNa3yUJBv3qgcpZXWf6ytGIOoaiHiM=";
-    };
-  });
-
   uuseg = osuper.uuseg.overrideAttrs (_: {
     version = "18.0.0";
     src = builtins.fetchurl {
