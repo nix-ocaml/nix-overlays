@@ -3300,14 +3300,6 @@ with oself;
         }
   );
 
-  uuseg = osuper.uuseg.overrideAttrs (_: {
-    version = "18.0.0";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uuseg/releases/uuseg-18.0.0.tbz";
-      sha256 = "sha256-bXzGAF6U+HH6B0TEzvPuB25fC+TlMcSu7wy4budLvRA=";
-    };
-  });
-
   uutf = osuper.uutf.overrideAttrs (_: {
     pname = "uutf";
   });
