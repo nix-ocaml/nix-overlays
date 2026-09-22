@@ -3300,14 +3300,6 @@ with oself;
         }
   );
 
-  uucd = osuper.uucd.overrideAttrs (_: {
-    version = "18.0.0";
-    src = builtins.fetchurl {
-      url = "https://erratique.ch/software/uucd/releases/uucd-18.0.0.tbz";
-      sha256 = "sha256-6HSF72EBD7VUAJ+PMrvFWxp7DF1p771LjM7JNRRfYHQ=";
-    };
-  });
-
   uucp = osuper.uucp.overrideAttrs (_: {
     version = "18.0.0";
     src = builtins.fetchurl {
