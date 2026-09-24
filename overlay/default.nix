@@ -1,12 +1,9 @@
-# `nixpkgs` here are the `nixpkgs` sources, i.e. the flake input
-nixpkgs:
-
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
 final: prev:
 
 let
-  overlay = import ./overlay.nix nixpkgs;
+  overlay = import ./overlay.nix;
 in
 
 overlay final prev

@@ -13,7 +13,7 @@
   outputs =
     { self, nixpkgs }:
     let
-      overlay = import ./overlay nixpkgs;
+      overlay = import ./overlay;
     in
     {
       lib = nixpkgs.lib;

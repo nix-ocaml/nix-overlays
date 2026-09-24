@@ -1,6 +1,3 @@
-# `nixpkgs` here are the `nixpkgs` sources, i.e. the flake input
-nixpkgs:
-
 # This might be helfpul later:
 # https://www.reddit.com/r/NixOS/comments/6hswg4/how_do_i_turn_an_overlay_into_a_proper_package_set/
 self: super:
@@ -17,21 +14,13 @@ let
     haskellPackages
     ;
 
-  overlayOCamlPackages =
-    attrs:
-    import ../ocaml/overlay-ocaml-packages.nix (
-      attrs
-      // {
-        inherit nixpkgs;
-      }
-    );
+  overlayOCamlPackages = attrs: import ../ocaml/overlay-ocaml-packages.nix attrs;
 in
 
 (overlayOCamlPackages {
   inherit self super;
   overlays = [
     (callPackage ../ocaml {
-      inherit nixpkgs;
       super-opaline = super.opaline;
       oniguruma-lib = super.oniguruma;
     })
@@ -167,8 +156,8 @@ in
   # with musl.
   libpq =
     (
-      (super.callPackage "${nixpkgs}/pkgs/servers/sql/postgresql/generic.nix" (
-        import "${nixpkgs}/pkgs/servers/sql/postgresql/18.nix" // { inherit self; }
+      (super.callPackage "${super.path}/pkgs/servers/sql/postgresql/generic.nix" (
+        import "${super.path}/pkgs/servers/sql/postgresql/18.nix" // { inherit self; }
       )).override
         {
           # a new change does some shenanigans to get llvmStdenv + lld which breaks
@@ -191,7 +180,7 @@ in
         finalAttrs: o:
         let
           pg_config = super.writeShellScriptBin "pg_config" (
-            builtins.readFile "${nixpkgs}/pkgs/servers/sql/postgresql/pg_config.sh"
+            builtins.readFile "${super.path}/pkgs/servers/sql/postgresql/pg_config.sh"
           );
         in
         {
