@@ -107,6 +107,7 @@ let
       linuxHeaders
       pam
       net-snmp
+      path
       stdenv
       ;
     zstd = zstd-oc;
