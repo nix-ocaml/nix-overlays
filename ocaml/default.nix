@@ -1,5 +1,4 @@
 {
-  nixpkgs,
   libmysqlclient,
   mariadb,
   bzip2,
@@ -88,10 +87,10 @@ let
 
   # Jane Street
   janePackage_0_16 =
-    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
+    oself.callPackage "${osuper.path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
       { };
   janePackage_0_17 =
-    oself.callPackage "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/janePackage_0_17.nix"
+    oself.callPackage "${osuper.path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_17.nix"
       { };
 
   janeStreet_0_16 = import ./janestreet-0.16.nix {
@@ -105,7 +104,6 @@ let
       lib
       krb5
       linuxHeaders
-      nixpkgs
       pam
       net-snmp
       stdenv
@@ -224,10 +222,10 @@ with oself;
     ];
   };
 
-  bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/bap" {
+  bap = callPackage "${osuper.path}/pkgs/development/ocaml-modules/bap" {
     inherit (llvmPackages) llvm;
   };
-  ppx_bap = callPackage "${nixpkgs}/pkgs/development/ocaml-modules/ppx_bap" { };
+  ppx_bap = callPackage "${osuper.path}/pkgs/development/ocaml-modules/ppx_bap" { };
 
   batteries = osuper.batteries.overrideAttrs (_: {
     postPatch = ''
@@ -835,7 +833,7 @@ with oself;
   dune_2 = oself.dune_3;
   dune_3 =
     let
-      dune_pkg = oself.callPackage "${nixpkgs}/pkgs/by-name/du/dune/package.nix" {
+      dune_pkg = oself.callPackage "${osuper.path}/pkgs/by-name/du/dune/package.nix" {
         buildPackages = buildPackages // {
           buildPackages = {
             ocamlPackages = oself;

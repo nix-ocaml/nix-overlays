@@ -6,7 +6,6 @@
   fzf,
   lib,
   linuxHeaders,
-  nixpkgs,
   pam,
   krb5,
   net-snmp,
@@ -2346,7 +2345,7 @@ in
       angstrom-async
       faraday
     ];
-    patches = [ "${nixpkgs}/pkgs/development/ocaml-modules/janestreet/vcaml.patch" ];
+    patches = [ "${self.path}/pkgs/development/ocaml-modules/janestreet/vcaml.patch" ];
   };
 
   virtual_dom = janePackage {

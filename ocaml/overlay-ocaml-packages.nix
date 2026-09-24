@@ -1,5 +1,4 @@
 {
-  nixpkgs,
   overlays,
   super,
   updateOCamlPackages ? false,
@@ -31,7 +30,7 @@ let
       ...
     }@extraOpts:
     ocaml-ng.mkOcamlPackages (
-      (callPackage (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
+      (callPackage (import "${super.path}/pkgs/development/compilers/ocaml/generic.nix" {
         inherit major_version minor_version patch_version;
       }) { }).overrideAttrs
         (
@@ -235,7 +234,7 @@ let
           ocamlPackages_jst = ocaml-ng.ocamlPackages_4_14.overrideScope (
             oself: osuper: {
               ocaml =
-                (callPackage (import "${nixpkgs}/pkgs/development/compilers/ocaml/generic.nix" {
+                (callPackage (import "${super.path}/pkgs/development/compilers/ocaml/generic.nix" {
                   major_version = "4";
                   minor_version = "14";
                   patch_version = "1+jst";
