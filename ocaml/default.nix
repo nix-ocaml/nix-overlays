@@ -869,8 +869,8 @@ with oself;
       src = fetchFromGitHub {
         owner = "anmonteiro";
         repo = "dune";
-        rev = "d244859fa04e4b0156b36cb0cea1995fd051a43d";
-        hash = "sha256-xeFoy98GFK0RFaXMp7qfjWkofGOKGzQl4mauDsYZfks=";
+        rev = "ba034a47bd77925a91f30c4705794129a1524c31";
+        hash = "sha256-j3VqFfNMDRrm0D12gL5qmp/N2oZ4uHuantb14wFW/Jg=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
