@@ -1280,12 +1280,25 @@ in
     ];
   };
 
-  ocaml_intrinsics_kernel = janePackage {
-    pname = "ocaml_intrinsics_kernel";
-    version = "0.17.1";
-    hash = "sha256-2fBrJtI7bXbdFlILKhcBWWj4Q8/9hpi73egVbZmgBak=";
-    meta.description = "Intrinsics";
-  };
+  ocaml_intrinsics_kernel = janePackage (
+    {
+      pname = "ocaml_intrinsics_kernel";
+      version = "0.17.1";
+      hash = "sha256-2fBrJtI7bXbdFlILKhcBWWj4Q8/9hpi73egVbZmgBak=";
+      meta.description = "Intrinsics";
+    }
+    // lib.optionalAttrs (lib.versionAtLeast self.ocaml.version "5.6") {
+      # OCaml 5.6 defines these bytecode primitives in its runtime.
+      postPatch = ''
+        substituteInPlace src/int_stubs.c \
+          --replace-fail 'caml_int_clz(value' 'caml_intrinsics_kernel_int_clz(value' \
+          --replace-fail 'caml_int_ctz(value' 'caml_intrinsics_kernel_int_ctz(value'
+        substituteInPlace src/int.ml \
+          --replace-fail '"caml_int_clz"' '"caml_intrinsics_kernel_int_clz"' \
+          --replace-fail '"caml_int_ctz"' '"caml_intrinsics_kernel_int_ctz"'
+      '';
+    }
+  );
 
   ocaml_openapi_generator = janePackage {
     pname = "ocaml_openapi_generator";
