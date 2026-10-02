@@ -7,6 +7,7 @@
   buildPackages,
   cmake,
   fetchpatch,
+  fetchurl,
   fetchFromBitbucket,
   fetchFromGitHub,
   fetchFromGitLab,
@@ -844,12 +845,10 @@ with oself;
       };
     in
     dune_pkg.overrideAttrs (o: {
-      version = "3.25-dev";
-      src = fetchFromGitHub {
-        owner = "ocaml";
-        repo = "dune";
-        rev = "ab02ae0d95df25b4118047a421d955df0579cf58";
-        hash = "sha256-Sjh12lyuXopNU0sU6fX1E0cdR17qbOFkPZJDfsn1I1I=";
+      version = "3.25.0_alpha0";
+      src = fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/3.25.0_alpha0/dune-3.25.0.alpha0.tbz";
+        hash = "sha256-g5WaPUou790kNkkNdof1AxazCTLb7VYq1VMptQOKgbY=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
@@ -867,10 +866,14 @@ with oself;
     inherit (dune_3) src version;
     propagatedBuildInputs = [ csexp ];
   };
-  dune-build-info = osuper.dune-build-info.overrideAttrs (_: {
+  dune-build-info = osuper.dune-build-info.overrideAttrs (o: {
+    inherit (dune_3) src version;
     buildInputs = [ ];
     propagatedBuildInputs = [ pp ];
     preBuild = "";
+    meta = o.meta // {
+      inherit (dune_3.meta) homepage;
+    };
   });
   dune-configurator = osuper.dune-configurator.overrideAttrs (_: {
     preBuild = "";
@@ -881,9 +884,11 @@ with oself;
   dune-rpc = osuper.dune-rpc.overrideAttrs (_: {
     buildInputs = [ ];
     propagatedBuildInputs = [
+      csexp
       stdune
       ordering
       pp
+      re
       xdg
       dyn
       ocamlc-loc
@@ -895,20 +900,9 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     preBuild = "";
   });
-  dune-action-plugin = osuper.dune-action-plugin.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [
-      pp
-      dune-rpc
-    ];
-    preBuild = "";
-  });
-  dune-glob = osuper.dune-glob.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [
-      pp
-      re
-    ];
-    preBuild = "";
-  });
+  # These packages have been merged into dune-rpc.
+  dune-action-plugin = null;
+  dune-glob = null;
   dune-private-libs = osuper.dune-private-libs.overrideAttrs (o: {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ pp ];
     preBuild = "";
@@ -1046,6 +1040,14 @@ with oself;
     else
       null;
 
+  eris = osuper.eris.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace lib/crypto/zig/dune \
+        --replace-fail '(external_library_name liberis_crypto)' \
+        '(external_library_name liberis_crypto) (deps eris_crypto.h)'
+    '';
+  });
+
   extlib-1-7-9 = osuper.extlib-1-7-9.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "ygrek";
@@ -1053,6 +1055,14 @@ with oself;
       rev = "99333426030c6d5a1d782a4193dbb9230e8455ee";
       hash = "sha256-5DcvGuCtGjMILGozlYRvpUSNh6+P6r/j4R8aVUtVlFU=";
     };
+  });
+
+  ez_opam_file = osuper.ez_opam_file.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace test/output-tests/dune \
+        --replace-fail '(run cat test1.expected)' \
+        '(run cat %{dep:test1.expected})'
+    '';
   });
 
   ezgzip = buildDunePackage rec {

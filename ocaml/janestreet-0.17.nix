@@ -2436,6 +2436,9 @@ in
     ];
     prePatch = ''
       substituteInPlace src/re2_c/dune --replace-fail 'CXX=g++' 'CXX=c++'
+      substituteInPlace src/dune \
+        --replace-fail '(names stubs)' \
+        '(names stubs) (extra_deps (source_tree re2_c/libre2))'
     '';
   };
 
