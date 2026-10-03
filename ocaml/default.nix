@@ -1533,6 +1533,11 @@ with oself;
         "";
   });
 
+  lambda-term = osuper.lambda-term.overrideAttrs (_: {
+    # Keep man-page paths consistent with the installed dune-package manifest.
+    dontGzipMan = true;
+  });
+
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     doCheck = false;
     patches = [ ];
