@@ -1533,6 +1533,10 @@ with oself;
         "";
   });
 
+  lambda-term = osuper.lambda-term.overrideAttrs (_: {
+    dontGzipMan = true;
+  });
+
   landmarks-ppx = osuper.landmarks-ppx.overrideAttrs (_: {
     doCheck = false;
     patches = [ ];
