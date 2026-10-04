@@ -280,6 +280,26 @@ with oself;
         --replace-fail \
           '  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)' \
           $'##V>=5.6##  let singleton_to_binding m =\n##V>=5.6##    match sget m with\n##V>=5.6##    | Node (Empty, binding, Empty) -> Some binding\n##V>=5.6##    | Empty | Node _ -> None\n\n  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)'
+      ${lib.optionalString (lib.versionAtLeast ocaml.version "5.6") ''
+        substituteInPlace src/batInt32.ml src/batInt32.mli \
+          --replace-fail \
+            $'"caml_int32_to_float"\n##V>=4.3## "caml_int32_to_float_unboxed" [@@unboxed] [@@noalloc]' \
+            '"%int32_to_float"'
+        substituteInPlace src/batInt64.ml src/batInt64.mli \
+          --replace-fail \
+            $'"caml_int64_of_float"\n##V>=4.3## "caml_int64_of_float_unboxed" [@@unboxed] [@@noalloc]' \
+            '"%int64_of_float"' \
+          --replace-fail \
+            $'"caml_int64_to_float"\n##V>=4.3## "caml_int64_to_float_unboxed" [@@unboxed] [@@noalloc]' \
+            '"%int64_to_float"'
+        substituteInPlace src/batNativeint.ml src/batNativeint.mli \
+          --replace-fail \
+            $'"caml_nativeint_of_float"\n##V>=4.3## "caml_nativeint_of_float_unboxed" [@@unboxed] [@@noalloc]' \
+            '"%nativeint_of_float"' \
+          --replace-fail \
+            $'"caml_nativeint_to_float"\n##V>=4.3## "caml_nativeint_to_float_unboxed" [@@unboxed] [@@noalloc]' \
+            '"%nativeint_to_float"'
+      ''}
     '';
   });
 
