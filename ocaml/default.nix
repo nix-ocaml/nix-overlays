@@ -2802,6 +2802,12 @@ with oself;
           sha256 = "18r96h331f4d3qd2z7cmm0qca3xblcp80kfk2fi70rig22rlkq49";
         };
 
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionOlder "5.6" ocaml.version) ''
+        echo "(version $version)" >> dune-project
+      '';
+
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -3064,8 +3070,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "anmonteiro";
       repo = "stdcompat";
-      rev = "23058cc632c4fcd3aaa6f7fe75fb47f71e684e37";
-      hash = "sha256-0MFceuHJo0kPRHpSbiSZfIDt9RAzpjoD/mUeA/Gd6IU=";
+      rev = "530d6a5715c54d01a62bdd02b8f0f989cd060d83";
+      hash = "sha256-xgD1fC+aFwvKpUfu5orp8dujKsFNIyexrzZk1wOeBPo=";
     };
 
     dontConfigure = true;
