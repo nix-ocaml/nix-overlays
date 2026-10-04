@@ -2988,6 +2988,10 @@ with oself;
 
   multicore-magic = disableTests osuper.multicore-magic;
 
+  saturn = osuper.saturn.overrideAttrs (o: {
+    patches = (o.patches or [ ]) ++ [ ./saturn-ws-deque-ordering.patch ];
+  });
+
   semver = buildDunePackage {
     pname = "semver";
     version = "0.2.0";
