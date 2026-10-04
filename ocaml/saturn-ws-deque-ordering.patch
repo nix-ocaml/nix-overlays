@@ -1,0 +1,15 @@
+diff --git a/src/ws_deque.ml b/src/ws_deque.ml
+--- a/src/ws_deque.ml
++++ b/src/ws_deque.ml
+@@ -109,9 +109,8 @@
+ let pop_as : type a r. a t -> (a, r) poly -> r =
+  fun q poly ->
+   let b = Atomic.fetch_and_add q.bottom (-1) - 1 in
+-  (* Read of [top] at this point requires no fence as we simply need to ensure
+-     that the read happens after updating [bottom]. *)
+-  let t = Atomic.fenceless_get q.top in
++  (* The read of [top] must be ordered after updating [bottom]. *)
++  let t = Atomic.get q.top in
+   let size = b - t in
+   if 0 < size then begin
+     let a = q.tab in
