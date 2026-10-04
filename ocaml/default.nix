@@ -2802,6 +2802,12 @@ with oself;
           sha256 = "18r96h331f4d3qd2z7cmm0qca3xblcp80kfk2fi70rig22rlkq49";
         };
 
+    postPatch =
+      (o.postPatch or "")
+      + lib.optionalString (lib.versionOlder "5.6" ocaml.version) ''
+        echo "(version $version)" >> dune-project
+      '';
+
     propagatedBuildInputs = [
       ocaml-compiler-libs
       ppx_derivers
@@ -3067,6 +3073,27 @@ with oself;
       rev = "23058cc632c4fcd3aaa6f7fe75fb47f71e684e37";
       hash = "sha256-0MFceuHJo0kPRHpSbiSZfIDt9RAzpjoD/mUeA/Gd6IU=";
     };
+
+    postPatch = lib.optionalString (lib.versionAtLeast ocaml.version "5.6") ''
+      substituteInPlace stdcompat__int32_s.mli.in \
+        --replace-fail \
+          $'"caml_int32_to_float" "caml_int32_to_float_unboxed"\n[@@unboxed ][@@noalloc ]' \
+          '"%int32_to_float"'
+      substituteInPlace stdcompat__int64_s.mli.in \
+        --replace-fail \
+          $'"caml_int64_of_float" "caml_int64_of_float_unboxed"\n[@@unboxed ][@@noalloc ]' \
+          '"%int64_of_float"' \
+        --replace-fail \
+          $'"caml_int64_to_float" "caml_int64_to_float_unboxed"\n[@@unboxed ][@@noalloc ]' \
+          '"%int64_to_float"'
+      substituteInPlace stdcompat__nativeint_s.mli.in \
+        --replace-fail \
+          $'"caml_nativeint_of_float"\n    "caml_nativeint_of_float_unboxed"[@@unboxed ][@@noalloc ]' \
+          '"%nativeint_of_float"' \
+        --replace-fail \
+          $'"caml_nativeint_to_float"\n    "caml_nativeint_to_float_unboxed"[@@unboxed ][@@noalloc ]' \
+          '"%nativeint_to_float"'
+    '';
 
     dontConfigure = true;
 
