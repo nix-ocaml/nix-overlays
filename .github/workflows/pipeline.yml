@@ -142,11 +142,15 @@ jobs:
           - { ocaml-version: 5_4, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
-          - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
-          - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
         target:
           - arm64
           - musl
+        include:
+          # arm64_* job sets only support x86_64-linux build hosts.
+          - setup: { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
+            target: musl
+          - setup: { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
+            target: musl
     name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }}, ${{ matrix.setup.os }})
     runs-on: ${{ matrix.setup.os }}
     env:
