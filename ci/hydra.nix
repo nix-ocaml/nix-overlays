@@ -150,7 +150,7 @@ with filter;
   musl_5_4 = (if system == "x86_64-linux" then crossTarget pkgs.pkgsCross.musl64 "5_4" else { });
 
   arm64_5_5 = (
-    if system == "x86_64-linux" then
+    if system == "x86_64-linux" || system == "aarch64-linux" then
       crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_5"
     else
       { }
@@ -165,7 +165,7 @@ with filter;
       { };
 
   arm64_5_6 = (
-    if system == "x86_64-linux" then
+    if system == "x86_64-linux" || system == "aarch64-linux" then
       crossTarget pkgs.pkgsCross.aarch64-multiplatform-musl "5_6"
     else
       { }
