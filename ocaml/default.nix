@@ -2785,28 +2785,15 @@ with oself;
 
   ppx_tools = if lib.versionOlder "5.2" ocaml.version then null else osuper.ppx_tools;
 
-  ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (o: {
-    version = "0.38.0";
-    name = "ocaml${ocaml.version}-ppxlib-0.38.0";
-    src =
-      if lib.versionOlder "5.6" ocaml.version then
-        fetchFromGitHub {
-          owner = "ocaml-ppx";
-          repo = "ppxlib";
-          rev = "377fee7793ee12d82772c619efee7985ea31f53f";
-          hash = "sha256-k/Z+yZVWVhXm5mF7loslb0KKX6jb3Y6d6LSKBVFb+50=";
-        }
-      else
-        builtins.fetchurl {
-          url = "https://github.com/ocaml-ppx/ppxlib/releases/download/0.38.0/ppxlib-0.38.0.tbz";
-          sha256 = "18r96h331f4d3qd2z7cmm0qca3xblcp80kfk2fi70rig22rlkq49";
-        };
-
-    postPatch =
-      (o.postPatch or "")
-      + lib.optionalString (lib.versionOlder "5.6" ocaml.version) ''
-        echo "(version $version)" >> dune-project
-      '';
+  ppxlib_gt_0_37 = osuper.ppxlib.overrideAttrs (_: {
+    version = "0.39.0";
+    name = "ocaml${ocaml.version}-ppxlib-0.39.0";
+    src = fetchFromGitHub {
+      owner = "ocaml-ppx";
+      repo = "ppxlib";
+      tag = "0.39.0";
+      hash = "sha256-G61N6fSW4g+urotTzt3qjb+opA9K9q6HjbzI8XlzyWI=";
+    };
 
     propagatedBuildInputs = [
       ocaml-compiler-libs
