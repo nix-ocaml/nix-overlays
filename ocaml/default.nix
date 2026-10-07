@@ -61,14 +61,14 @@ let
     src = fetchFromGitHub {
       owner = "ocaml";
       repo = "opam";
-      rev = "2.6.0";
-      hash = "sha256-ZlwtUCWms8S08RL4isvfS2ZrW1gc8pSwehltqGDPwYs=";
+      tag = "2.6.1";
+      hash = "sha256-4YHNhsFC1ZUt+6AY7n9GO33hZFXufxHGuQHxSQRcWSg=";
     };
-    version = "2.6.0";
+    version = "2.6.1";
     meta = with lib; {
       description = "A package manager for OCaml";
       homepage = "https://opam.ocaml.org/";
-      changelog = "https://github.com/ocaml/opam/raw/2.6.0/CHANGES";
+      changelog = "https://github.com/ocaml/opam/raw/2.6.1/CHANGES";
       maintainers = [
         maintainers.henrytill
       ];
@@ -2989,6 +2989,14 @@ with oself;
   };
 
   sedlex = (osuper.sedlex.override { inherit ppxlib; }).overrideAttrs (_: {
+    version = "3.8.1";
+    name = "ocaml${ocaml.version}-sedlex-3.8.1";
+    src = fetchurl {
+      url = "https://github.com/ocaml-community/sedlex/releases/download/v3.8.1/sedlex-3.8.1.tbz";
+      hash = "sha256-uO+unSqaOcLKLEOiaE8/toaod1Mp9/mwfD49iit2gtY=";
+    };
+    # The release archive includes the generated Unicode tables.
+    preBuild = "";
     doCheck = false;
     buildInputs = [ ];
   });
