@@ -3057,11 +3057,13 @@ with oself;
   };
 
   ssl = (osuper.ssl.override { openssl = openssl-oc.dev; }).overrideAttrs (o: {
+    version = "0.8.0";
+    name = "ocaml${ocaml.version}-ssl-0.8.0";
     src = fetchFromGitHub {
       owner = "savonet";
       repo = "ocaml-ssl";
-      rev = "v0.7.0";
-      hash = "sha256-gi80iwlKaI4TdAVnCyPG03qRWFa19DHdTrA0KMFBAc4=";
+      tag = "v0.8.0";
+      hash = "sha256-bju77cRwfzxer1VlRN+GLt0wkKbjPIsIQcOTT4zpgU8=";
     };
     nativeCheckInputs = [ openssl-oc.bin ];
     buildInputs = o.buildInputs ++ [ dune-configurator ];
