@@ -1746,9 +1746,11 @@ with oself;
   # conflicts)
   # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
   mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+    version = "2.7.0";
+    name = "ocaml${ocaml.version}-mdx-2.7.0";
     src = builtins.fetchurl {
-      url = "https://github.com/realworldocaml/mdx/releases/download/2.6.0/mdx-2.6.0.tbz";
-      sha256 = "0g3n8dz0r3lq4wlabnihnzki2ql0mhqca8ccvx7h98hb1nf1y09q";
+      url = "https://github.com/realworldocaml/mdx/releases/download/2.7.0/mdx-2.7.0.tbz";
+      sha256 = "0pr6nyndzgwlyxw69fmkz7z74mv5v9akrvd0p323l5sxw2vsxzg2";
     };
 
     doCheck = false;
