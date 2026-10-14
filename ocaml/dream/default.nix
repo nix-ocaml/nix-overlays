@@ -40,6 +40,8 @@ buildDunePackage {
   pname = "dream";
   inherit (dream-pure) src version;
 
+  patches = [ ./caqti-3.patch ];
+
   postPatch = ''
     substituteInPlace src/http/adapt.ml \
       --replace-fail \
