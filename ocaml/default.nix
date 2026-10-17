@@ -1434,8 +1434,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "ocsigen";
       repo = "js_of_ocaml";
-      rev = "8b46f0628091b73513141a010c3ac3914a872395";
-      hash = "sha256-h51yGnafwhhmz7Lk66pphlWsf6i1l+woyYfwP+voUVA=";
+      rev = "acefa21317f6b1bd7b24dc199a6758323ad4db0c";
+      hash = "sha256-HeeNdSywQlqP+0OXArZ2SitCQKLZ+yfxIqus1OH98ME=";
     };
   });
 
