@@ -1451,11 +1451,9 @@ with oself;
           sha256 = "0f82rnhx4ig7n1vsyrvpjjn2mq271nnzq2v07cdnbq4q35qh63wf";
         }
       else if lib.versionOlder "5.5" ocaml.version then
-        fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml-lsp";
-          rev = "446443286e2653eaffc428693a4ad26fc1b64d12";
-          hash = "sha256-LeM2qVxwifmCmluIZ1ENZsVOYflbkYudq69wcHqLehA=";
+        builtins.fetchurl {
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.28.0/lsp-1.28.0.tbz";
+          sha256 = "07r5xwl2ybcfa467fcl7dhl6vvv2qbgq2g3vj8rwdany4nkdpz53";
         }
       else if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub {
