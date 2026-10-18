@@ -90,7 +90,7 @@ with filter;
   };
 
   build_top-level-packages = {
-    inherit (pkgs) melange-relay-compiler terraform;
+    inherit (pkgs) terraform; # melange-relay-compiler
   }
   // (
     if stdenv.isLinux then
