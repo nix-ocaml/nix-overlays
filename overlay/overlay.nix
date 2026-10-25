@@ -21,6 +21,7 @@ in
   inherit self super;
   overlays = [
     (callPackage ../ocaml {
+      super-opam = super.opam;
       super-opaline = super.opaline;
       oniguruma-lib = super.oniguruma;
     })
