@@ -1427,14 +1427,14 @@ with oself;
 
   jose = callPackage ./jose { };
 
-  js_of_ocaml-compiler = osuper.js_of_ocaml-compiler.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocsigen";
-      repo = "js_of_ocaml";
-      rev = "acefa21317f6b1bd7b24dc199a6758323ad4db0c";
-      hash = "sha256-HeeNdSywQlqP+0OXArZ2SitCQKLZ+yfxIqus1OH98ME=";
-    };
-  });
+  js_of_ocaml-compiler =
+    (osuper.js_of_ocaml-compiler.override { version = "6.5.0"; }).overrideAttrs
+      (_: {
+        src = fetchurl {
+          url = "https://github.com/ocsigen/js_of_ocaml/releases/download/6.5.0/js_of_ocaml-6.5.0.tbz";
+          hash = "sha256-qZHOJRdaWhMkDIv2Q1S4814KjXIjuQvvAboyvG+SnPQ=";
+        };
+      });
 
   js_of_ocaml-toplevel = osuper.js_of_ocaml-toplevel.overrideAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ js_of_ocaml ];
