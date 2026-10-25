@@ -3328,6 +3328,7 @@ with oself;
         rev = "4c1559fd702fedc315fa9d8fb972411a12d93f7c";
         hash = "sha256-PhunXce0+cZBlxknmQ9VUKDIK+9n2JW6q8ReTdYAM6w=";
       };
+      dontGzipMan = true;
       doCheck = true;
       checkInputs = [ alcotest ];
     }

@@ -31,9 +31,12 @@ buildDunePackage {
         fetchSubmodules = true;
       }
     else if lib.versionAtLeast ocaml.version "5.5" then
-      builtins.fetchurl {
-        url = "https://github.com/melange-re/melange/releases/download/7.0.1-55/melange-7.0.1-55.tbz";
-        sha256 = "1yvs183qgywcpm5x8sq36pg066hc4wzi780nvvmjh9d81n3c0xw3";
+      fetchFromGitHub {
+        owner = "melange-re";
+        repo = "melange";
+        rev = "a8d215076ae10e26e95d2fc539d209ac4b927b31";
+        hash = "sha256-DzggayuNopklTQCIKlo5VVFmYS6GAkqFpRpVKpZu0ME=";
+        fetchSubmodules = true;
       }
     else if lib.versionOlder "5.4" ocaml.version then
       builtins.fetchurl {
