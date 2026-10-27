@@ -2241,7 +2241,13 @@ with oself;
     meta = owl-base.meta;
   });
 
-  ocaml_pcre = (osuper.ocaml_pcre.override { pcre = pcre-oc; });
+  # The bindings still need PCRE 1, which nixpkgs no longer provides.
+  ocaml_pcre = osuper.ocaml_pcre.overrideAttrs (old: {
+    propagatedBuildInputs = [ pcre-oc ];
+    meta = old.meta // {
+      broken = false;
+    };
+  });
 
   otfed = osuper.otfed.overrideAttrs (o: {
     buildInputs = [
