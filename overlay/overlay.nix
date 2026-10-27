@@ -451,16 +451,16 @@ in
     gmp
     libev
     lz4
-    pcre
     rdkafka
     sqlite
     zlib
     zstd
     readline
     ;
+  pcre = callPackage ../pcre { pcre = self.pcre-oc; };
   libffi = super.libffi.overrideAttrs (_: {
     doCheck = false;
   });
-  openssl = super.openssl_4_0;
+  openssl = super.openssl_4_1;
   curl = super.curl.override { openssl = self.openssl-oc; };
 })
