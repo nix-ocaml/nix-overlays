@@ -461,6 +461,15 @@ in
   libffi = super.libffi.overrideAttrs (_: {
     doCheck = false;
   });
-  openssl = super.openssl_4_1;
+  openssl = super.openssl_4_1.overrideAttrs (old: {
+    # OpenSSL 4.1 merged async_posix.h into async_local.h.
+    postPatch =
+      lib.replaceStrings
+        [ "crypto/async/arch/async_posix.h" ]
+        [
+          "crypto/async/async_local.h"
+        ]
+        old.postPatch;
+  });
   curl = super.curl.override { openssl = self.openssl-oc; };
 })
