@@ -2146,11 +2146,23 @@ with oself;
     ];
   };
 
-  odoc = osuper.odoc.overrideAttrs (old: {
-    doCheck = if lib.versionAtLeast ocaml.version "5.6" then false else old.doCheck or true;
-    patches =
-      (old.patches or [ ])
-      ++ lib.optionals (lib.versionAtLeast ocaml.version "5.6") [ ./odoc-ocaml-5.6.patch ];
+  odoc = osuper.odoc.overrideAttrs (_: {
+    checkInputs = [
+      bos
+      sexplib0
+      yojson
+    ];
+  });
+
+  odoc-parser = osuper.odoc-parser.overrideAttrs (old: rec {
+    version = "3.2.2";
+    src = fetchurl {
+      url = "https://github.com/ocaml/odoc/releases/download/${version}/odoc-${version}.tbz";
+      hash = "sha256-17lWfsny+ZxFV5mdeOJoyXvLXKuHcLXnTWlPWr1t/64=";
+    };
+    meta = old.meta // {
+      changelog = "https://github.com/ocaml/odoc/blob/${version}/CHANGES.md";
+    };
   });
 
   oidc = callPackage ./oidc { };
