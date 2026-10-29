@@ -1233,7 +1233,16 @@ with oself;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [ ppxlib ];
   });
 
-  jose = callPackage ./jose { };
+  jose = osuper.jose.overrideAttrs (old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      digestif
+      eqaf
+      mirage-crypto
+      mirage-crypto-pk
+      mirage-crypto-ec
+      ptime
+    ];
+  });
 
   js_of_ocaml-compiler =
     (osuper.js_of_ocaml-compiler.override { version = "6.5.0"; }).overrideAttrs
