@@ -1,5 +1,6 @@
 {
   buildDunePackage,
+  fetchzip,
   timere,
   oseq,
   re,
@@ -8,9 +9,15 @@
   mparser,
 }:
 
-buildDunePackage {
+buildDunePackage rec {
   pname = "timere-parse";
-  inherit (timere) src version;
+  version = "0.0.7";
+  src = fetchzip {
+    url = "https://github.com/daypack-dev/timere/releases/download/timere-parse-${version}/timere-parse-${version}.tar.gz";
+    hash = "sha256-I/iiYnVP59AIxKwhYgPZEXMqG7XHNJNm85wwybKnDHA=";
+    stripRoot = false;
+  };
+
   propagatedBuildInputs = [
     oseq
     re
