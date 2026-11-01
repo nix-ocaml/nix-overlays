@@ -34,6 +34,14 @@ in
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.latest;
 
+  # Keep GTK2 available for lablgtk and cairo2-gtk during upstream deprecation.
+  # https://github.com/NixOS/nixpkgs/issues/410814
+  gtk2 = super.gtk2.overrideAttrs (old: {
+    meta = old.meta // {
+      problems = builtins.removeAttrs (old.meta.problems or { }) [ "broken" ];
+    };
+  });
+
   tree-sitter = super.tree-sitter.overrideAttrs (
     old:
     let
