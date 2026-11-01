@@ -1,6 +1,11 @@
 { lib, stdenv }:
 let
   baseIgnoredPackages = [
+    # GTK2 is deprecated and will be removed from nixpkgs.
+    "cairo2-gtk"
+    "lablgtk"
+    "zelus-gtk"
+
     # not supported in 4.11+
     "bap"
     "lwt_camlp4"
@@ -233,7 +238,6 @@ let
     "systemd"
 
     "zelus"
-    "zelus-gtk"
     "fuse3"
     "ocamlfuse"
 
