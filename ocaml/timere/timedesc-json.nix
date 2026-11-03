@@ -6,7 +6,7 @@
 
 buildDunePackage {
   pname = "timedesc-json";
-  inherit (timedesc) src version;
+  inherit (timedesc) src version sourceRoot;
   propagatedBuildInputs = [
     timedesc
     yojson
