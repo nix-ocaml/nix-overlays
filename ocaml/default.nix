@@ -493,6 +493,9 @@ with oself;
         substituteInPlace lib/dune \
           --replace-fail "  values_intf" "" \
           --replace-fail "  properties_intf" ""
+        substituteInPlace test/cram/public_modules.t/run.t \
+          --replace-fail " Properties_intf" "" \
+          --replace-fail " Values_intf" ""
       '';
     }
   );
