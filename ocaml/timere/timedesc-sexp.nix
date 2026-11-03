@@ -1,13 +1,12 @@
 {
   buildDunePackage,
   timedesc,
-  timedesc-tzlocal,
   sexplib,
 }:
 
 buildDunePackage {
   pname = "timedesc-sexp";
-  inherit (timedesc-tzlocal) src version;
+  inherit (timedesc) src version sourceRoot;
   propagatedBuildInputs = [
     timedesc
     sexplib

@@ -7,6 +7,7 @@ let
     lib
     stdenv
     fetchFromGitHub
+    fetchurl
     callPackage
     fetchpatch
     substitute
@@ -135,6 +136,46 @@ in
       });
 
   # Other packages
+
+  docfd = super.docfd.overrideAttrs (old: {
+    version = "13.2.0";
+    src = fetchurl {
+      url = "https://github.com/darrenldl/docfd/releases/download/13.2.0/13.2.0.tar.gz";
+      hash = "sha256-hpx8JhRptncCoRRvN1W0tVI7uQ+rRl3FEu7dmvuL18Q=";
+    };
+    sourceRoot = ".";
+    minimalOCamlVersion = "5.2";
+    patches = [ ];
+    buildInputs =
+      old.buildInputs
+      ++ (with self.ocamlPackages; [
+        angstrom
+        containers
+        fmt
+        uucp
+      ]);
+  });
+
+  solo5 = super.solo5.overrideAttrs (_: {
+    version = "0.13.1";
+    src = fetchurl {
+      url = "https://github.com/Solo5/solo5/releases/download/v0.13.1/solo5-v0.13.1.tar.gz";
+      hash = "sha256-Fbu2XnLb6yBmiMJD5eqejlVpi68yvMRggYrhXtDdQ0Y=";
+    };
+  });
+
+  why3 = super.why3.overrideAttrs (old: {
+    version = "1.9.0";
+    src = fetchurl {
+      url = "https://why3.gitlabpages.inria.fr/releases/why3-1.9.0.tar.gz";
+      hash = "sha256-VXmTFiFGyRZwCCLVPo+3V/bwPgbSILLI+5alc98PpKk=";
+    };
+    nativeBuildInputs = old.nativeBuildInputs ++ [
+      self.ocamlPackages.dune_3
+      self.emacs
+    ];
+    buildInputs = lib.remove self.emacs old.buildInputs;
+  });
 
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.

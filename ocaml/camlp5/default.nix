@@ -13,35 +13,15 @@
   camlp-streams,
 }:
 
-let
-  params =
-    if lib.versionAtLeast ocaml.version "5.4" then
-      rec {
-        version = "8.04.00";
-
-        src = fetchFromGitHub {
-          owner = "camlp5";
-          repo = "camlp5";
-          rev = version;
-          hash = "sha256-5IQVGm/tqEzXmZmSYGbGqX+KN9nQLQgw+sBP+F2keXo=";
-        };
-      }
-    else
-      rec {
-        version = "8.03.02";
-
-        src = fetchFromGitHub {
-          owner = "camlp5";
-          repo = "camlp5";
-          rev = version;
-          hash = "sha256-nz+VfGR/6FdBvMzPPpVpviAXXBWNqM3Ora96Yzx964o=";
-        };
-      };
-in
-
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "ocaml${ocaml.version}-camlp5";
-  inherit (params) src version;
+  version = "8.05.03";
+  src = fetchFromGitHub {
+    owner = "camlp5";
+    repo = "camlp5";
+    tag = version;
+    hash = "sha256-NzlNX5AYP/BgDowQj65aZUlGrJACrV05GUUIblxRdu0=";
+  };
 
   strictDeps = true;
 

@@ -2375,7 +2375,8 @@ in
 
   zstandard = janePackage {
     pname = "zstandard";
-    hash = "sha256-QcYqlOpCAr0owmO6sLDJhki8lUnNvtkaxldKb5I5AF0=";
+    version = "0.16.1";
+    hash = "sha256-9oni/GxFzGK1dHSbQAmtUVhM6tmSEB5zoz5bLafB4r0=";
     meta.description = "OCaml bindings to Zstandard";
     buildInputs = [ ppx_jane ];
     propagatedBuildInputs = [
