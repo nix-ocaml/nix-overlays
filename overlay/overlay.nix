@@ -164,19 +164,6 @@ in
     };
   });
 
-  why3 = super.why3.overrideAttrs (old: {
-    version = "1.9.0";
-    src = fetchurl {
-      url = "https://why3.gitlabpages.inria.fr/releases/why3-1.9.0.tar.gz";
-      hash = "sha256-VXmTFiFGyRZwCCLVPo+3V/bwPgbSILLI+5alc98PpKk=";
-    };
-    nativeBuildInputs = old.nativeBuildInputs ++ [
-      self.ocamlPackages.dune_3
-      self.emacs
-    ];
-    buildInputs = lib.remove self.emacs old.buildInputs;
-  });
-
   # Stripped down postgres without the `bin` part, to allow static linking
   # with musl.
   libpq =
