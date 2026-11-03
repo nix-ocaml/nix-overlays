@@ -916,6 +916,8 @@ with oself;
   });
   windtrap = osuper.windtrap.overrideAttrs (_: {
     version = "0.3.0";
+    # The domain tests use Gc.Memprof.discard, available from OCaml 5.3.
+    doCheck = lib.versionAtLeast ocaml.version "5.3";
     src = fetchurl {
       url = "https://github.com/invariant-hq/windtrap/releases/download/v0.3.0/windtrap-0.3.0.tbz";
       hash = "sha256-N4sqNKZl8FoBZOojjtHZg8OhXbougN5rfOqcmOQtZqk=";
