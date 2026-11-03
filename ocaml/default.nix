@@ -465,26 +465,37 @@ with oself;
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
   });
 
-  cascade = osuper.cascade.overrideAttrs (old: {
-    version = "1.2.1";
-    src = fetchurl {
-      url = "https://github.com/samoht/cascade/releases/download/1.2.1/cascade-1.2.1.tbz";
-      hash = "sha256-HPUHmzeXzW5w+87Y3CYxB081fTb83qhZfHuhesKQP24=";
-    };
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      fmt
-      markup
-      mtime
-    ];
-    buildInputs = old.buildInputs ++ [ cmdliner ];
-    nativeCheckInputs = old.nativeCheckInputs ++ [ python3 ];
-    checkInputs = old.checkInputs ++ [
-      alcotest
-      astring
-      bytesrw
-      re
-    ];
-  });
+  cascade = osuper.cascade.overrideAttrs (
+    old:
+    {
+      version = "1.2.1";
+      src = fetchurl {
+        url = "https://github.com/samoht/cascade/releases/download/1.2.1/cascade-1.2.1.tbz";
+        hash = "sha256-HPUHmzeXzW5w+87Y3CYxB081fTb83qhZfHuhesKQP24=";
+      };
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        fmt
+        markup
+        mtime
+      ];
+      buildInputs = old.buildInputs ++ [ cmdliner ];
+      nativeCheckInputs = old.nativeCheckInputs ++ [ python3 ];
+      checkInputs = old.checkInputs ++ [
+        alcotest
+        astring
+        bytesrw
+        re
+      ];
+    }
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.6") {
+      # OCaml 5.6 needs these shared types when consuming Cascade's public interfaces.
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace lib/dune \
+          --replace-fail "  values_intf" "" \
+          --replace-fail "  properties_intf" ""
+      '';
+    }
+  );
 
   caqti = osuper.caqti.overrideAttrs (_: {
     nativeCheckInputs = [ mdx ];
