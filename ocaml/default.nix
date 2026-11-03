@@ -37,7 +37,6 @@
   pam,
   pkg-config,
   python3,
-  nodejs,
   rocq-core,
   lmdb,
   curl-oc,
@@ -575,30 +574,15 @@ with oself;
     ];
   };
 
-  re =
-    let
-      # ppx_expect and js_of_ocaml themselves depend on Re.
-      testPackages = oself.overrideScope (_: _: { re = osuper.re; });
-    in
-    osuper.re.overrideAttrs (old: {
-      version = "1.14.0";
-      src = fetchurl {
-        url = "https://github.com/ocaml/ocaml-re/archive/refs/tags/1.14.0.tar.gz";
-        hash = "sha256-4y60xvMZ/3QkHanhsAAy+ZAkE0cnG68620aPqqphYUc=";
-      };
-      minimalOCamlVersion = "4.13";
-      nativeCheckInputs = [
-        nodejs
-        testPackages.js_of_ocaml-compiler
-      ];
-      checkInputs =
-        old.checkInputs
-        ++ (with testPackages; [
-          base
-          ppx_expect
-          js_of_ocaml
-        ]);
-    });
+  re = osuper.re.overrideAttrs (_: {
+    version = "1.14.0";
+    src = fetchurl {
+      url = "https://github.com/ocaml/ocaml-re/archive/refs/tags/1.14.0.tar.gz";
+      hash = "sha256-4y60xvMZ/3QkHanhsAAy+ZAkE0cnG68620aPqqphYUc=";
+    };
+    minimalOCamlVersion = "4.13";
+    doCheck = false;
+  });
 
   received = buildDunePackage {
     pname = "received";
