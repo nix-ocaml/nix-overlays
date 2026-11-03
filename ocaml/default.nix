@@ -1684,13 +1684,27 @@ with oself;
         ];
       };
 
-  ocamlformat-mlx = osuper.ocamlformat-mlx.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "ocaml-mlx";
-      repo = "ocamlformat-mlx";
-      rev = "0.29.0.0";
-      hash = "sha256-GjPWDs8kXvSvRCA4qqzMpoa2h9aA9LEvgdw+y0Y4ofo=";
+  mlx = (osuper.mlx.override { ppxlib = ppxlib_gt_0_37; }).overrideAttrs (_: {
+    version = "0.12";
+    src = fetchurl {
+      url = "https://github.com/ocaml-mlx/mlx/releases/download/0.12/mlx-0.12.tbz";
+      hash = "sha256-sUsrCzQUtXT+fkRFF+lNhXmhJAtwfOOxH1gKlQJtrMU=";
     };
+  });
+
+  ocamlmerlin-mlx = osuper.ocamlmerlin-mlx.override { ppxlib = ppxlib_gt_0_37; };
+
+  ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (old: {
+    version = "0.29.0.2";
+    minimalOCamlVersion = "4.14";
+    src = fetchurl {
+      url = "https://github.com/ocaml-mlx/ocamlformat-mlx/releases/download/0.29.0.2/ocamlformat-mlx-0.29.0.2.tbz";
+      hash = "sha256-GUYUYpUo/GNRw0PBwQXkVJlpmKPySon56Q5LNql9gSI=";
+    };
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      cmdliner
+      uutf
+    ];
   });
 
   mustache = osuper.mustache.overrideAttrs (o: {
