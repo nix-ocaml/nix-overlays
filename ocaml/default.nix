@@ -2399,7 +2399,9 @@ with oself;
     '';
   });
 
-  ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (_: {
+  ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ super-opam.installer ];
+
     # Our compiler source is already unpacked.
     postPatch = ''
       cp -R ${ocaml.src} ocaml
