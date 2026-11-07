@@ -114,7 +114,7 @@ with oself;
 {
   janePackage = if lib.versionAtLeast ocaml.version "5.1" then janePackage_0_17 else janePackage_0_16;
   janeStreet = if lib.versionAtLeast ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16;
-  ocaml-crunch = crunch.bin;
+  ocaml-crunch = crunch;
 
   alcobar = osuper.alcobar.overrideAttrs (old: {
     version = "0.4.0";
