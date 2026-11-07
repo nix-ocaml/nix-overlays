@@ -1682,6 +1682,84 @@ with oself;
     ];
   };
 
+  # Mosaic 0.1.0's tests target Windtrap's older API.
+  matrix = osuper.matrix.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace matrix/test/test_*.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+      substituteInPlace matrix/test/test_ansi.ml \
+        --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
+      substituteInPlace matrix/test/test_input.ml \
+        --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
+        --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
+        --replace-fail '~equal:( = ) ()' '~equal:( = )' \
+        --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
+          'slow (test "parsing efficiency" test_parsing_efficiency)'
+      substituteInPlace matrix/test/test_glyph.ml \
+        --replace-fail '~equal:( = ) ()' '~equal:( = )'
+    '';
+  });
+
+  toffee = osuper.toffee.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace toffee/test/test_*.ml toffee/test/generated/test_runner.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+    '';
+  });
+
+  mosaic = osuper.mosaic.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace mosaic/test/unit/test_*.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+      substituteInPlace mosaic/test/unit/dune \
+        --replace-fail 'windtrap.prop' ""
+
+      # Keep the existing boolean properties, with assertions for Windtrap's unit-returning API.
+      substituteInPlace mosaic/test/unit/test_{selection,text_buffer,text_surface}.ml \
+        --replace-fail 'open Windtrap' 'open Windtrap
+      let prop name gen law =
+        Windtrap.prop name gen (fun value -> is_true (law value))
+      let prop2 name a b law =
+        prop name (Gen.pair a b) (fun (x, y) -> law x y)
+      let prop3 name a b c law =
+        prop name (Gen.triple a b c) (fun (x, y, z) -> law x y z)'
+
+      substituteInPlace mosaic/test/unit/test_selection.ml \
+        --replace-fail '~equal:Selection.equal_point ()' '~equal:Selection.equal_point' \
+        --replace-fail '~equal:Selection.equal_bounds ()' '~equal:Selection.equal_bounds' \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.small_int ()' \
+          'Gen.small_int' \
+        --replace-fail '(pair small_int small_int)' '(Gen.pair small_int small_int)'
+      substituteInPlace mosaic/test/unit/test_text_buffer.ml \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.nat ()' \
+          'Gen.nat'
+      substituteInPlace mosaic/test/unit/test_{text_buffer,text_surface}.ml \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt s -> Format.fprintf fmt "%S" s)\n    ~equal:String.equal\n    ~gen:(Windtrap_prop.Gen.string_of (Windtrap_prop.Gen.char_range \'a\' \'z\'))\n    ()' \
+          "Gen.string_of (Gen.char_range 'a' 'z')"
+      substituteInPlace mosaic/test/unit/test_edit_buffer.ml \
+        --replace-fail $'| _ -> false)\n    ()' '| _ -> false)'
+      substituteInPlace mosaic/test/unit/test_{text_surface,renderable,textarea,text_input}.ml \
+        --replace-fail 'open Windtrap' 'open Windtrap
+      let some ?msg t expected actual =
+        equal ?msg (option t) (Some expected) actual'
+      substituteInPlace mosaic/test/unit/test_canvas.ml \
+        --replace-fail '(float 0.)' 'float_exact'
+
+      # Standalone expect-test executables must explicitly run their registered tests.
+      for test_file in mosaic/test/expect/test_*.ml; do
+        cat >> "$test_file" <<'EOF'
+
+      let () =
+        exit (Windtrap.run "mosaic.expect"
+          (Ppx_windtrap_runtime.Ppx_runtime.collect ()))
+      EOF
+      done
+    '';
+  });
+
   matrix-common = callPackage ./matrix { };
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
