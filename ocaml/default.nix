@@ -951,6 +951,15 @@ with oself;
     };
   });
 
+  ppx_windtrap = osuper.ppx_windtrap.overrideAttrs (o: {
+    nativeCheckInputs = (o.nativeCheckInputs or [ ]) ++ [ (lib.getBin windtrap) ];
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace test/conformance/corpus/example/dune \
+        --replace-fail '%{ocaml_where}/../windtrap' \
+          '${lib.getDev windtrap}/lib/ocaml/${ocaml.version}/site-lib/windtrap'
+    '';
+  });
+
   xdg = osuper.xdg.overrideAttrs (o: {
     preBuild = "";
   });
