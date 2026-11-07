@@ -343,14 +343,20 @@ with oself;
     })
       (if builtins.isFunction arg then (final: add (arg final)) else add arg);
 
-  brisk-reconciler = osuper.brisk-reconciler.overrideAttrs (old: {
+  brisk-reconciler = buildDunePackage {
+    pname = "brisk-reconciler";
+    version = "1.0.0-alpha1";
+    src = fetchFromGitHub {
+      owner = "briskml";
+      repo = "brisk-reconciler";
+      tag = "v1.0.0-alpha1";
+      hash = "sha256-Xj6GGsod3lnEEjrzPrlHwQAowq66uz8comlhpWK888k=";
+    };
+    propagatedBuildInputs = [ ppxlib ];
     postPatch = ''
       substituteInPlace src/hooks.ml{,i} --replace-fail "effect" "effect_"
     '';
-    meta = old.meta // {
-      broken = false;
-    };
-  });
+  };
 
   bz2 = buildDunePackage {
     pname = "bz2";
