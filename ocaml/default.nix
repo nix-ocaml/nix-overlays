@@ -1004,36 +1004,6 @@ with oself;
     '';
   });
 
-  # Eliom 13 requires TyXML 5, selected with the newer PPX stack.
-  eliom = osuper.eliom.overrideAttrs (
-    old:
-    lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.3") {
-      version = "13.0.0";
-      src = fetchFromGitHub {
-        owner = "ocsigen";
-        repo = "eliom";
-        tag = "13.0.0";
-        hash = "sha256-h48vhtD9GFA4JtOIs9K0fHGillRDB35fgdIgER+MoZs=";
-      };
-      minimalOCamlVersion = "4.14";
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace src/lib/client/dune --replace-fail logs.browser logs-browser
-      '';
-      nativeBuildInputs = old.nativeBuildInputs ++ [
-        findlib
-        js_of_ocaml-compiler
-        wasm_of_ocaml-compiler
-      ];
-      buildInputs = old.buildInputs ++ [ ppxlib ];
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
-        logs-browser
-        re
-        reactivedata
-        xml-light
-      ];
-    }
-  );
-
   elina = osuper.elina.overrideAttrs (_: {
     env = lib.optionalAttrs stdenv.cc.isGNU {
       NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
@@ -1623,7 +1593,6 @@ with oself;
     '';
   });
 
-  logs-browser = callPackage ./logs/browser.nix { };
   logs-ppx = callPackage ./logs-ppx { };
   lmdb = buildDunePackage {
     pname = "lmdb";
@@ -2161,29 +2130,6 @@ with oself;
       osuper.oxenstored
     else
       null;
-
-  ocsigen_server = osuper.ocsigen_server.overrideAttrs (
-    old:
-    lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.3") {
-      version = "8.0.0";
-      src = fetchFromGitHub {
-        owner = "ocsigen";
-        repo = "ocsigenserver";
-        tag = "8.0.0";
-        hash = "sha256-uS5pX3zgIEM60kQD2vgMGw6MfAZAWPbOeUS4ou54VJg=";
-      };
-      minimalOCamlVersion = "4.14";
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
-        bytesrw
-        conduit-lwt-unix
-        http
-        logs
-        lwt_react
-        react
-        syslog-message
-      ];
-    }
-  );
 
   ocsigen-ppx-rpc = (osuper.ocsigen-ppx-rpc.override { ppxlib = ppxlib_gt_0_37; }).overrideAttrs (_: {
     version = "2.0";
