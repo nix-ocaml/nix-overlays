@@ -1121,15 +1121,13 @@ with oself;
 
   gitlab-unix = disableTests osuper.gitlab-unix;
 
-  gluten-mirage = osuper.gluten-mirage.overrideAttrs (_: {
-    propagatedBuildInputs = [
-      faraday-lwt
-      gluten-lwt
-      mirage-flow
-      cstruct
-    ];
-  });
-  gluten-eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.gluten-eio else null;
+  gluten = callPackage ./gluten { };
+  gluten-lwt = callPackage ./gluten/lwt.nix { };
+  gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
+  gluten-mirage = callPackage ./gluten/mirage.nix { };
+  gluten-async = callPackage ./gluten/async.nix { };
+  gluten-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then callPackage ./gluten/eio.nix { } else null;
 
   grenier = osuper.grenier.overrideAttrs (_: {
     postPatch = ''
@@ -1171,9 +1169,14 @@ with oself;
 
   hack_parallel = osuper.hack_parallel.override { sqlite = sqlite-oc; };
 
+  h2 = callPackage ./h2 { };
+  h2-lwt = callPackage ./h2/lwt.nix { };
+  h2-lwt-unix = callPackage ./h2/lwt-unix.nix { };
   h2-mirage = callPackage ./h2/mirage.nix { };
   h2-async = callPackage ./h2/async.nix { };
-  h2-eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.h2-eio else null;
+  h2-eio = if lib.versionAtLeast ocaml.version "5.0" then callPackage ./h2/eio.nix { } else null;
+
+  hpack = callPackage ./h2/hpack.nix { };
 
   hachis = buildDunePackage {
     pname = "hachis";
@@ -1218,9 +1221,14 @@ with oself;
     ];
   };
 
+  httpun-types = callPackage ./httpun/types.nix { };
+  httpun = callPackage ./httpun { };
+  httpun-lwt = callPackage ./httpun/lwt.nix { };
+  httpun-lwt-unix = callPackage ./httpun/lwt-unix.nix { };
   httpun-mirage = callPackage ./httpun/mirage.nix { };
   httpun-async = callPackage ./httpun/async.nix { };
-  httpun-eio = if lib.versionAtLeast ocaml.version "5.0" then osuper.httpun-eio else null;
+  httpun-eio =
+    if lib.versionAtLeast ocaml.version "5.0" then callPackage ./httpun/eio.nix { } else null;
 
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
@@ -3308,6 +3316,8 @@ with oself;
 
   };
 
+  httpun-ws = callPackage ./httpun-ws { };
+  httpun-ws-lwt = callPackage ./httpun-ws/lwt.nix { };
   httpun-ws-lwt-unix = callPackage ./httpun-ws/lwt-unix.nix { };
   httpun-ws-async = callPackage ./httpun-ws/async.nix { };
   httpun-ws-mirage = callPackage ./httpun-ws/mirage.nix { };
