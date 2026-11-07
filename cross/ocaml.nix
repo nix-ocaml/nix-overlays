@@ -116,10 +116,10 @@ in
           ] nativePackage;
 
           path = builtins.concatStringsSep ":" (
-            map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/${crossName}-sysroot/lib") inputs
+            map (x: "${lib.getDev x}/lib/ocaml/${natocaml.version}/${crossName}-sysroot/lib") inputs
           );
           natPath = builtins.concatStringsSep ":" (
-            map (x: "${x.outPath}/lib/ocaml/${natocaml.version}/site-lib") natInputs
+            map (x: "${lib.getDev x}/lib/ocaml/${natocaml.version}/site-lib") natInputs
           );
 
           native_findlib_conf = writeText "${package.name or package.pname}-findlib.conf" ''
@@ -362,6 +362,13 @@ in
             in
             attrs
             // {
+              # Keep the cross sysroot layout after the upstream postHook
+              # selects the development output for OCaml libraries.
+              postHook = ''
+                export OCAMLFIND_DESTDIR="''${!outputDev}/lib/ocaml/${oself.ocaml.version}/${crossName}-sysroot/lib/"
+              ''
+              + (attrs.postHook or "");
+
               buildPhase = ''
                 runHook preBuild
                 dune build -p ${pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES} -x ${crossName}
@@ -371,8 +378,13 @@ in
               installPhase = ''
                 runHook preInstall
                 dune install ${pname} -x ${crossName} \
-                  --prefix $out --libdir $(dirname $OCAMLFIND_DESTDIR) \
-                  --docdir $out/share/doc --man $out/share/man
+                  --prefix "$out" --libdir "$(dirname "$OCAMLFIND_DESTDIR")" \
+                  --docdir "''${!outputDoc}/share/doc" --mandir "''${!outputMan}/share/man" \
+                  --bindir "''${!outputBin}/bin" --etcdir "$out/etc" --datadir "$out/share"
+                # Not every package installs something into each output.
+                for output in $(getAllOutputNames); do
+                  mkdir -p "''${!output}"
+                done
                 runHook postInstall
               '';
             };
@@ -439,7 +451,7 @@ in
 
       ctypes = osuper.ctypes.overrideAttrs (o: {
         postInstall = ''
-          echo -e '\nversion = "${o.version}"'>> $out/lib/ocaml/${osuper.ocaml.version}/${crossName}-sysroot/lib/ctypes/META
+          echo -e '\nversion = "${o.version}"'>> $OCAMLFIND_DESTDIR/ctypes/META
         '';
       });
 
