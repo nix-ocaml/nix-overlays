@@ -2969,7 +2969,6 @@ with oself;
     inherit (raylib)
       version
       src
-      postPatch
       buildInputs
       ;
   });
@@ -2981,16 +2980,6 @@ with oself;
       hash = "sha256-p1lGe+/E0jjF3oe0zbYwLUxNckI0Wx1RmYngwjXFBec=";
     };
     patches = [ ];
-    postPatch = ''
-      substituteInPlace src/c/raylib/core/dune \
-        --replace-fail '(external_library_name raylib)' \
-          '(external_library_name raylib) (deps (glob_files ../../vendor/raylib/src/*.h))'
-      for file in src/c/rlgl/dune src/c/raygui/dune; do
-        substituteInPlace "$file" \
-          --replace-fail '(external_library_name raylib)' \
-            '(external_library_name raylib) (deps (glob_files ../vendor/raylib/src/*.h) (glob_files ../vendor/raygui/src/*.h))'
-      done
-    '';
     propagatedBuildInputs =
       if stdenv.hostPlatform.isDarwin then
         [
