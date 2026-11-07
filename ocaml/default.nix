@@ -1681,7 +1681,7 @@ with oself;
   # `logs` override, which breaks anything that uses logs (with OCaml package
   # conflicts)
   # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
-  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (_: {
     version = "2.7.0";
     name = "ocaml${ocaml.version}-mdx-2.7.0";
     src = builtins.fetchurl {
@@ -1690,9 +1690,6 @@ with oself;
     };
 
     doCheck = false;
-    postInstall = (o.postInstall or "") + ''
-      mkdir -p $bin $lib
-    '';
   });
 
   melange-json-native = buildDunePackage {
