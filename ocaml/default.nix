@@ -1016,6 +1016,9 @@ with oself;
         hash = "sha256-h48vhtD9GFA4JtOIs9K0fHGillRDB35fgdIgER+MoZs=";
       };
       minimalOCamlVersion = "4.14";
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace src/lib/client/dune --replace-fail logs.browser logs-browser
+      '';
       nativeBuildInputs = old.nativeBuildInputs ++ [
         findlib
         js_of_ocaml-compiler
@@ -1023,7 +1026,7 @@ with oself;
       ];
       buildInputs = old.buildInputs ++ [ ppxlib ];
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
-        logs
+        logs-browser
         re
         reactivedata
         xml-light
@@ -1620,6 +1623,7 @@ with oself;
     '';
   });
 
+  logs-browser = callPackage ./logs/browser.nix { };
   logs-ppx = callPackage ./logs-ppx { };
   lmdb = buildDunePackage {
     pname = "lmdb";
