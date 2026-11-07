@@ -76,11 +76,12 @@ let
           ocamlPackages_4_14 = ocaml-ng.ocamlPackages_4_14.overrideScope (
             oself: osuper: {
               ocaml = osuper.ocaml.overrideAttrs (_: {
+                version = "4.14.5";
                 src = super.fetchFromGitHub {
                   owner = "ocaml";
                   repo = "ocaml";
-                  rev = "4.14.4";
-                  hash = "sha256-13E+TnS7hf+YZGG6Uh6yaFiAlDKJuGICRVARNBV9D7s=";
+                  rev = "4.14.5";
+                  hash = "sha256-qZbvgQmgT8JrLaG50GfULhUF5+lzAgBM5EJGHhA5LiI=";
                 };
                 hardeningDisable = [ "strictoverflow" ];
               });
