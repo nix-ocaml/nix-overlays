@@ -102,7 +102,11 @@ with oself;
 
   lwt_domain = callPackage ./lwt/domain.nix { };
 
-  lwt_eio = callPackage ./eio/lwt_eio.nix { };
+  lwt_eio =
+    if lib.versionAtLeast ocaml.version "5.1" then
+      osuper.lwt_eio
+    else
+      callPackage ./eio/lwt_eio.nix { };
 
   moonpool = buildDunePackage {
     pname = "moonpool";
