@@ -140,19 +140,36 @@ with oself;
   archi = callPackage ./archi { };
   archi-lwt = callPackage ./archi/lwt.nix { };
   archi-async = callPackage ./archi/async.nix { };
-  async-uri = buildDunePackage {
-    pname = "async-uri";
-    version = "0.4.0";
-    src = builtins.fetchurl {
-      url = "https://github.com/vbmithr/async-uri/releases/download/0.4.0/async-uri-0.4.0.tbz";
-      sha256 = "16hz01g42aj0zvjqjadg3x4j1jvd279c4vbc2f6zcjvm0dzmlbs0";
-    };
-    propagatedBuildInputs = [
-      async_ssl
-      uri
-      uri-sexp
-    ];
-  };
+  async-uri = buildDunePackage (
+    {
+      pname = "async-uri";
+      version = "0.4.0";
+      src = builtins.fetchurl {
+        url = "https://github.com/vbmithr/async-uri/releases/download/0.4.0/async-uri-0.4.0.tbz";
+        sha256 = "16hz01g42aj0zvjqjadg3x4j1jvd279c4vbc2f6zcjvm0dzmlbs0";
+      };
+      propagatedBuildInputs = [
+        async_ssl
+        uri
+        uri-sexp
+      ];
+    }
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.1") {
+      version = "0.5.0";
+      src = fetchurl {
+        url = "https://github.com/vbmithr/async-uri/releases/download/0.5.0/async-uri-0.5.0.tbz";
+        hash = "sha256-WkxVSg94wRxg3VwT8DC0gW93GLNO2fD51hcr9VYF3m8=";
+      };
+      buildInputs = [ ppx_jane ];
+      propagatedBuildInputs = [
+        async_ssl
+        core
+        logs
+        uri
+        uri-sexp
+      ];
+    }
+  );
 
   atdgen = disableTests osuper.atdgen;
   atdts = buildDunePackage {
@@ -700,10 +717,10 @@ with oself;
   decimal = callPackage ./decimal { };
 
   dockerfile = osuper.dockerfile.overrideAttrs (_: {
-    version = "8.4.6";
+    version = "8.4.7";
     src = fetchurl {
-      url = "https://github.com/ocurrent/ocaml-dockerfile/releases/download/8.4.6/ocaml-dockerfile-8.4.6.tbz";
-      hash = "sha256-XvWdY8Gv/wqdVyx+m2GZwqA2ACOGGC6W9YqYIZ9Qt5c=";
+      url = "https://github.com/ocurrent/ocaml-dockerfile/releases/download/8.4.7/ocaml-dockerfile-8.4.7.tbz";
+      hash = "sha256-U4GRdWTHmWXsMB9lPCHPj0ug2qNj5ME+ddekB1/Ce4Y=";
     };
   });
 
@@ -925,12 +942,12 @@ with oself;
     preBuild = "";
   });
   windtrap = osuper.windtrap.overrideAttrs (_: {
-    version = "0.3.0";
+    version = "0.3.1";
     # The domain tests use Gc.Memprof.discard, available from OCaml 5.3.
     doCheck = lib.versionAtLeast ocaml.version "5.3";
     src = fetchurl {
-      url = "https://github.com/invariant-hq/windtrap/releases/download/v0.3.0/windtrap-0.3.0.tbz";
-      hash = "sha256-N4sqNKZl8FoBZOojjtHZg8OhXbougN5rfOqcmOQtZqk=";
+      url = "https://github.com/invariant-hq/windtrap/releases/download/v0.3.1/windtrap-0.3.1.tbz";
+      hash = "sha256-mox5Jsd7HCWAEOAn6yGRZORqA2v+LfMrNLh4GITI0Rw=";
     };
   });
 
@@ -958,12 +975,12 @@ with oself;
       ];
     in
     osuper.dune-release.overrideAttrs (o: {
-      src = fetchFromGitHub {
-        owner = "tarides";
-        repo = "dune-release";
-        rev = "2.2.1";
-        hash = "sha256-ixRKiQGkIBVAYD8ni7k/XUmp/LqobrcA6mZ/FBWTyAI=";
+      version = "2.3.0";
+      src = fetchurl {
+        url = "https://github.com/tarides/dune-release/releases/download/2.3.0/dune-release-2.3.0.tbz";
+        hash = "sha256-T5egUxBe6gukCXo77TH4/JNyjqSdkpKRLdLxuf8CaD8=";
       };
+      patches = [ ];
       nativeBuildInputs = [
         makeWrapper
         ocaml
@@ -1009,10 +1026,10 @@ with oself;
       null;
 
   elpi = osuper.elpi.overrideAttrs (old: {
-    version = "4.0.0";
+    version = "4.0.1";
     src = fetchurl {
-      url = "https://github.com/LPCIC/elpi/releases/download/v4.0.0/elpi-4.0.0.tbz";
-      hash = "sha256-kx7z6w1tk/0GYe+TcYsMTkTBpVD3SoZOg/b1fECLJRQ=";
+      url = "https://github.com/LPCIC/elpi/releases/download/v4.0.1/elpi-4.0.1.tbz";
+      hash = "sha256-jtWC3orRI2S/QEiF0NHUYz20MPO0nxePJrvp7s9fDi8=";
     };
     minimalOCamlVersion = "4.13";
     nativeBuildInputs = old.nativeBuildInputs ++ [ atdts ];
@@ -1374,6 +1391,11 @@ with oself;
   });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
+    version =
+      if lib.versionAtLeast ocaml.version "5.5" && lib.versionOlder ocaml.version "5.6" then
+        "1.28.1"
+      else
+        o.version;
     src =
       if lib.versionOlder "5.6" ocaml.version then
         builtins.fetchurl {
@@ -1382,8 +1404,8 @@ with oself;
         }
       else if lib.versionOlder "5.5" ocaml.version then
         builtins.fetchurl {
-          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.28.0/lsp-1.28.0.tbz";
-          sha256 = "07r5xwl2ybcfa467fcl7dhl6vvv2qbgq2g3vj8rwdany4nkdpz53";
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.28.1/lsp-1.28.1.tbz";
+          sha256 = "sha256-ErUjebk01plnO9gmuhbiBodVWu3O/FWjnGivu2IPuhk=";
         }
       else if lib.versionOlder "5.4" ocaml.version then
         fetchFromGitHub {
@@ -2095,10 +2117,33 @@ with oself;
     else
       null;
 
-  ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (o: {
-    buildInputs = [ ];
-    nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ lwt_ppx ];
+  ocsigen-ppx-rpc = (osuper.ocsigen-ppx-rpc.override { ppxlib = ppxlib_gt_0_37; }).overrideAttrs (_: {
+    version = "2.0";
+    src = fetchFromGitHub {
+      owner = "ocsigen";
+      repo = "ocsigen-ppx-rpc";
+      tag = "2.0";
+      hash = "sha256-W5CBBderCFV6tSSryJgL9Y6Quw8FH3VkPhZVsD05GRU=";
+    };
   });
+
+  ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (
+    o:
+    {
+      buildInputs = [ ];
+      nativeBuildInputs = (o.nativeBuildInputs or [ ]) ++ [ lwt_ppx ];
+    }
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.3") {
+      version = "3.1.2";
+      src = fetchFromGitHub {
+        owner = "ocsigen";
+        repo = "ocsipersist";
+        tag = "3.1.2";
+        hash = "sha256-/d1xl1Di12TFTU7mvIVfqZk8k9X77amp1vU5K8aM47s=";
+      };
+      minimalOCamlVersion = "4.14";
+    }
+  );
 
   ocaml_libvirt = osuper.ocaml_libvirt.override {
     libvirt = disableTests libvirt;
@@ -2792,8 +2837,16 @@ with oself;
     };
 
   reanalyze = osuper.reanalyze.overrideAttrs (o: {
+    version = "2.27.0";
+    src = fetchFromGitHub {
+      owner = "rescript-lang";
+      repo = "reanalyze";
+      tag = "v2.27.0";
+      hash = "sha256-dRCVkRQQYPiIbL161+fvyfAg2CTusC3sPbZwXeVRFBE=";
+    };
+    minimalOCamlVersion = "4.14";
     meta = o.meta // {
-      broken = false;
+      broken = lib.versionAtLeast ocaml.version "5.6";
     };
   });
 
@@ -2824,28 +2877,17 @@ with oself;
     inherit (raylib)
       version
       src
-      postPatch
       buildInputs
       ;
   });
 
   raylib = osuper.raylib.overrideAttrs (old: {
-    version = "2.4.0";
+    version = "2.4.1";
     src = fetchurl {
-      url = "https://github.com/tjammer/raylib-ocaml/releases/download/2.4.0/raylib-2.4.0.tbz";
-      hash = "sha256-e5tCdg5gZ0QrrJ02VKWO+KKYuap03+28vurxVPhG10Y=";
+      url = "https://github.com/tjammer/raylib-ocaml/releases/download/2.4.1/raylib-2.4.1.tbz";
+      hash = "sha256-p1lGe+/E0jjF3oe0zbYwLUxNckI0Wx1RmYngwjXFBec=";
     };
     patches = [ ];
-    postPatch = ''
-      substituteInPlace src/c/raylib/core/dune \
-        --replace-fail '(external_library_name raylib)' \
-          '(external_library_name raylib) (deps (glob_files ../../vendor/raylib/src/*.h))'
-      for file in src/c/rlgl/dune src/c/raygui/dune; do
-        substituteInPlace "$file" \
-          --replace-fail '(external_library_name raylib)' \
-            '(external_library_name raylib) (deps (glob_files ../vendor/raylib/src/*.h) (glob_files ../vendor/raygui/src/*.h))'
-      done
-    '';
     propagatedBuildInputs =
       if stdenv.hostPlatform.isDarwin then
         [
@@ -3067,10 +3109,10 @@ with oself;
   timere-parse = callPackage ./timere/parse.nix { };
 
   tls = osuper.tls.overrideAttrs (_: {
-    version = "2.1.4";
+    version = "2.1.5";
     src = fetchurl {
-      url = "https://github.com/mirleft/ocaml-tls/releases/download/v2.1.4/tls-2.1.4.tbz";
-      hash = "sha256-daywrvutN095hvFGbZPWYgUSqNU2vfyJbE3FCBtjHgU=";
+      url = "https://github.com/mirleft/ocaml-tls/releases/download/v2.1.5/tls-2.1.5.tbz";
+      hash = "sha256-uKc7WJNRwHNQV9t0YWGLpkAzfg9xX1OXb2LEjmheqcU=";
     };
   });
 
@@ -3170,10 +3212,10 @@ with oself;
           };
         }
     // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.2") {
-      version = "2.15.0";
+      version = "2.15.1";
       src = builtins.fetchurl {
-        url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.0/uring-2.15.0.tbz";
-        sha256 = "11ii3laq5iqh11qifmrwibwzhy7sphysz6ac6bwr9gfvskk4bb9h";
+        url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.1/uring-2.15.1.tbz";
+        sha256 = "sha256-j7ivQPKDbOIqjycknQsSI+eQjrAv3U66tWmEIUTdwLE=";
       };
     }
   );
