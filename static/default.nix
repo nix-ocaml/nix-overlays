@@ -47,18 +47,28 @@ self: super:
         propagatedBuildInputs = o.buildInputs;
       });
 
-  tzdata = super.tzdata.overrideAttrs (old: {
-    # Check the zone table at the release timestamp, not the build date.
-    preCheck = (old.preCheck or "") + ''
-      checkFlagsArray+=("CHECK_NOW_TIMESTAMP=$(stat -c %Y NEWS)")
-    '';
-  });
+  # This overlay also applies to native buildPackages. Preserve their cached
+  # tzdata and dependent tools (Python, LLVM, Rust, and Git).
+  tzdata =
+    if super.stdenv.hostPlatform.isMusl then
+      super.tzdata.overrideAttrs (old: {
+        # Check the zone table at the release timestamp, not the build date.
+        preCheck = (old.preCheck or "") + ''
+          checkFlagsArray+=("CHECK_NOW_TIMESTAMP=$(stat -c %Y NEWS)")
+        '';
+      })
+    else
+      super.tzdata;
 
   # SQLite's devtest target creates fresh builds without preserving the
   # original cross-compilation configuration.
-  sqlite = super.sqlite.overrideAttrs (_: {
-    doCheck = false;
-  });
+  sqlite =
+    if super.stdenv.hostPlatform != super.stdenv.buildPlatform then
+      super.sqlite.overrideAttrs (_: {
+        doCheck = false;
+      })
+    else
+      super.sqlite;
 
   sqlite-oc = (super.sqlite-oc.override { zlib = self.zlib-oc; }).overrideAttrs (o: {
     dontDisableStatic = true;
