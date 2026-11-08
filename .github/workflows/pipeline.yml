@@ -130,7 +130,7 @@ jobs:
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   cross-compilers:
-    # needs: [native-linux]
+    needs: [nix-fmt-check, native-linux, top-level-packages, native-macos]
     strategy:
       fail-fast: false
       matrix:
@@ -142,11 +142,14 @@ jobs:
           - { ocaml-version: 5_4, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
           - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-latest, platform: x86_64-linux }
-          - { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
-          - { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
         target:
           - arm64
           - musl
+        include:
+          - setup: { ocaml-version: 5_5, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
+            target: musl
+          - setup: { ocaml-version: 5_6, continue-on-error: false, os: ubuntu-24.04-arm, platform: aarch64-linux }
+            target: musl
     name: ${{matrix.target}} packages (OCaml ${{ matrix.setup.ocaml-version }}, ${{ matrix.setup.os }})
     runs-on: ${{ matrix.setup.os }}
     env:
@@ -171,6 +174,7 @@ jobs:
         continue-on-error: ${{ matrix.setup.continue-on-error }}
 
   cross-compilers-mingw:
+    needs: [nix-fmt-check, native-linux, top-level-packages, native-macos]
     strategy:
       fail-fast: false
       matrix:
