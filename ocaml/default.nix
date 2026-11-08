@@ -2402,6 +2402,11 @@ with oself;
   ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ super-opam.installer ];
 
+    # Autoconf otherwise picks the unwrapped, triplet-prefixed GCC on ARM.
+    env = (o.env or { }) // {
+      CC_FOR_BUILD = "${buildPackages.stdenv.cc}/bin/cc";
+    };
+
     # Our compiler source is already unpacked.
     postPatch = ''
       cp -R ${ocaml.src} ocaml
