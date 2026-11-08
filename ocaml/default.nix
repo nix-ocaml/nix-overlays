@@ -2402,6 +2402,11 @@ with oself;
   ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (o: {
     nativeBuildInputs = o.nativeBuildInputs ++ [ super-opam.installer ];
 
+    # The Solo5 compiler must read the native dependencies' .cmx files.
+    configureFlags =
+      o.configureFlags
+      ++ lib.optional (lib.elem "--enable-flambda" ocaml.configureFlags) "--ocaml-configure-option=--enable-flambda";
+
     # Autoconf otherwise picks the unwrapped, triplet-prefixed GCC on ARM.
     env = (o.env or { }) // {
       CC_FOR_BUILD = "${buildPackages.stdenv.cc}/bin/cc";
