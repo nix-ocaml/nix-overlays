@@ -230,7 +230,7 @@ in
             "--with-openssl"
             "--with-libxml"
             "--sysconfdir=/etc"
-            "--with-system-tzdata=${super.tzdata}/share/zoneinfo"
+            "--with-system-tzdata=${self.tzdata}/share/zoneinfo"
             "--enable-debug"
             "--with-icu"
             "--with-lz4"

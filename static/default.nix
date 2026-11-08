@@ -47,6 +47,13 @@ self: super:
         propagatedBuildInputs = o.buildInputs;
       });
 
+  tzdata = super.tzdata.overrideAttrs (old: {
+    # Check the zone table at the release timestamp, not the build date.
+    preCheck = (old.preCheck or "") + ''
+      checkFlagsArray+=("CHECK_NOW_TIMESTAMP=$(stat -c %Y NEWS)")
+    '';
+  });
+
   # SQLite's devtest target creates fresh builds without preserving the
   # original cross-compilation configuration.
   sqlite = super.sqlite.overrideAttrs (_: {
