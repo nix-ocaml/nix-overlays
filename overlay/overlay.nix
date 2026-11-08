@@ -156,12 +156,24 @@ in
       ]);
   });
 
-  solo5 = super.solo5.overrideAttrs (_: {
+  solo5 = super.solo5.overrideAttrs (old: {
     version = "0.13.1";
     src = fetchurl {
       url = "https://github.com/Solo5/solo5/releases/download/v0.13.1/solo5-v0.13.1.tar.gz";
       hash = "sha256-Fbu2XnLb6yBmiMJD5eqejlVpi68yvMRggYrhXtDdQ0Y=";
     };
+    # Solo5 only builds the virtio image tooling on x86-64.
+    installPhase =
+      if stdenv.hostPlatform.isx86_64 then
+        old.installPhase
+      else
+        ''
+          runHook preInstall
+          export DESTDIR=$out
+          export PREFIX=$out
+          make install
+          runHook postInstall
+        '';
   });
 
   # Stripped down postgres without the `bin` part, to allow static linking
