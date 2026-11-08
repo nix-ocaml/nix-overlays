@@ -114,7 +114,7 @@ with oself;
 {
   janePackage = if lib.versionAtLeast ocaml.version "5.1" then janePackage_0_17 else janePackage_0_16;
   janeStreet = if lib.versionAtLeast ocaml.version "5.1" then janeStreet_0_17 else janeStreet_0_16;
-  ocaml-crunch = crunch.bin;
+  ocaml-crunch = crunch;
 
   alcobar = osuper.alcobar.overrideAttrs (old: {
     version = "0.4.0";
@@ -951,6 +951,15 @@ with oself;
     };
   });
 
+  ppx_windtrap = osuper.ppx_windtrap.overrideAttrs (o: {
+    nativeCheckInputs = (o.nativeCheckInputs or [ ]) ++ [ (lib.getBin windtrap) ];
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace test/conformance/corpus/example/dune \
+        --replace-fail '%{ocaml_where}/../windtrap' \
+          '${lib.getDev windtrap}/lib/ocaml/${ocaml.version}/site-lib/windtrap'
+    '';
+  });
+
   xdg = osuper.xdg.overrideAttrs (o: {
     preBuild = "";
   });
@@ -1673,6 +1682,84 @@ with oself;
     ];
   };
 
+  # Mosaic 0.1.0's tests target Windtrap's older API.
+  matrix = osuper.matrix.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace matrix/test/test_*.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+      substituteInPlace matrix/test/test_ansi.ml \
+        --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
+      substituteInPlace matrix/test/test_input.ml \
+        --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
+        --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
+        --replace-fail '~equal:( = ) ()' '~equal:( = )' \
+        --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
+          'slow (test "parsing efficiency" test_parsing_efficiency)'
+      substituteInPlace matrix/test/test_glyph.ml \
+        --replace-fail '~equal:( = ) ()' '~equal:( = )'
+    '';
+  });
+
+  toffee = osuper.toffee.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace toffee/test/test_*.ml toffee/test/generated/test_runner.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+    '';
+  });
+
+  mosaic = osuper.mosaic.overrideAttrs (o: {
+    postPatch = (o.postPatch or "") + ''
+      substituteInPlace mosaic/test/unit/test_*.ml \
+        --replace-fail 'let () =' 'let () = exit @@'
+      substituteInPlace mosaic/test/unit/dune \
+        --replace-fail 'windtrap.prop' ""
+
+      # Keep the existing boolean properties, with assertions for Windtrap's unit-returning API.
+      substituteInPlace mosaic/test/unit/test_{selection,text_buffer,text_surface}.ml \
+        --replace-fail 'open Windtrap' 'open Windtrap
+      let prop name gen law =
+        Windtrap.prop name gen (fun value -> is_true (law value))
+      let prop2 name a b law =
+        prop name (Gen.pair a b) (fun (x, y) -> law x y)
+      let prop3 name a b c law =
+        prop name (Gen.triple a b c) (fun (x, y, z) -> law x y z)'
+
+      substituteInPlace mosaic/test/unit/test_selection.ml \
+        --replace-fail '~equal:Selection.equal_point ()' '~equal:Selection.equal_point' \
+        --replace-fail '~equal:Selection.equal_bounds ()' '~equal:Selection.equal_bounds' \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.small_int ()' \
+          'Gen.small_int' \
+        --replace-fail '(pair small_int small_int)' '(Gen.pair small_int small_int)'
+      substituteInPlace mosaic/test/unit/test_text_buffer.ml \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.nat ()' \
+          'Gen.nat'
+      substituteInPlace mosaic/test/unit/test_{text_buffer,text_surface}.ml \
+        --replace-fail \
+          $'Testable.make\n    ~pp:(fun fmt s -> Format.fprintf fmt "%S" s)\n    ~equal:String.equal\n    ~gen:(Windtrap_prop.Gen.string_of (Windtrap_prop.Gen.char_range \'a\' \'z\'))\n    ()' \
+          "Gen.string_of (Gen.char_range 'a' 'z')"
+      substituteInPlace mosaic/test/unit/test_edit_buffer.ml \
+        --replace-fail $'| _ -> false)\n    ()' '| _ -> false)'
+      substituteInPlace mosaic/test/unit/test_{text_surface,renderable,textarea,text_input}.ml \
+        --replace-fail 'open Windtrap' 'open Windtrap
+      let some ?msg t expected actual =
+        equal ?msg (option t) (Some expected) actual'
+      substituteInPlace mosaic/test/unit/test_canvas.ml \
+        --replace-fail '(float 0.)' 'float_exact'
+
+      # Standalone expect-test executables must explicitly run their registered tests.
+      for test_file in mosaic/test/expect/test_*.ml; do
+        cat >> "$test_file" <<'EOF'
+
+      let () =
+        exit (Windtrap.run "mosaic.expect"
+          (Ppx_windtrap_runtime.Ppx_runtime.collect ()))
+      EOF
+      done
+    '';
+  });
+
   matrix-common = callPackage ./matrix { };
   matrix-ctos = callPackage ./matrix/ctos.nix { };
   matrix-stos = callPackage ./matrix/stos.nix { };
@@ -1681,7 +1768,7 @@ with oself;
   # `logs` override, which breaks anything that uses logs (with OCaml package
   # conflicts)
   # https://github.com/NixOS/nixpkgs/blob/f6ed1c3c/pkgs/top-level/ocaml-packages.nix#L1035-L1037
-  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (o: {
+  mdx = (osuper.mdx.override { inherit logs; }).overrideAttrs (_: {
     version = "2.7.0";
     name = "ocaml${ocaml.version}-mdx-2.7.0";
     src = builtins.fetchurl {
@@ -1690,9 +1777,6 @@ with oself;
     };
 
     doCheck = false;
-    postInstall = (o.postInstall or "") + ''
-      mkdir -p $bin $lib
-    '';
   });
 
   melange-json-native = buildDunePackage {
@@ -2315,7 +2399,19 @@ with oself;
     '';
   });
 
-  ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (_: {
+  ocaml-solo5 = osuper.ocaml-solo5.overrideAttrs (o: {
+    nativeBuildInputs = o.nativeBuildInputs ++ [ super-opam.installer ];
+
+    # The Solo5 compiler must read the native dependencies' .cmx files.
+    configureFlags =
+      o.configureFlags
+      ++ lib.optional (lib.elem "--enable-flambda" ocaml.configureFlags) "--ocaml-configure-option=--enable-flambda";
+
+    # Autoconf otherwise picks the unwrapped, triplet-prefixed GCC on ARM.
+    env = (o.env or { }) // {
+      CC_FOR_BUILD = "${buildPackages.stdenv.cc}/bin/cc";
+    };
+
     # Our compiler source is already unpacked.
     postPatch = ''
       cp -R ${ocaml.src} ocaml
@@ -3175,10 +3271,11 @@ with oself;
       })
     else
       osuper.tyxml;
-  tyxml-jsx = callPackage ./tyxml/jsx.nix { };
+  # TyXML 5 needs ppxlib >= 0.36, including on older OCaml versions.
+  tyxml-jsx = callPackage ./tyxml/jsx.nix { ppxlib = ppxlib_gt_0_37; };
   tyxml-lwd = if lib.versionOlder tyxml.version "5.0" then osuper.tyxml-lwd else null;
-  tyxml-ppx = callPackage ./tyxml/ppx.nix { };
-  tyxml-syntax = callPackage ./tyxml/syntax.nix { };
+  tyxml-ppx = callPackage ./tyxml/ppx.nix { ppxlib = ppxlib_gt_0_37; };
+  tyxml-syntax = callPackage ./tyxml/syntax.nix { ppxlib = ppxlib_gt_0_37; };
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
     src = fetchFromGitHub {

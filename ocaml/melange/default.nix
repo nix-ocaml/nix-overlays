@@ -21,6 +21,14 @@
 buildDunePackage {
   pname = "melange";
   version = "7.0.1";
+
+  # melc needs the Melange libraries at runtime; keep them in the same output.
+  outputs = [
+    "out"
+    "man"
+    "doc"
+  ];
+
   src =
     if lib.versionAtLeast ocaml.version "5.6" then
       fetchFromGitHub {

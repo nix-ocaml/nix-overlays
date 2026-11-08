@@ -279,24 +279,18 @@ rec {
         baseIgnoredPackages ++ lib.optionals stdenv.hostPlatform.isDarwin darwinIgnores ++ extraIgnores;
     in
     lib.filterAttrs (
-      n: v':
+      n: v:
       # don't build tezos stuff
       if (builtins.substring 0 5 n) == "tezos" || (builtins.elem n ignoredPackages) then
         false
       else
         let
-          eval_result = builtins.tryEval v';
+          # Metadata can also force an unsupported dependency to evaluate.
+          eval_result = builtins.tryEval (
+            (lib.isDerivation v) && !(v.meta.broken or false) && lib.meta.availableOn stdenv.hostPlatform v
+          );
         in
-        if !eval_result.success then
-          false
-        else
-          (
-            let
-              v = eval_result.value;
-              broken = (v ? meta && v.meta ? broken && v.meta.broken);
-            in
-            (lib.isDerivation v) && !broken && lib.meta.availableOn stdenv.hostPlatform v
-          )
+        eval_result.success && eval_result.value
     ) ocamlPackages;
 
   crossTarget =
