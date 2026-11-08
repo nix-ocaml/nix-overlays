@@ -3261,10 +3261,11 @@ with oself;
       })
     else
       osuper.tyxml;
-  tyxml-jsx = callPackage ./tyxml/jsx.nix { };
+  # TyXML 5 needs ppxlib >= 0.36, including on older OCaml versions.
+  tyxml-jsx = callPackage ./tyxml/jsx.nix { ppxlib = ppxlib_gt_0_37; };
   tyxml-lwd = if lib.versionOlder tyxml.version "5.0" then osuper.tyxml-lwd else null;
-  tyxml-ppx = callPackage ./tyxml/ppx.nix { };
-  tyxml-syntax = callPackage ./tyxml/syntax.nix { };
+  tyxml-ppx = callPackage ./tyxml/ppx.nix { ppxlib = ppxlib_gt_0_37; };
+  tyxml-syntax = callPackage ./tyxml/syntax.nix { ppxlib = ppxlib_gt_0_37; };
 
   unix-errno = osuper.unix-errno.overrideAttrs (_: {
     src = fetchFromGitHub {
