@@ -8,7 +8,7 @@
 
 buildDunePackage {
   pname = "ocaml-index";
-  version = "1.0";
+  version = if lib.versions.majorMinor ocaml.version == "5.5" then merlin-lib.version else "1.0";
 
   src =
     if lib.versionOlder "5.3" ocaml.version then

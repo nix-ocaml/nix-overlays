@@ -1394,6 +1394,8 @@ with oself;
     version =
       if lib.versionAtLeast ocaml.version "5.5" && lib.versionOlder ocaml.version "5.6" then
         "1.28.1"
+      else if lib.versionAtLeast ocaml.version "5.4" && lib.versionOlder ocaml.version "5.5" then
+        "1.26.1"
       else
         o.version;
     src =
@@ -1408,11 +1410,9 @@ with oself;
           sha256 = "sha256-ErUjebk01plnO9gmuhbiBodVWu3O/FWjnGivu2IPuhk=";
         }
       else if lib.versionOlder "5.4" ocaml.version then
-        fetchFromGitHub {
-          owner = "ocaml";
-          repo = "ocaml-lsp";
-          rev = "4a01ba655e80af13e8a4ffdc7169fdc5f4a0ba22";
-          hash = "sha256-3NvDK6dM5dtD7U1oNN4An+lrtFQExK2smjg9aVpSMR4=";
+        builtins.fetchurl {
+          url = "https://github.com/ocaml/ocaml-lsp/releases/download/1.26.1/lsp-1.26.1.tbz";
+          sha256 = "sha256-EPZ5JIly5WWKrUYp7WqlD4GUI1aRiqlDAchDn/4ZoN0=";
         }
       else if lib.versionOlder "5.3" ocaml.version then
         builtins.fetchurl {
@@ -3322,17 +3322,16 @@ with oself;
 
   websocket = buildDunePackage {
     pname = "websocket";
-    version = "2.16";
+    version = "2.18";
     src = builtins.fetchurl {
-      url = "https://github.com/vbmithr/ocaml-websocket/releases/download/2.17/websocket-2.17.tbz";
-      sha256 = "173sgbk0xdlanj08wjl615gvwf04c850nw6gbjvgababafsmxbrr";
+      url = "https://github.com/vbmithr/ocaml-websocket/releases/download/2.18/websocket-2.18.tbz";
+      sha256 = "sha256-02mUp83Gk+rgTYCgn0fj5CSCvfsVduDZJaiWx5YboJY=";
     };
     propagatedBuildInputs = [
       cohttp
       astring
       base64
       ocplib-endian
-      conduit
       mirage-crypto-rng
     ];
   };
@@ -3340,22 +3339,15 @@ with oself;
     pname = "websocket-lwt-unix";
     inherit (websocket) src version;
     propagatedBuildInputs = [
+      logs
       lwt
       websocket
+      conduit-lwt-unix
       cohttp-lwt-unix
-      lwt_log
+      mirage-crypto-rng
       sexplib
     ];
     doCheck = true;
-
-    postPatch = ''
-      substituteInPlace lwt/websocket_lwt_unix.ml --replace-fail \
-        "fun (flow, ic, oc) ->" \
-        "fun (flow, ic, oc) -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in" \
-        --replace "Lwt_io.close ic" "Cohttp_lwt_unix.Private.Input_channel.close ic" \
-        --replace "(fun flow ic oc ->" "(fun flow ic oc -> let ic = (Cohttp_lwt_unix.Private.Input_channel.create ic) in "
-    '';
-
   };
 
   httpun-ws = callPackage ./httpun-ws { };
