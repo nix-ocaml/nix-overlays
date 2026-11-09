@@ -5,6 +5,7 @@
   osuper,
   makeWrapper,
   nix-eval-jobs,
+  python3,
 }:
 
 with oself;
@@ -135,21 +136,24 @@ with oself;
   nix-ci-build = buildDunePackage {
     pname = "nix-ci-build";
     version = "n/a";
+    minimalOCamlVersion = "5.1";
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "b9f5ff0dd65120f88c4301e0313adff1a5e10b8a";
-      hash = "sha256-oBwjFPzpQh/T/0yvrWkNai9772yluphipCVCoFx90jI=";
+      rev = "f18670511f0e3686bce79b70c76b346644beca19";
+      hash = "sha256-AH+Mjfe9GeAF/SG3XAiTV5aPcF94B3mNIJim/pF8lTk=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
+    nativeCheckInputs = [ python3 ];
+    doCheck = true;
     buildInputs = [ nix-eval-jobs ];
     propagatedBuildInputs = [
       cmdliner
       eio_main
       logs
       fmt
-      ppx_yojson_conv
+      yojson
     ];
     postInstall =
       let
