@@ -140,7 +140,7 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "835975023409f48fccac17aa346ed1220ccc9935";
+      rev = "361a3959294df96ce3fb730cc5c72e673b39f4fa";
       hash = "sha256-98kgEvxlX2uvmOMJswBDITvF3GEGFXWE0oXiXfzrtXY=";
     };
 
