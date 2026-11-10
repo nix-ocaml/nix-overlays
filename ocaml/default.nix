@@ -2581,11 +2581,24 @@ with oself;
     meta = owl-base.meta;
   });
 
-  # The bindings still need PCRE 1, which nixpkgs no longer provides.
-  ocaml_pcre = osuper.ocaml_pcre.overrideAttrs (old: {
+  # nixpkgs removed these PCRE 1 bindings, which existing packages still need.
+  ocaml_pcre = buildDunePackage (finalAttrs: {
+    pname = "pcre";
+    version = "8.0.5";
+
+    src = fetchurl {
+      url = "https://github.com/mmottl/pcre-ocaml/releases/download/${finalAttrs.version}/pcre-${finalAttrs.version}.tbz";
+      hash = "sha256-7ZvPiNeBdnrWp8BICv8J1YifL8UA3aDRYgoXhtTkRJA=";
+    };
+
+    buildInputs = [ dune-configurator ];
     propagatedBuildInputs = [ pcre-oc ];
-    meta = old.meta // {
-      broken = false;
+
+    meta = {
+      homepage = "https://mmottl.github.io/pcre-ocaml";
+      description = "Efficient C-library for pattern matching with Perl-style regular expressions in OCaml";
+      license = lib.licenses.lgpl21Plus;
+      maintainers = [ ];
     };
   });
 
