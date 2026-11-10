@@ -3545,6 +3545,7 @@ with oself;
 // (
   if lib.hasPrefix "5." osuper.ocaml.version then
     (import ./ocaml5.nix {
+      nodejs = buildPackages.nodejs;
       inherit
         oself
         osuper
