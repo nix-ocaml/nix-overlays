@@ -4,6 +4,7 @@ set -euo pipefail
 args=(
   --flake ".#hydraJobs.${1}.${2}"
   --jobs 4
+  --report-dir nix-ci-build-report
   --copy-to
   "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto&compression=zstd&parallel-compression=true&secret-key=${HOME}/.nix/nix-cache-key.sec"
   # --http-connections 50

@@ -140,8 +140,8 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "f18670511f0e3686bce79b70c76b346644beca19";
-      hash = "sha256-AH+Mjfe9GeAF/SG3XAiTV5aPcF94B3mNIJim/pF8lTk=";
+      rev = "361a3959294df96ce3fb730cc5c72e673b39f4fa";
+      hash = "sha256-98kgEvxlX2uvmOMJswBDITvF3GEGFXWE0oXiXfzrtXY=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
@@ -160,7 +160,8 @@ with oself;
         path = lib.makeBinPath [ nix-eval-jobs ];
       in
       ''
-        wrapProgram "$out/bin/nix-ci-build" --prefix PATH : ${path}
+        wrapProgram "$out/bin/nix-ci-build" --prefix PATH : ${path} \
+          --set NIX_CI_BUILD_NIX_EVAL_JOBS_VERSION ${lib.escapeShellArg nix-eval-jobs.version}
       '';
   };
 
