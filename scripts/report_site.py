@@ -218,12 +218,1132 @@ def elapsed(seconds):
 
 
 STYLE = """
-:root{color-scheme:light dark;--bg:#f7f8fa;--panel:#fff;--fg:#182336;--muted:#627084;--line:#dce2eb;--accent:#285bea}
-@media(prefers-color-scheme:dark){:root{--bg:#10151e;--panel:#19212e;--fg:#e5edf8;--muted:#9aaac0;--line:#303c50;--accent:#88acff}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}main{max-width:1300px;margin:0 auto;padding:36px 24px}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}h1{font-size:30px;letter-spacing:-.04em;margin:12px 0}h2{font-size:20px;margin:32px 0 12px}p,.muted{color:var(--muted)}nav{display:flex;gap:16px;flex-wrap:wrap}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:16px 0;overflow:auto}input{font:inherit;width:min(100%,600px);padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}table{border-collapse:collapse;width:100%;text-align:left}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}td,th{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}.badge{font:600 12px system-ui;border-radius:20px;padding:4px 9px;white-space:nowrap;background:#6a778226;color:var(--muted)}.success{background:#16966a24;color:#14916c}.failure,.failed,.error,.timed_out{background:#df494924;color:#d95353}.cancelled,.skipped{background:#b3862924;color:#a88333}code{font:12px ui-monospace,monospace}.facts{display:flex;gap:24px;flex-wrap:wrap}.facts strong{font-size:24px;display:block;color:var(--fg)}summary{cursor:pointer;display:flex;gap:12px;align-items:center;flex-wrap:wrap}details{border-top:1px solid var(--line);padding:12px 0}.timeline{min-width:500px}.track{height:12px;background:var(--line);border-radius:4px;overflow:hidden;min-width:180px}.bar{height:100%;background:var(--accent);border-radius:4px}.step-name{max-width:450px}.notice{border-left:3px solid #b38629;padding-left:12px}footer{font-size:12px;color:var(--muted);margin-top:32px}@media(max-width:700px){main{padding:20px 12px}td,th{padding:9px 8px}.panel{padding:12px}h1{font-size:25px}}
- .matrix{min-width:850px}.matrix-axis,.matrix-row{display:grid;grid-template-columns:minmax(260px,1.15fr) minmax(400px,2fr) 72px;gap:12px;align-items:center}.matrix-axis{font-size:11px;color:var(--muted);padding:0 8px 24px}.matrix-ticks{position:relative;height:10px}.matrix-ticks span{position:absolute;white-space:nowrap;transform:translateX(-50%)}.matrix-ticks span:first-child{transform:none}.matrix-ticks span:last-child{transform:translateX(-100%)}.matrix-row{width:100%;border:0;border-top:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;padding:7px 8px;cursor:pointer}.matrix-row:hover,.matrix-row:focus-visible{background:var(--line);outline:2px solid var(--accent);outline-offset:-2px}.matrix-label{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.matrix-duration{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}.matrix-track{display:block;position:relative;height:18px;background:repeating-linear-gradient(to right,transparent 0,transparent calc(25% - 1px),var(--line) calc(25% - 1px),var(--line) 25%);border-left:1px solid var(--line)}.matrix-span{position:absolute;top:2px;height:14px;border-radius:2px}.phase-job{background:var(--line)}.phase-checkout{background:#ab7ae0}.phase-setup{background:#5a95ee}.phase-build{background:#25a583}.phase-upload{background:#d8a145}.phase-other{background:#8493a8}.legend{display:flex;flex-wrap:wrap;gap:16px;margin:16px 0;font-size:12px;color:var(--muted)}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px}.job-details:target{outline:2px solid var(--accent)}
+:root {
+  color-scheme: light dark;
+  --bg: #f6f6f8;
+  --panel: #fff;
+  --fg: #232333;
+  --muted: #686879;
+  --line: #dfe0e5;
+  --soft: #f2edf8;
+  --accent: #632ca6;
+  --selected: #f1eafa;
+  --success: #188762;
+  --danger: #ce4659;
+  --warning: #ae7d23;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17171e;
+    --panel: #202029;
+    --fg: #e8e7ef;
+    --muted: #a7a5b8;
+    --line: #383741;
+    --soft: #2c253a;
+    --accent: #b28be1;
+    --selected: #362747;
+    --success: #5abf97;
+    --danger: #f07c8d;
+    --warning: #d4ae63;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    13px/1.5 system-ui,
+    sans-serif;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+button,
+input,
+select {
+  color: var(--fg);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+button {
+  padding: 5px 9px;
+}
+button:hover {
+  background: var(--soft);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+input {
+  padding: 7px 10px;
+  width: min(100%, 600px);
+}
+input::placeholder {
+  color: var(--muted);
+}
+select {
+  padding: 5px 26px 5px 8px;
+}
+h1 {
+  font-size: 23px;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  margin: 17px 0 10px;
+}
+h2 {
+  font-size: 16px;
+  margin: 22px 0 10px;
+}
+h3 {
+  font-size: 13px;
+  margin: 0;
+}
+p,
+.muted {
+  color: var(--muted);
+}
+p {
+  margin: 8px 0 12px;
+}
+code {
+  font:
+    12px ui-monospace,
+    monospace;
+  overflow-wrap: anywhere;
+}
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 42px;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.masthead-brand {
+  font-weight: 650;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--panel);
+  font:
+    700 14px ui-monospace,
+    monospace;
+}
+.masthead-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+}
+.masthead nav {
+  font-size: 12px;
+}
+main {
+  max-width: 1760px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+  min-width: 0;
+}
+nav {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.run-nav {
+  font-size: 12px;
+  padding-bottom: 3px;
+}
+.run-meta {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 12px 0;
+  overflow: auto;
+}
+.panel table {
+  min-width: 580px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+}
+th {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg);
+}
+td,
+th {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+tr:last-child td {
+  border-bottom: 0;
+}
+tbody tr:hover {
+  background: var(--soft);
+}
+.badge {
+  font: 600 10px system-ui;
+  border-radius: 3px;
+  padding: 3px 6px;
+  white-space: nowrap;
+  background: #6a778218;
+  color: var(--muted);
+}
+.success {
+  background: #16966a18;
+  color: var(--success);
+}
+.failure,
+.failed,
+.error,
+.timed_out {
+  background: #df494918;
+  color: var(--danger);
+}
+.cancelled,
+.skipped {
+  background: #b3862918;
+  color: var(--warning);
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  padding: 14px 0;
+  margin-top: 15px;
+}
+.facts > div {
+  border-right: 1px solid var(--line);
+  padding: 0 20px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.facts > div:last-child {
+  border-right: 0;
+}
+.facts strong {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 600;
+  display: block;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 3px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+.section-heading h2 {
+  margin: 0;
+}
+.table-search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.table-search input {
+  width: 300px;
+}
+.notice {
+  border-left: 3px solid var(--warning);
+  padding: 8px 12px;
+  background: var(--panel);
+  font-size: 12px;
+}
+footer {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 24px;
+  max-width: 1000px;
+}
+.explorer {
+  display: grid;
+  grid-template-columns: 162px minmax(0, 1fr) 310px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  min-width: 0;
+}
+.facets {
+  padding: 14px 10px;
+  border-right: 1px solid var(--line);
+}
+.facet-heading {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  font-weight: 650;
+  margin: 0 6px 8px;
+}
+.facet-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  padding: 7px 8px;
+  text-align: left;
+  font-size: 12px;
+  background: transparent;
+  margin-bottom: 2px;
+}
+.facet-button[aria-pressed="true"] {
+  background: var(--selected);
+  color: var(--accent);
+  font-weight: 600;
+}
+.facet-count {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.facet-note {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 12px 6px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.waterfall {
+  min-width: 0;
+}
+.explorer-toolbar {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.explorer-toolbar input {
+  width: 100%;
+  min-width: 0;
+}
+.search-shortcut {
+  color: var(--muted);
+  font:
+    11px ui-monospace,
+    monospace;
+  line-height: 1;
+  border: 1px solid var(--line);
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.query-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.query-wrap input {
+  padding-right: 30px;
+}
+.query-wrap kbd {
+  position: absolute;
+  right: 8px;
+  pointer-events: none;
+}
+.waterfall-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.waterfall-toolbar label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.waterfall-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.waterfall-actions button {
+  font-size: 11px;
+  padding: 4px 7px;
+}
+.matrix-scroll {
+  overflow: auto;
+  max-height: 620px;
+}
+.matrix {
+  min-width: 600px;
+  position: relative;
+}
+.matrix-axis,
+.matrix-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 1fr) minmax(270px, 1.5fr) 66px;
+  gap: 10px;
+  align-items: center;
+}
+.matrix-axis {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+  font-size: 10px;
+  color: var(--muted);
+  height: 35px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--line);
+}
+.matrix-ticks {
+  position: relative;
+  height: 14px;
+}
+.matrix-ticks span {
+  position: absolute;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.matrix-ticks span:first-child {
+  transform: none;
+}
+.matrix-ticks span:last-child {
+  transform: translateX(-100%);
+}
+.matrix-row {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  padding: 7px 10px;
+  height: 35px;
+  cursor: pointer;
+}
+.matrix-row:hover {
+  background: var(--soft);
+}
+.matrix-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.matrix-row[aria-expanded="true"] {
+  background: var(--selected);
+  box-shadow: inset 3px 0 var(--accent);
+}
+.matrix-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  min-width: 0;
+}
+.matrix-label-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+}
+.status-dot.success {
+  background: var(--success);
+}
+.status-dot.failure,
+.status-dot.timed_out,
+.status-dot.failed {
+  background: var(--danger);
+}
+.status-dot.cancelled,
+.status-dot.skipped {
+  background: var(--warning);
+}
+.matrix-duration {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.matrix-track {
+  display: block;
+  position: relative;
+  height: 20px;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(25% - 1px),
+    var(--line) calc(25% - 1px),
+    var(--line) 25%
+  );
+  border-left: 1px solid var(--line);
+  overflow: hidden;
+}
+.matrix-span {
+  position: absolute;
+  top: 3px;
+  height: 14px;
+  border-radius: 2px;
+}
+.phase-job {
+  background: var(--line);
+}
+.phase-checkout {
+  background: #9c6bd3;
+}
+.phase-setup {
+  background: #5a95de;
+}
+.phase-build {
+  background: #36a88b;
+}
+.phase-upload {
+  background: #dba44d;
+}
+.phase-other {
+  background: #9496aa;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 9px 12px;
+  border-top: 1px solid var(--line);
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+}
+.inspector {
+  border-left: 1px solid var(--line);
+  min-width: 0;
+}
+.inspector-header {
+  height: 53px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--line);
+}
+.inspector-header h2 {
+  font-size: 12px;
+  margin: 0;
+}
+.inspector-header span {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.inspector-content {
+  max-height: 710px;
+  overflow: auto;
+}
+.job-details {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.job-details:target {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.job-details summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.job-details summary::-webkit-details-marker {
+  display: none;
+}
+.job-details summary strong {
+  display: block;
+  width: 100%;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  order: 1;
+}
+.job-details summary .muted {
+  margin-left: auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.job-detail-body > p {
+  font-size: 11px;
+  margin: 10px 0;
+}
+.job-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+.job-tabs button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  padding: 7px 0;
+  font-size: 11px;
+}
+.job-tabs button[aria-selected="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.step-item {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+.step-item:last-child {
+  border-bottom: 0;
+}
+.step-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.step-name {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.step-duration {
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.step-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.step-track {
+  height: 4px;
+  flex: 1;
+  background: var(--line);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.step-bar {
+  height: 4px;
+  display: block;
+  border-radius: 1px;
+}
+.step-bottom .badge {
+  font-size: 9px;
+  padding: 1px 4px;
+}
+.job-metadata {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  font-size: 11px;
+  margin: 0;
+  gap: 10px;
+}
+.job-metadata dt {
+  color: var(--muted);
+}
+.job-metadata dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.empty-state {
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.enhanced .job-details:not([open]) {
+  display: none;
+}
+.enhanced .job-details {
+  border: 0;
+}
+.enhanced .job-details summary {
+  cursor: default;
+}
+.enhanced .job-details:target {
+  outline: none;
+}
+.toolbar-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 7px 0 12px;
+}
+.inline-button {
+  font: inherit;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  background: none;
+}
+.index-count {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: 8px;
+}
+.screen-reader {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 1200px) {
+  .explorer {
+    grid-template-columns: 156px minmax(0, 1fr);
+  }
+  .inspector {
+    grid-column: 1/-1;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .inspector-content {
+    max-height: 420px;
+  }
+  .job-detail-body {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    column-gap: 24px;
+  }
+  .job-detail-body > p {
+    grid-column: 1;
+  }
+  .job-tabs {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+  }
+  .job-tab-panel {
+    grid-column: 2;
+    grid-row: 2/5;
+  }
+  .job-details summary {
+    max-width: 320px;
+  }
+  .facts > div {
+    padding: 0 14px;
+  }
+}
+@media (max-width: 720px) {
+  main {
+    padding: 0 12px 20px;
+  }
+  .masthead {
+    padding: 8px 12px;
+  }
+  .masthead-subtitle {
+    display: none;
+  }
+  .masthead nav {
+    font-size: 11px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 16px;
+  }
+  .facts > div:nth-child(3) {
+    border-right: 0;
+  }
+  .facts strong {
+    font-size: 21px;
+  }
+  .explorer {
+    display: block;
+  }
+  .facets {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 9px;
+  }
+  .facet-heading {
+    width: 100%;
+    margin-bottom: 3px;
+  }
+  .facet-button {
+    width: auto;
+    gap: 7px;
+    padding: 4px 7px;
+    border: 1px solid var(--line);
+    margin: 0;
+  }
+  .facet-note {
+    display: none;
+  }
+  .inspector {
+    border-left: 0;
+  }
+  .job-detail-body {
+    display: block;
+  }
+  .job-tabs {
+    margin-top: 14px;
+  }
+  .job-details summary {
+    max-width: none;
+  }
+  .section-heading {
+    display: block;
+  }
+  .table-search {
+    margin-top: 8px;
+  }
+  .table-search input {
+    width: 100%;
+  }
+  .section-heading .muted {
+    font-size: 11px;
+  }
+  .matrix-scroll {
+    max-height: 460px;
+  }
+  .waterfall-toolbar select {
+    max-width: 150px;
+  }
+  .explorer-toolbar {
+    padding: 9px;
+  }
+  .toolbar-note {
+    font-size: 11px;
+  }
+  .matrix {
+    min-width: 580px;
+  }
+  .panel table {
+    min-width: 560px;
+  }
+}
 """
-FILTER = """const search=document.querySelector('#search');if(search){search.addEventListener('input',()=>{const q=search.value.toLowerCase();document.querySelectorAll('tbody[data-filter] tr').forEach(row=>{row.hidden=!row.textContent.toLowerCase().includes(q)})})}document.querySelectorAll('button[data-job]').forEach(button=>{const detail=document.getElementById(button.dataset.job);if(!detail)return;button.addEventListener('click',()=>{detail.open=!detail.open;if(detail.open)detail.scrollIntoView({block:'nearest'})});detail.addEventListener('toggle',()=>{button.setAttribute('aria-expanded',String(detail.open))})})"""
+FILTER = """
+(() => {
+  const search = document.querySelector("#search");
+  if (search)
+    search.addEventListener("input", () => {
+      const query = search.value.toLowerCase().trim();
+      const rows = [...document.querySelectorAll("tbody[data-filter] tr")];
+      rows.forEach((row) => {
+        row.hidden = !row.textContent.toLowerCase().includes(query);
+      });
+      const count = document.querySelector("#index-count");
+      if (count)
+        count.textContent =
+          rows.filter((row) => !row.hidden).length + " of " + rows.length;
+    });
+  const explorer = document.querySelector("#pipeline-explorer");
+  if (!explorer) return;
+  explorer.classList.add("enhanced");
+  const rows = [...explorer.querySelectorAll("button[data-job]")];
+  const details = [...explorer.querySelectorAll(".job-details")];
+  const query = document.querySelector("#job-search");
+  const facets = [...explorer.querySelectorAll("[data-outcome]")];
+  const counter = document.querySelector("#job-count");
+  const empty = document.querySelector("#job-empty");
+  const inspectorEmpty = document.querySelector("#inspector-empty");
+  const matrix = document.querySelector("#matrix");
+  const fullSpan = Number(matrix.dataset.span);
+  let selected = null;
+  let initialized = false;
+  let outcome = "";
+  let windowStart = 0;
+  let windowEnd = fullSpan;
+  const format = (value) => {
+    const seconds = Math.floor(Math.max(0, value));
+    return seconds >= 3600
+      ? Math.floor(seconds / 3600) +
+          "h " +
+          Math.floor((seconds % 3600) / 60) +
+          "m"
+      : Math.floor(seconds / 60) + "m " + (seconds % 60) + "s";
+  };
+  function revealSelection() {
+    if (!selected || selected.hidden) return;
+    const viewport = matrix.parentElement;
+    const top = selected.offsetTop;
+    const bottom = top + selected.offsetHeight;
+    const header = matrix.querySelector(".matrix-axis").offsetHeight;
+    if (top < viewport.scrollTop + header)
+      viewport.scrollTop = Math.max(0, top - header);
+    else if (bottom > viewport.scrollTop + viewport.clientHeight)
+      viewport.scrollTop = bottom - viewport.clientHeight;
+  }
+  function select(row, updateUrl = true) {
+    selected = row;
+    rows.forEach((item) =>
+      item.setAttribute("aria-expanded", String(item === row)),
+    );
+    details.forEach((detail) => {
+      detail.open = !!row && detail.id === row.dataset.job;
+    });
+    inspectorEmpty.hidden = !!row;
+    document.querySelector("#focus-job").disabled =
+      !row || Number(row.dataset.duration) <= 0;
+    document.querySelector("#inspector-content").scrollTop = 0;
+    if (row && updateUrl && history.replaceState)
+      history.replaceState(null, "", "#" + row.dataset.job);
+    revealSelection();
+  }
+  function filter() {
+    const text = query.value.toLowerCase().trim();
+    rows.forEach((row) => {
+      row.hidden =
+        (outcome && row.dataset.status !== outcome) ||
+        !row.dataset.search.includes(text);
+    });
+    const visible = rows.filter((row) => !row.hidden);
+    counter.textContent = visible.length + " of " + rows.length + " jobs";
+    empty.hidden = visible.length !== 0;
+    if (!selected || selected.hidden) select(visible[0] || null, initialized);
+    else revealSelection();
+    facets.forEach((button) =>
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.outcome === outcome),
+      ),
+    );
+  }
+  function setWindow(start, end) {
+    windowStart = Math.max(0, start);
+    windowEnd = Math.min(fullSpan, Math.max(windowStart + 1, end));
+    const span = windowEnd - windowStart;
+    matrix.querySelectorAll("[data-span-start]").forEach((segment) => {
+      const left = Math.max(windowStart, Number(segment.dataset.spanStart));
+      const right = Math.min(windowEnd, Number(segment.dataset.spanEnd));
+      segment.hidden = right <= left;
+      segment.style.left =
+        Math.max(0, (100 * (left - windowStart)) / span) + "%";
+      segment.style.width = Math.max(0, (100 * (right - left)) / span) + "%";
+    });
+    matrix.querySelectorAll(".matrix-ticks span").forEach((tick, index) => {
+      tick.textContent = format(windowStart + (span * index) / 4);
+    });
+    document.querySelector("#window-label").textContent =
+      start === 0 && end === fullSpan
+        ? "Full run"
+        : format(windowStart) + " – " + format(windowEnd);
+    document.querySelector("#reset-window").disabled =
+      start === 0 && end === fullSpan;
+  }
+  rows.forEach((row) => {
+    row.addEventListener("click", () => select(row));
+    row.addEventListener("keydown", (event) => {
+      const visible = [...matrix.querySelectorAll("button[data-job]")].filter(
+        (item) => !item.hidden,
+      );
+      const index = visible.indexOf(row);
+      let next = null;
+      if (event.key === "ArrowDown")
+        next = visible[Math.min(visible.length - 1, index + 1)];
+      if (event.key === "ArrowUp") next = visible[Math.max(0, index - 1)];
+      if (event.key === "Home") next = visible[0];
+      if (event.key === "End") next = visible[visible.length - 1];
+      if (next) {
+        event.preventDefault();
+        next.focus();
+        select(next);
+      }
+    });
+  });
+  details.forEach((detail) => {
+    detail
+      .querySelector("summary")
+      .addEventListener("click", (event) => event.preventDefault());
+    const tabs = [...detail.querySelectorAll("[role=tab]")];
+    function activate(tab) {
+      tabs.forEach((item) => {
+        const active = item === tab;
+        item.setAttribute("aria-selected", String(active));
+        item.tabIndex = active ? 0 : -1;
+        document.getElementById(item.getAttribute("aria-controls")).hidden =
+          !active;
+      });
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activate(tab));
+      tab.addEventListener("keydown", (event) => {
+        const next =
+          event.key === "ArrowRight"
+            ? tabs[(index + 1) % tabs.length]
+            : event.key === "ArrowLeft"
+              ? tabs[(index + tabs.length - 1) % tabs.length]
+              : null;
+        if (next) {
+          event.preventDefault();
+          activate(next);
+          next.focus();
+        }
+      });
+    });
+    if (tabs.length) activate(tabs[0]);
+  });
+  facets.forEach((button) =>
+    button.addEventListener("click", () => {
+      outcome = button.dataset.outcome;
+      filter();
+    }),
+  );
+  query.addEventListener("input", filter);
+  document.querySelector("#clear-job-filters").addEventListener("click", () => {
+    query.value = "";
+    outcome = "";
+    filter();
+    query.focus();
+  });
+  document.querySelector("#job-sort").addEventListener("change", (event) => {
+    const key = event.target.value;
+    const sorted = [...rows].sort((a, b) =>
+      key === "duration"
+        ? Number(b.dataset.duration) - Number(a.dataset.duration)
+        : key === "name"
+          ? a.dataset.search.localeCompare(b.dataset.search)
+          : key === "status"
+            ? a.dataset.status.localeCompare(b.dataset.status)
+            : Number(a.dataset.start) - Number(b.dataset.start),
+    );
+    sorted.forEach((row) => matrix.append(row));
+    revealSelection();
+  });
+  document.querySelector("#job-sort").dispatchEvent(new Event("change"));
+  document.querySelector("#focus-job").addEventListener("click", () => {
+    if (selected) {
+      const start = Number(selected.dataset.start);
+      const end = start + Number(selected.dataset.duration);
+      const padding = Math.max(1, (end - start) * 0.025);
+      setWindow(start - padding, end + padding);
+    }
+  });
+  document
+    .querySelector("#reset-window")
+    .addEventListener("click", () => setWindow(0, fullSpan));
+  document.querySelector("#longest-job").addEventListener("click", () => {
+    const longest = [...rows].sort(
+      (a, b) => Number(b.dataset.duration) - Number(a.dataset.duration),
+    )[0];
+    if (longest) {
+      outcome = "";
+      query.value = "";
+      filter();
+      select(longest);
+      longest.focus({ preventScroll: true });
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "/" &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.altKey &&
+      !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)
+    ) {
+      event.preventDefault();
+      query.focus();
+    }
+    if (event.key === "Escape" && document.activeElement === query) {
+      query.value = "";
+      filter();
+    }
+  });
+  window.addEventListener("hashchange", () => {
+    const row = rows.find((item) => "#" + item.dataset.job === location.hash);
+    if (row) {
+      outcome = "";
+      query.value = "";
+      filter();
+      select(row, false);
+    }
+  });
+  filter();
+  const initial =
+    rows.find((item) => "#" + item.dataset.job === location.hash) ||
+    [...rows].sort(
+      (a, b) => Number(b.dataset.duration) - Number(a.dataset.duration),
+    )[0];
+  if (initial) select(initial, false);
+  initialized = true;
+  setWindow(0, fullSpan);
+})();
+"""
 
 
 def page(title, body, root="./"):
@@ -233,8 +1353,10 @@ def page(title, body, root="./"):
         '<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
         f'<meta http-equiv="Content-Security-Policy" content="{escape(policy)}">'
-        f'<title>{escape(title)} · nix-overlays builds</title><style>{STYLE}</style></head><body><main>'
-        f'<nav><a href="{escape(root)}">nix-overlays / builds</a><a href="https://github.com/nix-ocaml/nix-overlays/actions/workflows/pipeline.yml">GitHub Actions</a></nav>'
+        f'<title>{escape(title)} · nix-overlays builds</title><style>{STYLE}</style></head><body>'
+        '<header class="masthead">'
+        f'<a class="masthead-brand" href="{escape(root)}"><span class="brand-mark" aria-hidden="true">n</span>nix-overlays <span class="masthead-subtitle">/ Build explorer</span></a>'
+        f'<nav><a href="{escape(root)}">All runs</a><a href="https://github.com/nix-ocaml/nix-overlays/actions/workflows/pipeline.yml">GitHub Actions ↗</a></nav></header><main>'
         f'<h1>{escape(title)}</h1>{body}'
         '<footer>Reports are indexed by the source commit reported by GitHub. Package explorers also retain the evaluated checkout SHA, which may be a PR merge commit. Raw logs remain in the Actions artifacts.</footer>'
         f'</main><script>{FILTER}</script></body></html>\n'
@@ -375,6 +1497,7 @@ def timeline(run, repository):
     origin = min(starts, default=0)
     span = max(max(ends, default=origin) - origin, 1)
     blocks, rows = [], []
+    outcomes = collections.Counter(str(job.get("conclusion") or "unknown") for job in run["jobs"])
 
     def segment(start, end, phase, label):
         start, end = timestamp(start), timestamp(end)
@@ -382,35 +1505,75 @@ def timeline(run, repository):
             return ""
         offset = max(0, min(100, 100 * (start - origin) / span))
         width = max(0, min(100 - offset, 100 * (end - start) / span))
-        return f'<span class="matrix-span phase-{phase}" style="left:{offset:.3f}%;width:{width:.3f}%" title="{escape(label)}"></span>'
+        return (f'<span class="matrix-span phase-{phase}" style="left:{offset:.3f}%;width:{width:.3f}%" '
+                f'data-span-start="{start - origin:.3f}" data-span-end="{end - origin:.3f}" title="{escape(label)}"></span>')
 
     for job in run["jobs"]:
         seconds = duration(job["started_at"], job["completed_at"])
+        offset = max(0, (timestamp(job["started_at"]) or origin) - origin)
         identifier = f'job-{positive(job["id"])}'
+        conclusion = str(job.get("conclusion") or "unknown")
+        category = conclusion if conclusion in {"success", "failure", "failed", "timed_out", "cancelled", "skipped"} else "unknown"
+        search = str(job["name"]) + " " + " ".join(str(step.get("name", "")) for step in job.get("steps") or [])
         steps, spans = [], [segment(job["started_at"], job["completed_at"], "job", job["name"])]
         for step in job.get("steps") or []:
             step_time = duration(step.get("started_at"), step.get("completed_at"))
             name = step.get("name", "Step")
-            steps.append(f'<tr><td class="step-name">{escape(name)}</td><td>{badge(step.get("conclusion"))}</td><td>{elapsed(step_time)}</td></tr>')
-            spans.append(segment(step.get("started_at"), step.get("completed_at"), step_phase(name), f'{name} · {elapsed(step_time)}'))
+            phase = step_phase(name)
+            proportion = min(100, 100 * (step_time or 0) / max(seconds or 0, 1))
+            steps.append(
+                f'<div class="step-item"><div class="step-top"><span class="step-name">{escape(name)}</span>'
+                f'<span class="step-duration">{elapsed(step_time)}</span></div><div class="step-bottom">{badge(step.get("conclusion"))}'
+                f'<span class="step-track" aria-hidden="true"><span class="step-bar phase-{phase}" style="width:{proportion:.3f}%"></span></span></div></div>'
+            )
+            spans.append(segment(step.get("started_at"), step.get("completed_at"), phase, f'{name} · {elapsed(step_time)}'))
         rows.append(
-            f'<button class="matrix-row" data-job="{identifier}" aria-controls="{identifier}" aria-expanded="false" title="{escape(job["name"])} · {escape(job["conclusion"] or "unknown")}">'
-            f'<span class="matrix-label">{escape(job["name"])}</span><span class="matrix-track" aria-hidden="true">{"".join(spans)}</span>'
-            f'<span class="matrix-duration">{elapsed(seconds)}</span></button>'
+            f'<button class="matrix-row" data-job="{identifier}" data-status="{escape(conclusion)}" data-search="{escape(search.lower())}" '
+            f'data-start="{offset:.3f}" data-duration="{seconds or 0:.3f}" aria-controls="{identifier}" aria-expanded="false" '
+            f'aria-label="{escape(job["name"])} · {escape(conclusion)} · {elapsed(seconds)}" title="{escape(job["name"])} · {escape(conclusion)}">'
+            f'<span class="matrix-label"><span class="status-dot {category}" aria-hidden="true"></span><span class="matrix-label-name">{escape(job["name"])}</span></span>'
+            f'<span class="matrix-track" aria-hidden="true">{"".join(spans)}</span><span class="matrix-duration">{elapsed(seconds)}</span></button>'
         )
         link = f'https://github.com/{repository}/actions/runs/{run["id"]}/job/{positive(job["id"])}'
+        metadata = (
+            f'<dl class="job-metadata"><dt>Job ID</dt><dd><code>{positive(job["id"])}</code></dd>'
+            f'<dt>Started</dt><dd>{escape(job.get("started_at") or "Unknown")}</dd>'
+            f'<dt>Finished</dt><dd>{escape(job.get("completed_at") or "Unknown")}</dd>'
+            f'<dt>Run offset</dt><dd>+{elapsed(offset)}</dd><dt>Duration</dt><dd>{elapsed(seconds)}</dd>'
+            f'<dt>Result</dt><dd>{badge(conclusion)}</dd></dl>'
+        )
         blocks.append(
-            f'<details class="job-details" id="{identifier}"><summary>{badge(job["conclusion"])}<strong>{escape(job["name"])}</strong><span class="muted">{elapsed(seconds)}</span></summary>'
-            f'<p><a href="{link}">Open Actions job</a></p><div class="timeline">'
-            '<table><thead><tr><th>Step</th><th>Result</th><th>Duration</th></tr></thead><tbody>' + "".join(steps) + '</tbody></table></div></details>'
+            f'<details class="job-details" id="{identifier}"><summary>{badge(conclusion)}<strong>{escape(job["name"])}</strong><span class="muted">{elapsed(seconds)}</span></summary>'
+            f'<div class="job-detail-body"><p><a href="{link}">Open Actions job ↗</a></p>'
+            f'<div class="job-tabs" role="tablist" aria-label="Job details">'
+            f'<button id="{identifier}-steps-tab" role="tab" aria-controls="{identifier}-steps" aria-selected="true">Steps ({len(steps)})</button>'
+            f'<button id="{identifier}-metadata-tab" role="tab" aria-controls="{identifier}-metadata" aria-selected="false" tabindex="-1">Metadata</button></div>'
+            f'<div class="job-tab-panel" id="{identifier}-steps" role="tabpanel" aria-labelledby="{identifier}-steps-tab">'
+            + ("".join(steps) if steps else '<p class="muted">No step timings were recorded.</p>')
+            + f'</div><div class="job-tab-panel" id="{identifier}-metadata" role="tabpanel" aria-labelledby="{identifier}-metadata-tab">{metadata}</div></div></details>'
         )
     ticks = ''.join(f'<span style="left:{number * 25}%">{elapsed(span * number / 4)}</span>' for number in range(5))
     legend = ''.join(f'<span><i class="phase-{phase}"></i>{label}</span>' for phase, label in (("checkout", "Checkout"), ("setup", "Setup"), ("build", "Build"), ("upload", "Upload"), ("other", "Other")))
-    chart = f'<div class="matrix"><div class="matrix-axis"><span>Elapsed from run start</span><span class="matrix-ticks">{ticks}</span><span>Duration</span></div>' + ''.join(rows) + '</div>'
+    facets = f'<button class="facet-button" data-outcome="" aria-pressed="true"><span>All jobs</span><span class="facet-count">{len(rows)}</span></button>'
+    facets += ''.join(
+        f'<button class="facet-button" data-outcome="{escape(status)}" aria-pressed="false"><span>{escape(status.replace("_", " ").capitalize())}</span><span class="facet-count">{count}</span></button>'
+        for status, count in sorted(outcomes.items())
+    )
+    chart = f'<div class="matrix" id="matrix" data-span="{span:.3f}"><div class="matrix-axis"><span>Job</span><span class="matrix-ticks">{ticks}</span><span>Duration</span></div>' + ''.join(rows) + '</div>'
     return (
-        '<h2>Pipeline timeline</h2><p>All Actions jobs share the same time axis. Select a row to expand its step details. '
-        'The build step includes tool bootstrap; package activity timelines are inside each report.</p>'
-        f'<div class="legend">{legend}</div><div class="panel">{chart}</div><h2>Actions step details</h2><div class="panel">' + "".join(blocks) + '</div>'
+        '<div class="section-heading"><h2>Pipeline timeline</h2><span class="muted">Actions jobs · one shared time axis</span></div>'
+        '<div class="explorer" id="pipeline-explorer"><aside class="facets" aria-label="Filter jobs by result"><p class="facet-heading">Result</p>'
+        f'{facets}<p class="facet-note">Each row is an Actions job. Select a job to inspect its steps.<br><br><button class="inline-button" id="longest-job">Inspect longest job</button></p></aside>'
+        '<section class="waterfall" aria-label="Job waterfall"><div class="explorer-toolbar"><label class="query-wrap"><span class="screen-reader">Search jobs or steps</span>'
+        '<input type="search" id="job-search" placeholder="Search jobs or steps…" autocomplete="off"><kbd class="search-shortcut">/</kbd></label>'
+        '<button id="clear-job-filters" title="Clear search and result filters">Reset</button></div>'
+        f'<div class="waterfall-toolbar"><span id="job-count" aria-live="polite">{len(rows)} jobs</span><label>Sort <select id="job-sort"><option value="start">Start time</option><option value="duration">Longest first</option><option value="name">Job name</option><option value="status">Result</option></select></label>'
+        '<div class="waterfall-actions"><span id="window-label">Full run</span><button id="focus-job">Focus selected</button><button id="reset-window" disabled>Full run</button></div></div>'
+        f'<div class="matrix-scroll">{chart}<p class="empty-state" id="job-empty" hidden>No jobs match these filters.</p></div><div class="legend">{legend}</div></section>'
+        '<aside class="inspector" aria-label="Selected job"><div class="inspector-header"><h2>Actions step details</h2><span>Job inspector</span></div>'
+        '<div class="inspector-content" id="inspector-content"><p class="empty-state" id="inspector-empty" hidden>Select a job to inspect its steps.</p>'
+        + "".join(blocks) + '</div></aside></div>'
+        '<p class="toolbar-note">Build includes tool bootstrap. Open a package report below for derivation activity, dependencies and logs. Use ↑ / ↓ to move between jobs.</p>'
     )
 
 
@@ -447,12 +1610,17 @@ def render_indexes(site, catalog):
                 + f'</td><td>{badge(report["status"])}</td><td>{count.get("built", 0)}</td><td>{count.get("cached", 0)}</td><td>{count.get("failed", 0) + count.get("blocked", 0)}</td>'
                 f'<td><a href="https://github.com/{repository}/actions/runs/{run["id"]}/artifacts/{report["id"]}">Raw artifact</a></td></tr>'
             )
-        facts = ''.join(f'<div><strong>{aggregate.get(key, 0):,}</strong>{label}</div>' for key, label in (("built", "Built roots"), ("cached", "Cached roots"), ("failed", "Failed roots"), ("blocked", "Blocked roots")))
+        job_ends = [timestamp(job.get("completed_at")) for job in run["jobs"]]
+        job_ends = [value for value in job_ends if value is not None]
+        run_start = timestamp(run["startedAt"])
+        wall_time = max(job_ends) - run_start if job_ends and run_start is not None else None
+        facts = f'<div><strong>{elapsed(wall_time)}</strong>Pipeline wall time</div><div><strong>{len(run["jobs"])}</strong>Actions jobs</div>'
+        facts += ''.join(f'<div><strong>{aggregate.get(key, 0):,}</strong>{label}</div>' for key, label in (("built", "Built roots"), ("cached", "Cached roots"), ("failed", "Failed roots"), ("blocked", "Blocked roots")))
         no_reports = '<p class="notice">No package reports were uploaded for this attempt. Check the Actions jobs below for setup failures or cancellation.</p>' if not rows else ""
-        body = f'<nav>{navigation}</nav><p>{badge(run["conclusion"])} · {escape(run["startedAt"])} · {escape(run["headRepository"])}</p><div class="panel facts">{facts}</div>{no_reports}'
+        body = f'<nav class="run-nav">{navigation}</nav><p class="run-meta">{badge(run["conclusion"])}<span>{escape(run["startedAt"])}</span><span>{escape(run["headRepository"])}</span></p><div class="panel facts">{facts}</div>{no_reports}'
         body += "".join(f'<p class="notice">{escape(note)}</p>' for note in run.get("notes", []))
-        body += '<h2>Package matrix</h2><label>Filter reports <input id="search" type="search" placeholder="Compiler, platform or target"></label><div class="panel"><table><thead><tr><th>Target</th><th>Result</th><th>Built</th><th>Cached</th><th>Failed / blocked</th><th>Logs</th></tr></thead><tbody data-filter>' + "".join(rows) + '</tbody></table></div>'
         body += timeline(run, repository)
+        body += f'<div class="section-heading"><h2>Package reports <span class="index-count" id="index-count">{len(rows)}</span></h2><label class="table-search">Filter <input id="search" type="search" placeholder="Compiler, platform or target"></label></div><div class="panel"><table><thead><tr><th>Target</th><th>Result</th><th>Built</th><th>Cached</th><th>Failed / blocked</th><th>Logs</th></tr></thead><tbody data-filter>' + "".join(rows) + '</tbody></table></div>'
         write_page(site, path, f'Run #{run["number"]} · attempt {run["attempt"]}', body)
     for path, selected in groups.items():
         first = selected[0]

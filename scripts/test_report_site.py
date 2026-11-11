@@ -199,7 +199,7 @@ class RenderingTests(unittest.TestCase):
              "steps": [{"name": "Upload build report", "started_at": "2026-11-10T10:01:30Z", "completed_at": "2026-11-10T10:02:00Z"}]},
         ]
         text = site.timeline(item, "nix-ocaml/nix-overlays")
-        chart, details = text.split('<h2>Actions step details</h2>')
+        chart, details = text.split('<aside class="inspector"')
         self.assertNotIn("<details", chart)
         self.assertEqual(chart.count('class="matrix-row"'), 2)
         self.assertIn('phase-build" style="left:25.000%;width:50.000%"', chart)
@@ -207,6 +207,23 @@ class RenderingTests(unittest.TestCase):
         self.assertIn('aria-controls="job-41"', chart)
         self.assertIn('id="job-41"', details)
         self.assertIn("2m 0s", chart)
+        self.assertIn('data-start="60.000" data-duration="60.000"', chart)
+        self.assertIn('data-span-start="90.000" data-span-end="120.000"', chart)
+        self.assertIn('data-outcome="success"', chart)
+        self.assertIn('aria-controls="job-41-metadata"', details)
+
+    def test_pipeline_missing_timestamps_and_hostile_search_metadata(self):
+        item = run()
+        item["jobs"] = [{"id": 40, "name": 'Target " onclick="alert(1)', "conclusion": "failure",
+                         "started_at": None, "completed_at": None,
+                         "steps": [{"name": "<script>bad</script>", "conclusion": "cancelled"}]}]
+        text = site.timeline(item, "nix-ocaml/nix-overlays")
+        self.assertIn('data-start="0.000" data-duration="0.000"', text)
+        self.assertIn('data-search="target &quot; onclick=&quot;alert(1) &lt;script&gt;bad&lt;/script&gt;"', text)
+        self.assertNotIn('<script>bad</script>', text)
+        self.assertNotIn('name="Target " onclick=', text)
+        self.assertIn('data-span="1.000"', text)
+        self.assertIn('aria-label="Job details"', text)
 
     def test_html_escapes_metadata_and_shows_steps(self):
         item = run(branch='<script>alert("branch")</script>')
