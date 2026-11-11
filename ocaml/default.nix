@@ -3380,14 +3380,16 @@ with oself;
   uspf-unix = uspf;
 
   utop = osuper.utop.overrideAttrs (
-    o:
+    finalAttrs: o:
     {
-      src = fetchFromGitHub {
-        owner = "ocaml-community";
-        repo = "utop";
-        rev = "4c1559fd702fedc315fa9d8fb972411a12d93f7c";
-        hash = "sha256-PhunXce0+cZBlxknmQ9VUKDIK+9n2JW6q8ReTdYAM6w=";
+      version = "2.18.0";
+      src = fetchurl {
+        url = "https://github.com/ocaml-community/utop/releases/download/${finalAttrs.version}/utop-${finalAttrs.version}.tar.gz";
+        hash = "sha256-KVomXgRzzfs8AjqyRJZ4yTDg2/XCnnQLmoVLDS1qM/o=";
       };
+      postPatch = (o.postPatch or "") + ''
+        substituteInPlace src/lib/uTop.ml --replace-fail '%%VERSION%%' '${finalAttrs.version}'
+      '';
       dontGzipMan = true;
       doCheck = true;
       checkInputs = [ alcotest ];
