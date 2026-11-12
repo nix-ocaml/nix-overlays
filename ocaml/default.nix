@@ -821,12 +821,10 @@ with oself;
       };
     in
     dune_pkg.overrideAttrs (o: {
-      version = "3.25.0_alpha0";
-      src = fetchFromGitHub {
-        owner = "anmonteiro";
-        repo = "dune";
-        rev = "d244859fa04e4b0156b36cb0cea1995fd051a43d";
-        hash = "sha256-xeFoy98GFK0RFaXMp7qfjWkofGOKGzQl4mauDsYZfks=";
+      version = "3.25.0_alpha1";
+      src = fetchurl {
+        url = "https://github.com/ocaml/dune/releases/download/3.25.0_alpha1/dune-3.25.0.alpha1.tbz";
+        hash = "sha256-JNsIj5rLISq6iIBmPZWNHQYeiNuH5UwqG01//WnLN9o=";
       };
       nativeBuildInputs = o.nativeBuildInputs ++ [ makeWrapper ];
       postFixup =
