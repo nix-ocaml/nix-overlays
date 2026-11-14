@@ -6,6 +6,7 @@
   makeWrapper,
   nix-eval-jobs,
   python3,
+  nodejs,
 }:
 
 with oself;
@@ -140,12 +141,15 @@ with oself;
     src = fetchFromGitHub {
       owner = "nix-ocaml";
       repo = "nix-ci-build";
-      rev = "361a3959294df96ce3fb730cc5c72e673b39f4fa";
-      hash = "sha256-98kgEvxlX2uvmOMJswBDITvF3GEGFXWE0oXiXfzrtXY=";
+      rev = "33d674ff2914068841eab814673713d6d52971a4";
+      hash = "sha256-SGS1rJS8/f+9LvLrT5peg6lXzjchAjTWGSBcX9I7kWo=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
-    nativeCheckInputs = [ python3 ];
+    nativeCheckInputs = [
+      python3
+      nodejs
+    ];
     doCheck = true;
     buildInputs = [ nix-eval-jobs ];
     propagatedBuildInputs = [

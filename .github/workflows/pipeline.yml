@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Test build report publisher
+        run: python3 -m unittest discover -s scripts -p test_report_site.py
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
@@ -76,8 +78,13 @@ jobs:
         if: ${{ always() && steps.report-artifact.outputs.artifact-url != '' }}
         env:
           REPORT_ARTIFACT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+          REPORT_ARTIFACT_ID: ${{ steps.report-artifact.outputs.artifact-id }}
+          REPORT_SITE_URL: ${{ vars.BUILD_REPORTS_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: |
           printf '\n[Download build report and full logs](%s)\n' "$REPORT_ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n[Open interactive report](%s/runs/%s/%s/jobs/%s/) · [Run matrix](%s/runs/%s/%s/) (published after Pipeline completes)\n' \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$REPORT_ARTIFACT_ID" \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
   top-level-packages:
     strategy:
@@ -121,8 +128,13 @@ jobs:
         if: ${{ always() && steps.report-artifact.outputs.artifact-url != '' }}
         env:
           REPORT_ARTIFACT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+          REPORT_ARTIFACT_ID: ${{ steps.report-artifact.outputs.artifact-id }}
+          REPORT_SITE_URL: ${{ vars.BUILD_REPORTS_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: |
           printf '\n[Download build report and full logs](%s)\n' "$REPORT_ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n[Open interactive report](%s/runs/%s/%s/jobs/%s/) · [Run matrix](%s/runs/%s/%s/) (published after Pipeline completes)\n' \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$REPORT_ARTIFACT_ID" \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
   native-macos:
     strategy:
@@ -174,8 +186,13 @@ jobs:
         if: ${{ always() && steps.report-artifact.outputs.artifact-url != '' }}
         env:
           REPORT_ARTIFACT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+          REPORT_ARTIFACT_ID: ${{ steps.report-artifact.outputs.artifact-id }}
+          REPORT_SITE_URL: ${{ vars.BUILD_REPORTS_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: |
           printf '\n[Download build report and full logs](%s)\n' "$REPORT_ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n[Open interactive report](%s/runs/%s/%s/jobs/%s/) · [Run matrix](%s/runs/%s/%s/) (published after Pipeline completes)\n' \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$REPORT_ARTIFACT_ID" \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
   cross-compilers:
     # needs: [native-linux]
@@ -231,8 +248,13 @@ jobs:
         if: ${{ always() && steps.report-artifact.outputs.artifact-url != '' }}
         env:
           REPORT_ARTIFACT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+          REPORT_ARTIFACT_ID: ${{ steps.report-artifact.outputs.artifact-id }}
+          REPORT_SITE_URL: ${{ vars.BUILD_REPORTS_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: |
           printf '\n[Download build report and full logs](%s)\n' "$REPORT_ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n[Open interactive report](%s/runs/%s/%s/jobs/%s/) · [Run matrix](%s/runs/%s/%s/) (published after Pipeline completes)\n' \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$REPORT_ARTIFACT_ID" \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
   cross-compilers-mingw:
     strategy:
@@ -278,5 +300,10 @@ jobs:
         if: ${{ always() && steps.report-artifact.outputs.artifact-url != '' }}
         env:
           REPORT_ARTIFACT_URL: ${{ steps.report-artifact.outputs.artifact-url }}
+          REPORT_ARTIFACT_ID: ${{ steps.report-artifact.outputs.artifact-id }}
+          REPORT_SITE_URL: ${{ vars.BUILD_REPORTS_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: |
           printf '\n[Download build report and full logs](%s)\n' "$REPORT_ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n[Open interactive report](%s/runs/%s/%s/jobs/%s/) · [Run matrix](%s/runs/%s/%s/) (published after Pipeline completes)\n' \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$REPORT_ARTIFACT_ID" \
+            "${REPORT_SITE_URL%/}" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
