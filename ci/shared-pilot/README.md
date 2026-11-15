@@ -1,11 +1,21 @@
 # Shared prerequisite pilot
 
 The [pilot workflow](../../.github/workflows/shared-prerequisite-pilot.yml)
-exercises nix-ci-build's shared execution plan against this checkout's real
-package sets and the existing signed R2 cache. It is separate from
-`pipeline.yml` and `ci.sh`, and adds no flake inputs.
+contains one reusable-workflow call. [build.json](build.json) supplies all four
+package sets, runner labels, read/write caches, and the pilot's work limits.
+The [reusable workflow](https://github.com/nix-ocaml/nix-ci-build/pull/17) handles planning, the two dynamic matrices, signed builder
+reuse, plan transfer, failure handling, and combined reports. Adding a set does
+not require another workflow job.
 
-It selects `lwt` from each of these x86_64-linux scopes:
+The caller maps the existing `R2_SIGNING_KEY`, `R2_ACCESS_KEY_ID`, and
+`R2_SECRET_ACESS_KEY` secrets once. Only same-repository PRs can run it; manual
+runs become available when the workflow reaches the default branch. The
+production `pipeline.yml` and `ci.sh` remain separate, with no new root flake
+inputs.
+
+## Bounded real package sets
+
+Each set selects the real `lwt` derivation from one x86_64-linux scope:
 
 | Set | Scope under `legacyPackages.x86_64-linux` |
 | --- | --- |
@@ -14,113 +24,75 @@ It selects `lwt` from each of these x86_64-linux scopes:
 | `musl-5_5` | `pkgsCross.musl64.ocaml-ng.ocamlPackages_5_5` |
 | `musl-5_6` | `pkgsCross.musl64.ocaml-ng.ocamlPackages_5_6` |
 
-These are the real scopes behind the production package sets. The pilot uses
-smaller roots than the usual musl package selection. It preserves package
-recipes, compiler options, and derivation identities.
+The limits allow only these four roots and their two reviewed `libev`
+derivations. The native helper is shared across OCaml versions, as is the
+separate musl helper. Those helper paths come from Lwt's actual input graph;
+the global musl `libev` attribute is a different derivation. If their identities
+change, update the two exact paths after reviewing the new graph. The guard
+fails closed instead of authorizing new dependencies.
 
-The planner evaluates all four sets, resolves their actual compiled `libev`
-dependencies, and allows at most six exact derivations: four Lwt roots and two
-libev builds. Each libev derivation is shared across OCaml versions; native and
-musl libev remain distinct. A missing compiler, unrelated library, or source fetcher stops the
-pilot before workers start. Every remaining dependency must have a complete
-closure in the existing read caches. Their union may contain at most 2 GiB of
-uncompressed NAR content. That is a bound on distinct dependency content, not
-total network traffic: multiple runners may download the same dependency,
-and tool bootstrap and recipe artifacts are separate.
+At most six derivations may build. Every remaining prerequisite must have a
+complete cached closure, whose union is limited to 2 GiB of uncompressed NAR
+content. This is a distinct-content limit, not a total network-traffic budget:
+multiple runners can download the same dependency, and builder bootstrap and
+recipe artifacts are separate. Each worker has a 20-minute timeout.
 
-The workflow builds the pinned nix-ci-build revision once on x86_64-linux,
-exports its signed runtime closure, and transfers that exact closure to the
-workers and report job. It reads the evaluator's upstream cache during this
-bootstrap. Subsequent package work reads the ordinary overlay and NixOS
-caches. Normal Nix signature verification remains enabled throughout.
+The workflow builds the tool once per host system and transfers its signed
+closure to workers. Workers import the saved derivation plan without evaluating
+the package sets again. A producer must publish its outputs successfully before
+consumers can use them. Normal Nix signature verification remains enabled.
 
-The shared prerequisite matrix runs before the package matrix. Both matrices
-skip cleanly when empty. Workers import the saved derivation bundle without
-re-evaluating the source flake, refresh cache availability, and refuse to build
-outside their assigned ownership. A producer only succeeds after its outputs
-are published to the existing R2 destination. One failed prerequisite does not
-prevent unrelated package workers from checking their own dependencies.
+All four roots were cached in the initial pilot. Both worker matrices skipped
+correctly and the combined report recorded no builds. That validates the warm
+path, not a native/musl speedup. A completely cold four-scope plan currently has
+about 2.61 GiB of prerequisite NAR content, so the 2 GiB guard intentionally
+refuses it. The smaller controlled musl comparison below fits the budget.
 
-Cache setup reuses the existing `R2_SIGNING_KEY`, `R2_ACCESS_KEY_ID`, and
-`R2_SECRET_ACESS_KEY` repository secrets through `nix-s3-action`. Only
-same-repository PRs can run the pilot. It triggers when the pilot files change;
-after the workflow reaches the default branch, it is also available through
-**Run workflow**. A same-repository PR also runs the bounded musl comparison
-described below; manual runs enable it with the **compare** checkbox. The
-ordinary pipeline remains unchanged and may run alongside the pilot.
+The reusable workflow retains the portable plan, guard evidence, builder
+bootstrap timings, worker reports and logs, and a combined HTML/JSON report.
+Per-derivation build activity is elapsed build time, not CPU time; worker wall
+time and bootstrap cost should be assessed separately.
 
-The artifacts retain:
+## Nonempty workflow smoke
 
-- The execution plan, package/helper identities, cache checks, and portable
-  derivation bundle.
-- The exact signed builder closure, with bootstrap timing in the plan.
-- Every available worker report, including failed attempts, import timing,
-  per-derivation build activity, publication checks, and full logs.
-- The combined HTML report, `pilot-measurements.json`, and a concise Actions
-  summary with build activity, worker wall span, duplicate builds, and missing
-  reports.
+[shared-prerequisite-smoke.yml](../../.github/workflows/shared-prerequisite-smoke.yml)
+calls the same reusable workflow with [smoke.json](smoke.json). Its no-input
+[fixture flake](fixture/flake.nix) contains two tiny roots consuming different
+outputs of one shared derivation. The initial cold run should build exactly
+three derivations through one prerequisite job and two package jobs, publishing
+them to the existing signed R2 cache. A rerun should find them cached and skip
+both matrices. It does not delete cache entries or force invalidation.
 
-Fully cached roots are a successful warm run: both worker matrices are empty,
-and the report explicitly records zero observed builds. This validates cache
-planning and the empty-stage path; it does **not** establish a native/musl
-build speedup. On the initial checked revision, all four Lwt roots were cached.
-The exact helper graph records two real cross-version shared libev derivations.
-The planner does not treat similarly named native/musl packages as identical.
-
-The natural plan's 2 GiB boundary cap is intentional: a completely cold set of
-all four Lwt roots would currently require about 2.61 GiB of distinct cached
-prerequisites and would stop. The controlled comparison uses just the two musl
-versions, whose cached boundary is about 1.35 GiB.
+Only this fixture uses `/bin/sh` with `sandbox = false`; its script uses shell
+builtins and has no external dependency closure. The smoke configuration allows
+only the three fixture derivations and at most 1 MiB of cached prerequisites.
+Signature verification and signed publication are unchanged. The real-package
+configuration does not disable sandboxing. This test checks workflow execution,
+not package-build performance.
 
 ## Controlled musl comparison
 
-A separate job imports the same signed builder artifact and uses the benchmark
-harness from that exact nix-ci-build revision. It evaluates an immutable,
-Git-filtered store snapshot of this workflow's checkout, then compares the two real musl Lwt
-roots on OCaml 5.5 and 5.6. Only those two roots and their exact common compiled
-libev may build: three unique derivations, including every selected output.
+[shared-prerequisite-comparison.yml](../../.github/workflows/shared-prerequisite-comparison.yml)
+is a separate manual-only experiment. It builds a pinned nix-ci-build once,
+then evaluates an immutable Git-filtered snapshot of the checkout. The harness
+compares the two real musl Lwt roots on OCaml 5.5 and 5.6, withholding only those
+roots and their exact common compiled libev from a private seed cache.
 
-It copies cached compilers, tools, libraries, and source archives into a frozen
-private seed without building them. The seed excludes the selected Lwt and
-libev outputs even when they exist upstream. Each worker uses a fresh Linux
-chroot store, so the ordinary store and the builder's dependencies cannot warm
-either case. Independent workers receive separate publication caches; the
-coordinated workers share one private publication cache. No comparison outputs
-are written to production R2, and no production cache entries are deleted.
+Cached compilers, tools, libraries, and sources are copied into the seed without
+building them. Each worker gets a fresh Linux chroot store. Independent workers
+use separate publication caches; coordinated workers share a private publication
+cache. Neither case can read the deliberately withheld outputs from upstream,
+and no experiment outputs are written to production R2.
 
-The expected result is four builds independently versus three with a shared
-prerequisite, with libev built twice versus once. The harness verifies these
-counts from actual build activity, rejects work outside the exact allowlist,
-requires the entire prerequisite boundary to be cached, caps its NAR content
-at 2 GiB, and imposes a 20-minute experiment deadline. Root privileges are used
-only to create disposable Linux chroot stores. The private experiment caches
-use their own signature policy; the signed production-cache jobs keep normal
-verification enabled.
+The harness checks actual build activity for four builds independently versus
+three with coordination, with libev built twice versus once. It rejects work
+outside those exact three derivations, requires the whole prerequisite boundary
+to be cached, caps its NAR content at 2 GiB, and imposes a 20-minute experiment
+deadline within a 30-minute job. Root privileges create disposable chroot stores;
+the private caches have their own signature policy.
 
-The comparison artifacts contain both plans, retained command logs, worker and
-aggregate reports, exact identities, measured build activity, worker wall time,
-seed sizes, and publication evidence. Cache file sizes are not network traffic,
-and summed build activity is not CPU time. Seed preparation, planning, and tool
-bootstrap are recorded separately; a reduction in duplicate work does not by
-itself establish a wall-time speedup.
-
-For earlier controlled duplicate-work evidence, the separate
-[nix-ci-build comparison](https://github.com/nix-ocaml/nix-ci-build/actions/runs/43441414870)
-used a frozen cache seed and independent stores: it observed four builds
-independently and three with coordination, with native `topkg` built twice
-versus once. That small comparison did not show a wall-time speedup. Neither
-comparison changes package recipes or runs a baseline against a cache warmed
-by its other arm.
-
-Run the bounded-work checks locally with:
-
-```sh
-python3 -B ci/shared-pilot/test_pilot.py
-```
-
-The package selection and planning steps can be inspected on any host able to
-evaluate x86_64-linux derivations. Execution belongs on x86_64-linux. The
-workflow limits planning/bootstrap to 30 minutes, each natural worker to
-20 minutes, the comparison job to 30 minutes, and aggregation to 10 minutes;
-expanding to larger families requires a new,
-explicitly reviewed build and cached-dependency budget.
+Artifacts retain both plans, command logs, worker and aggregate reports,
+identities, seed sizes, build activity, publication evidence, and worker wall
+time. Cache file sizes are not network traffic. Planning, seed preparation, and
+tool bootstrap remain separate, and less duplicate work does not by itself
+establish a wall-time speedup.

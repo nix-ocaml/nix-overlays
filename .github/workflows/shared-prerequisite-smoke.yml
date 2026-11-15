@@ -1,0 +1,28 @@
+name: Shared workflow smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [master]
+    paths:
+      - '.github/workflows/shared-prerequisite-smoke.yml'
+      - 'ci/shared-pilot/smoke.json'
+      - 'ci/shared-pilot/fixture/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-prerequisite-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: nix-ocaml/nix-ci-build/.github/workflows/build.yml@dd697bc30eb338839f9aa0a53e9b1294ab1df3f1
+    with:
+      config: ci/shared-pilot/smoke.json
+    secrets:
+      NIX_CACHE_SIGNING_KEY: ${{ secrets.R2_SIGNING_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACESS_KEY }}
