@@ -1,0 +1,336 @@
+name: Shared prerequisite pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      compare:
+        description: Run the bounded musl Lwt/libev comparison in fresh stores
+        type: boolean
+        default: false
+  pull_request:
+    branches: [master]
+    paths:
+      - '.github/workflows/shared-prerequisite-pilot.yml'
+      - 'ci/shared-pilot/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-prerequisite-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # The reviewed shared-execution revision; no additional flake input.
+  NIX_CI_BUILD_REV: dd267a6f93832f6ddec76b67b76d39cda47b6d37
+  NIX_CI_BUILD_RUN_ID: github:${{ github.repository }}:${{ github.run_id }}
+  NIX_CI_BUILD_ATTEMPT_ID: ${{ github.run_attempt }}
+
+jobs:
+  plan:
+    name: Plan native and musl package sets
+    # Publishing uses the existing repository cache credentials. Fork PRs
+    # cannot run this opt-in pilot; the ordinary pipeline remains separate.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      shared: ${{ steps.plan.outputs.shared }}
+      packages: ${{ steps.plan.outputs.packages }}
+      has-shared: ${{ steps.plan.outputs.has-shared }}
+      has-packages: ${{ steps.plan.outputs.has-packages }}
+      tool-ready: ${{ steps.tool-artifact.outcome == 'success' }}
+      plan-ready: ${{ steps.plan.outcome == 'success' && steps.plan-artifact.outcome == 'success' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev https://cache.thalheim.io
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY= cache.thalheim.io-1:R7msbosLEZKrxk/lKxf9BTjOOH7Ax3H0Qj0/6wiHOgc=
+            accept-flake-config = true
+      - uses: nix-ocaml/nix-s3-action@fork
+        with:
+          skipPush: true
+          endpoint: 's3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com'
+          signingKey: ${{ secrets.R2_SIGNING_KEY }}
+          awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
+          awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
+      - name: Check bounded-work guards
+        run: python3 -B ci/shared-pilot/test_pilot.py
+      - name: Build once and export the signed builder closure
+        run: |
+          python3 -B ci/shared-pilot/pilot.py bootstrap export --report plan \
+            --flake "github:nix-ocaml/nix-ci-build/$NIX_CI_BUILD_REV#packages.x86_64-linux.default"
+      - name: Upload the exact builder closure
+        id: tool-artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-tool
+          path: tool/
+          overwrite: true
+          compression-level: 0
+          retention-days: 7
+      - name: Select the real package roots and build helpers
+        run: |
+          python3 -B ci/shared-pilot/pilot.py prepare \
+            --wrapper "$RUNNER_TEMP/shared-pilot-source"
+      - name: Plan the package sets against the existing caches
+        id: plan
+        run: python3 -B ci/shared-pilot/pilot.py plan
+      - name: Reject work outside the package and cached-boundary budget
+        run: python3 -B ci/shared-pilot/pilot.py guard
+      - name: Publish the plan summary
+        if: always()
+        run: |
+          if [[ -f plan/summary.md ]]; then
+            cat plan/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -f plan/bounded-work.json ]]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          result = json.loads(Path('plan/bounded-work.json').read_text())
+          print('\nBounded-work guard: **' + result['status'] + '**.\n')
+          if result.get('error'):
+              print(result['error'])
+          if result.get('warm'):
+              print('All four Lwt roots are cached; no prerequisite or package workers are needed.')
+          PY
+          fi
+      - name: Upload the plan, exact identities, and guard evidence
+        id: plan-artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-plan
+          path: plan/
+          overwrite: true
+          if-no-files-found: ignore
+          retention-days: 14
+
+  shared:
+    name: Prerequisites / ${{ join(matrix.consumers, ', ') }}
+    needs: plan
+    if: ${{ needs.plan.outputs.has-shared == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.shared) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    env:
+      GROUP_ID: ${{ matrix.group }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
+      - uses: nix-ocaml/nix-s3-action@fork
+        with:
+          skipPush: true
+          endpoint: 's3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com'
+          signingKey: ${{ secrets.R2_SIGNING_KEY }}
+          awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
+          awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-tool
+          path: tool
+      - name: Import the signed builder closure
+        run: |
+          python3 -B ci/shared-pilot/pilot.py bootstrap import \
+            --report report --group "$GROUP_ID"
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-plan
+          path: plan
+      - name: Build owned prerequisites and verify publication to R2
+        run: python3 -B ci/shared-pilot/pilot.py execute --group "$GROUP_ID"
+      - name: Upload the prerequisite report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-worker-${{ matrix.group }}-${{ github.run_attempt }}
+          path: report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  packages:
+    name: Packages / ${{ join(matrix.consumers, ', ') }}
+    needs: [plan, shared]
+    # Empty or failed shared matrices must not suppress independent packages.
+    # Every worker verifies its own published prerequisites before building.
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.has-packages == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.packages) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    env:
+      GROUP_ID: ${{ matrix.group }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
+      - uses: nix-ocaml/nix-s3-action@fork
+        with:
+          skipPush: true
+          endpoint: 's3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com'
+          signingKey: ${{ secrets.R2_SIGNING_KEY }}
+          awsAccessKeyId: ${{ secrets.R2_ACCESS_KEY_ID }}
+          awsSecretAccessKey: ${{ secrets.R2_SECRET_ACESS_KEY }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-tool
+          path: tool
+      - name: Import the signed builder closure
+        run: |
+          python3 -B ci/shared-pilot/pilot.py bootstrap import \
+            --report report --group "$GROUP_ID"
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-plan
+          path: plan
+      - name: Import prerequisites, build owned packages, and publish
+        run: python3 -B ci/shared-pilot/pilot.py execute --group "$GROUP_ID"
+      - name: Upload the package report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-worker-${{ matrix.group }}-${{ github.run_attempt }}
+          path: report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  compare:
+    name: Controlled musl 5.5 / 5.6 comparison
+    needs: plan
+    # Editing pilot files opts a same-repository PR into this bounded proof.
+    # Manual runs can skip it when only the natural-cache plan is wanted.
+    if: ${{ needs.plan.result == 'success' && needs.plan.outputs.tool-ready == 'true' && needs.plan.outputs.plan-ready == 'true' && (github.event_name == 'pull_request' || inputs.compare) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: nix-ocaml/nix-ci-build
+          ref: ${{ env.NIX_CI_BUILD_REV }}
+          path: builder-source
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-tool
+          path: tool
+      - name: Import the same signed builder closure
+        run: python3 -B ci/shared-pilot/pilot.py bootstrap import --report comparison-bootstrap
+      - name: Check the comparison's bounded-work guards
+        run: python3 -B builder-source/test/shared_plan_benchmark.py --self-test
+      - name: Compare independent and coordinated musl workers
+        run: |
+          # Git filtering excludes builder-source, tool artifacts, and reports.
+          nix flake archive --json "$PWD" > comparison-source.json
+          overlay_snapshot=$(python3 -c 'import json; print(json.load(open("comparison-source.json"))["path"])')
+          tool=$(cat tool/path)
+          sudo env "PATH=$PATH" "$(command -v python3)" -B \
+            builder-source/test/shared_plan_benchmark.py "$tool/bin/nix-ci-build" \
+            --directory "$PWD/comparison" \
+            --scenario musl-lwt \
+            --nix-overlays-ref "path:$overlay_snapshot" \
+            --max-seed-bytes 2147483648 \
+            --deadline-seconds 1200
+      - name: Publish the controlled comparison
+        if: always()
+        run: |
+          if [[ -d comparison ]]; then
+            sudo chown -R --no-dereference "$(id -u):$(id -g)" comparison
+          fi
+          if [[ -f comparison/summary.md ]]; then
+            cat comparison/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload the comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-musl-comparison-${{ github.run_attempt }}
+          path: |
+            comparison-bootstrap/
+            comparison-source.json
+            comparison/*.json
+            comparison/summary.md
+            comparison/commands/
+            comparison/plans/
+            comparison/reports/
+            comparison/aggregate/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  aggregate:
+    name: Combined pilot report
+    needs: [plan, shared, packages]
+    if: ${{ always() && needs.plan.outputs.tool-ready == 'true' && needs.plan.outputs.plan-ready == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY=
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-tool
+          path: tool
+      - name: Import the signed builder closure
+        run: python3 -B ci/shared-pilot/pilot.py bootstrap import --report aggregate-bootstrap
+      - uses: actions/download-artifact@v8
+        with:
+          name: shared-pilot-plan
+          path: plan
+      - name: Download all available worker attempts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: shared-pilot-worker-*
+          path: reports
+      - name: Aggregate planning and worker outcomes
+        run: |
+          mkdir -p reports
+          nix-ci-build --aggregate-plan plan --reports reports --report-dir aggregate
+      - name: Measure the pilot, including failed or missing workers
+        if: always()
+        run: python3 -B ci/shared-pilot/pilot.py summarize
+      - name: Publish the measured pilot summary
+        if: always()
+        run: |
+          if [[ -f aggregate/pilot-summary.md ]]; then
+            cat aggregate/pilot-summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload the combined report
+        id: report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-pilot-report-${{ github.run_attempt }}
+          path: |
+            aggregate/
+            aggregate-bootstrap/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Link the combined report
+        if: ${{ always() && steps.report.outputs.artifact-url != '' }}
+        env:
+          REPORT_URL: ${{ steps.report.outputs.artifact-url }}
+        run: printf '\n[Download the combined build report](%s)\n' "$REPORT_URL" >> "$GITHUB_STEP_SUMMARY"
