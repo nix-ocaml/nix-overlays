@@ -55,10 +55,10 @@ with oself;
 
   melange-testing-library = buildDunePackage {
     pname = "melange-testing-library";
-    version = "n/a";
+    version = "0.3.0";
     src = builtins.fetchurl {
-      url = "https://github.com/melange-community/melange-testing-library/releases/download/0.2.0/melange-testing-library-0.2.0.tbz";
-      sha256 = "0kargnsn42yxcfqr8j5yx8jbb36m5liqzcbr1riqbygfkbi2s690";
+      url = "https://github.com/melange-community/melange-testing-library/archive/refs/tags/0.3.0.tar.gz";
+      sha256 = "sha256-J3cIJUUOReMTW03B2XofEkiXfU/CgHtZcSRwtkv0g7g=";
     };
     nativeBuildInputs = [
       melange
