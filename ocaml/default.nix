@@ -64,6 +64,28 @@ let
       doCheck = false;
     });
 
+  # Console 0.9's test terminal requires Matrix < 0.2.
+  consoleTestInputs = rec {
+    matrix = (osuper.matrix.override { mosaic = osuper.mosaic; }).overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace matrix/test/test_*.ml \
+          --replace-fail 'let () =' 'let () = exit @@'
+        substituteInPlace matrix/test/test_ansi.ml \
+          --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
+        substituteInPlace matrix/test/test_input.ml \
+          --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
+          --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
+          --replace-fail '~equal:( = ) ()' '~equal:( = )' \
+          --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
+            'slow (test "parsing efficiency" test_parsing_efficiency)'
+        substituteInPlace matrix/test/test_glyph.ml \
+          --replace-fail '~equal:( = ) ()' '~equal:( = )'
+      '';
+    });
+    # k7 propagates Matrix, so its test-tool version must match too.
+    k7 = osuper.k7.override { inherit matrix; };
+  };
+
   # Jane Street
   janePackage_0_16 =
     oself.callPackage "${path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
@@ -117,13 +139,26 @@ with oself;
   ocaml-crunch = crunch;
 
   alcobar = osuper.alcobar.overrideAttrs (old: {
-    version = "0.4.0";
+    version = "0.5.0";
     src = fetchurl {
-      url = "https://github.com/samoht/alcobar/releases/download/v0.4.0/alcobar-0.4.0.tbz";
-      hash = "sha256-4ASlhN62YFtP+cZmY6yo8P8HjDkOuviBw+qgA70a7oE=";
+      url = "https://github.com/samoht/alcobar/releases/download/v0.5.0/alcobar-0.5.0.tbz";
+      hash = "sha256-M6l8XMUWaCsglDzQYsUz2DuvSPbUTNPBhdiciGe8Tx8=";
     };
     minimalOCamlVersion = "4.11";
-    checkInputs = old.checkInputs ++ [ uutf ];
+    nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ mdx ];
+    checkInputs = old.checkInputs ++ [
+      uutf
+      mdx
+    ];
+  });
+
+  alcotest = osuper.alcotest.overrideAttrs (_: {
+    version = "1.10.0";
+    src = fetchurl {
+      url = "https://github.com/mirage/alcotest/releases/download/1.10.0/alcotest-1.10.0.tbz";
+      hash = "sha256-5B9Zs9rquSfatrvstoXt9myHKYjzcmhWgHmpvfwxSXw=";
+    };
+    minimalOCamlVersion = "4.14";
   });
 
   angstrom = osuper.angstrom.overrideAttrs (_: {
@@ -133,6 +168,12 @@ with oself;
       rev = "8239888a57111fdff10e15e16bdf194d5524a3a9";
       hash = "sha256-SQJs2GE7t0jL2jF1vNF8rbK1hN0Bhgn2WfS6//me6Ww=";
     };
+    # Alcotest 1.10's new test function shadows the local testable.
+    postPatch = ''
+      substituteInPlace lib_test/test_angstrom.ml \
+        --replace-fail 'Alcotest.(check (result test string))' \
+          '(Alcotest.check (Alcotest.result test Alcotest.string))'
+    '';
     checkInputs = [ alcotest ];
     propagatedBuildInputs = [ bigstringaf ];
   });
@@ -401,6 +442,23 @@ with oself;
   camlimages = osuper.camlimages.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ findlib ];
   });
+
+  camlid = buildDunePackage {
+    pname = "camlid";
+    version = "0.3";
+    minimalOCamlVersion = "4.14";
+    src = fetchurl {
+      url = "https://github.com/bobot/camlid/releases/download/0.3/camlid-0.3.tbz";
+      hash = "sha256-CGZVIDbEUqHN0Fc4p2ESt2HbbM7u7SsfWgPXMKGSScA=";
+    };
+    propagatedBuildInputs = [ fmt ];
+    doCheck = !stdenv.hostPlatform.isWindows;
+    meta = {
+      description = "Generate C stubs from an OCaml description";
+      homepage = "https://github.com/bobot/camlid";
+      license = lib.licenses.lgpl21Only;
+    };
+  };
 
   camlzip = (osuper.camlzip.override { zlib = zlib-oc; }).overrideAttrs (o: {
     createFindlibDestdir = true;
@@ -682,6 +740,9 @@ with oself;
 
   confero = callPackage ./confero { };
 
+  console = osuper.console.override consoleTestInputs;
+  console-eio = osuper.console-eio.override consoleTestInputs;
+
   cookie = callPackage ./cookie { };
 
   cppo = osuper.cppo.overrideAttrs (_: {
@@ -717,12 +778,39 @@ with oself;
   decimal = callPackage ./decimal { };
 
   dockerfile = osuper.dockerfile.overrideAttrs (_: {
-    version = "8.4.7";
+    version = "8.4.8";
     src = fetchurl {
-      url = "https://github.com/ocurrent/ocaml-dockerfile/releases/download/8.4.7/ocaml-dockerfile-8.4.7.tbz";
-      hash = "sha256-U4GRdWTHmWXsMB9lPCHPj0ug2qNj5ME+ddekB1/Ce4Y=";
+      url = "https://github.com/ocurrent/ocaml-dockerfile/releases/download/8.4.8/ocaml-dockerfile-8.4.8.tbz";
+      hash = "sha256-MT7Ne4AG8Rq/lKmDx7TkVScJnWh06HlSeTGedLYeH5o=";
     };
   });
+
+  dolmen = osuper.dolmen.overrideAttrs (old: {
+    version = "0.11";
+    src = fetchurl {
+      url = "https://github.com/Gbury/dolmen/releases/download/v0.11/dolmen-0.11.tbz";
+      hash = "sha256-I1x4ofTavGwRbT0c9Rryhss/vtcTxhFs1dGxy+0MyH8=";
+    };
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      dune-site
+      uutf
+    ];
+  });
+
+  dolmen_loop = osuper.dolmen_loop.overrideAttrs (old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ zarith ];
+  });
+
+  dolmen_lsp = osuper.dolmen_lsp.overrideAttrs (_: {
+    patches = [ ];
+  });
+
+  # smtml has not yet adopted the Dolmen 0.11 API.
+  smtml =
+    let
+      oldDolmen = oself.overrideScope (_: _: { dolmen = osuper.dolmen; });
+    in
+    osuper.smtml.override { inherit (oldDolmen) dolmen_model dolmen_type; };
 
   domain-local-await = disableTests osuper.domain-local-await;
   thread-table = disableTests osuper.thread-table;
@@ -1254,6 +1342,38 @@ with oself;
   httpun-eio =
     if lib.versionAtLeast ocaml.version "5.0" then callPackage ./httpun/eio.nix { } else null;
 
+  flint = osuper.flint.overrideAttrs (old: {
+    version = "0.5.0";
+    src = fetchurl {
+      url = "https://github.com/bobot/ocaml-flint/releases/download/0.5.0/flint-0.5.0.tbz";
+      hash = "sha256-ccP2rhsdI/FAsKVQnHmJ4z2m9N70X2T21x7LQbgdtzE=";
+    };
+    minimalOCamlVersion = "4.14";
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ camlid ];
+  });
+
+  h1 = osuper.h1.overrideAttrs (_: {
+    version = "1.1.2";
+    src = fetchurl {
+      url = "https://github.com/robur-coop/ocaml-h1/releases/download/v1.1.2/h1-1.1.2.tbz";
+      hash = "sha256-3wI9JIPGMSuiulnpjZ0BFgByZblv/sN8rCMO4Z8K45M=";
+    };
+  });
+
+  hol_light = osuper.hol_light.overrideAttrs (_: {
+    version = "3.2.0";
+    src = fetchurl {
+      url = "https://github.com/jrh13/hol-light/archive/refs/tags/Release-3.2.0.tar.gz";
+      hash = "sha256-O5zRCz8bq/YVOOtGf9wkvum637lvi89/nOmkSCLdrdk=";
+    };
+    patches = [ ];
+    postPatch = ''
+      substituteInPlace Makefile \
+        --replace-fail '-package zarith -o ocaml-hol' '-package zarith,findlib -o ocaml-hol'
+    '';
+  });
+
   hxd = osuper.hxd.overrideAttrs (o: {
     buildInputs = o.buildInputs ++ [ dune-configurator ];
     doCheck = false;
@@ -1261,11 +1381,25 @@ with oself;
 
   hyper = callPackage ./hyper { };
 
-  index = osuper.index.overrideAttrs (_: {
-    postPatch = ''
-      substituteInPlace test/unix/dune --replace-fail "logs.fmt" "logs.fmt logs.threaded"
-    '';
-  });
+  index = osuper.index.overrideAttrs (
+    old:
+    {
+      postPatch = ''
+        substituteInPlace test/unix/dune --replace-fail "logs.fmt" "logs.fmt logs.threaded"
+      '';
+    }
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.0") {
+      version = "1.7.0";
+      src = fetchurl {
+        url = "https://github.com/mirage/index/releases/download/1.7.0/index-1.7.0.tbz";
+        hash = "sha256-eHSmtoiIyjrxzCUiYqG7rUY4i3js+p4gEJ2HTSjALLI=";
+      };
+      patches = [ ];
+      postPatch = "";
+      minimalOCamlVersion = "5.0";
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ jsonm ];
+    }
+  );
 
   iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
@@ -1321,6 +1455,14 @@ with oself;
     '';
   };
   irmin-git = disableTests osuper.irmin-git;
+  irmin-tezos = osuper.irmin-tezos.overrideAttrs (old: {
+    # Alcotest 1.10 no longer creates _build in the test's working directory.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace test/irmin-pack/dune \
+        --replace-fail '(run ./test.exe -q --color=always)' \
+          '(progn (run mkdir -p _build) (run ./test.exe -q --color=always))'
+    '';
+  });
   ppx_irmin = osuper.ppx_irmin.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "mirage";
@@ -1395,6 +1537,32 @@ with oself;
 
   js_of_ocaml-toplevel = osuper.js_of_ocaml-toplevel.overrideAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ js_of_ocaml ];
+  });
+
+  junit_alcotest = osuper.junit_alcotest.overrideAttrs (old: {
+    # Alcotest 1.10 no longer embeds inferred locations in exception text.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace alcotest/test/alcotest_report.expected \
+        --replace-fail $'&#27;[1mFile &quot;alcotest/junit_alcotest.ml&quot;, line 22, character 6:\n&#27;[0m' ""
+    '';
+  });
+
+  k7 = osuper.k7.overrideAttrs (_: {
+    version = "0.10.0";
+    src = fetchurl {
+      url = "https://github.com/samoht/ocaml-k7/releases/download/0.10.0/k7-0.10.0.tbz";
+      hash = "sha256-y/7kROmTbNNTcVNdmmHqTtP/WNU+QsoJfT9VQh8hT3M=";
+    };
+  });
+
+  mariadb = osuper.mariadb.overrideAttrs (old: {
+    version = "2.2.1";
+    src = fetchurl {
+      url = "https://github.com/ocaml-community/ocaml-mariadb/releases/download/v2.2.1/mariadb-v2.2.1.tbz";
+      hash = "sha256-ztKZMrfdD3tncRGYtVlx58kmlyj1NBhaBk/sLSdYPy0=";
+    };
+    minimalOCamlVersion = "4.11";
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
   });
 
   jsonrpc = osuper.jsonrpc.overrideAttrs (o: {
@@ -1680,82 +1848,28 @@ with oself;
     ];
   };
 
-  # Mosaic 0.1.0's tests target Windtrap's older API.
-  matrix = osuper.matrix.overrideAttrs (o: {
-    postPatch = (o.postPatch or "") + ''
-      substituteInPlace matrix/test/test_*.ml \
-        --replace-fail 'let () =' 'let () = exit @@'
-      substituteInPlace matrix/test/test_ansi.ml \
-        --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
-      substituteInPlace matrix/test/test_input.ml \
-        --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
-        --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
-        --replace-fail '~equal:( = ) ()' '~equal:( = )' \
-        --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
-          'slow (test "parsing efficiency" test_parsing_efficiency)'
-      substituteInPlace matrix/test/test_glyph.ml \
-        --replace-fail '~equal:( = ) ()' '~equal:( = )'
-    '';
+  mosaic = osuper.mosaic.overrideAttrs (old: {
+    version = "0.2.0";
+    src = fetchurl {
+      url = "https://github.com/invariant-hq/mosaic/releases/download/0.2.0/mosaic-0.2.0.tbz";
+      hash = "sha256-q0i8AggvnB3uoHaaE8KTXfUpU2YwdF7Do9cY9ZZWEJs=";
+    };
+    checkInputs = old.checkInputs ++ [
+      eio_main
+      lwt
+    ];
   });
 
-  toffee = osuper.toffee.overrideAttrs (o: {
-    postPatch = (o.postPatch or "") + ''
-      substituteInPlace toffee/test/test_*.ml toffee/test/generated/test_runner.ml \
-        --replace-fail 'let () =' 'let () = exit @@'
-    '';
-  });
-
-  mosaic = osuper.mosaic.overrideAttrs (o: {
-    postPatch = (o.postPatch or "") + ''
-      substituteInPlace mosaic/test/unit/test_*.ml \
-        --replace-fail 'let () =' 'let () = exit @@'
-      substituteInPlace mosaic/test/unit/dune \
-        --replace-fail 'windtrap.prop' ""
-
-      # Keep the existing boolean properties, with assertions for Windtrap's unit-returning API.
-      substituteInPlace mosaic/test/unit/test_{selection,text_buffer,text_surface}.ml \
-        --replace-fail 'open Windtrap' 'open Windtrap
-      let prop name gen law =
-        Windtrap.prop name gen (fun value -> is_true (law value))
-      let prop2 name a b law =
-        prop name (Gen.pair a b) (fun (x, y) -> law x y)
-      let prop3 name a b c law =
-        prop name (Gen.triple a b c) (fun (x, y, z) -> law x y z)'
-
-      substituteInPlace mosaic/test/unit/test_selection.ml \
-        --replace-fail '~equal:Selection.equal_point ()' '~equal:Selection.equal_point' \
-        --replace-fail '~equal:Selection.equal_bounds ()' '~equal:Selection.equal_bounds' \
-        --replace-fail \
-          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.small_int ()' \
-          'Gen.small_int' \
-        --replace-fail '(pair small_int small_int)' '(Gen.pair small_int small_int)'
-      substituteInPlace mosaic/test/unit/test_text_buffer.ml \
-        --replace-fail \
-          $'Testable.make\n    ~pp:(fun fmt i -> Format.fprintf fmt "%d" i)\n    ~equal:Int.equal ~gen:Windtrap_prop.Gen.nat ()' \
-          'Gen.nat'
-      substituteInPlace mosaic/test/unit/test_{text_buffer,text_surface}.ml \
-        --replace-fail \
-          $'Testable.make\n    ~pp:(fun fmt s -> Format.fprintf fmt "%S" s)\n    ~equal:String.equal\n    ~gen:(Windtrap_prop.Gen.string_of (Windtrap_prop.Gen.char_range \'a\' \'z\'))\n    ()' \
-          "Gen.string_of (Gen.char_range 'a' 'z')"
-      substituteInPlace mosaic/test/unit/test_edit_buffer.ml \
-        --replace-fail $'| _ -> false)\n    ()' '| _ -> false)'
-      substituteInPlace mosaic/test/unit/test_{text_surface,renderable,textarea,text_input}.ml \
-        --replace-fail 'open Windtrap' 'open Windtrap
-      let some ?msg t expected actual =
-        equal ?msg (option t) (Some expected) actual'
-      substituteInPlace mosaic/test/unit/test_canvas.ml \
-        --replace-fail '(float 0.)' 'float_exact'
-
-      # Standalone expect-test executables must explicitly run their registered tests.
-      for test_file in mosaic/test/expect/test_*.ml; do
-        cat >> "$test_file" <<'EOF'
-
-      let () =
-        exit (Windtrap.run "mosaic.expect"
-          (Ppx_windtrap_runtime.Ppx_runtime.collect ()))
-      EOF
-      done
-    '';
+  matrix = osuper.matrix.overrideAttrs (old: {
+    nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ buildPackages.unixtools.ps ];
+    # The macOS sandbox denies ps access to process CPU time.
+    postPatch =
+      (old.postPatch or "")
+      + lib.optionalString stdenv.hostPlatform.isDarwin ''
+        substituteInPlace packages/matrix/test/test_runtime_pty.ml \
+          --replace-fail 'test "SIGTSTP stops the job" test_sigtstp_stops_the_job;' "" \
+          --replace-fail $'test "continued in the background, it stops again"\n                  test_background_continue_stops_again;' ""
+      '';
   });
 
   matrix-common = callPackage ./matrix { };
@@ -2723,6 +2837,12 @@ with oself;
   ppx_jsx_embed = callPackage ./ppx_jsx_embed { };
 
   ppx_import = osuper.ppx_import.overrideAttrs (o: {
+    version = "1.13.0";
+    src = fetchurl {
+      url = "https://github.com/ocaml-ppx/ppx_import/releases/download/v1.13.0/ppx_import-1.13.0.tar.gz";
+      hash = "sha256-QQcbV5hAhsEkhvOFbdFSlu5kJ1jg258EBk5KvozFO2k=";
+    };
+    patches = [ ];
     buildInputs = [ ppxlib ];
     checkInputs = [
       ounit
@@ -2989,10 +3109,10 @@ with oself;
   });
 
   raylib = osuper.raylib.overrideAttrs (old: {
-    version = "2.4.1";
+    version = "2.4.2";
     src = fetchurl {
-      url = "https://github.com/tjammer/raylib-ocaml/releases/download/2.4.1/raylib-2.4.1.tbz";
-      hash = "sha256-p1lGe+/E0jjF3oe0zbYwLUxNckI0Wx1RmYngwjXFBec=";
+      url = "https://github.com/tjammer/raylib-ocaml/releases/download/2.4.2/raylib-2.4.2.tbz";
+      hash = "sha256-mYNdZtzi5tc2k7GveExrdMk3w0iQTRZsJQ3Bthi4H/Q=";
     };
     patches = [ ];
     propagatedBuildInputs =
