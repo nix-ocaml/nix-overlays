@@ -1,4 +1,4 @@
-module.exports = async ({ github, context, core, require }) => {
+module.exports = async ({ github, core, require }) => {
   const {
     update_flake,
     get_revisions,
@@ -6,13 +6,16 @@ module.exports = async ({ github, context, core, require }) => {
     get_ocaml_commits,
     escapeForGHActions,
   } = require("./auto-update/lib.js");
+  const { describe_error } = require("./auto-update/request.js");
   const { readFileSync, writeFileSync } = require("fs");
 
+  core.setOutput("changed", false);
   const url = get_revisions()
-    .then(get_newest)
+    .then((revisions) => get_newest(github, revisions))
     .then(async (revision) => {
       const flake_path = "./flake.nix";
       const old_flake = readFileSync(flake_path).toString("utf8");
+      const old_lock = readFileSync("./flake.lock", "utf8");
       const next_flake = old_flake.replace(
         /rev=[a-z0-9]+/,
         `rev=${revision.sha}`
@@ -21,9 +24,13 @@ module.exports = async ({ github, context, core, require }) => {
       writeFileSync(flake_path, next_flake);
 
       const [prev_rev, curr_rev] = await update_flake();
+      if (old_flake === next_flake && old_lock === readFileSync("./flake.lock", "utf8")) {
+        core.info("Sources are already up to date.");
+        return "";
+      }
       const url = `https://github.com/NixOS/nixpkgs/compare/${prev_rev.sha}...${curr_rev.sha}`;
 
-      const { commits: ocaml_commits, error } = await get_ocaml_commits(prev_rev.sha, curr_rev.sha);
+      const { commits: ocaml_commits } = await get_ocaml_commits(github, prev_rev.sha, curr_rev.sha);
 
       const ocaml_packages_text = ocaml_commits.map(({ commit, html_url }) => {
         const message = escapeForGHActions(commit.message);
@@ -36,30 +43,13 @@ ${ocaml_packages_text.join("\n")}
 
 #### Diff URL: ${url}
 
-${error != null ? `#### Error
-
-${error}
-
-` : ''}
       `;
 
-      // Only write the file if the commit hash has changed
-      // Otherwise just cancel the workflow. We don't need to do anything
-      if (curr_rev.sha.startsWith(prev_rev.sha)) {
-        throw new Error("Shas were the same");
-      }
-
+      core.setOutput("changed", true);
       return post_text;
     })
     .catch((error) => {
-      console.error(error);
-      core.notice(error.message);
-      github.rest.actions.cancelWorkflowRun({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        run_id: context.runId,
-      });
-
+      core.setFailed(describe_error(error));
       return "";
     });
 

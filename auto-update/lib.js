@@ -1,86 +1,39 @@
-const https = require("https");
-const {URL} = require("url");
-
 const {exec} = require("child_process");
+const {readFileSync} = require("fs");
+const {promisify} = require("util");
+const {get_json, with_retry} = require("./request.js");
 
-function http_request(uri) {
-  return new Promise((resolve, reject) => {
-    const url = new URL(uri);
+async function update_flake() {
+  const revision = () => JSON.parse(readFileSync("flake.lock", "utf8"))
+    .nodes.nixpkgs.locked.rev;
+  const previous = revision();
+  await promisify(exec)("nix flake update");
+  return [{sha: previous}, {sha: revision()}];
+}
 
-    return https
-        .get({
-          port : 443,
-          path : url.pathname + url.search,
-          protocol : url.protocol,
-          hostname : url.hostname,
-          method : "GET",
-          headers : {
-            "User-Agent" : "GithubActions",
-            Accept : "application/json",
-          },
-          url,
-        },
-             (res) => {
-               const response_data = [];
-               res.on("data", (data) => { response_data.push(data); });
-
-               res.on("end", () => {
-                 const response = Buffer.concat(response_data);
-                 const response_string = response.toString();
-
-                 try {
-                   return resolve(JSON.parse(response_string));
-                 } catch (e) {
-                   return reject(e);
-                 };
-               });
-             })
-        .on("error", reject);
-  });
-};
-
-function update_flake() {
-  return new Promise((resolve, reject) => {
-    exec(`nix flake update`, (error, stdout, stderr) => {
-      if (error) {
-        return reject(error);
-      }
-
-      const shas = [
-        ...stderr.matchAll(
-            /NixOS\/nixpkgs\/([^?']+).*?' \(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/gi),
-      ].map(([ _, sha, date ]) => ({
-              sha,
-              date,
-            }));
-
-      if (shas.length < 2) {
-        return reject(new Error("No update"));
-      }
-
-      return resolve(shas);
-    });
+async function get_revisions() {
+  const response = await get_json(
+    "https://prometheus.nixos.org/api/v1/query?query=channel_revision");
+  if (response.status !== "success" || !Array.isArray(response.data?.result)) {
+    throw new Error(`Invalid channel response from prometheus.nixos.org: ${JSON.stringify(response)}`);
+  }
+  return ["nixos-unstable", "nixos-unstable-small"].map((channel) => {
+    const revision = response.data.result.find((d) => d.metric?.channel === channel);
+    if (!revision?.metric?.revision) {
+      throw new Error(`prometheus.nixos.org returned no revision for ${channel}`);
+    }
+    return revision;
   });
 }
 
-function get_revisions() {
-  return http_request(
-             "https://prometheus.nixos.org/api/v1/query?query=channel_revision")
-      .then((res) => res.data.result)
-      .then((rev) => [rev.find((d) => d.metric.channel === "nixos-unstable"),
-                      rev.find((d) =>
-                                   d.metric.channel === "nixos-unstable-small"),
-  ]);
-}
+const get_newest = (github, revisions) => {
+  const commits = revisions.map(({metric}) => with_retry(() =>
+    github.rest.repos.getCommit({
+      owner: "NixOS", repo: "nixpkgs", ref: metric.revision,
+      request: { retries: 0, timeout: 30000 },
+    })).then(({data}) => data));
 
-const get_newest = (revisions) => {
-  const urls =
-      revisions.map((revision) => revision.metric.revision)
-          .map((commit_sha) =>
-                   `https://api.github.com/repos/nixos/nixpkgs/commits/${
-                       commit_sha}`);
-
-  return Promise.all(urls.map(http_request)).then(([ big, small ]) => {
+  return Promise.all(commits).then(([ big, small ]) => {
     const big_date = new Date(big.commit.committer.date);
     const small_date = new Date(small.commit.committer.date);
     if (big_date > small_date) {
@@ -100,14 +53,17 @@ const get_newest = (revisions) => {
 };
 
 function get_commits(
+  github,
   sha1,
   sha2,
   page = 1,
   prev_commits = { commits: {}, files: [] }
 ) {
-  return http_request(
-    `https://api.github.com/repos/NixOS/nixpkgs/compare/${sha1}...${sha2}?per_page=100&page=${page}`
-  ).then((res) => {
+  return with_retry(() => github.rest.repos.compareCommitsWithBasehead({
+    owner: "NixOS", repo: "nixpkgs", basehead: `${sha1}...${sha2}`,
+    per_page: 100, page,
+    request: { retries: 0, timeout: 30000 },
+  })).then(({data: res}) => {
     res.commits.forEach(commit => prev_commits.commits[commit.sha] = commit);
     const next_commits = {
       commits: prev_commits.commits,
@@ -116,18 +72,14 @@ function get_commits(
     if (res.commits.length < 100) {
       return next_commits;
     } else {
-      return get_commits(sha1, sha2, page + 1, next_commits);
+      return get_commits(github, sha1, sha2, page + 1, next_commits);
     }
-  }).catch(e => {
-    return {
-      ...prev_commits,
-      error: 'Error occurred, there could be relevant commits missing'
-    }});
+  });
 }
 
-function get_ocaml_commits(sha1, sha2) {
-  return get_commits(sha1, sha2).then(
-    ({ commits = {}, files = [], error }) => {
+function get_ocaml_commits(github, sha1, sha2) {
+  return get_commits(github, sha1, sha2).then(
+    ({ commits = {}, files = [] }) => {
       const file_commits = files
         .filter((x) => x.filename.toLowerCase().includes("ocaml"))
         .map((x) => {
@@ -139,7 +91,6 @@ function get_ocaml_commits(sha1, sha2) {
         commits: Object.values(commits).filter((c) =>
             c.commit.message.toLowerCase().includes("ocaml")
           ).concat(file_commits),
-        error: error
       };
     }
   );
