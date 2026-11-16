@@ -7,7 +7,7 @@ on:
       - synchronize
     paths:
       - '.github/workflows/auto-update.js'
-      - 'auto-update/lib.js'
+      - 'auto-update/**'
       - '.github/workflows/auto-update.yml'
   schedule:
     - cron: "30 11 */2 * *"
@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Test updater
+        run: node --test auto-update/*.test.js
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
@@ -27,8 +29,9 @@ jobs:
           result-encoding: string
           script: |
             const script = require('./.github/workflows/auto-update.js')
-            return await script({github, context, core, require})
+            return await script({github, core, require})
       - name: Commit updated flake
+        if: github.event_name != 'pull_request' && steps.update-sources.outputs.changed == 'true'
         env:
           GITHUB_JOB: ${{ env.GITHUB_JOB }}
           GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}
@@ -40,6 +43,7 @@ jobs:
           git commit -m "Update sources"
           git push --set-upstream origin "auto-update-sources-$GITHUB_RUN_ID"
       - name: Open pull request
+        if: github.event_name != 'pull_request' && steps.update-sources.outputs.changed == 'true'
         uses: repo-sync/pull-request@v2
         env:
           GITHUB_JOB: ${{ env.GITHUB_JOB }}
