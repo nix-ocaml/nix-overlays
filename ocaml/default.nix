@@ -1531,6 +1531,14 @@ with oself;
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ js_of_ocaml ];
   });
 
+  junit_alcotest = osuper.junit_alcotest.overrideAttrs (old: {
+    # Alcotest 1.10 no longer embeds inferred locations in exception text.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace alcotest/test/alcotest_report.expected \
+        --replace-fail $'&#27;[1mFile &quot;alcotest/junit_alcotest.ml&quot;, line 22, character 6:\n&#27;[0m' ""
+    '';
+  });
+
   k7 = osuper.k7.overrideAttrs (_: {
     version = "0.10.0";
     src = fetchurl {
