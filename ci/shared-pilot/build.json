@@ -1,0 +1,27 @@
+{
+  "sets": [
+    { "id": "native-5_5", "flake": ".#legacyPackages.x86_64-linux.ocaml-ng.ocamlPackages_5_5.lwt" },
+    { "id": "native-5_6", "flake": ".#legacyPackages.x86_64-linux.ocaml-ng.ocamlPackages_5_6.lwt" },
+    { "id": "musl-5_5", "flake": ".#legacyPackages.x86_64-linux.pkgsCross.musl64.ocaml-ng.ocamlPackages_5_5.lwt" },
+    { "id": "musl-5_6", "flake": ".#legacyPackages.x86_64-linux.pkgsCross.musl64.ocaml-ng.ocamlPackages_5_6.lwt" }
+  ],
+  "runners": { "x86_64-linux": "ubuntu-latest" },
+  "timeoutMinutes": 20,
+  "cache": {
+    "read": ["https://anmonteiro.nix-cache.workers.dev", "https://cache.nixos.org"],
+    "write": "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto&compression=zstd&parallel-compression=true",
+    "publicKeys": ["ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY="]
+  },
+  "limits": {
+    "maxBuilds": 6,
+    "maxBoundaryNarBytes": 2147483648,
+    "allowedDerivations": [
+      ".#legacyPackages.x86_64-linux.ocaml-ng.ocamlPackages_5_5.lwt",
+      ".#legacyPackages.x86_64-linux.ocaml-ng.ocamlPackages_5_6.lwt",
+      ".#legacyPackages.x86_64-linux.pkgsCross.musl64.ocaml-ng.ocamlPackages_5_5.lwt",
+      ".#legacyPackages.x86_64-linux.pkgsCross.musl64.ocaml-ng.ocamlPackages_5_6.lwt",
+      "/nix/store/w7kw7wqmmr195ndafpjlhijdij3hba3g-libev-4.33.drv",
+      "/nix/store/jfpqhclps96w41vlan9fh4y371f1ny1n-libev-x86_64-unknown-linux-musl-4.33.drv"
+    ]
+  }
+}

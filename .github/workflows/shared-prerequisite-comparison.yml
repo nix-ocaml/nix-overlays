@@ -1,0 +1,103 @@
+name: Shared musl comparison
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-prerequisite-comparison-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NIX_CI_BUILD_REV: dd267a6f93832f6ddec76b67b76d39cda47b6d37
+
+jobs:
+  compare:
+    name: Controlled musl 5.5 / 5.6 comparison
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: nix-ocaml/nix-ci-build
+          ref: ${{ env.NIX_CI_BUILD_REV }}
+          path: builder-source
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://anmonteiro.nix-cache.workers.dev https://cache.thalheim.io
+            extra-trusted-public-keys = ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY= cache.thalheim.io-1:R7msbosLEZKrxk/lKxf9BTjOOH7Ax3H0Qj0/6wiHOgc=
+      - name: Build the experiment tool once
+        id: tool
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import time
+
+          started = time.time()
+          metadata = {'startedAt': started, 'status': 'failed'}
+          try:
+              reference = 'github:nix-ocaml/nix-ci-build/' + os.environ['NIX_CI_BUILD_REV']
+              tool = subprocess.check_output([
+                  'nix', 'build', '--accept-flake-config', '-L', '--no-link', '--print-out-paths', reference,
+              ], text=True).strip()
+              if len(tool.splitlines()) != 1 or not tool.startswith('/nix/store/'):
+                  raise RuntimeError('Expected one builder store path')
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+                  output.write('path=' + tool + '\n')
+              metadata.update(status='success', toolPath=tool)
+          finally:
+              metadata.update(finishedAt=time.time(), durationSeconds=time.time() - started)
+              Path('comparison-bootstrap.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          PY
+      - name: Check the comparison's bounded-work guards
+        run: python3 -B builder-source/test/shared_plan_benchmark.py --self-test
+      - name: Compare independent and coordinated musl workers
+        env:
+          TOOL_PATH: ${{ steps.tool.outputs.path }}
+        run: |
+          # Git filtering excludes builder-source, tool artifacts, and reports.
+          nix flake archive --json "$PWD" > comparison-source.json
+          overlay_snapshot=$(python3 -c 'import json; print(json.load(open("comparison-source.json"))["path"])')
+          sudo env "PATH=$PATH" "$(command -v python3)" -B \
+            builder-source/test/shared_plan_benchmark.py "$TOOL_PATH/bin/nix-ci-build" \
+            --directory "$PWD/comparison" \
+            --scenario musl-lwt \
+            --nix-overlays-ref "path:$overlay_snapshot" \
+            --max-seed-bytes 2147483648 \
+            --deadline-seconds 1200
+      - name: Publish the controlled comparison
+        if: always()
+        run: |
+          if [[ -d comparison ]]; then
+            sudo chown -R --no-dereference "$(id -u):$(id -g)" comparison
+          fi
+          if [[ -f comparison/summary.md ]]; then
+            cat comparison/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload the comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-musl-comparison-${{ github.run_attempt }}
+          path: |
+            comparison-bootstrap.json
+            comparison-source.json
+            comparison/*.json
+            comparison/summary.md
+            comparison/commands/
+            comparison/plans/
+            comparison/reports/
+            comparison/aggregate/
+          if-no-files-found: ignore
+          retention-days: 14

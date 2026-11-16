@@ -1,0 +1,23 @@
+{
+  "sets": [
+    { "id": "first", "flake": "./ci/shared-pilot/fixture#first" },
+    { "id": "second", "flake": "./ci/shared-pilot/fixture#second" }
+  ],
+  "runners": { "x86_64-linux": "ubuntu-latest" },
+  "timeoutMinutes": 20,
+  "cache": {
+    "read": ["https://anmonteiro.nix-cache.workers.dev", "https://cache.nixos.org"],
+    "write": "s3://overlays?endpoint=https://7a53c28e9b7a91239f9ed42da04276bc.r2.cloudflarestorage.com&region=auto&compression=zstd&parallel-compression=true",
+    "publicKeys": ["ocaml.nix-cache.com-1:/xI2h2+56rwFfKyyFVbkJSeGqSIYMC/Je+7XXqGKDIY="]
+  },
+  "nixConfig": "sandbox = false\n",
+  "limits": {
+    "maxBuilds": 3,
+    "maxBoundaryNarBytes": 1048576,
+    "allowedDerivations": [
+      "./ci/shared-pilot/fixture#first",
+      "./ci/shared-pilot/fixture#second",
+      "./ci/shared-pilot/fixture#shared"
+    ]
+  }
+}
