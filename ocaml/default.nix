@@ -1455,6 +1455,14 @@ with oself;
     '';
   };
   irmin-git = disableTests osuper.irmin-git;
+  irmin-tezos = osuper.irmin-tezos.overrideAttrs (old: {
+    # Alcotest 1.10 no longer creates _build in the test's working directory.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace test/irmin-pack/dune \
+        --replace-fail '(run ./test.exe -q --color=always)' \
+          '(progn (run mkdir -p _build) (run ./test.exe -q --color=always))'
+    '';
+  });
   ppx_irmin = osuper.ppx_irmin.overrideAttrs (_: {
     src = fetchFromGitHub {
       owner = "mirage";
