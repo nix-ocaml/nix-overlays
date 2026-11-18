@@ -1238,12 +1238,13 @@ with oself;
     '';
   });
 
-  goblint-cil = osuper.goblint-cil.overrideAttrs (_: {
+  goblint-cil = osuper.goblint-cil.overrideAttrs (old: {
     version = "2.2.1";
     src = fetchurl {
       url = "https://github.com/goblint/cil/releases/download/2.2.1/goblint-cil-2.2.1.tbz";
       hash = "sha256-wfq1wg7tc7LwIMBYta6IL8MUZdEztaBtxjuBFNik+ZE=";
     };
+    buildInputs = (old.buildInputs or [ ]) ++ [ ppxlib ];
   });
 
   graphql_parser = callPackage ./graphql/parser.nix { };

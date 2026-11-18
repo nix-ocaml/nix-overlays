@@ -176,6 +176,11 @@ in
       url = "https://git.frama-c.com/api/v4/projects/879/packages/generic/colibri2/0.7/colibri2-0.7.tbz";
       hash = "sha256-sEFFLepHTgvAfxu9VxAG1JeuFxtjJvB4DI2+dATkucY=";
     };
+    # List.is_empty is not available in this package's OCaml 4.14 set.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace colibri2/theories/FP/fp_to_real.ml \
+        --replace-fail 'List.is_empty eqs' 'Base.List.is_empty eqs'
+    '';
     propagatedBuildInputs =
       map (
         dep:
