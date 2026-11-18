@@ -45,6 +45,9 @@ buildDunePackage {
     lwt_eio
   ];
   doCheck = true;
+  sandboxProfile = lib.optionalString stdenv.hostPlatform.isDarwin ''
+    (allow mach-lookup (global-name "com.apple.FSEvents"))
+  '';
   meta = {
     description = "Portable Irmin watch backends using FSEvents or inotify";
     homepage = "https://github.com/mirage/irmin-watcher";

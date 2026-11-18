@@ -17,7 +17,9 @@ buildDunePackage {
     lwt
   ];
   checkInputs = [ alcotest ];
-  doCheck = true;
+  # The suite expects creation events for directories created before watching
+  # starts, which FSEvents does not reliably deliver. irmin-watcher tests the backend.
+  doCheck = false;
   postPatch = ''
     substituteInPlace src/fs_events.ml \
       --replace-fail 'Term.(ret (pure stream $ format $ paths)),' \
