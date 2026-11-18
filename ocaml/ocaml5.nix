@@ -30,7 +30,9 @@ with oself;
         };
         minimalOCamlVersion = "5.4";
         checkInputs = old.checkInputs ++ [ dscheck ];
-        meta.changelog = "https://github.com/ocaml-multicore/eio/raw/v1.7/CHANGES.md";
+        meta = old.meta // {
+          changelog = "https://github.com/ocaml-multicore/eio/raw/v1.7/CHANGES.md";
+        };
       })
     else
       osuper.eio;
