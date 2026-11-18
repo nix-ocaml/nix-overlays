@@ -154,6 +154,13 @@ in
             url = "https://github.com/OCamlPro/alt-ergo/releases/download/v2.6.5/alt-ergo-2.6.5.tbz";
             hash = "sha256-iAmjBUOsalJlifcZjZ9IWDaRkJae/OszDmnkPEr1Lps=";
           };
+          # The release archive still embeds the preceding Git version string.
+          postPatch = (old.postPatch or "") + ''
+            substituteInPlace dune-project \
+              --replace-fail '(version v2.6.4-1-g997f541)' '(version 2.6.5)'
+            substituteInPlace src/lib/util/version.ml \
+              --replace-fail '"2.6.4-1-g997f541"' '"2.6.5"'
+          '';
           propagatedBuildInputs = map (
             dep:
             if
