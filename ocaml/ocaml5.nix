@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  fetchurl,
   oself,
   osuper,
   makeWrapper,
@@ -18,6 +19,21 @@ with oself;
       rm -rf cohttp-eio/examples
     '';
   });
+
+  eio =
+    if lib.versionAtLeast ocaml.version "5.4" then
+      osuper.eio.overrideAttrs (old: {
+        version = "1.7";
+        src = fetchurl {
+          url = "https://github.com/ocaml-multicore/eio/releases/download/v1.7/eio-1.7.tbz";
+          hash = "sha256-qXccDX9NnZ/he63T0UfJboXzRBCrJSEZreKkB6tBzLU=";
+        };
+        minimalOCamlVersion = "5.4";
+        checkInputs = old.checkInputs ++ [ dscheck ];
+        meta.changelog = "https://github.com/ocaml-multicore/eio/raw/v1.7/CHANGES.md";
+      })
+    else
+      osuper.eio;
 
   eio_linux =
     if lib.versionAtLeast ocaml.version "5.2" then
