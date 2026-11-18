@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  fetchurl,
   oself,
   osuper,
   makeWrapper,
@@ -21,6 +22,12 @@ with oself;
       eio_main
       caqti
     ];
+    # Eio 1.7 adds an optional argument that Caqti's switch signature omits.
+    postPatch = lib.optionalString (lib.versionAtLeast eio.version "1.7") ''
+      substituteInPlace caqti-eio/lib/system.ml \
+        --replace-fail 'include Eio.Switch' \
+          $'include Eio.Switch\n  let remove_hook hook = Eio.Switch.remove_hook hook'
+    '';
   };
 
   cohttp-eio = osuper.cohttp-eio.overrideAttrs (_: {
@@ -28,6 +35,23 @@ with oself;
       rm -rf cohttp-eio/examples
     '';
   });
+
+  eio =
+    if lib.versionAtLeast ocaml.version "5.4" then
+      osuper.eio.overrideAttrs (old: {
+        version = "1.7";
+        src = fetchurl {
+          url = "https://github.com/ocaml-multicore/eio/releases/download/v1.7/eio-1.7.tbz";
+          hash = "sha256-qXccDX9NnZ/he63T0UfJboXzRBCrJSEZreKkB6tBzLU=";
+        };
+        minimalOCamlVersion = "5.4";
+        checkInputs = old.checkInputs ++ [ dscheck ];
+        meta = old.meta // {
+          changelog = "https://github.com/ocaml-multicore/eio/raw/v1.7/CHANGES.md";
+        };
+      })
+    else
+      osuper.eio;
 
   eio_linux =
     if lib.versionAtLeast ocaml.version "5.2" then

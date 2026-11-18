@@ -137,6 +137,85 @@ in
 
   # Other packages
 
+  alt-ergo =
+    let
+      # Alt-Ergo 2.6 still requires the Dolmen 0.10 API.
+      ocamlPackages = self.ocamlPackages.overrideScope (
+        final: _: {
+          dolmen = final.callPackage "${super.path}/pkgs/development/ocaml-modules/dolmen" { };
+        }
+      );
+      # The executable and both internal libraries must use the same release.
+      update =
+        drv:
+        drv.overrideAttrs (old: {
+          version = "2.6.5";
+          src = fetchurl {
+            url = "https://github.com/OCamlPro/alt-ergo/releases/download/v2.6.5/alt-ergo-2.6.5.tbz";
+            hash = "sha256-iAmjBUOsalJlifcZjZ9IWDaRkJae/OszDmnkPEr1Lps=";
+          };
+          # The release archive still embeds the preceding Git version string.
+          postPatch = (old.postPatch or "") + ''
+            substituteInPlace dune-project \
+              --replace-fail '(version v2.6.4-1-g997f541)' '(version 2.6.5)'
+            substituteInPlace src/lib/util/version.ml \
+              --replace-fail '"2.6.4-1-g997f541"' '"2.6.5"'
+          '';
+          propagatedBuildInputs = map (
+            dep:
+            if
+              builtins.elem (dep.pname or "") [
+                "alt-ergo-lib"
+                "alt-ergo-parsers"
+              ]
+            then
+              update dep
+            else
+              dep
+          ) old.propagatedBuildInputs;
+        });
+    in
+    update (super.alt-ergo.override { inherit ocamlPackages; });
+
+  colibri2 = super.colibri2.overrideAttrs (old: {
+    version = "0.7";
+    src = fetchurl {
+      url = "https://git.frama-c.com/api/v4/projects/879/packages/generic/colibri2/0.7/colibri2-0.7.tbz";
+      hash = "sha256-sEFFLepHTgvAfxu9VxAG1JeuFxtjJvB4DI2+dATkucY=";
+    };
+    # List.is_empty is not available in this package's OCaml 4.14 set.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace colibri2/theories/FP/fp_to_real.ml \
+        --replace-fail 'List.is_empty eqs' 'Base.List.is_empty eqs'
+    '';
+    propagatedBuildInputs =
+      map (
+        dep:
+        if (dep.pname or "") == "colibrilib" then
+          dep.overrideAttrs (oldLib: {
+            propagatedBuildInputs = oldLib.propagatedBuildInputs ++ [ self.ocaml-ng.ocamlPackages_4_14.flint ];
+          })
+        else
+          dep
+      ) old.propagatedBuildInputs
+      ++ [ self.ocaml-ng.ocamlPackages_4_14.base ];
+  });
+
+  why3find = super.why3find.overrideAttrs (old: {
+    version = "1.3.1";
+    src = fetchurl {
+      url = "https://git.frama-c.com/pub/why3find/-/archive/1.3.1/why3find-1.3.1.tar.gz";
+      hash = "sha256-K8zikdoUPM8xPi8WilJHvatSu4rj3HGfxSrJQLLZIvI=";
+    };
+    minimalOCamlVersion = "5.2";
+    propagatedBuildInputs =
+      old.propagatedBuildInputs
+      ++ (with self.ocamlPackages; [
+        cpu
+        xdg
+      ]);
+  });
+
   docfd = super.docfd.overrideAttrs (old: {
     version = "13.2.0";
     src = fetchurl {

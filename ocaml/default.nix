@@ -64,28 +64,6 @@ let
       doCheck = false;
     });
 
-  # Console 0.9's test terminal requires Matrix < 0.2.
-  consoleTestInputs = rec {
-    matrix = (osuper.matrix.override { mosaic = osuper.mosaic; }).overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace matrix/test/test_*.ml \
-          --replace-fail 'let () =' 'let () = exit @@'
-        substituteInPlace matrix/test/test_ansi.ml \
-          --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
-        substituteInPlace matrix/test/test_input.ml \
-          --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
-          --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
-          --replace-fail '~equal:( = ) ()' '~equal:( = )' \
-          --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
-            'slow (test "parsing efficiency" test_parsing_efficiency)'
-        substituteInPlace matrix/test/test_glyph.ml \
-          --replace-fail '~equal:( = ) ()' '~equal:( = )'
-      '';
-    });
-    # k7 propagates Matrix, so its test-tool version must match too.
-    k7 = osuper.k7.override { inherit matrix; };
-  };
-
   # Jane Street
   janePackage_0_16 =
     oself.callPackage "${path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
@@ -153,10 +131,10 @@ with oself;
   });
 
   alcotest = osuper.alcotest.overrideAttrs (_: {
-    version = "1.10.0";
+    version = "1.10.1";
     src = fetchurl {
-      url = "https://github.com/mirage/alcotest/releases/download/1.10.0/alcotest-1.10.0.tbz";
-      hash = "sha256-5B9Zs9rquSfatrvstoXt9myHKYjzcmhWgHmpvfwxSXw=";
+      url = "https://github.com/mirage/alcotest/releases/download/1.10.1/alcotest-1.10.1.tbz";
+      hash = "sha256-YsCV3tpc3WbDBoT3sfJbV3XR09Pe2SfHuJO0poNN20c=";
     };
     minimalOCamlVersion = "4.14";
   });
@@ -514,6 +492,9 @@ with oself;
     ];
   };
 
+  cf = callPackage ./cf { };
+  cf-lwt = callPackage ./cf/lwt.nix { };
+
   charInfo_width = buildDunePackage {
     pname = "charInfo_width";
     version = "2.0.0";
@@ -740,8 +721,17 @@ with oself;
 
   confero = callPackage ./confero { };
 
-  console = osuper.console.override consoleTestInputs;
-  console-eio = osuper.console-eio.override consoleTestInputs;
+  console = osuper.console.overrideAttrs (old: {
+    version = "0.10.0";
+    src = fetchurl {
+      url = "https://github.com/samoht/ocaml-console/releases/download/0.10.0/console-0.10.0.tbz";
+      hash = "sha256-y+eRwj00wU2PbnQB/ofmyUob1MBh88dEJSC7nIGvgCc=";
+    };
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      cmdliner
+      logs
+    ];
+  });
 
   cookie = callPackage ./cookie { };
 
@@ -1121,10 +1111,10 @@ with oself;
       null;
 
   elpi = osuper.elpi.overrideAttrs (old: {
-    version = "4.0.1";
+    version = "4.1.1";
     src = fetchurl {
-      url = "https://github.com/LPCIC/elpi/releases/download/v4.0.1/elpi-4.0.1.tbz";
-      hash = "sha256-jtWC3orRI2S/QEiF0NHUYz20MPO0nxePJrvp7s9fDi8=";
+      url = "https://github.com/LPCIC/elpi/releases/download/v4.1.1/elpi-4.1.1.tbz";
+      hash = "sha256-B8200zPmJ+V2RO5F5D7fqkogHSHvr9iSLo5eDUZJ+2g=";
     };
     minimalOCamlVersion = "4.13";
     nativeBuildInputs = old.nativeBuildInputs ++ [ atdts ];
@@ -1197,6 +1187,9 @@ with oself;
 
   flow_parser = callPackage ./flow_parser { };
 
+  fsevents = callPackage ./fsevents { };
+  fsevents-lwt = callPackage ./fsevents/lwt.nix { };
+
   functory = stdenv.mkDerivation {
     pname = "ocaml${ocaml.version}-functory";
     version = "0.6";
@@ -1252,6 +1245,15 @@ with oself;
           '  let is_singleton = function Node (_, Leaf, _, _, Leaf) -> true | Leaf | Node _ -> false' \
           $'  let is_singleton = function Node (_, Leaf, _, _, Leaf) -> true | Leaf | Node _ -> false\n\n  let singleton_to_binding = function\n    | Node (_, Leaf, key, value, Leaf) -> Some (key, value)\n    | Leaf | Node _ -> None'
     '';
+  });
+
+  goblint-cil = osuper.goblint-cil.overrideAttrs (old: {
+    version = "2.2.1";
+    src = fetchurl {
+      url = "https://github.com/goblint/cil/releases/download/2.2.1/goblint-cil-2.2.1.tbz";
+      hash = "sha256-wfq1wg7tc7LwIMBYta6IL8MUZdEztaBtxjuBFNik+ZE=";
+    };
+    buildInputs = (old.buildInputs or [ ]) ++ [ ppxlib ];
   });
 
   graphql_parser = callPackage ./graphql/parser.nix { };
@@ -1401,6 +1403,8 @@ with oself;
     }
   );
 
+  inotify-eio = callPackage ./inotify/eio.nix { };
+
   iomux = osuper.iomux.overrideAttrs (_: {
     hardeningDisable = [ "strictoverflow" ];
   });
@@ -1454,7 +1458,15 @@ with oself;
         --replace-fail notty notty-community
     '';
   };
-  irmin-git = disableTests osuper.irmin-git;
+  irmin-watcher =
+    if lib.versionAtLeast ocaml.version "5.2" then
+      callPackage ./irmin-watcher { }
+    else
+      osuper.irmin-watcher;
+
+  # Irmin still uses the Lwt API removed in irmin-watcher 0.6.
+  irmin-fs = osuper.irmin-fs.override { irmin-watcher = osuper.irmin-watcher; };
+  irmin-git = disableTests (osuper.irmin-git.override { irmin-watcher = osuper.irmin-watcher; });
   irmin-tezos = osuper.irmin-tezos.overrideAttrs (old: {
     # Alcotest 1.10 no longer creates _build in the test's working directory.
     postPatch = (old.postPatch or "") + ''
@@ -1794,11 +1806,19 @@ with oself;
     propagatedBuildInputs = [ luv ];
   };
 
-  lwt = osuper.lwt.override {
-    libev = libev-oc;
-    # Keep the runtime on the same release as lwt_ppx on older OCaml versions.
-    ppxlib = ppxlib_gt_0_37;
-  };
+  lwt =
+    (osuper.lwt.override {
+      libev = libev-oc;
+      # Keep the runtime on the same release as lwt_ppx on older OCaml versions.
+      ppxlib = ppxlib_gt_0_37;
+    }).overrideAttrs
+      (_: {
+        version = "6.1.3";
+        src = fetchurl {
+          url = "https://github.com/ocsigen/lwt/archive/refs/tags/6.1.3.tar.gz";
+          hash = "sha256-5Vj9rExlySXWHWuWcIYpytPynmp2/vgUwDHCI7o5zQk=";
+        };
+      });
 
   lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
     propagatedBuildInputs = [
@@ -1808,12 +1828,12 @@ with oself;
   });
 
   lwt_log = osuper.lwt_log.overrideAttrs (_: {
+    version = "1.1.3";
+    src = fetchurl {
+      url = "https://github.com/ocsigen/lwt_log/archive/refs/tags/1.1.3.tar.gz";
+      hash = "sha256-+Q7ZIQ6YmuFEtsRPtXl0z6mbIvhpFlMHUSd6KtUPKXM=";
+    };
     meta.broken = false;
-    postPatch = ''
-      substituteInPlace src/unix/lwt_daemon.ml --replace-fail \
-        'Lwt_sequence.iter_node_l Lwt_sequence.remove Lwt_main.exit_hooks [@ocaml.warning "-3"];' \
-        'Lwt_main.Exit_hooks.remove_all ();'
-    '';
   });
 
   lwt-watcher = osuper.lwt-watcher.overrideAttrs (_: {
@@ -2679,16 +2699,19 @@ with oself;
   });
 
   owl-base = osuper.owl-base.overrideAttrs (_: {
-    src = fetchFromGitHub {
-      owner = "owlbarn";
-      repo = "owl";
-      rev = "d957bd8b6f074947f07a80b835de4e6645b245a0";
-      hash = "sha256-hQ7BDFEBIIRhbKtjtf+/AyfO7HVpym3H+P1Y8Vlgah0=";
+    version = "1.3";
+    src = fetchurl {
+      url = "https://github.com/owlbarn/owl/releases/download/1.3/owl-1.3.tbz";
+      hash = "sha256-ts+HsVsDYyzy+sgunIwWC1smrlXM5aPUqxKNvoLiuKw=";
     };
+    minimalOCamlVersion = "4.12";
     meta.platforms = lib.platforms.all;
   });
-  owl = osuper.owl.overrideAttrs (o: {
-    propagatedBuildInputs = o.propagatedBuildInputs ++ [ eigen ];
+  owl = osuper.owl.overrideAttrs (_: {
+    buildInputs = [
+      dune-configurator
+      base
+    ];
     doCheck = false;
     meta = owl-base.meta;
   });
@@ -3672,6 +3695,7 @@ with oself;
         makeWrapper
         nix-eval-jobs
         fetchFromGitHub
+        fetchurl
         python3
         ;
     })
