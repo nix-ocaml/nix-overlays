@@ -13,16 +13,6 @@ with oself;
 {
   archi-eio = callPackage ./archi/eio.nix { };
 
-  caqti-eio = buildDunePackage {
-    inherit (caqti) version src;
-    pname = "caqti-eio";
-    propagatedBuildInputs = [
-      eio
-      eio_main
-      caqti
-    ];
-  };
-
   cohttp-eio = osuper.cohttp-eio.overrideAttrs (_: {
     postPatch = ''
       rm -rf cohttp-eio/examples
