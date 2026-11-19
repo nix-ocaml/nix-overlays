@@ -64,28 +64,6 @@ let
       doCheck = false;
     });
 
-  # Console 0.9's test terminal requires Matrix < 0.2.
-  consoleTestInputs = rec {
-    matrix = (osuper.matrix.override { mosaic = osuper.mosaic; }).overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace matrix/test/test_*.ml \
-          --replace-fail 'let () =' 'let () = exit @@'
-        substituteInPlace matrix/test/test_ansi.ml \
-          --replace-fail '~equal:Color.equal ()' '~equal:Color.equal'
-        substituteInPlace matrix/test/test_input.ml \
-          --replace-fail '~equal:Input.equal ()' '~equal:Input.equal' \
-          --replace-fail '~equal:Input.Caps.equal_event ()' '~equal:Input.Caps.equal_event' \
-          --replace-fail '~equal:( = ) ()' '~equal:( = )' \
-          --replace-fail 'slow "parsing efficiency" test_parsing_efficiency' \
-            'slow (test "parsing efficiency" test_parsing_efficiency)'
-        substituteInPlace matrix/test/test_glyph.ml \
-          --replace-fail '~equal:( = ) ()' '~equal:( = )'
-      '';
-    });
-    # k7 propagates Matrix, so its test-tool version must match too.
-    k7 = osuper.k7.override { inherit matrix; };
-  };
-
   # Jane Street
   janePackage_0_16 =
     oself.callPackage "${path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
@@ -740,8 +718,12 @@ with oself;
 
   confero = callPackage ./confero { };
 
-  console = osuper.console.override consoleTestInputs;
-  console-eio = osuper.console-eio.override consoleTestInputs;
+  console = osuper.console.overrideAttrs (old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      cmdliner
+      logs
+    ];
+  });
 
   cookie = callPackage ./cookie { };
 
@@ -1035,15 +1017,6 @@ with oself;
       url = "https://github.com/invariant-hq/windtrap/releases/download/v0.3.1/windtrap-0.3.1.tbz";
       hash = "sha256-mox5Jsd7HCWAEOAn6yGRZORqA2v+LfMrNLh4GITI0Rw=";
     };
-  });
-
-  ppx_windtrap = osuper.ppx_windtrap.overrideAttrs (o: {
-    nativeCheckInputs = (o.nativeCheckInputs or [ ]) ++ [ (lib.getBin windtrap) ];
-    postPatch = (o.postPatch or "") + ''
-      substituteInPlace test/conformance/corpus/example/dune \
-        --replace-fail '%{ocaml_where}/../windtrap' \
-          '${lib.getDev windtrap}/lib/ocaml/${ocaml.version}/site-lib/windtrap'
-    '';
   });
 
   xdg = osuper.xdg.overrideAttrs (o: {
