@@ -137,6 +137,76 @@ in
 
   # Other packages
 
+  merge-fmt = super.merge-fmt.overrideAttrs (_: {
+    version = "0.5";
+    src = fetchurl {
+      url = "https://github.com/hhugo/merge-fmt/releases/download/0.5/merge-fmt-0.5.tbz";
+      hash = "sha256-996sLhjRV7U3cetyYpUweC/YESicR2P4qa+mrxZJU18=";
+    };
+    minimalOCamlVersion = "4.8";
+    patches = [ ];
+  });
+
+  colibri2 = super.colibri2.overrideAttrs (old: {
+    version = "0.7";
+    src = fetchurl {
+      url = "https://git.frama-c.com/api/v4/projects/879/packages/generic/colibri2/0.7/colibri2-0.7.tbz";
+      hash = "sha256-sEFFLepHTgvAfxu9VxAG1JeuFxtjJvB4DI2+dATkucY=";
+    };
+    # List.is_empty is not available in this package's OCaml 4.14 set.
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace colibri2/theories/FP/fp_to_real.ml \
+        --replace-fail 'List.is_empty eqs' 'Base.List.is_empty eqs'
+    '';
+    propagatedBuildInputs =
+      map (
+        dep:
+        if (dep.pname or "") == "colibrilib" then
+          dep.overrideAttrs (oldLib: {
+            propagatedBuildInputs = oldLib.propagatedBuildInputs ++ [ self.ocaml-ng.ocamlPackages_4_14.flint ];
+          })
+        else
+          dep
+      ) old.propagatedBuildInputs
+      ++ [ self.ocaml-ng.ocamlPackages_4_14.base ];
+  });
+
+  why3find =
+    (super.why3find.override {
+      # The Alt-Ergo 2.6.4 test dependency needs the Dolmen 0.10 API.
+      alt-ergo = super.alt-ergo.override {
+        ocamlPackages = self.ocamlPackages.overrideScope (
+          final: _: {
+            dolmen = final.callPackage "${super.path}/pkgs/development/ocaml-modules/dolmen" { };
+          }
+        );
+      };
+    }).overrideAttrs
+      (old: {
+        version = "1.3.1";
+        src = fetchurl {
+          url = "https://git.frama-c.com/pub/why3find/-/archive/1.3.1/why3find-1.3.1.tar.gz";
+          hash = "sha256-K8zikdoUPM8xPi8WilJHvatSu4rj3HGfxSrJQLLZIvI=";
+        };
+        minimalOCamlVersion = "5.2";
+        postPatch =
+          (old.postPatch or "")
+          + lib.optionalString stdenv.hostPlatform.isDarwin ''
+            # Darwin rejects the test's memory limit. Use a signaled process
+            # to exercise the same calibration failure reporting.
+            substituteInPlace tests/calibration-error.t/run.t \
+              --replace-fail '$(which alt-ergo)' \
+                '${self.writeShellScript "why3find-failing-prover" "kill -KILL $$"}'
+          '';
+        nativeCheckInputs = old.nativeCheckInputs ++ [ self.which ];
+        propagatedBuildInputs =
+          old.propagatedBuildInputs
+          ++ (with self.ocamlPackages; [
+            cpu
+            xdg
+          ]);
+      });
+
   docfd = super.docfd.overrideAttrs (old: {
     version = "13.2.0";
     src = fetchurl {
