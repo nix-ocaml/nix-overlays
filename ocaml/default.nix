@@ -64,6 +64,9 @@ let
       doCheck = false;
     });
 
+  # Console's test terminal and its k7 runner use the Matrix 0.2 API.
+  matrix_0_2 = oself.matrix.override { mosaic = osuper.mosaic; };
+
   # Jane Street
   janePackage_0_16 =
     oself.callPackage "${path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
@@ -131,10 +134,10 @@ with oself;
   });
 
   alcotest = osuper.alcotest.overrideAttrs (_: {
-    version = "1.10.1";
+    version = "1.10.2";
     src = fetchurl {
-      url = "https://github.com/mirage/alcotest/releases/download/1.10.1/alcotest-1.10.1.tbz";
-      hash = "sha256-YsCV3tpc3WbDBoT3sfJbV3XR09Pe2SfHuJO0poNN20c=";
+      url = "https://github.com/mirage/alcotest/releases/download/1.10.2/alcotest-1.10.2.tbz";
+      hash = "sha256-bg2ogo+/aCbeC3gt/jLEX5/uekTx1iV8aX0M+Sz+zTY=";
     };
     minimalOCamlVersion = "4.14";
   });
@@ -721,17 +724,19 @@ with oself;
 
   confero = callPackage ./confero { };
 
-  console = osuper.console.overrideAttrs (old: {
-    version = "0.10.0";
+  console = (osuper.console.override { matrix = matrix_0_2; }).overrideAttrs (old: {
+    version = "0.10.1";
     src = fetchurl {
-      url = "https://github.com/samoht/ocaml-console/releases/download/0.10.0/console-0.10.0.tbz";
-      hash = "sha256-y+eRwj00wU2PbnQB/ofmyUob1MBh88dEJSC7nIGvgCc=";
+      url = "https://github.com/samoht/ocaml-console/releases/download/0.10.1/console-0.10.1.tbz";
+      hash = "sha256-N61l9oM8ZYFLBnPwCfa2VsUZRgjKA1GdouY+EFHVT24=";
     };
     propagatedBuildInputs = old.propagatedBuildInputs ++ [
       cmdliner
       logs
     ];
   });
+
+  console-eio = osuper.console-eio.override { matrix = matrix_0_2; };
 
   cookie = callPackage ./cookie { };
 
@@ -1109,6 +1114,7 @@ with oself;
     };
     minimalOCamlVersion = "4.13";
     nativeBuildInputs = old.nativeBuildInputs ++ [ atdts ];
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ findlib ];
   });
 
   eris = osuper.eris.overrideAttrs (o: {
@@ -1550,7 +1556,7 @@ with oself;
     '';
   });
 
-  k7 = osuper.k7.overrideAttrs (_: {
+  k7 = (osuper.k7.override { matrix = matrix_0_2; }).overrideAttrs (_: {
     version = "0.10.0";
     src = fetchurl {
       url = "https://github.com/samoht/ocaml-k7/releases/download/0.10.0/k7-0.10.0.tbz";
@@ -1860,10 +1866,10 @@ with oself;
   };
 
   mosaic = osuper.mosaic.overrideAttrs (old: {
-    version = "0.2.0";
+    version = "0.3.0";
     src = fetchurl {
-      url = "https://github.com/invariant-hq/mosaic/releases/download/0.2.0/mosaic-0.2.0.tbz";
-      hash = "sha256-q0i8AggvnB3uoHaaE8KTXfUpU2YwdF7Do9cY9ZZWEJs=";
+      url = "https://github.com/invariant-hq/mosaic/releases/download/0.3.0/mosaic-0.3.0.tbz";
+      hash = "sha256-qSy7y+AW+xn7CnSSItoORZqVZ67z9Mc0DZvWtxxT7W8=";
     };
     checkInputs = old.checkInputs ++ [
       eio_main
@@ -1876,6 +1882,10 @@ with oself;
     # The macOS sandbox denies ps access to process CPU time.
     postPatch =
       (old.postPatch or "")
+      + lib.optionalString (lib.versionAtLeast old.version "0.3") ''
+        substituteInPlace packages/matrix/test/test_pty.ml \
+          --replace-fail '#!/bin/sh' '#!${stdenv.shell}'
+      ''
       + lib.optionalString stdenv.hostPlatform.isDarwin ''
         substituteInPlace packages/matrix/test/test_runtime_pty.ml \
           --replace-fail 'test "SIGTSTP stops the job" test_sigtstp_stops_the_job;' "" \
@@ -2687,6 +2697,24 @@ with oself;
 
   oui = osuper.oui.overrideAttrs (_: {
     buildInputs = [ ppxlib ];
+  });
+
+  ocaml-lua = osuper.ocaml-lua.overrideAttrs (_: {
+    version = "1.10";
+    src = fetchurl {
+      url = "https://github.com/pdonadeo/ocaml-lua/archive/refs/tags/v1.10.tar.gz";
+      hash = "sha256-xGFp69EoO6jqomL6rXJ7nbNPiiAcR072FNUYkcv4gsc=";
+    };
+    minimalOCamlVersion = "4.11";
+    # Keep using Nixpkgs' Lua instead of the vendored source archive.
+    postPatch = ''
+      rm -r src/lua_c
+      substituteInPlace src/dune \
+        --replace-fail '-Ilua_c' "" \
+        --replace-fail '(extra_deps lua_c/lua.h lua_c/luaconf.h lua_c/lauxlib.h lua_c/lualib.h)' "" \
+        --replace-fail '(libraries unix threads lua_c)' \
+          '(libraries unix threads) (c_library_flags -llua)'
+    '';
   });
 
   owl-base = osuper.owl-base.overrideAttrs (_: {
@@ -3686,7 +3714,6 @@ with oself;
         makeWrapper
         nix-eval-jobs
         fetchFromGitHub
-        fetchurl
         python3
         ;
     })

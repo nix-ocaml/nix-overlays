@@ -137,45 +137,15 @@ in
 
   # Other packages
 
-  alt-ergo =
-    let
-      # Alt-Ergo 2.6 still requires the Dolmen 0.10 API.
-      ocamlPackages = self.ocamlPackages.overrideScope (
-        final: _: {
-          dolmen = final.callPackage "${super.path}/pkgs/development/ocaml-modules/dolmen" { };
-        }
-      );
-      # The executable and both internal libraries must use the same release.
-      update =
-        drv:
-        drv.overrideAttrs (old: {
-          version = "2.6.5";
-          src = fetchurl {
-            url = "https://github.com/OCamlPro/alt-ergo/releases/download/v2.6.5/alt-ergo-2.6.5.tbz";
-            hash = "sha256-iAmjBUOsalJlifcZjZ9IWDaRkJae/OszDmnkPEr1Lps=";
-          };
-          # The release archive still embeds the preceding Git version string.
-          postPatch = (old.postPatch or "") + ''
-            substituteInPlace dune-project \
-              --replace-fail '(version v2.6.4-1-g997f541)' '(version 2.6.5)'
-            substituteInPlace src/lib/util/version.ml \
-              --replace-fail '"2.6.4-1-g997f541"' '"2.6.5"'
-          '';
-          propagatedBuildInputs = map (
-            dep:
-            if
-              builtins.elem (dep.pname or "") [
-                "alt-ergo-lib"
-                "alt-ergo-parsers"
-              ]
-            then
-              update dep
-            else
-              dep
-          ) old.propagatedBuildInputs;
-        });
-    in
-    update (super.alt-ergo.override { inherit ocamlPackages; });
+  merge-fmt = super.merge-fmt.overrideAttrs (_: {
+    version = "0.5";
+    src = fetchurl {
+      url = "https://github.com/hhugo/merge-fmt/releases/download/0.5/merge-fmt-0.5.tbz";
+      hash = "sha256-996sLhjRV7U3cetyYpUweC/YESicR2P4qa+mrxZJU18=";
+    };
+    minimalOCamlVersion = "4.8";
+    patches = [ ];
+  });
 
   colibri2 = super.colibri2.overrideAttrs (old: {
     version = "0.7";
@@ -201,20 +171,32 @@ in
       ++ [ self.ocaml-ng.ocamlPackages_4_14.base ];
   });
 
-  why3find = super.why3find.overrideAttrs (old: {
-    version = "1.3.1";
-    src = fetchurl {
-      url = "https://git.frama-c.com/pub/why3find/-/archive/1.3.1/why3find-1.3.1.tar.gz";
-      hash = "sha256-K8zikdoUPM8xPi8WilJHvatSu4rj3HGfxSrJQLLZIvI=";
-    };
-    minimalOCamlVersion = "5.2";
-    propagatedBuildInputs =
-      old.propagatedBuildInputs
-      ++ (with self.ocamlPackages; [
-        cpu
-        xdg
-      ]);
-  });
+  why3find =
+    (super.why3find.override {
+      # Its tests require Alt-Ergo 2.6.4, which uses the Dolmen 0.10 API.
+      alt-ergo = super.alt-ergo.override {
+        ocamlPackages = self.ocamlPackages.overrideScope (
+          final: _: {
+            dolmen = final.callPackage "${super.path}/pkgs/development/ocaml-modules/dolmen" { };
+          }
+        );
+      };
+    }).overrideAttrs
+      (old: {
+        version = "1.3.1";
+        src = fetchurl {
+          url = "https://git.frama-c.com/pub/why3find/-/archive/1.3.1/why3find-1.3.1.tar.gz";
+          hash = "sha256-K8zikdoUPM8xPi8WilJHvatSu4rj3HGfxSrJQLLZIvI=";
+        };
+        minimalOCamlVersion = "5.2";
+        nativeCheckInputs = old.nativeCheckInputs ++ [ self.which ];
+        propagatedBuildInputs =
+          old.propagatedBuildInputs
+          ++ (with self.ocamlPackages; [
+            cpu
+            xdg
+          ]);
+      });
 
   docfd = super.docfd.overrideAttrs (old: {
     version = "13.2.0";
