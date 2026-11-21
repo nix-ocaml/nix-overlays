@@ -173,7 +173,7 @@ in
 
   why3find =
     (super.why3find.override {
-      # Its tests require Alt-Ergo 2.6.4, which uses the Dolmen 0.10 API.
+      # The Alt-Ergo 2.6.4 test dependency needs the Dolmen 0.10 API.
       alt-ergo = super.alt-ergo.override {
         ocamlPackages = self.ocamlPackages.overrideScope (
           final: _: {
@@ -189,6 +189,15 @@ in
           hash = "sha256-K8zikdoUPM8xPi8WilJHvatSu4rj3HGfxSrJQLLZIvI=";
         };
         minimalOCamlVersion = "5.2";
+        postPatch =
+          (old.postPatch or "")
+          + lib.optionalString stdenv.hostPlatform.isDarwin ''
+            # Darwin rejects the test's memory limit. Use a signaled process
+            # to exercise the same calibration failure reporting.
+            substituteInPlace tests/calibration-error.t/run.t \
+              --replace-fail '$(which alt-ergo)' \
+                '${self.writeShellScript "why3find-failing-prover" "kill -KILL $$"}'
+          '';
         nativeCheckInputs = old.nativeCheckInputs ++ [ self.which ];
         propagatedBuildInputs =
           old.propagatedBuildInputs
