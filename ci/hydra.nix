@@ -77,12 +77,6 @@ with filter;
     extraIgnores = extraIgnores ++ ocaml5Ignores;
   };
 
-  build_5_4_fp = ocamlCandidates {
-    pkgs = framePointerPkgs "5_4";
-    ocamlVersion = "5_4";
-    extraIgnores = extraIgnores ++ ocaml5Ignores;
-  };
-
   build_5_5_fp = ocamlCandidates {
     pkgs = framePointerPkgs "5_5";
     ocamlVersion = "5_5";
