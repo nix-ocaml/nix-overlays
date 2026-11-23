@@ -3119,14 +3119,15 @@ with oself;
     };
   });
 
-  reason = osuper.reason.overrideAttrs (o: {
+  # The converter needs the released parser without JavaScript label renaming.
+  reason_3_18 = osuper.reason.overrideAttrs (o: {
     version = "3.18.0";
     name = "ocaml${ocaml.version}-reason-3.18.0";
     src = fetchFromGitHub {
       owner = "reasonml";
       repo = "reason";
-      rev = "02024f3641892afa2fd26a10e4ad9bf74904cb71";
-      hash = "sha256-LNAjDsdyg23arWZ5cqfD0ulP7CroyvklKKjo+GPxESE=";
+      tag = "3.18.0";
+      hash = "sha256-V/5f9EKPN5DQEtFWrhEAkb1HdYg49QYn1o13zdwpa4g=";
     };
     buildInputs = o.buildInputs ++ [ ppxlib_gt_0_37 ];
     propagatedBuildInputs = [
@@ -3135,9 +3136,22 @@ with oself;
       menhirLib
     ];
 
-    patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
+    patches = [ ];
     meta.mainProgram = "refmt";
   });
+
+  reason = reason_3_18.overrideAttrs (_: {
+    patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
+    src = fetchFromGitHub {
+      owner = "reasonml";
+      repo = "reason";
+      rev = "02024f3641892afa2fd26a10e4ad9bf74904cb71";
+      hash = "sha256-LNAjDsdyg23arWZ5cqfD0ulP7CroyvklKKjo+GPxESE=";
+    };
+  });
+
+  reason-to-mlx = callPackage ./reason-to-mlx { reason = reason_3_18; };
+
   rtop = osuper.rtop.overrideAttrs (o: {
     buildInputs = (o.buildInputs or [ ]) ++ [ ppxlib_gt_0_37 ];
   });
