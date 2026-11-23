@@ -3138,9 +3138,13 @@ with oself;
 
     patches = [ ];
     meta.mainProgram = "refmt";
+    meta.broken = lib.versionAtLeast ocaml.version "5.6";
   });
 
-  reason = reason_3_18.overrideAttrs (_: {
+  reason = reason_3_18.overrideAttrs (o: {
+    meta = o.meta // {
+      broken = osuper.reason.meta.broken or false;
+    };
     patches = [ ./0001-rename-labels-ppxlib-0.36.patch ];
     src = fetchFromGitHub {
       owner = "reasonml";

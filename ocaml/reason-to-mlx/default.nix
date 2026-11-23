@@ -43,6 +43,7 @@ buildDunePackage rec {
   ];
 
   meta = {
+    broken = reason.meta.broken or false;
     description = "Convert Reason source to MLX, with an in-memory library API";
     homepage = "https://github.com/ocaml-mlx/reason-to-mlx";
     license = lib.licenses.mit;
