@@ -67,6 +67,22 @@ let
   # Console's test terminal and its k7 runner use the Matrix 0.2 API.
   matrix_0_2 = oself.matrix.override { mosaic = osuper.mosaic; };
 
+  # Keep explicit older versions and the fallback for OCaml before 4.14.
+  updateOCamlformat =
+    package:
+    (package.override {
+      version = if lib.versionAtLeast oself.ocaml.version "4.14" then "0.30.0" else "0.28.1";
+    }).overrideAttrs
+      (
+        old:
+        lib.optionalAttrs (old.version == "0.30.0") {
+          src = fetchurl {
+            url = "https://github.com/ocaml-ppx/ocamlformat/releases/download/0.30.0/ocamlformat-0.30.0.tbz";
+            hash = "sha256-WGpcwvSqWUnSBZGJ6y3SXTUF/JIk9LB7mUyoGexkDeQ=";
+          };
+        }
+      );
+
   # Jane Street
   janePackage_0_16 =
     oself.callPackage "${path}/pkgs/development/ocaml-modules/janestreet/janePackage_0_16.nix"
@@ -362,6 +378,14 @@ with oself;
     ];
   });
 
+  brr = osuper.brr.overrideAttrs (_: {
+    version = "0.1.0";
+    src = fetchurl {
+      url = "https://erratique.ch/software/brr/releases/brr-0.1.0.tbz";
+      hash = "sha256-hch4Qy3nUjA78U5tPs85zJNKId02SgspFhYXIdKMIOA=";
+    };
+  });
+
   bstr = osuper.bstr.overrideAttrs (_: {
     version = "0.1.3";
     src = fetchurl {
@@ -520,6 +544,27 @@ with oself;
 
   cmarkit = osuper.cmarkit.overrideAttrs (_: {
     buildPhase = "${topkg.buildPhase} --with-cmdliner true";
+  });
+
+  cmdliner = (osuper.cmdliner.override { version = "2.1.2"; }).overrideAttrs (
+    old:
+    lib.optionalAttrs (old.version == "2.1.2") {
+      src = fetchurl {
+        url = "https://erratique.ch/software/cmdliner/releases/cmdliner-2.1.2.tbz";
+        hash = "sha256-g5XmIAViTDHJ9y0OaITVyW/sa/LF6N6L9+hLddZii50=";
+      };
+    }
+  );
+
+  cudd = osuper.cudd.overrideAttrs (old: {
+    version = "0.2";
+    src = fetchurl {
+      url = "https://github.com/gammalphi/cudd.ml/archive/refs/tags/0.2.tar.gz";
+      hash = "sha256-gLaHwyyov2u4ItzXPMYFe7GwphPuYaC4T65TtobyJ5k=";
+    };
+    meta = old.meta // {
+      homepage = "https://github.com/gammalphi/cudd.ml";
+    };
   });
 
   cascade = osuper.cascade.overrideAttrs (
@@ -2067,6 +2112,11 @@ with oself;
   mlx = osuper.mlx.override { ppxlib = ppxlib_gt_0_37; };
 
   ocamlmerlin-mlx = osuper.ocamlmerlin-mlx.override { ppxlib = ppxlib_gt_0_37; };
+
+  ocamlformat = updateOCamlformat osuper.ocamlformat;
+  ocamlformat-lib = updateOCamlformat osuper.ocamlformat-lib;
+  ocamlformat-rpc-lib = updateOCamlformat osuper.ocamlformat-rpc-lib;
+  ocamlformat_0_30_0 = ocamlformat.override { version = "0.30.0"; };
 
   ocamlformat-mlx-lib = osuper.ocamlformat-mlx-lib.overrideAttrs (old: {
     version = "0.29.0.2";

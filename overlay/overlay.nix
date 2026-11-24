@@ -138,26 +138,23 @@ in
   # Other packages
 
   merge-fmt = super.merge-fmt.overrideAttrs (_: {
-    version = "0.5";
+    version = "0.5.1";
     src = fetchurl {
-      url = "https://github.com/hhugo/merge-fmt/releases/download/0.5/merge-fmt-0.5.tbz";
-      hash = "sha256-996sLhjRV7U3cetyYpUweC/YESicR2P4qa+mrxZJU18=";
+      url = "https://github.com/hhugo/merge-fmt/releases/download/0.5.1/merge-fmt-0.5.1.tbz";
+      hash = "sha256-dIo9r7zwV7+2LsIznwusKQOF9niNGdcnE1mrNHEi3ZQ=";
     };
-    minimalOCamlVersion = "4.8";
+    minimalOCamlVersion = "4.14";
     patches = [ ];
   });
 
   colibri2 = super.colibri2.overrideAttrs (old: {
-    version = "0.7";
+    version = "0.7.1";
+    minimalOCamlVersion = "4.14.1";
     src = fetchurl {
-      url = "https://git.frama-c.com/api/v4/projects/879/packages/generic/colibri2/0.7/colibri2-0.7.tbz";
-      hash = "sha256-sEFFLepHTgvAfxu9VxAG1JeuFxtjJvB4DI2+dATkucY=";
+      name = "colibri2-0.7.1.tbz";
+      url = "https://git.frama-c.com/pub/colibrics/-/package_files/108/download";
+      hash = "sha256-Wy7FzlrxagwdA/Nr1AWXYyWnkfEf6mi2d5qleypzNyw=";
     };
-    # List.is_empty is not available in this package's OCaml 4.14 set.
-    postPatch = (old.postPatch or "") + ''
-      substituteInPlace colibri2/theories/FP/fp_to_real.ml \
-        --replace-fail 'List.is_empty eqs' 'Base.List.is_empty eqs'
-    '';
     propagatedBuildInputs =
       map (
         dep:
