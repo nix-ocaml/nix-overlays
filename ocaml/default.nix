@@ -2844,6 +2844,9 @@ with oself;
 
     # patches = [ ./ppxlib.patch ];
     postPatch = ''
+      substituteInPlace src/internal/std.mli \
+        --replace-fail 'CCResult.result' 'CCResult.t'
+
       substituteInPlace src/internal/ppxc__script_real.ml \
       --replace 'C_content_make ()' 'C_content_make (struct end)'
 
