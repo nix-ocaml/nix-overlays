@@ -2384,6 +2384,12 @@ with oself;
     else
       null;
 
+  ocsigen-dune-rules = osuper.ocsigen-dune-rules.overrideAttrs (old: {
+    src = old.src.overrideAttrs (_: {
+      hash = "sha256-GZMvy5irs+36EkQdYKrO3GPcOwnc9c/E5RndzlKTdO4=";
+    });
+  });
+
   ocsigen-ppx-rpc = (osuper.ocsigen-ppx-rpc.override { ppxlib = ppxlib_gt_0_37; }).overrideAttrs (_: {
     version = "2.0";
     src = fetchFromGitHub {
