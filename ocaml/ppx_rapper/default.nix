@@ -19,15 +19,20 @@ buildDunePackage {
     hash = "sha256-2XTpk1kUakxddcR7ZBiv4hynV6dznDy//G7914azJKU=";
   };
 
-  postPatch = lib.optionalString (lib.versionOlder ppxlib.version "0.36") ''
+  postPatch = ''
+    # Caqti 3 exposes the Caqti 2 API through caqti.classic.
+    substituteInPlace lib-runtime/dune \
+      --replace-fail "(libraries caqti)" "(libraries caqti.classic)"
+  ''
+  + lib.optionalString (lib.versionOlder ppxlib.version "0.36") ''
     substituteInPlace ppx/ppx_rapper.ml \
       --replace-fail "       ~constraint_:drop" ""
   '';
 
-  buildInputs = [ ppxlib ];
   propagatedBuildInputs = [
     caqti
     pg_query
     base
+    ppxlib
   ];
 }
