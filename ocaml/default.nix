@@ -3052,6 +3052,22 @@ with oself;
     else
       osuper.ppx_deriving_yojson;
 
+  ppx_devtools-optcomp = buildDunePackage {
+    pname = "ppx_devtools-optcomp";
+    version = "0.1";
+    src = fetchurl {
+      url = "https://github.com/ocsigen/ppx_devtools/releases/download/0.1/ppx_devtools-0.1.tbz";
+      hash = "sha256-Rq1OYqIT48CFLALNHMGC2I7ImvooSkWkMWz7P/wLy5w=";
+    };
+    minimalOCamlVersion = "4.13";
+    propagatedBuildInputs = [ ppxlib ];
+    meta = {
+      homepage = "https://github.com/ocsigen/ppx_devtools";
+      description = "Lightweight ppx for conditional compilation";
+      license = lib.licenses.WITH lib.licenses.lgpl21Plus lib.licenses.ocamlLgplLinkingException;
+    };
+  };
+
   ppx_repr = disableTests osuper.ppx_repr;
 
   ppx_show = osuper.ppx_show.overrideAttrs (_: {
