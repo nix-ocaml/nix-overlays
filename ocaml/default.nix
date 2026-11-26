@@ -3807,7 +3807,6 @@ with oself;
         makeWrapper
         nix-eval-jobs
         fetchFromGitHub
-        python3
         ;
     })
   else
