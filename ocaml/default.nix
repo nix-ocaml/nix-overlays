@@ -1854,12 +1854,13 @@ with oself;
       # Keep the runtime on the same release as lwt_ppx on older OCaml versions.
       ppxlib = ppxlib_gt_0_37;
     }).overrideAttrs
-      (_: {
+      (o: {
         version = "6.1.3";
         src = fetchurl {
           url = "https://github.com/ocsigen/lwt/archive/refs/tags/6.1.3.tar.gz";
-          hash = "sha256-5Vj9rExlySXWHWuWcIYpytPynmp2/vgUwDHCI7o5zQk=";
+          hash = "sha256-a8MR1+iqahYkPsbHf5xgofF5ULx1Ty6j1g4Y/zHBVeI=";
         };
+        buildInputs = (o.buildInputs or [ ]) ++ [ ppx_devtools-optcomp ];
       });
 
   lwt_ppx = osuper.lwt_ppx.overrideAttrs (_: {
