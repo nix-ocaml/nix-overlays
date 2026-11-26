@@ -918,14 +918,11 @@ with oself;
   dose3 = disableTests osuper.dose3;
 
   dream-html = callPackage ./dream-html { };
-  dream-pure = callPackage ./dream/pure.nix { };
-  dream-httpaf = callPackage ./dream/httpaf.nix { };
   dream =
     let
       mf = multipart_form.override { upstream = true; };
     in
-    callPackage ./dream {
-      multipart_form = mf;
+    osuper.dream.override {
       multipart_form-lwt = multipart_form-lwt.override { multipart_form = mf; };
     };
 
