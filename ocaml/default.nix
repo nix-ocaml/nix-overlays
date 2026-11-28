@@ -2704,17 +2704,16 @@ with oself;
     if lib.versionAtLeast ocaml.version "5.3" then
       buildDunePackage rec {
         pname = "parseff";
-        version = "0.5.0";
+        version = "0.6.1";
         src = fetchurl {
-          url = "https://github.com/davesnx/parseff/releases/download/0.5.0/parseff-0.5.0.tbz";
-          hash = "sha256-2tZx6YvfGBbHal5h2hV784qYYFftL5QWVzFDu48a/M4=";
+          url = "https://github.com/davesnx/parseff/releases/download/0.6.1/parseff-0.6.1.tbz";
+          hash = "sha256-W7K0gnKNgGnulyKgn/0mGmKH1XdFoXWCQ+bjXkFg5xU=";
         };
         propagatedBuildInputs = [
-          re
           uucp
         ];
         meta = {
-          description = "Direct-style parser combinator library for OCaml 5 powered by algebraic effects";
+          description = "Direct-style parser combinator library for OCaml 5 with zero-copy spans";
           homepage = "https://github.com/davesnx/parseff";
           license = lib.licenses.mit;
           maintainers = [ ];
