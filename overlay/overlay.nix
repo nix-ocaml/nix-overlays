@@ -34,6 +34,20 @@ in
   # Override `pkgs.nix` to the unstable channel
   nix = super.nixVersions.latest;
 
+  nix-eval-jobs =
+    (super.nix-eval-jobs.override {
+      nixComponents = super.nixVersions.nixComponents_2_35;
+    }).overrideAttrs
+      (_: {
+        version = "2.35.2";
+        src = fetchFromGitHub {
+          owner = "NixOS";
+          repo = "nix-eval-jobs";
+          rev = "v2.35.2";
+          hash = "sha256-qHxk1wVKqz/UMtVC14ugkhySbqYcRQbwobyeO/fhAf0=";
+        };
+      });
+
   # Other packages
 
   ocsigen-i18n = super.ocsigen-i18n.overrideAttrs (_: {
