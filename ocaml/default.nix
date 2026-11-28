@@ -1220,6 +1220,7 @@ with oself;
 
   gitlab-unix = disableTests osuper.gitlab-unix;
 
+  gluten = callPackage ./gluten { };
   gluten-lwt = callPackage ./gluten/lwt.nix { };
   gluten-lwt-unix = callPackage ./gluten/lwt-unix.nix { };
   gluten-mirage = callPackage ./gluten/mirage.nix { };
@@ -1328,6 +1329,7 @@ with oself;
     ];
   };
 
+  httpun-types = callPackage ./httpun/types.nix { };
   httpun = callPackage ./httpun { };
   httpun-lwt = callPackage ./httpun/lwt.nix { };
   httpun-lwt-unix = callPackage ./httpun/lwt-unix.nix { };
