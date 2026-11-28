@@ -127,12 +127,12 @@ in
       nixComponents = super.nixVersions.nixComponents_2_35;
     }).overrideAttrs
       (_: {
-        version = "2.35.2";
+        version = "2.35.4";
         src = fetchFromGitHub {
           owner = "NixOS";
           repo = "nix-eval-jobs";
-          rev = "v2.35.2";
-          hash = "sha256-qHxk1wVKqz/UMtVC14ugkhySbqYcRQbwobyeO/fhAf0=";
+          tag = "v2.35.4";
+          hash = "sha256-t1FbcjvTWQ1WO3hJNKN+viNXuz4BX9Pte5K4F+IJLDk=";
         };
       });
 
