@@ -25,6 +25,7 @@ in
       super-opam = super.opam;
       super-opaline = super.opaline;
       oniguruma-lib = super.oniguruma;
+      ocsigen-i18n = self.ocsigen-i18n;
     })
   ];
 })
@@ -136,6 +137,15 @@ in
       });
 
   # Other packages
+
+  ocsigen-i18n = super.ocsigen-i18n.overrideAttrs (_: {
+    version = "6.0.0";
+    minimalOCamlVersion = "4.14";
+    src = fetchurl {
+      url = "https://github.com/ocsigen/ocsigen-i18n/archive/refs/tags/6.0.0.tar.gz";
+      hash = "sha256-ZpSfp42ISiT1ybkSKFFATpNSwZVRDKMZxH7hGp4bt6g=";
+    };
+  });
 
   merge-fmt = super.merge-fmt.overrideAttrs (_: {
     version = "0.5.1";
