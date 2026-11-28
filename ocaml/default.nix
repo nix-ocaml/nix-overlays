@@ -34,6 +34,7 @@
   gmp-oc,
   openssl-oc,
   oniguruma-lib,
+  ocsigen-i18n,
   pam,
   pkg-config,
   python3,
@@ -1214,9 +1215,10 @@ with oself;
   };
 
   fix = osuper.fix.overrideAttrs (_: {
-    src = builtins.fetchurl {
-      url = "https://anmonteiro.s3.eu-west-3.amazonaws.com/fix-20230505.tar.gz";
-      sha256 = "06q8h71q9j1jcr1gprr1ykigb9l4y6zil6c7i9p0b0f4qkyhcvrj";
+    version = "20261126";
+    src = fetchurl {
+      url = "https://gitlab.inria.fr/fpottier/fix/-/archive/20261126/archive.tar.gz";
+      hash = "sha256-xf4df71PnmUD45lm4YDSz6YZ6hTkuCdFwQChf9XIyik=";
     };
   });
 
@@ -2398,6 +2400,28 @@ with oself;
     };
   });
 
+  ocsigen-start = osuper.ocsigen-start.overrideAttrs (old: {
+    version = "9.0.0";
+    src = fetchurl {
+      url = "https://github.com/ocsigen/ocsigen-start/archive/refs/tags/9.0.0.tar.gz";
+      hash = "sha256-/cfSTIdJLTqPgxX63lWECi58/y/lPYJpZzywHbA9d48=";
+    };
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      (ocsigen-i18n.override { ocamlPackages = oself; })
+      ocsipersist-pgsql-config
+      re
+    ];
+  });
+
+  ocsigen-toolkit = osuper.ocsigen-toolkit.overrideAttrs (_: {
+    version = "5.0.0";
+    minimalOCamlVersion = "5.1";
+    src = fetchurl {
+      url = "https://github.com/ocsigen/ocsigen-toolkit/archive/refs/tags/5.0.0.tar.gz";
+      hash = "sha256-Bepp2aHX172VuvKjQHuBgbSy11+jCjO1106LqWcFDnE=";
+    };
+  });
+
   ocsipersist-lib = osuper.ocsipersist-lib.overrideAttrs (
     o:
     {
@@ -3323,6 +3347,15 @@ with oself;
     doCheck = false;
   });
 
+  sel = osuper.sel.overrideAttrs (_: {
+    version = "0.10.0";
+    minimalOCamlVersion = "4.12";
+    src = fetchurl {
+      url = "https://github.com/gares/sel/releases/download/v0.10.0/sel-0.10.0.tbz";
+      hash = "sha256-kVFDGrrsMK65Ok9WGFh1FgI/mUWt6EVV1ulsxRdhbNo=";
+    };
+  });
+
   sendfile = callPackage ./sendfile { };
 
   sherlodoc = callPackage ./sherlodoc { };
@@ -3426,7 +3459,13 @@ with oself;
     ];
   };
 
-  tcpip = disableTests osuper.tcpip;
+  tcpip = (disableTests osuper.tcpip).overrideAttrs (_: {
+    version = "9.0.2";
+    src = fetchurl {
+      url = "https://github.com/mirage/mirage-tcpip/releases/download/v9.0.2/tcpip-9.0.2.tbz";
+      hash = "sha256-bteI5etaVzXmdNPJaQmWFi8op2Zfm2nlCcODvQr7cMc=";
+    };
+  });
 
   testo = osuper.testo.overrideAttrs (o: {
     buildInputs = [ ppxlib ];
@@ -3575,6 +3614,14 @@ with oself;
       src = builtins.fetchurl {
         url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.1/uring-2.15.1.tbz";
         sha256 = "sha256-j7ivQPKDbOIqjycknQsSI+eQjrAv3U66tWmEIUTdwLE=";
+      };
+    }
+    # Eio 1.6 on OCaml 5.2 and 5.3 still needs APIs removed in uring 2.15.2.
+    // lib.optionalAttrs (lib.versionAtLeast ocaml.version "5.4") {
+      version = "2.15.2";
+      src = fetchurl {
+        url = "https://github.com/ocaml-multicore/ocaml-uring/releases/download/v2.15.2/uring-2.15.2.tbz";
+        hash = "sha256-zJxaSUKEF8DxNxFZ3m8yjvokdyY7NFl+ls0f4B6ePpA=";
       };
     }
   );
