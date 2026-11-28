@@ -3347,15 +3347,6 @@ with oself;
     doCheck = false;
   });
 
-  sel = osuper.sel.overrideAttrs (_: {
-    version = "0.10.0";
-    minimalOCamlVersion = "4.12";
-    src = fetchurl {
-      url = "https://github.com/gares/sel/releases/download/v0.10.0/sel-0.10.0.tbz";
-      hash = "sha256-kVFDGrrsMK65Ok9WGFh1FgI/mUWt6EVV1ulsxRdhbNo=";
-    };
-  });
-
   sendfile = callPackage ./sendfile { };
 
   sherlodoc = callPackage ./sherlodoc { };
